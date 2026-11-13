@@ -13,6 +13,7 @@ with sync_playwright() as p:
     except Exception: b = p.chromium.launch(channel='chrome')
     for f, chap in apps:
         ctx = b.new_context(viewport={'width': 420, 'height': 900}, user_agent='Mozilla/5.0 (Linux; Android 13; SM-A536B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36')
+        ctx.add_init_script("try{localStorage.setItem('lab_auto','0')}catch(e){}")
         pg = ctx.new_page()
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
@@ -59,6 +60,8 @@ with sync_playwright() as p:
         txt = pg.locator('#lab-report').inner_text()
         check('Salma Test' in txt and 'Android' in txt, f + ': nom et appareil dans le rapport')
         check('عنوان IP' in txt and 'المدينة' in txt, f + ': champs IP et ville présents')
+        ar = pg.evaluate("(function(){var e=document.querySelector('#lab-report .rp-ar');if(!e)return null;var c=getComputedStyle(e);return {bg:c.backgroundColor,bd:c.borderTopWidth,pos:c.position,w:e.getBoundingClientRect().width,rw:document.querySelector('#lab-report .rp').getBoundingClientRect().width}})()")
+        check(ar is not None and ar['bd'] == '0px' and ar['bg'] == 'rgba(0, 0, 0, 0)' and ar['pos'] == 'static' and ar['w'] <= ar['rw'] + 1, f + ': note arabe du rapport sans cadre ' + str(ar))
         pg.screenshot(path='/tmp/report_%s.png' % f.split('.')[0], full_page=False)
         check(not errs, f + ': aucune erreur JS ' + str(errs[:3]))
         ctx.close()

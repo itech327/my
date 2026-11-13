@@ -13,6 +13,7 @@ with sync_playwright() as p:
     except Exception: b = p.chromium.launch(channel='chrome')
     ctx = b.new_context(viewport={'width': 420, 'height': 900})
     ctx.add_init_script("Object.defineProperty(window,'LAB_NOTIFY_URL',{get:()=>'%s',set:()=>{}})" % URL)
+    ctx.add_init_script("try{localStorage.setItem('lab_auto','0')}catch(e){}")
     got = []
     def route(r):
         u = r.request.url
