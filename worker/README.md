@@ -39,3 +39,18 @@ Ne mets jamais le jeton dans le dépôt ni dans une conversation.
 node worker/test_worker.mjs
 python3 tests/notify_test.py
 ```
+
+## Tableau de bord enseignant
+
+Le relais garde aussi, dans une base Cloudflare D1, les événements des élèves qui ont accepté le suivi (connexion, séries, fin de session). Jamais l'adresse IP. Les visites anonymes ne sont pas gardées. Les lignes de plus de 180 jours sont effacées.
+
+La page `/teacher` lit `/api/teacher/events`. Ces deux chemins doivent être protégés par Cloudflare Access. Le relais refuse toute requête sans l'en-tête d'Access.
+
+1. D1 : créer la base `taalim`, puis exécuter `worker/schema.sql` dans sa console.
+2. Worker : lier la base avec le nom de liaison `DB`, puis déployer le nouveau `worker/worker.js`.
+3. Route du Worker : `taalim.men/api/teacher/*`. Le lien `workers.dev` reste utilisé par le site pour les alertes.
+4. Zero Trust, Access, application auto-hébergée sur `taalim.men`, chemins `/teacher*` et `/api/teacher/*`, règle Allow limitée à l'adresse de l'enseignant.
+5. Classes : donner aux élèves un lien `https://taalim.men/maths?c=CODE` (3 à 12 lettres ou chiffres) ou le code à saisir au démarrage.
+
+La suppression d'un élève (bouton « Supprimer ») efface toutes ses lignes. C'est la réponse à une demande de parent.
+

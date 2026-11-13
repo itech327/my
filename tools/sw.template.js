@@ -37,6 +37,7 @@ self.addEventListener('fetch', function (e) {
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+  if (/^\/(api|teacher)(\/|$)/.test(url.pathname)) return; // données d'élèves : jamais en cache local
   if (req.mode === 'navigate') {
     e.respondWith(fetch(req).then(function (r) { return store(req, r); }).catch(function () {
       return caches.match(key(req.url)).then(function (r) { return r || caches.match(key(SCOPE)); });

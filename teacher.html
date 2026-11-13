@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!--gen:head-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-P0Awe7l5N+TIN5Ga3m9FjzxbJc7GZyYXHIRaEQcHGxg='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="description" content="Espace réservé à l’enseignant.">
+<link rel="canonical" href="https://taalim.men/teacher.html">
+<meta name="theme-color" content="#0d0b14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">
+<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">
+<meta property="og:title" content="Espace enseignant · Cours en mouvement"><meta property="og:description" content="Espace réservé à l’enseignant."><meta property="og:url" content="https://taalim.men/teacher.html">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="twitter:card" content="summary">
+<!--/gen:head-->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Espace enseignant · Cours en mouvement</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--bg:#0d0b14;--surface:#161320;--surface-2:#1e1a2b;--line:#2f2942;--fg:#f2eff9;--muted:#aaa3bf;--pink:#e371cb;--lav:#9b92dc;--teal:#6ccdb6;--coral:#f27b60;--grad:linear-gradient(90deg,var(--pink),var(--lav) 50%,var(--teal));--f-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--f-ar:"Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-body);padding:0 max(14px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 0 56px}
+h1{font-size:clamp(26px,6vw,38px);margin:0 0 4px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:17px;margin:26px 0 8px}
+.muted{color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+select,button{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;min-height:42px;padding:6px 12px}
+button{cursor:pointer;font-weight:600}
+button:hover,button:focus-visible,select:focus-visible{border-color:var(--pink);outline:none}
+button.danger{color:var(--coral)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font-size:26px}
+.kpi span{color:var(--muted);font-size:13px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.pct{font-weight:700}
+.low{color:var(--coral)}.mid{color:#f0c36b}.hi{color:var(--teal)}
+.msg{padding:14px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);margin:14px 0}
+.msg.err{border-color:var(--coral)}
+.small{font-size:13px}
+.ar{font-family:var(--f-ar);direction:rtl}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Espace enseignant</h1>
+  <p class="muted">Résultats des élèves qui ont accepté le suivi. <span class="ar" lang="ar" dir="rtl">نتائج التلاميذ الذين وافقوا على المتابعة.</span></p>
+
+  <div class="bar">
+    <label for="cls" class="muted">Classe</label>
+    <select id="cls"><option value="">Toutes</option></select>
+    <label for="days" class="muted">Période</label>
+    <select id="days"><option value="7">7 jours</option><option value="30" selected>30 jours</option><option value="90">90 jours</option><option value="180">180 jours</option></select>
+    <button type="button" id="refresh">Actualiser</button>
+  </div>
+
+  <div id="status" class="msg" role="status">Chargement…</div>
+  <div id="out" hidden>
+    <div class="kpis" id="kpis"></div>
+
+    <h2>Élèves <span class="ar muted" lang="ar" dir="rtl">التلاميذ</span></h2>
+    <div class="tw"><table id="students"><thead><tr><th>Nom</th><th>Classe</th><th>Dernière activité</th><th>Réponses</th><th>Réussite</th><th>Points</th><th>Durée</th><th></th></tr></thead><tbody></tbody></table></div>
+
+    <h2>Chapitres à revoir <span class="ar muted" lang="ar" dir="rtl">دروس تحتاج مراجعة</span></h2>
+    <div class="tw"><table id="chapters"><thead><tr><th>Chapitre</th><th>Séries</th><th>Moyenne</th><th>Élèves en difficulté</th></tr></thead><tbody></tbody></table></div>
+    <p class="small muted">Données conservées 180 jours. Le bouton « Supprimer » efface toutes les données d’un élève, par exemple à la demande d’un parent.</p>
+  </div>
+</div>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  function el(tag, text, cls) { var e = document.createElement(tag); if (text != null) e.textContent = text; if (cls) e.className = cls; return e; }
+  function cell(tr, text, cls) { var td = el('td', text, cls); tr.appendChild(td); return td; }
+  function pctCls(p) { return p < 50 ? 'low' : p < 75 ? 'mid' : 'hi'; }
+  function dur(ms) { var m = Math.round(ms / 60000); return m < 1 ? '< 1 min' : m + ' min'; }
+  function ago(ts, now) {
+    var m = Math.round((now - ts) / 60000);
+    if (m < 2) return 'à l’instant'; if (m < 60) return 'il y a ' + m + ' min';
+    var h = Math.round(m / 60); if (h < 36) return 'il y a ' + h + ' h';
+    return 'il y a ' + Math.round(h / 24) + ' j';
+  }
+  function status(t, err) { var s = $('#status'); s.hidden = !t; s.textContent = t || ''; s.className = 'msg' + (err ? ' err' : ''); }
+
+  var firstLoad = true;
+  function load() {
+    status('Chargement…'); $('#out').hidden = true;
+    var q = '?days=' + encodeURIComponent($('#days').value) + ($('#cls').value ? '&cls=' + encodeURIComponent($('#cls').value) : '');
+    fetch('/api/teacher/events' + q, { credentials: 'same-origin', cache: 'no-store' }).then(function (r) {
+      if (r.status === 403) throw new Error('Accès refusé. Connecte-toi avec l’adresse autorisée.');
+      if (r.status === 503) throw new Error('La base de données n’est pas encore reliée au relais.');
+      if (!r.ok) throw new Error('Erreur ' + r.status);
+      return r.json();
+    }).then(function (d) {
+      if (firstLoad || $('#cls').options.length <= 1) fillClasses(d.classes || []);
+      firstLoad = false;
+      draw(d); status('');
+    }).catch(function (e) { status(e.message || 'Erreur réseau', true); });
+  }
+  function fillClasses(list) {
+    var s = $('#cls'), cur = s.value; s.innerHTML = '';
+    var all = el('option', 'Toutes'); all.value = ''; s.appendChild(all);
+    list.forEach(function (c) { var o = el('option', (c.cls || 'sans code') + ' (' + c.n + ')'); o.value = c.cls; s.appendChild(o); });
+    s.value = cur;
+  }
+
+  function draw(d) {
+    var ev = d.events || [], now = d.now || Date.now(), by = {}, ch = {};
+    ev.slice().reverse().forEach(function (e) {   // du plus ancien au plus récent
+      var s = by[e.sid] || (by[e.sid] = { sid: e.sid, name: e.name, cls: e.cls, last: 0, n: 0, ok: 0, pts: 0, ms: 0, series: 0, hasEnd: false });
+      s.last = Math.max(s.last, e.ts); s.cls = e.cls || s.cls;
+      var x = e.data || {};
+      if (e.type === 'end' || e.type === 'exit') { s.hasEnd = true; s.n = x.n || 0; s.ok = x.ok || 0; s.pts = x.pts || 0; s.ms = x.durMs || 0; }
+      if (e.type === 'series') {
+        s.series++;
+        if (!s.hasEnd) { s.n += x.asked || 0; s.ok += x.good || 0; s.pts += x.pts || 0; }
+        var c = ch[x.title] || (ch[x.title] = { title: x.title, n: 0, sum: 0, low: {} });
+        c.n++; c.sum += x.pct || 0; if ((x.pct || 0) < 60) c.low[e.sid] = e.name;
+      }
+    });
+    var list = Object.keys(by).map(function (k) { return by[k]; }).sort(function (a, b) { return b.last - a.last; });
+
+    var tot = list.reduce(function (t, s) { t.n += s.n; t.ok += s.ok; return t; }, { n: 0, ok: 0 });
+    var k = $('#kpis'); k.innerHTML = '';
+    [[list.length, 'élèves'], [ev.filter(function (e) { return e.type === 'series'; }).length, 'séries terminées'], [tot.n ? Math.round(100 * tot.ok / tot.n) + ' %' : '–', 'réussite moyenne'], [list.filter(function (s) { return now - s.last < 864e5; }).length, 'actifs en 24 h']].forEach(function (a) {
+      var b = el('div', null, 'kpi'); b.appendChild(el('b', String(a[0]))); b.appendChild(el('span', a[1])); k.appendChild(b);
+    });
+
+    var tb = $('#students tbody'); tb.innerHTML = '';
+    if (!list.length) { var tr0 = el('tr'); var td0 = cell(tr0, 'Aucune donnée pour cette période.', 'muted'); td0.colSpan = 8; tb.appendChild(tr0); }
+    list.forEach(function (s) {
+      var tr = el('tr'), p = s.n ? Math.round(100 * s.ok / s.n) : null;
+      cell(tr, s.name); cell(tr, s.cls || '–'); cell(tr, ago(s.last, now));
+      cell(tr, s.n ? s.ok + '/' + s.n : '–'); cell(tr, p == null ? '–' : p + ' %', p == null ? '' : 'pct ' + pctCls(p));
+      cell(tr, s.pts ? String(Math.round(s.pts * 10) / 10) : '–'); cell(tr, s.ms ? dur(s.ms) : '–');
+      var td = el('td'), b = el('button', 'Supprimer', 'danger'); b.type = 'button';
+      b.addEventListener('click', function () { del(s); });
+      td.appendChild(b); tr.appendChild(td); tb.appendChild(tr);
+    });
+
+    var cb = $('#chapters tbody'); cb.innerHTML = '';
+    var cl = Object.keys(ch).map(function (t) { var c = ch[t]; c.avg = Math.round(c.sum / c.n); return c; }).sort(function (a, b) { return a.avg - b.avg; });
+    if (!cl.length) { var tr1 = el('tr'); var td1 = cell(tr1, 'Aucune série terminée.', 'muted'); td1.colSpan = 4; cb.appendChild(tr1); }
+    cl.forEach(function (c) {
+      var tr = el('tr'); cell(tr, c.title || '–'); cell(tr, String(c.n)); cell(tr, c.avg + ' %', 'pct ' + pctCls(c.avg));
+      cell(tr, Object.keys(c.low).map(function (id) { return c.low[id]; }).join(', ') || '–'); cb.appendChild(tr);
+    });
+    $('#out').hidden = false;
+  }
+
+  function del(s) {
+    if (!window.confirm('Supprimer toutes les données de « ' + s.name + ' » ? Cette action est définitive.')) return;
+    fetch('/api/teacher/delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid: s.sid }) })
+      .then(function (r) { if (!r.ok) throw new Error('Suppression impossible (' + r.status + ')'); load(); })
+      .catch(function (e) { status(e.message, true); });
+  }
+
+  $('#refresh').addEventListener('click', load);
+  $('#cls').addEventListener('change', load);
+  $('#days').addEventListener('change', function () { firstLoad = true; load(); });
+  load();
+})();
+</script>
+</body>
+</html>

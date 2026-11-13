@@ -86,6 +86,7 @@ DESC = {
                 'Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.'),
  'confidentialite.html': ('Confidentialité · Cours en mouvement',
                 'Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.'),
+ 'teacher.html': ('Espace enseignant · Cours en mouvement', 'Espace réservé à l’enseignant.'),
 }
 FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
 
@@ -122,6 +123,8 @@ def harden(name, html):
              '<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">\n'
              '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '"><meta property="og:url" content="' + url + '">\n'
              '<meta name="twitter:card" content="summary">\n<!--/gen:head-->\n')
+    if name == 'teacher.html':
+        block = block.replace('<meta name="twitter:card"', '<meta name="robots" content="noindex,nofollow,noarchive"><meta name="twitter:card"')
     html = html.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + block, 1)
     assert '<!--gen:head-->' in html, name
     return html
@@ -137,13 +140,16 @@ hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',
        '/icons/*', '  Cache-Control: public, max-age=604800', '']
 today = datetime.date.today().isoformat()
 urls = []
-for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']:
+for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html', 'teacher.html']:
     h = harden(name, rd(name)); wr(name, h)
     c = csp_for(h, True)
     paths = ['/', '/index.html'] if name == 'index.html' else ['/' + name, '/' + name[:-5]]
     for pth in paths: hdr += [pth, '  Content-Security-Policy: ' + c]
+    if name == 'teacher.html':
+        hdr += ['  Cache-Control: no-store', '  X-Robots-Tag: noindex, nofollow, noarchive']
     hdr.append('')
-    urls.append(SITE if name == 'index.html' else SITE + name)
+    if name != 'teacher.html':
+        urls.append(SITE if name == 'index.html' else SITE + name)
 wr('_headers', '\n'.join(hdr))
 
 import json
@@ -161,7 +167,7 @@ fonts_list = sorted('fonts/' + f for f in os.listdir(os.path.join(ROOT, 'fonts')
 core = ['./'] + [n[:-5] for n in pages[1:]] + ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'lab/lab.js', 'lab/notify-config.js'] + fonts_list
 ver = hashlib.sha256(''.join(rd(n) for n in pages).encode('utf8') + rd('lab/notify-config.js').encode('utf8') + ''.join(fonts_list).encode('utf8')).hexdigest()[:10]
 wr('sw.js', rd('tools/sw.template.js').replace('__VERSION__', ver).replace('__CORE__', json.dumps(core)))
-wr('robots.txt', 'User-agent: *\nAllow: /\n\nSitemap: ' + SITE + 'sitemap.xml\n')
+wr('robots.txt', 'User-agent: *\nAllow: /\nDisallow: /teacher\nDisallow: /api/\n\nSitemap: ' + SITE + 'sitemap.xml\n')
 wr('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
    ''.join('  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, today) for u in urls) + '</urlset>\n')
 print('durci', len(urls), 'pages ·', SITE)

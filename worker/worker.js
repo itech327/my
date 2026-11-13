@@ -5,6 +5,7 @@
 const MAX_BODY = 4000;
 const LIMIT_IP = 40;       // messages par minute et par IP
 const LIMIT_SESSION = 60;  // messages par heure et par session
+const RETENTION_DAYS = 180;  // durée de conservation des événements dans D1
 const hits = new Map();
 
 function clean(v, n) {
@@ -18,6 +19,65 @@ function limited(key, max, windowMs, now) {
   if (hits.size > 5000) for (const k of hits.keys()) { hits.delete(k); if (hits.size < 2500) break; }
   return false;
 }
+export function clsClean(v) { v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); return v.length >= 3 ? v : ''; }
+
+/* Événement à stocker pour le tableau de bord : seulement les élèves ayant consenti (login, series, end, exit). */
+export function toRow(p, now) {
+  const type = clean(p.type, 10);
+  if (['login', 'series', 'end', 'exit'].indexOf(type) < 0) return null;
+  const sid = clean(p.sid, 40).replace(/[^\w-]/g, '');
+  if (!sid || !clean(p.name, 60)) return null;
+  const d = { };
+  if (type === 'series') {
+    d.title = clean(p.title, 100); d.d = num(p.d, 0, 4); d.good = num(p.good, 0, 50); d.asked = num(p.asked, 0, 50); d.pct = num(p.pct, 0, 100);
+    d.pts = num(p.pts, 0, 500); d.max = num(p.max, 0, 500); d.timeout = !!p.timeout;
+  } else if (type === 'login') {
+    d.device = clean(p.device, 120); d.city = clean(p.city, 40); d.country = clean(p.country, 40);
+  } else {
+    d.device = clean(p.device, 120); d.durMs = num(p.durMs, 0, 864e5); d.n = num(p.n, 0, 3000); d.ok = num(p.ok, 0, 3000); d.pct = num(p.pct, 0, 100);
+    d.pts = num(p.pts, 0, 99999); d.hints = num(p.hints, 0, 3000);
+    d.lv = (Array.isArray(p.lv) ? p.lv : []).slice(0, 4).map((x) => [num(x && x[0], 0, 3000), num(x && x[1], 0, 3000)]);
+    d.weak = (Array.isArray(p.weak) ? p.weak : []).slice(0, 5).map((w) => ({ title: clean(w && w.title, 80), pct: num(w && w.pct, 0, 100) }));
+  }
+  return { ts: now, cls: clsClean(p.cls), sid, type, app: clean(p.page, 40), name: clean(p.name, 60), data: JSON.stringify(d) };
+}
+
+async function store(env, row) {
+  if (!env.DB || !row) return;
+  try {
+    await env.DB.prepare('INSERT INTO events (ts, cls, sid, type, app, name, data) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(row.ts, row.cls, row.sid, row.type, row.app, row.name, row.data).run();
+    if (Math.random() < 0.02) await env.DB.prepare('DELETE FROM events WHERE ts < ?').bind(row.ts - RETENTION_DAYS * 864e5).run();
+  } catch (_) { /* le stockage ne doit jamais bloquer l'alerte */ }
+}
+
+const J = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
+
+/* API enseignant : derrière Cloudflare Access (chemin /api/teacher/*). On exige l'en-tête d'Access en plus. */
+async function teacher(request, env, url) {
+  if (!request.headers.get('Cf-Access-Jwt-Assertion')) return J({ error: 'access' }, 403);
+  if (!env.DB) return J({ error: 'db' }, 503);
+  const path = url.pathname;
+  if (request.method === 'GET' && path === '/api/teacher/events') {
+    const cls = clsClean(url.searchParams.get('cls')), days = num(url.searchParams.get('days') || 30, 1, RETENTION_DAYS) || 30;
+    const since = Date.now() - days * 864e5;
+    const st = cls
+      ? env.DB.prepare('SELECT id, ts, cls, sid, type, app, name, data FROM events WHERE ts >= ? AND cls = ? ORDER BY ts DESC LIMIT 2000').bind(since, cls)
+      : env.DB.prepare('SELECT id, ts, cls, sid, type, app, name, data FROM events WHERE ts >= ? ORDER BY ts DESC LIMIT 2000').bind(since);
+    const { results } = await st.all();
+    const cl = await env.DB.prepare('SELECT cls, COUNT(DISTINCT sid) AS n FROM events WHERE ts >= ? GROUP BY cls ORDER BY n DESC').bind(since).all();
+    return J({ now: Date.now(), classes: cl.results || [], events: (results || []).map((r) => Object.assign({}, r, { data: safeJson(r.data) })) });
+  }
+  if (request.method === 'POST' && path === '/api/teacher/delete') {
+    let b; try { b = JSON.parse(await request.text()); } catch (_) { return J({ error: 'json' }, 400); }
+    const sid = clean(b && b.sid, 40).replace(/[^\w-]/g, '');
+    if (!sid) return J({ error: 'sid' }, 400);
+    const r = await env.DB.prepare('DELETE FROM events WHERE sid = ?').bind(sid).run();
+    return J({ ok: true, deleted: (r.meta && r.meta.changes) || 0 });
+  }
+  return J({ error: 'route' }, 404);
+}
+function safeJson(t) { try { return JSON.parse(t); } catch (_) { return {}; } }
+
 function dur(ms) { const s = Math.round(ms / 1000), m = Math.floor(s / 60); return m ? m + ' min ' + (s % 60) + ' s' : s + ' s'; }
 
 export function format(p, cf, ip) {
@@ -50,6 +110,8 @@ export function format(p, cf, ip) {
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname.indexOf('/api/teacher/') === 0) return teacher(request, env, url);
     const origin = request.headers.get('Origin') || '';
     const allowed = clean(env.ALLOWED_ORIGIN, 200);
     const cors = { 'Access-Control-Allow-Origin': allowed || 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
@@ -67,6 +129,7 @@ export default {
     if (sid && limited('sid:' + sid, LIMIT_SESSION, 3600000, now)) return new Response('rate', { status: 429, headers: cors });
     const text = format(p, request.cf, ip);
     if (!text) return new Response('type', { status: 400, headers: cors });
+    await store(env, toRow(p, now));
     const r = await fetch('https://api.telegram.org/bot' + env.BOT_TOKEN + '/sendMessage', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: env.CHAT_ID, text: text.slice(0, 3900), disable_web_page_preview: true })

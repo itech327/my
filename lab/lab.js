@@ -230,7 +230,10 @@
   }
 
   /* ---------- session ---------- */
-  var K_CUR = 'lab_cur', K_HIST = 'lab_hist', K_PROG = 'lab_prog', K_NAME = 'lab_name';
+  var K_CUR = 'lab_cur', K_HIST = 'lab_hist', K_PROG = 'lab_prog', K_NAME = 'lab_name', K_CLS = 'lab_cls';
+  /* code de classe : 3 à 12 lettres ou chiffres, fourni par l'enseignant (lien ?c=CODE ou saisie) */
+  function clsClean(v) { v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); return v.length >= 3 ? v : ''; }
+  try { var mc = /[?&]c=([^&#]*)/.exec(location.search); if (mc && clsClean(decodeURIComponent(mc[1]))) store.set(K_CLS, clsClean(decodeURIComponent(mc[1]))); } catch (_) {}
   var Sess = (Lab.Session = {});
   var listeners = [];
   Sess.on = function (f) { listeners.push(f); };
@@ -246,7 +249,7 @@
   function cleanSess(s) {
     if (!s || typeof s !== 'object' || Array.isArray(s)) return null;
     var c = sprim(s);
-    c.id = sstr(s.id, 40).replace(/[^\w-]/g, ''); c.name = sstr(s.name, 60);
+    c.id = sstr(s.id, 40).replace(/[^\w-]/g, ''); c.name = sstr(s.name, 60); c.cls = clsClean(s.cls);
     c.startedAt = snum(s.startedAt, 0, 0, 4e12); c.endedAt = s.endedAt ? snum(s.endedAt, 0, 0, 4e12) : null; c.consent = !!s.consent;
     c.device = sprim(s.device); c.net = sprim(s.net);
     c.answers = (Array.isArray(s.answers) ? s.answers : []).slice(-2000).map(cleanAns);
@@ -259,10 +262,10 @@
     var hs = Sess.hist(), i = hs.findIndex(function (x) { return x.id === id; });
     if (i >= 0) { fn(hs[i]); store.set(K_HIST, hs); }
   }
-  Sess.start = function (name, consent) {
+  Sess.start = function (name, consent, cls) {
     var id = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    var s = { id: id, name: String(name).trim().slice(0, 60), startedAt: Date.now(), endedAt: null, consent: !!consent, device: detectDevice(), net: consent ? { status: 'pending' } : { status: 'declined' }, answers: [] };
-    store.set(K_CUR, s); store.set(K_NAME, s.name);
+    var s = { id: id, name: String(name).trim().slice(0, 60), startedAt: Date.now(), endedAt: null, consent: !!consent, cls: clsClean(cls), device: detectDevice(), net: consent ? { status: 'pending' } : { status: 'declined' }, answers: [] };
+    store.set(K_CUR, s); store.set(K_NAME, s.name); if (s.cls) store.set(K_CLS, s.cls); else store.del(K_CLS);
     var hs = Sess.hist(); hs.unshift(s); store.set(K_HIST, hs.slice(0, 20));
     emit();
     if (consent) {
@@ -326,7 +329,7 @@
     var st = stats(s), n = s.net || {};
     var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; }).slice(0, 5).map(function (c) { return { title: c.title, pct: Math.round(100 * c.ok / c.n), n: c.n }; });
     return {
-      sid: s.id, name: s.name, device: deviceLabel(s.device), consent: !!s.consent,
+      sid: s.id, name: s.name, cls: s.cls || '', device: deviceLabel(s.device), consent: !!s.consent,
       ip: s.consent ? n.ip || '' : '', city: s.consent ? n.city || '' : '', region: s.consent ? n.region || '' : '', country: s.consent ? n.country || '' : '', isp: s.consent ? n.isp || '' : '', cityApprox: !!n.cityApprox,
       durMs: (s.endedAt || Date.now()) - s.startedAt, n: st.n, ok: st.ok, pct: st.pct, pts: Math.round(st.pts * 10) / 10, hints: st.hints,
       lv: [1, 2, 3, 4].map(function (k) { return [st.lv[k].ok, st.lv[k].n]; }), weak: weak
@@ -339,7 +342,7 @@
     send(s && s.consent ? { type: 'open', name: s.name, sid: s.id } : { type: 'open' });
   };
   Notify.login = function (s) { send(Object.assign({ type: 'login' }, summary(s))); };
-  Notify.series = function (o) { var s = Sess.cur(); if (!s || !s.consent) return; send(Object.assign({ type: 'series', sid: s.id, name: s.name }, o)); };
+  Notify.series = function (o) { var s = Sess.cur(); if (!s || !s.consent) return; send(Object.assign({ type: 'series', sid: s.id, name: s.name, cls: s.cls || '' }, o)); };
   Notify.end = function (s) { if (s && s.consent) send(Object.assign({ type: 'end' }, summary(s))); };
   Notify.exit = function () {
     var s = Sess.cur(); if (!s || !s.consent) return;
@@ -618,6 +621,7 @@
     modal.innerHTML =
       '<div class="lab-card"><h3>Ma session · جلستي</h3>' +
       '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
+      (Notify.enabled() ? '<label class="f" for="lab-cls">Code de classe (facultatif) · رمز القسم</label><input id="lab-cls" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(store.get(K_CLS, '')) + '">' : '') +
       (Notify.enabled()
         ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil, mon IP et ma ville approximative soient envoyés à mon enseignant.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إرسال اسمي وجهازي وعنوان IP ومدينتي التقريبية إلى أستاذي.</span></span></label>' +
           '<p class="lab-note">Une visite anonyme (page, heure, pays) est aussi signalée. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>'
@@ -633,7 +637,7 @@
       if (n.length < 2) { $('#lab-err', modal).textContent = 'Écris ton nom (2 lettres au moins). · اكتب اسمك'; return; }
       var okc = $('#lab-cons', modal).checked;
       if (Notify.enabled() && !okc) { $('#lab-err', modal).textContent = 'Coche la case pour continuer, ou choisis « Sans session ». · وافق للمتابعة أو اختر «Sans session»'; return; }
-      Sess.start(n, okc); closeModal();
+      var ce = $('#lab-cls', modal); Sess.start(n, okc, ce ? ce.value : ''); closeModal();
     });
     nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#lab-go', modal).click(); });
     $('#lab-skip', modal).addEventListener('click', function () { try { sessionStorage.setItem('lab_skip', '1'); } catch (_) {} closeModal(); render(); });
