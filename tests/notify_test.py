@@ -77,6 +77,7 @@ with sync_playwright() as p:
     ctx.close()
     # relais désactivé : aucune requête
     ctx2 = b.new_context(); got2 = []
+    ctx2.add_init_script("Object.defineProperty(window,'LAB_NOTIFY_URL',{get:()=>'',set:()=>{}})")
     ctx2.route('**/*', lambda r: (got2.append(r.request.url), r.abort()) if r.request.url.startswith('http') and 'relay' in r.request.url else (r.abort() if r.request.url.startswith('http') else r.continue_()))
     pg2 = ctx2.new_page(); pg2.goto('file://' + ROOT + '/' + _csp_copy('svt.html')); pg2.wait_for_timeout(600)
     check(not got2 and 'envoyés à mon enseignant' not in pg2.locator('.lab-modal').inner_text(), 'URL vide : aucune alerte et texte de consentement local')

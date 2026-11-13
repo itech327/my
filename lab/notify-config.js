@@ -1,3 +1,1 @@
-/* Adresse du relais Telegram (voir worker/README.md).
-   Vide : aucune alerte n'est envoyée et le texte de consentement reste local. */
-window.LAB_NOTIFY_URL = "";
+window.LAB_NOTIFY_URL = "https://taalim-relay.abderrahim-habz.workers.dev";
