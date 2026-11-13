@@ -1090,7 +1090,7 @@ document.addEventListener('click',function(e){
         if (it.t === 'num') {
           var row = h('div', { 'class': 'lab-row' }), inp = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', autocapitalize: 'off', 'aria-label': 'Ta réponse', placeholder: 'Ta réponse' }), go = h('button', { type: 'button', 'class': 'btn' }, 'Valider');
           var keys = h('div', { 'class': 'lab-keys' });
-          [['−', '−'], ['/', '/']].forEach(function (k) { var kb = h('button', { type: 'button', 'aria-label': 'Insérer ' + k[0] }, k[0]); kb.addEventListener('mousedown', function (e) { e.preventDefault(); }); kb.addEventListener('click', function () { if (!inp.disabled) { inp.value += k[1]; inp.focus(); } }); keys.appendChild(kb); });
+          [['−', '−'], ['/', '/'], [',', ',']].forEach(function (k) { var kb = h('button', { type: 'button', 'aria-label': 'Insérer ' + k[0] }, k[0]); kb.addEventListener('mousedown', function (e) { e.preventDefault(); }); kb.addEventListener('click', function () { if (!inp.disabled) { inp.value += k[1]; inp.focus(); } }); keys.appendChild(kb); });
           row.appendChild(inp); row.appendChild(keys); if (it.u) row.appendChild(h('span', { 'class': 'lab-note' }, it.u)); row.appendChild(go); box.appendChild(row);
           var check = function () {
             if (over) return;
