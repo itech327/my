@@ -45,6 +45,7 @@ with sync_playwright() as p:
     check(s['app'] == 'maths' and s['chap'] and s['d'] in (1, 2, 3), 'enregistrement complet : ' + str({k: s[k] for k in ('chap', 'd', 'ok', 'pts')}))
     pg.evaluate("location.hash='#pr-1'"); pg.wait_for_timeout(300)
     box = pg.locator('#pr-1 .px-item').filter(has=pg.locator('input')).first
+    box = pg.locator('#pr-1 .px-item:not(.is-ok):not(.is-ko)').filter(has=pg.locator('input')).first
     if box.count():
         for i in range(3): box.locator('.lab-keys button').nth(i).click()
         check(box.locator('input').input_value() == '\u2212/,', 'touches pionnier : ' + box.locator('input').input_value())
