@@ -12,6 +12,9 @@ fails = []
 def check(c, m):
     print(('PASS ' if c else 'FAIL ') + m)
     if not c: fails.append(m)
+for f in ['maths.html', 'physique-chimie.html', 'svt.html', 'index.html', 'lab/lab.js']:
+    s = open(os.path.join(ROOT, f), encoding='utf8').read()
+    check(not re.search('[\u0660-\u0669\u06f0-\u06f9\u066a\u066b]', s), f + ' : aucun chiffre arabe-indien')
 with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')

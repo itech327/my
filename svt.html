@@ -1001,9 +1001,9 @@ document.addEventListener('click',function(e){
         : (d === 4 ? 'Défi : 5 questions du niveau le plus difficile, ' + SECS + ' secondes par question, sans indice, une seule tentative. Points ×5.'
           : (d === 3 ? '6 questions difficiles, plusieurs étapes. Un indice coûte la moitié des points.' : '6 questions. Un indice coûte la moitié des points.'));
       var ar = mode === 'adapt'
-        ? 'المستوى يتغيّر حسب إجاباتك: إجابة صحيحة تصعّد المستوى، وخطأ ينزل به. ٨ أسئلة.'
-        : (d === 4 ? 'التحدّي: ٥ أسئلة من أصعب مستوى، ' + SECS + ' ثانية لكل سؤال، بلا تلميح، ومحاولة واحدة. النقاط ×٥.'
-          : 'ستّ أسئلة. استعمال التلميح يخسّرك نصف النقاط. النجاح عند ٨٠٪ فما فوق.');
+        ? 'المستوى يتغيّر حسب إجاباتك: إجابة صحيحة تصعّد المستوى، وخطأ ينزل به. 8 أسئلة.'
+        : (d === 4 ? 'التحدّي: 5 أسئلة من أصعب مستوى، ' + SECS + ' ثانية لكل سؤال، بلا تلميح، ومحاولة واحدة. النقاط ×5.'
+          : 'ستّ أسئلة. استعمال التلميح يخسّرك نصف النقاط. النجاح عند 80% فما فوق.');
       info.innerHTML = '<p class="lab-note">' + txt + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>' +
         (s ? '' : '<p class="lab-note lab-noprint">Aucune session ouverte : tes résultats ne sont pas enregistrés. <a href="#" data-lab-start>Démarrer une session</a></p>');
       var a = info.querySelector('[data-lab-start]');
@@ -1277,7 +1277,7 @@ document.addEventListener('click',function(e){
         st.ch.map(function (c) { var p = Math.round(100 * c.ok / c.n); return '<tr><td>' + esc(c.app === 'maths' ? 'Maths' : 'Physique-Chimie') + '</td><td>' + esc(c.title) + '</td><td>' + c.ok + '/' + c.n + '</td><td class="' + (p >= 60 ? 'good' : 'bad') + '">' + p + ' %</td><td>' + Math.round(c.ms / c.n / 1000) + ' s</td></tr>'; }).join('') + '</table></div>';
       var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; });
       html += '<h3 dir="rtl">توصيات</h3>';
-      if (weak.length) html += weak.slice(0, 6).map(function (c) { return '<div class="rp-rec" dir="rtl">راجع فصل <a href="#' + esc(c.chap) + '" data-go="' + esc(c.chap) + '">' + esc(c.title) + '</a>: نسبة النجاح ' + Math.round(100 * c.ok / c.n) + '٪. ابدأ بالمستوى «سهل» ثم تدرّج.</div>'; }).join('');
+      if (weak.length) html += weak.slice(0, 6).map(function (c) { return '<div class="rp-rec" dir="rtl">راجع فصل <a href="#' + esc(c.chap) + '" data-go="' + esc(c.chap) + '">' + esc(c.title) + '</a>: نسبة النجاح ' + Math.round(100 * c.ok / c.n) + '%. ابدأ بالمستوى «سهل» ثم تدرّج.</div>'; }).join('');
       else html += '<div class="rp-rec" dir="rtl">لا توجد فصول ضعيفة ظاهرة. جرّب مستوى «تحدّي» في الفصول التي أتقنتها.</div>';
     }
     var wrong = (s.answers || []).filter(function (a) { return !a.ok; }).slice(-30).reverse();
