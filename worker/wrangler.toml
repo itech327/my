@@ -1,0 +1,6 @@
+name = "cours-telegram"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+[vars]
+ALLOWED_ORIGIN = "https://itech327.github.io"

@@ -1437,6 +1437,7 @@ window.addEventListener('load',function(){
 })();
 
 </script>
+<script src="lab/notify-config.js"></script>
 <script>
 /* Configuration des défis : Maths en mouvement */
 (function () {
@@ -1803,7 +1804,10 @@ window.addEventListener('load',function(){
     var hs = Sess.hist(); hs.unshift(s); store.set(K_HIST, hs.slice(0, 20));
     emit();
     if (consent) {
-      fetchNet().then(function (net) { patch(id, function (x) { x.net = net; }); emit(); });
+      fetchNet().then(function (net) {
+        patch(id, function (x) { x.net = net; }); emit();
+        var cur = Sess.hist().find(function (x) { return x.id === id; }); if (cur) Notify.login(cur);
+      });
       try {
         if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues)
           navigator.userAgentData.getHighEntropyValues(['model', 'platformVersion']).then(function (v) {
@@ -1818,7 +1822,9 @@ window.addEventListener('load',function(){
     var c = Sess.cur(); if (!c) return null;
     patch(c.id, function (x) { x.endedAt = Date.now(); });
     store.del(K_CUR); emit();
-    return Sess.hist().find(function (x) { return x.id === c.id; }) || c;
+    var done = Sess.hist().find(function (x) { return x.id === c.id; }) || c;
+    Notify.end(done);
+    return done;
   };
   Sess.log = function (rec) {
     var c = Sess.cur(); if (!c) return;
@@ -1840,6 +1846,45 @@ window.addEventListener('load',function(){
     return { n: n, ok: ok, pct: n ? Math.round(100 * ok / n) : 0, pts: pts, hints: hints, avg: n ? ms / n : 0, lv: lv, ch: Object.keys(ch).map(function (k) { return ch[k]; }) };
   }
   Sess.stats = stats;
+
+  /* ---------- alertes vers l'enseignant (Telegram via un relais) ---------- */
+  var Notify = (Lab.Notify = {});
+  function nurl() { return window.LAB_NOTIFY_URL || ''; }
+  Notify.enabled = function () { return !!nurl(); };
+  function send(payload, beacon) {
+    var u = nurl(); if (!u) return;
+    payload.v = 1; payload.page = CFG.appName; payload.t = Date.now();
+    var body = JSON.stringify(payload);
+    try {
+      if (beacon && navigator.sendBeacon && navigator.sendBeacon(u, new Blob([body], { type: 'text/plain;charset=UTF-8' }))) return;
+      fetch(u, { method: 'POST', body: body, keepalive: true, headers: { 'Content-Type': 'text/plain;charset=UTF-8' } }).catch(function () {});
+    } catch (_) {}
+  }
+  function summary(s) {
+    var st = stats(s), n = s.net || {};
+    var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; }).slice(0, 5).map(function (c) { return { title: c.title, pct: Math.round(100 * c.ok / c.n), n: c.n }; });
+    return {
+      sid: s.id, name: s.name, device: deviceLabel(s.device), consent: !!s.consent,
+      ip: s.consent ? n.ip || '' : '', city: s.consent ? n.city || '' : '', region: s.consent ? n.region || '' : '', country: s.consent ? n.country || '' : '', isp: s.consent ? n.isp || '' : '', cityApprox: !!n.cityApprox,
+      durMs: (s.endedAt || Date.now()) - s.startedAt, n: st.n, ok: st.ok, pct: st.pct, pts: Math.round(st.pts * 10) / 10, hints: st.hints,
+      lv: [1, 2, 3, 4].map(function (k) { return [st.lv[k].ok, st.lv[k].n]; }), weak: weak
+    };
+  }
+  var openSent = false, exitCount = -1;
+  Notify.open = function () {
+    if (openSent) return; openSent = true;
+    var s = Sess.cur();
+    send(s && s.consent ? { type: 'open', name: s.name, sid: s.id } : { type: 'open' });
+  };
+  Notify.login = function (s) { send(Object.assign({ type: 'login' }, summary(s))); };
+  Notify.series = function (o) { var s = Sess.cur(); if (!s || !s.consent) return; send(Object.assign({ type: 'series', sid: s.id, name: s.name }, o)); };
+  Notify.end = function (s) { if (s && s.consent) send(Object.assign({ type: 'end' }, summary(s))); };
+  Notify.exit = function () {
+    var s = Sess.cur(); if (!s || !s.consent) return;
+    if (exitCount === s.answers.length) return; exitCount = s.answers.length;
+    send(Object.assign({ type: 'exit' }, summary(s)), true);
+  };
+  window.addEventListener('pagehide', Notify.exit);
 
   /* ---------- progression par chapitre ---------- */
   function progGet() { return store.get(K_PROG, {}); }
@@ -2028,6 +2073,7 @@ window.addEventListener('load',function(){
         var lvl = mode === 'adapt' ? 0 : level;
         if (lvl) progSet(CFG.app, ctx.id, lvl, pct);
         prog.firstChild.style.width = '100%';
+        Notify.series({ app: CFG.app, chap: ctx.id, title: ctx.title, d: mode === 'adapt' ? 0 : level, good: good, asked: asked, pct: pct, pts: Math.round(pts * 10) / 10, max: max, timeout: !!timeout });
         var msg = pct >= 80 ? 'Bravo : niveau validé.' : (pct >= 50 ? 'Bien. Relis la leçon puis recommence pour valider.' : 'Reprends le cours de ce chapitre, puis un niveau plus facile.');
         var ar = pct >= 80 ? 'أحسنت! تم اجتياز هذا المستوى.' : (pct >= 50 ? 'جيّد. راجع الدرس وأعد المحاولة للنجاح في المستوى.' : 'عُد إلى درس هذا الفصل ثم جرّب مستوى أسهل.');
         var s = h('div', { 'class': 'lab-sum' }, '<h4>' + good + ' / ' + asked + ' · ' + pct + ' %</h4><p>' + pts + ' / ' + max + ' points' + (timeout ? ' · temps écoulé' : '') + '. ' + msg + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>');
@@ -2078,8 +2124,11 @@ window.addEventListener('load',function(){
       '<p class="lab-note">Entre ton nom pour suivre tes résultats. À la fin, tu obtiens un rapport.</p>' +
       '<p class="lab-ar" dir="rtl" lang="ar">أدخل اسمك لتتبّع نتائجك. في النهاية يظهر لك تقرير بالنتائج.</p>' +
       '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
-      '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
-      '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>' +
+      (Notify.enabled()
+        ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport et envoyés à mon enseignant (connexion, séries terminées, fermeture).<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على ظهور اسمي وجهازي وعنوان IP ومدينتي التقريبية في تقريري وعلى إرسالها إلى أستاذي (الدخول، إتمام التمارين، الخروج).</span></span></label>' +
+          '<p class="lab-note">Une visite anonyme (page et heure, sans nom ni IP) est aussi signalée à l’enseignant. La ville est approximative.<br><span class="lab-ar" dir="rtl" lang="ar">تُرسل أيضًا إشارة زيارة مجهولة (الصفحة والوقت فقط). المدينة تقريبية.</span></p>'
+        : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
+          '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>') +
       '<p class="lab-err" id="lab-err" role="alert"></p>' +
       '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
     document.body.appendChild(modal);
@@ -2088,7 +2137,9 @@ window.addEventListener('load',function(){
     $('#lab-go', modal).addEventListener('click', function () {
       var n = nm.value.trim();
       if (n.length < 2) { $('#lab-err', modal).textContent = 'Écris ton nom (2 lettres au moins). · اكتب اسمك'; return; }
-      Sess.start(n, $('#lab-cons', modal).checked); closeModal();
+      var okc = $('#lab-cons', modal).checked;
+      if (Notify.enabled() && !okc) { $('#lab-err', modal).textContent = 'Coche la case pour continuer, ou choisis « Sans session ». · وافق للمتابعة أو اختر «Sans session»'; return; }
+      Sess.start(n, okc); closeModal();
     });
     nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#lab-go', modal).click(); });
     $('#lab-skip', modal).addEventListener('click', function () { try { sessionStorage.setItem('lab_skip', '1'); } catch (_) {} closeModal(); render(); });
@@ -2153,7 +2204,7 @@ window.addEventListener('load',function(){
     if (!st.n) html += '<div class="rp-rec" dir="rtl">لم تُجَب أي أسئلة في هذه الجلسة بعد. افتح فصلًا وانتقل إلى «Défis».</div>';
     html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button><button type="button" class="btn ghost" data-r="csv">CSV</button><button type="button" class="btn ghost" data-r="json">JSON</button>' +
       (s.endedAt ? '<button type="button" class="btn ghost" data-r="new">Nouvelle session</button>' : '') + '<button type="button" class="btn ghost" data-r="wipe">Effacer mes données</button><button type="button" class="btn" data-r="close">Fermer</button></div>' +
-      '<p class="lab-note">Ces données sont enregistrées uniquement dans ce navigateur. Pour les transmettre à l’enseignant, utilise PDF ou JSON.<br><span class="ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح فقط. لإرسالها إلى الأستاذ استعمل PDF أو JSON.</span></p></div>';
+      (Notify.enabled() ? '<p class="lab-note">Ces données sont enregistrées dans ce navigateur. Un résumé est envoyé à l’enseignant pendant la session et à sa fermeture.<br><span class="ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح، ويُرسل ملخّص منها إلى الأستاذ أثناء الجلسة وعند إغلاقها.</span></p></div>' : '<p class="lab-note">Ces données sont enregistrées uniquement dans ce navigateur. Pour les transmettre à l’enseignant, utilise PDF ou JSON.<br><span class="ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح فقط. لإرسالها إلى الأستاذ استعمل PDF أو JSON.</span></p></div>');
     box.innerHTML = html;
     document.body.appendChild(box); box.scrollTop = 0;
     box.addEventListener('click', function (e) {
@@ -2186,7 +2237,7 @@ window.addEventListener('load',function(){
 
   /* ---------- démarrage ---------- */
   function boot() {
-    render();
+    render(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
     if (!Sess.cur() && !skip) openStart();
   }

@@ -12,7 +12,7 @@ EXTRA = {'maths': rd('lab/extra-maths.js') if os.path.exists(os.path.join(ROOT,'
 def inject(frag, marker, cfgfile, ns, key):
     i = frag.index(marker)
     j = frag.index('</script>', i) + len('</script>')
-    block = '\n<script>\n' + rd(cfgfile) + '\n' + LAB + '\nLab.install(window.' + ns + ');\n</script>\n'
+    block = '\n<script src="lab/notify-config.js"></script>\n<script>\n' + rd(cfgfile) + '\n' + LAB + '\nLab.install(window.' + ns + ');\n</script>\n'
     return frag[:j] + block + frag[j:]
 
 def inject_extra(frag, key):

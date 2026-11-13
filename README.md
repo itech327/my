@@ -25,6 +25,10 @@ Trois applications de cours pour le collège, option française. Chaque fichier 
 - L'enseignant ne voit pas les sessions des élèves à distance. L'élève envoie son rapport en PDF ou en JSON.
 - Le bouton « Effacer mes données » du rapport supprime tout.
 
+## Alertes Telegram
+
+Optionnelles. Voir `worker/README.md`. Tant que `lab/notify-config.js` est vide, rien n'est envoyé et les données restent dans le navigateur.
+
 ## Publier avec GitHub Pages
 
 Réglages du dépôt, Pages, source « Deploy from a branch », branche `lessons-site`, dossier racine.
@@ -36,6 +40,8 @@ python3 tools/build.py        # assemble les trois applications
 python3 tests/ui_test.py      # session, séries, rapport
 python3 tests/chapters_test.py  # ouvre tous les chapitres
 python3 tests/net_test.py     # IP simulée, consentement, CSV
+python3 tests/notify_test.py  # alertes avec relais simulé
+node worker/test_worker.mjs   # relais Telegram
 ```
 
 Les tests demandent `playwright` et un Chromium.
