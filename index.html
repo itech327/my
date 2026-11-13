@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Cours du collège en mouvement</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Figtree:wght@400;500;700&family=Lobster+Two:ital,wght@0,700;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+:root{--bg:#0d0b14;--surface:#161320;--surface-2:#1e1a2b;--line:#2f2942;--fg:#f2eff9;--muted:#aaa3bf;--pink:#e371cb;--lav:#9b92dc;--teal:#6ccdb6;--coral:#f27b60;--grad:linear-gradient(90deg,var(--pink),var(--lav) 50%,var(--teal));--f-display:"Lobster Two",Georgia,serif;--f-body:"Figtree",system-ui,sans-serif;--f-ar:"Cairo","Segoe UI",Tahoma,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body);padding:0 max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:760px;margin:0 auto;padding:20px 0 56px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--f-display);font-style:italic;font-size:clamp(40px,11vw,64px);line-height:1.1;margin:6px 0 10px;padding-right:.12em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.lead{color:var(--muted);max-width:56ch;margin:0 0 14px}
+.ar{font-family:var(--f-ar);direction:rtl;text-align:right;color:var(--teal);line-height:1.9}
+.grid{display:grid;gap:12px;margin:22px 0}
+a.card{display:block;padding:16px 18px;border-radius:16px;background:var(--surface);border:1.5px solid var(--line);color:var(--fg);text-decoration:none}
+a.card:hover,a.card:focus-visible{border-color:var(--pink);outline:none}
+a.card strong{font-size:20px;display:block}
+a.card span{display:block;color:var(--muted);font-size:14px}
+a.card .ar{font-size:15px;color:var(--lav)}
+.btn{font:inherit;font-weight:600;color:var(--fg);cursor:pointer;min-height:44px;padding:9px 18px;border-radius:999px;border:1.5px solid transparent;background:linear-gradient(var(--surface-2),var(--surface-2)) padding-box,var(--grad) border-box}
+.btn.ghost{background:none;border:1.5px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.box{padding:14px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--line);margin:18px 0;font-size:15px}
+.box p{margin:0 0 8px}.box p:last-child{margin:0}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Collège · option française</p>
+  <h1>Cours en mouvement</h1>
+  <p class="lead">Mathématiques, physique-chimie et SVT du collège : figures animées, explications en arabe, exercices à quatre niveaux et rapport de session.</p>
+  <p class="lead ar" lang="ar" dir="rtl">دروس الرياضيات والفيزياء والكيمياء وعلوم الحياة والأرض للإعدادي: رسوم متحركة، شرح بالعربية، تمارين بأربعة مستويات وتقرير للجلسة.</p>
+  <div class="grid">
+    <a class="card" href="maths.html"><strong>Maths en mouvement</strong><span>1<sup>re</sup>, 2<sup>e</sup> et 3<sup>e</sup> année · collège ordinaire et pionnier</span><span class="ar" lang="ar" dir="rtl">الرياضيات</span></a>
+    <a class="card" href="physique-chimie.html"><strong>Physique-Chimie en mouvement</strong><span>1<sup>re</sup>, 2<sup>e</sup> et 3<sup>e</sup> année · collège ordinaire et pionnier</span><span class="ar" lang="ar" dir="rtl">الفيزياء والكيمياء</span></a>
+    <a class="card" href="svt.html"><strong>SVT en mouvement</strong><span>3<sup>e</sup> année · nutrition et santé</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض</span></a>
+  </div>
+  <div class="row"><button class="btn" id="go-start" type="button">Démarrer une session</button><button class="btn ghost" id="go-report" type="button">Mon rapport</button></div>
+  <div class="box">
+    <p><b>Exercices par niveaux.</b> Dans chaque chapitre, la dernière leçon « Défis » propose Facile, Moyen, Difficile, Défi chronométré et un mode adaptatif.</p>
+    <p class="ar" lang="ar" dir="rtl">في كل فصل، الدرس الأخير «Défis» يحتوي على تمارين: سهل، متوسط، صعب، تحدٍّ بمؤقّت، ونمط تكيّفي.</p>
+    <p><b>Session et rapport.</b> Après avoir entré ton nom, le rapport affiche ton nom, ton appareil, ton adresse IP et ta ville. Les données restent dans ce navigateur. La ville est approximative.</p>
+  </div>
+</div>
+<script>window.LAB_CONFIG={app:'portal',appName:'Cours en mouvement',map:{},gen:function(){return null}};</script>
+<script src="lab/lab.js"></script>
+<script>
+document.getElementById('go-start').addEventListener('click',function(){var s=Lab.Session.cur();if(s)Lab.openReport(s);else Lab.openStart();});
+document.getElementById('go-report').addEventListener('click',function(){var s=Lab.Session.cur()||Lab.Session.hist()[0];if(s)Lab.openReport(s);else Lab.openStart();});
+</script>
+</body>
+</html>

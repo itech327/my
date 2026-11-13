@@ -1,0 +1,1720 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SVT en mouvement</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="color-scheme" content="dark">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Figtree:wght@400;500;700&family=Lobster+Two:ital,wght@0,700;1,700&family=STIX+Two+Text:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#0d0b14;
+  --surface:#161320;
+  --surface-2:#1e1a2b;
+  --line:#2f2942;
+  --fg:#f2eff9;
+  --muted:#aaa3bf;
+  --pink:#e371cb;
+  --lav:#9b92dc;
+  --teal:#6ccdb6;
+  --coral:#f27b60;
+  --tri:#190f17;
+  --grad:linear-gradient(90deg,var(--pink),var(--lav) 50%,var(--teal));
+  --f-display:"Lobster Two",Georgia,"Times New Roman",serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-math:"STIX Two Text","Times New Roman",serif;
+  --f-ar:"Cairo","Segoe UI",Tahoma,system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font:16px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 56px}
+b,strong{font-weight:700}
+.kicker,.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+h1.display{
+  font-family:var(--f-display);font-style:italic;font-weight:700;
+  font-size:clamp(42px,12vw,68px);line-height:1.1;margin:6px 0 10px;padding-right:.12em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+}
+.lead{color:var(--muted);max-width:56ch;margin:0 0 24px}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:4px}
+.seg button{font:inherit;font-weight:600;font-size:15px;color:var(--muted);background:none;border:0;padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-selected="true"]{color:#150f1c;background:var(--grad)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.chap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:14px}
+.chap{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--fg);text-decoration:none;min-width:0}
+.chap strong{font-size:16px}
+.chap small{color:var(--muted);font-size:13px}
+a.chap{border-color:var(--pink)}
+a.chap small{color:var(--teal)}
+.chap.soon{opacity:.55}
+
+.chapter{margin-top:56px;padding-top:8px}
+.chapter h2{font-family:var(--f-display);font-style:italic;font-weight:700;font-size:clamp(38px,10vw,54px);line-height:1.1;margin-top:6px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.toc a{display:block;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none;font-size:14px}
+.toc a:hover{border-color:var(--teal)}
+
+.lesson{margin-top:44px;padding-top:36px;border-top:1px solid var(--line)}
+.lesson h3{font-family:var(--f-display);font-style:italic;font-weight:700;font-size:clamp(30px,8vw,40px);line-height:1.15;margin:4px 0 10px}
+.lesson p{margin:0 0 14px;max-width:62ch}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px;margin:18px 0 12px}
+.stage svg{display:block;width:100%;height:auto}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.btn{font:inherit;font-weight:600;color:var(--fg);cursor:pointer;min-height:44px;padding:9px 18px;border-radius:999px;border:1.5px solid transparent;
+  background:linear-gradient(var(--surface-2),var(--surface-2)) padding-box,var(--grad) border-box}
+.btn:active{transform:translateY(1px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{font-family:var(--f-math);font-style:italic;font-size:17px;padding:5px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);font-variant-numeric:tabular-nums}
+.chip.plain{font-style:normal;font-family:var(--f-body);font-size:15px}
+.srow{display:grid;grid-template-columns:1fr auto;gap:0 12px;align-items:baseline;margin:10px 0 14px}
+.srow .sname{grid-area:1/1;min-width:0}
+.srow output{grid-area:1/2}
+.srow input[type=range]{grid-area:2/1/3/3;width:100%;margin:2px 0 0}
+.srow .sname{font-family:var(--f-math);font-style:italic;font-size:18px}
+.srow output{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+input[type=range]{width:100%;min-width:0;accent-color:var(--pink);height:32px}
+.ineq{list-style:none;margin:10px 0;padding:0;display:grid;gap:6px}
+.ineq li{display:flex;justify-content:space-between;gap:12px;padding:8px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.ineq .y{color:var(--teal);font-weight:700}
+.ineq .n{color:var(--coral);font-weight:700}
+.verdict{font-weight:600;font-size:17px;margin:12px 0}
+.verdict.ok{color:var(--teal)}.verdict.bad{color:var(--coral)}.verdict.flat{color:var(--lav)}
+.info{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+.info h4{font-family:var(--f-display);font-style:italic;font-size:26px;margin-bottom:6px}
+.info p{margin:0 0 8px}
+.info p:last-child{margin:0}
+.retenir{margin-top:22px;padding:14px 18px;border-radius:14px;border:1.5px solid transparent;
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--grad) border-box}
+.retenir h4{font-family:var(--f-display);font-style:italic;font-size:24px;margin-bottom:4px}
+.retenir p{margin:0 0 8px}
+.retenir p:last-child{margin:0}
+.ar-lead{font-family:var(--f-ar);text-align:right;margin-top:-12px}
+.ar-title{font-family:var(--f-ar);font-size:20px;color:var(--teal);margin:4px 0 14px;text-align:right}
+.ar{margin-top:20px;padding:14px 18px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--teal);font-family:var(--f-ar);line-height:1.9;font-size:17px}
+.ar summary{cursor:pointer;font-weight:700;color:var(--teal);font-size:18px;min-height:32px}
+.ar p{margin:8px 0}
+.ar bdi{white-space:nowrap}
+.ar .math{font-size:1em}
+.ar-use{padding:8px 12px;border-radius:10px;background:var(--surface-2)}
+.ar-words{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ar-words li{display:flex;gap:8px;align-items:baseline;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);font-size:15px}
+.fr-w{font-family:var(--f-body);color:var(--lav);font-size:14px}
+.chap .ar-t{font-family:var(--f-ar);font-size:14px;color:var(--lav);text-align:right;display:block;margin-top:2px}
+.math{font-family:var(--f-math);font-style:italic;font-size:1.08em;white-space:nowrap}
+
+.quiz{display:grid;gap:18px;margin-top:18px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.q p{margin:0 0 10px;font-weight:600}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;min-height:44px;cursor:pointer}
+.opt.ok{border-color:var(--teal)}
+.opt.ko{border-color:var(--coral)}
+.opt[disabled]{cursor:default}
+.fb{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.score{font-weight:700;font-size:18px;margin-top:14px}
+footer{margin-top:56px;color:var(--muted);font-size:14px}
+
+svg .tri{fill:var(--tri);stroke:#fff;stroke-width:2.6;stroke-linejoin:round}
+svg .tri-o{fill:none;stroke:#fff;stroke-width:2.6;stroke-linejoin:round}
+svg .vl{font-family:var(--f-math);font-style:italic;font-size:22px;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+svg .pl{font-family:var(--f-math);font-style:italic;font-size:19px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+svg .wl{font-family:var(--f-body);font-weight:700;font-size:13px;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+svg .sumtxt{font-family:var(--f-math);font-weight:500;font-size:19px;fill:var(--fg);text-anchor:middle}
+svg .note{font-family:var(--f-body);font-weight:600;font-size:14px;text-anchor:middle;pointer-events:none}
+svg .floor{stroke:#fff;stroke-width:2.6;stroke-linecap:round;opacity:.4}
+svg .ln{fill:none;stroke-width:2.6;stroke-linecap:round}
+svg .dash{fill:none;stroke-width:1.6;stroke-dasharray:5 5;opacity:.85}
+svg .arc{fill:none;stroke-width:2;stroke-dasharray:6 5}
+svg .ra{fill:none;stroke-width:1.7}
+svg .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+svg .handle{fill:#fff;stroke-width:3.5}
+svg .hd{outline:none}
+svg .hd:focus-visible .handle{stroke-width:7}
+.back{display:inline-block;margin:0 0 14px;color:var(--muted);text-decoration:none;font-size:14px}
+.back:hover{color:var(--fg)}
+.view.chapter{margin-top:8px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;font-family:var(--f-math);font-style:normal;margin:0 .15em}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+mark{background:rgba(227,113,203,.28);color:var(--fg);border-radius:6px;padding:0 5px}
+.calc .line{font-family:var(--f-math);font-size:22px;margin:8px 0 0}
+.calc .why{color:var(--muted);font-size:14px;margin:0 0 6px}
+.digits{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0;min-height:48px}
+.dg{min-width:38px;height:46px;display:grid;place-items:center;border-radius:9px;background:var(--surface-2);border:1px solid var(--line);font:700 24px var(--f-math)}
+.dg.cm{min-width:22px;background:var(--pink);color:#150f1c;border-color:var(--pink)}
+.tbl{border-collapse:collapse;margin:10px 0}
+.tbl td,.tbl th{border:1px solid var(--line);padding:8px 14px;text-align:center;font-variant-numeric:tabular-nums}
+.tbl td.on{background:rgba(108,205,182,.2);outline:2px solid var(--teal)}
+.big{font-family:var(--f-math);font-size:24px;margin:10px 0}
+.scroll-x{overflow-x:auto}
+
+.kinds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 14px}
+.kind{font:inherit;text-align:left;color:var(--fg);background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;min-height:84px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kind strong{font-size:18px}
+.kind small{color:var(--muted);font-size:14px;line-height:1.4}
+.kind .ar-t{font-family:var(--f-ar);color:var(--lav);font-size:15px;display:block;text-align:right}
+.kind[aria-pressed="true"]{border-color:transparent;background:linear-gradient(var(--surface-2),var(--surface-2)) padding-box,var(--grad) border-box}
+.kind-hint{color:var(--muted);margin:0 0 14px}
+.kind-hint .ar-t{display:block;font-family:var(--f-ar);color:var(--lav);text-align:right}
+#ord,#pion{margin-top:6px}
+#ord>.kicker,#pion>.kicker{margin:10px 0 8px}
+@media (max-width:520px){.kinds{grid-template-columns:1fr}}
+.btn.ghost{background:none;border:1.5px solid var(--line)}
+a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.px-hero{padding:16px 18px;border-radius:16px;background:var(--surface);border:1px solid var(--line);margin:16px 0}
+.px-hero h3{font-family:var(--f-display);font-style:italic;font-size:34px;line-height:1.1;margin:2px 0 8px}
+.px-hero p{margin:0 0 8px}
+.ar-note{font-family:var(--f-ar);color:var(--teal);line-height:1.9;font-size:16px;text-align:right}
+.px-step{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;margin:20px 0}
+.px-n{margin:0;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#150f1c;background:var(--grad)}
+.px-step h4{font-size:19px;margin-bottom:2px}
+.px-step p{margin:0 0 6px}
+.px-sub{color:var(--muted)}
+.chap.extra{border-style:dashed;border-color:var(--lav)}
+.chap.extra small{color:var(--lav)}
+.px-stars i{font-style:normal;color:#4a4560;font-size:17px;letter-spacing:2px}
+.px-stars i.on{color:#ffcf5c}
+.px-star-line{font-weight:600;margin:12px 0}
+.px-set{display:grid;gap:12px;margin:12px 0}
+.px-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.px-item.is-ok{border-color:var(--teal)}
+.px-item.is-ko{border-color:var(--coral)}
+.px-q{margin:0 0 10px;font-weight:600}
+.px-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.px-row input{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-height:44px;width:100%;flex:1 1 120px;max-width:200px}
+.px-u{color:var(--muted)}
+.px-tools{margin-top:8px}
+.px-hint{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--surface-2);color:var(--lav);font-size:15px}
+.px-score{font-weight:600;margin:10px 0}
+.px-ex{font-size:18px;margin:14px 0 6px}
+.px-board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-height:56px;font-family:var(--f-math);font-size:20px;overflow-x:auto}
+.px-line{padding:4px 0}
+.px-line.new{animation:pxin .45s ease}
+@keyframes pxin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.px-cap{color:var(--muted);margin:8px 0 4px;min-height:24px}
+.px-line sup{font-size:.7em}
+@media (prefers-reduced-motion:reduce){.px-line.new{animation:none}}
+:root{--lamp:#ffcf5c}
+svg .wire{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+svg .thin{fill:none;stroke-width:1.6;stroke-linecap:round}
+svg .tag{font-family:var(--f-body);font-weight:600;font-size:13px;text-anchor:middle;dominant-baseline:central;pointer-events:none;user-select:none}
+svg .small{font-family:var(--f-body);font-size:12px;text-anchor:middle;dominant-baseline:central;fill:var(--muted);pointer-events:none}
+.opts-grid{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.btn.sm{min-height:40px;padding:6px 14px;font-size:14px}
+.tbl.wide{width:100%;font-size:15px}
+.tbl th{background:var(--surface-2)}
+.sub{font-size:.7em;line-height:0}
+.big,.px-ex{overflow-x:auto;max-width:100%}
+.big .math,.px-ex .math{white-space:normal}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="view" id="home">
+  <header>
+    <p class="kicker">Collège · option française</p>
+    <h1 class="display">SVT en mouvement</h1>
+    <p class="lead">Cours de sciences de la vie et de la Terre de la 3<sup>e</sup> année du collège : nutrition et santé, avec des figures animées et un résumé en arabe sous chaque leçon.</p>
+    <p class="lead ar-lead" dir="rtl" lang="ar">دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والصحة، مع رسوم متحركة وشرح بالعربية تحت كل درس.</p>
+  </header>
+  <section aria-label="Chapitres">
+    <p class="kicker">3<sup>e</sup> année · Chapitres</p>
+    <div class="chap-grid" id="chapters"></div>
+    <p class="lead" style="margin-top:18px"><a class="btn ghost" href="index.html">← Toutes les matières</a></p>
+  </section>
+  </div>
+  <div id="more"></div>
+  <footer>SVT en mouvement · collège, option française · 3<sup>e</sup> année</footer>
+</div>
+<script>
+(function(){
+'use strict';
+var PC=window.PC={};
+document.documentElement.lang='fr';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+PC.$=$;PC.$$=$$;PC.reduce=reduce;
+
+function S(tag,attrs,parent){
+  var e=document.createElementNS(NS,tag);
+  if(attrs){for(var k in attrs){if(k==='text')e.textContent=attrs[k];else e.setAttribute(k,attrs[k]);}}
+  if(parent)parent.appendChild(e);
+  return e;
+}
+function h(tag,attrs,html){
+  var e=document.createElement(tag);
+  if(attrs)for(var k in attrs){if(k==='class')e.className=attrs[k];else e.setAttribute(k,attrs[k]);}
+  if(html!==undefined)e.innerHTML=html;
+  return e;
+}
+function fmt(x,d){
+  d=d===undefined?1:d;
+  var s=(+x).toFixed(d);
+  if(d>0&&s.indexOf('.')>-1)s=s.replace(/0+$/,'').replace(/\.$/,'');
+  return s.replace('.',',').replace('-','−');
+}
+function clamp(x,a,b){return Math.min(b,Math.max(a,x))}
+function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+function lerp(a,b,t){return a+(b-a)*t}
+function run(dur,step,done){
+  if(reduce||dur<=0){step(1);if(done)done();return}
+  var t0=performance.now();
+  (function f(now){
+    var p=Math.min(1,(now-t0)/dur);
+    step(p);
+    if(p<1)requestAnimationFrame(f);else if(done)done();
+  })(t0);
+}
+PC.S=S;PC.h=h;PC.fmt=fmt;PC.clamp=clamp;PC.ease=ease;PC.lerp=lerp;PC.run=run;
+PC.m=function(t){return '<span class="math" dir="ltr">'+t+'</span>'};
+PC.frac=function(n,d){return '<span class="fr"><span>'+n+'</span><span>'+d+'</span></span>'};
+PC.rnd=function(a,b){return a+Math.floor(Math.random()*(b-a+1))};
+PC.pick=function(a){return a[Math.floor(Math.random()*a.length)]};
+PC.shuffle=function(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a};
+
+/* boucle d'animation : appelée seulement quand l'élément est visible */
+PC.anim=function(el,fn){
+  var last=performance.now(),t=0;
+  function frame(now){
+    var dt=Math.min(.05,(now-last)/1000||0);last=now;
+    if(el.getClientRects().length){t+=reduce?0:dt;fn(reduce?0:dt,t)}
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+};
+
+/* stockage léger, avec repli en mémoire */
+var mem={};
+try{var raw=localStorage.getItem('pc-save');if(raw)mem=JSON.parse(raw)||{}}catch(_){}
+PC.get=function(k,d){return mem[k]===undefined?d:mem[k]};
+PC.set=function(k,v){mem[k]=v;try{localStorage.setItem('pc-save',JSON.stringify(mem))}catch(_){}};
+
+/* poignées déplaçables */
+function toSvg(svg,e){
+  var pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+PC.handle=function(svg,p,b,onMove){
+  var g=S('g',{tabindex:'0',role:'button','aria-label':'Déplacer '+(p.name||'le point'),'class':'hd'},svg);
+  var hit=S('circle',{r:26,fill:'transparent',style:'cursor:grab;touch-action:none'},g);
+  var dot=S('circle',{r:9,'class':'handle',style:'stroke:'+(p.color||'var(--pink)')},g);
+  var drag=false;
+  function pos(){[hit,dot].forEach(function(c){c.setAttribute('cx',p.x);c.setAttribute('cy',p.y)})}
+  function set(x,y){
+    p.x=p.lockX?p.x:clamp(x,b.x0,b.x1);
+    p.y=p.lockY?p.y:clamp(y,b.y0,b.y1);
+    pos();if(onMove)onMove(p);
+  }
+  g.addEventListener('pointerdown',function(e){drag=true;try{g.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()});
+  g.addEventListener('pointermove',function(e){if(!drag)return;var q=toSvg(svg,e);set(q.x,q.y)});
+  g.addEventListener('pointerup',function(){drag=false});
+  g.addEventListener('pointercancel',function(){drag=false});
+  g.addEventListener('keydown',function(e){
+    var st=e.shiftKey?12:5;
+    var m={ArrowLeft:[-st,0],ArrowRight:[st,0],ArrowUp:[0,-st],ArrowDown:[0,st]}[e.key];
+    if(m){e.preventDefault();set(p.x+m[0],p.y+m[1])}
+  });
+  pos();
+  return {update:pos,el:g};
+};
+
+/* interface */
+var ui={};PC.ui=ui;
+ui.stage=function(el,w,hh,label){
+  var d=h('div',{'class':'stage'});
+  var svg=S('svg',{viewBox:'0 0 '+w+' '+hh,role:'img','aria-label':label||'Figure interactive'});
+  d.appendChild(svg);el.appendChild(d);
+  return svg;
+};
+ui.slider=function(el,o,cb){
+  var row=h('label',{'class':'srow'});
+  var nm=h('span',{'class':'sname'},o.label);
+  if(o.color)nm.style.color=o.color;
+  var inp=h('input',{type:'range',min:o.min,max:o.max,step:o.step||1,value:o.value});
+  var out=h('output');
+  function show(){out.textContent=o.fmt?o.fmt(+inp.value):inp.value}
+  inp.addEventListener('input',function(){show();if(cb)cb(+inp.value)});
+  row.appendChild(nm);row.appendChild(inp);row.appendChild(out);el.appendChild(row);
+  show();
+  return {el:inp,get:function(){return +inp.value},set:function(v){inp.value=v;show()},refresh:show};
+};
+ui.chips=function(el){var d=h('div',{'class':'chips'});el.appendChild(d);return {set:function(x){d.innerHTML=x}}};
+ui.controls=function(el){var d=h('div',{'class':'controls'});el.appendChild(d);return d};
+ui.btn=function(el,text,cb){
+  var b=h('button',{'class':'btn',type:'button'},text);
+  b.addEventListener('click',function(){cb(b)});
+  el.appendChild(b);return b;
+};
+ui.tabs=function(el,items,cb){
+  var d=h('div',{'class':'seg',role:'tablist'});
+  items.forEach(function(it,i){
+    var b=h('button',{role:'tab','aria-selected':i===0?'true':'false',type:'button'},it[1]);
+    b.addEventListener('click',function(){
+      $$('button',d).forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+      cb(it[0]);
+    });
+    d.appendChild(b);
+  });
+  el.appendChild(d);return d;
+};
+ui.text=function(el,html,cls){var p=h('p',cls?{'class':cls}:null,html);el.appendChild(p);return p};
+ui.info=function(el){var d=h('div',{'class':'info'});el.appendChild(d);return {set:function(x){d.innerHTML=x}}};
+ui.verdict=function(el){var p=h('p',{'class':'verdict'});el.appendChild(p);return {set:function(t,k){p.className='verdict '+(k||'');p.textContent=t}}};
+ui.chip=function(t,c,plain){return '<span class="chip'+(plain?' plain':'')+'"'+(c?' style="border-color:'+c+'"':'')+'>'+t+'</span>'};
+
+ui.quiz=function(el,Q){
+  var box=h('div',{'class':'quiz'}),score=h('p',{'class':'score','aria-live':'polite'}),ctl=ui.controls(el);
+  el.appendChild(box);el.appendChild(score);el.appendChild(ctl);
+  var rs=ui.btn(ctl,'Recommencer',function(){build()});rs.hidden=true;
+  var done,good;
+  function build(){
+    box.replaceChildren();done=0;good=0;score.textContent='';rs.hidden=true;
+    Q.forEach(function(it,qi){
+      var d=h('div',{'class':'q'}),ob=h('div',{'class':'opts'}),fb=h('p',{'class':'fb','aria-live':'polite'});
+      d.appendChild(h('p',null,(qi+1)+'. '+it.q));d.appendChild(ob);d.appendChild(fb);
+      var btns=it.o.map(function(t,oi){
+        var b=h('button',{type:'button','class':'opt'},t);
+        b.addEventListener('click',function(){
+          btns.forEach(function(x,xi){x.disabled=true;if(xi===it.a)x.classList.add('ok')});
+          var right=oi===it.a;if(!right)b.classList.add('ko');
+          fb.innerHTML=(right?'Exact. ':'Faux. ')+it.e;
+          done++;if(right)good++;
+          if(done===Q.length){score.textContent='Score : '+good+' / '+Q.length;rs.hidden=false}
+        });
+        ob.appendChild(b);return b;
+      });
+      box.appendChild(d);
+    });
+  }
+  build();
+};
+
+/* boîte « شرح بالعربية » */
+PC.arBox=function(o){
+  var s='<details class="ar" dir="rtl" lang="ar" open><summary>شرح بالعربية</summary>';
+  o.e.forEach(function(p){s+='<p>'+p+'</p>'});
+  if(o.u)s+='<p class="ar-use"><b>كيف تستعمل الشكل؟</b> '+o.u+'</p>';
+  if(o.w&&o.w.length){
+    s+='<p class="ar-w"><b>المصطلحات:</b></p><ul class="ar-words">'+o.w.map(function(x){return '<li><span class="fr-w" dir="ltr" lang="fr">'+x[0]+'</span><span>'+x[1]+'</span></li>'}).join('')+'</ul>';
+  }
+  return s+'</details>';
+};
+
+/* chapitre (c.lazy : le contenu se construit à la première visite) */
+PC.chapter=function(c){
+  var sec=h('section',{'class':'chapter view',id:c.id,hidden:''});
+  sec.appendChild(h('a',{'class':'back',href:'#home'},'← Sommaire'));
+  sec.appendChild(h('p',{'class':'eyebrow'},c.eyebrow));
+  sec.appendChild(h('h2',null,c.title));
+  if(c.ar)sec.appendChild(h('p',{'class':'ar-title',dir:'rtl',lang:'ar'},c.ar));
+  var tail=h('a',{'class':'back',href:'#home',style:'margin-top:32px'},'← Retour au sommaire');
+  function body(){
+    var lessons=typeof c.lessons==='function'?c.lessons():c.lessons.slice();
+    if(c.quiz)lessons.push({short:'Je m’entraîne',title:'Je m’entraîne',intro:'Quelques questions pour vérifier ce que tu as retenu.',build:function(el){ui.quiz(el,c.quiz)}});
+    var toc=h('ul',{'class':'toc'});
+    lessons.forEach(function(l,i){toc.appendChild(h('li',null,'<a href="#'+c.id+'-l'+(i+1)+'">'+l.short+'</a>'))});
+    sec.insertBefore(toc,tail);
+    lessons.forEach(function(l,i){
+      var s=h('section',{'class':'lesson',id:c.id+'-l'+(i+1)});
+      s.appendChild(h('p',{'class':'eyebrow'},l.label||('Leçon '+(i+1))));
+      s.appendChild(h('h3',null,l.title));
+      if(l.intro)s.appendChild(h('p',null,l.intro));
+      var bd=h('div');s.appendChild(bd);
+      try{l.build(bd)}catch(err){bd.appendChild(h('p',null,'Cette animation ne s’est pas chargée.'));if(window.console)console.error(c.id,err)}
+      if(l.retenir)s.appendChild(h('div',{'class':'retenir'},'<h4>À retenir</h4>'+l.retenir.map(function(x){return '<p>'+x+'</p>'}).join('')));
+      if(l.ar)s.insertAdjacentHTML('beforeend',PC.arBox(l.ar));
+      sec.insertBefore(s,tail);
+    });
+  }
+  sec.appendChild(tail);
+  if(c.lazy)sec._build=body;else body();
+  $('#more').appendChild(sec);
+};
+
+/* navigation par ancre */
+function route(forced){
+  var id=typeof forced==='string'?forced:decodeURIComponent((location.hash||'').slice(1)),target=null,inner=null;
+  if(id&&id!=='home'){
+    var el=document.getElementById(id);
+    if(el){target=el.closest('.view');inner=(el===target)?null:el}
+  }
+  if(!target)target=$('#home');
+  if(target._build){var bf=target._build;target._build=null;bf();if(id&&id!==target.id)inner=document.getElementById(id)}
+  $$('.view').forEach(function(v){v.hidden=(v!==target)});
+  if(target.id==='home'&&PC.onHome)PC.onHome();
+  if(inner)inner.scrollIntoView();else window.scrollTo(0,0);
+}
+PC.route=route;
+window.addEventListener('hashchange',function(){route()});
+window.addEventListener('popstate',function(){route()});
+document.addEventListener('click',function(e){
+  var a=e.target&&e.target.closest?e.target.closest('a[href^="#"]'):null;
+  if(!a||e.defaultPrevented||e.button>0||e.ctrlKey||e.metaKey)return;
+  var id=decodeURIComponent(a.getAttribute('href').slice(1));
+  e.preventDefault();
+  route(id);
+  try{history.pushState(null,'','#'+id)}catch(_){}
+});
+})();
+
+</script>
+<script>
+/* Configuration des défis : SVT en mouvement (3AC) */
+(function () {
+  'use strict';
+  function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function fm(x, d) { var s = (+x).toFixed(d === undefined ? 1 : d); if (s.indexOf('.') > -1) s = s.replace(/0+$/, '').replace(/\.$/, ''); return s.replace('.', ','); }
+  function num(q, a, u, e, h, tol) { return { t: 'num', q: q, a: a, u: u || '', e: e, h: h || '', tol: tol === undefined ? (Math.abs(a - Math.round(a)) < 1e-9 ? 0.5 : 0.006) : tol, sol: fm(a, 2) + (u ? ' ' + u : '') }; }
+
+  /* [niveau, question, options, bonne réponse, explication] */
+  var B = {
+    dig: [
+      [1, 'Quel organe fabrique la bile ?', ['Le foie', 'Le pancréas', 'L’estomac'], 0, 'La bile est fabriquée par le foie.'],
+      [1, 'Où se termine la digestion ?', ['Dans la bouche', 'Dans l’estomac', 'Dans l’intestin grêle'], 2, 'L’intestin grêle achève la digestion.'],
+      [1, 'Les petites molécules issues de la digestion s’appellent :', ['des nutriments', 'des déchets', 'des enzymes'], 0, 'Les nutriments passent dans le sang et la lymphe.'],
+      [1, 'Quel organe absorbe surtout l’eau des déchets ?', ['L’œsophage', 'Le gros intestin', 'L’estomac'], 1, 'Le gros intestin absorbe l’eau et forme les excréments.'],
+      [2, 'L’amylase salivaire transforme :', ['l’amidon en maltose', 'les protéines en peptides', 'les lipides en acides gras'], 0, 'Elle agit sur l’amidon dans la bouche.'],
+      [2, 'Le suc gastrique contient de l’acide chlorhydrique et :', ['la lipase', 'la pepsine', 'l’amylase'], 1, 'La pepsine commence la digestion des protéines.'],
+      [2, 'Les villosités intestinales servent à :', ['produire la bile', 'augmenter la surface d’absorption', 'broyer les aliments'], 1, 'Elles agrandissent la surface d’échange.'],
+      [2, 'Quel suc est fabriqué par le pancréas ?', ['Le suc pancréatique', 'Le suc gastrique', 'La bile'], 0, 'Le pancréas fabrique le suc pancréatique.'],
+      [3, 'La bile facilite la digestion des lipides parce qu’elle :', ['contient la lipase', 'émulsionne les graisses en fines gouttelettes', 'neutralise l’amidon'], 1, 'L’émulsion augmente la surface d’action de la lipase.'],
+      [3, 'Les acides gras et le glycérol passent surtout dans :', ['les capillaires sanguins', 'la lymphe', 'la salive'], 1, 'Ils sont surtout absorbés par les vaisseaux lymphatiques.'],
+      [3, 'Une enzyme est spécifique : cela signifie qu’elle :', ['agit sur un seul type d’aliment', 'agit sur tous les aliments', 'agit à toute température'], 0, 'Chaque enzyme agit sur un type de molécule.'],
+      [3, 'Dans l’estomac, la pepsine agit en milieu :', ['acide', 'basique', 'neutre'], 0, 'Le suc gastrique est acide.']
+    ],
+    resp: [
+      [1, 'Le gaz utilisé par l’organisme pour respirer est :', ['le dioxyde de carbone', 'le dioxygène', 'le diazote'], 1, 'Le dioxygène est consommé par les cellules.'],
+      [1, 'Les échanges gazeux se font dans :', ['la trachée', 'les alvéoles pulmonaires', 'les bronches'], 1, 'Les alvéoles sont entourées de capillaires.'],
+      [1, 'Le muscle principal de l’inspiration est :', ['le diaphragme', 'le cœur', 'l’estomac'], 0, 'Le diaphragme s’abaisse à l’inspiration.'],
+      [1, 'L’air inspiré passe par les fosses nasales, le pharynx, le larynx, puis :', ['la trachée', 'l’œsophage', 'l’estomac'], 0, 'La trachée conduit l’air vers les bronches.'],
+      [2, 'À l’expiration, le volume du thorax :', ['augmente', 'diminue', 'ne change pas'], 1, 'Le diaphragme remonte et les côtes s’abaissent.'],
+      [2, 'L’eau de chaux se trouble avec :', ['l’air inspiré', 'l’air expiré', 'le dioxygène pur'], 1, 'L’air expiré contient plus de CO₂.'],
+      [2, 'Par rapport à l’air inspiré, l’air expiré contient :', ['plus de CO₂', 'moins de CO₂', 'la même quantité de CO₂'], 0, 'Les cellules ont rejeté du CO₂.'],
+      [2, 'Le CO₂ rejeté par les poumons est produit :', ['par l’air inspiré', 'par le fonctionnement des cellules', 'par la trachée'], 1, 'Les cellules consomment du O₂ et produisent du CO₂.'],
+      [3, 'On respire plus vite pendant un effort car les muscles :', ['consomment plus de O₂ et produisent plus de CO₂', 'ont besoin de moins de O₂', 'bloquent la trachée'], 0, 'Le besoin en O₂ augmente.'],
+      [3, 'Le monoxyde de carbone est dangereux car il :', ['se fixe sur l’hémoglobine à la place du O₂', 'détruit les globules blancs', 'est un gaz inerte'], 0, 'Le sang transporte alors moins de O₂.'],
+      [3, 'Les alvéoles facilitent les échanges car elles ont :', ['une grande surface et une paroi très mince', 'un petit nombre de cavités', 'une paroi épaisse'], 0, 'Surface d’échange importante et paroi fine.'],
+      [3, 'La fumée de cigarette est dangereuse car elle :', ['contient des substances toxiques et abîme les poumons', 'augmente le volume des alvéoles', 'nettoie les bronches'], 0, 'Goudrons, monoxyde de carbone et autres substances toxiques.']
+    ],
+    circ: [
+      [1, 'Les vaisseaux qui quittent le cœur sont :', ['les veines', 'les artères', 'les capillaires'], 1, 'Tout vaisseau qui part du cœur est une artère.'],
+      [1, 'Combien de cavités possède le cœur humain ?', ['2', '4', '6'], 1, 'Deux oreillettes et deux ventricules.'],
+      [1, 'Le sang circule dans :', ['un circuit fermé', 'un circuit ouvert', 'les poumons seulement'], 0, 'La circulation est fermée.'],
+      [1, 'Les globules rouges transportent :', ['le dioxygène', 'les anticorps', 'les enzymes'], 0, 'Grâce à l’hémoglobine.'],
+      [2, 'L’artère pulmonaire transporte du sang :', ['riche en O₂', 'riche en CO₂', 'sans cellules'], 1, 'Elle conduit le sang du cœur vers les poumons.'],
+      [2, 'Les veines pulmonaires arrivent :', ['à l’oreillette droite', 'à l’oreillette gauche', 'au ventricule droit'], 1, 'Elles ramènent le sang des poumons au cœur gauche.'],
+      [2, 'Les échanges entre le sang et les organes se font dans :', ['les artères', 'les capillaires', 'les veines'], 1, 'Les capillaires ont une paroi très fine.'],
+      [2, 'Le pouls correspond :', ['aux battements du cœur sentis dans une artère', 'au passage de l’air', 'à la digestion'], 0, 'On le sent au poignet ou au cou.'],
+      [3, 'Le ventricule gauche a une paroi plus épaisse car il :', ['envoie le sang dans tout le corps', 'envoie le sang aux poumons', 'reçoit le sang des veines caves'], 0, 'Il pousse le sang dans la grande circulation.'],
+      [3, 'Le sang qui arrive à l’oreillette droite vient :', ['des poumons', 'des organes par les veines caves', 'du ventricule gauche'], 1, 'C’est la fin de la grande circulation.'],
+      [3, 'Les valvules du cœur servent à :', ['empêcher le retour du sang en arrière', 'produire les globules rouges', 'filtrer le sang'], 0, 'Elles imposent un sens au sang.'],
+      [3, 'À l’effort, le débit cardiaque augmente car les organes ont besoin de :', ['plus de O₂ et de nutriments', 'moins de O₂', 'plus de lymphe'], 0, 'Le cœur bat plus vite et envoie plus de sang.']
+    ],
+    exc: [
+      [1, 'Quel organe fabrique l’urine ?', ['La vessie', 'Le rein', 'Le foie'], 1, 'Le rein filtre le sang et forme l’urine.'],
+      [1, 'La vessie sert à :', ['stocker l’urine', 'filtrer le sang', 'produire l’urée'], 0, 'L’urine s’y accumule avant d’être évacuée.'],
+      [1, 'Le conduit qui évacue l’urine à l’extérieur est :', ['l’urètre', 'l’uretère', 'la trachée'], 0, 'L’urètre part de la vessie.'],
+      [1, 'Combien de reins possède l’être humain ?', ['1', '2', '4'], 1, 'Deux reins.'],
+      [2, 'L’urée est :', ['un déchet produit par l’organisme', 'un nutriment', 'un gaz respiratoire'], 0, 'Elle provient surtout de la dégradation des protéines.'],
+      [2, 'Le sang qui sort du rein par la veine rénale est :', ['plus pauvre en urée', 'plus riche en urée', 'sans eau'], 0, 'Le rein a éliminé l’urée.'],
+      [2, 'Les uretères relient :', ['les reins à la vessie', 'la vessie à l’extérieur', 'les reins au cœur'], 0, 'Un uretère par rein.'],
+      [2, 'Normalement, l’urine ne contient pas de :', ['urée', 'glucose', 'eau'], 1, 'Le glucose est normalement réabsorbé.'],
+      [3, 'La présence de glucose dans l’urine peut indiquer :', ['un diabète', 'une fracture', 'un excès de sommeil'], 0, 'On parle de glycosurie.'],
+      [3, 'En cas de forte transpiration, l’urine devient :', ['plus abondante et diluée', 'moins abondante et plus concentrée', 'sans urée'], 1, 'Le corps économise l’eau.'],
+      [3, 'La présence de protéines dans l’urine indique :', ['un fonctionnement normal du rein', 'un problème de filtration du rein', 'un excès d’eau bue'], 1, 'Les protéines ne passent pas dans l’urine normalement.'],
+      [3, 'Pour protéger ses reins, il faut :', ['boire suffisamment d’eau et limiter l’excès de sel', 'ne jamais boire d’eau', 'manger uniquement des protéines'], 0, 'Une bonne hygiène de vie protège les reins.']
+    ],
+    imm: [
+      [1, 'Quelle barrière naturelle empêche l’entrée des microbes ?', ['La peau', 'Les os', 'Les cheveux'], 0, 'La peau intacte est une barrière.'],
+      [1, 'La phagocytose est réalisée par :', ['les phagocytes', 'les globules rouges', 'les plaquettes'], 0, 'Ce sont des globules blancs.'],
+      [1, 'Les anticorps sont fabriqués par :', ['les lymphocytes', 'les globules rouges', 'les reins'], 0, 'Ce sont des cellules de l’immunité.'],
+      [1, 'Un vaccin protège contre :', ['une maladie infectieuse', 'une fracture', 'le manque de sommeil'], 0, 'Il prépare le système immunitaire.'],
+      [2, 'Un antigène est :', ['une molécule étrangère reconnue par l’organisme', 'un anticorps', 'un globule rouge'], 0, 'Il déclenche la réponse immunitaire.'],
+      [2, 'Les anticorps sont :', ['spécifiques d’un antigène', 'actifs contre tous les microbes', 'des microbes'], 0, 'Un anticorps ne reconnaît qu’un antigène.'],
+      [2, 'Un vaccin contient :', ['un antigène inoffensif', 'des anticorps déjà prêts', 'un antibiotique'], 0, 'Microbe atténué ou tué, ou fragments de microbe.'],
+      [2, 'Les globules blancs participent à :', ['la défense de l’organisme', 'le transport du O₂', 'la digestion'], 0, 'Ils assurent la défense.'],
+      [3, 'La sérothérapie apporte :', ['des anticorps déjà fabriqués', 'un antigène', 'des globules rouges'], 0, 'La protection est immédiate mais temporaire.'],
+      [3, 'Le rappel de vaccin est utile car il :', ['renforce la mémoire immunitaire', 'remplace la phagocytose', 'détruit les anticorps'], 0, 'La réponse secondaire est plus rapide et plus forte.'],
+      [3, 'Un antibiotique agit contre :', ['les bactéries', 'les virus', 'les deux'], 0, 'Il est inefficace contre les virus.'],
+      [3, 'Le VIH attaque :', ['des lymphocytes du système immunitaire', 'les globules rouges', 'les reins'], 0, 'Il affaiblit les défenses de l’organisme.']
+    ]
+  };
+  function fromBank(key, d) {
+    var q = B[key]; if (!q) return null;
+    var pool = q.filter(function (x) { return d === 1 ? x[0] <= 2 : (d === 2 ? true : x[0] >= 2); });
+    var x = pick(pool), idx = shuffle(x[2].map(function (_, i) { return i; }));
+    return { t: 'mcq', q: x[1], o: idx.map(function (i) { return x[2][i]; }), a: idx.indexOf(x[3]), e: x[4], h: 'Relis la leçon du chapitre.' };
+  }
+
+  var G = {
+    energie: function (d) {
+      var g = ri(2, 9) * 50, l = ri(1, 6) * 10, p = ri(1, 8) * 10;
+      var info = ' (glucides : 17 kJ/g ; lipides : 38 kJ/g ; protéines : 17 kJ/g)';
+      if (d === 1) return num('Quelle énergie fournissent ' + g + ' g de glucides ?' + info, g * 17, 'kJ', g + ' × 17 = ' + (g * 17) + ' kJ.', 'Multiplie la masse par 17 kJ/g.');
+      if (d === 2) return num('Une ration contient ' + g + ' g de glucides et ' + l + ' g de lipides. Quelle énergie fournit-elle ?' + info, g * 17 + l * 38, 'kJ', g + ' × 17 + ' + l + ' × 38 = ' + (g * 17) + ' + ' + (l * 38) + ' = ' + (g * 17 + l * 38) + ' kJ.', 'Calcule l’énergie de chaque nutriment, puis additionne.');
+      var tot = g * 17 + l * 38 + p * 17;
+      if (d === 3) return num('Une ration contient ' + g + ' g de glucides, ' + l + ' g de lipides et ' + p + ' g de protéines. Quelle est son énergie totale ?' + info, tot, 'kJ', g + ' × 17 + ' + l + ' × 38 + ' + p + ' × 17 = ' + tot + ' kJ.', 'Additionne l’énergie des trois nutriments.');
+      return num('Une ration contient ' + g + ' g de glucides, ' + l + ' g de lipides et ' + p + ' g de protéines' + info + '. Quel pourcentage de l’énergie vient des lipides ? (arrondi à l’unité)', Math.round(l * 38 / tot * 100), '%', 'Énergie des lipides : ' + (l * 38) + ' kJ ; énergie totale : ' + tot + ' kJ. ' + (l * 38) + ' ÷ ' + tot + ' ≈ ' + Math.round(l * 38 / tot * 100) + ' %.', 'Calcule l’énergie totale puis la part des lipides.', 0.6);
+    },
+    vent: function (d) {
+      var fr = ri(10, 24), vt = pick([0.4, 0.5, 0.6]);
+      if (d === 1) return num('Une personne fait ' + fr + ' mouvements respiratoires par minute avec un volume courant de ' + fm(vt, 1) + ' L. Quel est son débit ventilatoire ?', fr * vt, 'L/min', fr + ' × ' + fm(vt, 1) + ' = ' + fm(fr * vt, 1) + ' L/min.', 'Débit = fréquence × volume courant.');
+      if (d === 2) { var f2 = ri(12, 20); return num('Le débit ventilatoire d’une personne est ' + fm(f2 * 0.5, 1) + ' L/min et son volume courant 0,5 L. Quelle est sa fréquence respiratoire (mouvements par minute) ?', f2, '/min', fm(f2 * 0.5, 1) + ' ÷ 0,5 = ' + f2 + '.', 'Fréquence = débit ÷ volume courant.'); }
+      var v3 = ri(40, 70) * 10;
+      if (d === 3) return num('Volume courant : ' + v3 + ' mL ; fréquence : ' + fr + ' par minute. Quel est le débit ventilatoire en L/min ?', fr * v3 / 1000, 'L/min', v3 + ' mL = ' + fm(v3 / 1000, 2) + ' L ; ' + fr + ' × ' + fm(v3 / 1000, 2) + ' = ' + fm(fr * v3 / 1000, 2) + ' L/min.', 'Convertis les mL en L avant de multiplier.');
+      var fe = ri(30, 40), ve = pick([1.2, 1.5, 2]), rest = 16 * 0.5;
+      return num('Au repos : 16 mouvements par minute et 0,5 L par mouvement. À l’effort : ' + fe + ' mouvements par minute et ' + fm(ve, 1) + ' L par mouvement. De combien de L/min le débit ventilatoire augmente-t-il ?', fe * ve - rest, 'L/min', 'Effort : ' + fe + ' × ' + fm(ve, 1) + ' = ' + fm(fe * ve, 1) + ' L/min. Repos : 8 L/min. Écart : ' + fm(fe * ve - rest, 1) + ' L/min.', 'Calcule les deux débits puis fais la différence.', 0.06);
+    },
+    debit: function (d) {
+      var fc = pick([60, 65, 70, 75, 80]), ves = pick([60, 70, 80]);
+      if (d === 1) return num('Le cœur bat ' + fc + ' fois par minute et éjecte ' + ves + ' mL à chaque battement. Quel est le débit cardiaque en mL/min ?', fc * ves, 'mL/min', fc + ' × ' + ves + ' = ' + (fc * ves) + ' mL/min.', 'Débit = fréquence × volume d’éjection.');
+      if (d === 2) return num('Même situation : ' + fc + ' battements/min et ' + ves + ' mL par battement. Quel est le débit cardiaque en L/min ?', fc * ves / 1000, 'L/min', fc + ' × ' + ves + ' = ' + (fc * ves) + ' mL/min = ' + fm(fc * ves / 1000, 2) + ' L/min.', 'Divise par 1 000 pour passer des mL aux L.');
+      if (d === 3) return num('Le débit cardiaque est de ' + fm(fc * ves / 1000, 2) + ' L/min pour ' + fc + ' battements/min. Quel est le volume d’éjection par battement, en mL ?', ves, 'mL', fm(fc * ves / 1000, 2) + ' L = ' + (fc * ves) + ' mL ; ' + (fc * ves) + ' ÷ ' + fc + ' = ' + ves + ' mL.', 'Volume d’éjection = débit ÷ fréquence.');
+      var fe = ri(130, 170), ve = pick([90, 100, 110]);
+      return num('Au repos : ' + fc + ' battements/min et ' + ves + ' mL par battement. À l’effort : ' + fe + ' battements/min et ' + ve + ' mL par battement. De combien de L/min le débit cardiaque augmente-t-il ?', (fe * ve - fc * ves) / 1000, 'L/min', 'Effort : ' + fm(fe * ve / 1000, 2) + ' L/min. Repos : ' + fm(fc * ves / 1000, 2) + ' L/min. Écart : ' + fm((fe * ve - fc * ves) / 1000, 2) + ' L/min.', 'Calcule les deux débits en L/min puis fais la différence.', 0.06);
+    },
+    urine: function (d) {
+      var cp = pick([0.2, 0.25, 0.3, 0.4]), cu = pick([12, 15, 20, 24]), vol = pick([1, 1.2, 1.5, 2]);
+      if (d === 1) return num('L’urine contient ' + fm(cu, 0) + ' g d’urée par litre. Un adulte produit ' + fm(vol, 1) + ' L d’urine par jour. Quelle masse d’urée élimine-t-il par jour ?', cu * vol, 'g', fm(cu, 0) + ' × ' + fm(vol, 1) + ' = ' + fm(cu * vol, 1) + ' g.', 'Masse = concentration × volume.');
+      if (d === 2) return num('Le plasma contient ' + fm(cp, 2) + ' g/L d’urée et l’urine ' + fm(cu, 0) + ' g/L. Combien de fois l’urine est-elle plus concentrée en urée ? (arrondi à l’unité)', Math.round(cu / cp), 'fois', fm(cu, 0) + ' ÷ ' + fm(cp, 2) + ' ≈ ' + Math.round(cu / cp) + '.', 'Divise la concentration de l’urine par celle du plasma.', 0.6);
+      if (d === 3) return num('Un adulte élimine ' + fm(cu * vol, 1) + ' g d’urée par jour dans ' + fm(vol, 1) + ' L d’urine. Quelle est la concentration de l’urine en g/L ?', cu, 'g/L', fm(cu * vol, 1) + ' ÷ ' + fm(vol, 1) + ' = ' + fm(cu, 0) + ' g/L.', 'Concentration = masse ÷ volume.');
+      var v2 = pick([0.6, 0.8]);
+      return num('Une personne élimine ' + fm(cu * vol, 1) + ' g d’urée par jour. Un jour de forte chaleur, son urine ne fait que ' + fm(v2, 1) + ' L pour la même masse d’urée. Quelle est alors sa concentration en urée (g/L, arrondie au dixième) ?', Math.round(cu * vol / v2 * 10) / 10, 'g/L', fm(cu * vol, 1) + ' ÷ ' + fm(v2, 1) + ' ≈ ' + fm(cu * vol / v2, 1) + ' g/L : l’urine est plus concentrée.', 'La masse d’urée reste la même, le volume diminue.', 0.06);
+    }
+  };
+
+  var M1 = {};
+  M1['s3-1'] = { topics: ['b:dig', 'b:dig', 'g:energie'] };
+  M1['s3-2'] = { topics: ['b:resp', 'b:resp', 'g:vent'] };
+  M1['s3-3'] = { topics: ['b:circ', 'b:circ', 'g:debit'] };
+  M1['s3-4'] = { topics: ['b:exc', 'b:exc', 'g:urine'] };
+  M1['s3-5'] = { topics: ['b:imm'] };
+  window.LAB_CONFIG = {
+    app: 'svt', appName: 'SVT en mouvement', map: M1,
+    gen: function (key, d) {
+      var k = key.slice(2);
+      if (key.charAt(0) === 'b') return fromBank(k, d === 4 ? 3 : d);
+      return G[k](d);
+    }
+  };
+})();
+
+/* Lab : exercices par niveaux + session visiteur + rapport.
+   Partagé par « Maths en mouvement » et « Physique-Chimie en mouvement ».
+   Configuration : window.LAB_CONFIG = {app, appName, map, gen(key,d)} */
+(function () {
+  'use strict';
+  var CFG = window.LAB_CONFIG;
+  if (!CFG) return;
+  var Lab = (window.Lab = {});
+
+  /* ---------- utilitaires ---------- */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function h(tag, attrs, html) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) { if (k === 'class') e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (_) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (_) { return false; } },
+    del: function (k) { try { localStorage.removeItem(k); } catch (_) {} }
+  };
+  function plain(html) {
+    var s = String(html == null ? '' : html)
+      .replace(/<span class="fr"><span>([^<]*)<\/span><span>([^<]*)<\/span><\/span>/g, '$1/$2')
+      .replace(/<sup>([^<]*)<\/sup>/g, '^$1')
+      .replace(/<sub>([^<]*)<\/sub>/g, '_$1');
+    var d = document.createElement('div'); d.innerHTML = s;
+    return (d.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  function parseNum(t) {
+    t = String(t).trim().replace(/[−–—]/g, '-').replace(/[()\s]/g, '').replace(/,/g, '.');
+    if (!t) return NaN;
+    var mm = t.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
+    if (mm) return (+mm[2]) === 0 ? NaN : (+mm[1]) / (+mm[2]);
+    return /^-?\d+(\.\d+)?$/.test(t) ? +t : NaN;
+  }
+  function fmtDur(ms) {
+    var s = Math.round(ms / 1000), m = Math.floor(s / 60);
+    return m ? m + ' د ' + (s % 60) + ' ث' : s + ' ث';
+  }
+  function fmtDate(t) {
+    try { return new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }); } catch (_) { return String(t); }
+  }
+
+  var LV = {
+    1: { fr: 'Facile', ar: 'سهل', pts: 1, mark: '★' },
+    2: { fr: 'Moyen', ar: 'متوسط', pts: 2, mark: '★★' },
+    3: { fr: 'Difficile', ar: 'صعب', pts: 3, mark: '★★★' },
+    4: { fr: 'Défi', ar: 'تحدّي', pts: 5, mark: '⚡' }
+  };
+  Lab.LV = LV;
+
+  /* ---------- styles ---------- */
+  var css = [
+    'body{padding-bottom:72px}',
+    '.lab-box{margin:14px 0}',
+    '.lab-note{color:var(--muted);font-size:15px;margin:8px 0}',
+    '.lab-ar{font-family:var(--f-ar,Cairo,sans-serif);direction:rtl;text-align:right;color:var(--teal);line-height:1.9;font-size:16px;margin:8px 0}',
+    '.lab-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}',
+    '.lab-tab{font:inherit;font-weight:600;font-size:14px;color:var(--muted);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;min-height:44px;cursor:pointer;text-align:center;line-height:1.25}',
+    '.lab-tab small{display:block;font-weight:400;font-family:var(--f-ar,Cairo,sans-serif);color:var(--lav)}',
+    '.lab-tab[aria-selected="true"]{color:#150f1c;border-color:transparent;background:var(--grad)}',
+    '.lab-tab[aria-selected="true"] small{color:#150f1c}',
+    '.lab-tab .ok{color:#ffcf5c}',
+    '.lab-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;margin:10px 0;font-weight:600}',
+    '.lab-prog{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:6px 0 12px}',
+    '.lab-prog i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}',
+    '.lab-timer{font-variant-numeric:tabular-nums;color:var(--coral)}',
+    '.lab-q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}',
+    '.lab-q.is-ok{border-color:var(--teal)}.lab-q.is-ko{border-color:var(--coral)}',
+    '.lab-q .q{margin:0 0 10px;font-weight:600;font-size:17px}',
+    '.lab-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}',
+    '.lab-row input{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-height:44px;width:100%;flex:1 1 120px;max-width:220px}',
+    '.lab-opts{display:grid;gap:8px}',
+    '.lab-opt{font:inherit;text-align:left;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;min-height:44px;cursor:pointer}',
+    '.lab-opt.ok{border-color:var(--teal)}.lab-opt.ko{border-color:var(--coral)}',
+    '.lab-opt[disabled]{cursor:default}',
+    '.lab-hint{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--surface-2);color:var(--lav);font-size:15px}',
+    '.lab-fb{margin:10px 0 0;font-size:15px;color:var(--muted)}',
+    '.lab-sum{padding:16px 18px;border-radius:14px;border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--grad) border-box;margin:12px 0}',
+    '.lab-sum h4{font-family:var(--f-display,serif);font-style:italic;font-size:26px;margin:0 0 6px}',
+    '.lab-sum p{margin:0 0 6px}',
+    '.lab-bar2{position:fixed;left:12px;bottom:12px;z-index:60;max-width:calc(100vw - 24px);display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--surface-2);border:1.5px solid var(--teal);border-radius:16px;padding:6px 10px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.45)}',
+    '.lab-bar2 b{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}',
+    '.lab-bar2 button{font:inherit;font-size:13px;font-weight:600;color:var(--fg);background:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;min-height:34px;cursor:pointer}',
+    '.lab-bar2 button:hover{border-color:var(--teal)}',
+    '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
+    '.lab-dot.off{background:var(--muted)}',
+    '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
+    '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:20px}',
+    '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
+    '.lab-card label.f{display:block;font-weight:600;margin:12px 0 4px}',
+    '.lab-card input[type=text]{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}',
+    '.lab-chk{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:15px;line-height:1.6}',
+    '.lab-chk input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--pink)}',
+    '.lab-err{color:var(--coral);min-height:22px;margin:4px 0}',
+    '.lab-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}',
+    '#lab-report{position:fixed;inset:0;z-index:90;background:var(--bg);overflow:auto;padding:16px max(16px,env(safe-area-inset-left,0px))}',
+    '#lab-report .rp{max-width:820px;margin:0 auto 60px}',
+    '.rp h2{font-family:var(--f-display,serif);font-style:italic;font-size:clamp(32px,8vw,46px);margin:6px 0 2px}',
+    '.rp h3{font-family:var(--f-ar,Cairo,sans-serif);color:var(--teal);margin:26px 0 8px;font-size:20px}',
+    '.rp .ar{font-family:var(--f-ar,Cairo,sans-serif)}',
+    '.rp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}',
+    '.rp-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px}',
+    '.rp-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}',
+    '.rp-card dt{color:var(--muted);font-family:var(--f-ar,Cairo,sans-serif)}',
+    '.rp-card dd{margin:0;overflow-wrap:anywhere;font-weight:600}',
+    '.rp-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}',
+    '.rp-kpi div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;text-align:center}',
+    '.rp-kpi b{display:block;font-size:26px;font-variant-numeric:tabular-nums}',
+    '.rp-kpi span{color:var(--muted);font-size:13px;font-family:var(--f-ar,Cairo,sans-serif)}',
+    '.rp-bar{display:grid;grid-template-columns:110px 1fr 90px;gap:10px;align-items:center;margin:6px 0;font-size:14px}',
+    '.rp-bar i{display:block;height:12px;border-radius:99px;background:var(--surface-2);position:relative;overflow:hidden}',
+    '.rp-bar i u{position:absolute;inset:0 auto 0 0;background:var(--grad);border-radius:99px}',
+    '.rp table{width:100%;border-collapse:collapse;font-size:14px}',
+    '.rp th,.rp td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}',
+    '.rp th{color:var(--muted);font-weight:600}',
+    '.rp .scroll-x{overflow-x:auto}',
+    '.rp .bad{color:var(--coral)}.rp .good{color:var(--teal)}',
+    '.rp-rec{padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);margin:6px 0;font-family:var(--f-ar,Cairo,sans-serif);line-height:1.8}',
+    '.rp-rec a{color:var(--pink)}',
+    '.rp-wrong{padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);margin:8px 0;font-size:15px}',
+    '.rp-wrong small{color:var(--muted)}',
+    '.rp-wide{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}',
+    '@media print{',
+    '  body.lab-printing>*:not(#lab-report){display:none!important}',
+    '  body.lab-printing #lab-report{position:static;inset:auto;overflow:visible;padding:0;background:#fff;color:#14101c;--bg:#fff;--fg:#14101c;--muted:#55506a;--surface:#f6f4fb;--surface-2:#efecf7;--line:#cfc9e0;--teal:#17806c;--pink:#b0307f;--lav:#5b52b0;--coral:#c24a2f;--grad:linear-gradient(90deg,#b0307f,#5b52b0,#17806c)}',
+    '  body.lab-printing .rp-wide,body.lab-printing .lab-noprint{display:none!important}',
+    '  body.lab-printing .rp-card,body.lab-printing .rp-wrong,body.lab-printing tr{break-inside:avoid}',
+    '}',
+    '@media (max-width:520px){.rp-bar{grid-template-columns:80px 1fr 70px}.lab-bar2{right:12px}}'
+  ].join('\n');
+  document.head.appendChild(h('style', { id: 'lab-css' }, css));
+
+  /* ---------- appareil et réseau ---------- */
+  function detectDevice() {
+    var nav = navigator, ua = nav.userAgent || '', os = 'Inconnu', osv = '', m;
+    if ((m = ua.match(/Windows NT ([\d.]+)/))) { os = 'Windows'; osv = { '10.0': '10 / 11', '6.3': '8.1', '6.2': '8', '6.1': '7' }[m[1]] || m[1]; }
+    else if ((m = ua.match(/Android ([\d.]+)/))) { os = 'Android'; osv = m[1]; }
+    else if ((m = ua.match(/(iPhone|iPad|iPod).*? OS ([\d_]+)/))) { os = m[1] === 'iPad' ? 'iPadOS' : 'iOS'; osv = m[2].replace(/_/g, '.'); }
+    else if (/Macintosh/.test(ua)) { os = nav.maxTouchPoints > 1 ? 'iPadOS' : 'macOS'; var mv = ua.match(/Mac OS X ([\d_.]+)/); osv = mv ? mv[1].replace(/_/g, '.') : ''; }
+    else if (/CrOS/.test(ua)) os = 'ChromeOS';
+    else if (/Linux/.test(ua)) os = 'Linux';
+    var browser = 'Inconnu', bv = '', br = [[/Edg(?:e|A|iOS)?\/([\d.]+)/, 'Edge'], [/OPR\/([\d.]+)/, 'Opera'], [/SamsungBrowser\/([\d.]+)/, 'Samsung Internet'], [/(?:Firefox|FxiOS)\/([\d.]+)/, 'Firefox'], [/(?:Chrome|CriOS)\/([\d.]+)/, 'Chrome'], [/Version\/([\d.]+).*Safari/, 'Safari']];
+    for (var i = 0; i < br.length; i++) { var x = ua.match(br[i][0]); if (x) { browser = br[i][1]; bv = x[1].split('.')[0]; break; } }
+    var type = 'Ordinateur';
+    if (/iPad|Tablet/.test(ua) || os === 'iPadOS' || (/Android/.test(ua) && !/Mobile/.test(ua))) type = 'Tablette';
+    else if (/Mobi|iPhone|iPod|Android/.test(ua)) type = 'Téléphone';
+    var model = '';
+    if ((m = ua.match(/Android [\d.]+;\s*([^;)]+?)(?:\s+Build\/|[;)])/))) model = m[1].trim();
+    if (/iPhone/.test(ua)) model = 'iPhone';
+    if (model === 'K') model = '';
+    var scr = window.screen || {};
+    return {
+      type: type, os: os, osVersion: osv, browser: browser, browserVersion: bv, model: model,
+      screen: (scr.width || 0) + '×' + (scr.height || 0), viewport: window.innerWidth + '×' + window.innerHeight,
+      dpr: window.devicePixelRatio || 1, lang: nav.language || '',
+      tz: (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '', touch: nav.maxTouchPoints || 0
+    };
+  }
+  function deviceLabel(d) {
+    if (!d) return '-';
+    var p = [d.type]; if (d.model) p.push(d.model);
+    p.push(d.os + (d.osVersion ? ' ' + d.osVersion : '')); p.push(d.browser + (d.browserVersion ? ' ' + d.browserVersion : ''));
+    return p.join(' / ');
+  }
+  function getJSON(url, ms) {
+    var c = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var t = setTimeout(function () { if (c) c.abort(); }, ms || 6000);
+    return fetch(url, { signal: c ? c.signal : undefined, cache: 'no-store' }).then(function (r) {
+      clearTimeout(t); if (!r.ok) throw new Error('http ' + r.status); return r.json();
+    }, function (e) { clearTimeout(t); throw e; });
+  }
+  function cityFromTz(tz) { var c = String(tz || '').split('/').pop(); return c ? c.replace(/_/g, ' ') : ''; }
+  function fetchNet() {
+    var tz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '';
+    var tries = [
+      function () { return getJSON('https://ipwho.is/').then(function (j) { if (j.success === false) throw 0; return { ip: j.ip, city: j.city, region: j.region, country: j.country, isp: j.connection && j.connection.isp, source: 'ipwho.is' }; }); },
+      function () { return getJSON('https://ipapi.co/json/').then(function (j) { if (j.error) throw 0; return { ip: j.ip, city: j.city, region: j.region, country: j.country_name, isp: j.org, source: 'ipapi.co' }; }); },
+      function () { return getJSON('https://api.ipify.org?format=json').then(function (j) { return { ip: j.ip, source: 'ipify.org' }; }); }
+    ];
+    var i = 0;
+    function next() {
+      if (i >= tries.length) return Promise.resolve({ status: 'failed', city: cityFromTz(tz), cityApprox: true, source: 'المنطقة الزمنية للمتصفح' });
+      return tries[i++]().then(function (r) {
+        if (r && r.ip) { r.status = 'ok'; if (!r.city) { r.city = cityFromTz(tz); r.cityApprox = true; } return r; }
+        return next();
+      }, next);
+    }
+    return next();
+  }
+
+  /* ---------- session ---------- */
+  var K_CUR = 'lab_cur', K_HIST = 'lab_hist', K_PROG = 'lab_prog', K_NAME = 'lab_name';
+  var Sess = (Lab.Session = {});
+  var listeners = [];
+  Sess.on = function (f) { listeners.push(f); };
+  function emit() { listeners.forEach(function (f) { try { f(); } catch (_) {} }); }
+  Sess.cur = function () { return store.get(K_CUR, null); };
+  Sess.hist = function () { return store.get(K_HIST, []); };
+  function patch(id, fn) {
+    var c = Sess.cur(); if (c && c.id === id) { fn(c); store.set(K_CUR, c); }
+    var hs = Sess.hist(), i = hs.findIndex(function (x) { return x.id === id; });
+    if (i >= 0) { fn(hs[i]); store.set(K_HIST, hs); }
+  }
+  Sess.start = function (name, consent) {
+    var id = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    var s = { id: id, name: String(name).trim().slice(0, 60), startedAt: Date.now(), endedAt: null, consent: !!consent, device: detectDevice(), net: consent ? { status: 'pending' } : { status: 'declined' }, answers: [] };
+    store.set(K_CUR, s); store.set(K_NAME, s.name);
+    var hs = Sess.hist(); hs.unshift(s); store.set(K_HIST, hs.slice(0, 20));
+    emit();
+    if (consent) {
+      fetchNet().then(function (net) { patch(id, function (x) { x.net = net; }); emit(); });
+      try {
+        if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues)
+          navigator.userAgentData.getHighEntropyValues(['model', 'platformVersion']).then(function (v) {
+            patch(id, function (x) { if (v.model) x.device.model = v.model; if (v.platformVersion && x.device.os === 'Windows') x.device.osVersion = (parseInt(v.platformVersion, 10) >= 13 ? '11' : '10'); });
+            emit();
+          }, function () {});
+      } catch (_) {}
+    }
+    return s;
+  };
+  Sess.end = function () {
+    var c = Sess.cur(); if (!c) return null;
+    patch(c.id, function (x) { x.endedAt = Date.now(); });
+    store.del(K_CUR); emit();
+    return Sess.hist().find(function (x) { return x.id === c.id; }) || c;
+  };
+  Sess.log = function (rec) {
+    var c = Sess.cur(); if (!c) return;
+    rec.t = Date.now();
+    patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
+    emit();
+  };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  function stats(s) {
+    var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
+    var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
+    var ms = a.reduce(function (t, x) { return t + (x.ms || 0); }, 0);
+    var lv = {}; [1, 2, 3, 4].forEach(function (d) { var l = a.filter(function (x) { return x.d === d; }); lv[d] = { n: l.length, ok: l.filter(function (x) { return x.ok; }).length }; });
+    var ch = {};
+    a.forEach(function (x) {
+      var k = x.app + '|' + x.chap; var c = ch[k] || (ch[k] = { app: x.app, chap: x.chap, title: x.title, n: 0, ok: 0, ms: 0, pts: 0 });
+      c.n++; if (x.ok) c.ok++; c.ms += x.ms || 0; c.pts += x.pts || 0;
+    });
+    return { n: n, ok: ok, pct: n ? Math.round(100 * ok / n) : 0, pts: pts, hints: hints, avg: n ? ms / n : 0, lv: lv, ch: Object.keys(ch).map(function (k) { return ch[k]; }) };
+  }
+  Sess.stats = stats;
+
+  /* ---------- progression par chapitre ---------- */
+  function progGet() { return store.get(K_PROG, {}); }
+  function progSet(app, chap, d, pct) {
+    var p = progGet(), k = app + '|' + chap; p[k] = p[k] || {};
+    if (!p[k][d] || p[k][d] < pct) p[k][d] = pct;
+    store.set(K_PROG, p);
+  }
+
+  /* ---------- fabrique de questions ---------- */
+  function norm(it) {
+    if (!it || typeof it.q !== 'string' || !it.q) return null;
+    var o = {}; for (var k in it) o[k] = it[k];
+    if (o.t === 'qcm') o.t = 'mcq';
+    if (o.t === 'num') { if (typeof o.a !== 'number' || !isFinite(o.a)) return null; if (o.tol == null) o.tol = 1e-6; }
+    else if (o.t === 'mcq') { if (!o.o || o.o.length < 2 || o.a == null || o.a < 0 || o.a >= o.o.length) return null; }
+    else return null;
+    if (/NaN|undefined|Infinity/.test(o.q + (o.e || '') + (o.sol || ''))) return null;
+    return o;
+  }
+  function makeItem(cfg, d, seen) {
+    for (var tries = 0; tries < 40; tries++) {
+      var key = pick(cfg.topics), it = null;
+      try { it = norm(CFG.gen(key, d)); } catch (e) { it = null; }
+      if (it && !seen[it.q]) { seen[it.q] = 1; it.key = key; it.d = d; return it; }
+    }
+    return null;
+  }
+  Lab.makeItem = makeItem;
+  function answerText(it) {
+    if (it.t === 'num') return it.sol ? plain(it.sol) : String(it.a) + (it.u ? ' ' + it.u : '');
+    return plain(it.o[it.a]);
+  }
+  Lab.answerText = answerText;
+
+  /* ---------- composant d'exercices ---------- */
+  var SECS = 45; // secondes par question au niveau Défi
+  function mount(el, ctx) {
+    var cfg = ctx.cfg, level = 2, mode = 'level';
+    var wrap = h('div', { 'class': 'lab-box' });
+    el.appendChild(wrap);
+
+    var tabs = h('div', { 'class': 'lab-tabs', role: 'tablist' });
+    var list = [[1], [2], [3], [4], ['a']];
+    function tabLabel(t) {
+      var pr = progGet()[CFG.app + '|' + ctx.id] || {}, done = t[0] !== 'a' && pr[t[0]] >= 80;
+      if (t[0] === 'a') return 'Adaptatif<small>تكيّفي</small>';
+      return LV[t[0]].mark + ' ' + LV[t[0]].fr + (done ? ' <span class="ok">✓</span>' : '') + '<small>' + LV[t[0]].ar + '</small>';
+    }
+    function drawTabs() {
+      tabs.innerHTML = '';
+      list.forEach(function (t) {
+        var sel = t[0] === 'a' ? mode === 'adapt' : (mode === 'level' && level === t[0]);
+        var b = h('button', { type: 'button', 'class': 'lab-tab', role: 'tab', 'aria-selected': sel ? 'true' : 'false' }, tabLabel(t));
+        b.addEventListener('click', function () { if (t[0] === 'a') { mode = 'adapt'; } else { mode = 'level'; level = t[0]; } stopRun(); drawTabs(); intro(); });
+        tabs.appendChild(b);
+      });
+    }
+    var info = h('div'), arena = h('div');
+    wrap.appendChild(tabs); wrap.appendChild(info); wrap.appendChild(arena);
+
+    var timerId = null;
+    function stopRun() { if (timerId) { clearInterval(timerId); timerId = null; } arena.innerHTML = ''; }
+
+    function intro() {
+      var d = level, s = Sess.cur();
+      var txt = mode === 'adapt'
+        ? 'La difficulté s’ajuste : une bonne réponse monte d’un niveau, une erreur redescend. 8 questions.'
+        : (d === 4 ? 'Défi : 5 questions du niveau le plus difficile, ' + SECS + ' secondes par question, sans indice, une seule tentative. Points ×5.'
+          : (d === 3 ? '6 questions difficiles, plusieurs étapes. Un indice coûte la moitié des points.' : '6 questions. Un indice coûte la moitié des points.'));
+      var ar = mode === 'adapt'
+        ? 'المستوى يتغيّر حسب إجاباتك: إجابة صحيحة تصعّد المستوى، وخطأ ينزل به. ٨ أسئلة.'
+        : (d === 4 ? 'التحدّي: ٥ أسئلة من أصعب مستوى، ' + SECS + ' ثانية لكل سؤال، بلا تلميح، ومحاولة واحدة. النقاط ×٥.'
+          : 'ستّ أسئلة. استعمال التلميح يخسّرك نصف النقاط. النجاح عند ٨٠٪ فما فوق.');
+      info.innerHTML = '<p class="lab-note">' + txt + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>' +
+        (s ? '' : '<p class="lab-note lab-noprint">Aucune session ouverte : tes résultats ne sont pas enregistrés. <a href="#" data-lab-start>Démarrer une session</a></p>');
+      var a = info.querySelector('[data-lab-start]');
+      if (a) a.addEventListener('click', function (e) { e.preventDefault(); openStart(); });
+      arena.innerHTML = '';
+      var go = h('button', { type: 'button', 'class': 'btn' }, 'Lancer la série');
+      go.addEventListener('click', run);
+      arena.appendChild(go);
+    }
+
+    function run() {
+      stopRun();
+      var seen = {}, N = mode === 'adapt' ? 8 : (level === 4 ? 5 : 6);
+      var d = mode === 'adapt' ? 2 : level, idx = 0, good = 0, pts = 0, max = 0, deadline = 0, answered = false;
+      var head = h('div', { 'class': 'lab-bar' }), prog = h('div', { 'class': 'lab-prog' }, '<i></i>'), holder = h('div');
+      arena.appendChild(head); arena.appendChild(prog); arena.appendChild(holder);
+      var timerEl = h('span', { 'class': 'lab-timer' });
+      function upHead(cur) {
+        head.innerHTML = '<span>Question ' + (Math.min(idx + 1, N)) + ' / ' + N + ' · ' + LV[cur].mark + ' ' + LV[cur].fr + '</span><span>' + pts + ' pts</span>';
+        if (mode === 'level' && level === 4) head.appendChild(timerEl);
+        prog.firstChild.style.width = (100 * idx / N) + '%';
+      }
+      if (mode === 'level' && level === 4) {
+        deadline = Date.now() + SECS * N * 1000;
+        timerId = setInterval(function () {
+          var left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+          timerEl.textContent = '⏱ ' + Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2);
+          if (left <= 0) { clearInterval(timerId); timerId = null; timeUp(); }
+        }, 250);
+      }
+      var current = null;
+      function timeUp() {
+        if (current && !answered) record(current.it, false, '(temps écoulé)', current.hint, true);
+        idx = N;
+        finish(true);
+      }
+      var startT = 0;
+      function next() {
+        if (idx >= N) { finish(false); return; }
+        var dd = mode === 'adapt' ? d : level;
+        var it = makeItem(cfg, dd, seen);
+        if (!it) { N = idx; finish(false); return; }
+        answered = false; startT = Date.now(); max += LV[dd].pts;
+        current = { it: it, i: idx, hint: false };
+        upHead(dd);
+        holder.innerHTML = '';
+        holder.appendChild(card(it, dd));
+      }
+      function record(it, ok, given, hint, late) {
+        var dd = it.d, base = LV[dd].pts, p = ok ? (hint ? base / 2 : base) : 0;
+        pts += p; if (ok) good++;
+        Sess.log({ app: CFG.app, chap: ctx.id, title: ctx.title, topic: it.key, d: dd, ok: ok, pts: p, hint: !!hint, ms: Date.now() - startT, q: plain(it.q).slice(0, 220), given: String(given).slice(0, 60), right: answerText(it).slice(0, 80), late: !!late });
+        answered = true;
+      }
+      function card(it, dd) {
+        var box = h('div', { 'class': 'lab-q' }), over = false, usedHint = false, tries = 0;
+        box.appendChild(h('p', { 'class': 'q' }, it.q));
+        var fb = h('p', { 'class': 'lab-fb', 'aria-live': 'polite' });
+        var hintEl = h('p', { 'class': 'lab-hint', hidden: '' }, '<b>Indice.</b> ' + (it.h || 'Relis le cours.'));
+        var tools = h('div', { 'class': 'lab-actions' }), hb = null;
+        function done(ok, given) {
+          over = true; if (hb) hb.disabled = true;
+          record(it, ok, given, usedHint, false);
+          box.classList.add(ok ? 'is-ok' : 'is-ko');
+          fb.innerHTML = (ok ? '<b>Exact.</b> ' : '<b>Pas tout à fait.</b> La réponse est <b>' + esc(answerText(it)) + '</b>. ') + (it.e || '');
+          idx++; upHead(mode === 'adapt' ? d : level); prog.firstChild.style.width = (100 * idx / N) + '%';
+          if (mode === 'adapt') d = ok ? Math.min(4, d + 1) : Math.max(1, d - 1);
+          var nb = h('button', { type: 'button', 'class': 'btn' }, idx >= N ? 'Voir le résultat' : 'Question suivante');
+          nb.addEventListener('click', next);
+          box.appendChild(nb);
+          nb.focus();
+        }
+        if (it.t === 'num') {
+          var row = h('div', { 'class': 'lab-row' }), inp = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', autocapitalize: 'off', 'aria-label': 'Ta réponse', placeholder: 'Ta réponse' }), go = h('button', { type: 'button', 'class': 'btn' }, 'Valider');
+          row.appendChild(inp); if (it.u) row.appendChild(h('span', { 'class': 'lab-note' }, it.u)); row.appendChild(go); box.appendChild(row);
+          var check = function () {
+            if (over) return;
+            var v = parseNum(inp.value);
+            if (isNaN(v)) { fb.textContent = 'Écris un nombre, par exemple 3,5 ou 3/4.'; return; }
+            inp.disabled = true; go.disabled = true;
+            done(Math.abs(v - it.a) <= (it.tol || 0) + 1e-9, inp.value);
+          };
+          go.addEventListener('click', check);
+          inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
+          setTimeout(function () { try { inp.focus(); } catch (_) {} }, 30);
+        } else {
+          var ob = h('div', { 'class': 'lab-opts' });
+          var btns = it.o.map(function (t, i) {
+            var b = h('button', { type: 'button', 'class': 'lab-opt' }, t);
+            b.addEventListener('click', function () {
+              if (over) return;
+              var ok = i === it.a;
+              btns.forEach(function (x, xi) { x.disabled = true; if (xi === it.a) x.classList.add('ok'); });
+              if (!ok) b.classList.add('ko');
+              done(ok, plain(t));
+            });
+            ob.appendChild(b); return b;
+          });
+          box.appendChild(ob);
+        }
+        if (dd < 4) {
+          hb = h('button', { type: 'button', 'class': 'btn ghost' }, 'Indice (−50 %)');
+          hb.addEventListener('click', function () { usedHint = true; current.hint = true; hintEl.hidden = false; });
+          tools.appendChild(hb); box.appendChild(tools);
+        }
+        box.appendChild(hintEl); box.appendChild(fb);
+        return box;
+      }
+      function finish(timeout) {
+        if (timerId) { clearInterval(timerId); timerId = null; }
+        var asked = Math.max(1, N), pct = Math.round(100 * good / asked);
+        var lvl = mode === 'adapt' ? 0 : level;
+        if (lvl) progSet(CFG.app, ctx.id, lvl, pct);
+        prog.firstChild.style.width = '100%';
+        var msg = pct >= 80 ? 'Bravo : niveau validé.' : (pct >= 50 ? 'Bien. Relis la leçon puis recommence pour valider.' : 'Reprends le cours de ce chapitre, puis un niveau plus facile.');
+        var ar = pct >= 80 ? 'أحسنت! تم اجتياز هذا المستوى.' : (pct >= 50 ? 'جيّد. راجع الدرس وأعد المحاولة للنجاح في المستوى.' : 'عُد إلى درس هذا الفصل ثم جرّب مستوى أسهل.');
+        var s = h('div', { 'class': 'lab-sum' }, '<h4>' + good + ' / ' + asked + ' · ' + pct + ' %</h4><p>' + pts + ' / ' + max + ' points' + (timeout ? ' · temps écoulé' : '') + '. ' + msg + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>');
+        var act = h('div', { 'class': 'lab-actions' });
+        var again = h('button', { type: 'button', 'class': 'btn' }, 'Nouvelle série'); again.addEventListener('click', run); act.appendChild(again);
+        if (lvl && lvl < 4 && pct >= 80) { var up = h('button', { type: 'button', 'class': 'btn' }, 'Niveau suivant'); up.addEventListener('click', function () { level = lvl + 1; drawTabs(); intro(); run(); }); act.appendChild(up); }
+        if (Sess.cur()) { var rp = h('button', { type: 'button', 'class': 'btn ghost' }, 'Mon rapport'); rp.addEventListener('click', function () { openReport(Sess.cur()); }); act.appendChild(rp); }
+        s.appendChild(act); holder.innerHTML = ''; holder.appendChild(s);
+        drawTabs();
+      }
+      next();
+    }
+
+    drawTabs(); intro();
+    return { stop: stopRun };
+  }
+  Lab.mount = mount;
+
+  /* ---------- hook sur les chapitres ---------- */
+  Lab.install = function (NS) {
+    var orig = NS.chapter;
+    NS.chapter = function (c) {
+      var cfg = CFG.map[c.id];
+      if (cfg) {
+        var ctx = { id: c.id, title: c.title, cfg: cfg };
+        var extra = {
+          short: 'Défis', title: 'Défis par niveaux', label: 'Défis · تحدّيات',
+          intro: 'Quatre niveaux, du plus facile au défi chronométré. Chaque série est tirée au hasard.',
+          build: function (el) { mount(el, ctx); },
+          ar: { e: ['هذه تمارين تفاعلية بأربعة مستويات: سهل، متوسط، صعب، ثم تحدٍّ بمؤقّت. الأسئلة تتغيّر في كل مرة، ونتائجك تُسجَّل في جلستك لتظهر في التقرير.'], w: [['niveau', 'مستوى'], ['indice', 'تلميح'], ['défi', 'تحدٍّ'], ['série', 'سلسلة أسئلة']] }
+        };
+        if (typeof c.lessons === 'function') { var f = c.lessons; c.lessons = function () { var a = f(); a.push(extra); return a; }; }
+        else c.lessons = c.lessons.concat([extra]);
+      }
+      return orig.apply(this, arguments);
+    };
+  };
+
+  /* ---------- fenêtre de démarrage ---------- */
+  var modal = null;
+  function closeModal() { if (modal) { modal.remove(); modal = null; } }
+  function openStart() {
+    closeModal();
+    var last = store.get(K_NAME, '');
+    modal = h('div', { 'class': 'lab-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Démarrer une session' });
+    modal.innerHTML =
+      '<div class="lab-card"><h3>Ma session</h3>' +
+      '<p class="lab-note">Entre ton nom pour suivre tes résultats. À la fin, tu obtiens un rapport.</p>' +
+      '<p class="lab-ar" dir="rtl" lang="ar">أدخل اسمك لتتبّع نتائجك. في النهاية يظهر لك تقرير بالنتائج.</p>' +
+      '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
+      '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
+      '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>' +
+      '<p class="lab-err" id="lab-err" role="alert"></p>' +
+      '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
+    document.body.appendChild(modal);
+    var nm = $('#lab-name', modal);
+    setTimeout(function () { nm.focus(); }, 30);
+    $('#lab-go', modal).addEventListener('click', function () {
+      var n = nm.value.trim();
+      if (n.length < 2) { $('#lab-err', modal).textContent = 'Écris ton nom (2 lettres au moins). · اكتب اسمك'; return; }
+      Sess.start(n, $('#lab-cons', modal).checked); closeModal();
+    });
+    nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#lab-go', modal).click(); });
+    $('#lab-skip', modal).addEventListener('click', function () { try { sessionStorage.setItem('lab_skip', '1'); } catch (_) {} closeModal(); render(); });
+  }
+  Lab.openStart = openStart;
+
+  /* ---------- barre de session ---------- */
+  var bar = null;
+  function render() {
+    if (!bar) { bar = h('div', { 'class': 'lab-bar2 lab-noprint', role: 'region', 'aria-label': 'Session' }); document.body.appendChild(bar); }
+    var s = Sess.cur();
+    if (!s) {
+      bar.innerHTML = '<span class="lab-dot off"></span><span>Sans session</span><button type="button" data-a="start">Démarrer</button>' + (Sess.hist().length ? '<button type="button" data-a="last">Dernier rapport</button>' : '');
+    } else {
+      var st = stats(s);
+      bar.innerHTML = '<span class="lab-dot"></span><b>' + esc(s.name) + '</b><span>' + st.ok + '/' + st.n + '</span><button type="button" data-a="rep">Rapport</button><button type="button" data-a="end">Terminer</button>';
+    }
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-a]') : null;
+    if (!b || !bar || !bar.contains(b)) return;
+    var a = b.getAttribute('data-a');
+    if (a === 'start') openStart();
+    else if (a === 'rep') openReport(Sess.cur());
+    else if (a === 'last') openReport(Sess.hist()[0]);
+    else if (a === 'end') { if (confirm('Terminer la session et voir le rapport ? · إنهاء الجلسة وعرض التقرير؟')) openReport(Sess.end()); }
+  });
+  Sess.on(render);
+
+  /* ---------- rapport ---------- */
+  function rpDl(label, val) { return '<dt>' + label + '</dt><dd>' + (val === '' || val == null ? '-' : esc(val)) + '</dd>'; }
+  function openReport(s) {
+    if (!s) return;
+    var old = $('#lab-report'); if (old) old.remove();
+    var st = stats(s), box = h('div', { id: 'lab-report', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Rapport de session' });
+    var d = s.device || {}, n = s.net || {}, end = s.endedAt || Date.now();
+    var netState = n.status === 'pending' ? 'جارٍ التحديد…' : (n.status === 'declined' ? 'لم يوافق المستخدم' : (n.status === 'failed' ? 'تعذّر الحصول على IP' : ''));
+    var place = [n.city, n.region, n.country].filter(Boolean).join('، ');
+    var html = '<div class="rp"><p class="lab-note">' + esc(CFG.appName) + ' · rapport de session</p>' +
+      '<h2>' + esc(s.name) + '</h2><p class="ar" dir="rtl" lang="ar">' + (s.endedAt ? 'جلسة منتهية' : 'جلسة جارية') + ' · ' + fmtDate(s.startedAt) + ' · المدة ' + fmtDur(end - s.startedAt) + '</p>';
+    html += '<h3 dir="rtl">الجهاز والموقع</h3><div class="rp-grid"><div class="rp-card" dir="rtl"><dl>' +
+      rpDl('الاسم', s.name) + rpDl('الجهاز', deviceLabel(d)) + rpDl('النظام', (d.os || '') + (d.osVersion ? ' ' + d.osVersion : '')) + rpDl('المتصفح', (d.browser || '') + (d.browserVersion ? ' ' + d.browserVersion : '')) +
+      rpDl('الشاشة', d.screen) + rpDl('اللغة', d.lang) + rpDl('المنطقة الزمنية', d.tz) + '</dl></div>' +
+      '<div class="rp-card" dir="rtl"><dl>' + rpDl('عنوان IP', n.ip || netState) + rpDl('المدينة', place || netState) + (n.cityApprox ? rpDl('ملاحظة', 'المدينة مأخوذة من المنطقة الزمنية') : '') + rpDl('مزوّد الخدمة', n.isp) + rpDl('المصدر', n.source) +
+      '</dl><p class="lab-note" style="margin-top:8px">المدينة تقريبية وتُستنتج من عنوان IP.</p></div></div>';
+    html += '<h3 dir="rtl">النتائج</h3><div class="rp-kpi" dir="rtl"><div><b>' + st.n + '</b><span>أسئلة</span></div><div><b class="' + (st.pct >= 60 ? 'good' : 'bad') + '">' + st.pct + '%</b><span>صحيحة</span></div><div><b>' + (Math.round(st.pts * 10) / 10) + '</b><span>نقاط</span></div><div><b>' + (st.n ? Math.round(st.avg / 1000) : 0) + ' ث</b><span>متوسط الزمن</span></div><div><b>' + st.hints + '</b><span>تلميحات</span></div></div>';
+    html += '<div dir="rtl">' + [1, 2, 3, 4].map(function (k) {
+      var l = st.lv[k], p = l.n ? Math.round(100 * l.ok / l.n) : 0;
+      return '<div class="rp-bar"><span>' + LV[k].ar + ' · ' + LV[k].fr + '</span><i><u style="width:' + p + '%"></u></i><span>' + l.ok + '/' + l.n + (l.n ? ' · ' + p + '%' : '') + '</span></div>';
+    }).join('') + '</div>';
+    if (st.ch.length) {
+      st.ch.sort(function (a, b) { return a.ok / a.n - b.ok / b.n; });
+      html += '<h3 dir="rtl">حسب الفصل</h3><div class="scroll-x"><table><tr><th>Application</th><th>Chapitre</th><th>Questions</th><th>Réussite</th><th>Temps moyen</th></tr>' +
+        st.ch.map(function (c) { var p = Math.round(100 * c.ok / c.n); return '<tr><td>' + esc(c.app === 'maths' ? 'Maths' : 'Physique-Chimie') + '</td><td>' + esc(c.title) + '</td><td>' + c.ok + '/' + c.n + '</td><td class="' + (p >= 60 ? 'good' : 'bad') + '">' + p + ' %</td><td>' + Math.round(c.ms / c.n / 1000) + ' s</td></tr>'; }).join('') + '</table></div>';
+      var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; });
+      html += '<h3 dir="rtl">توصيات</h3>';
+      if (weak.length) html += weak.slice(0, 6).map(function (c) { return '<div class="rp-rec" dir="rtl">راجع فصل <a href="#' + esc(c.chap) + '" data-go="' + esc(c.chap) + '">' + esc(c.title) + '</a>: نسبة النجاح ' + Math.round(100 * c.ok / c.n) + '٪. ابدأ بالمستوى «سهل» ثم تدرّج.</div>'; }).join('');
+      else html += '<div class="rp-rec" dir="rtl">لا توجد فصول ضعيفة ظاهرة. جرّب مستوى «تحدّي» في الفصول التي أتقنتها.</div>';
+    }
+    var wrong = (s.answers || []).filter(function (a) { return !a.ok; }).slice(-30).reverse();
+    if (wrong.length) html += '<h3 dir="rtl">الأسئلة التي أخطأت فيها</h3>' + wrong.map(function (a) { return '<div class="rp-wrong"><b>' + esc(a.q) + '</b><br><small>Ta réponse : ' + esc(a.given || '-') + ' · Bonne réponse : ' + esc(a.right) + ' · ' + esc(a.title) + ' · ' + LV[a.d].fr + '</small></div>'; }).join('');
+    if (!st.n) html += '<div class="rp-rec" dir="rtl">لم تُجَب أي أسئلة في هذه الجلسة بعد. افتح فصلًا وانتقل إلى «Défis».</div>';
+    html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button><button type="button" class="btn ghost" data-r="csv">CSV</button><button type="button" class="btn ghost" data-r="json">JSON</button>' +
+      (s.endedAt ? '<button type="button" class="btn ghost" data-r="new">Nouvelle session</button>' : '') + '<button type="button" class="btn ghost" data-r="wipe">Effacer mes données</button><button type="button" class="btn" data-r="close">Fermer</button></div>' +
+      '<p class="lab-note">Ces données sont enregistrées uniquement dans ce navigateur. Pour les transmettre à l’enseignant, utilise PDF ou JSON.<br><span class="ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح فقط. لإرسالها إلى الأستاذ استعمل PDF أو JSON.</span></p></div>';
+    box.innerHTML = html;
+    document.body.appendChild(box); box.scrollTop = 0;
+    box.addEventListener('click', function (e) {
+      var go = e.target.closest && e.target.closest('[data-go]');
+      if (go) { e.preventDefault(); box.remove(); var id = go.getAttribute('data-go'); location.hash = '#' + id; return; }
+      var b = e.target.closest && e.target.closest('[data-r]'); if (!b) return;
+      var a = b.getAttribute('data-r');
+      if (a === 'close') box.remove();
+      else if (a === 'print') { document.body.classList.add('lab-printing'); window.addEventListener('afterprint', function () { document.body.classList.remove('lab-printing'); }, { once: true }); setTimeout(function () { window.print(); }, 50); }
+      else if (a === 'csv') download('session-' + s.id + '.csv', toCSV(s), 'text/csv;charset=utf-8');
+      else if (a === 'json') download('session-' + s.id + '.json', JSON.stringify(s, null, 2), 'application/json');
+      else if (a === 'new') { box.remove(); openStart(); }
+      else if (a === 'wipe') { if (confirm('Effacer toutes les sessions et la progression de ce navigateur ? · مسح كل الجلسات والتقدّم؟')) { Sess.clearAll(); box.remove(); } }
+    });
+  }
+  Lab.openReport = openReport;
+  function csvCell(v) { v = String(v == null ? '' : v); return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function toCSV(s) {
+    var n = s.net || {}, d = s.device || {};
+    var head = ['nom', 'appareil', 'ip', 'ville', 'app', 'chapitre', 'sujet', 'niveau', 'correct', 'points', 'indice', 'duree_ms', 'question', 'reponse', 'bonne_reponse', 'date'];
+    var rows = (s.answers || []).map(function (a) {
+      return [s.name, deviceLabel(d), n.ip || '', [n.city, n.country].filter(Boolean).join(' '), a.app, a.title, a.topic, LV[a.d].fr, a.ok ? 1 : 0, a.pts, a.hint ? 1 : 0, a.ms, a.q, a.given, a.right, new Date(a.t).toISOString()].map(csvCell).join(',');
+    });
+    return '﻿' + head.join(',') + '\n' + rows.join('\n');
+  }
+  function download(name, text, type) {
+    var url = URL.createObjectURL(new Blob([text], { type: type })), a = h('a', { href: url, download: name });
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  /* ---------- démarrage ---------- */
+  function boot() {
+    render();
+    var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
+    if (!Sess.cur() && !skip) openStart();
+  }
+  if (document.readyState === 'complete') setTimeout(boot, 0); else window.addEventListener('load', function () { setTimeout(boot, 0); });
+
+  /* ---------- auto-test (utilisé par les tests) ---------- */
+  Lab.selftest = function (draws) {
+    var bad = [], total = 0;
+    Object.keys(CFG.map).forEach(function (id) {
+      var cfg = CFG.map[id];
+      [1, 2, 3, 4].forEach(function (d) {
+        for (var i = 0; i < (draws || 40); i++) {
+          cfg.topics.forEach(function (key) {
+            total++;
+            var it = null, err = '';
+            try { it = norm(CFG.gen(key, d)); } catch (e) { err = String(e); }
+            if (!it) bad.push(id + ' ' + key + ' d' + d + ' ' + err);
+          });
+        }
+      });
+    });
+    return { total: total, bad: bad.slice(0, 20), badCount: bad.length };
+  };
+})();
+
+Lab.install(window.PC);
+</script>
+
+<script>
+/* SVT en mouvement : 3e année du collège (3AC), nutrition et immunité.
+   Même cadre que « Physique-Chimie en mouvement » (PC.chapter, PC.ui). */
+(function () {
+  'use strict';
+  var PC = window.PC, ui = PC.ui, S = PC.S, h = PC.h, fmt = PC.fmt, clamp = PC.clamp, ease = PC.ease;
+  var EY = '3<sup>e</sup> année · ';
+  var T = 'var(--teal)', P = 'var(--pink)', C = 'var(--coral)', L = 'var(--lav)';
+  var BLUE = '#6f8cff', RED = '#f27b60';
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function fm(x, d) { return fmt(x, d === undefined ? 1 : d); }
+
+  /* suit une ligne brisée : renvoie le point à la proportion p (0..1) */
+  function follower(pts) {
+    var cum = [0], i, tot = 0;
+    for (i = 1; i < pts.length; i++) { tot += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); cum.push(tot); }
+    return {
+      total: tot, cum: cum,
+      at: function (p) {
+        p = ((p % 1) + 1) % 1; var d = p * tot, k = 1;
+        while (k < cum.length - 1 && cum[k] < d) k++;
+        var a = pts[k - 1], b = pts[k], s = (d - cum[k - 1]) / ((cum[k] - cum[k - 1]) || 1);
+        return { x: lerp(a[0], b[0], s), y: lerp(a[1], b[1], s) };
+      },
+      frac: function (k) { return cum[k] / tot; }
+    };
+  }
+  function poly(pts) { return 'M' + pts.map(function (p) { return p[0] + ' ' + p[1]; }).join('L'); }
+  function label(g, x, y, t, c, anchor, size) {
+    return S('text', { x: x, y: y, 'class': 'note', text: t, style: 'fill:' + (c || '#fff') + ';text-anchor:' + (anchor || 'middle') + (size ? ';font-size:' + size + 'px' : '') }, g);
+  }
+
+  /* ===================================================== 1. DIGESTION */
+  function trajet(el) {
+    var svg = ui.stage(el, 400, 410, 'Le tube digestif : trajet d’une bouchée');
+    var org = [
+      { id: 'bouche', t: 'Bouche', c: P, d: 'On coupe et on broie les aliments (digestion mécanique). La salive contient l’amylase salivaire : elle commence à transformer l’amidon en maltose.' },
+      { id: 'oeso', t: 'Œsophage', c: L, d: 'Un tube musclé qui pousse le bol alimentaire vers l’estomac par des contractions (péristaltisme).' },
+      { id: 'estomac', t: 'Estomac', c: C, d: 'Le suc gastrique, acide, contient de l’acide chlorhydrique et une enzyme, la pepsine. Elle commence la digestion des protéines.' },
+      { id: 'grele', t: 'Intestin grêle', c: T, d: 'La bile (fabriquée par le foie), le suc pancréatique et le suc intestinal achèvent la digestion. Les aliments deviennent des nutriments, qui passent dans le sang et la lymphe : c’est l’absorption intestinale.' },
+      { id: 'gros', t: 'Gros intestin', c: '#e9b84a', d: 'Il absorbe surtout de l’eau. Les déchets non digérés forment les excréments (fèces), évacués par l’anus.' }
+    ];
+    var g0 = S('g', null, svg);
+    var shapes = {};
+    shapes.gros = S('path', { d: 'M290 345L290 232L125 232L125 345', fill: 'none', 'stroke-width': 20, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g0);
+    shapes.grele = S('path', { d: poly([[215, 215], [170, 238], [250, 252], [160, 274], [250, 292], [165, 312], [240, 330]]), fill: 'none', 'stroke-width': 13, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g0);
+    shapes.estomac = S('path', { d: 'M190 126C146 130 148 204 200 218C248 228 268 190 242 160C228 136 216 126 190 126Z', 'stroke-width': 3 }, g0);
+    shapes.oeso = S('path', { d: 'M200 58L200 130', fill: 'none', 'stroke-width': 14, 'stroke-linecap': 'round' }, g0);
+    shapes.bouche = S('ellipse', { cx: 200, cy: 40, rx: 36, ry: 20, 'stroke-width': 3 }, g0);
+    S('path', { d: 'M125 345L150 378', fill: 'none', stroke: '#e9b84a', 'stroke-width': 16, 'stroke-linecap': 'round', opacity: .5 }, g0);
+    label(g0, 262, 44, 'bouche', '#fff', 'start', 13); label(g0, 214, 96, 'œsophage', '#fff', 'start', 13);
+    label(g0, 262, 172, 'estomac', '#fff', 'start', 13); label(g0, 296, 270, 'gros intestin', '#fff', 'start', 13);
+    label(g0, 90, 276, 'intestin grêle', '#fff', 'end', 13); label(g0, 150, 400, 'anus', '#fff', 'middle', 13);
+    var path = [[200, 40], [200, 130], [212, 175], [215, 215], [170, 238], [250, 252], [160, 274], [250, 292], [165, 312], [240, 330], [290, 345], [290, 232], [125, 232], [125, 345], [150, 380]];
+    var f = follower(path);
+    var bounds = [0, f.frac(1), f.frac(3), f.frac(9), f.frac(14), 1];
+    var bolus = S('circle', { r: 9, style: 'fill:#fff;stroke:var(--pink);stroke-width:3' }, svg);
+    var st = { p: 0, play: true, hold: -1 }, info = ui.info(el), chips = ui.chips(el);
+    function oi(p) { var i = 0; while (i < 4 && p >= bounds[i + 1]) i++; return i; }
+    function draw() {
+      var pt = f.at(st.p), cur = oi(st.p);
+      bolus.setAttribute('cx', pt.x); bolus.setAttribute('cy', pt.y);
+      org.forEach(function (o, i) {
+        var sh = shapes[o.id], on = i === cur;
+        sh.setAttribute('style', 'stroke:' + o.c + ';fill:' + (sh.getAttribute('fill') === 'none' ? 'none' : o.c) + ';fill-opacity:' + (on ? .55 : .15) + ';stroke-opacity:' + (on ? 1 : .55));
+        if (shapes[o.id].tagName === 'path' && (o.id === 'oeso' || o.id === 'gros' || o.id === 'grele')) sh.setAttribute('style', 'stroke:' + o.c + ';fill:none;stroke-opacity:' + (on ? 1 : .4));
+      });
+      info.set('<h4>' + org[cur].t + '</h4><p>' + org[cur].d + '</p>');
+    }
+    var ctl = ui.controls(el), pb = ui.btn(ctl, 'Pause', function () { st.play = !st.play; pb.textContent = st.play ? 'Pause' : 'Lecture'; });
+    org.forEach(function (o, i) { ui.btn(ctl, o.t, function () { st.p = bounds[i] + .002; st.play = false; pb.textContent = 'Lecture'; draw(); }); });
+    PC.anim(svg, function (dt) { if (st.play) { st.p = (st.p + dt * .045) % 1; draw(); } });
+    draw();
+    chips.set('<span class="chip plain">Durée réelle : de 24 à 72 h</span><span class="chip plain">Longueur du tube digestif : environ 8 m</span>');
+  }
+
+  function enzymes(el) {
+    var chains = {
+      amidon: { n: 'Amidon (glucide)', s: [['Aliment', 'Amidon', '#e9b84a'], ['Amylase (salive, suc pancréatique)', 'Maltose', P], ['Maltase (suc intestinal)', 'Glucose', T]], end: 'Le glucose est un nutriment : il passe dans le sang.' },
+      prot: { n: 'Protéines', s: [['Aliment', 'Protéines', C], ['Pepsine (estomac), puis enzymes du suc pancréatique', 'Peptides', P], ['Enzymes du suc intestinal', 'Acides aminés', T]], end: 'Les acides aminés sont des nutriments : ils passent dans le sang.' },
+      lip: { n: 'Lipides', s: [['Aliment', 'Gouttes de graisse', '#ffcf5c'], ['Bile : émulsion (fines gouttelettes)', 'Gouttelettes émulsionnées', P], ['Lipase (suc pancréatique)', 'Acides gras + glycérol', T]], end: 'Les acides gras et le glycérol passent surtout dans la lymphe.' }
+    };
+    var cur = 'amidon', k = 0;
+    var svg = ui.stage(el, 400, 170, 'Les étapes de la digestion chimique'), g = S('g', null, svg), cap = h('p', { 'class': 'px-cap' });
+    ui.tabs(el, [['amidon', 'Amidon'], ['prot', 'Protéines'], ['lip', 'Lipides']], function (v) { cur = v; k = 0; draw(); });
+    el.appendChild(cap);
+    var ctl = ui.controls(el), nb = ui.btn(ctl, 'Étape suivante', function () { var ch = chains[cur]; if (k >= ch.s.length - 1) { k = 0; } else k++; draw(); });
+    function draw() {
+      g.replaceChildren(); var ch = chains[cur];
+      ch.s.forEach(function (s, i) {
+        var x = 20 + i * 130, on = i <= k;
+        S('rect', { x: x, y: 50, width: 110, height: 64, rx: 12, style: 'fill:' + s[2] + ';fill-opacity:' + (on ? .55 : .1) + ';stroke:' + s[2] + ';stroke-width:2' }, g);
+        label(g, x + 55, 86, s[1], '#fff', 'middle', 12);
+        if (i > 0) { S('path', { d: 'M' + (x - 18) + ' 82H' + (x - 2), 'class': 'ln', style: 'stroke:#fff;opacity:' + (on ? 1 : .3) }, g); S('path', { d: 'M' + (x - 8) + ' 76L' + (x - 2) + ' 82L' + (x - 8) + ' 88', 'class': 'ln', style: 'stroke:#fff;opacity:' + (on ? 1 : .3) }, g); }
+      });
+      cap.innerHTML = k === 0 ? 'Départ : <b>' + ch.n + '</b>.' : '<b>' + ch.s[k][0] + '</b> transforme en <b>' + ch.s[k][1] + '</b>.' + (k === ch.s.length - 1 ? ' ' + ch.end : '');
+    }
+    draw();
+  }
+
+  function villosites(el) {
+    var svg = ui.stage(el, 400, 250, 'Une villosité intestinale et l’absorption'), g = S('g', null, svg);
+    S('path', { d: 'M200 230C150 230 150 90 200 40C250 90 250 230 200 230Z', style: 'fill:var(--pink);fill-opacity:.15;stroke:var(--pink);stroke-width:3' }, g);
+    S('path', { d: 'M185 220L185 70', fill: 'none', style: 'stroke:#6f8cff;stroke-width:6;stroke-linecap:round' }, g);
+    S('path', { d: 'M215 220L215 60', fill: 'none', style: 'stroke:#ffcf5c;stroke-width:6;stroke-linecap:round' }, g);
+    label(g, 120, 130, 'capillaire sanguin', '#6f8cff', 'end', 13); label(g, 280, 110, 'vaisseau lymphatique', '#ffcf5c', 'start', 13);
+    label(g, 200, 244, 'villosité (paroi de l’intestin grêle)', '#fff', 'middle', 12);
+    var dots = [], i;
+    for (i = 0; i < 6; i++) dots.push({ c: S('circle', { r: 5, style: 'fill:var(--teal)' }, svg), kind: 0, o: i / 6 });
+    for (i = 0; i < 4; i++) dots.push({ c: S('circle', { r: 5, style: 'fill:#ffcf5c' }, svg), kind: 1, o: i / 4 });
+    var st = { t: 0 };
+    PC.anim(svg, function (dt) {
+      st.t += dt * .2;
+      dots.forEach(function (d) {
+        var p = (st.t + d.o) % 1, x0 = d.kind ? 262 : 138, x1 = d.kind ? 215 : 185, y = 40 + (1 - p) * 180;
+        d.c.setAttribute('cx', lerp(x0, x1, clamp(p * 1.6, 0, 1))); d.c.setAttribute('cy', 100 + 120 * (1 - p));
+      });
+    });
+    ui.chips(el).set('<span class="chip plain" style="border-color:var(--teal)">Glucose, acides aminés, eau, sels : vers le sang</span><span class="chip plain" style="border-color:#ffcf5c">Acides gras, glycérol : surtout vers la lymphe</span>');
+  }
+
+  PC.chapter({ id: 's3-1', lazy: true, eyebrow: EY + 'Nutrition', title: 'La digestion et l’absorption intestinale', ar: 'الهضم والامتصاص المعوي',
+    lessons: function () { return [
+      { short: 'Le trajet', title: 'Le trajet d’une bouchée', intro: 'Suis la bouchée dans le tube digestif. Choisis un organe pour lire son rôle.', build: trajet,
+        retenir: ['Le tube digestif va de la bouche à l’anus : bouche, œsophage, estomac, intestin grêle, gros intestin.', 'La <b>digestion</b> transforme les aliments en <b>nutriments</b> assez petits pour passer dans le sang.'],
+        ar: { e: ['الجهاز الهضمي أنبوب طويل يمرّ فيه الغذاء من الفم إلى الشرج. في كل عضو يحدث جزء من الهضم: ميكانيكي (مضغ، تقليب) وكيميائي (بواسطة الأنزيمات).', 'في الأمعاء الدقيقة ينتهي الهضم وتنتقل المغذّيات إلى الدم واللمف.'], u: 'يتحرك كتلة الطعام تلقائيًا. اضغط على اسم العضو لتنتقل إليه، أو اضغط «Pause» لإيقاف الحركة.', w: [['digestion', 'الهضم'], ['nutriment', 'مغذّي (مادة بسيطة قابلة للامتصاص)'], ['enzyme', 'أنزيم'], ['suc gastrique', 'العصير المعدي'], ['bile', 'الصفراء'], ['absorption intestinale', 'الامتصاص المعوي']] } },
+      { short: 'Enzymes', title: 'Enzymes et nutriments', intro: 'Choisis un aliment et avance étape par étape : chaque enzyme coupe les grosses molécules.', build: enzymes,
+        retenir: ['Amidon → maltose → <b>glucose</b>.', 'Protéines → peptides → <b>acides aminés</b>.', 'Lipides → (bile : émulsion) → <b>acides gras et glycérol</b>.', 'Les enzymes sont spécifiques : chacune agit sur un type d’aliment.'],
+        ar: { e: ['الأنزيمات مواد تفكّك الجزيئات الكبيرة إلى جزيئات صغيرة. كل أنزيم متخصّص: الأميلاز يفكّك النشا، والببسين يفكّك البروتينات، واللّيباز يفكّك الدسم.', 'الصفراء لا تحتوي على أنزيمات، لكنها تُحوّل الدسم إلى قطيرات صغيرة (استحلاب) فيسهل عمل اللّيباز.'], u: 'اختر نوع الغذاء من الأعلى ثم اضغط «Étape suivante» لترى كل مرحلة.', w: [['amidon', 'النشا'], ['protéines', 'البروتينات'], ['lipides', 'الدهون (الدسم)'], ['glucose', 'الغلوكوز'], ['acides aminés', 'الأحماض الأمينية'], ['émulsion', 'استحلاب']] } },
+      { short: 'Absorption', title: 'L’absorption intestinale', intro: 'Les nutriments traversent la paroi de l’intestin grêle grâce aux villosités.', build: villosites,
+        retenir: ['La paroi de l’intestin grêle forme des <b>villosités</b> : elles augmentent beaucoup la surface d’échange.', 'Les nutriments passent dans les capillaires sanguins et dans les vaisseaux lymphatiques.'],
+        ar: { e: ['جدار الأمعاء الدقيقة مغطّى بزغابات معوية كثيرة تزيد مساحة الامتصاص. تعبر المغذّيات جدار الزغابة إلى الشعيرات الدموية وإلى الأوعية اللمفاوية.'], w: [['villosité', 'زغابة معوية'], ['capillaire sanguin', 'شعيرة دموية'], ['lymphe', 'اللمف']] } }
+    ]; },
+    quiz: [
+      { q: 'Quelle enzyme agit dans la bouche ?', o: ['La pepsine', 'L’amylase salivaire', 'La lipase'], a: 1, e: 'L’amylase salivaire commence la transformation de l’amidon en maltose.' },
+      { q: 'La bile contient :', o: ['des enzymes qui digèrent les protéines', 'aucune enzyme : elle émulsionne les lipides', 'de l’acide chlorhydrique'], a: 1, e: 'La bile émulsionne les graisses en fines gouttelettes.' },
+      { q: 'La digestion des protéines donne :', o: ['du glucose', 'des acides aminés', 'des acides gras'], a: 1, e: 'Protéines → peptides → acides aminés.' }
+    ] });
+
+  /* ===================================================== 2. RESPIRATION */
+  function ventilation(el) {
+    var svg = ui.stage(el, 400, 300, 'Ventilation : diaphragme et cage thoracique'), g = S('g', null, svg);
+    var st = { fr: 16, phase: 0, t: 0, run: true };
+    var cage = S('path', { fill: 'none', 'stroke-width': 4, style: 'stroke:#fff;stroke-opacity:.6' }, g);
+    var lung = S('path', { style: 'fill:var(--pink);fill-opacity:.35;stroke:var(--pink);stroke-width:3' }, g);
+    var dia = S('path', { fill: 'none', 'stroke-width': 7, 'stroke-linecap': 'round', style: 'stroke:var(--teal)' }, g);
+    var air = S('path', { fill: 'none', 'stroke-width': 4, 'stroke-linecap': 'round', style: 'stroke:#fff' }, g);
+    label(g, 200, 24, 'trachée', '#fff', 'middle', 13); label(g, 200, 290, 'diaphragme', T, 'middle', 13);
+    S('path', { d: 'M200 36L200 84', style: 'stroke:#fff;stroke-width:8;stroke-linecap:round;opacity:.6', fill: 'none' }, g);
+    var chips = ui.chips(el), verd = ui.verdict(el);
+    function draw() {
+      var e = (1 - Math.cos(st.phase * Math.PI * 2)) / 2; // 0 expiration .. 1 inspiration
+      var w = 108 + 22 * e, top = 90 - 6 * e, bot = 230 + 8 * e - 26 * e * 0, dy = 36 * e;
+      cage.setAttribute('d', 'M' + (200 - w - 14) + ' ' + top + 'Q' + (200 - w - 28) + ' 170 ' + (200 - w) + ' ' + (226 + 0) + 'M' + (200 + w + 14) + ' ' + top + 'Q' + (200 + w + 28) + ' 170 ' + (200 + w) + ' 226');
+      lung.setAttribute('d', 'M200 90C' + (200 - w) + ' 84 ' + (200 - w - 4) + ' 190 ' + (200 - w + 10) + ' ' + (232 + dy * .0) + 'L' + (200 + w - 10) + ' ' + (232) + 'C' + (200 + w + 4) + ' 190 ' + (200 + w) + ' 84 200 90Z');
+      dia.setAttribute('d', 'M' + (200 - w) + ' 232Q200 ' + (214 + 46 * e) + ' ' + (200 + w) + ' 232');
+      lung.setAttribute('transform', 'translate(0 ' + (-6 * (1 - e)) + ')');
+      var ay = 44 + (st.phase < .5 ? 1 : -1) * 0, dir = st.phase < .5 ? 1 : -1;
+      air.setAttribute('d', 'M200 52L200 82M' + (190) + ' ' + (dir > 0 ? 70 : 62) + 'L200 ' + (dir > 0 ? 82 : 52) + 'L210 ' + (dir > 0 ? 70 : 62));
+      verd.set(st.phase < .5 ? 'Inspiration : le diaphragme s’abaisse, les côtes se soulèvent, le volume du thorax augmente et l’air entre.' : 'Expiration : le diaphragme remonte, les côtes s’abaissent, le volume du thorax diminue et l’air sort.', st.phase < .5 ? 'ok' : 'flat');
+      var vt = 0.5, q = st.fr * vt;
+      chips.set('<span class="chip plain">Fréquence : <b>' + st.fr + '</b> mouvements / min</span><span class="chip plain">Volume courant : <b>0,5 L</b></span><span class="chip plain">Débit ventilatoire : <b>' + fm(q, 1) + ' L/min</b></span>');
+    }
+    ui.slider(el, { label: 'Fréquence respiratoire', min: 10, max: 40, value: 16, fmt: function (v) { return v + ' / min'; } }, function (v) { st.fr = v; draw(); });
+    var ctl = ui.controls(el), pb = ui.btn(ctl, 'Pause', function () { st.run = !st.run; pb.textContent = st.run ? 'Pause' : 'Lecture'; });
+    PC.anim(svg, function (dt) { if (st.run) { st.phase = (st.phase + dt * st.fr / 60) % 1; draw(); } });
+    draw();
+  }
+
+  function echanges(el) {
+    var svg = ui.stage(el, 400, 250, 'Échanges gazeux entre l’alvéole pulmonaire et le sang'), g = S('g', null, svg);
+    S('circle', { cx: 120, cy: 125, r: 85, style: 'fill:var(--pink);fill-opacity:.12;stroke:var(--pink);stroke-width:3' }, g);
+    S('path', { d: 'M205 70C260 70 300 180 360 180', fill: 'none', style: 'stroke:#6f8cff;stroke-width:22;stroke-linecap:round;opacity:.35' }, g);
+    S('path', { d: 'M205 70C260 70 300 180 360 180', fill: 'none', style: 'stroke:#6f8cff;stroke-width:3;stroke-dasharray:5 6;opacity:.8' }, g);
+    label(g, 120, 130, 'alvéole', P, 'middle', 14); label(g, 300, 120, 'capillaire', '#6f8cff', 'middle', 14);
+    var parts = [], i;
+    for (i = 0; i < 5; i++) parts.push({ el: S('circle', { r: 6, style: 'fill:var(--teal)' }, svg), o2: true, o: i / 5 });
+    for (i = 0; i < 4; i++) parts.push({ el: S('circle', { r: 6, style: 'fill:var(--coral)' }, svg), o2: false, o: i / 4 });
+    var t = 0;
+    PC.anim(svg, function (dt) {
+      t += dt * .35;
+      parts.forEach(function (p) {
+        var s = (t + p.o) % 1, a = ease(clamp(s * 1.4, 0, 1));
+        var A = p.o2 ? [150 + 20 * Math.sin(p.o * 9), 110 + 30 * Math.cos(p.o * 7)] : [215, 82], B = p.o2 ? [215, 82] : [150 + 20 * Math.sin(p.o * 9), 110 + 30 * Math.cos(p.o * 7)];
+        p.el.setAttribute('cx', lerp(A[0], B[0], a)); p.el.setAttribute('cy', lerp(A[1], B[1], a));
+      });
+    });
+    S('circle', { cx: 24, cy: 200, r: 6, style: 'fill:var(--teal)' }, svg); label(svg, 36, 204, 'dioxygène O₂ : de l’alvéole vers le sang', '#fff', 'start', 12);
+    S('circle', { cx: 24, cy: 226, r: 6, style: 'fill:var(--coral)' }, svg); label(svg, 36, 230, 'dioxyde de carbone CO₂ : du sang vers l’alvéole', '#fff', 'start', 12);
+    var box = h('div', { 'class': 'scroll-x' }, '<table class="tbl"><tr><th></th><th>O₂</th><th>CO₂</th></tr><tr><th>Air inspiré</th><td>≈ 21 %</td><td>≈ 0,04 %</td></tr><tr><th>Air expiré</th><td>≈ 16 %</td><td>≈ 4 %</td></tr></table>');
+    el.appendChild(box); ui.text(el, 'Valeurs approximatives : l’air expiré contient moins de O₂ et beaucoup plus de CO₂ que l’air inspiré. Le diazote (≈ 78 %) ne change presque pas.', 'px-cap');
+  }
+
+  PC.chapter({ id: 's3-2', lazy: true, eyebrow: EY + 'Nutrition', title: 'La respiration chez l’Homme', ar: 'التنفّس عند الإنسان',
+    lessons: function () { return [
+      { short: 'Ventilation', title: 'Les mouvements respiratoires', intro: 'Observe le thorax. Change la fréquence respiratoire et lis le débit ventilatoire.', build: ventilation,
+        retenir: ['À l’inspiration, le diaphragme s’abaisse et les côtes se soulèvent : le volume du thorax augmente.', 'À l’expiration, le diaphragme remonte et les côtes s’abaissent.', 'Débit ventilatoire = fréquence × volume courant.'],
+        ar: { e: ['عند الشهيق ينخفض الحجاب الحاجز وترتفع الأضلاع فيزداد حجم القفص الصدري ويدخل الهواء. عند الزفير يرتفع الحجاب وتنخفض الأضلاع فيقلّ الحجم ويخرج الهواء.', 'التدفّق التهويّ = عدد الحركات التنفسية في الدقيقة × الحجم الجاري.'], u: 'حرّك المنزلق لتغيير عدد مرات التنفس في الدقيقة وشاهد التدفّق التهويّ.', w: [['inspiration', 'شهيق'], ['expiration', 'زفير'], ['diaphragme', 'الحجاب الحاجز'], ['volume courant', 'الحجم الجاري'], ['fréquence respiratoire', 'التواتر التنفسي']] } },
+      { short: 'Échanges gazeux', title: 'Les échanges gazeux', intro: 'Dans l’alvéole, le dioxygène passe vers le sang et le dioxyde de carbone en sort.', build: echanges,
+        retenir: ['Les échanges se font entre l’air des <b>alvéoles</b> et le sang des capillaires.', 'Le sang <b>gagne du O₂</b> et <b>perd du CO₂</b>.'],
+        ar: { e: ['في الحويصلات الرئوية يعبر غاز الأوكسجين من الهواء إلى الدم، ويعبر غاز ثنائي أكسيد الكربون من الدم إلى الهواء. لذلك يحتوي هواء الزفير على أوكسجين أقل وثنائي أكسيد كربون أكثر.'], w: [['alvéole pulmonaire', 'حويصلة رئوية'], ['dioxygène', 'ثنائي الأوكسجين'], ['dioxyde de carbone', 'ثنائي أكسيد الكربون'], ['capillaire', 'شعيرة دموية']] } }
+    ]; },
+    quiz: [
+      { q: 'À l’inspiration, le diaphragme :', o: ['remonte', 's’abaisse', 'ne bouge pas'], a: 1, e: 'Il s’abaisse et le volume du thorax augmente.' },
+      { q: 'L’air expiré contient, par rapport à l’air inspiré :', o: ['plus de O₂ et moins de CO₂', 'moins de O₂ et plus de CO₂', 'autant de O₂ et de CO₂'], a: 1, e: 'Le sang a pris du O₂ et rejeté du CO₂.' },
+      { q: 'Un débit ventilatoire de 8 L/min avec un volume courant de 0,5 L correspond à une fréquence de :', o: ['4 par min', '16 par min', '40 par min'], a: 1, e: '8 ÷ 0,5 = 16.' }
+    ] });
+
+  /* ===================================================== 3. CIRCULATION */
+  function sang(el) {
+    var svg = ui.stage(el, 400, 270, 'Composition du sang après centrifugation'), g = S('g', null, svg);
+    var st = { p: 0, busy: false };
+    var cells = [], i, tx = 150, tw = 70, ty = 24, th = 220;
+    S('rect', { x: tx, y: ty, width: tw, height: th, rx: 14, style: 'fill:none;stroke:#fff;stroke-width:3;opacity:.7' }, g);
+    var plasma = S('rect', { x: tx + 3, y: ty + 3, width: tw - 6, height: th - 6, rx: 11, style: 'fill:#ffcf5c;fill-opacity:.25' }, g);
+    var white = S('rect', { x: tx + 3, width: tw - 6, height: 5, style: 'fill:#fff' }, g);
+    var red = S('rect', { x: tx + 3, width: tw - 6, rx: 6, style: 'fill:var(--coral);fill-opacity:.8' }, g);
+    var seed = [];
+    for (i = 0; i < 40; i++) seed.push({ x: tx + 12 + Math.random() * (tw - 24), y: ty + 14 + Math.random() * (th - 28), c: S('circle', { r: 4, style: 'fill:' + (i % 14 === 0 ? '#fff' : 'var(--coral)') }, g), w: i % 14 === 0 });
+    var lbl = [label(g, 250, 90, 'plasma', '#ffcf5c', 'start', 14), label(g, 250, 190, 'globules rouges', C, 'start', 14), label(g, 250, 168, 'globules blancs, plaquettes', '#fff', 'start', 12)];
+    var chips = ui.chips(el);
+    function draw() {
+      var e = ease(st.p), redTop = lerp(ty + 20, ty + th - 3 - 0.45 * (th - 6), e), whiteY = redTop - 5;
+      red.setAttribute('y', redTop); red.setAttribute('height', ty + th - 3 - redTop);
+      white.setAttribute('y', whiteY); white.setAttribute('opacity', e);
+      seed.forEach(function (s) {
+        var ny = s.w ? whiteY + 2 : lerp(s.y, redTop + 6 + (s.y - ty) / th * (ty + th - 10 - redTop - 6), e);
+        s.c.setAttribute('cx', s.x); s.c.setAttribute('cy', ny);
+      });
+      lbl[0].setAttribute('y', ty + 60); lbl[1].setAttribute('y', (redTop + ty + th) / 2); lbl[2].setAttribute('y', whiteY - 6); lbl[2].setAttribute('opacity', e);
+      chips.set(e > .95 ? '<span class="chip plain">Plasma ≈ 55 %</span><span class="chip plain">Globules rouges ≈ 45 %</span><span class="chip plain">Globules blancs et plaquettes : moins de 1 %</span>' : '<span class="chip plain">Sang total : mélange de cellules dans le plasma</span>');
+    }
+    var ctl = ui.controls(el), b = ui.btn(ctl, 'Centrifuger', function () {
+      if (st.busy) return; st.busy = true; var from = st.p, to = from > .5 ? 0 : 1;
+      PC.run(1800, function (p) { st.p = lerp(from, to, p); draw(); }, function () { st.busy = false; b.textContent = to ? 'Remélanger' : 'Centrifuger'; });
+    });
+    draw();
+  }
+
+  function coeur(el) {
+    var svg = ui.stage(el, 400, 300, 'Le cœur et la double circulation'), g = S('g', null, svg);
+    var st = { mode: 'both', bpm: 70, t: 0 };
+    // chambres : OD (gauche de l'image), VD, OG, VG (schéma vu de face : cœur droit à gauche)
+    function room(x, y, w, hh, name, col) { S('rect', { x: x, y: y, width: w, height: hh, rx: 16, style: 'fill:' + col + ';fill-opacity:.25;stroke:' + col + ';stroke-width:3' }, g); label(g, x + w / 2, y + hh / 2 + 4, name, '#fff', 'middle', 13); }
+    room(130, 110, 60, 50, 'OD', BLUE); room(130, 170, 60, 70, 'VD', BLUE); room(210, 110, 60, 50, 'OG', RED); room(210, 170, 60, 70, 'VG', RED);
+    label(g, 200, 262, 'cœur (vu de face)', '#aaa3bf', 'middle', 12);
+    // circuits
+    var petit = [[160, 170], [100, 150], [70, 70], [60, 30], [120, 30], [240, 30], [330, 30], [330, 70], [260, 110]];
+    // petite circulation : VD -> poumons (haut) -> OG (sens: du bas du VD vers poumons puis OG)
+    petit = [[160, 240], [160, 280], [40, 280], [40, 60], [100, 38], [180, 38], [330, 38], [350, 60], [250, 120], [240, 135]];
+    var grande = [[240, 240], [240, 285], [380, 285], [380, 150], [330, 90], [260, 90], [200, 90], [160, 95], [160, 110], [160, 135]];
+    // simplification : chemins lisibles
+    petit = [[150, 190], [90, 190], [60, 150], [60, 60], [120, 36], [300, 36], [345, 60], [290, 120], [250, 135]];
+    grande = [[250, 200], [330, 200], [360, 240], [350, 285], [60, 285], [40, 240], [60, 200], [100, 120], [160, 135]];
+    var fP = follower(petit), fG = follower(grande);
+    function pathEl(pts, col) { return S('path', { d: poly(pts), fill: 'none', style: 'stroke:' + col + ';stroke-width:8;stroke-linecap:round;stroke-linejoin:round;opacity:.22' }, g); }
+    var pg = S('path', { d: poly(petit.slice(0, 5)), fill: 'none', style: 'stroke:' + BLUE + ';stroke-width:8;opacity:.22' }, g); pg.remove();
+    pathEl(petit.slice(0, 5), BLUE); pathEl(petit.slice(4), RED); pathEl(grande.slice(0, 5), RED); pathEl(grande.slice(4), BLUE);
+    label(g, 205, 24, 'poumons', P, 'middle', 13); label(g, 205, 300, 'organes', C, 'middle', 13);
+    var dots = [], i;
+    for (i = 0; i < 10; i++) { dots.push({ f: fP, o: i / 10, grand: false, el: S('circle', { r: 5 }, svg) }); dots.push({ f: fG, o: i / 10, grand: true, el: S('circle', { r: 5 }, svg) }); }
+    var chips = ui.chips(el), info = ui.info(el);
+    ui.tabs(el, [['both', 'Les deux'], ['petit', 'Petite circulation'], ['grand', 'Grande circulation']], function (v) { st.mode = v; draw(); });
+    ui.slider(el, { label: 'Fréquence cardiaque', min: 50, max: 180, value: 70, fmt: function (v) { return v + ' battements/min'; } }, function (v) { st.bpm = v; draw(); });
+    function draw() {
+      var q = st.bpm * 70 / 1000;
+      chips.set('<span class="chip plain">Volume d’éjection : <b>≈ 70 mL</b></span><span class="chip plain">Débit cardiaque : <b>' + fm(q, 1) + ' L/min</b></span>');
+      info.set(st.mode === 'petit' ? '<h4>Petite circulation</h4><p>Cœur droit → poumons → cœur gauche. Le sang chargé de CO₂ (bleu) devient riche en O₂ (rouge).</p>' : (st.mode === 'grand' ? '<h4>Grande circulation</h4><p>Cœur gauche → organes → cœur droit. Le sang riche en O₂ (rouge) cède son O₂ aux organes.</p>' : '<h4>Double circulation</h4><p>Le sang passe deux fois par le cœur : c’est une circulation <b>double</b> et <b>fermée</b>. Le sang rouge est riche en O₂, le sang bleu est riche en CO₂.</p>'));
+    }
+    PC.anim(svg, function (dt) {
+      st.t += dt * st.bpm / 60 * .12;
+      dots.forEach(function (d) {
+        var on = st.mode === 'both' || (st.mode === 'petit' && !d.grand) || (st.mode === 'grand' && d.grand);
+        d.el.style.display = on ? '' : 'none'; if (!on) return;
+        var p = (st.t + d.o) % 1, pt = d.f.at(p);
+        var blue = d.grand ? p > .5 : p < .5;
+        d.el.setAttribute('cx', pt.x); d.el.setAttribute('cy', pt.y); d.el.style.fill = blue ? BLUE : RED;
+      });
+    });
+    draw();
+  }
+
+  PC.chapter({ id: 's3-3', lazy: true, eyebrow: EY + 'Nutrition', title: 'Le sang et la circulation sanguine', ar: 'الدم والدورة الدموية',
+    lessons: function () { return [
+      { short: 'Le sang', title: 'La composition du sang', intro: 'Centrifuge le sang pour séparer ses constituants.', build: sang,
+        retenir: ['Le sang contient du <b>plasma</b> et des cellules : globules rouges, globules blancs et plaquettes.', 'Les globules rouges transportent le dioxygène, les globules blancs défendent l’organisme, les plaquettes participent à la coagulation.'],
+        ar: { e: ['الدم سائل يتكوّن من البلازما والخلايا الدموية: الكريات الحمراء تنقل الأوكسجين، الكريات البيضاء تدافع عن الجسم، والصفائح الدموية تساهم في التخثّر.'], u: 'اضغط «Centrifuger» لفصل مكوّنات الدم كما يحدث في المختبر.', w: [['plasma', 'البلازما'], ['globule rouge', 'كرية حمراء'], ['globule blanc', 'كرية بيضاء'], ['plaquette', 'صفيحة دموية'], ['centrifugation', 'الطرد المركزي']] } },
+      { short: 'Cœur', title: 'Le cœur et la double circulation', intro: 'Suis le sang dans la petite et la grande circulation. Change la fréquence cardiaque.', build: coeur,
+        retenir: ['Le cœur a quatre cavités : deux oreillettes et deux ventricules.', '<b>Petite circulation</b> : cœur droit → poumons → cœur gauche.', '<b>Grande circulation</b> : cœur gauche → organes → cœur droit.', 'Débit cardiaque = fréquence cardiaque × volume d’éjection systolique.'],
+        ar: { e: ['للقلب أربع حجرات: أذينان وبُطينان. الدورة الدموية عند الإنسان مزدوجة ومغلقة: الدورة الصغرى (القلب الأيمن ← الرئتان ← القلب الأيسر) والدورة الكبرى (القلب الأيسر ← الأعضاء ← القلب الأيمن).', 'التدفّق القلبي = التواتر القلبي × حجم الدفع الانقباضي.'], u: 'اختر نوع الدورة من الأعلى. حرّك المنزلق لتغيير عدد نبضات القلب وشاهد التدفّق القلبي.', w: [['oreillette', 'أذين'], ['ventricule', 'بطين'], ['artère', 'شريان'], ['veine', 'وريد'], ['débit cardiaque', 'التدفّق القلبي'], ['fréquence cardiaque', 'التواتر القلبي']] } }
+    ]; },
+    quiz: [
+      { q: 'Quelles cellules transportent le dioxygène ?', o: ['Les globules blancs', 'Les globules rouges', 'Les plaquettes'], a: 1, e: 'Les globules rouges contiennent l’hémoglobine.' },
+      { q: 'La petite circulation relie :', o: ['le cœur gauche aux organes', 'le cœur droit aux poumons puis au cœur gauche', 'les poumons aux reins'], a: 1, e: 'Cœur droit → poumons → cœur gauche.' },
+      { q: 'À 70 battements/min avec 70 mL par battement, le débit cardiaque est :', o: ['4,9 L/min', '49 L/min', '0,49 L/min'], a: 0, e: '70 × 70 = 4 900 mL/min = 4,9 L/min.' }
+    ] });
+
+  /* ===================================================== 4. EXCRETION */
+  function appareil(el) {
+    var svg = ui.stage(el, 400, 310, 'L’appareil urinaire'), g = S('g', null, svg);
+    function kid(x, side) {
+      S('ellipse', { cx: x, cy: 112, rx: 24, ry: 44, transform: 'rotate(' + (side * 10) + ' ' + x + ' 112)', style: 'fill:var(--coral);fill-opacity:.35;stroke:var(--coral);stroke-width:3' }, g);
+      S('circle', { cx: x + side * 22, cy: 118, r: 8, style: 'fill:var(--bg);stroke:var(--coral);stroke-width:2' }, g);
+    }
+    kid(150, 1); kid(250, -1);
+    S('path', { d: 'M156 120L190 220M244 120L210 220', fill: 'none', style: 'stroke:var(--lav);stroke-width:5;stroke-linecap:round' }, g);
+    S('ellipse', { cx: 200, cy: 240, rx: 34, ry: 28, style: 'fill:#ffcf5c;fill-opacity:.25;stroke:#ffcf5c;stroke-width:3' }, g);
+    S('path', { d: 'M200 268L200 300', fill: 'none', style: 'stroke:#ffcf5c;stroke-width:6;stroke-linecap:round' }, g);
+    label(g, 108, 112, 'rein', C, 'end', 14); label(g, 292, 112, 'rein', C, 'start', 14); label(g, 112, 190, 'uretère', L, 'end', 13);
+    label(g, 250, 244, 'vessie', '#ffcf5c', 'start', 14); label(g, 214, 296, 'urètre', '#ffcf5c', 'start', 13);
+    S('path', { d: 'M200 20L200 110', fill: 'none', style: 'stroke:' + RED + ';stroke-width:5;opacity:.5' }, g); label(g, 206, 34, 'artère rénale : sang riche en urée', RED, 'start', 11);
+    var drops = [], i;
+    for (i = 0; i < 6; i++) drops.push({ el: S('circle', { r: 4, style: 'fill:#ffcf5c' }, svg), o: i / 6, side: i % 2 });
+    var t = 0;
+    PC.anim(svg, function (dt) {
+      t += dt * .22;
+      drops.forEach(function (d) {
+        var p = (t + d.o) % 1, a = d.side ? [244, 120] : [156, 120], b = [200, 220];
+        var x, y;
+        if (p < .6) { var s = p / .6; x = lerp(a[0], b[0], s); y = lerp(a[1], b[1], s); } else { x = 200; y = lerp(220, 262, (p - .6) / .4); }
+        d.el.setAttribute('cx', x); d.el.setAttribute('cy', y);
+      });
+    });
+    ui.chips(el).set('<span class="chip plain">Les reins filtrent le sang</span><span class="chip plain">L’urine descend par les uretères, s’accumule dans la vessie, puis sort par l’urètre</span>');
+  }
+  function urine(el) {
+    var st = { eau: 1.5, sueur: 0 }, bars = h('div'), chips = ui.chips(el);
+    var rows = [['Eau', '90 à 96 %', '≈ 91 %', 'g'], ['Urée', '0,3 g/L', '≈ 20 g/L', 'u'], ['Glucose', '≈ 1 g/L', '0 g/L', 'g'], ['Protéines', '≈ 70 g/L', '0 g/L', 'p']];
+    var box = h('div', { 'class': 'scroll-x' }, '<table class="tbl"><tr><th></th><th>Plasma</th><th>Urine normale</th></tr><tr><th>Urée</th><td>0,3 g/L</td><td>≈ 20 g/L</td></tr><tr><th>Glucose</th><td>≈ 1 g/L</td><td>0 g/L</td></tr><tr><th>Protéines</th><td>≈ 70 g/L</td><td>0 g/L</td></tr></table>');
+    el.appendChild(box);
+    ui.text(el, 'Valeurs indicatives. L’urée est très concentrée dans l’urine : le rein <b>élimine</b> les déchets. Glucose et protéines n’apparaissent normalement pas dans l’urine.', 'px-cap');
+    var svg = ui.stage(el, 400, 130, 'Volume d’urine selon l’eau bue'), g = S('g', null, svg);
+    function draw() {
+      g.replaceChildren();
+      var vol = clamp(0.6 + (st.eau - 0.5) * 0.7 - st.sueur * 0.004, 0.3, 3), conc = 20 * 1.5 / Math.max(.4, vol);
+      S('rect', { x: 40, y: 40, width: 320, height: 22, rx: 11, style: 'fill:var(--surface-2)' }, g);
+      S('rect', { x: 40, y: 40, width: 320 * clamp(vol / 3, 0, 1), height: 22, rx: 11, style: 'fill:#ffcf5c;fill-opacity:.8' }, g);
+      label(g, 200, 30, 'volume d’urine par jour ≈ ' + fm(vol, 1) + ' L', '#fff', 'middle', 13);
+      S('rect', { x: 40, y: 92, width: 320, height: 22, rx: 11, style: 'fill:var(--surface-2)' }, g);
+      S('rect', { x: 40, y: 92, width: 320 * clamp(conc / 70, 0, 1), height: 22, rx: 11, style: 'fill:var(--coral);fill-opacity:.8' }, g);
+      label(g, 200, 84, 'concentration de l’urine ≈ ' + fm(conc, 0) + ' g/L d’urée', '#fff', 'middle', 13);
+      chips.set(st.eau > 2.2 ? '<span class="chip plain">Urine abondante et diluée</span>' : (st.eau < 1 || st.sueur > 20 ? '<span class="chip plain">Urine peu abondante et concentrée</span>' : '<span class="chip plain">Urine normale</span>'));
+    }
+    ui.slider(el, { label: 'Eau bue par jour', min: 0.5, max: 3, step: 0.1, value: 1.5, fmt: function (v) { return fm(v, 1) + ' L'; } }, function (v) { st.eau = v; draw(); });
+    ui.slider(el, { label: 'Transpiration (effort, chaleur)', min: 0, max: 60, step: 5, value: 0, fmt: function (v) { return v + ' %'; } }, function (v) { st.sueur = v; draw(); });
+    ui.text(el, 'Le modèle est qualitatif : le rein ajuste le volume et la concentration pour garder l’eau du corps constante.', 'px-cap');
+    draw();
+  }
+  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition', title: 'L’excrétion urinaire chez l’Homme', ar: 'الإطراح البولي عند الإنسان',
+    lessons: function () { return [
+      { short: 'Appareil urinaire', title: 'L’appareil urinaire', intro: 'Suis le trajet de l’urine, du rein jusqu’à l’extérieur.', build: appareil,
+        retenir: ['L’appareil urinaire comprend : deux reins, deux uretères, la vessie et l’urètre.', 'Le sang arrive au rein par l’<b>artère rénale</b> et repart par la <b>veine rénale</b>, appauvri en urée.'],
+        ar: { e: ['يتكوّن الجهاز البولي من كليتين وحالبين ومثانة ومجرى البول. تُصفّي الكلية الدم فتُطرح الفضلات في البول: يصل الدم إلى الكلية عبر الشريان الكلوي غنيًا باليوريا ويغادرها عبر الوريد الكلوي فقيرًا باليوريا.'], w: [['rein', 'كلية'], ['uretère', 'حالب'], ['vessie', 'مثانة'], ['urètre', 'مجرى البول'], ['urée', 'اليوريا'], ['excrétion', 'إطراح']] } },
+      { short: 'Urine', title: 'Composition de l’urine', intro: 'Compare le plasma et l’urine. Fais varier l’eau bue.', build: urine,
+        retenir: ['L’urine contient de l’eau, de l’<b>urée</b> et des sels minéraux.', 'Normalement, l’urine ne contient ni glucose ni protéines.', 'Le rein maintient la composition du sang et l’équilibre en eau.'],
+        ar: { e: ['البول يحتوي على الماء واليوريا والأملاح المعدنية. في الحالة العادية لا يحتوي على الغلوكوز ولا على البروتينات. وجود الغلوكوز في البول يدلّ على مرض السكري، ووجود البروتينات يدلّ على خلل في الكلية.'], w: [['urine', 'البول'], ['plasma', 'البلازما'], ['glucose', 'الغلوكوز'], ['protéines', 'البروتينات'], ['glycosurie', 'وجود الغلوكوز في البول']] } }
+    ]; },
+    quiz: [
+      { q: 'Quel organe filtre le sang et fabrique l’urine ?', o: ['La vessie', 'Le rein', 'Le foie'], a: 1, e: 'Le rein filtre le sang et forme l’urine.' },
+      { q: 'Le sang qui sort du rein par la veine rénale est :', o: ['plus riche en urée', 'plus pauvre en urée', 'sans eau'], a: 1, e: 'Le rein a éliminé une partie de l’urée.' },
+      { q: 'La présence de glucose dans l’urine est :', o: ['normale', 'anormale', 'toujours due à une infection'], a: 1, e: 'Elle peut indiquer un diabète.' }
+    ] });
+
+  /* ===================================================== 5. IMMUNITE */
+  function phago(el) {
+    var steps = ['Un microbe pénètre dans l’organisme.', 'Le phagocyte détecte le microbe et s’en approche.', 'Il l’entoure avec ses prolongements (pseudopodes) : c’est l’ingestion.', 'Le microbe est enfermé dans une vacuole.', 'Il est digéré : le phagocyte l’a détruit.'];
+    var svg = ui.stage(el, 400, 220, 'Phagocytose d’un microbe'), g = S('g', null, svg), k = 0, cap = h('p', { 'class': 'px-cap' });
+    el.appendChild(cap);
+    function draw() {
+      g.replaceChildren();
+      var px = 200, py = 110, mx = [330, 250, 215, 200, 200][k], my = [60, 100, 108, 110, 110][k];
+      var spread = [0, 0, 1, 1, 1][k];
+      S('circle', { cx: px, cy: py, r: 52, style: 'fill:#fff;fill-opacity:.12;stroke:#fff;stroke-width:3' }, g);
+      S('circle', { cx: px - 12, cy: py - 8, r: 16, style: 'fill:var(--lav);fill-opacity:.7' }, g);
+      label(g, px, py + 78, 'phagocyte', '#fff', 'middle', 13);
+      if (spread) { S('path', { d: 'M165 70C190 50 230 50 245 75M165 150C190 170 230 170 245 145', fill: 'none', style: 'stroke:#fff;stroke-width:5;stroke-linecap:round;opacity:.8' }, g); }
+      if (k < 4) { S('path', { d: 'M' + (mx - 8) + ' ' + my + 'l16 0M' + mx + ' ' + (my - 8) + 'l0 16', style: 'stroke:var(--coral);stroke-width:3;opacity:.0' }, g); }
+      S('ellipse', { cx: mx, cy: my, rx: k === 4 ? 6 : 14, ry: k === 4 ? 4 : 9, style: 'fill:var(--coral);fill-opacity:' + (k === 4 ? .35 : .9) }, g);
+      if (k === 3) S('circle', { cx: mx, cy: my, r: 20, style: 'fill:none;stroke:var(--teal);stroke-width:3;stroke-dasharray:4 4' }, g);
+      label(g, 330, 40, 'microbe', C, 'middle', 13);
+      cap.innerHTML = '<b>Étape ' + (k + 1) + ' / 5.</b> ' + steps[k];
+    }
+    var ctl = ui.controls(el); ui.btn(ctl, 'Étape suivante', function () { k = (k + 1) % 5; draw(); });
+    draw();
+  }
+  function anticorps(el) {
+    var ag = [{ n: 'Antigène 1', s: 'tri', c: C }, { n: 'Antigène 2', s: 'sq', c: T }, { n: 'Antigène 3', s: 'ci', c: P }];
+    var ab = ag.map(function (a) { return a.s; }), order = PC.shuffle([0, 1, 2]);
+    var svg = ui.stage(el, 400, 200, 'Complémentarité entre un antigène et un anticorps'), g = S('g', null, svg), sel = 0, picked = null, fb = ui.verdict(el);
+    function shape(s, x, y, c, inv, op) {
+      var st = 'fill:' + c + ';fill-opacity:' + (op || .55) + ';stroke:' + c + ';stroke-width:3';
+      if (s === 'tri') return S('path', { d: inv ? 'M' + (x - 24) + ' ' + (y + 24) + 'L' + x + ' ' + (y - 22) + 'L' + (x + 24) + ' ' + (y + 24) + 'Z' : 'M' + (x - 24) + ' ' + (y - 24) + 'L' + (x + 24) + ' ' + (y - 24) + 'L' + x + ' ' + (y + 22) + 'Z', style: st }, g);
+      if (s === 'sq') return S('rect', { x: x - 20, y: y - 20, width: 40, height: 40, rx: 4, style: st }, g);
+      return S('circle', { cx: x, cy: y, r: 22, style: st }, g);
+    }
+    function draw() {
+      g.replaceChildren();
+      label(g, 70, 28, 'Antigène', '#fff', 'middle', 13); shape(ag[sel].s, 70, 90, ag[sel].c, false, .9);
+      label(g, 70, 150, ag[sel].n, ag[sel].c, 'middle', 12);
+      label(g, 270, 28, 'Choisis l’anticorps complémentaire', '#fff', 'middle', 13);
+      order.forEach(function (idx, i) {
+        var x = 190 + i * 70; var a = ag[idx];
+        var s = shape(a.s, x + 15, 100, 'var(--lav)', true, picked === idx ? .95 : .45); s.style.cursor = 'pointer'; s.setAttribute('tabindex', '0'); s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Anticorps ' + (i + 1));
+        function pick() { picked = idx; var ok = idx === sel; fb.set(ok ? 'Exact : l’anticorps s’ajuste à l’antigène, comme une clé dans une serrure.' : 'Non : cet anticorps ne s’ajuste pas à cet antigène.', ok ? 'ok' : 'bad'); draw(); }
+        s.addEventListener('click', pick); s.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+      });
+      if (picked !== null && picked === sel) { S('path', { d: 'M96 90L176 100', style: 'stroke:var(--teal);stroke-width:3;stroke-dasharray:4 4' }, g); }
+    }
+    var ctl = ui.controls(el); ui.btn(ctl, 'Autre antigène', function () { sel = (sel + 1) % 3; picked = null; order = PC.shuffle([0, 1, 2]); fb.set('', ''); draw(); });
+    draw();
+  }
+  function vaccin(el) {
+    var svg = ui.stage(el, 400, 240, 'Concentration d’anticorps après une injection'), g = S('g', null, svg);
+    var st = { two: true };
+    ui.tabs(el, [[true, 'Deux injections (vaccin + rappel)'], [false, 'Une injection']], function (v) { st.two = v; draw(); });
+    var chips = ui.chips(el);
+    function curve(day, t0, peak, rise, decay) { if (day < t0) return 0; var d = day - t0; return peak * (1 - Math.exp(-d / rise)) * Math.exp(-d / decay); }
+    function draw() {
+      g.replaceChildren();
+      S('path', { d: 'M40 200H380M40 200V30', 'class': 'ln', style: 'stroke:#fff;opacity:.6' }, g);
+      label(g, 210, 232, 'temps (jours)', '#fff', 'middle', 12); label(g, 14, 120, 'anticorps', '#fff', 'middle', 12).setAttribute('transform', 'rotate(-90 14 120)');
+      var pts = [], x;
+      for (x = 0; x <= 340; x += 4) {
+        var day = x / 340 * 60, v = curve(day, 0, 28 * 2.6, 6, 9) + (st.two ? curve(day, 28, 150 * 1.9, 3, 18) : 0);
+        pts.push([40 + x, 200 - v]);
+      }
+      S('path', { d: poly(pts), fill: 'none', style: 'stroke:var(--teal);stroke-width:4;stroke-linejoin:round' }, g);
+      [0].concat(st.two ? [28] : []).forEach(function (d, i) { var xx = 40 + d / 60 * 340; S('path', { d: 'M' + xx + ' 200V190', style: 'stroke:var(--pink);stroke-width:3' }, g); label(g, xx, 184, i ? '2e injection' : '1re injection', P, 'middle', 11); });
+      chips.set(st.two ? '<span class="chip plain">Réponse secondaire : plus rapide, plus forte, plus durable</span>' : '<span class="chip plain">Réponse primaire : lente et faible</span>');
+    }
+    draw();
+    ui.text(el, 'Courbe schématique (qualitative). La mémoire immunitaire explique pourquoi le rappel est plus efficace.', 'px-cap');
+  }
+  PC.chapter({ id: 's3-5', lazy: true, eyebrow: EY + 'Santé', title: 'L’immunité', ar: 'المناعة',
+    lessons: function () { return [
+      { short: 'Phagocytose', title: 'Les défenses de l’organisme', intro: 'Observe comment un phagocyte détruit un microbe.', build: phago,
+        retenir: ['La peau et les muqueuses sont des barrières naturelles.', 'Les <b>phagocytes</b> (globules blancs) ingèrent et digèrent les microbes : c’est la <b>phagocytose</b>.'],
+        ar: { e: ['الجلد والأغشية المخاطية حواجز طبيعية تمنع دخول الميكروبات. إذا دخل ميكروب إلى الجسم تلتهمه الخلايا البلعمية (نوع من الكريات البيضاء) وتهضمه: هذه هي الالتهام (phagocytose).'], u: 'اضغط «Étape suivante» لتشاهد خطوات الالتهام واحدة بعد أخرى.', w: [['microbe', 'ميكروب'], ['phagocyte', 'خلية بلعمية'], ['phagocytose', 'الالتهام'], ['immunité', 'المناعة']] } },
+      { short: 'Anticorps', title: 'Antigènes et anticorps', intro: 'Un anticorps est spécifique : il s’ajuste à un seul antigène.', build: anticorps,
+        retenir: ['Un <b>antigène</b> est une molécule étrangère reconnue par l’organisme.', 'Les lymphocytes fabriquent des <b>anticorps</b> spécifiques de l’antigène.'],
+        ar: { e: ['المستضدّ (antigène) جزيء غريب يتعرّف عليه الجسم. تُنتج الخلايا اللمفاوية أجسامًا مضادّة (anticorps) خاصة بكل مستضدّ، تتّحد معه كما يتّحد المفتاح بقفله.'], u: 'اختر الجسم المضاد الذي ينطبق شكله على المستضدّ.', w: [['antigène', 'مستضدّ'], ['anticorps', 'جسم مضاد'], ['lymphocyte', 'خلية لمفاوية'], ['spécifique', 'نوعي (خاص)']] } },
+      { short: 'Vaccin', title: 'Vaccination et sérothérapie', intro: 'Compare une injection et deux injections.', build: vaccin,
+        retenir: ['Le <b>vaccin</b> contient un antigène inoffensif : l’organisme fabrique ses anticorps et garde une mémoire. Protection durable.', 'La <b>sérothérapie</b> apporte des anticorps déjà prêts : protection immédiate mais temporaire.'],
+        ar: { e: ['اللقاح يحتوي على مستضدّ غير ضارّ فيصنع الجسم أجسامه المضادّة ويحتفظ بذاكرة مناعية، والحماية طويلة الأمد. أمّا العلاج المصلي فيمنح أجسامًا مضادّة جاهزة: حماية فورية لكنها مؤقّتة.'], w: [['vaccin', 'لقاح'], ['sérothérapie', 'العلاج المصلي'], ['rappel', 'جرعة تذكيرية'], ['mémoire immunitaire', 'الذاكرة المناعية']] } }
+    ]; },
+    quiz: [
+      { q: 'Quelle cellule ingère les microbes ?', o: ['Le phagocyte', 'Le globule rouge', 'La plaquette'], a: 0, e: 'C’est la phagocytose.' },
+      { q: 'Un anticorps est :', o: ['actif contre tous les microbes', 'spécifique d’un antigène', 'un microbe affaibli'], a: 1, e: 'Il ne reconnaît qu’un seul antigène.' },
+      { q: 'La protection immédiate mais temporaire est assurée par :', o: ['la vaccination', 'la sérothérapie', 'la phagocytose seulement'], a: 1, e: 'Le sérum apporte des anticorps déjà fabriqués.' }
+    ] });
+
+  /* ===================================================== accueil */
+  var CH = [
+    ['s3-1', 'La digestion et l’absorption intestinale', 'الهضم والامتصاص المعوي', 'Nutrition'],
+    ['s3-2', 'La respiration chez l’Homme', 'التنفّس عند الإنسان', 'Nutrition'],
+    ['s3-3', 'Le sang et la circulation sanguine', 'الدم والدورة الدموية', 'Nutrition'],
+    ['s3-4', 'L’excrétion urinaire chez l’Homme', 'الإطراح البولي عند الإنسان', 'Nutrition'],
+    ['s3-5', 'L’immunité', 'المناعة', 'Santé']
+  ];
+  function home() {
+    var box = PC.$('#chapters'); if (!box) return; box.replaceChildren();
+    CH.forEach(function (c, i) {
+      var a = h('a', { 'class': 'chap', href: '#' + c[0] });
+      a.innerHTML = '<strong>' + (i + 1) + '. ' + c[1] + '</strong><span class="ar-t" dir="rtl" lang="ar">' + c[2] + '</span><small>Disponible · ' + c[3] + '</small>';
+      box.appendChild(a);
+    });
+  }
+  PC.onHome = home; home();
+  window.addEventListener('load', function () { PC.route(); });
+})();
+
+</script>
+
+</body>
+</html>

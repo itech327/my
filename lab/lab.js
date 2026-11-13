@@ -1,0 +1,624 @@
+/* Lab : exercices par niveaux + session visiteur + rapport.
+   Partagé par « Maths en mouvement » et « Physique-Chimie en mouvement ».
+   Configuration : window.LAB_CONFIG = {app, appName, map, gen(key,d)} */
+(function () {
+  'use strict';
+  var CFG = window.LAB_CONFIG;
+  if (!CFG) return;
+  var Lab = (window.Lab = {});
+
+  /* ---------- utilitaires ---------- */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function h(tag, attrs, html) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) { if (k === 'class') e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (_) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (_) { return false; } },
+    del: function (k) { try { localStorage.removeItem(k); } catch (_) {} }
+  };
+  function plain(html) {
+    var s = String(html == null ? '' : html)
+      .replace(/<span class="fr"><span>([^<]*)<\/span><span>([^<]*)<\/span><\/span>/g, '$1/$2')
+      .replace(/<sup>([^<]*)<\/sup>/g, '^$1')
+      .replace(/<sub>([^<]*)<\/sub>/g, '_$1');
+    var d = document.createElement('div'); d.innerHTML = s;
+    return (d.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  function parseNum(t) {
+    t = String(t).trim().replace(/[−–—]/g, '-').replace(/[()\s]/g, '').replace(/,/g, '.');
+    if (!t) return NaN;
+    var mm = t.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
+    if (mm) return (+mm[2]) === 0 ? NaN : (+mm[1]) / (+mm[2]);
+    return /^-?\d+(\.\d+)?$/.test(t) ? +t : NaN;
+  }
+  function fmtDur(ms) {
+    var s = Math.round(ms / 1000), m = Math.floor(s / 60);
+    return m ? m + ' د ' + (s % 60) + ' ث' : s + ' ث';
+  }
+  function fmtDate(t) {
+    try { return new Date(t).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }); } catch (_) { return String(t); }
+  }
+
+  var LV = {
+    1: { fr: 'Facile', ar: 'سهل', pts: 1, mark: '★' },
+    2: { fr: 'Moyen', ar: 'متوسط', pts: 2, mark: '★★' },
+    3: { fr: 'Difficile', ar: 'صعب', pts: 3, mark: '★★★' },
+    4: { fr: 'Défi', ar: 'تحدّي', pts: 5, mark: '⚡' }
+  };
+  Lab.LV = LV;
+
+  /* ---------- styles ---------- */
+  var css = [
+    'body{padding-bottom:72px}',
+    '.lab-box{margin:14px 0}',
+    '.lab-note{color:var(--muted);font-size:15px;margin:8px 0}',
+    '.lab-ar{font-family:var(--f-ar,Cairo,sans-serif);direction:rtl;text-align:right;color:var(--teal);line-height:1.9;font-size:16px;margin:8px 0}',
+    '.lab-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}',
+    '.lab-tab{font:inherit;font-weight:600;font-size:14px;color:var(--muted);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;min-height:44px;cursor:pointer;text-align:center;line-height:1.25}',
+    '.lab-tab small{display:block;font-weight:400;font-family:var(--f-ar,Cairo,sans-serif);color:var(--lav)}',
+    '.lab-tab[aria-selected="true"]{color:#150f1c;border-color:transparent;background:var(--grad)}',
+    '.lab-tab[aria-selected="true"] small{color:#150f1c}',
+    '.lab-tab .ok{color:#ffcf5c}',
+    '.lab-bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;margin:10px 0;font-weight:600}',
+    '.lab-prog{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:6px 0 12px}',
+    '.lab-prog i{display:block;height:100%;background:var(--grad);width:0;transition:width .3s}',
+    '.lab-timer{font-variant-numeric:tabular-nums;color:var(--coral)}',
+    '.lab-q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}',
+    '.lab-q.is-ok{border-color:var(--teal)}.lab-q.is-ko{border-color:var(--coral)}',
+    '.lab-q .q{margin:0 0 10px;font-weight:600;font-size:17px}',
+    '.lab-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}',
+    '.lab-row input{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;min-height:44px;width:100%;flex:1 1 120px;max-width:220px}',
+    '.lab-opts{display:grid;gap:8px}',
+    '.lab-opt{font:inherit;text-align:left;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;min-height:44px;cursor:pointer}',
+    '.lab-opt.ok{border-color:var(--teal)}.lab-opt.ko{border-color:var(--coral)}',
+    '.lab-opt[disabled]{cursor:default}',
+    '.lab-hint{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--surface-2);color:var(--lav);font-size:15px}',
+    '.lab-fb{margin:10px 0 0;font-size:15px;color:var(--muted)}',
+    '.lab-sum{padding:16px 18px;border-radius:14px;border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--grad) border-box;margin:12px 0}',
+    '.lab-sum h4{font-family:var(--f-display,serif);font-style:italic;font-size:26px;margin:0 0 6px}',
+    '.lab-sum p{margin:0 0 6px}',
+    '.lab-bar2{position:fixed;left:12px;bottom:12px;z-index:60;max-width:calc(100vw - 24px);display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--surface-2);border:1.5px solid var(--teal);border-radius:16px;padding:6px 10px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.45)}',
+    '.lab-bar2 b{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}',
+    '.lab-bar2 button{font:inherit;font-size:13px;font-weight:600;color:var(--fg);background:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;min-height:34px;cursor:pointer}',
+    '.lab-bar2 button:hover{border-color:var(--teal)}',
+    '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
+    '.lab-dot.off{background:var(--muted)}',
+    '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
+    '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:20px}',
+    '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
+    '.lab-card label.f{display:block;font-weight:600;margin:12px 0 4px}',
+    '.lab-card input[type=text]{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}',
+    '.lab-chk{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:15px;line-height:1.6}',
+    '.lab-chk input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--pink)}',
+    '.lab-err{color:var(--coral);min-height:22px;margin:4px 0}',
+    '.lab-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}',
+    '#lab-report{position:fixed;inset:0;z-index:90;background:var(--bg);overflow:auto;padding:16px max(16px,env(safe-area-inset-left,0px))}',
+    '#lab-report .rp{max-width:820px;margin:0 auto 60px}',
+    '.rp h2{font-family:var(--f-display,serif);font-style:italic;font-size:clamp(32px,8vw,46px);margin:6px 0 2px}',
+    '.rp h3{font-family:var(--f-ar,Cairo,sans-serif);color:var(--teal);margin:26px 0 8px;font-size:20px}',
+    '.rp .ar{font-family:var(--f-ar,Cairo,sans-serif)}',
+    '.rp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}',
+    '.rp-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px}',
+    '.rp-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}',
+    '.rp-card dt{color:var(--muted);font-family:var(--f-ar,Cairo,sans-serif)}',
+    '.rp-card dd{margin:0;overflow-wrap:anywhere;font-weight:600}',
+    '.rp-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}',
+    '.rp-kpi div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;text-align:center}',
+    '.rp-kpi b{display:block;font-size:26px;font-variant-numeric:tabular-nums}',
+    '.rp-kpi span{color:var(--muted);font-size:13px;font-family:var(--f-ar,Cairo,sans-serif)}',
+    '.rp-bar{display:grid;grid-template-columns:110px 1fr 90px;gap:10px;align-items:center;margin:6px 0;font-size:14px}',
+    '.rp-bar i{display:block;height:12px;border-radius:99px;background:var(--surface-2);position:relative;overflow:hidden}',
+    '.rp-bar i u{position:absolute;inset:0 auto 0 0;background:var(--grad);border-radius:99px}',
+    '.rp table{width:100%;border-collapse:collapse;font-size:14px}',
+    '.rp th,.rp td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}',
+    '.rp th{color:var(--muted);font-weight:600}',
+    '.rp .scroll-x{overflow-x:auto}',
+    '.rp .bad{color:var(--coral)}.rp .good{color:var(--teal)}',
+    '.rp-rec{padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);margin:6px 0;font-family:var(--f-ar,Cairo,sans-serif);line-height:1.8}',
+    '.rp-rec a{color:var(--pink)}',
+    '.rp-wrong{padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);margin:8px 0;font-size:15px}',
+    '.rp-wrong small{color:var(--muted)}',
+    '.rp-wide{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}',
+    '@media print{',
+    '  body.lab-printing>*:not(#lab-report){display:none!important}',
+    '  body.lab-printing #lab-report{position:static;inset:auto;overflow:visible;padding:0;background:#fff;color:#14101c;--bg:#fff;--fg:#14101c;--muted:#55506a;--surface:#f6f4fb;--surface-2:#efecf7;--line:#cfc9e0;--teal:#17806c;--pink:#b0307f;--lav:#5b52b0;--coral:#c24a2f;--grad:linear-gradient(90deg,#b0307f,#5b52b0,#17806c)}',
+    '  body.lab-printing .rp-wide,body.lab-printing .lab-noprint{display:none!important}',
+    '  body.lab-printing .rp-card,body.lab-printing .rp-wrong,body.lab-printing tr{break-inside:avoid}',
+    '}',
+    '@media (max-width:520px){.rp-bar{grid-template-columns:80px 1fr 70px}.lab-bar2{right:12px}}'
+  ].join('\n');
+  document.head.appendChild(h('style', { id: 'lab-css' }, css));
+
+  /* ---------- appareil et réseau ---------- */
+  function detectDevice() {
+    var nav = navigator, ua = nav.userAgent || '', os = 'Inconnu', osv = '', m;
+    if ((m = ua.match(/Windows NT ([\d.]+)/))) { os = 'Windows'; osv = { '10.0': '10 / 11', '6.3': '8.1', '6.2': '8', '6.1': '7' }[m[1]] || m[1]; }
+    else if ((m = ua.match(/Android ([\d.]+)/))) { os = 'Android'; osv = m[1]; }
+    else if ((m = ua.match(/(iPhone|iPad|iPod).*? OS ([\d_]+)/))) { os = m[1] === 'iPad' ? 'iPadOS' : 'iOS'; osv = m[2].replace(/_/g, '.'); }
+    else if (/Macintosh/.test(ua)) { os = nav.maxTouchPoints > 1 ? 'iPadOS' : 'macOS'; var mv = ua.match(/Mac OS X ([\d_.]+)/); osv = mv ? mv[1].replace(/_/g, '.') : ''; }
+    else if (/CrOS/.test(ua)) os = 'ChromeOS';
+    else if (/Linux/.test(ua)) os = 'Linux';
+    var browser = 'Inconnu', bv = '', br = [[/Edg(?:e|A|iOS)?\/([\d.]+)/, 'Edge'], [/OPR\/([\d.]+)/, 'Opera'], [/SamsungBrowser\/([\d.]+)/, 'Samsung Internet'], [/(?:Firefox|FxiOS)\/([\d.]+)/, 'Firefox'], [/(?:Chrome|CriOS)\/([\d.]+)/, 'Chrome'], [/Version\/([\d.]+).*Safari/, 'Safari']];
+    for (var i = 0; i < br.length; i++) { var x = ua.match(br[i][0]); if (x) { browser = br[i][1]; bv = x[1].split('.')[0]; break; } }
+    var type = 'Ordinateur';
+    if (/iPad|Tablet/.test(ua) || os === 'iPadOS' || (/Android/.test(ua) && !/Mobile/.test(ua))) type = 'Tablette';
+    else if (/Mobi|iPhone|iPod|Android/.test(ua)) type = 'Téléphone';
+    var model = '';
+    if ((m = ua.match(/Android [\d.]+;\s*([^;)]+?)(?:\s+Build\/|[;)])/))) model = m[1].trim();
+    if (/iPhone/.test(ua)) model = 'iPhone';
+    if (model === 'K') model = '';
+    var scr = window.screen || {};
+    return {
+      type: type, os: os, osVersion: osv, browser: browser, browserVersion: bv, model: model,
+      screen: (scr.width || 0) + '×' + (scr.height || 0), viewport: window.innerWidth + '×' + window.innerHeight,
+      dpr: window.devicePixelRatio || 1, lang: nav.language || '',
+      tz: (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '', touch: nav.maxTouchPoints || 0
+    };
+  }
+  function deviceLabel(d) {
+    if (!d) return '-';
+    var p = [d.type]; if (d.model) p.push(d.model);
+    p.push(d.os + (d.osVersion ? ' ' + d.osVersion : '')); p.push(d.browser + (d.browserVersion ? ' ' + d.browserVersion : ''));
+    return p.join(' / ');
+  }
+  function getJSON(url, ms) {
+    var c = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var t = setTimeout(function () { if (c) c.abort(); }, ms || 6000);
+    return fetch(url, { signal: c ? c.signal : undefined, cache: 'no-store' }).then(function (r) {
+      clearTimeout(t); if (!r.ok) throw new Error('http ' + r.status); return r.json();
+    }, function (e) { clearTimeout(t); throw e; });
+  }
+  function cityFromTz(tz) { var c = String(tz || '').split('/').pop(); return c ? c.replace(/_/g, ' ') : ''; }
+  function fetchNet() {
+    var tz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '';
+    var tries = [
+      function () { return getJSON('https://ipwho.is/').then(function (j) { if (j.success === false) throw 0; return { ip: j.ip, city: j.city, region: j.region, country: j.country, isp: j.connection && j.connection.isp, source: 'ipwho.is' }; }); },
+      function () { return getJSON('https://ipapi.co/json/').then(function (j) { if (j.error) throw 0; return { ip: j.ip, city: j.city, region: j.region, country: j.country_name, isp: j.org, source: 'ipapi.co' }; }); },
+      function () { return getJSON('https://api.ipify.org?format=json').then(function (j) { return { ip: j.ip, source: 'ipify.org' }; }); }
+    ];
+    var i = 0;
+    function next() {
+      if (i >= tries.length) return Promise.resolve({ status: 'failed', city: cityFromTz(tz), cityApprox: true, source: 'المنطقة الزمنية للمتصفح' });
+      return tries[i++]().then(function (r) {
+        if (r && r.ip) { r.status = 'ok'; if (!r.city) { r.city = cityFromTz(tz); r.cityApprox = true; } return r; }
+        return next();
+      }, next);
+    }
+    return next();
+  }
+
+  /* ---------- session ---------- */
+  var K_CUR = 'lab_cur', K_HIST = 'lab_hist', K_PROG = 'lab_prog', K_NAME = 'lab_name';
+  var Sess = (Lab.Session = {});
+  var listeners = [];
+  Sess.on = function (f) { listeners.push(f); };
+  function emit() { listeners.forEach(function (f) { try { f(); } catch (_) {} }); }
+  Sess.cur = function () { return store.get(K_CUR, null); };
+  Sess.hist = function () { return store.get(K_HIST, []); };
+  function patch(id, fn) {
+    var c = Sess.cur(); if (c && c.id === id) { fn(c); store.set(K_CUR, c); }
+    var hs = Sess.hist(), i = hs.findIndex(function (x) { return x.id === id; });
+    if (i >= 0) { fn(hs[i]); store.set(K_HIST, hs); }
+  }
+  Sess.start = function (name, consent) {
+    var id = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    var s = { id: id, name: String(name).trim().slice(0, 60), startedAt: Date.now(), endedAt: null, consent: !!consent, device: detectDevice(), net: consent ? { status: 'pending' } : { status: 'declined' }, answers: [] };
+    store.set(K_CUR, s); store.set(K_NAME, s.name);
+    var hs = Sess.hist(); hs.unshift(s); store.set(K_HIST, hs.slice(0, 20));
+    emit();
+    if (consent) {
+      fetchNet().then(function (net) { patch(id, function (x) { x.net = net; }); emit(); });
+      try {
+        if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues)
+          navigator.userAgentData.getHighEntropyValues(['model', 'platformVersion']).then(function (v) {
+            patch(id, function (x) { if (v.model) x.device.model = v.model; if (v.platformVersion && x.device.os === 'Windows') x.device.osVersion = (parseInt(v.platformVersion, 10) >= 13 ? '11' : '10'); });
+            emit();
+          }, function () {});
+      } catch (_) {}
+    }
+    return s;
+  };
+  Sess.end = function () {
+    var c = Sess.cur(); if (!c) return null;
+    patch(c.id, function (x) { x.endedAt = Date.now(); });
+    store.del(K_CUR); emit();
+    return Sess.hist().find(function (x) { return x.id === c.id; }) || c;
+  };
+  Sess.log = function (rec) {
+    var c = Sess.cur(); if (!c) return;
+    rec.t = Date.now();
+    patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
+    emit();
+  };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  function stats(s) {
+    var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
+    var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
+    var ms = a.reduce(function (t, x) { return t + (x.ms || 0); }, 0);
+    var lv = {}; [1, 2, 3, 4].forEach(function (d) { var l = a.filter(function (x) { return x.d === d; }); lv[d] = { n: l.length, ok: l.filter(function (x) { return x.ok; }).length }; });
+    var ch = {};
+    a.forEach(function (x) {
+      var k = x.app + '|' + x.chap; var c = ch[k] || (ch[k] = { app: x.app, chap: x.chap, title: x.title, n: 0, ok: 0, ms: 0, pts: 0 });
+      c.n++; if (x.ok) c.ok++; c.ms += x.ms || 0; c.pts += x.pts || 0;
+    });
+    return { n: n, ok: ok, pct: n ? Math.round(100 * ok / n) : 0, pts: pts, hints: hints, avg: n ? ms / n : 0, lv: lv, ch: Object.keys(ch).map(function (k) { return ch[k]; }) };
+  }
+  Sess.stats = stats;
+
+  /* ---------- progression par chapitre ---------- */
+  function progGet() { return store.get(K_PROG, {}); }
+  function progSet(app, chap, d, pct) {
+    var p = progGet(), k = app + '|' + chap; p[k] = p[k] || {};
+    if (!p[k][d] || p[k][d] < pct) p[k][d] = pct;
+    store.set(K_PROG, p);
+  }
+
+  /* ---------- fabrique de questions ---------- */
+  function norm(it) {
+    if (!it || typeof it.q !== 'string' || !it.q) return null;
+    var o = {}; for (var k in it) o[k] = it[k];
+    if (o.t === 'qcm') o.t = 'mcq';
+    if (o.t === 'num') { if (typeof o.a !== 'number' || !isFinite(o.a)) return null; if (o.tol == null) o.tol = 1e-6; }
+    else if (o.t === 'mcq') { if (!o.o || o.o.length < 2 || o.a == null || o.a < 0 || o.a >= o.o.length) return null; }
+    else return null;
+    if (/NaN|undefined|Infinity/.test(o.q + (o.e || '') + (o.sol || ''))) return null;
+    return o;
+  }
+  function makeItem(cfg, d, seen) {
+    for (var tries = 0; tries < 40; tries++) {
+      var key = pick(cfg.topics), it = null;
+      try { it = norm(CFG.gen(key, d)); } catch (e) { it = null; }
+      if (it && !seen[it.q]) { seen[it.q] = 1; it.key = key; it.d = d; return it; }
+    }
+    return null;
+  }
+  Lab.makeItem = makeItem;
+  function answerText(it) {
+    if (it.t === 'num') return it.sol ? plain(it.sol) : String(it.a) + (it.u ? ' ' + it.u : '');
+    return plain(it.o[it.a]);
+  }
+  Lab.answerText = answerText;
+
+  /* ---------- composant d'exercices ---------- */
+  var SECS = 45; // secondes par question au niveau Défi
+  function mount(el, ctx) {
+    var cfg = ctx.cfg, level = 2, mode = 'level';
+    var wrap = h('div', { 'class': 'lab-box' });
+    el.appendChild(wrap);
+
+    var tabs = h('div', { 'class': 'lab-tabs', role: 'tablist' });
+    var list = [[1], [2], [3], [4], ['a']];
+    function tabLabel(t) {
+      var pr = progGet()[CFG.app + '|' + ctx.id] || {}, done = t[0] !== 'a' && pr[t[0]] >= 80;
+      if (t[0] === 'a') return 'Adaptatif<small>تكيّفي</small>';
+      return LV[t[0]].mark + ' ' + LV[t[0]].fr + (done ? ' <span class="ok">✓</span>' : '') + '<small>' + LV[t[0]].ar + '</small>';
+    }
+    function drawTabs() {
+      tabs.innerHTML = '';
+      list.forEach(function (t) {
+        var sel = t[0] === 'a' ? mode === 'adapt' : (mode === 'level' && level === t[0]);
+        var b = h('button', { type: 'button', 'class': 'lab-tab', role: 'tab', 'aria-selected': sel ? 'true' : 'false' }, tabLabel(t));
+        b.addEventListener('click', function () { if (t[0] === 'a') { mode = 'adapt'; } else { mode = 'level'; level = t[0]; } stopRun(); drawTabs(); intro(); });
+        tabs.appendChild(b);
+      });
+    }
+    var info = h('div'), arena = h('div');
+    wrap.appendChild(tabs); wrap.appendChild(info); wrap.appendChild(arena);
+
+    var timerId = null;
+    function stopRun() { if (timerId) { clearInterval(timerId); timerId = null; } arena.innerHTML = ''; }
+
+    function intro() {
+      var d = level, s = Sess.cur();
+      var txt = mode === 'adapt'
+        ? 'La difficulté s’ajuste : une bonne réponse monte d’un niveau, une erreur redescend. 8 questions.'
+        : (d === 4 ? 'Défi : 5 questions du niveau le plus difficile, ' + SECS + ' secondes par question, sans indice, une seule tentative. Points ×5.'
+          : (d === 3 ? '6 questions difficiles, plusieurs étapes. Un indice coûte la moitié des points.' : '6 questions. Un indice coûte la moitié des points.'));
+      var ar = mode === 'adapt'
+        ? 'المستوى يتغيّر حسب إجاباتك: إجابة صحيحة تصعّد المستوى، وخطأ ينزل به. ٨ أسئلة.'
+        : (d === 4 ? 'التحدّي: ٥ أسئلة من أصعب مستوى، ' + SECS + ' ثانية لكل سؤال، بلا تلميح، ومحاولة واحدة. النقاط ×٥.'
+          : 'ستّ أسئلة. استعمال التلميح يخسّرك نصف النقاط. النجاح عند ٨٠٪ فما فوق.');
+      info.innerHTML = '<p class="lab-note">' + txt + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>' +
+        (s ? '' : '<p class="lab-note lab-noprint">Aucune session ouverte : tes résultats ne sont pas enregistrés. <a href="#" data-lab-start>Démarrer une session</a></p>');
+      var a = info.querySelector('[data-lab-start]');
+      if (a) a.addEventListener('click', function (e) { e.preventDefault(); openStart(); });
+      arena.innerHTML = '';
+      var go = h('button', { type: 'button', 'class': 'btn' }, 'Lancer la série');
+      go.addEventListener('click', run);
+      arena.appendChild(go);
+    }
+
+    function run() {
+      stopRun();
+      var seen = {}, N = mode === 'adapt' ? 8 : (level === 4 ? 5 : 6);
+      var d = mode === 'adapt' ? 2 : level, idx = 0, good = 0, pts = 0, max = 0, deadline = 0, answered = false;
+      var head = h('div', { 'class': 'lab-bar' }), prog = h('div', { 'class': 'lab-prog' }, '<i></i>'), holder = h('div');
+      arena.appendChild(head); arena.appendChild(prog); arena.appendChild(holder);
+      var timerEl = h('span', { 'class': 'lab-timer' });
+      function upHead(cur) {
+        head.innerHTML = '<span>Question ' + (Math.min(idx + 1, N)) + ' / ' + N + ' · ' + LV[cur].mark + ' ' + LV[cur].fr + '</span><span>' + pts + ' pts</span>';
+        if (mode === 'level' && level === 4) head.appendChild(timerEl);
+        prog.firstChild.style.width = (100 * idx / N) + '%';
+      }
+      if (mode === 'level' && level === 4) {
+        deadline = Date.now() + SECS * N * 1000;
+        timerId = setInterval(function () {
+          var left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+          timerEl.textContent = '⏱ ' + Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2);
+          if (left <= 0) { clearInterval(timerId); timerId = null; timeUp(); }
+        }, 250);
+      }
+      var current = null;
+      function timeUp() {
+        if (current && !answered) record(current.it, false, '(temps écoulé)', current.hint, true);
+        idx = N;
+        finish(true);
+      }
+      var startT = 0;
+      function next() {
+        if (idx >= N) { finish(false); return; }
+        var dd = mode === 'adapt' ? d : level;
+        var it = makeItem(cfg, dd, seen);
+        if (!it) { N = idx; finish(false); return; }
+        answered = false; startT = Date.now(); max += LV[dd].pts;
+        current = { it: it, i: idx, hint: false };
+        upHead(dd);
+        holder.innerHTML = '';
+        holder.appendChild(card(it, dd));
+      }
+      function record(it, ok, given, hint, late) {
+        var dd = it.d, base = LV[dd].pts, p = ok ? (hint ? base / 2 : base) : 0;
+        pts += p; if (ok) good++;
+        Sess.log({ app: CFG.app, chap: ctx.id, title: ctx.title, topic: it.key, d: dd, ok: ok, pts: p, hint: !!hint, ms: Date.now() - startT, q: plain(it.q).slice(0, 220), given: String(given).slice(0, 60), right: answerText(it).slice(0, 80), late: !!late });
+        answered = true;
+      }
+      function card(it, dd) {
+        var box = h('div', { 'class': 'lab-q' }), over = false, usedHint = false, tries = 0;
+        box.appendChild(h('p', { 'class': 'q' }, it.q));
+        var fb = h('p', { 'class': 'lab-fb', 'aria-live': 'polite' });
+        var hintEl = h('p', { 'class': 'lab-hint', hidden: '' }, '<b>Indice.</b> ' + (it.h || 'Relis le cours.'));
+        var tools = h('div', { 'class': 'lab-actions' }), hb = null;
+        function done(ok, given) {
+          over = true; if (hb) hb.disabled = true;
+          record(it, ok, given, usedHint, false);
+          box.classList.add(ok ? 'is-ok' : 'is-ko');
+          fb.innerHTML = (ok ? '<b>Exact.</b> ' : '<b>Pas tout à fait.</b> La réponse est <b>' + esc(answerText(it)) + '</b>. ') + (it.e || '');
+          idx++; upHead(mode === 'adapt' ? d : level); prog.firstChild.style.width = (100 * idx / N) + '%';
+          if (mode === 'adapt') d = ok ? Math.min(4, d + 1) : Math.max(1, d - 1);
+          var nb = h('button', { type: 'button', 'class': 'btn' }, idx >= N ? 'Voir le résultat' : 'Question suivante');
+          nb.addEventListener('click', next);
+          box.appendChild(nb);
+          nb.focus();
+        }
+        if (it.t === 'num') {
+          var row = h('div', { 'class': 'lab-row' }), inp = h('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', autocapitalize: 'off', 'aria-label': 'Ta réponse', placeholder: 'Ta réponse' }), go = h('button', { type: 'button', 'class': 'btn' }, 'Valider');
+          row.appendChild(inp); if (it.u) row.appendChild(h('span', { 'class': 'lab-note' }, it.u)); row.appendChild(go); box.appendChild(row);
+          var check = function () {
+            if (over) return;
+            var v = parseNum(inp.value);
+            if (isNaN(v)) { fb.textContent = 'Écris un nombre, par exemple 3,5 ou 3/4.'; return; }
+            inp.disabled = true; go.disabled = true;
+            done(Math.abs(v - it.a) <= (it.tol || 0) + 1e-9, inp.value);
+          };
+          go.addEventListener('click', check);
+          inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
+          setTimeout(function () { try { inp.focus(); } catch (_) {} }, 30);
+        } else {
+          var ob = h('div', { 'class': 'lab-opts' });
+          var btns = it.o.map(function (t, i) {
+            var b = h('button', { type: 'button', 'class': 'lab-opt' }, t);
+            b.addEventListener('click', function () {
+              if (over) return;
+              var ok = i === it.a;
+              btns.forEach(function (x, xi) { x.disabled = true; if (xi === it.a) x.classList.add('ok'); });
+              if (!ok) b.classList.add('ko');
+              done(ok, plain(t));
+            });
+            ob.appendChild(b); return b;
+          });
+          box.appendChild(ob);
+        }
+        if (dd < 4) {
+          hb = h('button', { type: 'button', 'class': 'btn ghost' }, 'Indice (−50 %)');
+          hb.addEventListener('click', function () { usedHint = true; current.hint = true; hintEl.hidden = false; });
+          tools.appendChild(hb); box.appendChild(tools);
+        }
+        box.appendChild(hintEl); box.appendChild(fb);
+        return box;
+      }
+      function finish(timeout) {
+        if (timerId) { clearInterval(timerId); timerId = null; }
+        var asked = Math.max(1, N), pct = Math.round(100 * good / asked);
+        var lvl = mode === 'adapt' ? 0 : level;
+        if (lvl) progSet(CFG.app, ctx.id, lvl, pct);
+        prog.firstChild.style.width = '100%';
+        var msg = pct >= 80 ? 'Bravo : niveau validé.' : (pct >= 50 ? 'Bien. Relis la leçon puis recommence pour valider.' : 'Reprends le cours de ce chapitre, puis un niveau plus facile.');
+        var ar = pct >= 80 ? 'أحسنت! تم اجتياز هذا المستوى.' : (pct >= 50 ? 'جيّد. راجع الدرس وأعد المحاولة للنجاح في المستوى.' : 'عُد إلى درس هذا الفصل ثم جرّب مستوى أسهل.');
+        var s = h('div', { 'class': 'lab-sum' }, '<h4>' + good + ' / ' + asked + ' · ' + pct + ' %</h4><p>' + pts + ' / ' + max + ' points' + (timeout ? ' · temps écoulé' : '') + '. ' + msg + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>');
+        var act = h('div', { 'class': 'lab-actions' });
+        var again = h('button', { type: 'button', 'class': 'btn' }, 'Nouvelle série'); again.addEventListener('click', run); act.appendChild(again);
+        if (lvl && lvl < 4 && pct >= 80) { var up = h('button', { type: 'button', 'class': 'btn' }, 'Niveau suivant'); up.addEventListener('click', function () { level = lvl + 1; drawTabs(); intro(); run(); }); act.appendChild(up); }
+        if (Sess.cur()) { var rp = h('button', { type: 'button', 'class': 'btn ghost' }, 'Mon rapport'); rp.addEventListener('click', function () { openReport(Sess.cur()); }); act.appendChild(rp); }
+        s.appendChild(act); holder.innerHTML = ''; holder.appendChild(s);
+        drawTabs();
+      }
+      next();
+    }
+
+    drawTabs(); intro();
+    return { stop: stopRun };
+  }
+  Lab.mount = mount;
+
+  /* ---------- hook sur les chapitres ---------- */
+  Lab.install = function (NS) {
+    var orig = NS.chapter;
+    NS.chapter = function (c) {
+      var cfg = CFG.map[c.id];
+      if (cfg) {
+        var ctx = { id: c.id, title: c.title, cfg: cfg };
+        var extra = {
+          short: 'Défis', title: 'Défis par niveaux', label: 'Défis · تحدّيات',
+          intro: 'Quatre niveaux, du plus facile au défi chronométré. Chaque série est tirée au hasard.',
+          build: function (el) { mount(el, ctx); },
+          ar: { e: ['هذه تمارين تفاعلية بأربعة مستويات: سهل، متوسط، صعب، ثم تحدٍّ بمؤقّت. الأسئلة تتغيّر في كل مرة، ونتائجك تُسجَّل في جلستك لتظهر في التقرير.'], w: [['niveau', 'مستوى'], ['indice', 'تلميح'], ['défi', 'تحدٍّ'], ['série', 'سلسلة أسئلة']] }
+        };
+        if (typeof c.lessons === 'function') { var f = c.lessons; c.lessons = function () { var a = f(); a.push(extra); return a; }; }
+        else c.lessons = c.lessons.concat([extra]);
+      }
+      return orig.apply(this, arguments);
+    };
+  };
+
+  /* ---------- fenêtre de démarrage ---------- */
+  var modal = null;
+  function closeModal() { if (modal) { modal.remove(); modal = null; } }
+  function openStart() {
+    closeModal();
+    var last = store.get(K_NAME, '');
+    modal = h('div', { 'class': 'lab-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Démarrer une session' });
+    modal.innerHTML =
+      '<div class="lab-card"><h3>Ma session</h3>' +
+      '<p class="lab-note">Entre ton nom pour suivre tes résultats. À la fin, tu obtiens un rapport.</p>' +
+      '<p class="lab-ar" dir="rtl" lang="ar">أدخل اسمك لتتبّع نتائجك. في النهاية يظهر لك تقرير بالنتائج.</p>' +
+      '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
+      '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
+      '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>' +
+      '<p class="lab-err" id="lab-err" role="alert"></p>' +
+      '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
+    document.body.appendChild(modal);
+    var nm = $('#lab-name', modal);
+    setTimeout(function () { nm.focus(); }, 30);
+    $('#lab-go', modal).addEventListener('click', function () {
+      var n = nm.value.trim();
+      if (n.length < 2) { $('#lab-err', modal).textContent = 'Écris ton nom (2 lettres au moins). · اكتب اسمك'; return; }
+      Sess.start(n, $('#lab-cons', modal).checked); closeModal();
+    });
+    nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#lab-go', modal).click(); });
+    $('#lab-skip', modal).addEventListener('click', function () { try { sessionStorage.setItem('lab_skip', '1'); } catch (_) {} closeModal(); render(); });
+  }
+  Lab.openStart = openStart;
+
+  /* ---------- barre de session ---------- */
+  var bar = null;
+  function render() {
+    if (!bar) { bar = h('div', { 'class': 'lab-bar2 lab-noprint', role: 'region', 'aria-label': 'Session' }); document.body.appendChild(bar); }
+    var s = Sess.cur();
+    if (!s) {
+      bar.innerHTML = '<span class="lab-dot off"></span><span>Sans session</span><button type="button" data-a="start">Démarrer</button>' + (Sess.hist().length ? '<button type="button" data-a="last">Dernier rapport</button>' : '');
+    } else {
+      var st = stats(s);
+      bar.innerHTML = '<span class="lab-dot"></span><b>' + esc(s.name) + '</b><span>' + st.ok + '/' + st.n + '</span><button type="button" data-a="rep">Rapport</button><button type="button" data-a="end">Terminer</button>';
+    }
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-a]') : null;
+    if (!b || !bar || !bar.contains(b)) return;
+    var a = b.getAttribute('data-a');
+    if (a === 'start') openStart();
+    else if (a === 'rep') openReport(Sess.cur());
+    else if (a === 'last') openReport(Sess.hist()[0]);
+    else if (a === 'end') { if (confirm('Terminer la session et voir le rapport ? · إنهاء الجلسة وعرض التقرير؟')) openReport(Sess.end()); }
+  });
+  Sess.on(render);
+
+  /* ---------- rapport ---------- */
+  function rpDl(label, val) { return '<dt>' + label + '</dt><dd>' + (val === '' || val == null ? '-' : esc(val)) + '</dd>'; }
+  function openReport(s) {
+    if (!s) return;
+    var old = $('#lab-report'); if (old) old.remove();
+    var st = stats(s), box = h('div', { id: 'lab-report', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Rapport de session' });
+    var d = s.device || {}, n = s.net || {}, end = s.endedAt || Date.now();
+    var netState = n.status === 'pending' ? 'جارٍ التحديد…' : (n.status === 'declined' ? 'لم يوافق المستخدم' : (n.status === 'failed' ? 'تعذّر الحصول على IP' : ''));
+    var place = [n.city, n.region, n.country].filter(Boolean).join('، ');
+    var html = '<div class="rp"><p class="lab-note">' + esc(CFG.appName) + ' · rapport de session</p>' +
+      '<h2>' + esc(s.name) + '</h2><p class="ar" dir="rtl" lang="ar">' + (s.endedAt ? 'جلسة منتهية' : 'جلسة جارية') + ' · ' + fmtDate(s.startedAt) + ' · المدة ' + fmtDur(end - s.startedAt) + '</p>';
+    html += '<h3 dir="rtl">الجهاز والموقع</h3><div class="rp-grid"><div class="rp-card" dir="rtl"><dl>' +
+      rpDl('الاسم', s.name) + rpDl('الجهاز', deviceLabel(d)) + rpDl('النظام', (d.os || '') + (d.osVersion ? ' ' + d.osVersion : '')) + rpDl('المتصفح', (d.browser || '') + (d.browserVersion ? ' ' + d.browserVersion : '')) +
+      rpDl('الشاشة', d.screen) + rpDl('اللغة', d.lang) + rpDl('المنطقة الزمنية', d.tz) + '</dl></div>' +
+      '<div class="rp-card" dir="rtl"><dl>' + rpDl('عنوان IP', n.ip || netState) + rpDl('المدينة', place || netState) + (n.cityApprox ? rpDl('ملاحظة', 'المدينة مأخوذة من المنطقة الزمنية') : '') + rpDl('مزوّد الخدمة', n.isp) + rpDl('المصدر', n.source) +
+      '</dl><p class="lab-note" style="margin-top:8px">المدينة تقريبية وتُستنتج من عنوان IP.</p></div></div>';
+    html += '<h3 dir="rtl">النتائج</h3><div class="rp-kpi" dir="rtl"><div><b>' + st.n + '</b><span>أسئلة</span></div><div><b class="' + (st.pct >= 60 ? 'good' : 'bad') + '">' + st.pct + '%</b><span>صحيحة</span></div><div><b>' + (Math.round(st.pts * 10) / 10) + '</b><span>نقاط</span></div><div><b>' + (st.n ? Math.round(st.avg / 1000) : 0) + ' ث</b><span>متوسط الزمن</span></div><div><b>' + st.hints + '</b><span>تلميحات</span></div></div>';
+    html += '<div dir="rtl">' + [1, 2, 3, 4].map(function (k) {
+      var l = st.lv[k], p = l.n ? Math.round(100 * l.ok / l.n) : 0;
+      return '<div class="rp-bar"><span>' + LV[k].ar + ' · ' + LV[k].fr + '</span><i><u style="width:' + p + '%"></u></i><span>' + l.ok + '/' + l.n + (l.n ? ' · ' + p + '%' : '') + '</span></div>';
+    }).join('') + '</div>';
+    if (st.ch.length) {
+      st.ch.sort(function (a, b) { return a.ok / a.n - b.ok / b.n; });
+      html += '<h3 dir="rtl">حسب الفصل</h3><div class="scroll-x"><table><tr><th>Application</th><th>Chapitre</th><th>Questions</th><th>Réussite</th><th>Temps moyen</th></tr>' +
+        st.ch.map(function (c) { var p = Math.round(100 * c.ok / c.n); return '<tr><td>' + esc(c.app === 'maths' ? 'Maths' : 'Physique-Chimie') + '</td><td>' + esc(c.title) + '</td><td>' + c.ok + '/' + c.n + '</td><td class="' + (p >= 60 ? 'good' : 'bad') + '">' + p + ' %</td><td>' + Math.round(c.ms / c.n / 1000) + ' s</td></tr>'; }).join('') + '</table></div>';
+      var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; });
+      html += '<h3 dir="rtl">توصيات</h3>';
+      if (weak.length) html += weak.slice(0, 6).map(function (c) { return '<div class="rp-rec" dir="rtl">راجع فصل <a href="#' + esc(c.chap) + '" data-go="' + esc(c.chap) + '">' + esc(c.title) + '</a>: نسبة النجاح ' + Math.round(100 * c.ok / c.n) + '٪. ابدأ بالمستوى «سهل» ثم تدرّج.</div>'; }).join('');
+      else html += '<div class="rp-rec" dir="rtl">لا توجد فصول ضعيفة ظاهرة. جرّب مستوى «تحدّي» في الفصول التي أتقنتها.</div>';
+    }
+    var wrong = (s.answers || []).filter(function (a) { return !a.ok; }).slice(-30).reverse();
+    if (wrong.length) html += '<h3 dir="rtl">الأسئلة التي أخطأت فيها</h3>' + wrong.map(function (a) { return '<div class="rp-wrong"><b>' + esc(a.q) + '</b><br><small>Ta réponse : ' + esc(a.given || '-') + ' · Bonne réponse : ' + esc(a.right) + ' · ' + esc(a.title) + ' · ' + LV[a.d].fr + '</small></div>'; }).join('');
+    if (!st.n) html += '<div class="rp-rec" dir="rtl">لم تُجَب أي أسئلة في هذه الجلسة بعد. افتح فصلًا وانتقل إلى «Défis».</div>';
+    html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button><button type="button" class="btn ghost" data-r="csv">CSV</button><button type="button" class="btn ghost" data-r="json">JSON</button>' +
+      (s.endedAt ? '<button type="button" class="btn ghost" data-r="new">Nouvelle session</button>' : '') + '<button type="button" class="btn ghost" data-r="wipe">Effacer mes données</button><button type="button" class="btn" data-r="close">Fermer</button></div>' +
+      '<p class="lab-note">Ces données sont enregistrées uniquement dans ce navigateur. Pour les transmettre à l’enseignant, utilise PDF ou JSON.<br><span class="ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح فقط. لإرسالها إلى الأستاذ استعمل PDF أو JSON.</span></p></div>';
+    box.innerHTML = html;
+    document.body.appendChild(box); box.scrollTop = 0;
+    box.addEventListener('click', function (e) {
+      var go = e.target.closest && e.target.closest('[data-go]');
+      if (go) { e.preventDefault(); box.remove(); var id = go.getAttribute('data-go'); location.hash = '#' + id; return; }
+      var b = e.target.closest && e.target.closest('[data-r]'); if (!b) return;
+      var a = b.getAttribute('data-r');
+      if (a === 'close') box.remove();
+      else if (a === 'print') { document.body.classList.add('lab-printing'); window.addEventListener('afterprint', function () { document.body.classList.remove('lab-printing'); }, { once: true }); setTimeout(function () { window.print(); }, 50); }
+      else if (a === 'csv') download('session-' + s.id + '.csv', toCSV(s), 'text/csv;charset=utf-8');
+      else if (a === 'json') download('session-' + s.id + '.json', JSON.stringify(s, null, 2), 'application/json');
+      else if (a === 'new') { box.remove(); openStart(); }
+      else if (a === 'wipe') { if (confirm('Effacer toutes les sessions et la progression de ce navigateur ? · مسح كل الجلسات والتقدّم؟')) { Sess.clearAll(); box.remove(); } }
+    });
+  }
+  Lab.openReport = openReport;
+  function csvCell(v) { v = String(v == null ? '' : v); return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function toCSV(s) {
+    var n = s.net || {}, d = s.device || {};
+    var head = ['nom', 'appareil', 'ip', 'ville', 'app', 'chapitre', 'sujet', 'niveau', 'correct', 'points', 'indice', 'duree_ms', 'question', 'reponse', 'bonne_reponse', 'date'];
+    var rows = (s.answers || []).map(function (a) {
+      return [s.name, deviceLabel(d), n.ip || '', [n.city, n.country].filter(Boolean).join(' '), a.app, a.title, a.topic, LV[a.d].fr, a.ok ? 1 : 0, a.pts, a.hint ? 1 : 0, a.ms, a.q, a.given, a.right, new Date(a.t).toISOString()].map(csvCell).join(',');
+    });
+    return '﻿' + head.join(',') + '\n' + rows.join('\n');
+  }
+  function download(name, text, type) {
+    var url = URL.createObjectURL(new Blob([text], { type: type })), a = h('a', { href: url, download: name });
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  /* ---------- démarrage ---------- */
+  function boot() {
+    render();
+    var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
+    if (!Sess.cur() && !skip) openStart();
+  }
+  if (document.readyState === 'complete') setTimeout(boot, 0); else window.addEventListener('load', function () { setTimeout(boot, 0); });
+
+  /* ---------- auto-test (utilisé par les tests) ---------- */
+  Lab.selftest = function (draws) {
+    var bad = [], total = 0;
+    Object.keys(CFG.map).forEach(function (id) {
+      var cfg = CFG.map[id];
+      [1, 2, 3, 4].forEach(function (d) {
+        for (var i = 0; i < (draws || 40); i++) {
+          cfg.topics.forEach(function (key) {
+            total++;
+            var it = null, err = '';
+            try { it = norm(CFG.gen(key, d)); } catch (e) { err = String(e); }
+            if (!it) bad.push(id + ' ' + key + ' d' + d + ' ' + err);
+          });
+        }
+      });
+    });
+    return { total: total, bad: bad.slice(0, 20), badCount: bad.length };
+  };
+})();
