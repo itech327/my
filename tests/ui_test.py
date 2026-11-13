@@ -57,6 +57,7 @@ with sync_playwright() as p:
         pg.locator('.lab-bar2 button:has-text("Terminer")').click()
         pg.wait_for_timeout(400)
         check(pg.locator('#lab-report').count() == 1, f + ': rapport affiché')
+        check(pg.locator('#lab-report [data-r=print]').count() == 1 and pg.locator('#lab-report [data-r=csv]').count() == 0 and pg.locator('#lab-report [data-r=json]').count() == 0, f + ': rapport public : PDF seulement')
         txt = pg.locator('#lab-report').inner_text()
         check('Salma Test' in txt and 'Android' in txt, f + ': nom et appareil dans le rapport')
         check('عنوان IP' in txt and 'المدينة' in txt, f + ': champs IP et ville présents')

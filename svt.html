@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-v8KTLEcPa14P8gIgHuzhmBAA4hC8mq/p8WigjlqdKqM=' 'sha256-Gt5xfVv0PG/4BqO2qCWGuaPbhI4Gzu97p2OccYmBb4s='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-QSzbVNr8XnVUE1jM9o2Fe1V9sljeN1ouHsw+ybDtN6o=' 'sha256-Gt5xfVv0PG/4BqO2qCWGuaPbhI4Gzu97p2OccYmBb4s='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.">
 <link rel="canonical" href="https://taalim.men/svt.html">
@@ -742,11 +742,11 @@ document.addEventListener('click',function(e){
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
     '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
-    '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:20px}',
+    '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}',
     '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
     '.lab-card label.f{display:block;font-weight:600;margin:12px 0 4px}',
     '.lab-card input[type=text]{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}',
-    '.lab-chk{display:flex;gap:10px;align-items:flex-start;margin:14px 0;font-size:15px;line-height:1.6}',
+    '.lab-chk{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:14px;line-height:1.5}.lab-chk .lab-ar{display:block;margin:2px 0 0;font-size:14px;line-height:1.7}',
     '.lab-chk input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--pink)}',
     '.lab-err{color:var(--coral);min-height:22px;margin:4px 0}',
     '.lab-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}',
@@ -777,7 +777,21 @@ document.addEventListener('click',function(e){
     '.rp-wrong{padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);margin:8px 0;font-size:15px}',
     '.rp-wrong small{color:var(--muted)}',
     '.rp-wide{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}',
+    '@page{size:A4;margin:12mm}',
     '@media print{',
+    '  html.lab-printing,body.lab-printing{background:#fff!important;color:#14101c;color-scheme:light}',
+    '  body.lab-printing *{-webkit-print-color-adjust:exact;print-color-adjust:exact}',
+    '  body.lab-printing #lab-report .rp{max-width:none;margin:0;font-size:13px}',
+    '  body.lab-printing .rp h2{font-size:30px;margin:2px 0}',
+    '  body.lab-printing .rp h3{margin:14px 0 6px;font-size:16px;border-bottom:1.5px solid var(--line);padding-bottom:3px}',
+    '  body.lab-printing .rp-grid{grid-template-columns:1fr 1fr;gap:8px}',
+    '  body.lab-printing .rp-kpi{grid-template-columns:repeat(5,1fr);gap:6px;margin:8px 0}',
+    '  body.lab-printing .rp-kpi b{font-size:20px}',
+    '  body.lab-printing .rp-card,body.lab-printing .rp-kpi div,body.lab-printing .rp-rec,body.lab-printing .rp-wrong{padding:6px 10px;border-radius:8px;margin:4px 0}',
+    '  body.lab-printing .rp-wrongs{column-count:2;column-gap:10px}',
+    '  body.lab-printing .rp-rec a{color:inherit;text-decoration:none;font-weight:700}',
+    '  body.lab-printing .rp table{font-size:12px}',
+    '  body.lab-printing .rp th{background:var(--surface-2)}',
     '  body.lab-printing>*:not(#lab-report){display:none!important}',
     '  body.lab-printing #lab-report{position:static;inset:auto;overflow:visible;padding:0;background:#fff;color:#14101c;--bg:#fff;--fg:#14101c;--muted:#55506a;--surface:#f6f4fb;--surface-2:#efecf7;--line:#cfc9e0;--teal:#17806c;--pink:#b0307f;--lav:#5b52b0;--coral:#c24a2f;--grad:linear-gradient(90deg,#b0307f,#5b52b0,#17806c)}',
     '  body.lab-printing .rp-wide,body.lab-printing .lab-noprint,body.lab-printing .rp-top,.lab-tools{display:none!important}',
@@ -1232,16 +1246,13 @@ document.addEventListener('click',function(e){
     var last = store.get(K_NAME, '');
     modal = h('div', { 'class': 'lab-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Démarrer une session' });
     modal.innerHTML =
-      '<div class="lab-card"><h3>Ma session</h3>' +
-      '<p class="lab-note">Entre ton nom pour suivre tes résultats. À la fin, tu obtiens un rapport.</p>' +
-      '<p class="lab-ar" dir="rtl" lang="ar">أدخل اسمك لتتبّع نتائجك. في النهاية يظهر لك تقرير بالنتائج.</p>' +
+      '<div class="lab-card"><h3>Ma session · جلستي</h3>' +
       '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
       (Notify.enabled()
-        ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport et envoyés à mon enseignant (connexion, séries terminées, fermeture).<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على ظهور اسمي وجهازي وعنوان IP ومدينتي التقريبية في تقريري وعلى إرسالها إلى أستاذي (الدخول، إتمام التمارين، الخروج).</span></span></label>' +
-          '<p class="lab-note">Une visite anonyme (page, heure et pays, sans nom ni IP) est aussi signalée à l’enseignant. La ville est approximative.<br><span class="lab-ar" dir="rtl" lang="ar">تُرسل أيضًا إشارة زيارة مجهولة (الصفحة والوقت والبلد فقط). المدينة تقريبية.</span></p>'
-        : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
-          '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>') +
-      '<p class="lab-note"><a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>' +
+        ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil, mon IP et ma ville approximative soient envoyés à mon enseignant.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إرسال اسمي وجهازي وعنوان IP ومدينتي التقريبية إلى أستاذي.</span></span></label>' +
+          '<p class="lab-note">Une visite anonyme (page, heure, pays) est aussi signalée. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>'
+        : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon IP et ma ville approximative figurent dans mon rapport.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إظهار جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
+          '<p class="lab-note">Données gardées dans ce navigateur. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>') +
       '<p class="lab-err" id="lab-err" role="alert"></p>' +
       '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
     document.body.appendChild(modal);
@@ -1317,9 +1328,9 @@ document.addEventListener('click',function(e){
       else html += '<div class="rp-rec" dir="rtl">لا توجد فصول ضعيفة ظاهرة. جرّب مستوى «تحدّي» في الفصول التي أتقنتها.</div>';
     }
     var wrong = (s.answers || []).filter(function (a) { return !a.ok; }).slice(-30).reverse();
-    if (wrong.length) html += '<h3 dir="rtl">الأسئلة التي أخطأت فيها</h3>' + wrong.map(function (a) { return '<div class="rp-wrong"><b>' + esc(a.q) + '</b><br><small>Ta réponse : ' + esc(a.given || '-') + ' · Bonne réponse : ' + esc(a.right) + ' · ' + esc(a.title) + ' · ' + LV[a.d].fr + '</small></div>'; }).join('');
+    if (wrong.length) html += '<h3 dir="rtl">الأسئلة التي أخطأت فيها</h3><div class="rp-wrongs">' + wrong.map(function (a) { return '<div class="rp-wrong"><b>' + esc(a.q) + '</b><br><small>Ta réponse : ' + esc(a.given || '-') + ' · Bonne réponse : ' + esc(a.right) + ' · ' + esc(a.title) + ' · ' + LV[a.d].fr + '</small></div>'; }).join('') + '</div>';
     if (!st.n) html += '<div class="rp-rec" dir="rtl">لم تُجَب أي أسئلة في هذه الجلسة بعد. افتح فصلًا وانتقل إلى «Défis».</div>';
-    html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button><button type="button" class="btn ghost" data-r="csv">CSV</button>' + (store.get('lab_dev', false) ? '<button type="button" class="btn ghost" data-r="json">JSON</button>' : '') +
+    html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button>' + (store.get('lab_dev', false) ? '<button type="button" class="btn ghost" data-r="csv">CSV</button><button type="button" class="btn ghost" data-r="json">JSON</button>' : '') +
       (s.endedAt ? '<button type="button" class="btn ghost" data-r="new">Nouvelle session</button>' : '') + '<button type="button" class="btn ghost" data-r="wipe">Effacer mes données</button><button type="button" class="btn" data-r="close">Fermer</button></div>' +
       (Notify.enabled() ? '<p class="lab-note">Ces données sont enregistrées dans ce navigateur. Un résumé est envoyé à l’enseignant pendant la session et à sa fermeture.<br><span class="rp-ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح، ويُرسل ملخّص منها إلى الأستاذ أثناء الجلسة وعند إغلاقها.</span></p></div>' : '<p class="lab-note">Ces données sont enregistrées uniquement dans ce navigateur. Pour les transmettre à l’enseignant, utilise PDF ou JSON.<br><span class="rp-ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح فقط. لإرسالها إلى الأستاذ استعمل PDF أو JSON.</span></p></div>');
     box.innerHTML = html;
@@ -1330,8 +1341,8 @@ document.addEventListener('click',function(e){
       var b = e.target.closest && e.target.closest('[data-r]'); if (!b) return;
       var a = b.getAttribute('data-r');
       if (a === 'close') box.remove();
-      else if (a === 'print') { document.body.classList.add('lab-printing'); window.addEventListener('afterprint', function () { document.body.classList.remove('lab-printing'); }, { once: true }); setTimeout(function () { window.print(); }, 50); }
-      else if (a === 'csv') download('session-' + s.id + '.csv', toCSV(s), 'text/csv;charset=utf-8');
+      else if (a === 'print') { document.body.classList.add('lab-printing'); document.documentElement.classList.add('lab-printing'); window.addEventListener('afterprint', function () { document.body.classList.remove('lab-printing'); document.documentElement.classList.remove('lab-printing'); }, { once: true }); setTimeout(function () { window.print(); }, 50); }
+      else if (a === 'csv' && store.get('lab_dev', false)) download('session-' + s.id + '.csv', toCSV(s), 'text/csv;charset=utf-8');
       else if (a === 'json' && store.get('lab_dev', false)) download('session-' + s.id + '.json', JSON.stringify(s, null, 2), 'application/json');
       else if (a === 'new') { box.remove(); openStart(); }
       else if (a === 'wipe') { if (confirm('Effacer toutes les sessions et la progression de ce navigateur ? · مسح كل الجلسات والتقدّم؟')) { Sess.clearAll(); box.remove(); } }

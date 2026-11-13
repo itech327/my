@@ -33,6 +33,7 @@ with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')
     ctx = b.new_context(viewport={'width': 420, 'height': 900})
+    ctx.add_init_script("try{localStorage.setItem('lab_dev','true')}catch(e){}")
     pg = ctx.new_page(); csp = []
     pg.on('console', lambda m: csp.append(m.text) if 'Content Security Policy' in m.text or 'Refused to' in m.text else None)
     pg.route('**/*', lambda r: r.abort() if r.request.url.startswith('http') else r.continue_())
