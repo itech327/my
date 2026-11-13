@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Assemble les deux applications autonomes (HTML + JS en ligne)."""
-import os, re, sys
+import os, re, sys, hashlib
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def rd(p): return open(os.path.join(ROOT, p), encoding='utf8').read()
 def wr(p, t): open(os.path.join(ROOT, p), 'w', encoding='utf8').write(t)
@@ -12,7 +12,8 @@ EXTRA = {'maths': rd('lab/extra-maths.js') if os.path.exists(os.path.join(ROOT,'
 def inject(frag, marker, cfgfile, ns, key):
     i = frag.index(marker)
     j = frag.index('</script>', i) + len('</script>')
-    block = '\n<script src="lab/notify-config.js"></script>\n<script>\n' + rd(cfgfile) + '\n' + LAB + '\nLab.install(window.' + ns + ');\n</script>\n'
+    ver = hashlib.sha256(rd('lab/notify-config.js').encode()).hexdigest()[:8]
+    block = '\n<script src="lab/notify-config.js?v=' + ver + '"></script>\n<script>\n' + rd(cfgfile) + '\n' + LAB + '\nLab.install(window.' + ns + ');\n</script>\n'
     return frag[:j] + block + frag[j:]
 
 def inject_extra(frag, key):
@@ -126,7 +127,8 @@ hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',
        '  X-Content-Type-Options: nosniff', '  X-Frame-Options: DENY', '  Referrer-Policy: strict-origin-when-cross-origin',
        '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()',
        '  Cross-Origin-Opener-Policy: same-origin', '  Strict-Transport-Security: max-age=31536000; includeSubDomains', '',
-       '/fonts/*', '  Cache-Control: public, max-age=31536000, immutable', '']
+       '/fonts/*', '  Cache-Control: public, max-age=31536000, immutable', '',
+       '/lab/notify-config.js', '  Cache-Control: no-cache', '']
 today = datetime.date.today().isoformat()
 urls = []
 for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']:
