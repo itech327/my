@@ -2,10 +2,21 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<!--gen:head-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-rUegjk8jugSf4wVX0+sPE7lpgGm7DSDDeQO1xvd66Y8=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-3ecPjMqk3wB95zvScE/AYCCq5wZC/om4sp9BYc3xaM0=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-+dPOIHjuBbcAkGYGrza8eqJzqLOiaEWFp/881dJT4L0=' 'sha256-RPOSMKCPUU9QwL5psgcPu2mRW/Sc9N/k0sPlSPlOMjU=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
+<link rel="canonical" href="https://itech327.github.io/my/maths.html">
+<meta name="theme-color" content="#0d0b14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">
+<meta property="og:title" content="Maths en mouvement : cours de mathématiques du collège"><meta property="og:description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux."><meta property="og:url" content="https://itech327.github.io/my/maths.html">
+<meta name="twitter:card" content="summary">
+<!--/gen:head-->
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Maths en mouvement</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Figtree:wght@400;500;700&family=Lobster+Two:ital,wght@0,700;1,700&family=STIX+Two+Text:ital,wght@0,500;1,500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 :root{
   --bg:#0d0b14;
@@ -1690,7 +1701,7 @@ window.addEventListener('load',function(){
     if (html !== undefined) e.innerHTML = html;
     return e;
   }
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function esc(s) { return String(s).replace(/[&<>"'`]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]; }); }
   function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   var store = {
@@ -1896,8 +1907,25 @@ window.addEventListener('load',function(){
   var listeners = [];
   Sess.on = function (f) { listeners.push(f); };
   function emit() { listeners.forEach(function (f) { try { f(); } catch (_) {} }); }
-  Sess.cur = function () { return store.get(K_CUR, null); };
-  Sess.hist = function () { return store.get(K_HIST, []); };
+  /* données relues depuis localStorage : jamais de confiance (contenu modifiable par l'utilisateur) */
+  function sstr(x, n) { return String(x == null ? '' : x).replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, n); }
+  function snum(x, d, lo, hi) { x = +x; return isFinite(x) ? Math.min(hi, Math.max(lo, x)) : d; }
+  function sprim(o) { var r = {}; if (!o || typeof o !== 'object') return r; Object.keys(o).slice(0, 40).forEach(function (k) { var v = o[k]; if (typeof v === 'string') r[sstr(k, 30)] = sstr(v, 120); else if (typeof v === 'number' && isFinite(v)) r[sstr(k, 30)] = v; else if (typeof v === 'boolean') r[sstr(k, 30)] = v; }); return r; }
+  function cleanAns(a) {
+    a = a && typeof a === 'object' ? a : {};
+    return { app: sstr(a.app, 12), chap: sstr(a.chap, 24).replace(/[^\w-]/g, ''), title: sstr(a.title, 120), topic: sstr(a.topic, 40), d: Math.round(snum(a.d, 1, 1, 4)), ok: !!a.ok, pts: snum(a.pts, 0, 0, 100), hint: !!a.hint, ms: snum(a.ms, 0, 0, 36e5), q: sstr(a.q, 300), given: sstr(a.given, 80), right: sstr(a.right, 120), t: snum(a.t, 0, 0, 4e12), late: !!a.late };
+  }
+  function cleanSess(s) {
+    if (!s || typeof s !== 'object' || Array.isArray(s)) return null;
+    var c = sprim(s);
+    c.id = sstr(s.id, 40).replace(/[^\w-]/g, ''); c.name = sstr(s.name, 60);
+    c.startedAt = snum(s.startedAt, 0, 0, 4e12); c.endedAt = s.endedAt ? snum(s.endedAt, 0, 0, 4e12) : null; c.consent = !!s.consent;
+    c.device = sprim(s.device); c.net = sprim(s.net);
+    c.answers = (Array.isArray(s.answers) ? s.answers : []).slice(-2000).map(cleanAns);
+    return c.id ? c : null;
+  }
+  Sess.cur = function () { return cleanSess(store.get(K_CUR, null)); };
+  Sess.hist = function () { var h = store.get(K_HIST, []); return (Array.isArray(h) ? h : []).slice(0, 20).map(cleanSess).filter(Boolean); };
   function patch(id, fn) {
     var c = Sess.cur(); if (c && c.id === id) { fn(c); store.set(K_CUR, c); }
     var hs = Sess.hist(), i = hs.findIndex(function (x) { return x.id === id; });
@@ -2269,6 +2297,7 @@ window.addEventListener('load',function(){
           '<p class="lab-note">Une visite anonyme (page et heure, sans nom ni IP) est aussi signalée à l’enseignant. La ville est approximative.<br><span class="lab-ar" dir="rtl" lang="ar">تُرسل أيضًا إشارة زيارة مجهولة (الصفحة والوقت فقط). المدينة تقريبية.</span></p>'
         : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
           '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>') +
+      '<p class="lab-note"><a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>' +
       '<p class="lab-err" id="lab-err" role="alert"></p>' +
       '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
     document.body.appendChild(modal);
@@ -2365,7 +2394,7 @@ window.addEventListener('load',function(){
     });
   }
   Lab.openReport = openReport;
-  function csvCell(v) { v = String(v == null ? '' : v); return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function csvCell(v) { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function toCSV(s) {
     var n = s.net || {}, d = s.device || {};
     var head = ['nom', 'appareil', 'ip', 'ville', 'app', 'chapitre', 'sujet', 'niveau', 'correct', 'points', 'indice', 'duree_ms', 'question', 'reponse', 'bonne_reponse', 'date'];

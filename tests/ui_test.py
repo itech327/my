@@ -13,7 +13,7 @@ with sync_playwright() as p:
     except Exception: b = p.chromium.launch(channel='chrome')
     for f, chap in apps:
         ctx = b.new_context(viewport={'width': 420, 'height': 900}, user_agent='Mozilla/5.0 (Linux; Android 13; SM-A536B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36')
-        ctx.add_init_script("try{localStorage.setItem('lab_auto','0')}catch(e){}")
+        ctx.add_init_script("try{localStorage.setItem('lab_auto','0');sessionStorage.setItem('lab_barmin','0')}catch(e){}")
         pg = ctx.new_page()
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))

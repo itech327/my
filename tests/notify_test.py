@@ -8,10 +8,22 @@ def check(c, m):
     print(('PASS ' if c else 'FAIL ') + m)
     if not c: fails.append(m)
 URL = 'https://relay.test/'
+
+import re as _re, atexit as _atexit
+def _csp_copy(name):
+    h = open(ROOT + '/' + name, encoding='utf8').read()
+    origin = _re.match(r'https://[^/]+', URL).group(0)
+    h = h.replace("connect-src 'self'", "connect-src 'self' " + origin, 1)
+    out = ROOT + '/_t_' + name
+    open(out, 'w', encoding='utf8').write(h)
+    _atexit.register(lambda: os.path.exists(out) and os.remove(out))
+    return '_t_' + name
+
 with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')
     ctx = b.new_context(viewport={'width': 420, 'height': 900})
+    ctx.add_init_script("try{sessionStorage.setItem('lab_barmin','0')}catch(e){}")
     ctx.add_init_script("Object.defineProperty(window,'LAB_NOTIFY_URL',{get:()=>'%s',set:()=>{}})" % URL)
     ctx.add_init_script("try{localStorage.setItem('lab_auto','0')}catch(e){}")
     got = []
@@ -25,7 +37,7 @@ with sync_playwright() as p:
         else: r.continue_()
     ctx.route('**/*', route)
     pg = ctx.new_page()
-    pg.goto('file://' + ROOT + '/maths.html'); pg.wait_for_timeout(700)
+    pg.goto('file://' + ROOT + '/' + _csp_copy('maths.html')); pg.wait_for_timeout(700)
     types = lambda: [g.get('type') for g in got]
     check(types() == ['open'] and 'name' not in got[0], 'ouverture : alerte anonyme')
     check('Une visite anonyme' in pg.locator('.lab-modal').inner_text(), 'modale : mention de la visite anonyme et envoi à l’enseignant')
@@ -66,7 +78,7 @@ with sync_playwright() as p:
     # relais désactivé : aucune requête
     ctx2 = b.new_context(); got2 = []
     ctx2.route('**/*', lambda r: (got2.append(r.request.url), r.abort()) if r.request.url.startswith('http') and 'relay' in r.request.url else (r.abort() if r.request.url.startswith('http') else r.continue_()))
-    pg2 = ctx2.new_page(); pg2.goto('file://' + ROOT + '/svt.html'); pg2.wait_for_timeout(600)
+    pg2 = ctx2.new_page(); pg2.goto('file://' + ROOT + '/' + _csp_copy('svt.html')); pg2.wait_for_timeout(600)
     check(not got2 and 'envoyés à mon enseignant' not in pg2.locator('.lab-modal').inner_text(), 'URL vide : aucune alerte et texte de consentement local')
     b.close()
 print('FAILS:', len(fails)); sys.exit(1 if fails else 0)

@@ -67,3 +67,77 @@ sv = sv + '\n<script>\n' + rd('svt/svt.js') + '\n</script>\n'
 head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
 wr('svt.html', head + head_css.lstrip() + '\n</head>\n<body>' + svt_body + sv + '\n</body>\n</html>\n')
 print('ok', len(m), len(p), len(sv))
+
+# ---------------------------------------------------------------------------
+# Durcissement : polices locales, CSP (hachages des scripts en ligne), SEO,
+# fichiers _headers, robots.txt, sitemap.xml
+# ---------------------------------------------------------------------------
+import hashlib, base64, datetime
+SITE = os.environ.get('SITE_URL', 'https://itech327.github.io/my/').rstrip('/') + '/'
+DESC = {
+ 'index.html': ('Cours en mouvement : maths, physique-chimie et SVT du collège',
+                'Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux.'),
+ 'maths.html': ('Maths en mouvement : cours de mathématiques du collège',
+                'Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.'),
+ 'physique-chimie.html': ('Physique-Chimie en mouvement : cours du collège',
+                'Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.'),
+ 'svt.html': ('SVT en mouvement : cours de la 3e année du collège',
+                'Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.'),
+ 'confidentialite.html': ('Confidentialité · Cours en mouvement',
+                'Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.'),
+}
+FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+
+def notify_origin():
+    m = re.search(r'LAB_NOTIFY_URL\s*=\s*"(https://[^"/]+)', rd('lab/notify-config.js'))
+    return m.group(1) if m else ''
+
+def inline_hashes(html):
+    hs = []
+    for m in re.finditer(r'<script>(.*?)</script>', html, re.S):
+        hs.append("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode('utf8')).digest()).decode() + "'")
+    return hs
+
+def csp_for(html, header=False):
+    conn = ["'self'", 'https://ipwho.is', 'https://ipapi.co', 'https://api.ipify.org'] + ([notify_origin()] if notify_origin() else [])
+    parts = ["default-src 'none'", "script-src 'self' " + ' '.join(inline_hashes(html)), "style-src 'self' 'unsafe-inline'",
+             "img-src 'self' data:", "font-src 'self'", 'connect-src ' + ' '.join(conn), "base-uri 'none'", "form-action 'none'", "object-src 'none'",
+             "manifest-src 'self'", 'upgrade-insecure-requests']
+    if header: parts.append("frame-ancestors 'none'")
+    return '; '.join(parts)
+
+def harden(name, html):
+    html = re.sub(r'<link href="https://fonts\.googleapis\.com[^>]*>', '<link rel="stylesheet" href="fonts/fonts.css">', html)
+    html = re.sub(r'<!--gen:head-->.*?<!--/gen:head-->\n?', '', html, flags=re.S)
+    title, desc = DESC[name]
+    url = SITE + ('' if name == 'index.html' else name)
+    block = ('<!--gen:head-->\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(html) + '">\n'
+             '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
+             '<meta name="description" content="' + desc + '">\n<link rel="canonical" href="' + url + '">\n'
+             '<meta name="theme-color" content="#0d0b14">\n<link rel="icon" href="' + FAVICON + '">\n'
+             '<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">\n'
+             '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '"><meta property="og:url" content="' + url + '">\n'
+             '<meta name="twitter:card" content="summary">\n<!--/gen:head-->\n')
+    html = html.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + block, 1)
+    assert '<!--gen:head-->' in html, name
+    return html
+
+hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',
+       '  X-Content-Type-Options: nosniff', '  X-Frame-Options: DENY', '  Referrer-Policy: strict-origin-when-cross-origin',
+       '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()',
+       '  Cross-Origin-Opener-Policy: same-origin', '  Strict-Transport-Security: max-age=31536000; includeSubDomains', '',
+       '/fonts/*', '  Cache-Control: public, max-age=31536000, immutable', '']
+today = datetime.date.today().isoformat()
+urls = []
+for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']:
+    h = harden(name, rd(name)); wr(name, h)
+    c = csp_for(h, True)
+    paths = ['/', '/index.html'] if name == 'index.html' else ['/' + name, '/' + name[:-5]]
+    for pth in paths: hdr += [pth, '  Content-Security-Policy: ' + c]
+    hdr.append('')
+    urls.append(SITE if name == 'index.html' else SITE + name)
+wr('_headers', '\n'.join(hdr))
+wr('robots.txt', 'User-agent: *\nAllow: /\n\nSitemap: ' + SITE + 'sitemap.xml\n')
+wr('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+   ''.join('  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, today) for u in urls) + '</urlset>\n')
+print('durci', len(urls), 'pages ·', SITE)

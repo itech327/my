@@ -53,3 +53,10 @@ Sources : `source/` contient les deux applications d'origine. `lab/` contient le
 - Les exercices utilisent les générateurs déjà présents dans les applications, plus des problèmes de niveau Défi. Certains chapitres n'ont pas d'exercices par niveaux (par exemple pression, lentilles, courant alternatif en physique-chimie ; droites et angles en 1re année de maths).
 - Les séquences du collège pionnier gardent leurs propres exercices. Leurs réponses ne sont pas enregistrées dans le rapport.
 - Il faut vérifier l'ordre et le contenu des chapitres de SVT avec la répartition annuelle de l'établissement.
+
+## Sécurité, confidentialité, déploiement
+
+- `docs/SECURITE.md` : mesures en place et règles pour un futur serveur.
+- `docs/DEPLOIEMENT.md` : mise en ligne (Cloudflare Pages, domaine, SSL).
+- `confidentialite.html` : page de confidentialité (français et arabe).
+- `python3 tools/build.py` régénère aussi la CSP, `_headers`, `robots.txt` et `sitemap.xml`.

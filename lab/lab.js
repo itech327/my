@@ -15,7 +15,7 @@
     if (html !== undefined) e.innerHTML = html;
     return e;
   }
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function esc(s) { return String(s).replace(/[&<>"'`]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]; }); }
   function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   var store = {
@@ -221,8 +221,25 @@
   var listeners = [];
   Sess.on = function (f) { listeners.push(f); };
   function emit() { listeners.forEach(function (f) { try { f(); } catch (_) {} }); }
-  Sess.cur = function () { return store.get(K_CUR, null); };
-  Sess.hist = function () { return store.get(K_HIST, []); };
+  /* données relues depuis localStorage : jamais de confiance (contenu modifiable par l'utilisateur) */
+  function sstr(x, n) { return String(x == null ? '' : x).replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, n); }
+  function snum(x, d, lo, hi) { x = +x; return isFinite(x) ? Math.min(hi, Math.max(lo, x)) : d; }
+  function sprim(o) { var r = {}; if (!o || typeof o !== 'object') return r; Object.keys(o).slice(0, 40).forEach(function (k) { var v = o[k]; if (typeof v === 'string') r[sstr(k, 30)] = sstr(v, 120); else if (typeof v === 'number' && isFinite(v)) r[sstr(k, 30)] = v; else if (typeof v === 'boolean') r[sstr(k, 30)] = v; }); return r; }
+  function cleanAns(a) {
+    a = a && typeof a === 'object' ? a : {};
+    return { app: sstr(a.app, 12), chap: sstr(a.chap, 24).replace(/[^\w-]/g, ''), title: sstr(a.title, 120), topic: sstr(a.topic, 40), d: Math.round(snum(a.d, 1, 1, 4)), ok: !!a.ok, pts: snum(a.pts, 0, 0, 100), hint: !!a.hint, ms: snum(a.ms, 0, 0, 36e5), q: sstr(a.q, 300), given: sstr(a.given, 80), right: sstr(a.right, 120), t: snum(a.t, 0, 0, 4e12), late: !!a.late };
+  }
+  function cleanSess(s) {
+    if (!s || typeof s !== 'object' || Array.isArray(s)) return null;
+    var c = sprim(s);
+    c.id = sstr(s.id, 40).replace(/[^\w-]/g, ''); c.name = sstr(s.name, 60);
+    c.startedAt = snum(s.startedAt, 0, 0, 4e12); c.endedAt = s.endedAt ? snum(s.endedAt, 0, 0, 4e12) : null; c.consent = !!s.consent;
+    c.device = sprim(s.device); c.net = sprim(s.net);
+    c.answers = (Array.isArray(s.answers) ? s.answers : []).slice(-2000).map(cleanAns);
+    return c.id ? c : null;
+  }
+  Sess.cur = function () { return cleanSess(store.get(K_CUR, null)); };
+  Sess.hist = function () { var h = store.get(K_HIST, []); return (Array.isArray(h) ? h : []).slice(0, 20).map(cleanSess).filter(Boolean); };
   function patch(id, fn) {
     var c = Sess.cur(); if (c && c.id === id) { fn(c); store.set(K_CUR, c); }
     var hs = Sess.hist(), i = hs.findIndex(function (x) { return x.id === id; });
@@ -594,6 +611,7 @@
           '<p class="lab-note">Une visite anonyme (page et heure, sans nom ni IP) est aussi signalée à l’enseignant. La ville est approximative.<br><span class="lab-ar" dir="rtl" lang="ar">تُرسل أيضًا إشارة زيارة مجهولة (الصفحة والوقت فقط). المدينة تقريبية.</span></p>'
         : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon adresse IP et ma ville approximative soient indiqués dans mon rapport.<br><span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin:4px 0 0">أوافق على إظهار نوع جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
           '<p class="lab-note">Les données restent dans ce navigateur. La ville vient d’un service de géolocalisation par IP : elle est approximative.</p>') +
+      '<p class="lab-note"><a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>' +
       '<p class="lab-err" id="lab-err" role="alert"></p>' +
       '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
     document.body.appendChild(modal);
@@ -690,7 +708,7 @@
     });
   }
   Lab.openReport = openReport;
-  function csvCell(v) { v = String(v == null ? '' : v); return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function csvCell(v) { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function toCSV(s) {
     var n = s.net || {}, d = s.device || {};
     var head = ['nom', 'appareil', 'ip', 'ville', 'app', 'chapitre', 'sujet', 'niveau', 'correct', 'points', 'indice', 'duree_ms', 'question', 'reponse', 'bonne_reponse', 'date'];
