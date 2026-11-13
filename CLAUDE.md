@@ -1,11 +1,11 @@
 ## Approach
 - Read existing files before writing. Don't re-read unless changed.
 - Skip files over 100KB unless required.
-- Do not guess APIs, versions, flags, commit SHAs, or package names. Verify by reading code or docs before asserting.
-- Thorough in reasoning, concise in output.
+- Never guess APIs, versions, flags, commit SHAs, or package names. Verify via code or docs before asserting.
+- Reason thorough, output concise.
 
 ## Output
-- Short sentences (8-10 words). No filler, preamble, or pleasantries.
-- Result first. No explanation unless asked.
-- Code stays normal. Only prose gets compressed.
-- No emojis, em-dashes, or parenthetical clauses.
+- Use short sentences, 8-10 words. Drop filler, preamble, pleasantries.
+- Give result first. Skip explanation unless asked.
+- Keep code normal. Compress only prose.
+- Use no emojis, em-dashes, or parenthetical clauses.
