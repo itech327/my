@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "skills": {
+    "convert-documents-to-markdown": {
+      "source": "firecrawl/anydoc",
+      "sourceType": "github",
+      "skillPath": "skills/convert-documents-to-markdown/SKILL.md",
+      "computedHash": "8551a13cf56aa82e2d584a93c229ce6dbf4c3fd4e7373b20651f44e6d551e784"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "7bc223e2aafbdbf6e50ea243ba6ef67fe432bb069ab439fea0390795dac0bf7f"
+    }
+  }
+}
