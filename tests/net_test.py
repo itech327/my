@@ -12,7 +12,6 @@ with sync_playwright() as p:
     except Exception: b = p.chromium.launch(channel='chrome')
     # 1) service disponible
     ctx = b.new_context(viewport={'width': 420, 'height': 900})
-    ctx.add_init_script("try{localStorage.setItem('lab_dev','true')}catch(e){}")
     ctx.add_init_script("Object.defineProperty(window,'LAB_NOTIFY_URL',{get:()=>'',set:()=>{}})")
     pg = ctx.new_page()
     def route(r):
@@ -33,7 +32,8 @@ with sync_playwright() as p:
     pg.click('#go-report'); pg.wait_for_timeout(200)
     t = pg.locator('#lab-report').inner_text()
     check('203.0.113.7' not in t and 'لم يوافق' in t, 'sans consentement : aucune IP collectée')
-    # CSV
+    # CSV (réservé à l'enseignant : drapeau lab_dev)
+    pg.evaluate("localStorage.setItem('lab_dev','true')"); pg.evaluate("Lab.openReport(Lab.Session.cur())"); pg.wait_for_timeout(200)
     with pg.expect_download() as d:
         pg.click('[data-r="csv"]')
     check(d.value.suggested_filename.endswith('.csv'), 'export CSV')

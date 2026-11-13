@@ -33,7 +33,6 @@ with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')
     ctx = b.new_context(viewport={'width': 420, 'height': 900})
-    ctx.add_init_script("try{localStorage.setItem('lab_dev','true')}catch(e){}")
     pg = ctx.new_page(); csp = []
     pg.on('console', lambda m: csp.append(m.text) if 'Content Security Policy' in m.text or 'Refused to' in m.text else None)
     pg.route('**/*', lambda r: r.abort() if r.request.url.startswith('http') else r.continue_())
@@ -54,7 +53,7 @@ with sync_playwright() as p:
     # injection CSV
     pg.evaluate("(function(){var s=Lab.Session.cur();s.name='=HYPERLINK(\"http://x\")';s.answers[0].given='+cmd|calc';localStorage.setItem('lab_cur',JSON.stringify(s));})()")
     with pg.expect_download() as dl:
-        pg.evaluate("Lab.openReport(Lab.Session.cur())"); pg.click('#lab-report [data-r=csv]')
+        pg.evaluate("localStorage.setItem('lab_dev','true')"); pg.evaluate("Lab.openReport(Lab.Session.cur())"); pg.click('#lab-report [data-r=csv]')
     path = dl.value.path(); csv = open(path, encoding='utf8').read()
     check("'=HYPERLINK" in csv and "'+cmd" in csv and not re.search(r'(^|,)=HYPERLINK', csv, re.M), 'CSV : formules neutralisées')
     check(not csp, 'aucune violation de CSP en navigation normale ' + str(csp[:2]))
