@@ -31,7 +31,8 @@ const fakeDB = { prepare(sql) { return { sql, args: [], bind(...a) { this.args =
     if (/^DELETE FROM events WHERE sid/.test(sql)) { const n = rows.length; for (let i = rows.length - 1; i >= 0; i--) if (rows[i].sid === this.args[0]) rows.splice(i, 1); return { meta: { changes: n - rows.length } }; } return { meta: { changes: 0 } }; },
   async all() { if (/GROUP BY cls/.test(sql)) { const m = {}; rows.forEach((r) => { (m[r.cls] = m[r.cls] || new Set()).add(r.sid); }); return { results: Object.keys(m).map((k) => ({ cls: k, n: m[k].size })) }; }
     return { results: rows.filter((r) => (!/cls = \?/.test(sql) || r.cls === this.args[1])).slice().reverse() }; } }; } };
-const env2 = Object.assign({}, env, { DB: fakeDB });
+const KEY = 'cle-de-test-123456';
+const env2 = Object.assign({}, env, { DB: fakeDB, TEACHER_KEY: KEY });
 sent.length = 0;
 await worker.fetch(req({ type: 'open', page: 'Maths' }, { ip: '198.18.1.1' }), env2);
 ok(rows.length === 0, 'visite anonyme : rien dans D1');
@@ -43,14 +44,23 @@ ok(!rows.some((r) => /secret-ip/.test(r.data)), 'IP du client jamais stockée');
 ok(sent.length >= 4, 'alertes Telegram toujours envoyées');
 const noname = toRow({ type: 'login', sid: 'x1' }, 1); ok(noname === null, 'sans nom : non stocké');
 ok(toRow({ type: 'open' }, 1) === null, 'type open : non stocké');
-const tReq = (path, o = {}) => new Request('https://taalim.men' + path, { method: o.method || 'GET', headers: o.noAccess ? {} : { 'Cf-Access-Jwt-Assertion': 'jwt' }, body: o.body });
-r = await worker.fetch(tReq('/api/teacher/events', { noAccess: true }), env2); ok(r.status === 403, 'API enseignant sans Access : 403');
-r = await worker.fetch(tReq('/api/teacher/events'), { ALLOWED_ORIGIN: env.ALLOWED_ORIGIN }); ok(r.status === 503, 'API enseignant sans D1 : 503');
+const tReq = (path, o = {}) => new Request('https://w.example' + path, { method: o.method || 'GET', headers: Object.assign({ Origin: o.origin || env.ALLOWED_ORIGIN, 'CF-Connecting-IP': o.ip || '192.0.2.10' }, o.noAccess ? {} : { Authorization: 'Bearer ' + (o.key || KEY) }), body: o.body });
+r = await worker.fetch(tReq('/api/teacher/events', { noAccess: true }), env2); ok(r.status === 401, 'API enseignant sans clé : 401');
+r = await worker.fetch(tReq('/api/teacher/events', { key: 'faux' }), env2); ok(r.status === 401, 'mauvaise clé : 401');
+r = await worker.fetch(tReq('/api/teacher/events', { key: KEY.slice(0, -1) }), env2); ok(r.status === 401, 'clé tronquée : 401');
+r = await worker.fetch(tReq('/api/teacher/events'), { ALLOWED_ORIGIN: env.ALLOWED_ORIGIN, DB: fakeDB }); ok(r.status === 503, 'clé non configurée : tout refusé (503)');
+r = await worker.fetch(tReq('/api/teacher/events'), { ALLOWED_ORIGIN: env.ALLOWED_ORIGIN, DB: fakeDB, TEACHER_KEY: 'court' }); ok(r.status === 503, 'clé trop courte : refusée (503)');
+r = await worker.fetch(tReq('/api/teacher/events', { origin: 'https://evil.example' }), env2); ok(r.status === 403, 'autre origine : 403');
+r = await worker.fetch(tReq('/api/teacher/events'), { ALLOWED_ORIGIN: env.ALLOWED_ORIGIN, TEACHER_KEY: KEY }); ok(r.status === 503, 'sans D1 : 503');
+r = await worker.fetch(new Request('https://w.example/api/teacher/events', { method: 'OPTIONS', headers: { Origin: env.ALLOWED_ORIGIN } }), env2); ok(r.status === 204 && /Authorization/.test(r.headers.get('Access-Control-Allow-Headers')), 'préflight de l’API enseignant');
 r = await worker.fetch(tReq('/api/teacher/events'), env2); let j = await r.json();
 ok(r.status === 200 && j.events.length === 3 && j.classes.length === 2 && j.events[0].data && typeof j.events[0].data === 'object', 'liste des événements et des classes');
-ok(r.headers.get('Cache-Control') === 'no-store', 'réponse non mise en cache');
+ok(r.headers.get('Cache-Control') === 'no-store' && r.headers.get('Access-Control-Allow-Origin') === env.ALLOWED_ORIGIN, 'réponse non mise en cache, CORS limité');
 r = await worker.fetch(tReq('/api/teacher/events?cls=zz-99'), env2); j = await r.json(); ok(j.events.length === 1 && j.events[0].name === 'Omar', 'filtre par classe');
 r = await worker.fetch(tReq('/api/teacher/delete', { method: 'POST', body: JSON.stringify({ sid: 'sa1' }) }), env2); j = await r.json();
 ok(j.ok && j.deleted === 2 && rows.length === 1, 'suppression des données d’un élève (droit des parents)');
 r = await worker.fetch(tReq('/api/teacher/nimporte'), env2); ok(r.status === 404, 'route inconnue : 404');
+let blocked = 0; for (let i = 0; i < 14; i++) { const x = await worker.fetch(tReq('/api/teacher/events', { key: 'mauvaise-cle-' + i, ip: '192.0.2.77' }), env2); if (x.status === 429) blocked++; }
+ok(blocked === 4, 'blocage après 10 échecs : ' + blocked + ' refus 429');
+r = await worker.fetch(tReq('/api/teacher/events', { ip: '192.0.2.77' }), env2); ok(r.status === 429, 'IP bloquée même avec la bonne clé');
 console.log('FAILS:', fails); process.exit(fails ? 1 : 0);

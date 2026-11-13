@@ -52,9 +52,28 @@ async function store(env, row) {
 
 const J = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
 
-/* API enseignant : derrière Cloudflare Access (chemin /api/teacher/*). On exige l'en-tête d'Access en plus. */
-async function teacher(request, env, url) {
-  if (!request.headers.get('Cf-Access-Jwt-Assertion')) return J({ error: 'access' }, 403);
+/* API enseignant : protégée par une clé (secret TEACHER_KEY, 12 caractères au moins), jamais écrite dans le dépôt.
+   Sans clé configurée, tout est refusé. Après 10 échecs en 10 minutes, l'adresse IP est bloquée. */
+function sameKey(a, b) {
+  if (a.length !== b.length) return false;
+  let d = 0; for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
+}
+async function teacher(request, env, url, cors) {
+  if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+  const withCors = (r) => { Object.keys(cors).forEach((k) => r.headers.set(k, cors[k])); return r; };
+  const origin = request.headers.get('Origin') || '';
+  if (origin && origin !== clean(env.ALLOWED_ORIGIN, 200)) return withCors(J({ error: 'origin' }, 403));
+  const key = String(env.TEACHER_KEY || '');
+  if (key.length < 12) return withCors(J({ error: 'config' }, 503));
+  const ip = request.headers.get('CF-Connecting-IP') || '', now = Date.now(), fk = 'authfail:' + ip;
+  const fails = (hits.get(fk) || []).filter((t) => now - t < 600000);
+  if (fails.length >= 10) return withCors(J({ error: 'rate' }, 429));
+  const m = /^Bearer (.+)$/.exec(request.headers.get('Authorization') || '');
+  if (!m || !sameKey(m[1], key)) { fails.push(now); hits.set(fk, fails); return withCors(J({ error: 'auth' }, 401)); }
+  return withCors(await teacherApi(request, env, url));
+}
+async function teacherApi(request, env, url) {
   if (!env.DB) return J({ error: 'db' }, 503);
   const path = url.pathname;
   if (request.method === 'GET' && path === '/api/teacher/events') {
@@ -111,7 +130,8 @@ export function format(p, cf, ip) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname.indexOf('/api/teacher/') === 0) return teacher(request, env, url);
+    const allowed0 = clean(env.ALLOWED_ORIGIN, 200);
+    if (url.pathname.indexOf('/api/teacher/') === 0) return teacher(request, env, url, { 'Access-Control-Allow-Origin': allowed0 || 'null', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Vary': 'Origin' });
     const origin = request.headers.get('Origin') || '';
     const allowed = clean(env.ALLOWED_ORIGIN, 200);
     const cors = { 'Access-Control-Allow-Origin': allowed || 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
