@@ -1,0 +1,50 @@
+{
+  "name": "Cours en mouvement",
+  "short_name": "Cours",
+  "description": "Maths, physique-chimie et SVT du collège",
+  "lang": "fr",
+  "dir": "auto",
+  "start_url": "./",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "background_color": "#0d0b14",
+  "theme_color": "#0d0b14",
+  "categories": [
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Maths",
+      "url": "maths.html"
+    },
+    {
+      "name": "Physique-Chimie",
+      "url": "physique-chimie.html"
+    },
+    {
+      "name": "SVT",
+      "url": "svt.html"
+    }
+  ]
+}

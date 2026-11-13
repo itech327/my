@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-QSzbVNr8XnVUE1jM9o2Fe1V9sljeN1ouHsw+ybDtN6o=' 'sha256-Gt5xfVv0PG/4BqO2qCWGuaPbhI4Gzu97p2OccYmBb4s='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-apqe1d6MNnjoCesgcfrGwllvMUHt0pLFHD+CqvGtRVs=' 'sha256-Gt5xfVv0PG/4BqO2qCWGuaPbhI4Gzu97p2OccYmBb4s='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.">
 <link rel="canonical" href="https://taalim.men/svt.html">
 <meta name="theme-color" content="#0d0b14">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">
 <meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">
 <meta property="og:title" content="SVT en mouvement : cours de la 3e année du collège"><meta property="og:description" content="Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe."><meta property="og:url" content="https://taalim.men/svt.html">
 <meta name="twitter:card" content="summary">
@@ -1269,6 +1272,11 @@ document.addEventListener('click',function(e){
     $('#lab-skip', modal).addEventListener('click', function () { try { sessionStorage.setItem('lab_skip', '1'); } catch (_) {} closeModal(); render(); });
   }
   Lab.openStart = openStart;
+
+  /* ---------- application installable et hors ligne ---------- */
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
 
   /* ---------- barre de session ---------- */
   var bar = null;

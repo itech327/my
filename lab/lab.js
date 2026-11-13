@@ -640,6 +640,11 @@
   }
   Lab.openStart = openStart;
 
+  /* ---------- application installable et hors ligne ---------- */
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
+
   /* ---------- barre de session ---------- */
   var bar = null;
   function render() {

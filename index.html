@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8J4PH9bpiXWRbGze3jnyMmlrBoW98tBTvuooUvX2rJE=' 'sha256-wsLN2IOnkgKT9lEsblesfXG9ZLCJb2dxOrmL0DPvUYU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-8J4PH9bpiXWRbGze3jnyMmlrBoW98tBTvuooUvX2rJE=' 'sha256-G1qC6a6RKRnRwI1jq1EZNbjiGMUhlwfQq5mq/X+S9FI='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux.">
 <link rel="canonical" href="https://taalim.men/">
 <meta name="theme-color" content="#0d0b14">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">
 <meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">
 <meta property="og:title" content="Cours en mouvement : maths, physique-chimie et SVT du collège"><meta property="og:description" content="Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux."><meta property="og:url" content="https://taalim.men/">
 <meta name="twitter:card" content="summary">
@@ -52,6 +55,11 @@ a.card .ar{font-size:15px;color:var(--lav)}
     <a class="card" href="svt.html"><strong>SVT en mouvement</strong><span>3<sup>e</sup> année · nutrition et santé</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض</span></a>
   </div>
   <div class="row"><button class="btn" id="go-start" type="button">Démarrer une session</button><button class="btn ghost" id="go-report" type="button">Mon rapport</button></div>
+  <div class="box" id="pwa" hidden>
+    <p><b>Installer l’application.</b> <span id="pwa-ios" hidden>Sur iPhone : bouton Partager, puis « Sur l’écran d’accueil ». </span>Elle s’ouvre en plein écran et marche sans connexion.</p>
+    <p class="ar" lang="ar" dir="rtl">ثبّت التطبيق على هاتفك. يفتح بملء الشاشة ويعمل بدون إنترنت.</p>
+    <div class="row"><button class="btn" id="pwa-btn" type="button" hidden>Installer · تثبيت</button></div>
+  </div>
   <div class="box">
     <p><b>Exercices par niveaux.</b> Dans chaque chapitre, la dernière leçon « Défis » propose Facile, Moyen, Difficile, Défi chronométré et un mode adaptatif.</p>
     <p class="ar" lang="ar" dir="rtl">في كل فصل، الدرس الأخير «Défis» يحتوي على تمارين: سهل، متوسط، صعب، تحدٍّ بمؤقّت، ونمط تكيّفي.</p>
@@ -63,6 +71,15 @@ a.card .ar{font-size:15px;color:var(--lav)}
 <script src="lab/lab.js"></script>
 <script>
 document.getElementById('go-start').addEventListener('click',function(){var s=Lab.Session.cur();if(s)Lab.openReport(s);else Lab.openStart();});
+(function(){
+  var box=document.getElementById('pwa'),btn=document.getElementById('pwa-btn'),dp=null;
+  var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+  if(standalone||!/^https?:$/.test(location.protocol))return;
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;box.hidden=false;btn.hidden=false;});
+  btn.addEventListener('click',function(){if(!dp)return;dp.prompt();dp.userChoice.then(function(){dp=null;box.hidden=true;});});
+  window.addEventListener('appinstalled',function(){box.hidden=true;});
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent)){box.hidden=false;document.getElementById('pwa-ios').hidden=false;}
+})();
 document.getElementById('go-report').addEventListener('click',function(){var s=Lab.Session.cur()||Lab.Session.hist()[0];if(s)Lab.openReport(s);else Lab.openStart();});
 </script>
 </body>

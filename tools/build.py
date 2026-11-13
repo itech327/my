@@ -116,6 +116,9 @@ def harden(name, html):
              '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
              '<meta name="description" content="' + desc + '">\n<link rel="canonical" href="' + url + '">\n'
              '<meta name="theme-color" content="#0d0b14">\n<link rel="icon" href="' + FAVICON + '">\n'
+             '<link rel="manifest" href="manifest.webmanifest">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
+             '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">'
+             '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">\n'
              '<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">\n'
              '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '"><meta property="og:url" content="' + url + '">\n'
              '<meta name="twitter:card" content="summary">\n<!--/gen:head-->\n')
@@ -128,7 +131,10 @@ hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',
        '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()',
        '  Cross-Origin-Opener-Policy: same-origin', '  Strict-Transport-Security: max-age=31536000; includeSubDomains', '',
        '/fonts/*', '  Cache-Control: public, max-age=31536000, immutable', '',
-       '/lab/notify-config.js', '  Cache-Control: no-cache', '']
+       '/lab/notify-config.js', '  Cache-Control: no-cache', '',
+       '/sw.js', '  Cache-Control: no-cache', '  Service-Worker-Allowed: /', '',
+       '/manifest.webmanifest', '  Content-Type: application/manifest+json', '  Cache-Control: no-cache', '',
+       '/icons/*', '  Cache-Control: public, max-age=604800', '']
 today = datetime.date.today().isoformat()
 urls = []
 for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']:
@@ -139,6 +145,22 @@ for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'co
     hdr.append('')
     urls.append(SITE if name == 'index.html' else SITE + name)
 wr('_headers', '\n'.join(hdr))
+
+import json
+pages = ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']
+wr('manifest.webmanifest', json.dumps({
+    'name': 'Cours en mouvement', 'short_name': 'Cours', 'description': 'Maths, physique-chimie et SVT du collège',
+    'lang': 'fr', 'dir': 'auto', 'start_url': './', 'scope': './', 'id': './', 'display': 'standalone',
+    'background_color': '#0d0b14', 'theme_color': '#0d0b14', 'categories': ['education'],
+    'icons': [{'src': 'icons/icon-192.png', 'sizes': '192x192', 'type': 'image/png', 'purpose': 'any'},
+              {'src': 'icons/icon-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'any'},
+              {'src': 'icons/icon-maskable-512.png', 'sizes': '512x512', 'type': 'image/png', 'purpose': 'maskable'}],
+    'shortcuts': [{'name': 'Maths', 'url': 'maths.html'}, {'name': 'Physique-Chimie', 'url': 'physique-chimie.html'}, {'name': 'SVT', 'url': 'svt.html'}],
+}, ensure_ascii=False, indent=2) + '\n')
+fonts_list = sorted('fonts/' + f for f in os.listdir(os.path.join(ROOT, 'fonts')))
+core = ['./'] + [n[:-5] for n in pages[1:]] + ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'lab/lab.js', 'lab/notify-config.js'] + fonts_list
+ver = hashlib.sha256(''.join(rd(n) for n in pages).encode('utf8') + rd('lab/notify-config.js').encode('utf8') + ''.join(fonts_list).encode('utf8')).hexdigest()[:10]
+wr('sw.js', rd('tools/sw.template.js').replace('__VERSION__', ver).replace('__CORE__', json.dumps(core)))
 wr('robots.txt', 'User-agent: *\nAllow: /\n\nSitemap: ' + SITE + 'sitemap.xml\n')
 wr('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
    ''.join('  <url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, today) for u in urls) + '</urlset>\n')
