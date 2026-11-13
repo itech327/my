@@ -408,7 +408,8 @@ ui.quiz=function(el,Q){
           var right=oi===it.a;if(!right)b.classList.add('ko');
           fb.innerHTML=(right?'Exact. ':'Faux. ')+it.e;
           done++;if(right)good++;
-          if(done===Q.length){score.textContent='Score : '+good+' / '+Q.length;rs.hidden=false}
+          if(window.Lab&&Lab.record)Lab.record(d,{ok:right,d:1,q:it.q,given:t,right:it.o[it.a],topic:'quiz'});
+          if(done===Q.length){score.textContent='Score : '+good+' / '+Q.length;rs.hidden=false;if(window.Lab&&Lab.seriesDone)Lab.seriesDone(box,{d:1,good:good,asked:Q.length})}
         });
         ob.appendChild(b);return b;
       });

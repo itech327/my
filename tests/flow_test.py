@@ -60,12 +60,10 @@ with sync_playwright() as p:
     else:
         print('SKIP touches : question QCM')
     # barre de session réductible
-    full = pg.locator('.lab-bar2').bounding_box()['width']
-    pg.locator('.lab-bar2 [data-a=tog]').click(); pg.wait_for_timeout(100)
     small = pg.locator('.lab-bar2').bounding_box()['width']
-    check(small < full * 0.7 and pg.evaluate("getComputedStyle(document.body).paddingBottom") == '96px', 'barre réduite : %d -> %d px, marge basse 96px' % (full, small))
+    check(small < 200 and pg.evaluate("getComputedStyle(document.body).paddingBottom") == '96px', 'barre réduite par défaut : %d px, marge basse 96px' % small)
     pg.locator('.lab-bar2 [data-a=tog]').click(); pg.wait_for_timeout(100)
-    check(pg.locator('.lab-bar2').bounding_box()['width'] > small, 'barre rouverte')
+    check(pg.locator('.lab-bar2').bounding_box()['width'] > small + 100, 'barre agrandie au toucher')
     ctx.close(); b.close()
 print('FAILS:', len(fails))
 sys.exit(1 if fails else 0)

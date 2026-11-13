@@ -1332,7 +1332,8 @@ ui.quiz=function(el,Q){
           var right=oi===it.a;if(!right)b.classList.add('ko');
           fb.innerHTML=(right?'Exact. ':'Faux. ')+it.e;
           done++;if(right)good++;
-          if(done===Q.length){score.textContent='Score : '+good+' / '+Q.length;rs.hidden=false}
+          if(window.Lab&&Lab.record)Lab.record(d,{ok:right,d:1,q:it.q,given:t,right:it.o[it.a],topic:'quiz'});
+          if(done===Q.length){score.textContent='Score : '+good+' / '+Q.length;rs.hidden=false;if(window.Lab&&Lab.seriesDone)Lab.seriesDone(box,{d:1,good:good,asked:Q.length})}
         });
         ob.appendChild(b);return b;
       });
@@ -2207,6 +2208,24 @@ window.addEventListener('load',function(){
   Lab.mount = mount;
 
   /* ---------- hook sur les chapitres ---------- */
+  /* exercices et quiz hors du composant Défis (Collège pionnier, « Je m'entraîne ») : enregistrés dans la session */
+  function chapOf(el) {
+    var ch = el && el.closest ? el.closest('.chapter') : null;
+    return { id: ch ? ch.id : '', title: ch && ch.querySelector('h2') ? ch.querySelector('h2').textContent : '' };
+  }
+  Lab.record = function (el, r) {
+    try {
+      var c = chapOf(el), d = r.d || 1;
+      Sess.log({ app: CFG.app, chap: c.id, title: c.title, topic: r.topic || 'cours', d: d, ok: !!r.ok, pts: r.ok ? (LV[d] ? LV[d].pts : 1) * (r.hint ? 0.5 : 1) : 0, hint: !!r.hint, ms: 0, q: plain(r.q || '').slice(0, 220), given: String(r.given == null ? '' : r.given).slice(0, 60), right: plain(r.right || '').slice(0, 80), late: false });
+    } catch (_) {}
+  };
+  Lab.seriesDone = function (el, r) {
+    try {
+      var c = chapOf(el), d = r.d || 1, asked = Math.max(1, r.asked), pp = LV[d] ? LV[d].pts : 1;
+      Notify.series({ app: CFG.app, chap: c.id, title: c.title, d: d, good: r.good, asked: asked, pct: Math.round(100 * r.good / asked), pts: Math.round(r.good * pp * 10) / 10, max: asked * pp, timeout: false });
+    } catch (_) {}
+  };
+
   Lab.install = function (NS) {
     var orig = NS.chapter;
     NS.chapter = function (c) {
@@ -2274,7 +2293,7 @@ window.addEventListener('load',function(){
     bar.classList.toggle('min', isMin());
     document.body.classList.add('lab-has-bar');
   }
-  function isMin() { try { return sessionStorage.getItem('lab_barmin') === '1'; } catch (_) { return false; } }
+  function isMin() { try { return sessionStorage.getItem('lab_barmin') !== '0'; } catch (_) { return true; } }
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest ? e.target.closest('[data-a]') : null;
     if (!b || !bar || !bar.contains(b)) return;
@@ -6152,6 +6171,7 @@ function card(it,o){
   function finish(ok,text){
     over=true;fb.innerHTML=text;d.classList.add(ok?'is-ok':'is-ko');
     if(hb)hb.disabled=true;
+    if(window.Lab&&Lab.record)Lab.record(d,{ok:ok,d:o.d||it._d||(o.mode==='guided'?1:2),q:it.q,right:(it.t==='num'?it.sol:it.o[it.a]),hint:!hint.hidden,topic:it.key||'pionnier'});
     if(o.done)o.done(ok);
   }
   function showHint(){hint.hidden=false}
@@ -6220,10 +6240,11 @@ function series(el,o){
     box.replaceChildren();msg.textContent='';upd();
     var done=0,good=0,items=genSet(o.keys,s,n);
     items.forEach(function(it,i){
-      var c=card(it,{mode:'solo',done:function(ok){
+      var c=card(it,{mode:'solo',d:s,done:function(ok){
         done++;if(ok)good++;
         if(done===n){
           var star=good>=thr;
+          if(window.Lab&&Lab.seriesDone)Lab.seriesDone(box,{d:s,good:good,asked:n});
           if(star){earn(o.id,s);upd()}
           msg.innerHTML='<b>'+good+' bonne'+(good>1?'s':'')+' réponse'+(good>1?'s':'')+' sur '+n+'.</b> '+(star?'Bravo, tu gagnes l’étoile du niveau '+s+'.':'Relis l’exemple de « Je regarde », puis lance une nouvelle série.');
           if(o.after)o.after(good,n);
@@ -6412,11 +6433,12 @@ P.evalPage=function(d){
       function build(){
         box.replaceChildren();msg.textContent='';showBest();
         var done=0,good=0,items=[],lv=[1,1,2,2,2,3,3,2];
-        lv.forEach(function(s,i){items.push(M.genItem(d.keys[i%d.keys.length],s))});
+        lv.forEach(function(s,i){var q0=M.genItem(d.keys[i%d.keys.length],s);q0._d=s;items.push(q0)});
         items.forEach(function(it){
           box.appendChild(card(it,{mode:'solo',done:function(ok){
             done++;if(ok)good++;
             if(done===8){
+              if(window.Lab&&Lab.seriesDone)Lab.seriesDone(box,{d:2,good:good,asked:8});
               if(P.get('ev:'+d.id,-1)<good)P.set('ev:'+d.id,good);
               showBest();
               msg.innerHTML='<b>Score : '+good+' / 8.</b> '+(good>=7?'Maîtrise solide : tu peux passer à la période suivante et essayer les ★★★.':(good>=5?'Tu progresses. Refais les séquences où tu as hésité.':'Reprends les séquences de la période avec « Je regarde » puis « Nous faisons ».'));
