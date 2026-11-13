@@ -24,7 +24,7 @@ export function format(p, cf, ip) {
   const type = clean(p.type, 10), page = clean(p.page, 40), name = clean(p.name, 60);
   const lv = ['سهل', 'متوسط', 'صعب', 'تحدّي'];
   const place = (c) => [clean(c.city, 40), clean(c.region, 40), clean(c.country, 40)].filter(Boolean).join('، ');
-  if (type === 'open') return '👀 فتح صفحة\n' + page + (name ? '\nالاسم: ' + name : '\n(زائر مجهول)');
+  if (type === 'open') return '👀 فتح صفحة\n' + page + (name ? '\nالاسم: ' + name : '\n(زائر مجهول)') + (cf && cf.country ? '\nالبلد: ' + clean(cf.country, 10) : '');
   const who = () => {
     const seen = [clean(p.ip, 45) && 'IP: ' + clean(p.ip, 45), place(p) && 'المدينة: ' + place(p) + (p.cityApprox ? ' (تقريبية)' : ''), clean(p.isp, 60) && 'المزوّد: ' + clean(p.isp, 60)].filter(Boolean);
     return ['الاسم: ' + name, 'الجهاز: ' + clean(p.device, 120)].concat(seen);
