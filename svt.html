@@ -715,6 +715,11 @@ document.addEventListener('click',function(e){
     '.lab-bar2 b{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}',
     '.lab-bar2 button{font:inherit;font-size:13px;font-weight:600;color:var(--fg);background:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;min-height:34px;cursor:pointer}',
     '.lab-bar2 button:hover{border-color:var(--teal)}',
+    '.lab-bar2{bottom:calc(12px + env(safe-area-inset-bottom,0px));opacity:.96}',
+    '.lab-bar2.min{padding:4px 8px;gap:4px;border-radius:999px}',
+    '.lab-bar2.min b,.lab-bar2.min button:not([data-a=tog]){display:none}',
+    '.lab-bar2 [data-a=tog]{min-width:34px;padding:4px 8px}',
+    'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
     '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
@@ -759,7 +764,7 @@ document.addEventListener('click',function(e){
     '  body.lab-printing .rp-wide,body.lab-printing .lab-noprint,body.lab-printing .rp-top{display:none!important}',
     '  body.lab-printing .rp-card,body.lab-printing .rp-wrong,body.lab-printing tr{break-inside:avoid}',
     '}',
-    '@media (max-width:520px){.rp-bar{grid-template-columns:80px 1fr 70px}.lab-bar2{right:12px}}'
+    '@media (max-width:520px){.rp-bar{grid-template-columns:80px 1fr 70px}.lab-bar2{right:12px}.lab-bar2.min{right:auto}}'
   ].join('\n');
   document.head.appendChild(h('style', { id: 'lab-css' }, css));
 
@@ -1205,17 +1210,21 @@ document.addEventListener('click',function(e){
     if (!bar) { bar = h('div', { 'class': 'lab-bar2 lab-noprint', role: 'region', 'aria-label': 'Session' }); document.body.appendChild(bar); }
     var s = Sess.cur();
     if (!s) {
-      bar.innerHTML = '<span class="lab-dot off"></span><span>Sans session</span><button type="button" data-a="start">Démarrer</button>' + (Sess.hist().length ? '<button type="button" data-a="last">Dernier rapport</button>' : '');
+      bar.innerHTML = '<span class="lab-dot off"></span><span>Sans session</span><button type="button" data-a="start">Démarrer</button>' + (Sess.hist().length ? '<button type="button" data-a="last">Dernier rapport</button>' : '') + '<button type="button" data-a="tog" aria-label="Réduire ou agrandir la barre">' + (isMin() ? '▴' : '▾') + '</button>';
     } else {
       var st = stats(s);
-      bar.innerHTML = '<span class="lab-dot"></span><b>' + esc(s.name) + '</b><span>' + st.ok + '/' + st.n + '</span><button type="button" data-a="rep">Rapport</button><button type="button" data-a="end">Terminer</button>';
+      bar.innerHTML = '<span class="lab-dot"></span><b>' + esc(s.name) + '</b><span>' + st.ok + '/' + st.n + '</span><button type="button" data-a="rep">Rapport</button><button type="button" data-a="end">Terminer</button><button type="button" data-a="tog" aria-label="Réduire ou agrandir la barre">' + (isMin() ? '▴' : '▾') + '</button>';
     }
+    bar.classList.toggle('min', isMin());
+    document.body.classList.add('lab-has-bar');
   }
+  function isMin() { try { return sessionStorage.getItem('lab_barmin') === '1'; } catch (_) { return false; } }
   document.addEventListener('click', function (e) {
     var b = e.target && e.target.closest ? e.target.closest('[data-a]') : null;
     if (!b || !bar || !bar.contains(b)) return;
     var a = b.getAttribute('data-a');
-    if (a === 'start') openStart();
+    if (a === 'tog') { try { sessionStorage.setItem('lab_barmin', isMin() ? '0' : '1'); } catch (_) {} render(); }
+    else if (a === 'start') openStart();
     else if (a === 'rep') openReport(Sess.cur());
     else if (a === 'last') openReport(Sess.hist()[0]);
     else if (a === 'end') { if (confirm('Terminer la session et voir le rapport ? · إنهاء الجلسة وعرض التقرير؟')) openReport(Sess.end()); }
