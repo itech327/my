@@ -76,6 +76,7 @@ a.chap small{color:var(--teal)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .chip{font-family:var(--f-math);font-style:italic;font-size:17px;padding:5px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);font-variant-numeric:tabular-nums}
 .chip.plain{font-style:normal;font-family:var(--f-body);font-size:15px}
+.srow[hidden]{display:none}
 .srow{display:grid;grid-template-columns:1fr auto;gap:0 12px;align-items:baseline;margin:10px 0 14px}
 .srow .sname{grid-area:1/1;min-width:0}
 .srow output{grid-area:1/2}
@@ -578,21 +579,24 @@ function makeHandles(svg,pts,b,onMove){
       ['Statistiques',ST]
     ]),
     2:mk([
-      ['Nombres rationnels : introduction',N],
-      ['Nombres rationnels : somme et différence',N],
-      ['Nombres rationnels : produit et quotient',N],
-      ['Puissances',N],
-      ['Calcul littéral',N],
-      ['Équations',N],
-      ['Ordre et opérations',N],
-      ['Symétrie axiale',G],
-      ['Droites remarquables dans un triangle',G,'#l3'],
-      ['Triangle et parallèles',G],
-      ['Triangle rectangle et cercle',G],
-      ['Vecteurs et translation',G],
-      ['Prisme droit et cône de révolution',G],
-      ['Proportionnalité',ST],
-      ['Statistiques',ST]
+      ['Introduction des nombres rationnels',N,'#c2-1'],
+      ['Addition et soustraction des nombres rationnels',N,'#c2-2'],
+      ['Symétrie axiale',G,'#c2-8'],
+      ['Multiplication et division des nombres rationnels',N,'#c2-3'],
+      ['Triangle et parallèles',G,'#c2-10'],
+      ['Les quatre opérations sur les nombres rationnels',N,'#c2-16'],
+      ['Droites remarquables dans un triangle',G,'#c2-9'],
+      ['Puissances',N,'#c2-4'],
+      ['Calcul littéral',N,'#c2-5'],
+      ['Triangle rectangle et cercle',G,'#c2-11'],
+      ['Théorème de Pythagore',G,'#c2-17'],
+      ['Cosinus d’un angle aigu',G,'#c2-18'],
+      ['Équations',N,'#c2-6'],
+      ['Vecteurs et translations',G,'#c2-12'],
+      ['Ordre des nombres rationnels et opérations',N,'#c2-7'],
+      ['Proportionnalité',ST,'#c2-14'],
+      ['Statistique',ST,'#c2-15'],
+      ['Pyramides et cônes de révolution',G,'#c2-13']
     ]),
     3:mk([
       ['Racines carrées',N],
@@ -625,7 +629,7 @@ function makeHandles(svg,pts,b,onMove){
       var a=document.createElement('strong');a.textContent=c.t;
       var b=document.createElement('small');b.textContent=ok?'Disponible · '+c.d:c.d+' · bientôt';
       el.appendChild(a);
-      var at=window.MMar&&window.MMar.card(lv,c.n);
+      var at=window.MMar&&window.MMar.card(lv,c.n,href);
       if(at){var ar=document.createElement('span');ar.className='ar-t';ar.dir='rtl';ar.lang='ar';ar.textContent=at;el.appendChild(ar)}
       el.appendChild(b);box.appendChild(el);
     });
@@ -2317,7 +2321,7 @@ function ratAxis(el,two){
   }
   draw();
 }
-M.chapter({id:'c2-1',eyebrow:'2<sup>e</sup> année · Chapitre 1 · Numérique',title:'Nombres rationnels : introduction',
+M.chapter({id:'c2-1',eyebrow:'2<sup>e</sup> année · Chapitre 1 · Numérique',title:'Introduction des nombres rationnels',
   lessons:[
     {short:'Repérer un rationnel',title:'Repérer un nombre rationnel',intro:'Un rationnel s’écrit comme une fraction dont le numérateur est un entier relatif. Change les curseurs : les petits traits partagent chaque unité en parts égales.',build:function(el){ratAxis(el,false)},
       retenir:['Un <b>nombre rationnel</b> est un nombre qui s’écrit <span class="math">a/b</span> avec a entier relatif et b entier non nul.','Le point d’abscisse <span class="math">−a/b</span> est le symétrique du point d’abscisse <span class="math">a/b</span> par rapport à 0 : ces deux nombres sont <b>opposés</b>.','La distance à zéro de <span class="math">a/b</span> est toujours positive.']},
@@ -2360,7 +2364,7 @@ function sommeRat(el){
   }
   draw();
 }
-M.chapter({id:'c2-2',eyebrow:'2<sup>e</sup> année · Chapitre 2 · Numérique',title:'Nombres rationnels : somme et différence',
+M.chapter({id:'c2-2',eyebrow:'2<sup>e</sup> année · Chapitre 2 · Numérique',title:'Addition et soustraction des nombres rationnels',
   lessons:[
     {short:'Additionner et soustraire',title:'Somme et différence de deux rationnels',intro:'On se place au même dénominateur, puis on additionne les numérateurs. Les flèches montrent le déplacement sur la droite graduée.',build:sommeRat,
       retenir:['Pour additionner ou soustraire deux rationnels, on les met d’abord au <b>même dénominateur</b>.','<span class="math">a/c + b/c = (a + b)/c</span> et <span class="math">a/c − b/c = (a − b)/c</span>.','Soustraire un nombre, c’est ajouter son opposé : <span class="math">x − y = x + (−y)</span>.','On simplifie le résultat quand c’est possible.']}
@@ -2412,7 +2416,7 @@ function quotientRat(el){
   }
   draw();
 }
-M.chapter({id:'c2-3',eyebrow:'2<sup>e</sup> année · Chapitre 3 · Numérique',title:'Nombres rationnels : produit et quotient',
+M.chapter({id:'c2-3',eyebrow:'2<sup>e</sup> année · Chapitre 4 · Numérique',title:'Multiplication et division des nombres rationnels',
   lessons:[
     {short:'Produit',title:'Le produit de deux rationnels',intro:'Les colonnes teintées représentent la première fraction, les lignes teintées la seconde. Leur croisement est le produit.',build:produitRat,
       retenir:['<span class="math">a/b × c/d = (a × c)/(b × d)</span> : on multiplie les numérateurs entre eux et les dénominateurs entre eux.','Le signe suit la règle des signes : deux signes différents donnent un produit négatif.']},
@@ -2476,7 +2480,7 @@ function reglesPuiss(el){
   }
   draw();
 }
-M.chapter({id:'c2-4',eyebrow:'2<sup>e</sup> année · Chapitre 4 · Numérique',title:'Puissances',
+M.chapter({id:'c2-4',eyebrow:'2<sup>e</sup> année · Chapitre 8 · Numérique',title:'Puissances',
   lessons:[
     {short:'Définition',title:'Puissance d’un nombre',intro:'Une puissance est un produit répété : <span class="math">aⁿ = a × a × … × a</span> (n facteurs).',build:puissanceDef,
       retenir:['<span class="math">aⁿ = a × a × … × a</span> avec n facteurs égaux à a.','<span class="math">a¹ = a</span> et <span class="math">a⁰ = 1</span> (pour a non nul).','Si a est négatif : aⁿ est positif quand n est pair, négatif quand n est impair.']},
@@ -2530,7 +2534,7 @@ function identites(el){
   }
   draw();
 }
-M.chapter({id:'c2-5',eyebrow:'2<sup>e</sup> année · Chapitre 5 · Numérique',title:'Calcul littéral',
+M.chapter({id:'c2-5',eyebrow:'2<sup>e</sup> année · Chapitre 9 · Numérique',title:'Calcul littéral',
   lessons:[
     {short:'Double distributivité',title:'Développer (a + b)(c + d)',intro:'L’aire du grand rectangle est la somme des aires des quatre petits rectangles.',build:distribution,
       retenir:['<span class="math">(a + b)(c + d) = ac + ad + bc + bd</span>','Chaque terme de la première parenthèse est multiplié par chaque terme de la seconde.']},
@@ -2556,7 +2560,7 @@ M.stepper=function(el,problems){
   }
   draw();
 };
-M.chapter({id:'c2-6',eyebrow:'2<sup>e</sup> année · Chapitre 6 · Numérique',title:'Équations',
+M.chapter({id:'c2-6',eyebrow:'2<sup>e</sup> année · Chapitre 13 · Numérique',title:'Équations',
   lessons:[
     {short:'La balance',title:'Équations avec x des deux côtés',intro:'Chaque plateau porte des boîtes x et des jetons. Cherche la valeur de x qui équilibre la balance, puis regarde la résolution.',
       build:function(el){M.balance(el,[{a:3,b:2,c:1,d:8},{a:5,b:1,c:2,d:10},{a:4,b:3,c:2,d:9},{a:5,b:1,c:3,d:9}])},
@@ -2595,7 +2599,7 @@ function ordre(el){
   }
   draw();
 }
-M.chapter({id:'c2-7',eyebrow:'2<sup>e</sup> année · Chapitre 7 · Numérique',title:'Ordre et opérations',
+M.chapter({id:'c2-7',eyebrow:'2<sup>e</sup> année · Chapitre 15 · Numérique',title:'Ordre des nombres rationnels et opérations',
   lessons:[
     {short:'Ordre, somme et produit',title:'Comparer après une opération',intro:'Déplace a et b, choisis une opération et un nombre k. Compare l’ordre avant et après.',build:ordre,
       retenir:['Si <span class="math">a &lt; b</span> alors <span class="math">a + k &lt; b + k</span> : ajouter le même nombre ne change pas l’ordre.','Si <span class="math">a &lt; b</span> et <span class="math">k &gt; 0</span> alors <span class="math">a×k &lt; b×k</span> : l’ordre est conservé.','Si <span class="math">a &lt; b</span> et <span class="math">k &lt; 0</span> alors <span class="math">a×k &gt; b×k</span> : l’ordre est <b>inversé</b>.']}
@@ -2693,7 +2697,7 @@ function axesFigures(el){
   }
   draw();
 }
-M.chapter({id:'c2-8',eyebrow:'2<sup>e</sup> année · Chapitre 8 · Géométrie',title:'Symétrie axiale',
+M.chapter({id:'c2-8',eyebrow:'2<sup>e</sup> année · Chapitre 3 · Géométrie',title:'Symétrie axiale',
   lessons:[
     {short:'Symétrique d’un point',title:'Symétrique d’un point',intro:'Déplace M, E et F. Le bouton plie la feuille le long de l’axe : M arrive sur M′.',build:symPoint,
       retenir:['M′ est le symétrique de M par rapport à la droite (d) si (d) est la <b>médiatrice</b> du segment [MM′].','Un point de l’axe est son propre symétrique.']},
@@ -2754,7 +2758,7 @@ function reciproqueMilieux(el){
   }
   draw();
 }
-M.chapter({id:'c2-10',eyebrow:'2<sup>e</sup> année · Chapitre 10 · Géométrie',title:'Triangle et parallèles',
+M.chapter({id:'c2-10',eyebrow:'2<sup>e</sup> année · Chapitre 5 · Géométrie',title:'Triangle et parallèles',
   lessons:[
     {short:'Droite des milieux',title:'La droite des milieux',intro:'M et N sont les milieux de deux côtés. Déplace les sommets : (MN) reste parallèle à (BC).',build:droiteMilieux,
       retenir:['Dans un triangle, la droite qui passe par les milieux de deux côtés est <b>parallèle</b> au troisième côté.','Le segment qui joint ces deux milieux mesure la <b>moitié</b> du troisième côté : <span class="math">MN = BC ÷ 2</span>.']},
@@ -2808,7 +2812,7 @@ function reciproqueCercle(el){
   }
   draw();
 }
-M.chapter({id:'c2-11',eyebrow:'2<sup>e</sup> année · Chapitre 11 · Géométrie',title:'Triangle rectangle et cercle',
+M.chapter({id:'c2-11',eyebrow:'2<sup>e</sup> année · Chapitre 10 · Géométrie',title:'Triangle rectangle et cercle',
   lessons:[
     {short:'Cercle circonscrit',title:'Le cercle circonscrit à un triangle rectangle',intro:'[BC] est un diamètre du cercle. Déplace A sur le cercle : l’angle en A reste droit.',build:cercleRect,
       retenir:['Si un triangle est rectangle, alors son <b>cercle circonscrit</b> a pour diamètre l’hypoténuse.','Le centre du cercle est le milieu de l’hypoténuse.','La médiane issue de l’angle droit mesure la moitié de l’hypoténuse : <span class="math">AO = BC ÷ 2</span>.']},
@@ -2878,7 +2882,7 @@ function chasles(el){
   }
   draw();
 }
-M.chapter({id:'c2-12',eyebrow:'2<sup>e</sup> année · Chapitre 12 · Géométrie',title:'Vecteurs et translation',
+M.chapter({id:'c2-12',eyebrow:'2<sup>e</sup> année · Chapitre 14 · Géométrie',title:'Vecteurs et translations',
   lessons:[
     {short:'Translation',title:'La translation',intro:'Déplace A′ pour choisir le vecteur AA′. Tous les points de la figure glissent du même vecteur.',build:translation,
       retenir:['Une <b>translation</b> fait glisser tous les points de la figure de la même façon : même direction, même sens, même longueur.','Un vecteur est caractérisé par sa direction, son sens et sa longueur.','Si B′ est l’image de B et A′ celle de A, alors ABB′A′ est un parallélogramme : <span class="math">AB = A′B′</span>.']},
@@ -2928,17 +2932,37 @@ function cone(el){
   }
   draw();
 }
-M.chapter({id:'c2-13',eyebrow:'2<sup>e</sup> année · Chapitre 13 · Géométrie',title:'Prisme droit et cône de révolution',
+function pyramide(el){
+  var svg=ui.stage(el,400,260,'Pyramide à base carrée'),g=S('g',null,svg),chips=ui.chips(el),s={c:6,h:7};
+  ui.slider(el,{label:'Côté de la base',min:2,max:8,value:6,color:P,fmt:function(v){return v+' cm'}},function(v){s.c=v;draw()});
+  ui.slider(el,{label:'Hauteur',min:2,max:10,value:7,color:C,fmt:function(v){return v+' cm'}},function(v){s.h=v;draw()});
+  function draw(){
+    g.replaceChildren();
+    var u=16,w=s.c*u,k=w*.42,x0=150-w/2,y0=232;
+    var A={x:x0,y:y0},B={x:x0+w,y:y0},C2={x:x0+w+k,y:y0-k*.5},D={x:x0+k,y:y0-k*.5};
+    var ct={x:(A.x+C2.x)/2,y:(A.y+C2.y)/2},Sm={x:ct.x,y:ct.y-s.h*u};
+    var face=function(pts,c,o){S('polygon',{points:M.ptsStr(pts),style:'fill:'+c+';fill-opacity:'+o+';stroke:#fff;stroke-width:2.2;stroke-linejoin:round'},g)};
+    face([Sm,B,C2],'var(--teal)',.5);face([Sm,A,B],'var(--pink)',.5);
+    ln(g,D.x,D.y,A.x,A.y,'#fff',1.4,'4 4');ln(g,D.x,D.y,C2.x,C2.y,'#fff',1.4,'4 4');ln(g,D.x,D.y,Sm.x,Sm.y,'#fff',1.4,'4 4');
+    ln(g,Sm.x,Sm.y,ct.x,ct.y,C,2.4,'5 4');dot(g,ct.x,ct.y,3.5,C);
+    txt(g,'h = '+s.h+' cm',ct.x+12,(Sm.y+ct.y)/2,C,'pl').setAttribute('style','fill:var(--coral);text-anchor:start;font-size:15px');
+    txt(g,'c = '+s.c+' cm',(A.x+B.x)/2,y0+18,P,'wl');
+    var base=s.c*s.c,V=base*s.h/3,ap=Math.sqrt(s.h*s.h+s.c*s.c/4),lat=2*s.c*ap;
+    chips.set('<span class="chip plain">Aire de la base B = '+s.c+'² = <b>'+fmtN(base)+' cm²</b></span><span class="chip plain">Volume = ⅓ × B × h = <b>'+fmt(V)+' cm³</b></span><span class="chip plain">Apothème = √(h² + (c÷2)²) = '+fmt(ap)+' cm</span><span class="chip plain">Aire latérale = 4 × (c × apothème ÷ 2) = <b>'+fmt(lat)+' cm²</b></span>');
+  }
+  draw();
+}
+M.chapter({id:'c2-13',eyebrow:'2<sup>e</sup> année · Chapitre 18 · Géométrie',title:'Pyramides et cônes de révolution',
   lessons:[
-    {short:'Prisme droit',title:'Volume d’un prisme droit',intro:'La base est un triangle. Change ses dimensions et la hauteur du prisme.',build:prismeTri,
-      retenir:['<b>Volume d’un prisme droit</b> = aire de la base × hauteur.','Aire d’un triangle = base × hauteur ÷ 2.','Aire latérale = périmètre de la base × hauteur.']},
+    {short:'Pyramide',title:'Volume et aire d’une pyramide',intro:'La base est un carré. Change son côté et la hauteur de la pyramide.',build:pyramide,
+      retenir:['<b>Volume d’une pyramide</b> : <span class="math">V = ⅓ × B × h</span>, où B est l’aire de la base et h la hauteur.','C’est le tiers du volume du prisme de même base et de même hauteur.','L’aire latérale d’une pyramide régulière est la somme des aires de ses faces triangulaires.']},
     {short:'Cône de révolution',title:'Le cône de révolution',intro:'Le cône est dessiné dans le cylindre de même base et de même hauteur.',build:cone,
       retenir:['Volume d’un cône : <span class="math">V = ⅓ × π × r² × h</span>. C’est le tiers du volume du cylindre de même base et de même hauteur.','La longueur <span class="math">l</span> d’une génératrice vérifie <span class="math">l² = r² + h²</span>.','Aire latérale : <span class="math">π × r × l</span>.']}
   ],
   quiz:[
-    {q:'Une base triangulaire de 12 cm² et un prisme de hauteur 5 cm. Le volume est…',o:['17 cm³','60 cm³','30 cm³','120 cm³'],a:1,e:'V = 12 × 5 = 60 cm³.'},
-    {q:'Un cône et un cylindre ont la même base et la même hauteur. Le volume du cône est…',o:['le double','le tiers','la moitié','le même'],a:1,e:'V(cône) = ⅓ × V(cylindre).'},
-    {q:'Quelle est l’aire d’un triangle de base 6 cm et de hauteur 4 cm ?',o:['24 cm²','10 cm²','12 cm²','6 cm²'],a:2,e:'6 × 4 ÷ 2 = 12 cm².'}
+    {q:'Une pyramide a une base de 36 cm² et une hauteur de 5 cm. Son volume est…',o:['60 cm³','180 cm³','30 cm³','41 cm³'],a:0,e:'V = ⅓ × 36 × 5 = 60 cm³.'},
+    {q:'Une pyramide et un prisme ont la même base et la même hauteur. Le volume de la pyramide est…',o:['le tiers','la moitié','le double','le même'],a:0,e:'V(pyramide) = ⅓ × V(prisme).'},
+    {q:'Un cône et un cylindre ont la même base et la même hauteur. Le volume du cône est…',o:['le tiers','le double','la moitié','le même'],a:0,e:'V(cône) = ⅓ × V(cylindre).'}
   ]});
 
 function partage(el){
@@ -2959,7 +2983,7 @@ function partage(el){
   }
   draw();
 }
-M.chapter({id:'c2-14',eyebrow:'2<sup>e</sup> année · Chapitre 14 · Statistiques et graphiques',title:'Proportionnalité',
+M.chapter({id:'c2-14',eyebrow:'2<sup>e</sup> année · Chapitre 16 · Statistiques et graphiques',title:'Proportionnalité',
   lessons:[
     {short:'Tableau et graphique',title:'Grandeurs proportionnelles',intro:'Change le prix d’un kilogramme. Le tableau et le graphique montrent la même situation.',build:function(el){M.propWidget(el)},
       retenir:['Deux grandeurs sont proportionnelles si l’on passe de l’une à l’autre en multipliant par un <b>coefficient</b> constant.','Leur représentation graphique est formée de points alignés avec l’origine du repère.','<span class="math">y = k × x</span>, où k est le coefficient de proportionnalité.']},
@@ -2988,7 +3012,7 @@ function moyennePond(el){
   }
   draw();
 }
-M.chapter({id:'c2-15',eyebrow:'2<sup>e</sup> année · Chapitre 15 · Statistiques et graphiques',title:'Statistiques',
+M.chapter({id:'c2-15',eyebrow:'2<sup>e</sup> année · Chapitre 17 · Statistiques et graphiques',title:'Statistique',
   lessons:[
     {short:'Effectifs, moyenne',title:'Effectifs, fréquences et moyenne',intro:'Change les effectifs : le tableau, les diagrammes, le mode et la moyenne se mettent à jour.',build:function(el){M.statsWidget(el,{moy:true})},
       retenir:['<b>Moyenne</b> = (somme de toutes les valeurs) ÷ (effectif total).','Avec un tableau d’effectifs : on multiplie chaque valeur par son effectif, on additionne, puis on divise par l’effectif total.','L’<b>étendue</b> est la différence entre la plus grande et la plus petite valeur.']},
@@ -3617,6 +3641,241 @@ M.chapter({id:'c3-6',eyebrow:'3<sup>e</sup> année · Chapitre 6 · Géométrie'
     {q:'ABC est rectangle en A avec AB = 6 et AC = 8. Combien vaut BC ?',o:['10','14','2','100'],a:0,e:'BC² = 36 + 64 = 100, donc BC = 10.'},
     {q:'Un triangle a pour côtés 5, 12 et 13. Est-il rectangle ?',o:['Oui, car 13² = 5² + 12²','Non, car 13 ≠ 5 + 12','Oui, car 5 + 12 > 13','Non, car 12² ≠ 5² + 13²'],a:0,e:'169 = 25 + 144.'},
     {q:'Dans un triangle rectangle, <span class="math">sin α</span> est égal à…',o:['opposé ÷ hypoténuse','adjacent ÷ hypoténuse','opposé ÷ adjacent','hypoténuse ÷ opposé'],a:0,e:'sin = opposé ÷ hypoténuse.'}
+  ]});
+
+/* ================= 2e année : droites remarquables, Pythagore, cosinus, quatre opérations ================= */
+function mid2(A,B){return {x:(A.x+B.x)/2,y:(A.y+B.y)/2}}
+function footOn(Q,A,B){var dx=B.x-A.x,dy=B.y-A.y,t=((Q.x-A.x)*dx+(Q.y-A.y)*dy)/(dx*dx+dy*dy);return {x:A.x+t*dx,y:A.y+t*dy,t:t}}
+function triGeo2(A,B,Cc){
+  var d=2*(A.x*(B.y-Cc.y)+B.x*(Cc.y-A.y)+Cc.x*(A.y-B.y));
+  if(Math.abs(d)<1e-3)return null;
+  var a2=A.x*A.x+A.y*A.y,b2=B.x*B.x+B.y*B.y,c2=Cc.x*Cc.x+Cc.y*Cc.y;
+  var O={x:(a2*(B.y-Cc.y)+b2*(Cc.y-A.y)+c2*(A.y-B.y))/d,y:(a2*(Cc.x-B.x)+b2*(A.x-Cc.x)+c2*(B.x-A.x))/d};
+  var a=M.dist(B,Cc),b=M.dist(A,Cc),c=M.dist(A,B),s=a+b+c;
+  return {O:O,I:{x:(a*A.x+b*B.x+c*Cc.x)/s,y:(a*A.y+b*B.y+c*Cc.y)/s},G:{x:(A.x+B.x+Cc.x)/3,y:(A.y+B.y+Cc.y)/3},H:{x:A.x+B.x+Cc.x-2*O.x,y:A.y+B.y+Cc.y-2*O.y},a:a,b:b,c:c};
+}
+function triKind(t){
+  var q=[t.a*t.a,t.b*t.b,t.c*t.c],mx=Math.max(q[0],q[1],q[2]),df=(q[0]+q[1]+q[2]-mx-mx)/mx;
+  return Math.abs(df)<0.03?'rect':(df<0?'obt':'acu');
+}
+function remarq(kind){
+  return function(el){
+    var names={med:'médiatrices',bis:'bissectrices',hau:'hauteurs',mdn:'médianes'};
+    var svg=ui.stage(el,400,300,'Les trois '+names[kind]+' d’un triangle'),g=S('g',null,svg),chips=ui.chips(el),LC=[P,T,C];
+    var A={x:200,y:50,name:'A',color:P},B={x:78,y:240,name:'B',color:T},Cc={x:332,y:246,name:'C',color:C};
+    var hs=M.makeHandles(svg,[A,B,Cc],{x0:24,x1:376,y0:24,y1:280},function(){draw()});
+    function cm(v){return dec(v/U,1)+' cm'}
+    function draw(){
+      g.replaceChildren();
+      var V=[A,B,Cc],t=triGeo2(A,B,Cc),sides=[[B,Cc,A],[Cc,A,B],[A,B,Cc]],tk;
+      S('polygon',{points:M.ptsStr(V),'class':'tri'},g);
+      if(!t){hs.update();chips.set('<span class="chip plain">Les trois points sont alignés : ce n’est pas un triangle.</span>');return}
+      tk=triKind(t);
+      if(kind==='med'){
+        sides.forEach(function(sd,i){
+          var p=sd[0],q=sd[1],m=mid2(p,q),d=M.unit({x:-(q.y-p.y),y:q.x-p.x});
+          ln(g,m.x-d.x*180,m.y-d.y*180,m.x+d.x*180,m.y+d.y*180,LC[i],2.2);
+          raMark(g,m,M.unit(M.sub(q,p)),d,8,'#fff');
+          dot(g,m.x,m.y,3.5,'#fff');
+        });
+        var R=M.dist(t.O,A);
+        if(R<1500)S('circle',{cx:t.O.x,cy:t.O.y,r:R,style:'fill:none;stroke:var(--lav);stroke-width:2;stroke-dasharray:6 5'},g);
+        V.forEach(function(p){ln(g,t.O.x,t.O.y,p.x,p.y,'#fff',1.3,'4 4')});
+        dot(g,t.O.x,t.O.y,5,'#fff');txt(g,'O',t.O.x+13,t.O.y-9,'#fff','vl');
+        chips.set('<span class="chip plain">OA = <b>'+cm(R)+'</b></span><span class="chip plain">OB = <b>'+cm(M.dist(t.O,B))+'</b></span><span class="chip plain">OC = <b>'+cm(M.dist(t.O,Cc))+'</b></span><span class="chip plain">O est le centre du cercle circonscrit : <b>'+(tk==='acu'?'à l’intérieur':(tk==='rect'?'au milieu de l’hypoténuse':'à l’extérieur'))+'</b></span>');
+      }else if(kind==='bis'){
+        var vs=[[A,B,Cc],[B,Cc,A],[Cc,A,B]],ds=[];
+        vs.forEach(function(v,i){
+          var lp=M.dist(v[0],v[1]),lq=M.dist(v[0],v[2]),f={x:v[1].x+(v[2].x-v[1].x)*lp/(lp+lq),y:v[1].y+(v[2].y-v[1].y)*lp/(lp+lq)};
+          ln(g,v[0].x,v[0].y,f.x,f.y,LC[i],2.2);
+        });
+        [[A,B],[B,Cc],[Cc,A]].forEach(function(sd){
+          var f=footOn(t.I,sd[0],sd[1]);ds.push(M.dist(t.I,f));
+        });
+        S('circle',{cx:t.I.x,cy:t.I.y,r:ds[0],style:'fill:none;stroke:var(--lav);stroke-width:2;stroke-dasharray:6 5'},g);
+        [[A,B],[B,Cc],[Cc,A]].forEach(function(sd){
+          var f=footOn(t.I,sd[0],sd[1]);
+          ln(g,t.I.x,t.I.y,f.x,f.y,'#fff',1.3,'4 4');
+          raMark(g,f,M.unit(M.sub(t.I,f)),M.unit(M.sub(sd[1],sd[0])),7,'#fff');
+        });
+        dot(g,t.I.x,t.I.y,5,'#fff');txt(g,'I',t.I.x+13,t.I.y-9,'#fff','vl');
+        chips.set('<span class="chip plain">d(I ; AB) = <b>'+cm(ds[0])+'</b></span><span class="chip plain">d(I ; BC) = <b>'+cm(ds[1])+'</b></span><span class="chip plain">d(I ; CA) = <b>'+cm(ds[2])+'</b></span><span class="chip plain">I est le centre du cercle inscrit, toujours <b>à l’intérieur</b></span>');
+      }else if(kind==='hau'){
+        sides.forEach(function(sd,i){
+          var p=sd[0],q=sd[1],v=sd[2],f=footOn(v,p,q),dd=M.unit(M.sub(v,f));
+          if(f.t<0)ln(g,p.x,p.y,f.x,f.y,'#fff',1.3,'4 4');
+          else if(f.t>1)ln(g,q.x,q.y,f.x,f.y,'#fff',1.3,'4 4');
+          ln(g,v.x,v.y,f.x,f.y,LC[i],2.2);
+          if(M.dist(v,f)>14)raMark(g,f,dd,M.unit(M.sub(q,p)),8,'#fff');
+        });
+        dot(g,t.H.x,t.H.y,5,'#fff');txt(g,'H',t.H.x+13,t.H.y-9,'#fff','vl');
+        chips.set('<span class="chip plain">Les trois hauteurs passent par <b>le même point H</b></span><span class="chip plain">'+(tk==='acu'?'Triangle acutangle : H est à l’intérieur':(tk==='rect'?'Triangle rectangle : H est le sommet de l’angle droit':'Triangle obtusangle : H est à l’extérieur'))+'</span>');
+      }else{
+        var ms=[mid2(B,Cc),mid2(Cc,A),mid2(A,B)];
+        V.forEach(function(v,i){ln(g,v.x,v.y,ms[i].x,ms[i].y,LC[i],2.2);dot(g,ms[i].x,ms[i].y,3.5,'#fff')});
+        dot(g,t.G.x,t.G.y,5,'#fff');txt(g,'G',t.G.x+13,t.G.y-9,'#fff','vl');
+        var ag=M.dist(A,t.G),aa=M.dist(A,ms[0]);
+        chips.set('<span class="chip plain">AG = <b>'+cm(ag)+'</b></span><span class="chip plain">AA′ = <b>'+cm(aa)+'</b></span><span class="chip plain">AG ÷ AA′ = <b>'+dec(ag/aa,2)+'</b> ≈ ⅔</span><span class="chip plain">G est toujours <b>à l’intérieur</b></span>');
+      }
+      hs.update();
+    }
+    draw();
+  };
+}
+function pythCalc(el){
+  var svg=ui.stage(el,400,260,'Calculer un côté d’un triangle rectangle avec le théorème de Pythagore'),g=S('g',null,svg),info=ui.info(el),s={m:'hyp',a:6,b:8,c:10};
+  ui.tabs(el,[['hyp','Calculer l’hypoténuse'],['cote','Calculer un côté de l’angle droit']],function(k){s.m=k;sets();draw()});
+  var sa=ui.slider(el,{label:'BC',min:2,max:9,value:6,color:T,fmt:function(v){return v+' cm'}},function(v){s.a=v;if(s.m==='cote'&&s.c<=s.a){s.c=s.a+1;sc.set(s.c)}draw()});
+  var sb=ui.slider(el,{label:'AC',min:2,max:9,value:8,color:P,fmt:function(v){return v+' cm'}},function(v){s.b=v;draw()});
+  var sc=ui.slider(el,{label:'Hypoténuse AB',min:3,max:12,value:10,color:L,fmt:function(v){return v+' cm'}},function(v){s.c=v;if(s.c<=s.a){s.a=s.c-1;sa.set(s.a)}draw()});
+  function sets(){sb.el.parentNode.hidden=s.m!=='hyp';sc.el.parentNode.hidden=s.m!=='cote'}
+  function draw(){
+    g.replaceChildren();
+    var a=s.a,b,c,html,r;
+    if(s.m==='hyp'){b=s.b;r=a*a+b*b;c=Math.sqrt(r);
+      html='<p class="big">ABC est rectangle en C, donc AB² = AC² + BC²</p><p class="big">AB² = '+b+'² + '+a+'² = '+(b*b)+' + '+(a*a)+' = '+r+'</p><p class="big">AB = √'+r+(Number.isInteger(c)?' = <b>'+c+' cm</b>':' ≈ <b>'+dec(c,2)+' cm</b>')+'</p>';
+    }else{c=s.c;r=c*c-a*a;b=Math.sqrt(r);
+      html='<p class="big">ABC est rectangle en C, donc AB² = AC² + BC²</p><p class="big">AC² = AB² − BC² = '+c+'² − '+a+'² = '+(c*c)+' − '+(a*a)+' = '+r+'</p><p class="big">AC = √'+r+(Number.isInteger(b)?' = <b>'+b+' cm</b>':' ≈ <b>'+dec(b,2)+' cm</b>')+'</p>';
+    }
+    var u=Math.min(24,190/b,290/a),Cp={x:70,y:222},Bp={x:Cp.x+a*u,y:Cp.y},Ap={x:Cp.x,y:Cp.y-b*u};
+    S('polygon',{points:M.ptsStr([Ap,Bp,Cp]),'class':'tri'},g);
+    ln(g,Cp.x,Cp.y,Bp.x,Bp.y,T,3.4);ln(g,Cp.x,Cp.y,Ap.x,Ap.y,P,3.4);ln(g,Ap.x,Ap.y,Bp.x,Bp.y,L,3.4);
+    raMark(g,Cp,{x:1,y:0},{x:0,y:-1},12,'#fff');
+    txt(g,'C',Cp.x-14,Cp.y+14,'#fff','vl');txt(g,'B',Bp.x+14,Bp.y+14,'#fff','vl');txt(g,'A',Ap.x-14,Ap.y-6,'#fff','vl');
+    txt(g,'BC = '+a,(Cp.x+Bp.x)/2,Cp.y+22,T,'pl');
+    txt(g,s.m==='hyp'?'AC = '+b:'AC = ?',Cp.x-10,(Cp.y+Ap.y)/2,P,'pl').setAttribute('style','fill:var(--pink);text-anchor:end;font-size:15px');
+    txt(g,s.m==='hyp'?'AB = ?':'AB = '+c,(Ap.x+Bp.x)/2+12,(Ap.y+Bp.y)/2-10,L,'pl').setAttribute('style','fill:var(--lav);text-anchor:start;font-size:15px');
+    info.set(html);
+  }
+  sets();draw();
+}
+function cosDef(el){
+  var svg=ui.stage(el,400,270,'Cosinus d’un angle aigu dans un triangle rectangle'),g=S('g',null,svg),chips=ui.chips(el),s={al:40,H:8};
+  ui.slider(el,{label:'Angle α',min:5,max:85,value:40,color:P,fmt:function(v){return v+'°'}},function(v){s.al=v;draw()});
+  ui.slider(el,{label:'Hypoténuse AB',min:4,max:10,value:8,color:L,fmt:function(v){return v+' cm'}},function(v){s.H=v;draw()});
+  function draw(){
+    g.replaceChildren();
+    var adj=s.H*Math.cos(s.al*RAD);
+    trigoTri(g,s.al,s.H,20,['hypoténuse AB = '+s.H,'','adjacent BC = '+dec(adj,2)]);
+    chips.set('<span class="chip plain">cos α = BC ÷ AB = '+dec(adj,2)+' ÷ '+s.H+' = <b>'+dec(adj/s.H,3)+'</b></span><span class="chip plain">Change AB : cos α <b>ne change pas</b></span><span class="chip plain">Change α : cos α <b>diminue quand α augmente</b></span>');
+  }
+  draw();
+}
+function cosCalc(el){
+  var svg=ui.stage(el,400,270,'Calculer une longueur ou un angle avec le cosinus'),g=S('g',null,svg),info=ui.info(el),s={m:'long',al:40,H:8,ad:5};
+  ui.tabs(el,[['long','Calculer une longueur'],['angle','Calculer un angle']],function(k){s.m=k;sets();draw()});
+  var sA=ui.slider(el,{label:'Angle α',min:5,max:85,value:40,color:P,fmt:function(v){return v+'°'}},function(v){s.al=v;draw()});
+  var sH=ui.slider(el,{label:'Hypoténuse AB',min:2,max:10,step:0.5,value:8,color:L,fmt:function(v){return fmtN(v)+' cm'}},function(v){s.H=v;if(s.ad>=v){s.ad=v-0.5;sD.set(s.ad)}draw()});
+  var sD=ui.slider(el,{label:'Côté adjacent BC',min:1,max:9.5,step:0.5,value:5,color:T,fmt:function(v){return fmtN(v)+' cm'}},function(v){s.ad=v;if(s.ad>=s.H){s.H=v+0.5;sH.set(s.H)}draw()});
+  function sets(){sA.el.parentNode.hidden=s.m!=='long';sD.el.parentNode.hidden=s.m!=='angle'}
+  function draw(){
+    g.replaceChildren();
+    var al,H=s.H,html;
+    if(s.m==='long'){
+      al=s.al;var BC=H*Math.cos(al*RAD);
+      trigoTri(g,al,H,20,['AB = '+fmtN(H),'','BC = ?']);
+      html='<p class="big">cos '+al+'° = BC ÷ AB</p><p class="big">BC = AB × cos '+al+'° = '+fmtN(H)+' × '+dec(Math.cos(al*RAD),3)+' ≈ <b>'+dec(BC,2)+' cm</b></p>';
+    }else{
+      var ratio=Math.min(s.ad/H,0.999);al=Math.acos(ratio)*DEG;
+      trigoTri(g,al,H,20,['AB = '+fmtN(H),'','BC = '+fmtN(s.ad)]);
+      html='<p class="big">cos α = BC ÷ AB = '+fmtN(s.ad)+' ÷ '+fmtN(H)+' ≈ '+dec(ratio,3)+'</p><p class="big">α = cos⁻¹('+dec(ratio,3)+') ≈ <b>'+dec(al,1)+'°</b></p><p>Sur la calculatrice, on utilise la touche cos⁻¹ (ou arccos), en mode degrés.</p>';
+    }
+    info.set(html);
+  }
+  sets();draw();
+}
+function F4(n,d){return '<span class="fr"><span>'+n+'</span><span>'+d+'</span></span>'}
+function ops4(el){
+  var X=[
+    {e:F4(1,2)+' + '+F4(3,4)+' × '+F4(2,3),st:[['On effectue d’abord la multiplication : elle est prioritaire sur l’addition.',F4(3,4)+' × '+F4(2,3)+' = '+F4(6,12)+' = '+F4(1,2)],['On additionne.',F4(1,2)+' + '+F4(1,2)+' = <b>1</b>']]},
+    {e:'('+F4(2,3)+' − '+F4(1,2)+') ÷ '+F4(5,6),st:[['On calcule d’abord la parenthèse, avec le même dénominateur.',F4(2,3)+' − '+F4(1,2)+' = '+F4(4,6)+' − '+F4(3,6)+' = '+F4(1,6)],['Diviser par une fraction, c’est multiplier par son inverse.',F4(1,6)+' ÷ '+F4(5,6)+' = '+F4(1,6)+' × '+F4(6,5)+' = '+F4(6,30)],['On simplifie.',F4(6,30)+' = <b>'+F4(1,5)+'</b>']]},
+    {e:'−'+F4(3,4)+' × ('+F4(1,2)+' − '+F4(2,3)+') + '+F4(1,3),st:[['Parenthèse d’abord.',F4(1,2)+' − '+F4(2,3)+' = '+F4(3,6)+' − '+F4(4,6)+' = −'+F4(1,6)],['Puis la multiplication : moins par moins donne plus.','−'+F4(3,4)+' × (−'+F4(1,6)+') = +'+F4(3,24)+' = '+F4(1,8)],['Enfin l’addition, avec le dénominateur 24.',F4(1,8)+' + '+F4(1,3)+' = '+F4(3,24)+' + '+F4(8,24)+' = <b>'+F4(11,24)+'</b>']]},
+    {e:'(−'+F4(5,6)+' + '+F4(1,3)+') ÷ (−'+F4(1,4)+')',st:[['Première parenthèse, avec le dénominateur 6.','−'+F4(5,6)+' + '+F4(2,6)+' = −'+F4(3,6)+' = −'+F4(1,2)],['Diviser par −'+F4(1,4)+', c’est multiplier par −4.','−'+F4(1,2)+' × (−4) = +'+F4(4,2)],['On simplifie.','<b>2</b>']]}
+  ],k=0,n=0,info;
+  ui.tabs(el,[['0','Exemple 1'],['1','Exemple 2'],['2','Exemple 3'],['3','Exemple 4']],function(v){k=+v;n=0;draw()});
+  var ctl=ui.controls(el);
+  ui.btn(ctl,'Étape suivante',function(){if(n<X[k].st.length){n++;draw()}});
+  ui.btn(ctl,'Recommencer',function(){n=0;draw()});
+  info=ui.info(el);
+  function draw(){
+    var h2='<p class="big">Calcule : '+X[k].e+'</p>',i;
+    for(i=0;i<n;i++)h2+='<p><b>Étape '+(i+1)+'.</b> '+X[k].st[i][0]+'</p><p class="big">'+X[k].st[i][1]+'</p>';
+    if(n===0)h2+='<p>Appuie sur « Étape suivante » pour dérouler le calcul.</p>';
+    else if(n===X[k].st.length)h2+='<p><b>Calcul terminé.</b></p>';
+    info.set(h2);
+  }
+  draw();
+}
+function distrib(el){
+  var s={a:3,b:4,c:-2},info=ui.info(el);
+  function par(x){return x<0?'('+sg(x)+')':String(x)}
+  ui.slider(el,{label:'a',min:-8,max:8,value:3,color:P},function(v){s.a=v;draw()});
+  ui.slider(el,{label:'b',min:-8,max:8,value:4,color:T},function(v){s.b=v;draw()});
+  ui.slider(el,{label:'c',min:-8,max:8,value:-2,color:C},function(v){s.c=v;draw()});
+  function draw(){
+    var a=s.a,b=s.b,c=s.c,l=a*(b+c),r=a*b+a*c;
+    info.set('<p class="big">a × (b + c) = '+par(a)+' × ('+par(b)+' + '+par(c)+') = '+par(a)+' × '+par(b+c)+' = <b>'+sg(l)+'</b></p><p class="big">a × b + a × c = '+par(a)+' × '+par(b)+' + '+par(a)+' × '+par(c)+' = '+par(a*b)+' + '+par(a*c)+' = <b>'+sg(r)+'</b></p><p><b>Les deux résultats sont égaux : '+sg(l)+' = '+sg(r)+'.</b> La multiplication se distribue sur l’addition.</p>');
+  }
+  draw();
+}
+M.chapter({id:'c2-9',eyebrow:'2<sup>e</sup> année · Chapitre 7 · Géométrie',title:'Droites remarquables dans un triangle',
+  lessons:[
+    {short:'Médiatrices',title:'Les médiatrices et le cercle circonscrit',intro:'Déplace les sommets. Les trois médiatrices se coupent toujours en un point O, à égale distance des trois sommets.',build:remarq('med'),
+      retenir:['La <b>médiatrice</b> d’un segment est la droite perpendiculaire à ce segment en son milieu.','Les trois médiatrices d’un triangle sont <b>concourantes</b> en O.','O est le centre du <b>cercle circonscrit</b> : <span class="math">OA = OB = OC</span>.']},
+    {short:'Bissectrices',title:'Les bissectrices et le cercle inscrit',intro:'Les trois bissectrices se coupent en un point I situé à égale distance des trois côtés.',build:remarq('bis'),
+      retenir:['La <b>bissectrice</b> d’un angle le partage en deux angles égaux.','Les trois bissectrices d’un triangle sont concourantes en I.','I est le centre du <b>cercle inscrit</b>, tangent aux trois côtés.']},
+    {short:'Hauteurs',title:'Les hauteurs et l’orthocentre',intro:'Une hauteur passe par un sommet et est perpendiculaire au côté opposé. Rends le triangle rectangle, puis obtus.',build:remarq('hau'),
+      retenir:['Une <b>hauteur</b> est la droite issue d’un sommet, perpendiculaire au côté opposé.','Les trois hauteurs sont concourantes en un point H, l’<b>orthocentre</b>.','Dans un triangle rectangle, H est le sommet de l’angle droit.']},
+    {short:'Médianes',title:'Les médianes et le centre de gravité',intro:'Une médiane joint un sommet au milieu du côté opposé. Regarde le rapport AG ÷ AA′.',build:remarq('mdn'),
+      retenir:['Une <b>médiane</b> joint un sommet au milieu du côté opposé.','Les trois médianes sont concourantes en G, le <b>centre de gravité</b>.','G est situé aux deux tiers de chaque médiane à partir du sommet : <span class="math">AG = ⅔ AA′</span>.']}
+  ],
+  quiz:[
+    {q:'Les trois médiatrices d’un triangle se coupent en…',o:['le centre du cercle circonscrit','le centre du cercle inscrit','le centre de gravité','l’orthocentre'],a:0,e:'Ce point est équidistant des trois sommets.'},
+    {q:'Le point de rencontre des trois bissectrices est équidistant…',o:['des trois côtés','des trois sommets','des trois milieux','de rien de particulier'],a:0,e:'C’est le centre du cercle inscrit.'},
+    {q:'G est le centre de gravité de ABC et A′ le milieu de [BC]. Alors AG vaut…',o:['les deux tiers de AA′','la moitié de AA′','le tiers de AA′','AA′'],a:0,e:'AG = ⅔ × AA′.'},
+    {q:'Dans un triangle rectangle en A, l’orthocentre est…',o:['le sommet A','le milieu de [BC]','le centre de gravité','à l’extérieur du triangle'],a:0,e:'Les côtés AB et AC sont eux-mêmes des hauteurs.'},
+    {q:'Une hauteur d’un triangle est une droite qui passe par un sommet et qui est…',o:['perpendiculaire au côté opposé','parallèle au côté opposé','passe par le milieu du côté opposé','partage l’angle en deux'],a:0,e:'Hauteur = perpendiculaire au côté opposé.'}
+  ]});
+M.chapter({id:'c2-16',eyebrow:'2<sup>e</sup> année · Chapitre 6 · Numérique',title:'Les quatre opérations sur les nombres rationnels',
+  lessons:[
+    {short:'Priorités et fractions',title:'Enchaîner les opérations',intro:'Choisis un exemple et déroule le calcul étape par étape.',build:ops4,
+      retenir:['On calcule d’abord les <b>parenthèses</b>, puis les <b>multiplications et divisions</b>, enfin les <b>additions et soustractions</b>.','Diviser par un rationnel non nul, c’est multiplier par son <b>inverse</b>.','Pour additionner ou soustraire, on met les fractions au même dénominateur.']},
+    {short:'Distributivité',title:'La distributivité',intro:'Change a, b et c : les deux calculs donnent toujours le même résultat.',build:distrib,
+      retenir:['<span class="math">a × (b + c) = a × b + a × c</span>','<span class="math">a × (b − c) = a × b − a × c</span>','Cette égalité sert à calculer plus simplement, et à développer ou factoriser.']}
+  ],
+  quiz:[
+    {q:'Combien vaut 1/2 + 3/4 × 2/3 ?',o:['1','5/6','1/2','2'],a:0,e:'La multiplication est prioritaire : 3/4 × 2/3 = 1/2, puis 1/2 + 1/2 = 1.'},
+    {q:'Combien vaut (2/3 − 1/2) ÷ 5/6 ?',o:['1/5','1/6','5/36','6/5'],a:0,e:'1/6 ÷ 5/6 = 1/6 × 6/5 = 1/5.'},
+    {q:'Diviser par −1/4 revient à multiplier par…',o:['−4','4','−1/4','1/4'],a:0,e:'L’inverse de −1/4 est −4.'},
+    {q:'Le produit (−3/4) × (−1/6) est…',o:['positif','négatif','nul','impossible à savoir'],a:0,e:'Moins par moins donne plus : 3/24 = 1/8.'}
+  ]});
+M.chapter({id:'c2-17',eyebrow:'2<sup>e</sup> année · Chapitre 11 · Géométrie',title:'Théorème de Pythagore',
+  lessons:[
+    {short:'Pythagore',title:'Le théorème de Pythagore',intro:'On construit un carré sur chaque côté d’un triangle rectangle. Change les longueurs des côtés de l’angle droit.',build:pythagore,
+      retenir:['Si un triangle est <b>rectangle</b>, le carré de l’hypoténuse est égal à la somme des carrés des deux autres côtés.','Si ABC est rectangle en C : <span class="math">AB² = AC² + BC²</span>.']},
+    {short:'Réciproque',title:'La réciproque du théorème de Pythagore',intro:'Règle les trois longueurs, ou choisis un exemple : le triangle est-il rectangle ?',build:pythagoreReciproque,
+      retenir:['Si le carré du plus grand côté est égal à la somme des carrés des deux autres, alors le triangle est <b>rectangle</b>.','On compare toujours le carré du plus grand côté avec la somme des carrés des deux autres.','Si les deux nombres sont différents, le triangle n’est pas rectangle.']},
+    {short:'Calculer',title:'Calculer une longueur',intro:'Choisis de calculer l’hypoténuse ou un côté de l’angle droit.',build:pythCalc,
+      retenir:['Hypoténuse : <span class="math">AB² = AC² + BC²</span>, donc <span class="math">AB = √(AC² + BC²)</span>.','Côté de l’angle droit : <span class="math">AC² = AB² − BC²</span>.','On rédige toujours : « ABC est rectangle en C, donc d’après le théorème de Pythagore… ».']}
+  ],
+  quiz:[
+    {q:'ABC est rectangle en A avec AB = 6 et AC = 8. Combien vaut BC ?',o:['10','14','2','100'],a:0,e:'BC² = 36 + 64 = 100, donc BC = 10.'},
+    {q:'Un triangle a pour côtés 5, 12 et 13. Est-il rectangle ?',o:['Oui, car 13² = 5² + 12²','Non, car 13 ≠ 5 + 12','Oui, car 5 + 12 > 13','Non, car 12² ≠ 5² + 13²'],a:0,e:'169 = 25 + 144.'},
+    {q:'ABC est rectangle en A, AB = 9 et BC = 15. Combien vaut AC ?',o:['12','6','24','18'],a:0,e:'AC² = 225 − 81 = 144, donc AC = 12.'},
+    {q:'Un triangle a pour côtés 6, 8 et 11. Est-il rectangle ?',o:['Non, car 11² ≠ 6² + 8²','Oui, car 6 + 8 > 11','Oui, car 11² = 6² + 8²','On ne peut pas savoir'],a:0,e:'121 est différent de 36 + 64 = 100.'}
+  ]});
+M.chapter({id:'c2-18',eyebrow:'2<sup>e</sup> année · Chapitre 12 · Géométrie',title:'Cosinus d’un angle aigu',
+  lessons:[
+    {short:'Définition',title:'Le cosinus d’un angle aigu',intro:'Dans un triangle rectangle, le rapport adjacent ÷ hypoténuse ne dépend que de l’angle α.',build:cosDef,
+      retenir:['<span class="math">cos α = côté adjacent ÷ hypoténuse</span>','Pour un angle aigu : <span class="math">0 &lt; cos α &lt; 1</span>.','Le cosinus ne dépend pas de la taille du triangle, seulement de l’angle.']},
+    {short:'Calculer',title:'Calculer une longueur ou un angle',intro:'Avec la calculatrice en mode degrés, on utilise cos pour une longueur et cos⁻¹ pour un angle.',build:cosCalc,
+      retenir:['Longueur : <span class="math">adjacent = hypoténuse × cos α</span>.','Angle : on calcule <span class="math">adjacent ÷ hypoténuse</span>, puis on utilise <span class="math">cos⁻¹</span>.','La calculatrice doit être en mode « degrés ».']}
+  ],
+  quiz:[
+    {q:'Dans un triangle rectangle, <span class="math">cos α</span> est égal à…',o:['adjacent ÷ hypoténuse','opposé ÷ hypoténuse','adjacent ÷ opposé','hypoténuse ÷ adjacent'],a:0,e:'cos = adjacent ÷ hypoténuse.'},
+    {q:'ABC est rectangle en A, AB = 4 et BC = 5. Combien vaut cos B ?',o:['0,8','1,25','0,6','0,75'],a:0,e:'cos B = AB ÷ BC = 4 ÷ 5 = 0,8.'},
+    {q:'Pour un angle aigu, la valeur de cos α est toujours…',o:['comprise entre 0 et 1','supérieure à 1','négative','égale à 1'],a:0,e:'L’adjacent est plus court que l’hypoténuse.'},
+    {q:'ABC est rectangle en A, BC = 10 cm et B = 60°. Combien mesure AB ?',o:['5 cm','8,66 cm','20 cm','6 cm'],a:0,e:'AB = BC × cos 60° = 10 × 0,5 = 5 cm.'}
   ]});
 
 /* ================= Chapitre 7 : théorème de Thalès ================= */
@@ -6630,6 +6889,64 @@ var L={
   u:'اختر شكلاً من الأزرار فتظهر محاور تماثله، وعددها مكتوب تحت الرسم.',
   w:[['axe de symétrie','محور التماثل'],['isocèle','متساوي الساقين'],['équilatéral','متساوي الأضلاع']]},
 
+'c2-9-l1':{
+  e:['المنصّف العمودي لقطعة هو المستقيم العمودي عليها في منتصفها.',
+     'المنصّفات العمودية الثلاثة لمثلث تتقاطع في نقطة واحدة O، وهي مركز الدائرة المحيطة بالمثلث: '+m('OA = OB = OC')+'.'],
+  u:'حرّك الرؤوس A وB وC. تبقى المنصّفات الثلاثة متقاطعة في O، ويبقى OA = OB = OC.',
+  w:[['médiatrice','المنصّف العمودي'],['cercle circonscrit','الدائرة المحيطة'],['concourantes','متلاقية']]},
+'c2-9-l2':{
+  e:['منصّف زاوية هو نصف المستقيم الذي يقسمها إلى زاويتين متقايستين.',
+     'المنصّفات الثلاثة لمثلث تتقاطع في نقطة I تبعد بنفس المسافة عن الأضلاع الثلاثة، وهي مركز الدائرة المحاطة بالمثلث.'],
+  u:'حرّك الرؤوس. تبقى المسافات الثلاث من I إلى الأضلاع متساوية، ويبقى I داخل المثلث.',
+  w:[['bissectrice','منصّف الزاوية'],['cercle inscrit','الدائرة المحاطة'],['côté','ضلع']]},
+'c2-9-l3':{
+  e:['ارتفاع مثلث هو المستقيم المار من رأس والعمودي على الضلع المقابل.',
+     'الارتفاعات الثلاثة تتلاقى في نقطة واحدة H تسمى ملتقى الارتفاعات. في المثلث القائم الزاوية تكون H هي رأس الزاوية القائمة.'],
+  u:'حرّك الرؤوس: اجعل المثلث قائم الزاوية ثم منفرج الزاوية، وانظر أين توجد H.',
+  w:[['hauteur','ارتفاع'],['orthocentre','ملتقى الارتفاعات'],['perpendiculaire','عمودي']]},
+'c2-9-l4':{
+  e:['الموسط هو القطعة التي تصل رأساً بمنتصف الضلع المقابل.',
+     'الموسّطات الثلاثة تتقاطع في نقطة G هي مركز ثقل المثلث، وتوجد على ثلثي كل موسط انطلاقاً من الرأس: '+m('AG = ⅔ AA′')+'.'],
+  u:'حرّك الرؤوس. تبقى النسبة AG ÷ AA′ مساوية تقريباً لـ ⅔.',
+  w:[['médiane','موسط'],['centre de gravité','مركز الثقل'],['milieu','منتصف']]},
+
+'c2-16-l1':{
+  e:['ترتيب الأولويات: نحسب أولاً ما بين الأقواس، ثم الضرب والقسمة، وأخيراً الجمع والطرح.',
+     'القسمة على عدد جذري غير منعدم تعني الضرب في مقلوبه.'],
+  u:'اختر مثالاً ثم اضغط «Étape suivante» لتظهر مراحل الحساب واحدة بعد الأخرى.',
+  w:[['priorité','أولوية'],['inverse','مقلوب'],['dénominateur','مقام'],['parenthèse','قوس']]},
+'c2-16-l2':{
+  e:['توزيع الضرب على الجمع: '+m('a × (b + c) = a × b + a × c')+'، وكذلك على الطرح.'],
+  u:'غيّر a وb وc: يبقى الطرفان متساويين دائماً.',
+  w:[['distributivité','التوزيع'],['développer','نشر'],['factoriser','تعميل']]},
+
+'c2-17-l1':{
+  e:['مبرهنة فيثاغورس: في مثلث قائم الزاوية، مربع الوتر يساوي مجموع مربعي الضلعين الآخرين.',
+     'إذا كان ABC قائم الزاوية في C فإن '+m('AB² = AC² + BC²')+'.'],
+  u:'غيّر طولي ضلعي الزاوية القائمة بالمنزلقين: مساحة المربع الكبير تساوي مجموع مساحتي المربعين الآخرين.',
+  w:[['hypoténuse','الوتر'],['carré','مربع'],['triangle rectangle','مثلث قائم الزاوية']]},
+'c2-17-l2':{
+  e:['الخاصية العكسية: إذا كان مربع أكبر ضلع في مثلث يساوي مجموع مربعي الضلعين الآخرين فإن المثلث قائم الزاوية.',
+     'نقارن دائماً مربع أكبر ضلع مع مجموع مربعي الضلعين الآخرين.'],
+  u:'اضبط الأطوال الثلاثة أو اختر مثالاً، ثم انظر هل تتحقق المساواة.',
+  w:[['réciproque','الخاصية العكسية'],['plus grand côté','أكبر ضلع']]},
+'c2-17-l3':{
+  e:['لحساب الوتر: '+m('AB² = AC² + BC²')+' ثم نأخذ الجذر المربع.',
+     'لحساب ضلع من ضلعي الزاوية القائمة: '+m('AC² = AB² − BC²')+'.'],
+  u:'اختر حساب الوتر أو حساب ضلع الزاوية القائمة وحرّك المنزلقات: تظهر مراحل الحل.',
+  w:[['hypoténuse','الوتر'],['côté de l’angle droit','ضلع الزاوية القائمة'],['racine carrée','الجذر المربع']]},
+
+'c2-18-l1':{
+  e:['جيب تمام زاوية حادة في مثلث قائم الزاوية: '+m('cos α = المجاور ÷ الوتر')+'.',
+     'هذه النسبة تتعلق بالزاوية فقط وليس بحجم المثلث، وهي دائماً بين 0 و1.'],
+  u:'غيّر الزاوية α: يتغير cos α. غيّر الوتر AB: لا يتغير cos α.',
+  w:[['cosinus','جيب التمام'],['côté adjacent','الضلع المجاور'],['hypoténuse','الوتر']]},
+'c2-18-l2':{
+  e:['لحساب طول: '+m('المجاور = الوتر × cos α')+'.',
+     'لحساب زاوية: نحسب '+m('المجاور ÷ الوتر')+' ثم نستعمل '+m('cos⁻¹')+' في الآلة الحاسبة بنمط الدرجات.'],
+  u:'اختر «Calculer une longueur» أو «Calculer un angle» وحرّك المنزلقات: تظهر الكتابة الكاملة للحل.',
+  w:[['calculatrice','الآلة الحاسبة'],['degrés','درجات']]},
+
 'c2-10-l1':{
   e:['في مثلث، المستقيم المار من منتصفي ضلعين <b>مواز</b> للضلع الثالث، وطول القطعة الواصلة بين المنتصفين يساوي <b>نصف</b> طول الضلع الثالث: '+m('MN = BC ÷ 2')+'.'],
   u:'حرّك الرؤوس A وB وC. المنتصفان M وN يتحركان معها، وتبقى MN مساوية لنصف BC.',
@@ -6662,10 +6979,10 @@ var L={
   w:[['relation de Chasles','علاقة شال'],['somme de vecteurs','مجموع متجهتين'],['parallélogramme','متوازي الأضلاع']]},
 
 'c2-13-l1':{
-  e:['حجم المنشور القائم = مساحة القاعدة × الارتفاع. وقاعدته هنا مثلث، ومساحته: القاعدة × الارتفاع ÷ 2.',
-     'المساحة الجانبية = محيط القاعدة × ارتفاع المنشور.'],
-  u:'غيّر أبعاد المثلث وارتفاع المنشور. الحجم المكتوب في الأسفل يتحدث تلقائياً.',
-  w:[['prisme droit','منشور قائم'],['base','قاعدة'],['volume','حجم']]},
+  e:['حجم الهرم '+m('V = ⅓ × B × h')+' حيث B مساحة القاعدة وh الارتفاع، أي ثلث حجم المنشور القائم الذي له نفس القاعدة ونفس الارتفاع.',
+     'المساحة الجانبية لهرم منتظم قاعدته مربع هي مساحة 4 مثلثات متساوية الساقين: '+m('4 × (c × a ÷ 2)')+' حيث a ارتفاع الوجه الجانبي.'],
+  u:'غيّر ضلع القاعدة والارتفاع: يتحدث الحجم والمساحة الجانبية تلقائياً.',
+  w:[['pyramide','هرم'],['base','قاعدة'],['hauteur','ارتفاع'],['apothème','ارتفاع الوجه الجانبي']]},
 'c2-13-l2':{
   e:['حجم المخروط الدوراني '+m('V = ⅓ × π × r² × h')+'، أي ثلث حجم الأسطوانة التي لها نفس القاعدة ونفس الارتفاع.',
      'طول المولّد l يحقق '+m('l² = r² + h²')+'، والمساحة الجانبية تساوي '+m('π × r × l')+'.'],
@@ -6972,7 +7289,11 @@ var T={
 'c2-10':'المثلث والمستقيمات الموازية',
 'c2-11':'المثلث القائم الزاوية والدائرة',
 'c2-12':'المتجهات والإزاحة',
-'c2-13':'المنشور القائم والمخروط الدوراني',
+'c2-13':'الهرم والمخروط الدوراني',
+'c2-9':'المستقيمات الهامة في مثلث',
+'c2-16':'العمليات الأربع في الأعداد الجذرية',
+'c2-17':'مبرهنة فيثاغورس',
+'c2-18':'جيب تمام زاوية حادة',
 'c2-14':'التناسبية',
 'c2-15':'الإحصاء',
 'c3-1':'الجذور المربعة',
@@ -6992,7 +7313,8 @@ var T={
 'c3-15':'الإحصاء'
 };
 window.MMar={
-  card:function(lv,n){
+  card:function(lv,n,href){
+    if(href&&/^#c\d-\d+$/.test(href)&&T[href.slice(1)])return T[href.slice(1)];
     var k={1:{8:'الزوايا والمثلثات',9:'المستقيمات الهامة في مثلث',10:'التماثل المركزي'}}[lv];
     if(k&&k[n])return k[n];
     if(lv===2&&n===9)return 'المستقيمات الهامة في مثلث';

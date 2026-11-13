@@ -90,6 +90,81 @@
     }
   };
 
+  /* générateurs propres aux chapitres ajoutés pour la 2e année (sommaire du manuel) */
+  function sgn2(n) { return n < 0 ? '−' + (-n) : String(n); }
+  function fs(f) { return f[1] === 1 ? sgn2(f[0]) : sgn2(f[0]) + '/' + f[1]; }
+  function fn(n, d) { var g = gcd(n, d); return [n / g, d / g]; }
+  function fadd2(a, b) { return fn(a[0] * b[1] + b[0] * a[1], a[1] * b[1]); }
+  function fmul2(a, b) { return fn(a[0] * b[0], a[1] * b[1]); }
+  function finv2(a) { return a[0] < 0 ? [-a[1], -a[0]] : [a[1], a[0]]; }
+  function fneg(a) { return [-a[0], a[1]]; }
+  function rf(neg) { var n = pick([1, 2, 3, 4, 5]), d = pick([2, 3, 4, 5, 6]); if (neg && Math.random() < 0.5) n = -n; return fn(n, d); }
+  function fnum(q, f, e, h) { return num(q, f[0] / f[1], e, h, { tol: 0.006, sol: fs(f) }); }
+  function par(f) { return f[0] < 0 ? '(' + fs(f) + ')' : fs(f); }
+  var EXTRA = {
+    ops4: function (d) {
+      var a, b, c, r, t;
+      if (d === 1) {
+        a = ri(2, 9); b = ri(2, 6); c = ri(2, 6);
+        return num('Calcule ' + a + ' + ' + b + ' × ' + c + '.', a + b * c, 'La multiplication est prioritaire : ' + b + ' × ' + c + ' = ' + (b * c) + ', puis ' + a + ' + ' + (b * c) + ' = ' + (a + b * c) + '.', 'Multiplie avant d’additionner.');
+      }
+      if (d === 2) {
+        a = rf(false); b = rf(false); c = rf(false);
+        r = fadd2(a, fmul2(b, c));
+        return fnum('Calcule ' + fs(a) + ' + ' + fs(b) + ' × ' + fs(c) + '. Écris le résultat sous forme de fraction (ou en décimal arrondi au centième).', r, 'Priorité à la multiplication : ' + fs(b) + ' × ' + fs(c) + ' = ' + fs(fmul2(b, c)) + ', puis on additionne : ' + fs(r) + '.', 'Multiplie d’abord.');
+      }
+      if (d === 3) {
+        a = rf(true); b = rf(true); c = rf(false);
+        r = fmul2(fadd2(a, fneg(b)), finv2(c));
+        return fnum('Calcule (' + fs(a) + ' − ' + par(b) + ') ÷ ' + fs(c) + '. Écris le résultat sous forme de fraction (ou en décimal arrondi au centième).', r, 'Parenthèse : ' + fs(a) + ' − ' + par(b) + ' = ' + fs(fadd2(a, fneg(b))) + '. Diviser par ' + fs(c) + ', c’est multiplier par son inverse : résultat ' + fs(r) + '.', 'Calcule la parenthèse, puis multiplie par l’inverse.');
+      }
+      a = rf(true); b = rf(true); c = rf(true); t = rf(false);
+      r = fadd2(fmul2(a, fadd2(b, c)), fneg(t));
+      return fnum('Calcule ' + par(a) + ' × (' + fs(b) + ' + ' + par(c) + ') − ' + fs(t) + '. Écris le résultat sous forme de fraction (ou en décimal arrondi au centième).', r, 'Parenthèse : ' + fs(fadd2(b, c)) + '. Produit : ' + fs(fmul2(a, fadd2(b, c))) + '. Puis on retranche ' + fs(t) + ' : ' + fs(r) + '.', '');
+    },
+    rem: function (d) {
+      var x, y, k, t;
+      if (d === 4) {
+        x = 3 * ri(2, 8); y = 3 * ri(2, 8);
+        return num('G est le centre de gravité du triangle ABC. Les médianes [AA′] et [BB′] mesurent ' + x + ' cm et ' + y + ' cm. Calcule AG + BG.', 2 * (x + y) / 3, 'G est aux deux tiers de chaque médiane : AG = ⅔ × ' + x + ' = ' + (2 * x / 3) + ' et BG = ⅔ × ' + y + ' = ' + (2 * y / 3) + '.', 'AG = ⅔ AA′ et BG = ⅔ BB′.', { u: 'cm' });
+      }
+      t = ri(0, d === 1 ? 1 : 3);
+      if (t === 0) { x = 3 * ri(2, 10); return num('G est le centre de gravité de ABC et A′ le milieu de [BC]. AA′ = ' + x + ' cm. Calcule AG.', 2 * x / 3, 'AG = ⅔ × AA′ = ⅔ × ' + x + ' = ' + (2 * x / 3) + ' cm.', 'G est aux deux tiers de la médiane.', { u: 'cm' }); }
+      if (t === 1) { x = 3 * ri(2, 10); return num('G est le centre de gravité de ABC et A′ le milieu de [BC]. AA′ = ' + x + ' cm. Calcule GA′.', x / 3, 'GA′ = AA′ − AG = ⅓ × AA′ = ' + (x / 3) + ' cm.', 'GA′ est le tiers de AA′.', { u: 'cm' }); }
+      if (t === 2) { x = ri(2, 12); return num('G est le centre de gravité de ABC et A′ le milieu de [BC]. GA′ = ' + x + ' cm. Calcule AA′.', 3 * x, 'GA′ est le tiers de AA′, donc AA′ = 3 × ' + x + ' = ' + (3 * x) + ' cm.', 'AA′ = 3 × GA′.', { u: 'cm' }); }
+      k = ri(3, 15); return num('ABC est rectangle en A et BC = ' + (2 * k) + ' cm. Quel est le rayon de son cercle circonscrit ?', k, 'Le centre du cercle circonscrit est le milieu de l’hypoténuse : rayon = ' + (2 * k) + ' ÷ 2 = ' + k + ' cm.', 'Le centre est le milieu de [BC].', { u: 'cm' });
+    },
+    cos: function (d) {
+      var p, H, a, t;
+      if (d === 1) {
+        p = pick([[3, 5], [4, 5], [6, 10], [8, 10], [9, 15], [12, 15], [12, 20], [16, 20]]);
+        return num('ABC est rectangle en A, AB = ' + p[0] + ' cm et BC = ' + p[1] + ' cm. Calcule cos B.', p[0] / p[1], 'cos B = côté adjacent ÷ hypoténuse = AB ÷ BC = ' + p[0] + ' ÷ ' + p[1] + ' = ' + fm(p[0] / p[1], 3) + '.', 'cos = adjacent ÷ hypoténuse.', { tol: 0.006 });
+      }
+      if (d === 2) {
+        H = 2 * ri(2, 10);
+        return num('ABC est rectangle en A, BC = ' + H + ' cm et l’angle B mesure 60°. Sachant que cos 60° = 0,5, calcule AB.', H / 2, 'AB = BC × cos B = ' + H + ' × 0,5 = ' + (H / 2) + ' cm.', 'AB = BC × cos B.', { u: 'cm' });
+      }
+      if (d === 3) {
+        H = ri(5, 20); a = pick([30, 35, 40, 45, 50, 55]);
+        return num('ABC est rectangle en A, BC = ' + H + ' cm et l’angle B mesure ' + a + '°. Calcule AB (arrondi au dixième).', +(H * Math.cos(a * Math.PI / 180)).toFixed(1), 'AB = BC × cos B = ' + H + ' × cos ' + a + '° ≈ ' + fm(H * Math.cos(a * Math.PI / 180), 1) + ' cm.', 'Calculatrice en mode degrés.', { u: 'cm', tol: 0.06 });
+      }
+      if (Math.random() < 0.5) {
+        H = ri(4, 9); a = pick([40, 50, 55, 65]);
+        return num('Une échelle de ' + H + ' m est appuyée contre un mur. Elle forme avec le sol un angle de ' + a + '°. À quelle distance du mur se trouve son pied ? (arrondis au dixième)', +(H * Math.cos(a * Math.PI / 180)).toFixed(1), 'Le pied est le côté adjacent à l’angle : ' + H + ' × cos ' + a + '° ≈ ' + fm(H * Math.cos(a * Math.PI / 180), 1) + ' m.', 'Dessine le triangle rectangle : l’échelle est l’hypoténuse.', { u: 'm', tol: 0.06 });
+      }
+      p = pick([[4, 6], [5, 8], [3, 7], [6, 9], [2, 5], [7, 10]]);
+      return num('ABC est rectangle en A, AB = ' + p[0] + ' cm et BC = ' + p[1] + ' cm. Calcule l’angle B, arrondi au degré.', Math.round(Math.acos(p[0] / p[1]) * 180 / Math.PI), 'cos B = ' + p[0] + ' ÷ ' + p[1] + ' ≈ ' + fm(p[0] / p[1], 3) + ', donc B = cos⁻¹(' + fm(p[0] / p[1], 3) + ') ≈ ' + Math.round(Math.acos(p[0] / p[1]) * 180 / Math.PI) + '°.', 'Utilise cos⁻¹ sur la calculatrice.', { u: '°', tol: 0.6 });
+    },
+    pyr: function (d) {
+      var B, h, c, V, tr, ap, lat;
+      if (d === 1) { B = 3 * ri(2, 12); h = ri(2, 9); return num('Volume d’une pyramide de base ' + B + ' cm² et de hauteur ' + h + ' cm.', B * h / 3, 'V = ⅓ × B × h = ⅓ × ' + B + ' × ' + h + ' = ' + fm(B * h / 3) + ' cm³.', 'V = ⅓ × B × h.', { u: 'cm³' }); }
+      if (d === 2) { c = 3 * ri(1, 4); h = ri(2, 9); return num('Une pyramide a pour base un carré de côté ' + c + ' cm et pour hauteur ' + h + ' cm. Calcule son volume.', c * c * h / 3, 'B = ' + c + '² = ' + (c * c) + ' cm², puis V = ⅓ × ' + (c * c) + ' × ' + h + ' = ' + fm(c * c * h / 3) + ' cm³.', 'Calcule d’abord l’aire de la base.', { u: 'cm³' }); }
+      if (d === 3) { B = ri(2, 10) * 3; h = ri(2, 8); V = B * h / 3; return num('Une pyramide de volume ' + V + ' cm³ a une base de ' + B + ' cm². Calcule sa hauteur.', h, 'V = ⅓ × B × h donc h = 3 × V ÷ B = 3 × ' + V + ' ÷ ' + B + ' = ' + h + ' cm.', 'h = 3V ÷ B.', { u: 'cm' }); }
+      tr = pick([[4, 3, 5], [3, 4, 5], [12, 5, 13], [6, 8, 10]]); h = tr[0]; c = 2 * tr[1]; ap = tr[2]; lat = 2 * c * ap;
+      return num('Une pyramide régulière a pour base un carré de côté ' + c + ' cm et pour hauteur ' + h + ' cm. L’apothème (hauteur d’une face triangulaire) mesure ' + ap + ' cm. Calcule son aire totale (base + faces).', c * c + lat, 'Aire latérale = 4 × (' + c + ' × ' + ap + ' ÷ 2) = ' + lat + ' cm². Base : ' + c + '² = ' + (c * c) + ' cm². Total : ' + (c * c + lat) + ' cm².', 'Quatre faces triangulaires de base ' + c + ' cm et de hauteur ' + ap + ' cm.', { u: 'cm²' });
+    }
+  };
+
   function expo() { return window.MM && window.MM.G; }
 
   var M1 = {};
@@ -117,9 +192,13 @@
   T('c2-10', ['thal']);
   T('c2-11', ['pyth', 'cercle']);
   T('c2-12', ['vec']);
-  T('c2-13', ['vol']);
+  T('c2-13', ['pyr', 'vol']);
   T('c2-14', ['prop', 'pct', 'ech']);
   T('c2-15', ['stat']);
+  T('c2-9', ['rem']);
+  T('c2-16', ['ops4', 'fadd', 'fmul']);
+  T('c2-17', ['pyth']);
+  T('c2-18', ['cos']);
   T('c3-1', ['sqrt']);
   T('c3-2', ['lit', 'pow', 'sci']);
   T('c3-3', ['ordre', 'enc']);
@@ -140,6 +219,7 @@
     app: 'maths', appName: 'Maths en mouvement', map: M1,
     gen: function (key, d) {
       var G = expo();
+      if (EXTRA[key]) return EXTRA[key](d);
       if (d === 4 && HARD[key]) return HARD[key]();
       if (!G || !G[key]) return null;
       return G[key](d === 4 ? 3 : d);
