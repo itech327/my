@@ -689,7 +689,7 @@
     var wrong = (s.answers || []).filter(function (a) { return !a.ok; }).slice(-30).reverse();
     if (wrong.length) html += '<h3 dir="rtl">الأسئلة التي أخطأت فيها</h3>' + wrong.map(function (a) { return '<div class="rp-wrong"><b>' + esc(a.q) + '</b><br><small>Ta réponse : ' + esc(a.given || '-') + ' · Bonne réponse : ' + esc(a.right) + ' · ' + esc(a.title) + ' · ' + LV[a.d].fr + '</small></div>'; }).join('');
     if (!st.n) html += '<div class="rp-rec" dir="rtl">لم تُجَب أي أسئلة في هذه الجلسة بعد. افتح فصلًا وانتقل إلى «Défis».</div>';
-    html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button><button type="button" class="btn ghost" data-r="csv">CSV</button><button type="button" class="btn ghost" data-r="json">JSON</button>' +
+    html += '<div class="rp-wide"><button type="button" class="btn" data-r="print">Imprimer / PDF</button><button type="button" class="btn ghost" data-r="csv">CSV</button>' + (store.get('lab_dev', false) ? '<button type="button" class="btn ghost" data-r="json">JSON</button>' : '') +
       (s.endedAt ? '<button type="button" class="btn ghost" data-r="new">Nouvelle session</button>' : '') + '<button type="button" class="btn ghost" data-r="wipe">Effacer mes données</button><button type="button" class="btn" data-r="close">Fermer</button></div>' +
       (Notify.enabled() ? '<p class="lab-note">Ces données sont enregistrées dans ce navigateur. Un résumé est envoyé à l’enseignant pendant la session et à sa fermeture.<br><span class="rp-ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح، ويُرسل ملخّص منها إلى الأستاذ أثناء الجلسة وعند إغلاقها.</span></p></div>' : '<p class="lab-note">Ces données sont enregistrées uniquement dans ce navigateur. Pour les transmettre à l’enseignant, utilise PDF ou JSON.<br><span class="rp-ar" dir="rtl" lang="ar">البيانات محفوظة في هذا المتصفح فقط. لإرسالها إلى الأستاذ استعمل PDF أو JSON.</span></p></div>');
     box.innerHTML = html;
@@ -702,7 +702,7 @@
       if (a === 'close') box.remove();
       else if (a === 'print') { document.body.classList.add('lab-printing'); window.addEventListener('afterprint', function () { document.body.classList.remove('lab-printing'); }, { once: true }); setTimeout(function () { window.print(); }, 50); }
       else if (a === 'csv') download('session-' + s.id + '.csv', toCSV(s), 'text/csv;charset=utf-8');
-      else if (a === 'json') download('session-' + s.id + '.json', JSON.stringify(s, null, 2), 'application/json');
+      else if (a === 'json' && store.get('lab_dev', false)) download('session-' + s.id + '.json', JSON.stringify(s, null, 2), 'application/json');
       else if (a === 'new') { box.remove(); openStart(); }
       else if (a === 'wipe') { if (confirm('Effacer toutes les sessions et la progression de ce navigateur ? · مسح كل الجلسات والتقدّم؟')) { Sess.clearAll(); box.remove(); } }
     });
