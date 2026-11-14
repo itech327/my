@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-/4BOpJBgQA2tmTNi4HjVjVlue/UN3DrHK/GapSrip9g=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-3ecPjMqk3wB95zvScE/AYCCq5wZC/om4sp9BYc3xaM0=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-+dPOIHjuBbcAkGYGrza8eqJzqLOiaEWFp/881dJT4L0=' 'sha256-RPOSMKCPUU9QwL5psgcPu2mRW/Sc9N/k0sPlSPlOMjU=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-CeQockfy+Hfv4VrkzTsGCm42z11KW3dPjyAV4pREmW0=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-3ecPjMqk3wB95zvScE/AYCCq5wZC/om4sp9BYc3xaM0=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-+dPOIHjuBbcAkGYGrza8eqJzqLOiaEWFp/881dJT4L0=' 'sha256-RPOSMKCPUU9QwL5psgcPu2mRW/Sc9N/k0sPlSPlOMjU=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -227,6 +227,16 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 .pdf-toast p{margin:0 0 6px}.pdf-toast p[lang=ar]{font-family:var(--f-ar);line-height:1.8}
 .pdf-toast[hidden]{display:none}
 .px-static,.px-blank,.px-sol{display:none}
+/* grand écran : page plus large, « À retenir » en face du « شرح بالعربية » */
+@media screen and (min-width:900px){
+  .wrap{max-width:980px}
+  .stage{max-width:720px;margin-left:auto;margin-right:auto}
+  .lesson{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:22px}
+  .lesson>*{grid-column:1/-1}
+  .lesson>.retenir{grid-column:1}
+  .lesson>.retenir:not(:has(+ details.ar)){grid-column:1/-1}
+  .lesson>.retenir+details.ar{grid-column:2;margin-top:22px;align-self:start}
+}
 @media print{
   @page{size:A4;margin:14mm}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -2538,7 +2548,7 @@ window.addEventListener('load',function(){
   function boot() {
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
-    if (!Sess.cur() && !skip) openStart();
+    if (!Sess.cur() && !skip && CFG.app !== 'portal') openStart(); // l'accueil laisse d'abord choisir la matière
   }
   if (document.readyState === 'complete') setTimeout(boot, 0); else window.addEventListener('load', function () { setTimeout(boot, 0); });
 

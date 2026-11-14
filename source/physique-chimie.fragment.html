@@ -214,6 +214,16 @@ svg .small{font-family:var(--f-body);font-size:12px;text-anchor:middle;dominant-
 .big,.px-ex{overflow-x:auto;max-width:100%}
 .big .math,.px-ex .math{white-space:normal}
 
+/* grand écran : page plus large, « À retenir » en face du « شرح بالعربية » */
+@media screen and (min-width:900px){
+  .wrap{max-width:980px}
+  .stage{max-width:720px;margin-left:auto;margin-right:auto}
+  .lesson{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:22px}
+  .lesson>*{grid-column:1/-1}
+  .lesson>.retenir{grid-column:1}
+  .lesson>.retenir:not(:has(+ details.ar)){grid-column:1/-1}
+  .lesson>.retenir+details.ar{grid-column:2;margin-top:22px;align-self:start}
+}
 </style>
 <div class="wrap">
   <div class="view" id="home">

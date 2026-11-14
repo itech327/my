@@ -214,6 +214,16 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 .pdf-toast p{margin:0 0 6px}.pdf-toast p[lang=ar]{font-family:var(--f-ar);line-height:1.8}
 .pdf-toast[hidden]{display:none}
 .px-static,.px-blank,.px-sol{display:none}
+/* grand écran : page plus large, « À retenir » en face du « شرح بالعربية » */
+@media screen and (min-width:900px){
+  .wrap{max-width:980px}
+  .stage{max-width:720px;margin-left:auto;margin-right:auto}
+  .lesson{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:22px}
+  .lesson>*{grid-column:1/-1}
+  .lesson>.retenir{grid-column:1}
+  .lesson>.retenir:not(:has(+ details.ar)){grid-column:1/-1}
+  .lesson>.retenir+details.ar{grid-column:2;margin-top:22px;align-self:start}
+}
 @media print{
   @page{size:A4;margin:14mm}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}

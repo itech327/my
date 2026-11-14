@@ -849,7 +849,7 @@
   function boot() {
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
-    if (!Sess.cur() && !skip) openStart();
+    if (!Sess.cur() && !skip && CFG.app !== 'portal') openStart(); // l'accueil laisse d'abord choisir la matière
   }
   if (document.readyState === 'complete') setTimeout(boot, 0); else window.addEventListener('load', function () { setTimeout(boot, 0); });
 

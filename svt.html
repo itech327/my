@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-x0Vq0unP+7qz3859gmQ7QNtBF0jCtzATi2/XKg2XxHU=' 'sha256-bWh9qRgJGzLW8hMgRR9vVSRC5Np7CS+w07ogn1vgXYc='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-d8x0B6U5EOnobQwDswZ5LG/t099SCLDTA1/Fo8n9tTk=' 'sha256-bWh9qRgJGzLW8hMgRR9vVSRC5Np7CS+w07ogn1vgXYc='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.">
 <link rel="canonical" href="https://taalim.men/svt.html">
@@ -232,6 +232,16 @@ svg .small{font-family:var(--f-body);font-size:12px;text-anchor:middle;dominant-
 .big,.px-ex{overflow-x:auto;max-width:100%}
 .big .math,.px-ex .math{white-space:normal}
 
+/* grand écran : page plus large, « À retenir » en face du « شرح بالعربية » */
+@media screen and (min-width:900px){
+  .wrap{max-width:980px}
+  .stage{max-width:720px;margin-left:auto;margin-right:auto}
+  .lesson{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:22px}
+  .lesson>*{grid-column:1/-1}
+  .lesson>.retenir{grid-column:1}
+  .lesson>.retenir:not(:has(+ details.ar)){grid-column:1/-1}
+  .lesson>.retenir+details.ar{grid-column:2;margin-top:22px;align-self:start}
+}
 </style>
 </head>
 <body>
@@ -1527,7 +1537,7 @@ document.addEventListener('click',function(e){
   function boot() {
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
-    if (!Sess.cur() && !skip) openStart();
+    if (!Sess.cur() && !skip && CFG.app !== 'portal') openStart(); // l'accueil laisse d'abord choisir la matière
   }
   if (document.readyState === 'complete') setTimeout(boot, 0); else window.addEventListener('load', function () { setTimeout(boot, 0); });
 
