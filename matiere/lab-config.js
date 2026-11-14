@@ -171,6 +171,23 @@
       var V4 = pick([2, 4, 5, 10]);
       return num('Une vis de pas ' + Pm + ' mm avance à ' + V4 + ' mm/s. Elle est entraînée par un motoréducteur de rapport 1/48. Quelle est la vitesse du moteur, en tr/s ?', V4 / Pm * 48, 'tr/s', 'Vis : ' + V4 + ' ÷ ' + Pm + ' = ' + fm(V4 / Pm, 2) + ' tr/s ; moteur : × 48 = ' + fm(V4 / Pm * 48, 1) + ' tr/s.', 'Le moteur tourne 48 fois plus vite que la vis.', 0.1);
     },
+    led: function (d) {
+      var E12 = [100, 120, 150, 180, 220, 270, 330, 390, 470, 560, 680, 820], E, U, I, R, k;
+      do { E = pick([3.7, 5, 6, 7.4, 9]); U = pick([1.6, 2, 2.2]); I = pick([10, 15, 20]); R = (E - U) / I * 1000; } while (R < 100 || R > 820);
+      var near = E12[0]; for (k = 0; k < E12.length; k++) if (Math.abs(E12[k] - R) < Math.abs(near - R)) near = E12[k];
+      var tail = 'Une LED de ' + fm(U, 1) + ' V est alimentée sous ' + fm(E, 1) + ' V. Le courant doit être de ' + I + ' mA.';
+      if (d === 1) return num(tail + ' Quelle résistance en série (en Ω) ?', R, 'Ω', 'R = (E − U) ÷ I = (' + fm(E, 1) + ' − ' + fm(U, 1) + ') ÷ ' + fm(I / 1000, 3) + ' = ' + fm(R, 0) + ' Ω.', 'Loi d’additivité des tensions : la résistance reçoit E − U.', 1);
+      if (d === 2) return num('Une LED de ' + fm(U, 1) + ' V est alimentée sous ' + fm(E, 1) + ' V avec une résistance de ' + near + ' Ω. Quel est le courant, en mA ?', (E - U) / near * 1000, 'mA', 'I = (E − U) ÷ R = ' + fm(E - U, 1) + ' ÷ ' + near + ' = ' + fm((E - U) / near * 1000, 1) + ' mA.', 'I = (E − U) ÷ R, puis convertis en mA.', 0.2);
+      if (d === 3) return num(tail + ' La valeur calculée est ' + fm(R, 0) + ' Ω. Quelle valeur normalisée de la série E12 est la plus proche (en Ω) ?', near, 'Ω', 'Série E12 : 100, 120, 150, 180, 220, 270, 330, 390, 470, 560, 680, 820. La plus proche de ' + fm(R, 0) + ' Ω est ' + near + ' Ω.', 'Compare la valeur calculée aux valeurs de la série.');
+      return num(tail + ' On choisit la valeur E12 la plus proche. Quel est alors le courant réel, en mA ?', (E - U) / near * 1000, 'mA', 'R normalisée = ' + near + ' Ω ; I = ' + fm(E - U, 1) + ' ÷ ' + near + ' = ' + fm((E - U) / near * 1000, 1) + ' mA.', 'Calcule R, choisis la valeur E12, puis recalcule I.', 0.2);
+    },
+    pv: function (d) {
+      var u = pick([30, 35, 40]), i = pick([2, 2.5, 3, 4, 4.5]), n = ri(2, 6), h = ri(3, 8), P = u * i;
+      if (d === 1) return num('Un panneau solaire fournit ' + u + ' V et ' + fm(i, 1) + ' A. Quelle puissance, en W ?', P, 'W', 'P = U × I = ' + u + ' × ' + fm(i, 1) + ' = ' + fm(P, 1) + ' W.', 'P = U × I.', 0.1);
+      if (d === 2) return num('Un panneau fournit ' + fm(P, 1) + ' W pendant ' + h + ' h. Quelle énergie, en Wh ?', P * h, 'Wh', 'W = P × t = ' + fm(P, 1) + ' × ' + h + ' = ' + fm(P * h, 1) + ' Wh.', 'Énergie = puissance × durée.', 0.1);
+      if (d === 3) return num('Un panneau a une puissance maximale de ' + (u * i * 2) + ' W. Une installation comporte ' + n + ' panneaux identiques. Quelle est sa puissance maximale, en W ?', u * i * 2 * n, 'W', 'P = ' + (u * i * 2) + ' × ' + n + ' = ' + (u * i * 2 * n) + ' W.', 'Multiplie par le nombre de panneaux.');
+      return num('Un panneau de ' + (u * i * 2) + ' W est utilisé ' + h + ' h par jour. Quelle énergie produit-il en kWh par jour ?', u * i * 2 * h / 1000, 'kWh', (u * i * 2) + ' × ' + h + ' = ' + (u * i * 2 * h) + ' Wh = ' + fm(u * i * 2 * h / 1000, 2) + ' kWh.', 'Convertis les Wh en kWh.', 0.01);
+    },
     puiss: function (d) {
       var sf = ri(1, 6), g0 = ri(2, 10) * 100, eta = pick([15, 18, 20]);
       if (d === 1) return num('Un panneau photovoltaïque reçoit ' + g0 + ' W/m² sur ' + sf + ' m² avec un rendement de ' + eta + ' %. Quelle puissance produit-il ?', sf * g0 * eta / 100, 'W', sf + ' × ' + g0 + ' × ' + eta + ' ÷ 100 = ' + fm(sf * g0 * eta / 100, 1) + ' W.', 'P = surface × ensoleillement × rendement.', 0.1);
@@ -219,7 +236,7 @@
   M['t3-2'] = { topics: ['b:acq', 'b:acq', 'g:volt'] };
   M['t3-3'] = { topics: ['b:trait', 'b:trait', 'g:algo'] };
   M['t3-4'] = { topics: ['b:comm'] };
-  M['t3-5'] = { topics: ['b:ali', 'b:ali', 'g:auto'] };
+  M['t3-5'] = { topics: ['b:ali', 'b:ali', 'g:auto', 'g:led'] };
   M['t3-6'] = { topics: ['b:dis'] };
   M['t3-7'] = { topics: ['b:conv'] };
   M['t3-8'] = { topics: ['b:trans', 'b:trans', 'g:ratio', 'g:mvt'] };
@@ -227,7 +244,7 @@
   M['t3-10'] = { topics: ['b:des', 'b:des', 'g:ech'] };
   M['t3-11'] = { topics: ['b:ener'] };
   M['t3-12'] = { topics: ['b:hyd'] };
-  M['t3-13'] = { topics: ['b:sol', 'b:sol', 'g:puiss'] };
+  M['t3-13'] = { topics: ['b:sol', 'b:sol', 'g:puiss', 'g:pv'] };
   M['t3-14'] = { topics: ['b:eff', 'b:eff', 'g:cout'] };
 
   window.LAB_CONFIG = {
