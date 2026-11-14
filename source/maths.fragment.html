@@ -5665,6 +5665,85 @@ G.nparith=function(s){
   return num('Deux cloches sonnent ensemble à 8 h. La première sonne toutes les '+m+' minutes et la seconde toutes les '+n+' minutes. Dans combien de minutes sonneront-elles de nouveau ensemble ?',L,'Événement qui se reproduit : j’utilise le PPCM. PPCM('+m+' ; '+n+') = '+L+'. Elles sonnent ensemble dans '+L+' minutes.','Événement qui se reproduit : PPCM.');
 };
 
+/* ---------- 3AC période 1 semaine 3 : racines carrées et nombres réels ---------- */
+function isSq(n){var r=Math.round(Math.sqrt(n));return r*r===n}
+var NSQ=[2,3,5,6,7,8,10,11,12,13,14,15,17,18,19,20,21,22,23,24,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,46,47,48,50];
+G.nrac=function(s){
+  var a,right,wr,k,v,sq,vals;
+  if(s===1){
+    a=ri(2,15);
+    return num('Calcule √'+(a*a)+'.',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : √'+(a*a)+' = '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.');
+  }
+  if(s===2){
+    right=pick([4,9,16,25,36,49,64,81,100,121,144,169,196,225]);wr=[];
+    while(wr.length<3){v=ri(5,230);if(!isSq(v)&&wr.indexOf(v)<0)wr.push(v)}
+    return qcm('Lequel de ces nombres est un carré parfait ?',String(right),wr.map(String),right+' = '+Math.round(Math.sqrt(right))+'² : c’est le carré d’un nombre entier.','Un carré parfait est le carré d’un entier.');
+  }
+  k=pick(NSQ);v=Math.round(Math.sqrt(k)*100)/100;
+  return num('À l’aide de la calculatrice, donne la valeur approchée de √'+k+' arrondie au centième.',v,'Je tape la touche √, puis le nombre '+k+'. La calculatrice affiche environ '+fm(Math.sqrt(k),5)+'. Arrondi au centième : '+fm(v,2)+'.','Touche √, puis le nombre, puis arrondis.',{tol:1e-6,sol:fm(v,2)});
+};
+G.ncomp=function(s){
+  var a,b,n,r,items,vals,right,perms,i,x,k,lst,shown,seen;
+  if(s===1){
+    do{a=ri(2,60);b=ri(2,60)}while(a===b);
+    r=a<b?'<':'>';
+    return qcm('Compare √'+a+' ◻ √'+b,r,['<','>','='].filter(function(c){return c!==r}),'Deux nombres positifs sont rangés comme leurs carrés : '+a+' '+r+' '+b+', donc √'+a+' '+r+' √'+b+'.','Compare les nombres sous les racines.');
+  }
+  if(s===2){
+    n=ri(3,12);do{a=ri(5,160)}while(a===n*n);
+    r=a<n*n?'<':'>';
+    return qcm('Compare √'+a+' ◻ '+n,r,['<','>','='].filter(function(c){return c!==r}),'On compare les carrés : ('+'√'+a+')² = '+a+' et '+n+'² = '+(n*n)+'. Comme '+a+' '+r+' '+(n*n)+', on a √'+a+' '+r+' '+n+'.','Compare les carrés des deux nombres.');
+  }
+  items=[];seen={};
+  while(items.length<4){
+    if(Math.random()<.5){k=pick(NSQ);x=Math.sqrt(k);if(!seen[x.toFixed(6)]){seen[x.toFixed(6)]=1;items.push({t:'√'+k,v:x})}}
+    else{k=ri(2,7);if(!seen[k.toFixed(6)]){seen[k.toFixed(6)]=1;items.push({t:String(k),v:k})}}
+  }
+  var sorted=items.slice().sort(function(p,q){return p.v-q.v});
+  right=sorted.map(function(o){return o.t}).join(' < ');
+  var wrongs=[],tries=0,perm;
+  while(wrongs.length<3&&tries++<200){perm=shuffle(items).map(function(o){return o.t}).join(' < ');if(perm!==right&&wrongs.indexOf(perm)<0)wrongs.push(perm)}
+  return qcm('Range dans l’ordre croissant : '+items.map(function(o){return o.t}).join(' ; ')+'.',right,wrongs,'Je compare les carrés : '+sorted.map(function(o){return o.t+' → '+fm(o.v*o.v,2)}).join(' ; ')+'. Ordre croissant : '+right+'.','Compare les carrés des nombres positifs.');
+};
+function decNat(a,b){var g=gcd(a,b),d=b/g;while(d%2===0)d/=2;while(d%5===0)d/=5;return d===1?'fin':'per'}
+G.ndecim=function(s){
+  var a,b,k,txt,nat,e,labels=['décimale finie','illimitée périodique','illimitée non périodique'],idx,mode,val;
+  mode=s===1?'frac':s===2?'root':(ri(0,1)?'frac':'root');
+  if(mode==='frac'){
+    do{b=ri(3,12);a=ri(1,b-1)}while(gcd(a,b)===b||a%b===0);
+    nat=decNat(a,b);val=a/b;
+    txt='Quelle est la nature de l’écriture décimale de '+a+'/'+b+' ?';
+    e=nat==='fin'?'La calculatrice affiche '+fm(val,6)+' : l’écriture s’arrête, elle est décimale finie.':'La calculatrice affiche '+fm(val,7)+'… : un groupe de chiffres se répète, l’écriture est illimitée périodique.';
+    idx=nat==='fin'?0:1;
+  }else{
+    if(ri(0,1)){k=pick(NSQ);nat='non';val=Math.sqrt(k);txt='Quelle est la nature de l’écriture décimale de √'+k+' ?';e='La calculatrice affiche '+fm(val,7)+'… : les chiffres continuent sans motif qui se répète, l’écriture est illimitée non périodique.';idx=2}
+    else{k=ri(2,15);txt='Quelle est la nature de l’écriture décimale de √'+(k*k)+' ?';e='√'+(k*k)+' = '+k+' : l’écriture s’arrête, elle est décimale finie.';idx=0}
+  }
+  return qcm(txt,labels[idx],labels.filter(function(l,i){return i!==idx}),e,'Utilise la calculatrice et observe les chiffres après la virgule.');
+};
+G.nreel=function(s){
+  var kinds,mk,items,right,wr,labels=['un entier','un rationnel non entier','un irrationnel'],t,i,k,b,a,cnt;
+  function mkN(kind){
+    var k,b,a;
+    if(kind==='int'){if(ri(0,1)){k=ri(2,12);return {t:'√'+(k*k),c:0}}return {t:sg(nz(-20,20)),c:0}}
+    if(kind==='frac'){do{b=ri(3,12);a=ri(1,b-1)}while(gcd(a,b)!==1);return {t:a+'/'+b,c:1}}
+    if(kind==='dec'){do{k=ri(11,99)}while(k%10===0);return {t:fm(k/10,1),c:1}}
+    if(Math.random()<.2)return {t:'π',c:2};
+    k=pick(NSQ);return {t:'√'+k,c:2};
+  }
+  if(s===1){
+    t=pick(['int','frac','dec','irr']);var o=mkN(t);
+    return qcm('Le nombre '+o.t+' est :',labels[o.c],labels.filter(function(l,i){return i!==o.c}),o.c===0?'Son écriture décimale est finie et sans partie décimale : c’est un entier.':o.c===1?'On peut l’écrire sous forme de fraction mais ce n’est pas un entier : c’est un rationnel non entier.':'Son écriture décimale est illimitée et non périodique : on ne peut pas l’écrire en fraction. C’est un irrationnel.','Un irrationnel a une écriture décimale illimitée non périodique.');
+  }
+  if(s===2){
+    right=mkN('irr');wr=[mkN('int'),mkN('frac'),mkN('dec')];
+    return qcm('Lequel de ces nombres est irrationnel ?',right.t,wr.map(function(o){return o.t}),right.t+' a une écriture décimale illimitée non périodique. Les autres nombres sont rationnels : on peut les écrire en fraction.','Les rationnels s’écrivent sous forme de fraction.');
+  }
+  items=[];cnt=0;
+  for(i=0;i<5;i++){t=pick(['int','frac','dec','irr','irr']);var o2=mkN(t);items.push(o2.t);if(o2.c===2)cnt++}
+  return num('Combien de nombres irrationnels y a-t-il dans la liste : '+items.join(' ; ')+' ?',cnt,'Les irrationnels sont les nombres à écriture décimale illimitée non périodique : racines de nombres qui ne sont pas des carrés parfaits, et π. Il y en a '+cnt+'.','Les entiers, fractions et décimaux sont rationnels.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -8118,6 +8197,106 @@ D({id:'pi3-25',lv:3,period:1,dom:'Nombres',t:'Problèmes d’arithmétique avec 
   ar:['التوزيع الأقصى في حزم متماثلة يتطلب PGCD. حدث يتكرر في نفس الوقت يتطلب PPCM.','أحسب الأداة المختارة، أستغل النتيجة، ثم أكتب دائما جملة الجواب.'],
   arw:[['problème','مسألة'],['paquets identiques','حزم متماثلة'],['PGCD','القاسم المشترك الأكبر'],['PPCM','المضاعف المشترك الأصغر'],['phrase réponse','جملة الجواب']]});
 
+D({id:'pi3-26',lv:3,period:1,dom:'Nombres',t:'La racine carrée d’un nombre positif',at:'الجذر المربع لعدد موجب',
+  obj:'Reconnaître la racine carrée d’un nombre positif et la calculer.',keys:['nrac'],
+  lex:[['racine carrée','الجذر المربع'],['carré parfait','مربع كامل'],['carré','مربع'],['valeur approchée','قيمة مقربة'],['calculatrice','آلة حاسبة']],
+  pre:[
+    ['La racine carrée d’un nombre positif a est le nombre positif dont le carré est a.',true,'Par exemple √49 = 7 car 7² = 49.'],
+    ['√25 = −5.',false,'Une racine carrée est positive : √25 = 5.'],
+    ['Un carré parfait est le carré d’un nombre entier.',true,'Par exemple 49 = 7² et 144 = 12².']],
+  plan:['Je regarde le nombre sous la racine.','Je cherche le nombre positif dont le carré est ce nombre. Sinon, j’utilise la calculatrice.','J’écris le résultat.'],
+  ex:[
+    E('Calcule √49.',[
+      ['Étape 1 · le nombre sous la racine est 49','Je le reconnais : 49 est un carré parfait.'],
+      ['Étape 2 · 7 × 7 = 49 et 7 est positif','Je cherche le nombre positif dont le carré est 49.'],
+      ['<b>Étape 3 · √49 = 7</b>','J’écris le résultat.']]),
+    E('Calcule √144.',[
+      ['Étape 1 · le nombre sous la racine est 144','Je le reconnais : 144 est un carré parfait.'],
+      ['Étape 2 · 12 × 12 = 144 et 12 est positif','Je cherche le nombre positif dont le carré est 144.'],
+      ['<b>Étape 3 · √144 = 12</b>','J’écris le résultat.']]),
+    E('Donne une valeur approchée de √7 au centième.',[
+      ['Étape 1 · le nombre sous la racine est 7','7 n’est pas un carré parfait.'],
+      ['Étape 2 · je tape la touche √ puis le nombre 7 : la calculatrice affiche 2,6457513','J’utilise la calculatrice.'],
+      ['<b>Étape 3 · √7 ≈ 2,65</b>','J’arrondis au centième.']])],
+  ret:['La racine carrée d’un nombre positif a est le nombre positif dont le carré est a. On la note √a.','Pour un carré parfait, on trouve un entier. Pour les autres nombres, on utilise la calculatrice et on donne une valeur approchée.','Une racine carrée n’est jamais négative.'],
+  ar:['الجذر المربع لعدد موجب a هو العدد الموجب الذي مربعه a، ونرمز له بـ √a. مثلا √49 = 7.','إذا كان العدد مربعا كاملا نجد عددا صحيحا. وإلا نستعمل الآلة الحاسبة ونعطي قيمة مقربة. الجذر المربع لا يكون سالبا أبدا.'],
+  arw:[['racine carrée','الجذر المربع'],['carré parfait','مربع كامل'],['carré','مربع'],['valeur approchée','قيمة مقربة'],['calculatrice','آلة حاسبة']]});
+
+D({id:'pi3-27',lv:3,period:1,dom:'Nombres',t:'Comparer des racines carrées',at:'مقارنة جذور مربعة',
+  obj:'Comparer les racines carrées de nombres positifs.',keys:['ncomp'],
+  lex:[['comparer','قارن'],['racine carrée','الجذر المربع'],['carré','مربع'],['ordre croissant','ترتيب تصاعدي'],['nombres positifs','أعداد موجبة']],
+  pre:[
+    ['Si a < b avec a et b positifs, alors √a < √b.',true,'Deux nombres positifs sont rangés comme leurs carrés.'],
+    ['√10 < √8.',false,'10 > 8, donc √10 > √8.'],
+    ['4 = √16.',true,'√16 = 4 car 4² = 16.']],
+  plan:['J’écris les deux nombres de la même façon : sous une racine, ou je calcule leurs carrés.','Je compare les nombres obtenus.','Je conclus : deux nombres positifs sont rangés comme leurs carrés.'],
+  ex:[
+    E('Compare √3 et √8.',[
+      ['Étape 1 · les deux nombres sont sous une racine : 3 et 8','Je compare les nombres sous les racines.'],
+      ['Étape 2 · 3 < 8','Je compare 3 et 8.'],
+      ['<b>Étape 3 · √3 < √8</b>','Deux nombres positifs sont rangés comme leurs carrés.']]),
+    E('Compare √11 et 4.',[
+      ['Étape 1 · 4 = √16','Je mets 4 sous une racine : 4² = 16.'],
+      ['Étape 2 · je compare 11 et 16 : 11 < 16','Je compare les nombres sous les racines.'],
+      ['<b>Étape 3 · √11 < 4</b>','Même rangement que les carrés.']]),
+    E('Compare 5 et √20.',[
+      ['Étape 1 · 5² = 25 et (√20)² = 20','Je calcule les carrés des deux nombres.'],
+      ['Étape 2 · 25 > 20','Je compare les carrés.'],
+      ['<b>Étape 3 · 5 > √20</b>','Même rangement que les carrés.']])],
+  ret:['Si a et b sont positifs : a < b équivaut à √a < √b.','Pour comparer une racine et un entier, j’écris l’entier sous une racine, ou je compare leurs carrés.','Pour ranger plusieurs nombres, je compare leurs carrés.'],
+  ar:['إذا كان a و b موجبين فإن a < b تكافئ √a < √b. أي أن العددين الموجبين يرتبان مثل مربعيهما.','لمقارنة جذر مع عدد صحيح أكتب العدد الصحيح تحت جذر أو أقارن مربعيهما. مثلا 4 = √16 إذن √11 < 4.'],
+  arw:[['comparer','قارن'],['racine carrée','الجذر المربع'],['carré','مربع'],['ordre croissant','ترتيب تصاعدي'],['positif','موجب']]});
+
+D({id:'pi3-28',lv:3,period:1,dom:'Nombres',t:'Écritures décimales : finie, périodique, non périodique',at:'الكتابة العشرية: منتهية، دورية، غير دورية',
+  obj:'Distinguer l’écriture décimale finie, illimitée périodique et illimitée non périodique.',keys:['ndecim'],
+  lex:[['écriture décimale','الكتابة العشرية'],['décimale finie','عشرية منتهية'],['illimitée périodique','غير منتهية دورية'],['illimitée non périodique','غير منتهية وغير دورية'],['chiffres après la virgule','الأرقام بعد الفاصلة']],
+  pre:[
+    ['31,56 a une écriture décimale finie.',true,'Il n’y a que deux chiffres après la virgule.'],
+    ['5,262626… est illimitée non périodique.',false,'Le groupe 26 se répète : l’écriture est illimitée périodique.'],
+    ['1,73205080756… peut s’écrire comme une fraction.',false,'Ses chiffres ne se répètent pas : on ne peut pas l’écrire en fraction.']],
+  plan:['J’utilise la calculatrice pour déterminer l’écriture décimale.','J’observe les chiffres après la virgule.','Je conclus sur la nature de l’écriture.'],
+  ex:[
+    E('Quelle est l’écriture décimale de 3/8 ?',[
+      ['Étape 1 · la calculatrice affiche 0,375','Je calcule 3 ÷ 8.'],
+      ['Étape 2 · les chiffres s’arrêtent après le 5','Je regarde les chiffres après la virgule.'],
+      ['<b>Étape 3 · l’écriture est décimale finie</b>','Je conclus.']]),
+    E('Quelle est l’écriture décimale de 4/11 ?',[
+      ['Étape 1 · la calculatrice affiche 0,363636363…','Je calcule 4 ÷ 11.'],
+      ['Étape 2 · le groupe de chiffres 36 se répète','Je regarde les chiffres après la virgule.'],
+      ['<b>Étape 3 · l’écriture est illimitée périodique</b>','Je conclus.']]),
+    E('Quelle est l’écriture décimale de √3 ?',[
+      ['Étape 1 · la calculatrice affiche 1,7320508075…','Je tape √3.'],
+      ['Étape 2 · les chiffres continuent sans groupe qui se répète','Je regarde les chiffres après la virgule.'],
+      ['<b>Étape 3 · l’écriture est illimitée non périodique</b>','Je conclus.']])],
+  ret:['Décimale finie : les chiffres s’arrêtent (31,56). Illimitée périodique : un groupe de chiffres se répète sans fin (5,262626…). Illimitée non périodique : aucun groupe ne se répète (1,7320508…).','Une fraction a une écriture décimale finie ou illimitée périodique.','Pour distinguer : j’utilise la calculatrice, j’observe les chiffres après la virgule, puis je conclus.'],
+  ar:['كتابة عشرية منتهية: الأرقام تتوقف (31,56). غير منتهية دورية: مجموعة أرقام تتكرر بلا نهاية (5,262626…). غير منتهية وغير دورية: لا توجد مجموعة تتكرر (1,7320508…).','الكسر كتابته العشرية منتهية أو غير منتهية دورية. للتمييز: أستعمل الآلة الحاسبة، ألاحظ الأرقام بعد الفاصلة، ثم أستنتج.'],
+  arw:[['écriture décimale','الكتابة العشرية'],['décimale finie','عشرية منتهية'],['périodique','دورية'],['non périodique','غير دورية'],['chiffre','رقم']]});
+
+D({id:'pi3-29',lv:3,period:1,dom:'Nombres',t:'Rationnels, irrationnels et réels',at:'الأعداد الجذرية وغير الجذرية والحقيقية',
+  obj:'Distinguer nombres rationnels, nombres irrationnels et nombres réels.',keys:['nreel'],
+  lex:[['nombre rationnel','عدد جذري'],['nombre irrationnel','عدد غير جذري'],['nombre réel','عدد حقيقي'],['fraction','كسر'],['entier','عدد صحيح']],
+  pre:[
+    ['Tout entier est un nombre rationnel.',true,'Par exemple 7 = 7/1.'],
+    ['√2 est un nombre rationnel.',false,'√2 a une écriture décimale illimitée non périodique : il est irrationnel.'],
+    ['Les rationnels et les irrationnels forment les nombres réels.',true,'Tous ces nombres sont réels.']],
+  plan:['Je détermine l’écriture décimale du nombre, ou je l’écris sous forme de fraction.','J’observe : fraction possible, ou écriture illimitée non périodique.','Je conclus : rationnel (entier ou non) ou irrationnel. Dans tous les cas, c’est un nombre réel.'],
+  ex:[
+    E('Classe le nombre −4.',[
+      ['Étape 1 · −4 = −4/1','Je l’écris sous forme de fraction.'],
+      ['Étape 2 · une fraction est possible','L’écriture décimale est finie : −4,0.'],
+      ['<b>Étape 3 · −4 est un entier, donc un rationnel, donc un réel</b>','Je conclus.']]),
+    E('Classe le nombre 0,25.',[
+      ['Étape 1 · 0,25 = 25/100 = 1/4','Je l’écris sous forme de fraction.'],
+      ['Étape 2 · une fraction est possible','L’écriture décimale est finie.'],
+      ['<b>Étape 3 · 0,25 est un rationnel non entier, donc un réel</b>','Je conclus.']]),
+    E('Classe le nombre √2.',[
+      ['Étape 1 · la calculatrice affiche 1,41421356…','Les chiffres continuent sans fin.'],
+      ['Étape 2 · l’écriture est illimitée non périodique','Aucune fraction ne peut s’écrire avec ces chiffres.'],
+      ['<b>Étape 3 · √2 est un irrationnel, donc un réel</b>','Je conclus.']])],
+  ret:['Un nombre rationnel peut s’écrire sous forme de fraction. Tout entier est rationnel.','Un nombre à écriture décimale illimitée non périodique est irrationnel (√2, π...).','Les rationnels et les irrationnels forment l’ensemble des nombres réels.'],
+  ar:['العدد الجذري يمكن كتابته على شكل كسر، وكل عدد صحيح جذري. العدد ذو الكتابة العشرية غير المنتهية وغير الدورية عدد غير جذري (√2 وπ...).','الأعداد الجذرية وغير الجذرية تشكل معا مجموعة الأعداد الحقيقية.'],
+  arw:[['nombre rationnel','عدد جذري'],['nombre irrationnel','عدد غير جذري'],['nombre réel','عدد حقيقي'],['fraction','كسر'],['entier','عدد صحيح']]});
+
 /* ===== PÉRIODE 2 ===== */
 var NL=SC.nl(-6,2,{every:1,x0:30,x1:370});
 D({id:'pi3-4',lv:3,period:2,dom:'Algèbre',t:'Équations et inéquations',at:'المعادلات والمتراجحات',
@@ -8348,7 +8527,7 @@ P.evalPage({id:'pe3-4',lv:3,period:4,keys:['vec','rep','droite','vec','rep','dro
 P.evalPage({id:'pe3-5',lv:3,period:5,keys:['vol','agr','fonc','droite','stat','effC','vol','fonc']});
 
 P.setLevel(3,['pr-2','pr-3','pr-4'],[
-  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-20','pi3-21','pi3-22','pi3-23','pi3-24','pi3-25','pi3-1','pi3-2','pi3-3']},
+  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-20','pi3-21','pi3-22','pi3-23','pi3-24','pi3-25','pi3-26','pi3-27','pi3-28','pi3-29','pi3-1','pi3-2','pi3-3']},
   {title:'Équations, systèmes et Pythagore',seqs:['pi3-4','pi3-5','pi3-6']},
   {title:'Thalès, angles inscrits et triangles semblables',seqs:['pi3-7','pi3-8','pi3-9']},
   {title:'Vecteurs, repère et droites',seqs:['pi3-10','pi3-11','pi3-12']},
