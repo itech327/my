@@ -8,7 +8,7 @@
 <meta name="description" content="Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux.">
 <link rel="canonical" href="https://taalim.men/">
 <meta name="theme-color" content="#0d0b14">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%230d0b14'/%3E%3Cpath d='M5 33Q24 -1 43 33' fill='none' stroke='%237066 96' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='24' r='5' fill='%23e371cb'/%3E%3Ccircle cx='24' cy='15' r='5' fill='%239b92dc'/%3E%3Ccircle cx='37' cy='24' r='5' fill='%236ccdb6'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">
@@ -25,12 +25,21 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body);padding:0 max(16px,env(safe-area-inset-left,0px))}
 .wrap{max-width:760px;margin:0 auto;padding:20px 0 56px}
-.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
-h1{font-family:var(--f-display);font-style:italic;font-size:clamp(40px,11vw,64px);line-height:1.1;margin:6px 0 10px;padding-right:.12em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.kicker{font-size:14px;color:var(--muted);margin:0}
+h1{font-family:var(--f-display);font-style:italic;font-weight:400;font-size:clamp(40px,11vw,64px);line-height:1.1;margin:6px 0 2px;padding-right:.12em;color:var(--fg)}
 .lead{color:var(--muted);max-width:56ch;margin:0 0 14px}
 .ar{font-family:var(--f-ar);direction:rtl;text-align:right;color:var(--teal);line-height:1.9}
 .grid{display:grid;gap:12px;margin:12px 0 22px}
-.logo{width:.8em;height:.8em;margin-right:.18em;vertical-align:-.05em;-webkit-text-fill-color:initial}
+.mark{width:1.45em;height:.97em;margin-right:.22em;vertical-align:-.06em;overflow:visible}
+.mark .arc{fill:none;stroke:#5b5180;stroke-width:2.4;stroke-linecap:round}
+.mark circle{transform-box:fill-box;transform-origin:center}
+.tag{font-size:22px;max-width:60ch;margin:0 0 14px;color:var(--teal)}
+@media (prefers-reduced-motion:no-preference){
+.mark .arc{stroke-dasharray:1;stroke-dashoffset:1;animation:trace .9s ease-out .1s forwards}
+.mark circle{opacity:0;animation:land .4s cubic-bezier(.3,1.6,.5,1) forwards}
+.mark .d1{animation-delay:.35s}.mark .d2{animation-delay:.6s}.mark .d3{animation-delay:.85s}}
+@keyframes trace{to{stroke-dashoffset:0}}
+@keyframes land{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
 .welcome{font-size:18px;max-width:60ch;margin:0 0 10px}
 .welcome.ar{color:var(--teal);font-size:19px}
 .step{font-weight:700;margin:26px 0 4px;color:var(--fg)}
@@ -55,7 +64,8 @@ a.card .ar{font-size:15px;color:var(--lav)}
 <body>
 <div class="wrap">
   <p class="kicker">Collège · option française</p>
-  <h1><svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#e371cb"/><stop offset=".5" stop-color="#9b92dc"/><stop offset="1" stop-color="#6ccdb6"/></linearGradient></defs><path d="M4 23 L11 9 L18 20 L28 6" fill="none" stroke="url(#lg)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cours en mouvement</h1>
+  <h1><svg class="mark" viewBox="0 0 48 32" aria-hidden="true"><path class="arc" pathLength="1" d="M4 26Q24 -6 44 26"/><circle class="d1" cx="10" cy="17.8" r="3.6" fill="#e371cb"/><circle class="d2" cx="24" cy="10" r="3.6" fill="#9b92dc"/><circle class="d3" cx="38" cy="17.8" r="3.6" fill="#6ccdb6"/></svg>Cours en mouvement</h1>
+  <p class="tag ar" lang="ar" dir="rtl">دروس الإعدادي بالحركة</p>
   <p class="welcome">Merci de ta visite. Ici, les cours bougent : tu touches la figure, tu changes les valeurs et tu comprends. Choisis ta matière pour commencer.</p>
   <p class="welcome ar" lang="ar" dir="rtl">شكرًا لزيارتك! هنا تتحرّك الدروس: تلمس الشكل وتغيّر القيم فتفهم. اختر المادة التي تناسبك لتبدأ.</p>
   <p class="step">1 · Choisis ta matière <span class="ar" lang="ar" dir="rtl">اختر المادة</span></p>
