@@ -146,17 +146,24 @@ with sync_playwright() as p:
     check(pb.evaluate("Lab.balanceDue(Date.now() + 8*864e5)") is True, 'équilibre : de nouveau dû après 8 jours')
     pb.evaluate("Lab.Session.clearAll()"); check(pb.evaluate("localStorage.getItem('lab_bal')") is None, 'équilibre : effacé avec les données')
     check(not eb, 'équilibre : aucune erreur JS %s' % eb[:1])
-    # --- mot de bienvenue à l'ouverture
+    # --- bienvenue (splash) à l'ouverture
     for f in ('index.html', 'maths.html', 'physique-chimie.html', 'svt.html'):
         pw, ew = page(ctx, f)
-        check(pw.locator('.lab-welcome').count() == 1 and 'réussite' in pw.locator('.lab-welcome').inner_text() and 'التعلم والنجاح' in pw.locator('.lab-welcome').inner_text(), f + ': bienvenue affichée à l’ouverture')
-        pw.locator('.lab-welcome .btn').click(); pw.wait_for_timeout(150)
-        check(pw.locator('.lab-welcome').count() == 0, f + ': bienvenue fermable')
+        tx = pw.locator('.lab-welcome').inner_text() if pw.locator('.lab-welcome').count() else ''
+        check(pw.locator('.lab-welcome').count() == 1 and 'réussite' in tx and 'انتماءك' in tx, f + ': splash de bienvenue à l’ouverture')
+        pw.locator('.lab-welcome .btn').click(); pw.wait_for_timeout(600)
+        check(pw.locator('.lab-welcome').count() == 0, f + ': splash fermé par le bouton')
         pw.reload(); pw.wait_for_timeout(600)
-        check(pw.locator('.lab-welcome').count() == 0, f + ': bienvenue non répétée au rechargement')
-        check(pw.evaluate("Lab.welcomeDue(Date.now() + 8*864e5)") is True, f + ': bienvenue de nouveau due après 8 jours')
-        pw.evaluate("Lab.Session.clearAll()"); check(pw.evaluate("localStorage.getItem('lab_wel')") is None, f + ': bienvenue effacée avec les données')
-        check(not ew, f + ': bienvenue sans erreur JS %s' % ew[:1])
+        check(pw.locator('.lab-welcome').count() == 0, f + ': splash non répété au rechargement')
+        check(pw.evaluate("Lab.welcomeDue(Date.now() + 8*864e5)") is True, f + ': splash de nouveau dû après 8 jours')
+        pw.evaluate("Lab.Session.clearAll()"); check(pw.evaluate("localStorage.getItem('lab_wel')") is None, f + ': splash effacé avec les données')
+        check(not ew, f + ': splash sans erreur JS %s' % ew[:1])
+    pw, ew = page(ctx, 'svt.html')
+    check(pw.locator('.lab-welcome').count() == 1, 'splash : visible au début')
+    pw.wait_for_timeout(5000)
+    check(pw.locator('.lab-welcome').count() == 1, 'splash : encore visible avant 6 s')
+    pw.wait_for_timeout(1900)
+    check(pw.locator('.lab-welcome').count() == 0, 'splash : disparaît seul après 6 s')
     # --- étiquette approfondissement
     ps, es = page(ctx, 'svt.html')
     check(ps.locator('.chap .appro').count() == 2 and ps.locator('p.appro-note').count() == 1, 'SVT : 2 chapitres étiquetés approfondissement et la note de repère')
