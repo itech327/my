@@ -18,7 +18,7 @@ with sync_playwright() as p:
     pg.goto('file://' + os.path.join(ROOT, 'maths.html')); pg.wait_for_timeout(800)
     # générateurs : 400 tirages par clé et niveau
     bad = pg.evaluate("""function(){
-      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat'],MM=window.MM;
+      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly'],MM=window.MM;
       keys.forEach(function(k){[1,2,3].forEach(function(s){for(var i=0;i<400;i++){
         var it=MM.genItem(k,s),txt=JSON.stringify(it);
         if(/undefined|NaN|\\[object/.test(txt)){out.push(k+s+' texte '+it.q);break}
@@ -35,13 +35,13 @@ with sync_playwright() as p:
     # exactitude des polynômes : on évalue question et bonne réponse en x = 2, y = 3
     pol = pg.evaluate("""function(){
       var MM=window.MM,bad=[];
-      function ev1(t,x,y){t=t.replace(/([xy])<sup>(\\d+)<\\/sup>/g,'Math.pow($1,$2)').replace(/−/g,'-').replace(/×/g,'*').replace(/(\\d)([xy]|Math)/g,'$1*$2').replace(/([xy])([xy]|Math)/g,'$1*$2').replace(/(\\d|[xy])\\(/g,'$1*(').replace(/\\)\\(/g,')*(').replace(/\\)(Math|[xy])/g,')*$1');
+      function ev1(t,x,y){t=t.replace(/([xy])<sup>(\\d+)<\\/sup>/g,'Math.pow($1,$2)').replace(/−/g,'-').replace(/×/g,'*').replace(/÷/g,'/').replace(/(\\d)([xy]|Math)/g,'$1*$2').replace(/([xy])([xy]|Math)/g,'$1*$2').replace(/(\\d|[xy])\\(/g,'$1*(').replace(/\\)\\(/g,')*(').replace(/\\)(Math|[xy])/g,')*$1');
         return Function('x','y','return ('+t+')')(x,y)}
-      function ev(t){return ev1(t,2,3)+'|'+ev1(t,5,-1)}
-      ['pred','padd','psub','pmon','pbim','pbb'].forEach(function(k){[2,3].forEach(function(s){for(var i=0;i<300;i++){
+      function ev(t){return [ev1(t,2,3),ev1(t,5,-1)].map(function(v){return Math.round(v*1e6)/1e6}).join('|')}
+      ['pred','padd','psub','pmon','pbim','pbb','pdm','pdb'].forEach(function(k){[2,3].forEach(function(s){for(var i=0;i<300;i++){
         var it=MM.genItem(k,s);if(it.t!=='qcm')continue;
         var q=it.q.replace(/^[^:(]*?(?=[\\d(x−])/,'').replace(/\\.$/,'');
-        var m=/^(?:Réduis |Effectue l’addition : |Effectue la soustraction : |Calcule |Développe )(.*)\\.$/.exec(it.q);if(!m)continue;
+        var m=/^(?:Réduis |Effectue l’addition : |Effectue la soustraction : |Calcule |Développe |Effectue la division : )(.*)\\.$/.exec(it.q);if(!m)continue;
         var expr=m[1];
         try{var a=ev(expr),b=ev(it.o[it.a]);if(a!==b){bad.push(k+s+' '+expr+' => '+it.o[it.a]);break}
           var wrong=it.o.filter(function(o,j){return j!==it.a&&ev(o)===a});if(wrong.length){bad.push(k+s+' faux ok '+expr);break}}
@@ -59,7 +59,18 @@ with sync_playwright() as p:
         if(ok.length){bad.push('distracteur valide '+it.q);break}}
       return bad}()""")
     check(not pat, 'motifs : formule cohérente avec les rangs (%s)' % (pat[:2],))
-    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs')):
+    # équations : la valeur calculée doit vérifier l'équation
+    eqs = pg.evaluate("""function(){var MM=window.MM,bad=[];
+      for(var i=0;i<400;i++){var it=MM.genItem('pvaly',1+i%3);
+        var m=/^Dans l’équation (−?\\d*)x ([+−]) (\\d*)y = (−?\\d+), calcule (x|y) pour (x|y) = (−?\\d+)\\.$/.exec(it.q);
+        if(!m){bad.push('format '+it.q);break}
+        var n=function(v){return +v.replace('−','-')};
+        var a=m[1]===''?1:(m[1]==='−'?-1:n(m[1])),b=(m[3]===''?1:+m[3])*(m[2]==='−'?-1:1),c=n(m[4]),v=n(m[7]);
+        var x=m[6]==='x'?v:it.a,y=m[6]==='x'?it.a:v;
+        if(a*x+b*y!==c){bad.push(it.q+' => '+it.a);break}}
+      return bad}()""")
+    check(not eqs, 'équations : valeur calculée exacte (%s)' % (eqs[:2],))
+    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x')):
         pg.evaluate("location.hash='#%s'" % cid); pg.wait_for_timeout(500)
         sec = pg.locator('#%s' % cid)
         check(sec.count() == 1 and title in sec.inner_text(), cid + ' : page affichée')
@@ -75,7 +86,7 @@ with sync_playwright() as p:
     pg.evaluate("location.hash='#home'"); pg.wait_for_timeout(300)
     lv2 = pg.locator('#plevels button').nth(1); lv2.click(); pg.wait_for_timeout(400)
     hrefs = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
-    check('#pi2-15' in hrefs and '#pi2-16' in hrefs and '#pi2-17' in hrefs and all(('#pi2-%d' % n) in hrefs for n in (18,19,20,21,22,23,24,25)), 'séquences listées dans le parcours pionnier 2AC')
+    check('#pi2-15' in hrefs and '#pi2-16' in hrefs and '#pi2-17' in hrefs and all(('#pi2-%d' % n) in hrefs for n in range(18,30)), 'séquences listées dans le parcours pionnier 2AC')
     check(not errs, 'aucune erreur JS %s' % errs[:1])
     b.close()
 print('FAILS: %d' % len(fails))

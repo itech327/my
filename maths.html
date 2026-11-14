@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-GLeWzlXbIY54gqR7hrzXIoYW10kXBeJvhLNVkM19f2g=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-FNZykQvslOoz1RmXH5BoY/vsxoa8qlR9NjaTNWyey8Q=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-J/dvjUx7p2m5Lc4yPHr/0FoAQxnsmaDWkyBjwJO5xP8=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6550,6 +6550,65 @@ G.ppat=function(s){
   return num('Rang 1 : '+u1+' '+it+', rang 2 : '+(u1+a)+' '+it+', rang 3 : '+(u1+2*a)+' '+it+'. Combien y en a-t-il au rang '+k+' ?',a*k+b,'Formule : '+fo(a,b)+'. Au rang '+k+' : '+a+' × '+k+(b?' + '+b:'')+' = '+(a*k+b)+'.','Trouve d’abord la formule au rang n, puis remplace n.');
 };
 
+/* ---------- division de monômes, équations à deux inconnues ---------- */
+function eq2(a,b,c){
+  return tm(a,[1],['x'],true)+(b<0?' − ':' + ')+(Math.abs(b)===1?'':Math.abs(b))+'y = '+sg(c);
+}
+G.pdm=function(s){
+  var vs=s===1?['x']:['x','y'],b,k,a,q,m,i,dd=[],dv=[],dq=[];
+  if(s===1){b=ri(2,6);k=ri(2,6);q=[ri(1,3)];m=[q[0]+ri(1,3)]}
+  else if(s===2){do{b=nz(-6,6)}while(Math.abs(b)<2);k=nz(-6,6);q=[ri(1,2),ri(1,2)];m=[q[0]+ri(1,3),q[1]+ri(0,2)]}
+  else{b=nz(-7,-2);k=nz(-7,7);q=[ri(1,3),ri(1,3)];m=[q[0]+ri(1,2),q[1]+ri(0,2)]}
+  a=b*k;
+  var d=m.map(function(v,j){return v-q[j]});
+  var right=pStr([[k,d]],vs);
+  var wr=[pStr([[k,m.map(function(v,j){return v+q[j]})]],vs),pStr([[a-b,d]],vs),pStr([[-k,d]],vs),pStr([[k,d.map(function(v,j){return j===0?v+1:v})]],vs)];
+  return qcm('Effectue la division : ('+tm(a,m,vs,true)+') ÷ ('+tm(b,q,vs,true)+').',right,distinct(right,wr).slice(0,3),'Coefficients : '+sg(a)+' ÷ '+rl(b)+' = '+sg(k)+'. Pour chaque variable, j’enlève l’exposant du diviseur à celui du dividende. Résultat : '+right+'.','Les coefficients se divisent, les exposants de la même variable se soustraient.');
+};
+G.pdb=function(s){
+  var vs,M,Q,d,q1,q2,e,a1,a2,T,right,wr;
+  if(s===3){
+    vs=['x','y'];d=ri(2,7);q1=nz(-6,6);q2=nz(-6,6);a1=ri(1,2);a2=ri(1,2);
+    M=[d,[1,1]];Q=[[q1,[a1,0]],[q2,[0,a2]]];
+  }else{
+    vs=['x'];d=s===1?ri(2,6):ri(2,7);e=ri(1,2);
+    q1=s===1?ri(1,6):nz(-6,6);q2=s===1?ri(1,6):nz(-6,6);a1=ri(1,3);a2=ri(0,a1-1);
+    M=[d,[e]];Q=[[q1,[a1]],[q2,[a2]]];
+  }
+  T=Q.map(function(t){return [d*t[0],t[1].map(function(v,j){return v+M[1][j]})]});
+  right=pStr(Q,vs);
+  wr=[pStr([Q[0],[-q2,Q[1][1]]],vs),pStr([Q[0],T[1]],vs),pStr([[-q1,Q[0][1]],Q[1]],vs),pStr([Q[0],[q2*d,Q[1][1]]],vs),pStr([[q1,Q[0][1]],[q2+1,Q[1][1]]],vs)];
+  return qcm('Effectue la division : ('+pStr(T,vs)+') ÷ ('+tm(d,M[1],vs,true)+').',right,distinct(right,wr).slice(0,3),'Je sépare en deux fractions en gardant le signe : ('+tm(T[0][0],T[0][1],vs,true)+') ÷ ('+tm(d,M[1],vs,true)+') et ('+tm(T[1][0],T[1][1],vs,true)+') ÷ ('+tm(d,M[1],vs,true)+'). Je simplifie chacune. Résultat : '+right+'.','Divise chaque terme du numérateur par le diviseur, et garde le signe entre les deux.');
+};
+G.peq=function(s){
+  var a,b,c,x,y,t,right,wr;
+  if(s===1){
+    a=ri(2,9);b=ri(2,9);while(b===a)b=ri(2,9);x=ri(1,4);y=ri(1,4);c=a*x+b*y;
+    right=eq2(a,b,c);
+    wr=[eq2(b,a,c),'x + y = '+c,eq2(a,-b,c),eq2(a,b,x+y)];
+    return qcm('Un cahier coûte '+a+' DH et un stylo coûte '+b+' DH. Karim paie '+c+' DH. Soit x le nombre de cahiers et y le nombre de stylos. Quelle équation traduit la situation ?',right,distinct(right,wr).slice(0,3),'Les cahiers coûtent '+a+'x DH et les stylos '+b+'y DH. Le total est '+c+' DH : '+right+'.','Prix d’un article × nombre d’articles, pour chaque sorte.');
+  }
+  if(s===2){
+    x=ri(2,7);y=ri(2,7);c=4*x+2*y;right=eq2(4,2,c);
+    wr=[eq2(2,4,c),'x + y = '+c,eq2(4,-2,c),eq2(4,2,x+y)];
+    return qcm('Dans un parking, il y a des voitures (4 roues) et des motos (2 roues). On compte '+c+' roues. Soit x le nombre de voitures et y le nombre de motos. Quelle équation traduit la situation ?',right,distinct(right,wr).slice(0,3),'Les voitures ont 4x roues et les motos 2y roues. Au total : '+right+'.','Chaque voiture a 4 roues, chaque moto en a 2.');
+  }
+  var words={2:'double',3:'triple',4:'quadruple'},plus=ri(0,1)===1;
+  a=ri(2,4);do{b=ri(2,4)}while(b===a);x=ri(1,6);y=ri(1,6);c=a*x+(plus?b*y:-b*y);
+  right=eq2(a,plus?b:-b,c);
+  wr=[eq2(b,plus?a:-a,c),eq2(a,plus?-b:b,c),'x '+(plus?'+':'−')+' y = '+sg(c),eq2(a,plus?b:-b,c+1)];
+  return qcm('Le '+words[a]+' d’un nombre x '+(plus?'augmenté':'diminué')+' du '+words[b]+' d’un nombre y est égal à '+sg(c)+'. Quelle équation traduit cette phrase ?',right,distinct(right,wr).slice(0,3),'Le '+words[a]+' de x s’écrit '+a+'x et le '+words[b]+' de y s’écrit '+b+'y. Résultat : '+right+'.','Double = 2 fois, triple = 3 fois, quadruple = 4 fois.');
+};
+G.pvaly=function(s){
+  var a,b,c,x,y,ask;
+  if(s===1){a=ri(2,6);b=ri(2,6);x=ri(1,6);y=ri(1,6)}
+  else if(s===2){a=ri(2,6);b=-ri(2,6);x=ri(1,6);y=ri(1,6)}
+  else{a=nz(-7,7);if(Math.abs(a)<2)a=-3;b=nz(-7,7);if(Math.abs(b)<2)b=4;x=nz(-6,6);y=nz(-6,6)}
+  c=a*x+b*y;ask=s===3&&ri(0,1)===1;
+  if(!ask)return num('Dans l’équation '+eq2(a,b,c)+', calcule y pour x = '+sg(x)+'.',y,'Je remplace x par '+rl(x)+' : '+sg(a*x)+(b<0?' − ':' + ')+Math.abs(b)+'y = '+sg(c)+'. J’isole y : '+sg(b)+'y = '+sg(c-a*x)+', donc y = '+sg(y)+'. Vérification : '+sg(a)+' × '+rl(x)+' + '+rl(b)+' × '+rl(y)+' = '+sg(c)+'.','Remplace x, soustrais le terme en x aux deux membres, puis divise.');
+  return num('Dans l’équation '+eq2(a,b,c)+', calcule x pour y = '+sg(y)+'.',x,'Je remplace y par '+rl(y)+' : '+sg(a)+'x '+(b*y<0?'− ':'+ ')+Math.abs(b*y)+' = '+sg(c)+'. J’isole x : '+sg(a)+'x = '+sg(c-b*y)+', donc x = '+sg(x)+'. Vérification : '+sg(a)+' × '+rl(x)+' + '+rl(b)+' × '+rl(y)+' = '+sg(c)+'.','Remplace y, déplace le terme connu de l’autre côté, puis divise.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7938,6 +7997,118 @@ D({id:'pi2-25',lv:2,period:1,dom:'Algèbre',t:'Problème de motifs algébriques'
   ar:['لحل مسألة نمط: أتعرف على الوحدة، أرسم العنصر الموالي، أسجل الأعداد في جدول، ثم أجد الصيغة العامة.','إذا كنا نضيف a في كل رتبة فالصيغة من الشكل an + b، ونجد b من الرتبة 1. ولا نخلط بين الرتبة n وعدد العناصر. نتحقق من الصيغة بالرتب الأولى.'],
   arw:[['motif','نمط'],['rang','رتبة'],['formule','صيغة'],['tableau','جدول'],['unité','وحدة']]});
 
+D({id:'pi2-26',lv:2,period:1,dom:'Algèbre',t:'Diviser un monôme par un monôme',at:'قسمة وحيدة حد على وحيدة حد',
+  obj:'Effectuer la division d’un monôme par un monôme de degré inférieur.',keys:['pdm'],
+  lex:[['division','قسمة'],['quotient','خارج القسمة'],['fraction','كسر'],['simplifier','اختزل'],['facteur commun','عامل مشترك']],
+  pre:[
+    ['Quand on écrit une division sous forme de fraction, le diviseur se place au dénominateur.',true,'Le dividende est au numérateur, le diviseur au dénominateur.'],
+    ['x<sup>5</sup> ÷ x<sup>2</sup> = x<sup>2,5</sup>.',false,'On soustrait les exposants : x<sup>5</sup> ÷ x<sup>2</sup> = x<sup>3</sup>.'],
+    ['(−12) ÷ 4 = 3.',false,'Un nombre négatif divisé par un nombre positif donne un résultat négatif : −3.']],
+  plan:['J’exprime la division sous forme de fraction.','Je décompose les nombres et les puissances.','Je simplifie.','Je conclus.'],
+  ex:[
+    E('Effectue (12x<sup>5</sup>) ÷ (3x<sup>2</sup>).',[
+      ['Étape 1 · 12x<sup>5</sup> / 3x<sup>2</sup>','Le diviseur est au dénominateur.'],
+      ['Étape 2 · (3 × 4 × x × x × x × x × x) / (3 × x × x)','Je décompose 12 et les puissances de x.'],
+      ['Étape 3 · je barre 3, x et x : il reste 4 × x × x × x','Je barre les facteurs communs.'],
+      ['<b>Étape 4 · 4x<sup>3</sup></b>','Contrôle : 5 − 2 = 3.']]),
+    E('Effectue (−20x<sup>3</sup>y<sup>2</sup>) ÷ (5xy).',[
+      ['Étape 1 · −20x<sup>3</sup>y<sup>2</sup> / 5xy','Fraction.'],
+      ['Étape 2 · (−5 × 4 × x × x × x × y × y) / (5 × x × y)','Je décompose.'],
+      ['Étape 3 · je barre 5, x et y : il reste −4 × x × x × y','Le signe − reste.'],
+      ['<b>Étape 4 · −4x<sup>2</sup>y</b>','Contrôle : x : 3 − 1 = 2 et y : 2 − 1 = 1.']]),
+    E('Effectue (−18xy<sup>3</sup>) ÷ (−6xy).',[
+      ['Étape 1 · −18xy<sup>3</sup> / (−6xy)','Fraction.'],
+      ['Étape 2 · (−6 × 3 × x × y × y × y) / (−6 × x × y)','Je décompose.'],
+      ['Étape 3 · je barre −6, x et y : il reste 3 × y × y','x disparaît car 1 − 1 = 0.'],
+      ['<b>Étape 4 · 3y<sup>2</sup></b>','Moins divisé par moins donne plus.']])],
+  ret:['Pour diviser un monôme par un monôme, j’écris une fraction, je décompose, je simplifie, je conclus.','Les coefficients se divisent. Pour chaque variable, les exposants se soustraient : x<sup>m</sup> ÷ x<sup>n</sup> = x<sup>m − n</sup>.','On ne peut simplifier qu’après avoir décomposé. Je respecte la règle des signes.'],
+  ar:['لقسمة وحيدة حد على وحيدة حد: أكتب القسمة على شكل كسر، ثم أفكك الأعداد والقوى، ثم أختزل العوامل المشتركة، ثم أكتب النتيجة.','نقسم المعاملين، وبالنسبة لكل متغير نطرح الأسس: x⁵ ÷ x² = x³. ونراعي قاعدة الإشارات.'],
+  arw:[['division','قسمة'],['quotient','خارج القسمة'],['simplifier','اختزل'],['dénominateur','مقام'],['numérateur','بسط']]});
+
+D({id:'pi2-27',lv:2,period:1,dom:'Algèbre',t:'Diviser un binôme par un monôme',at:'قسمة ثنائية حد على وحيدة حد',
+  obj:'Effectuer la division d’un binôme par un monôme de degré inférieur.',keys:['pdb'],
+  lex:[['binôme','ثنائية حد'],['somme','مجموع'],['différence','فرق'],['numérateur','بسط'],['simplifier','اختزل']],
+  pre:[
+    ['(a + b) ÷ c = a ÷ c + b ÷ c.',true,'On divise chaque terme par c.'],
+    ['(a + b) ÷ c = a + b ÷ c.',false,'Le diviseur c divise les deux termes, pas seulement le second.'],
+    ['Quand on sépare la fraction en deux, on garde le signe entre les deux termes.',true,'Le signe + ou − du numérateur reste entre les deux fractions.']],
+  plan:['J’exprime la division sous forme de fraction.','J’écris la fraction comme somme ou différence de deux fractions.','Je décompose les coefficients et les puissances.','Je simplifie chaque fraction.','Je conclus.'],
+  ex:[
+    E('Effectue (12x<sup>3</sup> + 8x<sup>2</sup>) ÷ (4x).',[
+      ['Étape 1 · (12x<sup>3</sup> + 8x<sup>2</sup>) / 4x','Fraction.'],
+      ['Étape 2 · 12x<sup>3</sup> / 4x + 8x<sup>2</sup> / 4x','Deux fractions, signe + conservé.'],
+      ['Étape 3 · (4 × 3 × x<sup>3</sup>) / (4 × x) + (4 × 2 × x<sup>2</sup>) / (4 × x)','Je décompose.'],
+      ['Étape 4 · 3x<sup>2</sup> et 2x','Je simplifie chaque fraction.'],
+      ['<b>Étape 5 · 3x<sup>2</sup> + 2x</b>','Je conclus.']]),
+    E('Effectue (−6x<sup>4</sup> + 9x<sup>3</sup>) ÷ (3x<sup>2</sup>).',[
+      ['Étape 1 · (−6x<sup>4</sup> + 9x<sup>3</sup>) / 3x<sup>2</sup>','Fraction.'],
+      ['Étape 2 · −6x<sup>4</sup> / 3x<sup>2</sup> + 9x<sup>3</sup> / 3x<sup>2</sup>','Je garde le signe +.'],
+      ['Étape 3 · (3 × (−2) × x<sup>4</sup>) / (3 × x<sup>2</sup>) + (3 × 3 × x<sup>3</sup>) / (3 × x<sup>2</sup>)','Je décompose.'],
+      ['Étape 4 · −2x<sup>2</sup> et 3x','4 − 2 = 2 et 3 − 2 = 1.'],
+      ['<b>Étape 5 · −2x<sup>2</sup> + 3x</b>','Je conclus.']]),
+    E('Effectue (−14x<sup>2</sup>y + 28xy<sup>2</sup>) ÷ (7xy).',[
+      ['Étape 1 · (−14x<sup>2</sup>y + 28xy<sup>2</sup>) / 7xy','Fraction.'],
+      ['Étape 2 · −14x<sup>2</sup>y / 7xy + 28xy<sup>2</sup> / 7xy','Deux fractions.'],
+      ['Étape 3 · (7 × (−2) × x × x × y) / (7 × x × y) + (7 × 4 × x × y × y) / (7 × x × y)','Je décompose.'],
+      ['Étape 4 · −2x et 4y','Je barre 7, x et y dans chaque fraction.'],
+      ['<b>Étape 5 · −2x + 4y</b>','Je conclus.']])],
+  ret:['Pour diviser un binôme par un monôme, j’écris deux fractions : (a + b) ÷ c = a ÷ c + b ÷ c.','Je garde le signe entre les deux termes.','Puis je divise chaque terme comme pour deux monômes : coefficients divisés, exposants soustraits.'],
+  ar:['لقسمة ثنائية حد على وحيدة حد: أفصل الكسر إلى كسرين، أي (a + b) ÷ c = a ÷ c + b ÷ c، مع الاحتفاظ بالإشارة بين الحدين.','ثم أقسم كل حد على وحيدة الحد كما في قسمة وحيدتي حد: نقسم المعاملات ونطرح الأسس.'],
+  arw:[['binôme','ثنائية حد'],['somme','مجموع'],['différence','فرق'],['fraction','كسر'],['signe','إشارة']]});
+
+D({id:'pi2-28',lv:2,period:1,dom:'Algèbre',t:'Traduire une situation par une équation à deux inconnues',at:'ترجمة وضعية إلى معادلة بمجهولين',
+  obj:'Traduire une situation par une équation du 1er degré à deux inconnues.',keys:['peq'],
+  lex:[['équation','معادلة'],['inconnue','مجهول'],['traduire','ترجم'],['situation','وضعية'],['quantité','كمية']],
+  pre:[
+    ['Une équation est une égalité : elle contient toujours le signe =.',true,'Sans le signe =, ce n’est pas une équation.'],
+    ['Dans 2x + 3y = 20, il y a deux inconnues.',true,'Les inconnues sont x et y.'],
+    ['Le double de x s’écrit x + 2.',false,'Le double de x s’écrit 2x.']],
+  plan:['J’identifie les deux quantités inconnues.','Je représente chacune par une lettre.','J’écris l’équation qui traduit la situation.'],
+  ex:[
+    E('Un stylo bleu coûte 2 DH et un stylo rouge 3 DH. Adam paie 20 DH. Traduis la situation.',[
+      ['Étape 1 · inconnues : le nombre de stylos bleus et le nombre de stylos rouges','Deux quantités que l’on ne connaît pas.'],
+      ['Étape 2 · x = nombre de stylos bleus ; y = nombre de stylos rouges','Une lettre pour chaque quantité.'],
+      ['<b>Étape 3 · 2x + 3y = 20</b>','Les bleus coûtent 2x, les rouges 3y, le total est 20.']]),
+    E('Un parking contient des voitures (4 roues) et des motos (2 roues). On compte 30 roues.',[
+      ['Étape 1 · inconnues : le nombre de voitures et le nombre de motos','Deux quantités inconnues.'],
+      ['Étape 2 · x = nombre de voitures ; y = nombre de motos','Une lettre chacune.'],
+      ['<b>Étape 3 · 4x + 2y = 30</b>','Les voitures ont 4x roues, les motos 2y roues.']]),
+    E('Le triple d’un nombre x diminué du double d’un nombre y est égal à 7.',[
+      ['Étape 1 · inconnues : les deux nombres','Ils sont déjà nommés x et y.'],
+      ['Étape 2 · x et y','Les lettres sont données.'],
+      ['<b>Étape 3 · 3x − 2y = 7</b>','Triple de x : 3x. Double de y : 2y. « Diminué de » : signe −.']])],
+  ret:['Traduire une situation par une équation, c’est l’exprimer avec des nombres, des lettres et des symboles.','Je choisis une lettre pour chaque inconnue, puis j’écris l’égalité qui relie les quantités.','Une équation du 1er degré à deux inconnues s’écrit ax + by = c.'],
+  ar:['ترجمة وضعية إلى معادلة معناها التعبير عنها بالأعداد والحروف والرموز الرياضية. أحدد المجهولين، وأرمز لكل منهما بحرف، ثم أكتب المساواة التي تربط الكميات.','معادلة من الدرجة الأولى بمجهولين تكتب على الشكل ax + by = c.'],
+  arw:[['équation','معادلة'],['inconnue','مجهول'],['double','ضعف'],['triple','ثلاثة أمثال'],['diminué de','منقوصا من']]});
+
+D({id:'pi2-29',lv:2,period:1,dom:'Algèbre',t:'Calculer y pour une valeur de x',at:'حساب y لقيمة معلومة لـ x',
+  obj:'Calculer la valeur de y pour une valeur donnée de x dans l’équation ax + by = c.',keys:['pvaly'],
+  lex:[['remplacer','أعوض'],['isoler','أعزل'],['opération inverse','العملية العكسية'],['membre','طرف'],['vérifier','أتحقق']],
+  pre:[
+    ['Pour isoler une inconnue, on utilise l’opération inverse.',true,'L’inverse de l’addition est la soustraction, l’inverse de la multiplication est la division.'],
+    ['Dans 3y + 4 = 10, on divise par 3 avant de soustraire 4.',false,'On soustrait d’abord 4 aux deux membres, puis on divise par 3.'],
+    ['On vérifie une solution en la remplaçant dans l’équation initiale.',true,'Les deux membres doivent être égaux.']],
+  plan:['Je remplace x par sa valeur.','J’isole y avec les opérations inverses.','Je donne la solution.','Je vérifie dans l’équation initiale.'],
+  ex:[
+    E('Dans 2x + 3y = 16, calcule y pour x = 5.',[
+      ['Étape 1 · 2 × 5 + 3y = 16, donc 10 + 3y = 16','Je remplace x par 5.'],
+      ['Étape 2 · 3y = 16 − 10 = 6, puis y = 6 ÷ 3','Je soustrais 10 aux deux membres, puis je divise par 3.'],
+      ['Étape 3 · pour x = 5, y = 2','Je donne la solution.'],
+      ['<b>Étape 4 · 2 × 5 + 3 × 2 = 10 + 6 = 16</b>','L’égalité est vraie : la solution est correcte.']]),
+    E('Dans 5x − 2y = 11, calcule y pour x = 3.',[
+      ['Étape 1 · 5 × 3 − 2y = 11, donc 15 − 2y = 11','Je remplace x par 3.'],
+      ['Étape 2 · −2y = 11 − 15 = −4, puis y = (−4) ÷ (−2)','Je soustrais 15, puis je divise par −2.'],
+      ['Étape 3 · pour x = 3, y = 2','Moins divisé par moins donne plus.'],
+      ['<b>Étape 4 · 5 × 3 − 2 × 2 = 15 − 4 = 11</b>','Vérifié.']]),
+    E('Dans 3x + 2y = −4, calcule y pour x = −2.',[
+      ['Étape 1 · 3 × (−2) + 2y = −4, donc −6 + 2y = −4','Je remplace x par −2, entre parenthèses.'],
+      ['Étape 2 · 2y = −4 + 6 = 2, puis y = 2 ÷ 2','J’ajoute 6 aux deux membres, puis je divise par 2.'],
+      ['Étape 3 · pour x = −2, y = 1','Solution.'],
+      ['<b>Étape 4 · 3 × (−2) + 2 × 1 = −6 + 2 = −4</b>','Vérifié.']])],
+  ret:['Pour calculer y quand on connaît x : je remplace x, j’isole y, je donne la solution, je vérifie.','Pour isoler y, j’utilise les opérations inverses sur les deux membres : d’abord le terme en x, puis le coefficient de y.','Je vérifie toujours dans l’équation initiale.'],
+  ar:['لحساب y عندما نعرف x: أعوض x بقيمته، أعزل y بالعمليات العكسية على الطرفين، أكتب الحل، ثم أتحقق في المعادلة الأصلية.','أبدأ بنقل الحد الذي فيه x ثم أقسم على معامل y. وعند التعويض بعدد سالب أضعه بين قوسين.'],
+  arw:[['remplacer','أعوض'],['isoler','أعزل'],['opération inverse','العملية العكسية'],['membre','طرف'],['vérifier','أتحقق']]});
+
 /* ===== PÉRIODE 2 ===== */
 var ra=function(n){
   var r=[SC.rect(80,40,100,100,PK,'x²'),SC.rect(180,40,60,100,TL,'3x'),SC.rect(80,140,100,40,CO,'2x'),SC.rect(180,140,60,40,LV,'6')];
@@ -8152,7 +8323,7 @@ P.evalPage({id:'pe2-4',lv:2,period:4,keys:['tricerc','angTri','vec','vol','trice
 P.evalPage({id:'pe2-5',lv:2,period:5,keys:['prop','pct','vit','ech','stat','effC','prop','stat']});
 
 P.setLevel(2,['pr-1','pr-2','pr-3','pr-4'],[
-  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-18','pi2-19','pi2-20','pi2-21','pi2-22','pi2-23','pi2-24','pi2-25','pi2-1','pi2-2','pi2-3']},
+  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-18','pi2-19','pi2-20','pi2-21','pi2-22','pi2-23','pi2-24','pi2-25','pi2-26','pi2-27','pi2-28','pi2-29','pi2-1','pi2-2','pi2-3']},
   {title:'Calcul littéral, équations, ordre',seqs:['pi2-4','pi2-5','pi2-6']},
   {title:'Symétrie axiale, droites du triangle',seqs:['pi2-7','pi2-8','pi2-9']},
   {title:'Triangle rectangle, vecteurs et volumes',seqs:['pi2-10','pi2-11','pi2-12']},
