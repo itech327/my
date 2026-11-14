@@ -448,12 +448,217 @@
       { q: 'La protection immédiate mais temporaire est assurée par :', o: ['la vaccination', 'la sérothérapie', 'la phagocytose seulement'], a: 1, e: 'Le sérum apporte des anticorps déjà fabriqués.' }
     ] });
 
+  /* ===================================================== outils communs (chapitres de relation et d’éducation) */
+  /* schéma de noeuds reliés, mis en évidence étape par étape */
+  function stepper(el, o) {
+    var svg = ui.stage(el, o.w || 400, o.h || 230, o.label), g = S('g', null, svg), k = 0, cap = h('p', { 'class': 'px-cap' }), byId = {};
+    el.appendChild(cap);
+    o.nodes.forEach(function (n) { byId[n.id] = n; });
+    function draw() {
+      g.replaceChildren();
+      var st = o.steps[k], on = {};
+      (st.on || []).forEach(function (id) { on[id] = 1; });
+      (o.links || []).forEach(function (l) {
+        var a = byId[l[0]], b = byId[l[1]], act = on[l[0]] && on[l[1]];
+        S('path', { d: 'M' + a.x + ' ' + a.y + 'L' + b.x + ' ' + b.y, style: 'fill:none;stroke:' + (act ? 'var(--pink)' : '#fff') + ';stroke-width:' + (act ? 5 : 2) + ';opacity:' + (act ? 1 : .25) + ';stroke-linecap:round' }, g);
+      });
+      o.nodes.forEach(function (n) {
+        var a = on[n.id], r = n.r || 20;
+        S('circle', { cx: n.x, cy: n.y, r: r, style: 'fill:' + (n.c || L) + ';fill-opacity:' + (a ? .95 : .22) + ';stroke:' + (a ? '#fff' : 'transparent') + ';stroke-width:3' }, g);
+        label(g, n.x, n.y + r + 15 + (n.row ? 15 : 0), n.t, '#fff', 'middle', 12);
+      });
+      cap.innerHTML = '<b>Étape ' + (k + 1) + ' / ' + o.steps.length + '.</b> ' + st.t;
+    }
+    var ctl = ui.controls(el); ui.btn(ctl, 'Étape suivante', function () { k = (k + 1) % o.steps.length; draw(); });
+    draw();
+  }
+  /* onglets : un clic affiche la fiche de l’élément */
+  function explorer(el, items) {
+    var by = {};
+    items.forEach(function (it) { by[it.id] = it; });
+    ui.tabs(el, items.map(function (it) { return [it.id, it.t]; }), show);
+    var info = ui.info(el);
+    function show(id) { var it = by[id]; info.set('<b style="color:' + (it.c || T) + '">' + it.t + '</b><br>' + it.d); }
+    show(items[0].id);
+  }
+
+  /* ===================================================== 6. ÉDUCATION NUTRITIONNELLE */
+  function groupes(el) {
+    explorer(el, [
+      { id: 'en', t: 'Énergétiques', c: C, d: 'Riches en <b>glucides</b> et en <b>lipides</b> : pain, pâtes, riz, pommes de terre, sucre, huile, beurre. Ils fournissent l’énergie dont les organes ont besoin pour fonctionner.' },
+      { id: 'co', t: 'Constructeurs', c: P, d: 'Riches en <b>protéines</b> : viande, poisson, œufs, lait, légumes secs (lentilles, pois chiches). Ils servent à construire et à réparer les organes. Ils sont indispensables pendant la croissance.' },
+      { id: 'pr', t: 'Protecteurs', c: T, d: 'Riches en <b>vitamines</b> et en <b>sels minéraux</b> : fruits et légumes. Ils protègent l’organisme et règlent son fonctionnement.' },
+      { id: 'ea', t: 'L’eau', c: BLUE, d: 'L’eau est le constituant le plus abondant du corps. On la trouve dans toutes les boissons et dans presque tous les aliments. Il faut boire régulièrement.' }
+    ]);
+  }
+  function carences(el) {
+    explorer(el, [
+      { id: 'c', t: 'Vitamine C', c: C, d: '<b>Scorbut</b> : fatigue, gencives qui saignent, cicatrisation lente. À manger : agrumes, poivrons, légumes frais.' },
+      { id: 'd', t: 'Vitamine D', c: P, d: '<b>Rachitisme</b> chez l’enfant : os mous et déformés. À manger : poissons gras, œufs. Le soleil aide la peau à fabriquer la vitamine D. Le calcium est aussi nécessaire.' },
+      { id: 'fe', t: 'Fer', c: RED, d: '<b>Anémie</b> : peu de globules rouges ou d’hémoglobine, donc pâleur et fatigue. À manger : viande, foie, lentilles.' },
+      { id: 'i', t: 'Iode', c: T, d: '<b>Goitre</b> : gonflement du cou dû à la glande thyroïde. À manger : poissons de mer, sel iodé.' },
+      { id: 'pt', t: 'Protéines', c: L, d: '<b>Retard de croissance</b> et fonte des muscles. À manger : viande, poisson, œufs, lait, légumes secs.' }
+    ]);
+  }
+  function ration(el) {
+    var prof = [['el', 'Élève du collège', 10500], ['ad', 'Adulte peu actif', 9500], ['sp', 'Sportif', 14000]], cur = 0;
+    ui.tabs(el, prof.map(function (p) { return [p[0], p[1]]; }), function (id) { prof.forEach(function (p, i) { if (p[0] === id) cur = i; }); draw(); });
+    var svg = ui.stage(el, 400, 120, 'Énergie de la ration comparée au besoin'), g = S('g', null, svg);
+    var kj = function (v) { return v + ' g'; };
+    var sg = ui.slider(el, { label: 'Glucides', min: 0, max: 600, step: 10, value: 330, color: C, fmt: kj }, function () { draw(); });
+    var sl = ui.slider(el, { label: 'Lipides', min: 0, max: 200, step: 5, value: 85, color: '#e9b84a', fmt: kj }, function () { draw(); });
+    var sp = ui.slider(el, { label: 'Protéines', min: 0, max: 200, step: 5, value: 90, color: P, fmt: kj }, function () { draw(); });
+    var info = ui.info(el);
+    function draw() {
+      var G = sg.get(), Lp = sl.get(), Pr = sp.get(), e = G * 17 + Lp * 38 + Pr * 17, need = prof[cur][2];
+      var W = 360, max = need * 1.6, r = e / need;
+      g.replaceChildren();
+      S('rect', { x: 20, y: 46, width: W, height: 28, rx: 14, style: 'fill:#fff;fill-opacity:.12' }, g);
+      S('rect', { x: 20, y: 46, width: Math.max(2, Math.min(W, W * e / max)), height: 28, rx: 14, style: 'fill:' + (r < .9 ? C : (r > 1.1 ? P : T)) + ';fill-opacity:.9' }, g);
+      var mx = 20 + W * need / max;
+      S('path', { d: 'M' + mx + ' 36L' + mx + ' 84', style: 'stroke:#fff;stroke-width:3' }, g);
+      label(g, mx, 28, 'besoin : ' + need + ' kJ', '#fff', 'middle', 12);
+      label(g, 20, 106, 'ration : ' + e + ' kJ', '#fff', 'start', 13);
+      var v = r < .9 ? 'Ration insuffisante : à la longue, fatigue et perte de masse.' : (r > 1.1 ? 'Ration excessive : l’excès d’énergie est stocké sous forme de graisses.' : 'Ration adaptée au besoin en énergie.');
+      var pc = function (x) { return e ? Math.round(x / e * 100) : 0; };
+      info.set('<b>' + v + '</b><br>Part de l’énergie : glucides ' + pc(G * 17) + ' %, lipides ' + pc(Lp * 38) + ' %, protéines ' + pc(Pr * 17) + ' %. Repères habituels : environ 50 à 55 %, 30 % et 15 %.<br><small>Énergie : 17 kJ par g de glucides ou de protéines, 38 kJ par g de lipides. Besoins indicatifs.</small>');
+    }
+    draw();
+  }
+  PC.chapter({ id: 's3-6', lazy: true, eyebrow: EY + 'Nutrition', title: 'L’éducation nutritionnelle', ar: 'التربية الغذائية',
+    lessons: function () { return [
+      { short: 'Groupes d’aliments', title: 'Les groupes d’aliments', intro: 'Touche chaque onglet : on classe les aliments d’après leur rôle dans l’organisme.', build: groupes,
+        retenir: ['Les aliments sont classés d’après leur rôle : <b>énergétiques</b>, <b>constructeurs</b> et <b>protecteurs</b>.', 'Aucun aliment ne contient tout : il faut <b>varier</b> l’alimentation.'],
+        ar: { e: ['تُصنَّف الأغذية حسب دورها في الجسم: أغذية طاقية غنية بالسكريات والدهون، وأغذية بانية غنية بالبروتيدات، وأغذية واقية غنية بالفيتامينات والأملاح المعدنية. لا يوجد غذاء واحد يحتوي على كل شيء، لذلك يجب تنويع الغذاء.'], u: 'اضغط على كل لسان لتقرأ دور المجموعة وأمثلتها.', w: [['aliment énergétique', 'غذاء طاقي'], ['aliment constructeur', 'غذاء بانٍ'], ['aliment protecteur', 'غذاء واقٍ'], ['glucides', 'السكريات'], ['lipides', 'الدهون'], ['protéines', 'البروتيدات']] } },
+      { short: 'Carences', title: 'Les carences alimentaires', intro: 'Une carence est un apport insuffisant en un nutriment. Choisis un nutriment pour voir la maladie qui en résulte.', build: carences,
+        retenir: ['Une <b>carence</b> est un apport insuffisant en un nutriment. Elle provoque une <b>maladie de carence</b>.', 'Scorbut (vitamine C), rachitisme (vitamine D), anémie (fer), goitre (iode).'],
+        ar: { e: ['الخصاص الغذائي هو نقص كمية مادة غذائية في الغذاء، وينتج عنه مرض. مثلًا: نقص فيتامين C يسبب الإسقربوط، ونقص فيتامين D يسبب الكساح عند الطفل، ونقص الحديد يسبب فقر الدم، ونقص اليود يسبب الدّراق (تضخم الغدة الدرقية).'], u: 'اضغط على المادة الغذائية لتعرف المرض والأغذية التي تقي منه.', w: [['carence', 'خصاص'], ['scorbut', 'الإسقربوط'], ['rachitisme', 'الكساح'], ['anémie', 'فقر الدم'], ['goitre', 'الدّراق']] } },
+      { short: 'Ration', title: 'La ration alimentaire', intro: 'Règle les quantités. Compare l’énergie de la ration au besoin de la personne.', build: ration,
+        retenir: ['La <b>ration alimentaire</b> est la quantité d’aliments consommée en 24 heures.', 'Elle doit couvrir les besoins en énergie et en nutriments. Elle dépend de l’âge, de l’activité et du sexe.', 'Énergie : 17 kJ/g pour glucides et protéines, 38 kJ/g pour les lipides.'],
+        ar: { e: ['الحصة الغذائية هي كمية الأغذية التي يتناولها الشخص خلال 24 ساعة. يجب أن تغطي حاجيات الجسم من الطاقة والمواد الغذائية، وتختلف حسب السن والنشاط والجنس. الرياضي يحتاج إلى طاقة أكثر من الشخص قليل الحركة. الطاقة التي يوفرها الغرام الواحد: 17 كيلوجول للسكريات والبروتيدات و38 كيلوجول للدهون.'], u: 'حرّك المنزلقات لتغيير كمية السكريات والدهون والبروتيدات، ثم قارن طاقة الحصة بحاجة الشخص.', w: [['ration alimentaire', 'الحصة الغذائية'], ['besoin énergétique', 'الحاجة الطاقية'], ['kilojoule (kJ)', 'كيلوجول']] } }
+    ]; },
+    quiz: [
+      { q: 'Quels aliments sont surtout constructeurs ?', o: ['Lait, œufs, viande', 'Huile, sucre', 'Fruits seulement'], a: 0, e: 'Ils sont riches en protéines.' },
+      { q: 'La carence en iode provoque :', o: ['le goitre', 'le scorbut', 'le rachitisme'], a: 0, e: 'L’iode est nécessaire à la thyroïde.' },
+      { q: 'Une ration équilibrée :', o: ['couvre les besoins en énergie et en nutriments', 'contient un seul type d’aliment', 'est la même pour tout le monde'], a: 0, e: 'Elle est variée et adaptée à la personne.' }
+    ] });
+
+  /* ===================================================== 7. SYSTÈME NERVEUX */
+  function trajetSensitif(el) {
+    stepper(el, { label: 'Trajet du message nerveux sensitif', h: 190, nodes: [
+      { id: 'st', x: 40, y: 80, t: 'Stimulus', c: C }, { id: 're', x: 120, y: 80, t: 'Récepteur', c: P, row: 1 }, { id: 'ns', x: 200, y: 80, t: 'Nerf sensitif', c: L },
+      { id: 'mo', x: 280, y: 80, t: 'Moelle épinière', c: T, row: 1 }, { id: 'ce', x: 360, y: 80, t: 'Cerveau', c: '#e9b84a' }
+    ], links: [['st', 're'], ['re', 'ns'], ['ns', 'mo'], ['mo', 'ce']], steps: [
+      { on: ['st'], t: 'Un stimulus agit sur l’organisme (une piqûre, de la lumière, un son).' },
+      { on: ['st', 're'], t: 'Les récepteurs (peau, œil, oreille...) le transforment en message nerveux.' },
+      { on: ['re', 'ns'], t: 'Les nerfs sensitifs conduisent le message nerveux vers les centres nerveux.' },
+      { on: ['ns', 'mo'], t: 'Le message passe par la moelle épinière.' },
+      { on: ['mo', 'ce'], t: 'Il arrive au cerveau, qui produit la sensation consciente : on sent la piqûre.' }
+    ] });
+  }
+  function voies(el) {
+    var box = h('div'), modes = {
+      vol: { label: 'Mouvement volontaire', nodes: [{ id: 'ce', x: 50, y: 80, t: 'Cerveau', c: '#e9b84a', r: 24 }, { id: 'mo', x: 150, y: 80, t: 'Moelle épinière', c: T, r: 24 }, { id: 'nm', x: 250, y: 80, t: 'Nerf moteur', c: L, r: 24 }, { id: 'mu', x: 350, y: 80, t: 'Muscle', c: P, r: 24 }],
+        links: [['ce', 'mo'], ['mo', 'nm'], ['nm', 'mu']], steps: [
+          { on: ['ce'], t: 'Le cerveau décide du mouvement : c’est la commande volontaire.' },
+          { on: ['ce', 'mo'], t: 'Le message nerveux moteur descend par la moelle épinière.' },
+          { on: ['mo', 'nm'], t: 'Il est conduit par un nerf moteur.' },
+          { on: ['nm', 'mu'], t: 'Le muscle se contracte : le mouvement est réalisé.' }] },
+      ref: { label: 'Réflexe', nodes: [{ id: 're', x: 35, y: 110, t: 'Récepteur', c: P, r: 17 }, { id: 'ns', x: 105, y: 110, t: 'Nerf sensitif', c: L, r: 17, row: 1 }, { id: 'mo', x: 190, y: 110, t: 'Moelle épinière', c: T, r: 17 }, { id: 'nm', x: 275, y: 110, t: 'Nerf moteur', c: L, r: 17, row: 1 }, { id: 'mu', x: 360, y: 110, t: 'Muscle', c: P, r: 17 }, { id: 'ce', x: 190, y: 35, t: 'Cerveau', c: '#e9b84a', r: 17 }],
+        links: [['re', 'ns'], ['ns', 'mo'], ['mo', 'nm'], ['nm', 'mu'], ['mo', 'ce']], steps: [
+          { on: ['re'], t: 'Un stimulus brusque (main sur une plaque chaude) excite les récepteurs de la peau.' },
+          { on: ['re', 'ns'], t: 'Le message nerveux est conduit par un nerf sensitif.' },
+          { on: ['ns', 'mo'], t: 'La moelle épinière, centre nerveux du réflexe, traite le message sans attendre le cerveau.' },
+          { on: ['mo', 'nm', 'mu'], t: 'Elle envoie l’ordre par un nerf moteur : le muscle retire la main. C’est involontaire et très rapide.' },
+          { on: ['mo', 'ce'], t: 'Le cerveau est informé juste après : on sent la douleur une fois la main retirée.' }] }
+    };
+    ui.tabs(el, [['vol', 'Volontaire'], ['ref', 'Réflexe']], function (id) { load(id); });
+    el.appendChild(box);
+    function load(id) { box.replaceChildren(); stepper(box, { label: modes[id].label, h: 190, nodes: modes[id].nodes, links: modes[id].links, steps: modes[id].steps }); }
+    load('vol');
+  }
+  function hygieneNerveux(el) {
+    explorer(el, [
+      { id: 'so', t: 'Sommeil', c: L, d: 'Dormir assez (environ 8 à 10 heures à l’adolescence) permet aux centres nerveux de récupérer. Le manque de sommeil diminue l’attention et la mémoire.' },
+      { id: 'to', t: 'Toxiques', c: C, d: 'L’alcool, le tabac et les drogues perturbent le fonctionnement des neurones : troubles de l’attention, du comportement et dépendance. Il faut les éviter.' },
+      { id: 'br', t: 'Bruit', c: P, d: 'Un bruit trop fort et prolongé abîme les récepteurs de l’oreille. Baisse le volume du casque.' },
+      { id: 'pr', t: 'Protection', c: T, d: 'Un casque protège la tête (vélo, moto). Une alimentation variée, une activité physique régulière et des temps de repos aident aussi le système nerveux.' }
+    ]);
+  }
+  PC.chapter({ id: 's3-7', lazy: true, eyebrow: EY + 'Relation', title: 'Le système nerveux', ar: 'الجهاز العصبي',
+    lessons: function () { return [
+      { short: 'Message nerveux', title: 'Le trajet du message nerveux sensitif', intro: 'Avance étape par étape : du stimulus à la sensation consciente.', build: trajetSensitif,
+        retenir: ['Les <b>récepteurs</b> transforment un stimulus en <b>message nerveux</b>.', 'Les <b>nerfs sensitifs</b> le conduisent vers les <b>centres nerveux</b> (moelle épinière et cerveau).', 'La <b>sensation consciente</b> se produit dans le cerveau.'],
+        ar: { e: ['عندما يؤثر منبّه على الجسم تحوّله المستقبِلات الحسية (الجلد، العين، الأذن...) إلى سيالة عصبية. تنقلها الأعصاب الحسية نحو المراكز العصبية: النخاع الشوكي ثم الدماغ. في الدماغ يحدث الإحساس الواعي، مثل الإحساس بالألم.'], u: 'اضغط «Étape suivante» لتتبع مسار السيالة العصبية.', w: [['stimulus', 'منبّه'], ['récepteur', 'مستقبِل'], ['message nerveux', 'سيالة عصبية'], ['nerf sensitif', 'عصب حسي'], ['moelle épinière', 'النخاع الشوكي'], ['cerveau', 'الدماغ']] } },
+      { short: 'Volontaire et réflexe', title: 'Mouvement volontaire et réflexe', intro: 'Compare les deux trajets. Dans le réflexe, qui commande le muscle ?', build: voies,
+        retenir: ['Le mouvement <b>volontaire</b> est commandé par le <b>cerveau</b>.', 'Le <b>réflexe</b> est involontaire et rapide : le centre nerveux est la <b>moelle épinière</b>.', 'Trajet du réflexe : <b>arc réflexe</b> (récepteur, nerf sensitif, centre nerveux, nerf moteur, muscle).'],
+        ar: { e: ['الحركة الإرادية يأمر بها الدماغ، فتنتقل السيالة الحركية عبر النخاع الشوكي والعصب الحركي إلى العضلة. أما الفعل المنعكس فهو لا إرادي وسريع، ومركزه العصبي هو النخاع الشوكي، ويُعلَم الدماغ بعد ذلك فقط. مسار الفعل المنعكس يسمى القوس الانعكاسية.'], u: 'اختر «Volontaire» أو «Réflexe» ثم اضغط «Étape suivante».', w: [['mouvement volontaire', 'حركة إرادية'], ['réflexe', 'فعل منعكس'], ['arc réflexe', 'القوس الانعكاسية'], ['nerf moteur', 'عصب حركي']] } },
+      { short: 'Hygiène', title: 'L’hygiène du système nerveux', intro: 'Touche chaque onglet pour connaître les bons gestes.', build: hygieneNerveux,
+        retenir: ['Dormir assez, éviter alcool, tabac et drogues, éviter le bruit excessif et se protéger la tête.'],
+        ar: { e: ['للمحافظة على الجهاز العصبي: النوم الكافي، وتجنب الكحول والتدخين والمخدرات، وتجنب الضجيج المفرط، وحماية الرأس بالخوذة، مع تغذية متوازنة وممارسة الرياضة.'], w: [['hygiène', 'الوقاية والنظافة'], ['neurone', 'خلية عصبية']] } }
+    ]; },
+    quiz: [
+      { q: 'Quel est le centre nerveux d’un réflexe ?', o: ['La moelle épinière', 'Le muscle', 'Le récepteur'], a: 0, e: 'Le cerveau est informé ensuite.' },
+      { q: 'Un nerf moteur conduit le message :', o: ['du centre nerveux vers un muscle', 'du récepteur vers le centre nerveux', 'du cœur vers les poumons'], a: 0, e: 'Il commande l’effecteur, par exemple un muscle.' },
+      { q: 'La sensation consciente se forme dans :', o: ['le cerveau', 'la peau', 'le nerf moteur'], a: 0, e: 'Les récepteurs seulement élaborent le message nerveux.' }
+    ] });
+
+  /* ===================================================== 8. SYSTÈME MUSCULAIRE */
+  function proprietes(el) {
+    explorer(el, [
+      { id: 'ex', t: 'Excitabilité', c: P, d: 'Le muscle <b>réagit à une stimulation</b> (message nerveux, courant électrique faible) : il se contracte.' },
+      { id: 'co', t: 'Contractilité', c: T, d: 'Le muscle <b>se raccourcit et s’épaissit</b> quand il se contracte. Il tire alors sur l’os grâce aux tendons.' },
+      { id: 'el', t: 'Élasticité', c: L, d: 'Après la contraction, le muscle <b>reprend sa longueur</b> et sa forme de départ.' }
+    ]);
+  }
+  function energieMuscle(el) {
+    stepper(el, { label: 'Le muscle qui se contracte', h: 230, nodes: [
+      { id: 'ne', x: 60, y: 175, t: 'Nerf moteur', c: L }, { id: 'sa', x: 60, y: 60, t: 'Sang', c: RED }, { id: 'mu', x: 200, y: 118, t: 'Muscle', c: P, r: 26 },
+      { id: 'tr', x: 340, y: 40, t: 'Mouvement', c: T }, { id: 'ch', x: 340, y: 118, t: 'Chaleur', c: C }, { id: 'de', x: 340, y: 196, t: 'CO₂ et déchets', c: '#e9b84a' }
+    ], links: [['ne', 'mu'], ['sa', 'mu'], ['mu', 'tr'], ['mu', 'ch'], ['mu', 'de']], steps: [
+      { on: ['ne', 'mu'], t: 'Un message nerveux arrive au muscle par le nerf moteur.' },
+      { on: ['sa', 'mu'], t: 'Le sang apporte au muscle du glucose et du dioxygène.' },
+      { on: ['mu'], t: 'Le muscle utilise ces substances : il libère de l’énergie.' },
+      { on: ['mu', 'tr'], t: 'Une partie de cette énergie permet la contraction, donc le mouvement.' },
+      { on: ['mu', 'ch'], t: 'Une autre partie est libérée sous forme de chaleur : le corps se réchauffe pendant l’effort.' },
+      { on: ['mu', 'de'], t: 'Le muscle rejette du dioxyde de carbone et des déchets dans le sang. Si l’effort est trop long, ils s’accumulent : c’est la fatigue.' }
+    ] });
+  }
+  function hygieneMuscle(el) {
+    explorer(el, [
+      { id: 'ex', t: 'Exercice', c: T, d: 'Une activité physique régulière développe et entretient les muscles. Un échauffement avant l’effort prévient les blessures.' },
+      { id: 'al', t: 'Alimentation', c: P, d: 'Les muscles ont besoin de protéines pour se construire et de glucides pour fournir l’énergie. Il faut aussi boire de l’eau.' },
+      { id: 'po', t: 'Posture', c: L, d: 'Se tenir droit, répartir la charge du cartable sur les deux épaules, ne pas porter trop lourd : cela protège les muscles et la colonne vertébrale.' },
+      { id: 're', t: 'Repos', c: C, d: 'Après un effort, le repos permet aux muscles de récupérer et d’éliminer les déchets. Un effort excessif provoque crampes et courbatures.' }
+    ]);
+  }
+  PC.chapter({ id: 's3-8', lazy: true, eyebrow: EY + 'Relation', title: 'Le système musculaire', ar: 'الجهاز العضلي',
+    lessons: function () { return [
+      { short: 'Propriétés', title: 'Les propriétés du muscle', intro: 'Trois propriétés expliquent le fonctionnement d’un muscle squelettique.', build: proprietes,
+        retenir: ['Le muscle squelettique est <b>excitable</b>, <b>contractile</b> et <b>élastique</b>.', 'Les muscles sont reliés aux os par des <b>tendons</b>.'],
+        ar: { e: ['العضلة الهيكلية لها ثلاث خاصيات: القابلية للتنبّه (تستجيب للتنبيه)، والانقباضية (تقصر وتتسمّك عند الانقباض)، والمرونة (ترجع إلى طولها الأصلي بعد الانقباض). ترتبط العضلات بالعظام بواسطة الأوتار.'], u: 'اضغط على كل خاصية لتقرأ تعريفها.', w: [['excitabilité', 'القابلية للتنبّه'], ['contractilité', 'الانقباضية'], ['élasticité', 'المرونة'], ['tendon', 'وتر']] } },
+      { short: 'Énergie', title: 'La contraction et l’énergie du muscle', intro: 'Suis ce que reçoit et ce que rejette un muscle qui travaille.', build: energieMuscle,
+        retenir: ['Le muscle reçoit du <b>glucose</b> et du <b>dioxygène</b> par le sang.', 'Il libère de l’énergie : <b>mouvement</b> et <b>chaleur</b>. Il rejette du <b>CO₂</b> et des déchets.', 'Un effort trop long provoque la <b>fatigue musculaire</b>.'],
+        ar: { e: ['تحصل العضلة من الدم على الغلوكوز وثنائي الأوكسجين. تستعملهما لتحرير الطاقة، فتُستعمل جزء منها في الانقباض (الحركة) ويتحرر جزء آخر على شكل حرارة. تطرح العضلة ثنائي أوكسيد الكربون وفضلات. إذا طال المجهود تتراكم الفضلات فيحدث التعب العضلي.'], u: 'اضغط «Étape suivante» لتتبع ما يحدث داخل العضلة.', w: [['glucose', 'الغلوكوز'], ['dioxygène', 'ثنائي الأوكسجين'], ['fatigue musculaire', 'التعب العضلي'], ['chaleur', 'الحرارة']] } },
+      { short: 'Hygiène', title: 'L’hygiène de l’appareil musculaire', intro: 'Touche chaque onglet pour connaître les bons gestes.', build: hygieneMuscle,
+        retenir: ['Exercice régulier avec échauffement, alimentation variée, bonne posture et repos.'],
+        ar: { e: ['للمحافظة على العضلات: ممارسة الرياضة بانتظام مع الإحماء قبل المجهود، وتغذية متنوعة غنية بالبروتيدات، واتخاذ وضعية جيدة للجسم وتوزيع ثقل المحفظة على الكتفين، وأخذ قسط من الراحة بعد المجهود.'], w: [['échauffement', 'الإحماء'], ['posture', 'وضعية الجسم'], ['courbature', 'آلام عضلية']] } }
+    ]; },
+    quiz: [
+      { q: 'Quand un muscle se contracte, il :', o: ['se raccourcit et s’épaissit', 's’allonge', 'reste identique'], a: 0, e: 'C’est la contractilité.' },
+      { q: 'Le muscle reçoit glucose et dioxygène par :', o: ['le sang', 'le tendon', 'la salive'], a: 0, e: 'Le sang apporte les substances nécessaires.' },
+      { q: 'Un échauffement avant l’effort :', o: ['prépare les muscles et évite des blessures', 'fatigue le muscle', 'remplace l’alimentation'], a: 0, e: 'Il fait partie de l’hygiène musculaire.' }
+    ] });
+
   /* ===================================================== accueil */
   var CH = [
     ['s3-1', 'La digestion et l’absorption intestinale', 'الهضم والامتصاص المعوي', 'Nutrition'],
+    ['s3-6', 'L’éducation nutritionnelle', 'التربية الغذائية', 'Nutrition'],
     ['s3-2', 'La respiration chez l’Homme', 'التنفّس عند الإنسان', 'Nutrition'],
     ['s3-3', 'Le sang et la circulation sanguine', 'الدم والدورة الدموية', 'Nutrition'],
     ['s3-4', 'L’excrétion urinaire chez l’Homme', 'الإطراح البولي عند الإنسان', 'Nutrition'],
+    ['s3-7', 'Le système nerveux', 'الجهاز العصبي', 'Relation'],
+    ['s3-8', 'Le système musculaire', 'الجهاز العضلي', 'Relation'],
     ['s3-5', 'L’immunité', 'المناعة', 'Santé']
   ];
   function home() {

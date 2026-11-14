@@ -78,6 +78,48 @@
       [3, 'Le rappel de vaccin est utile car il :', ['renforce la mémoire immunitaire', 'remplace la phagocytose', 'détruit les anticorps'], 0, 'La réponse secondaire est plus rapide et plus forte.'],
       [3, 'Un antibiotique agit contre :', ['les bactéries', 'les virus', 'les deux'], 0, 'Il est inefficace contre les virus.'],
       [3, 'Le VIH attaque :', ['des lymphocytes du système immunitaire', 'les globules rouges', 'les reins'], 0, 'Il affaiblit les défenses de l’organisme.']
+    ],
+    nut: [
+      [1, 'Les aliments riches en glucides et en lipides sont surtout :', ['énergétiques', 'constructeurs', 'protecteurs'], 0, 'Ils fournissent surtout de l’énergie.'],
+      [1, 'Les fruits et les légumes sont surtout riches en :', ['vitamines et sels minéraux', 'lipides', 'protéines'], 0, 'Ce sont des aliments protecteurs.'],
+      [1, 'Le lait, les œufs et la viande sont riches en :', ['protéines', 'sucres rapides', 'sels minéraux seulement'], 0, 'Ce sont des aliments constructeurs.'],
+      [1, 'Une carence alimentaire est :', ['un apport insuffisant en un nutriment', 'un excès de sel', 'une maladie microbienne'], 0, 'Elle provoque une maladie de carence.'],
+      [2, 'Le scorbut est dû à une carence en :', ['vitamine C', 'vitamine D', 'iode'], 0, 'On le prévient avec des fruits et des légumes frais.'],
+      [2, 'Le rachitisme touche surtout :', ['les os de l’enfant', 'les reins', 'les poumons'], 0, 'Il est dû à une carence en vitamine D et en calcium.'],
+      [2, 'Le goitre est dû à une carence en :', ['iode', 'fer', 'vitamine C'], 0, 'L’iode est nécessaire à la glande thyroïde.'],
+      [2, 'Pour prévenir l’anémie, on mange des aliments riches en :', ['fer', 'iode', 'lipides'], 0, 'Viande, foie, lentilles.'],
+      [3, 'Une ration alimentaire équilibrée :', ['couvre les besoins en énergie et en nutriments', 'contient seulement des protéines', 'supprime tous les lipides'], 0, 'Elle est variée et adaptée à la personne.'],
+      [3, 'Un sportif a besoin d’une ration :', ['plus riche en énergie qu’une personne peu active', 'moins riche en énergie', 'sans glucides'], 0, 'Son activité consomme plus d’énergie.'],
+      [3, 'Un excès d’énergie dans la ration, avec peu d’activité, peut conduire à :', ['l’obésité', 'le scorbut', 'le goitre'], 0, 'L’excès d’énergie est stocké sous forme de graisses.'],
+      [3, 'Il faut varier son alimentation parce que :', ['aucun aliment seul ne fournit tous les nutriments', 'tous les aliments sont identiques', 'un seul aliment suffit'], 0, 'Chaque groupe d’aliments a un rôle différent.']
+    ],
+    nerv: [
+      [1, 'Le message nerveux est élaboré au niveau :', ['des récepteurs', 'des os', 'des reins'], 0, 'Les récepteurs transforment le stimulus en message nerveux.'],
+      [1, 'L’œil et l’oreille sont :', ['des organes des sens', 'des muscles', 'des centres nerveux'], 0, 'Ils contiennent des récepteurs sensoriels.'],
+      [1, 'La moelle épinière est située :', ['dans la colonne vertébrale', 'dans le thorax', 'dans l’estomac'], 0, 'Elle est protégée par les vertèbres.'],
+      [1, 'Les nerfs sont :', ['des conducteurs du message nerveux', 'des vaisseaux sanguins', 'des muscles'], 0, 'Ils relient les organes aux centres nerveux.'],
+      [2, 'Un nerf sensitif conduit le message :', ['des récepteurs vers un centre nerveux', 'du centre nerveux vers un muscle', 'du muscle vers l’os'], 0, 'Sens du récepteur vers le centre.'],
+      [2, 'Un nerf moteur conduit le message :', ['du centre nerveux vers un muscle', 'des récepteurs vers le cerveau', 'du sang vers le muscle'], 0, 'Il commande l’effecteur.'],
+      [2, 'La sensation consciente se forme dans :', ['le cerveau', 'la moelle épinière', 'le muscle'], 0, 'Dans les aires sensitives du cerveau.'],
+      [2, 'Un mouvement volontaire est commandé par :', ['le cerveau', 'les récepteurs de la peau', 'les tendons'], 0, 'La commande part du cerveau.'],
+      [3, 'Dans un réflexe, le centre nerveux est généralement :', ['la moelle épinière', 'le cerveau', 'le muscle'], 0, 'Le cerveau est informé ensuite.'],
+      [3, 'Le trajet d’un réflexe s’appelle :', ['l’arc réflexe', 'la grande circulation', 'le tube digestif'], 0, 'Récepteur, nerf sensitif, centre nerveux, nerf moteur, effecteur.'],
+      [3, 'Un réflexe est plus rapide qu’un mouvement volontaire car :', ['le trajet est plus court et évite le cerveau', 'il n’utilise pas de nerfs', 'il n’utilise pas de muscle'], 0, 'La moelle épinière commande directement.'],
+      [3, 'Pour protéger son système nerveux, il faut :', ['dormir assez et éviter alcool et drogues', 'dormir très peu', 'consommer de l’alcool pour se détendre'], 0, 'Ces produits perturbent le fonctionnement des neurones.']
+    ],
+    musc: [
+      [1, 'Un muscle squelettique est relié à l’os par :', ['un tendon', 'un nerf', 'une artère'], 0, 'Les tendons relient les muscles aux os.'],
+      [1, 'Quand un muscle se contracte, il :', ['se raccourcit et s’épaissit', 's’allonge et s’amincit', 'ne change pas'], 0, 'C’est la contractilité.'],
+      [1, 'La capacité du muscle à reprendre sa forme est :', ['l’élasticité', 'l’excitabilité', 'la digestion'], 0, 'Après la contraction il retrouve sa longueur.'],
+      [1, 'La capacité du muscle à répondre à une stimulation est :', ['l’excitabilité', 'l’élasticité', 'la circulation'], 0, 'Un muscle excitable se contracte quand il est stimulé.'],
+      [2, 'Un muscle se contracte quand il reçoit :', ['un message nerveux', 'de la bile', 'un anticorps'], 0, 'Par un nerf moteur.'],
+      [2, 'Pour se contracter, le muscle utilise :', ['du glucose et du dioxygène', 'seulement de l’eau', 'de l’urée'], 0, 'Ils sont apportés par le sang.'],
+      [2, 'Un muscle qui travaille rejette :', ['du CO₂, des déchets et de la chaleur', 'du dioxygène', 'des enzymes digestives'], 0, 'Ce sont des produits de son fonctionnement.'],
+      [2, 'Le muscle reçoit glucose et dioxygène par :', ['le sang', 'l’air directement', 'les tendons'], 0, 'Les vaisseaux sanguins irriguent le muscle.'],
+      [3, 'La fatigue musculaire apparaît quand :', ['les déchets s’accumulent et les réserves diminuent', 'le muscle se repose trop', 'le sang cesse de circuler partout'], 0, 'Un effort prolongé épuise le muscle.'],
+      [3, 'Pendant un effort, la température du corps augmente car :', ['la contraction libère de la chaleur', 'les os produisent de la chaleur', 'le muscle consomme de la chaleur'], 0, 'Une partie de l’énergie est libérée sous forme de chaleur.'],
+      [3, 'Un échauffement avant l’effort sert à :', ['préparer les muscles et prévenir les blessures', 'fatiguer les muscles', 'supprimer le besoin de dioxygène'], 0, 'Il fait partie de l’hygiène musculaire.'],
+      [3, 'Porter un cartable lourd sur une seule épaule risque de :', ['déformer la colonne vertébrale', 'renforcer tous les muscles de façon égale', 'diminuer le poids du cartable'], 0, 'Il faut répartir la charge.']
     ]
   };
   function fromBank(key, d) {
@@ -130,6 +172,9 @@
   M1['s3-3'] = { topics: ['b:circ', 'b:circ', 'g:debit'] };
   M1['s3-4'] = { topics: ['b:exc', 'b:exc', 'g:urine'] };
   M1['s3-5'] = { topics: ['b:imm'] };
+  M1['s3-6'] = { topics: ['b:nut', 'b:nut', 'g:energie'] };
+  M1['s3-7'] = { topics: ['b:nerv'] };
+  M1['s3-8'] = { topics: ['b:musc'] };
   window.LAB_CONFIG = {
     app: 'svt', appName: 'SVT en mouvement', map: M1,
     gen: function (key, d) {

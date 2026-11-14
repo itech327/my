@@ -50,8 +50,8 @@ svt_body = '''
   <header>
     <p class="kicker">Collège · option française</p>
     <h1 class="display">SVT en mouvement</h1>
-    <p class="lead">Cours de sciences de la vie et de la Terre de la 3<sup>e</sup> année du collège : nutrition et santé, avec des figures animées et un résumé en arabe sous chaque leçon.</p>
-    <p class="lead ar-lead" dir="rtl" lang="ar">دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والصحة، مع رسوم متحركة وشرح بالعربية تحت كل درس.</p>
+    <p class="lead">Cours de sciences de la vie et de la Terre de la 3<sup>e</sup> année du collège : nutrition, système nerveux, muscles et santé, avec des figures animées et un résumé en arabe sous chaque leçon.</p>
+    <p class="lead ar-lead" dir="rtl" lang="ar">دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والجهازان العصبي والعضلي والصحة، مع رسوم متحركة وشرح بالعربية تحت كل درس.</p>
   </header>
   <section aria-label="Chapitres">
     <p class="kicker">3<sup>e</sup> année · Chapitres</p>
