@@ -1,0 +1,53 @@
+# Couverture du programme officiel, collège (1re, 2e, 3e année)
+
+## Sources et limites
+
+- Document de la Direction des curricula : « Document de référence relatif à l'adaptation des programmes », janvier 2024, cycle collégial. Copie hébergée sur moutamadris.ma : https://moutamadris.ma/wp-content/uploads/2024/02/Progra_adapte_College.pdf
+- Ce document adapte les programmes de 2009 pour l'année 2023-2024. Je n'ai pas vérifié s'il s'applique encore en 2026-2027. À confirmer avec la dernière note ministérielle.
+- Le PDF est mal numérisé. Les titres et les heures ont été lus par extraction automatique. Les heures par chapitre sont approximatives, les totaux sont plus sûrs.
+- Les textes de 2009 (orientations et programmes) n'ont pas encore été lus en entier. Une copie de l'orientation en physique-chimie existe sur monstrepc.com.
+- La page d'accueil de TelmidTICE ne donne ni niveaux ni structure. Je n'ai pas pu comparer chapitre par chapitre.
+
+## SVT
+
+| Niveau | Unité du programme (heures après adaptation) | Dans l'application |
+| --- | --- | --- |
+| 1re | Relations entre êtres vivants et milieu (23 h) : milieu naturel, êtres microscopiques, respiration, alimentation, chaînes et réseaux alimentaires, classification, équilibres naturels | Rien |
+| 1re | Phénomènes géologiques externes (18 h) : érosion, transport, dépôt, fossiles, roches sédimentaires, ressources en eau | Rien |
+| 2e | Phénomènes géologiques internes (16 h) : tectonique des plaques, séismes, volcans, montagnes | Rien |
+| 2e | Reproduction et hérédité (20 h) : reproduction animale, végétale, humaine, régulation des naissances, hérédité | Rien |
+| 3e | Éducation nutritionnelle et fonctions de nutrition (20 h) | s3-1, s3-2, s3-3, s3-6 |
+| 3e | Fonctions de relation et immunologie (19 h) | s3-5, s3-7, s3-8, s3-9, s3-10, s3-11 |
+
+Notes :
+- Les chapitres s3-4 (excrétion urinaire), SIDA, allergie et transfusion sont retirés du programme allégé 2023-2024. Ils restent dans l'application comme approfondissement, à signaler dans l'interface.
+- Les deux années 1re et 2e représentent environ 79 h de programme sans aucun chapitre. C'est le plus grand manque.
+
+## Physique-chimie
+
+Comparaison par titres de chapitres et de leçons du collège ordinaire. La plupart des notions sont présentes, parfois à l'intérieur d'un chapitre voisin : série et dérivation dans c1-16, mouvement et repos dans c3-9, éclipses dans c2-10, puissance dans c3-16.
+
+Notions à vérifier en profondeur, car aucun titre ne les nomme :
+
+| Niveau | Notion du programme | Où chercher |
+| --- | --- | --- |
+| 1re | Chaleur et température | c1-2, changements d'état |
+| 1re | Conservation de la masse et du volume lors d'une transformation physique | c1-2, c1-3 |
+| 1re | Résistance électrique | Côté pionnier : pi1-11. Côté ordinaire : aucun chapitre nommé |
+| 3e | Trajectoire, mouvements uniforme, accéléré et retardé | Une leçon dans c3-9. Peut-être trop courte |
+
+Un premier essai de liste par numéros manquants dans la série (c1-5, c3-8...) était faux. Les chapitres existent sous d'autres numéros. Aucun chapitre entier de physique-chimie ne manque d'après les titres.
+
+## Mathématiques
+
+Les titres de l'application recouvrent les chapitres de l'adaptation 2024 pour les trois niveaux. À vérifier :
+- 1re : angles d'un triangle et triangles particuliers, médiatrices et bissectrices. Aires et périmètres sont retirés de l'adaptation mais présents côté pionnier.
+- 3e : angles inscrits et triangles isométriques ou semblables sont retirés de l'adaptation. Ils sont dans l'application et restent au programme complet.
+
+## Ordre de travail proposé
+
+1. SVT 3e déjà complète. Marquer les chapitres hors programme allégé.
+2. Physique-chimie : relire les quatre notions à vérifier et compléter les leçons trop courtes.
+3. SVT 2e : reproduction et hérédité, puis tectonique des plaques.
+4. SVT 1re : milieu et alimentation, puis géologie externe.
+5. Relire les textes de 2009 pour confirmer l'ordre et les objectifs de chaque chapitre.
