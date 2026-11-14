@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-w49Rek+23b7nK81/QqKVbQk/z3brlDBL10QmZOt94UI=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-3EWbS1/LD1oPfxYVTVQhcJfj3s+OoDEA4I+78jMhFUA=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-9lPq+R31O/F8C1UXIYCIHwwGpUyiG/GX1sHSECHDqvo=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-yiDY76wbAtVfJxFvIahxjn/VA6SF4Ysw7U8JF8P7d9s=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6398,6 +6398,108 @@ G.mono=function(s){
   return num('Quel est le degré du monôme '+m+' ? Attention aux exposants qui ne sont pas écrits.',tot,'La variable '+vars[1]+' n’a pas d’exposant écrit : son exposant est 1. Degré : '+ex.join(' + ')+' = '+tot+'.','Une variable sans exposant écrit a l’exposant 1.');
 };
 
+/* ---------- polynômes : degré, réduction, addition, soustraction ---------- */
+function tm(c,ex,vars,first){
+  var vp='',i,a=Math.abs(c),body;
+  for(i=0;i<vars.length;i++){if(ex[i]>0)vp+=vars[i]+(ex[i]>1?sp(ex[i]):'')}
+  body=vp?((a===1?'':String(a))+vp):String(a);
+  if(first)return (c<0?'−':'')+body;
+  return (c<0?' − ':' + ')+body;
+}
+function pStr(terms,vars){
+  var t=terms.filter(function(x){return x[0]!==0});
+  if(!t.length)return '0';
+  return t.map(function(x,i){return tm(x[0],x[1],vars,i===0)}).join('');
+}
+function tdeg(t){return t[1].reduce(function(a,b){return a+b},0)}
+function pcomb(A,B,sign){
+  var m={},keys=[];
+  A.concat(B.map(function(t){return [sign*t[0],t[1]]})).forEach(function(t){
+    var k=t[1].join(',');
+    if(!(k in m)){m[k]=[0,t[1]];keys.push(k)}
+    m[k][0]+=t[0];
+  });
+  return keys.sort(function(a,b){
+    var da=m[a][1].reduce(function(x,y){return x+y},0),db=m[b][1].reduce(function(x,y){return x+y},0);
+    return db-da||(a<b?1:-1);
+  }).map(function(k){return m[k]});
+}
+function pwrongs(res,vars,extra){
+  var c=(extra||[]).slice(),i;
+  var nz2=res.filter(function(t){return t[0]!==0});
+  nz2.forEach(function(t,j){
+    var a=nz2.map(function(u){return [u[0],u[1]]});a[j][0]=-a[j][0];c.push(pStr(a,vars));
+    var b=nz2.map(function(u){return [u[0],u[1]]});b[j][0]=b[j][0]+(t[0]>0?1:-1);c.push(pStr(b,vars));
+    var b2=nz2.map(function(u){return [u[0],u[1]]});b2[j][0]=b2[j][0]+(t[0]>0?2:-2);c.push(pStr(b2,vars));
+  });
+  return c;
+}
+G.pdeg=function(s){
+  var ex,i,terms,d,x;
+  if(s===1){
+    ex=shuffle([0,1,2,3,4,5]).slice(0,3);
+    terms=ex.map(function(e){return [nz(-9,9),[e]]});
+    d=Math.max.apply(null,ex);
+    return num('Quel est le degré du polynôme '+pStr(terms,['x'])+' ?',d,'Degré de chaque terme : '+terms.map(tdeg).join(' ; ')+'. Le plus grand est '+d+'. Le degré du polynôme est donc '+d+'.','Cherche le plus grand des degrés des termes.');
+  }
+  if(s===2){
+    var vs=['x','y'];
+    terms=[];
+    var seen={};
+    while(terms.length<3){
+      var e1=ri(0,3),e2=ri(0,3),k=e1+','+e2;
+      if(seen[k]||e1+e2===0)continue;
+      seen[k]=1;terms.push([nz(-9,9),[e1,e2]]);
+    }
+    d=Math.max.apply(null,terms.map(tdeg));
+    return num('Quel est le degré du polynôme '+pStr(terms,vs)+' ?',d,'Degré de chaque terme (somme des exposants) : '+terms.map(tdeg).join(' ; ')+'. Le plus grand est '+d+'.','Additionne les exposants dans chaque terme, puis prends le plus grand.');
+  }
+  var m=ri(3,4),a=nz(-6,6),p=ri(1,m-2),q=p+ri(1,m-p-1);
+  var t=shuffle([[a,[m]],[nz(-9,9),[q]],[-a,[m]],[nz(-9,9),[p]]]);
+  return num('Réduis d’abord, puis donne le degré du polynôme '+pStr(t,['x'])+'.',q,'Les termes en x'+sp(m)+' se compensent : '+sg(a)+' + '+rl(-a)+' = 0. Il reste des termes de degrés '+q+' et '+p+'. Le degré est '+q+'.','Regroupe les termes semblables avant de chercher le degré.');
+};
+G.pred=function(s){
+  var vs,a,b,c,d,e,f,t,res,right;
+  if(s===1){
+    a=ri(2,9);vs=['x','y'];var ex=[ri(1,3),ri(1,3)];
+    var ok=nz(-9,9);if(ok===a)ok=-a;
+    var w1=[ex[0]+1,ex[1]],w2=[ex[1],ex[0]],w3=[ex[0],0];
+    if(w2[0]===ex[0]&&w2[1]===ex[1])w2=[ex[0],ex[1]+1];
+    var ts=[tm(ok,ex,vs,true),tm(a,w1,vs,true),tm(a,w2,vs,true),tm(a,w3,vs,true)];
+    return qcm('Quel terme est semblable à '+tm(a,ex,vs,true)+' ?',ts[0],ts.slice(1),'Deux termes sont semblables s’ils ont les mêmes variables avec les mêmes exposants. '+ts[0]+' a les variables x et y avec les exposants '+ex[0]+' et '+ex[1]+', comme '+tm(a,ex,vs,true)+'.','Compare les variables et les exposants, pas les coefficients.');
+  }
+  vs=['x'];
+  if(s===2){
+    a=nz(-9,9);c=nz(-9,9);b=nz(-9,9);d=nz(-9,9);
+    while(a+c===0&&b+d===0){d=nz(-9,9)}
+    t=shuffle([[a,[1]],[b,[0]],[c,[1]],[d,[0]]]);
+    res=[[a+c,[1]],[b+d,[0]]];right=pStr(res,vs);
+    return qcm('Réduis '+pStr(t,vs)+'.',right,distinct(right,pwrongs(res,vs,[pStr([[a+c+b+d,[1]]],vs)]).slice(0,8)).slice(0,3),'Je regroupe : ('+sg(a)+'x '+(c<0?'−':'+')+' '+Math.abs(c)+'x) + ('+sg(b)+' '+(d<0?'−':'+')+' '+Math.abs(d)+'). Je réduis : '+right+'.','Les termes en x vont ensemble, les nombres vont ensemble.');
+  }
+  do{a=nz(-6,6);b=nz(-9,9);c=nz(-9,9);d=nz(-6,6);e=nz(-9,9);f=nz(-9,9)}while(a+d===0&&b+e===0&&c+f===0);
+  t=shuffle([[a,[2]],[b,[1]],[c,[0]],[d,[2]],[e,[1]],[f,[0]]]);
+  res=[[a+d,[2]],[b+e,[1]],[c+f,[0]]];right=pStr(res,vs);
+  return qcm('Réduis '+pStr(t,vs)+'.',right,distinct(right,[pStr([[a+d+b+e,[2]],[c+f,[0]]],vs)].concat(pwrongs(res,vs)).slice(0,10)).slice(0,3),'Termes en x'+sp(2)+' : '+sg(a)+' + '+rl(d)+' = '+(a+d)+'. Termes en x : '+sg(b)+' + '+rl(e)+' = '+(b+e)+'. Nombres : '+sg(c)+' + '+rl(f)+' = '+(c+f)+'. Résultat : '+right+'.','On ne regroupe que les termes qui ont le même exposant.');
+};
+function pPair(s){
+  var vs,A,B;
+  if(s===1){vs=['x'];A=[[nz(-9,9),[1]],[nz(-9,9),[0]]];B=[[nz(-9,9),[1]],[nz(-9,9),[0]]]}
+  else if(s===2){vs=['x'];A=[[nz(-6,6),[2]],[nz(-9,9),[1]],[nz(-9,9),[0]]];B=[[nz(-6,6),[2]],[nz(-9,9),[1]],[nz(-9,9),[0]]]}
+  else{vs=['x','y'];A=[[nz(-9,9),[1,0]],[nz(-9,9),[0,1]],[nz(-9,9),[0,0]]];B=[[nz(-9,9),[1,0]],[nz(-9,9),[0,1]],[nz(-9,9),[0,0]]]}
+  return {vs:vs,A:A,B:B};
+}
+G.padd=function(s){
+  var p,res,right;do{p=pPair(s);res=pcomb(p.A,p.B,1);right=pStr(res,p.vs)}while(right==='0');
+  var ws=distinct(right,pwrongs(res,p.vs,[pStr(pcomb(p.A,p.B,-1),p.vs)]).slice(0,10)).slice(0,3);
+  return qcm('Effectue l’addition : ('+pStr(p.A,p.vs)+') + ('+pStr(p.B,p.vs)+').',right,ws,'J’enlève les parenthèses (signe + : les signes ne changent pas). Je regroupe les termes semblables et j’additionne leurs coefficients. Résultat : '+right+'.','Pas de changement de signe quand les parenthèses sont précédées de +.');
+};
+G.psub=function(s){
+  var p,res,right;do{p=pPair(s);res=pcomb(p.A,p.B,-1);right=pStr(res,p.vs)}while(right==='0');
+  var oneSign=pcomb(p.A,[[-p.B[0][0],p.B[0][1]]].concat(p.B.slice(1)),1);
+  var ws=distinct(right,[pStr(pcomb(p.A,p.B,1),p.vs),pStr(oneSign,p.vs)].concat(pwrongs(res,p.vs)).slice(0,10)).slice(0,3);
+  return qcm('Effectue la soustraction : ('+pStr(p.A,p.vs)+') − ('+pStr(p.B,p.vs)+').',right,ws,'Je transforme la soustraction en addition de l’opposé : je change le signe de tous les termes de ('+pStr(p.B,p.vs)+'). J’enlève les parenthèses, je regroupe, je calcule. Résultat : '+right+'.','Le signe − change le signe de chaque terme du second polynôme, pas seulement du premier.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7586,6 +7688,106 @@ D({id:'pi2-17',lv:2,period:1,dom:'Algèbre',t:'Monômes : coefficient, variables
   ar:['وحيدة الحد هي تعبير حرفي من حد واحد، مثل 5x²y. المعامل هو العدد المضروب في المتغيرات مع إشارته. وإذا لم يُكتب عدد فالمعامل 1.','درجة وحيدة الحد هي مجموع أسس جميع متغيراتها. المتغير الذي لا أس له مكتوبا أسه 1. في 5x²y الدرجة 2 + 1 = 3.'],
   arw:[['monôme','وحيدة حد'],['coefficient','معامل'],['variable','متغير'],['degré','درجة'],['exposant','أس']]});
 
+D({id:'pi2-18',lv:2,period:1,dom:'Algèbre',t:'Polynômes : le degré',at:'كثيرات الحدود: الدرجة',
+  obj:'Déterminer le degré d’un polynôme.',keys:['pdeg'],
+  lex:[['polynôme','كثير حدود'],['terme','حد'],['binôme','ثنائية حد'],['trinôme','ثلاثية حد'],['degré','درجة']],
+  pre:[
+    ['Le degré d’un monôme est la somme des exposants de ses variables.',true,'C’est la définition du degré d’un monôme.'],
+    ['Dans 7x, le degré est 7.',false,'7 est le coefficient. L’exposant de x est 1, donc le degré est 1.'],
+    ['Un trinôme est une expression réduite de trois termes.',true,'Trois termes qui n’ont pas les mêmes variables avec les mêmes exposants.']],
+  plan:['Je détermine le degré de chaque terme.','Je conclus : le degré du polynôme est le plus grand de ces degrés.'],
+  ex:[
+    E('Détermine le degré de 3x<sup>4</sup> − 5x<sup>2</sup> + 7.',[
+      ['Étape 1 · degrés des termes : 4 ; 2 ; 0','Le terme 7 est constant : son degré est 0.'],
+      ['<b>Étape 2 · le plus grand est 4</b>','Le degré du polynôme est 4.']]),
+    E('Même question pour 2xy<sup>2</sup> + x<sup>3</sup> − 4y.',[
+      ['Étape 1 · degrés : 1 + 2 = 3 ; 3 ; 1','Dans chaque terme, j’additionne les exposants.'],
+      ['<b>Étape 2 · le plus grand est 3</b>','Le degré du polynôme est 3.']]),
+    E('Même question pour 9x<sup>2</sup> − x + 12.',[
+      ['Étape 1 · degrés : 2 ; 1 ; 0','x seul a l’exposant 1.'],
+      ['<b>Étape 2 · le plus grand est 2</b>','Le degré est 2, pas 12 : on ne regarde pas les coefficients.']])],
+  ret:['Un polynôme est une somme de termes. Le degré d’un terme est la somme des exposants de ses variables.','Le degré d’un polynôme est le plus grand des degrés de ses termes.','Avant de chercher le degré, on regroupe les termes semblables.'],
+  ar:['كثير الحدود مجموع حدود. درجة الحد هي مجموع أسس متغيراته. ودرجة كثير الحدود هي أكبر درجة بين درجات حدوده.','انتبه: لا ننظر إلى المعاملات. في 9x² − x + 12 الدرجة 2 وليست 12. وقبل البحث عن الدرجة نجمع الحدود المتشابهة.'],
+  arw:[['polynôme','كثير حدود'],['terme','حد'],['degré','درجة'],['exposant','أس'],['constant','ثابت']]});
+
+D({id:'pi2-19',lv:2,period:1,dom:'Algèbre',t:'Réduire un polynôme',at:'اختزال كثير حدود',
+  obj:'Réduire un polynôme en regroupant les termes semblables.',keys:['pred'],
+  lex:[['réduire','اختزل'],['termes semblables','حدود متشابهة'],['distributivité','خاصية التوزيع'],['regrouper','أجمع'],['coefficient','معامل']],
+  pre:[
+    ['3x et 5x sont des termes semblables.',true,'Même variable, même exposant.'],
+    ['3x et 3x<sup>2</sup> sont semblables car ils ont le même coefficient.',false,'Les exposants sont différents. Le coefficient ne compte pas.'],
+    ['4xy et 7yx sont des termes semblables.',true,'Ce sont les mêmes variables avec les mêmes exposants, dans un autre ordre.']],
+  plan:['Je regroupe les termes semblables.','J’applique la distributivité.','Je donne le résultat final.'],
+  ex:[
+    E('Réduis 5x + 3 + 2x − 1.',[
+      ['Étape 1 · (5x + 2x) + (3 − 1)','Les termes en x ensemble, les nombres ensemble.'],
+      ['Étape 2 · (5 + 2)x + (3 − 1)','Distributivité : on met x en facteur.'],
+      ['<b>Étape 3 · 7x + 2</b>','Résultat final.']]),
+    E('Réduis 4x<sup>2</sup> − 3x + 2x<sup>2</sup> + 5x.',[
+      ['Étape 1 · (4x<sup>2</sup> + 2x<sup>2</sup>) + (−3x + 5x)','x<sup>2</sup> et x ne sont pas semblables : on ne les mélange pas.'],
+      ['Étape 2 · (4 + 2)x<sup>2</sup> + (−3 + 5)x','Distributivité.'],
+      ['<b>Étape 3 · 6x<sup>2</sup> + 2x</b>','Résultat final.']]),
+    E('Réduis 2x<sup>2</sup> + 3x + 4 + x<sup>2</sup> − 3x.',[
+      ['Étape 1 · (2x<sup>2</sup> + x<sup>2</sup>) + (3x − 3x) + 4','Je regroupe aussi les termes en x.'],
+      ['Étape 2 · (2 + 1)x<sup>2</sup> + (3 − 3)x + 4','3 − 3 = 0.'],
+      ['<b>Étape 3 · 3x<sup>2</sup> + 4</b>','Le terme en x a disparu : 0x = 0.']])],
+  ret:['Deux termes sont semblables s’ils ont les mêmes variables avec les mêmes exposants.','Pour réduire : je regroupe les termes semblables, j’applique la distributivité, je donne le résultat final.','On additionne les coefficients. L’exposant ne change pas.'],
+  ar:['الحدان متشابهان إذا كان لهما نفس المتغيرات ونفس الأسس. لاختزال كثير حدود: أجمع الحدود المتشابهة، ثم أستعمل خاصية التوزيع، ثم أكتب النتيجة.','نجمع المعاملات فقط، والأس لا يتغير. x² و x ليسا متشابهين فلا نجمعهما.'],
+  arw:[['réduire','اختزل'],['termes semblables','حدود متشابهة'],['distributivité','خاصية التوزيع'],['coefficient','معامل'],['exposant','أس']]});
+
+D({id:'pi2-20',lv:2,period:1,dom:'Algèbre',t:'Additionner deux polynômes',at:'جمع كثيري حدود',
+  obj:'Effectuer l’addition de deux polynômes.',keys:['padd'],
+  lex:[['addition','جمع'],['parenthèses','أقواس'],['regrouper','أجمع'],['réduire','اختزل'],['horizontale','أفقي']],
+  pre:[
+    ['Devant des parenthèses précédées de +, les signes ne changent pas.',true,'On peut enlever les parenthèses sans rien changer.'],
+    ['(2x + 3) + (4x + 5) = 6x + 8.',true,'2x + 4x = 6x et 3 + 5 = 8.'],
+    ['Quand on additionne des termes semblables, on additionne aussi leurs exposants.',false,'On additionne les coefficients. L’exposant ne change pas.']],
+  plan:['J’enlève les parenthèses.','Je regroupe les termes semblables.','Je réduis.'],
+  ex:[
+    E('Calcule (2x + 3y) + (4x + 5y).',[
+      ['Étape 1 · 2x + 3y + 4x + 5y','Signe + devant la parenthèse : rien ne change.'],
+      ['Étape 2 · (2x + 4x) + (3y + 5y)','Les termes en x, puis les termes en y.'],
+      ['<b>Étape 3 · 6x + 8y</b>','J’additionne les coefficients.']]),
+    E('Calcule (3x<sup>2</sup> − 2x + 1) + (x<sup>2</sup> + 5x − 4).',[
+      ['Étape 1 · 3x<sup>2</sup> − 2x + 1 + x<sup>2</sup> + 5x − 4','J’enlève les parenthèses.'],
+      ['Étape 2 · (3x<sup>2</sup> + x<sup>2</sup>) + (−2x + 5x) + (1 − 4)','Chaque famille de termes semblables.'],
+      ['<b>Étape 3 · 4x<sup>2</sup> + 3x − 3</b>','Je réduis.']]),
+    E('Calcule (5x − 2) + (−5x + 7).',[
+      ['Étape 1 · 5x − 2 − 5x + 7','Je garde les signes.'],
+      ['Étape 2 · (5x − 5x) + (−2 + 7)','Les termes en x s’annulent.'],
+      ['<b>Étape 3 · 5</b>','0x + 5 = 5.']])],
+  ret:['Pour additionner deux polynômes : j’enlève les parenthèses, je regroupe les termes semblables, je réduis.','Devant des parenthèses précédées de +, les signes ne changent pas.','On peut aussi écrire l’addition en colonnes, en alignant les termes semblables.'],
+  ar:['لجمع كثيري حدود: أحذف الأقواس، أجمع الحدود المتشابهة، ثم أختزل. الإشارة + أمام القوس لا تغير الإشارات داخله.','يمكن أيضا الجمع عموديا بوضع الحدود المتشابهة في نفس العمود.'],
+  arw:[['addition','جمع'],['parenthèses','أقواس'],['regrouper','أجمع'],['réduire','اختزل'],['termes semblables','حدود متشابهة']]});
+
+D({id:'pi2-21',lv:2,period:1,dom:'Algèbre',t:'Soustraire deux polynômes',at:'طرح كثيري حدود',
+  obj:'Effectuer la soustraction de deux polynômes.',keys:['psub'],
+  lex:[['soustraction','طرح'],['opposé','مقابل'],['signe','إشارة'],['parenthèses','أقواس'],['calculer','أحسب']],
+  pre:[
+    ['Le signe − devant des parenthèses change le signe de chaque terme à l’intérieur.',true,'Chaque terme est remplacé par son opposé.'],
+    ['(4x + 1) − (2x + 3) = 2x + 4.',false,'4x − 2x = 2x, mais 1 − 3 = −2. Le résultat est 2x − 2.'],
+    ['L’opposé de −3x est 3x.',true,'On change le signe.']],
+  plan:['Je transforme la soustraction en addition.','J’enlève les parenthèses.','Je regroupe les termes semblables.','Je calcule.'],
+  ex:[
+    E('Calcule (5x + 4) − (2x + 1).',[
+      ['Étape 1 · (5x + 4) + (−2x − 1)','Je change les signes de tous les termes du second polynôme.'],
+      ['Étape 2 · 5x + 4 − 2x − 1','J’enlève les parenthèses.'],
+      ['Étape 3 · (5x − 2x) + (4 − 1)','Je regroupe.'],
+      ['<b>Étape 4 · 3x + 3</b>','Je calcule.']]),
+    E('Calcule (4x<sup>2</sup> − x + 3) − (x<sup>2</sup> + 2x − 5).',[
+      ['Étape 1 · (4x<sup>2</sup> − x + 3) + (−x<sup>2</sup> − 2x + 5)','Les trois termes changent de signe.'],
+      ['Étape 2 · 4x<sup>2</sup> − x + 3 − x<sup>2</sup> − 2x + 5','J’enlève les parenthèses.'],
+      ['Étape 3 · (4x<sup>2</sup> − x<sup>2</sup>) + (−x − 2x) + (3 + 5)','Je regroupe.'],
+      ['<b>Étape 4 · 3x<sup>2</sup> − 3x + 8</b>','Je calcule.']]),
+    E('Calcule (2x − 3) − (−x + 4).',[
+      ['Étape 1 · (2x − 3) + (x − 4)','L’opposé de −x est x et l’opposé de 4 est −4.'],
+      ['Étape 2 · 2x − 3 + x − 4','J’enlève les parenthèses.'],
+      ['Étape 3 · (2x + x) + (−3 − 4)','Je regroupe.'],
+      ['<b>Étape 4 · 3x − 7</b>','Je calcule.']])],
+  ret:['Pour soustraire un polynôme, je le remplace par son opposé : je change le signe de tous ses termes.','Ensuite j’enlève les parenthèses, je regroupe les termes semblables et je calcule.','Erreur fréquente : ne changer que le signe du premier terme.'],
+  ar:['لطرح كثير حدود نحول الطرح إلى جمع المقابل: نغير إشارة جميع حدود كثير الحدود المطروح. ثم نحذف الأقواس ونجمع الحدود المتشابهة ونحسب.','الخطأ الشائع: تغيير إشارة الحد الأول فقط. الإشارة − أمام القوس تغير إشارة كل الحدود داخله.'],
+  arw:[['soustraction','طرح'],['opposé','مقابل'],['signe','إشارة'],['parenthèses','أقواس'],['calculer','أحسب']]});
+
 /* ===== PÉRIODE 2 ===== */
 var ra=function(n){
   var r=[SC.rect(80,40,100,100,PK,'x²'),SC.rect(180,40,60,100,TL,'3x'),SC.rect(80,140,100,40,CO,'2x'),SC.rect(180,140,60,40,LV,'6')];
@@ -7800,7 +8002,7 @@ P.evalPage({id:'pe2-4',lv:2,period:4,keys:['tricerc','angTri','vec','vol','trice
 P.evalPage({id:'pe2-5',lv:2,period:5,keys:['prop','pct','vit','ech','stat','effC','prop','stat']});
 
 P.setLevel(2,['pr-1','pr-2','pr-3','pr-4'],[
-  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-1','pi2-2','pi2-3']},
+  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-18','pi2-19','pi2-20','pi2-21','pi2-1','pi2-2','pi2-3']},
   {title:'Calcul littéral, équations, ordre',seqs:['pi2-4','pi2-5','pi2-6']},
   {title:'Symétrie axiale, droites du triangle',seqs:['pi2-7','pi2-8','pi2-9']},
   {title:'Triangle rectangle, vecteurs et volumes',seqs:['pi2-10','pi2-11','pi2-12']},
