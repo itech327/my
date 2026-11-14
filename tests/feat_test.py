@@ -107,6 +107,34 @@ with sync_playwright() as p:
     c = qs(pg3, '.lab-modal', 10)
     check(a == c, 'défi : mêmes questions pour un autre élève la même semaine')
     check(pg3.evaluate("localStorage.getItem('lab_err')") is None, 'le défi ne touche pas aux erreurs par chapitre')
+    # --- énigme du jour
+    for f in ('maths.html', 'physique-chimie.html', 'svt.html'):
+        pz, ez = page(ctx, f)
+        n = pz.locator('.lab-riddle').count()
+        check(n == 1, f + ': une carte d’énigme sur l’accueil')
+        if n != 1: continue
+        R = pz.evaluate("window.LAB_CONFIG.riddles")
+        check(len(R) >= 6 and all(len(set(r['o'])) == len(r['o']) >= 3 and 0 <= r['a'] < len(r['o']) and r['qa'] and r['ea'] and r['e'] for r in R), f + ': énigmes bien formées (%d)' % len(R))
+        i1 = pz.evaluate("Lab.riddleIndex(window.LAB_CONFIG.app,'2026-03-10',%d)" % len(R)); i2 = pz.evaluate("Lab.riddleIndex(window.LAB_CONFIG.app,'2026-03-10',%d)" % len(R))
+        days = {pz.evaluate("Lab.riddleIndex(window.LAB_CONFIG.app,'2026-03-%02d',%d)" % (d, len(R))) for d in range(1, 29)}
+        check(i1 == i2 and len(days) >= 3, f + ': indice stable par jour, varie d’un jour à l’autre (%d valeurs)' % len(days))
+        q0 = pz.locator('.lab-riddle .rq').first.inner_text()
+        right = pz.evaluate("(function(){var d=Lab.dayKey(),R=window.LAB_CONFIG.riddles;return R[Lab.riddleIndex(window.LAB_CONFIG.app,d,R.length)].a})()")
+        wrong = 0 if right != 0 else 1
+        pz.locator('.lab-riddle .rd-opts button').nth(wrong).click()
+        check(pz.locator('.lab-riddle .rd-opts button.ok').count() == 1 and pz.locator('.lab-riddle .rd-opts button.ko').count() == 1 and 'Pas tout' in pz.locator('.lab-riddle .rd-fb').inner_text(), f + ': mauvaise réponse corrigée avec explication')
+        pz.reload(); pz.wait_for_timeout(500)
+        check(pz.locator('.lab-riddle .rd-opts button.ko').count() == 1 and pz.locator('.lab-riddle .rd-opts button').first.is_disabled(), f + ': réponse conservée après rechargement')
+        pz.evaluate("Lab.Session.clearAll()")
+        check(pz.evaluate("localStorage.getItem('lab_rid')") is None, f + ': effacer les données retire l’énigme répondue')
+        check(not ez, f + ': aucune erreur JS %s' % ez[:1])
+    # --- étiquette approfondissement
+    ps, es = page(ctx, 'svt.html')
+    check(ps.locator('.chap .appro').count() == 2 and ps.locator('.appro-note').count() == 1, 'SVT : 2 chapitres étiquetés approfondissement et la note de repère')
+    ps.evaluate("location.hash='#s3-11'"); ps.wait_for_timeout(500)
+    check(ps.locator('#s3-11 .eyebrow .appro').count() == 1, 'SVT : étiquette dans l’en-tête du chapitre s3-11')
+    ps.evaluate("location.hash='#s3-1'"); ps.wait_for_timeout(500)
+    check(ps.locator('#s3-1 .eyebrow .appro').count() == 0, 'SVT : pas d’étiquette sur un chapitre du programme')
     check(pg.evaluate("document.querySelector('[data-a=err]')") is None, 'plus de bouton Signaler dans la barre')
     for e in (errs, errs2): check(not e, 'aucune erreur JS %s' % e[:1])
     b.close()

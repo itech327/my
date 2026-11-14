@@ -374,6 +374,99 @@
   M1['s3-10'] = { topics: ['b:rim'] };
   M1['s3-11'] = { topics: ['b:dys'] };
   window.LAB_CONFIG = {
+    riddles: [
+      {
+        "q": "Quelle cellule du sang transporte le dioxygène ?",
+        "qa": "أي خلية في الدم تنقل ثنائي الأوكسجين؟",
+        "o": [
+          "Les globules blancs",
+          "Les plaquettes",
+          "Les globules rouges",
+          "Le plasma"
+        ],
+        "a": 2,
+        "e": "Les globules rouges contiennent l’hémoglobine qui fixe le dioxygène.",
+        "ea": "تحتوي الكريات الحمراء على الهيموغلوبين الذي يثبت ثنائي الأوكسجين."
+      },
+      {
+        "q": "Où se fait l’essentiel de l’absorption des nutriments ?",
+        "qa": "أين يتم معظم امتصاص المغذيات؟",
+        "o": [
+          "L’estomac",
+          "L’intestin grêle",
+          "Le gros intestin",
+          "L’œsophage"
+        ],
+        "a": 1,
+        "e": "La paroi de l’intestin grêle est très plissée, ce qui offre une grande surface d’absorption.",
+        "ea": "جدار الأمعاء الدقيقة كثير الثنيات، فيوفر مساحة امتصاص كبيرة."
+      },
+      {
+        "q": "Combien de chromosomes contient une cellule non sexuelle humaine ?",
+        "qa": "كم صبغيا في خلية جسدية عند الإنسان؟",
+        "o": [
+          "23",
+          "46",
+          "92",
+          "48"
+        ],
+        "a": 1,
+        "e": "23 paires, soit 46 chromosomes. Les cellules sexuelles en ont 23.",
+        "ea": "23 زوجا أي 46 صبغيا. أما الخلايا الجنسية ففيها 23."
+      },
+      {
+        "q": "Chez une plante à fleurs, de quelle partie de la fleur le fruit se forme-t-il ?",
+        "qa": "عند نبات زهري، من أي جزء من الزهرة يتكوّن الثمر؟",
+        "o": [
+          "Du pétale",
+          "Du sépale",
+          "De l’ovaire",
+          "De l’étamine"
+        ],
+        "a": 2,
+        "e": "Après la fécondation, l’ovaire devient le fruit et les ovules deviennent les graines.",
+        "ea": "بعد الإخصاب يتحول المبيض إلى ثمرة وتتحول البويضات إلى بذور."
+      },
+      {
+        "q": "Un enfant reçoit un chromosome X de sa mère et un chromosome Y de son père. Quel est son sexe ?",
+        "qa": "طفل ورث صبغي X من أمه وصبغي Y من أبيه. ما جنسه؟",
+        "o": [
+          "Fille",
+          "Garçon",
+          "On ne peut pas savoir",
+          "Cela dépend de l’âge de la mère"
+        ],
+        "a": 1,
+        "e": "Le génotype XY correspond à un garçon. Les filles sont XX.",
+        "ea": "النمط XY يوافق ذكرا. أما الإناث فهن XX."
+      },
+      {
+        "q": "Dans une chaîne alimentaire, qui est le producteur ?",
+        "qa": "في سلسلة غذائية، من هو المنتِج؟",
+        "o": [
+          "Le carnivore",
+          "L’herbivore",
+          "Le décomposeur",
+          "La plante verte"
+        ],
+        "a": 3,
+        "e": "La plante verte fabrique sa matière organique grâce à la lumière : la photosynthèse.",
+        "ea": "النبات الأخضر يصنع مادته العضوية بفضل الضوء: التركيب الضوئي."
+      },
+      {
+        "q": "Les antibiotiques sont efficaces contre :",
+        "qa": "المضادات الحيوية فعّالة ضد:",
+        "o": [
+          "Les virus",
+          "Les bactéries",
+          "Tous les microbes",
+          "Les allergies"
+        ],
+        "a": 1,
+        "e": "Ils agissent sur les bactéries. Ils sont sans effet sur les virus comme celui de la grippe.",
+        "ea": "تؤثر في البكتيريا. ولا أثر لها على الفيروسات مثل فيروس الزكام."
+      }
+    ],
     app: 'svt', appName: 'SVT en mouvement', map: M1,
     gen: function (key, d) {
       var k = key.slice(2);

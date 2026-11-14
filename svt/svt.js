@@ -4,6 +4,7 @@
   'use strict';
   var PC = window.PC, ui = PC.ui, S = PC.S, h = PC.h, fmt = PC.fmt, clamp = PC.clamp, ease = PC.ease;
   var EY = '3<sup>e</sup> année · ';
+  var APPRO = '<span class="appro" title="Hors du programme allégé 2023-2024">Approfondissement · تعمّق</span>';
   var T = 'var(--teal)', P = 'var(--pink)', C = 'var(--coral)', L = 'var(--lav)';
   var BLUE = '#6f8cff', RED = '#f27b60';
   function lerp(a, b, t) { return a + (b - a) * t; }
@@ -345,7 +346,7 @@
     ui.text(el, 'Le modèle est qualitatif : le rein ajuste le volume et la concentration pour garder l’eau du corps constante.', 'px-cap');
     draw();
   }
-  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition', title: 'L’excrétion urinaire chez l’Homme', ar: 'الإطراح البولي عند الإنسان',
+  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition · ' + APPRO, title: 'L’excrétion urinaire chez l’Homme', ar: 'الإطراح البولي عند الإنسان',
     lessons: function () { return [
       { short: 'Appareil urinaire', title: 'L’appareil urinaire', intro: 'Suis le trajet de l’urine, du rein jusqu’à l’extérieur.', build: appareil,
         retenir: ['L’appareil urinaire comprend : deux reins, deux uretères, la vessie et l’urètre.', 'Le sang arrive au rein par l’<b>artère rénale</b> et repart par la <b>veine rénale</b>, appauvri en urée.'],
@@ -826,7 +827,7 @@
       { id: 'is', t: 'Infections', c: C, d: 'Les infections sexuellement transmissibles (IST) se préviennent. Le préservatif protège. Dépister et soigner tôt évite les complications.' }
     ]);
   }
-  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé', title: 'Les dysfonctionnements du système immunitaire', ar: 'اختلالات الجهاز المناعي',
+  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé · ' + APPRO, title: 'Les dysfonctionnements du système immunitaire', ar: 'اختلالات الجهاز المناعي',
     lessons: function () { return [
       { short: 'SIDA', title: 'Le SIDA', intro: 'Comment le VIH affaiblit les défenses de l’organisme ?', build: sida,
         retenir: ['Le <b>VIH</b> infecte et détruit les <b>lymphocytes T4</b>.', 'Le <b>SIDA</b> est le stade où l’organisme ne se défend plus correctement : des maladies graves apparaissent.'],
@@ -1512,6 +1513,7 @@
     ['s3-10', 'Les réponses immunitaires', 'الاستجابات المناعية', 'Santé', '3'],
     ['s3-11', 'Les dysfonctionnements du système immunitaire', 'اختلالات الجهاز المناعي', 'Santé', '3']
   ];
+  var APPROS = { 's3-4': 1, 's3-11': 1 };
   function home() {
     var box = PC.$('#chapters'); if (!box) return; box.replaceChildren();
     LV.forEach(function (lv) {
@@ -1520,11 +1522,12 @@
       var grid = h('div', { 'class': 'chap-grid' });
       list.forEach(function (c, i) {
         var a = h('a', { 'class': 'chap', href: '#' + c[0] });
-        a.innerHTML = '<strong>' + (i + 1) + '. ' + c[1] + '</strong><span class="ar-t" dir="rtl" lang="ar">' + c[2] + '</span><small>Disponible · ' + c[3] + '</small>';
+        a.innerHTML = '<strong>' + (i + 1) + '. ' + c[1] + '</strong><span class="ar-t" dir="rtl" lang="ar">' + c[2] + '</span><small>Disponible · ' + c[3] + (APPROS[c[0]] ? ' · <span class="appro">Approfondissement</span>' : '') + '</small>';
         grid.appendChild(a);
       });
       box.appendChild(grid);
     });
+    box.appendChild(h('p', { 'class': 'lab-note appro-note' }, 'Repère : ces chapitres s’appuient sur le programme officiel de SVT du collège (version adaptée 2023-2024 du ministère). « Approfondissement » signale un chapitre hors de ce programme allégé, utile pour aller plus loin. <span dir="rtl" lang="ar" style="display:block;margin-top:4px">تستند الفصول إلى برنامج علوم الحياة والأرض الرسمي (النسخة المتكيفة 2023-2024). وسم «تعمّق» يعني فصلا خارج هذا البرنامج المخفف.</span>'));
   }
   PC.onHome = home; home();
   window.addEventListener('load', function () { PC.route(); });

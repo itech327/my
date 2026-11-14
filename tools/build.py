@@ -57,7 +57,7 @@ s0 = fr.index('<script>')
 s1 = fr.index('</script>', s0) + len('</script>')
 framework = fr[s0:s1]
 svt_body = '''
-<style>h2.lvl{font-size:20px;margin:30px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}h2.lvl span{color:var(--teal);font-weight:600;margin-inline-start:.4em}</style>
+<style>h2.lvl{font-size:20px;margin:30px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}h2.lvl span{color:var(--teal);font-weight:600;margin-inline-start:.4em}.appro{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:none;color:var(--gold,#e8b84a);border:1px solid currentColor;border-radius:999px;padding:1px 8px}.appro-note{margin-top:26px}</style>
 <div class="wrap">
   <div class="view" id="home">
   <header>

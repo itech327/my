@@ -95,6 +95,86 @@
   T('c3-16', ['g:power']);
 
   window.LAB_CONFIG = {
+    riddles: [
+      {
+        "q": "Un glaçon flotte dans un verre d’eau rempli à ras bord. Quand il a fondu, le verre déborde-t-il ?",
+        "qa": "قطعة ثلج تطفو في كأس ماء ممتلئ حتى الحافة. عند ذوبانها هل ينسكب الماء؟",
+        "o": [
+          "Oui, un peu",
+          "Non, le niveau ne change pas",
+          "Oui, beaucoup",
+          "Le verre se vide"
+        ],
+        "a": 1,
+        "e": "Le glaçon déplace un volume d’eau de même masse que lui. En fondant, il donne exactement ce volume d’eau liquide.",
+        "ea": "قطعة الثلج تزيح حجما من الماء له نفس كتلتها. عند الذوبان تعطي بالضبط هذا الحجم من الماء السائل."
+      },
+      {
+        "q": "Comment s’appelle le passage de l’état liquide à l’état solide ?",
+        "qa": "ماذا نسمي الانتقال من الحالة السائلة إلى الحالة الصلبة؟",
+        "o": [
+          "La fusion",
+          "La vaporisation",
+          "La solidification",
+          "La condensation"
+        ],
+        "a": 2,
+        "e": "Liquide vers solide : solidification. Solide vers liquide : fusion.",
+        "ea": "من سائل إلى صلب: التصلب. ومن صلب إلى سائل: الانصهار."
+      },
+      {
+        "q": "Quelle grandeur est conservée quand la glace fond ?",
+        "qa": "ما المقدار الذي يبقى ثابتا عندما يذوب الثلج؟",
+        "o": [
+          "Le volume",
+          "La masse",
+          "La forme",
+          "La masse volumique"
+        ],
+        "a": 1,
+        "e": "La masse se conserve lors d’un changement d’état. Le volume et la masse volumique changent.",
+        "ea": "تبقى الكتلة ثابتة خلال تغيّر الحالة. أما الحجم والكتلة الحجمية فيتغيران."
+      },
+      {
+        "q": "Une voiture parcourt 90 km en 1 h 30. Quelle est sa vitesse moyenne ?",
+        "qa": "قطعت سيارة 90 كم في ساعة ونصف. ما سرعتها المتوسطة؟",
+        "o": [
+          "45 km/h",
+          "60 km/h",
+          "90 km/h",
+          "135 km/h"
+        ],
+        "a": 1,
+        "e": "v = d ÷ t = 90 ÷ 1,5 = 60 km/h.",
+        "ea": "v = d ÷ t = 90 ÷ 1,5 = 60 كم/س."
+      },
+      {
+        "q": "On dissout du sel dans de l’eau. Quel type de mélange obtient-on ?",
+        "qa": "أذبنا ملحا في الماء. ما نوع الخليط الناتج؟",
+        "o": [
+          "Un mélange hétérogène",
+          "Un corps pur",
+          "Un mélange homogène",
+          "Un élément chimique"
+        ],
+        "a": 2,
+        "e": "On ne distingue plus le sel de l’eau à l’œil nu : le mélange est homogène.",
+        "ea": "لا نميّز الملح عن الماء بالعين المجردة: الخليط متجانس."
+      },
+      {
+        "q": "Un seul fil relie directement les deux bornes d’une pile. Comment nomme-t-on cette situation, à ne jamais reproduire ?",
+        "qa": "سلك واحد يصل مباشرة بين قطبي عمود. ماذا نسمي هذه الوضعية التي يجب ألا نكررها؟",
+        "o": [
+          "Un circuit en série",
+          "Un circuit en dérivation",
+          "Un circuit ouvert",
+          "Un court-circuit"
+        ],
+        "a": 3,
+        "e": "C’est un court-circuit : le courant est très intense, le fil et la pile chauffent. Il est dangereux.",
+        "ea": "هذا هو القصر الكهربائي: تصبح الشدة كبيرة جدا فيسخن السلك والعمود. وهو خطير."
+      }
+    ],
     app: 'pc', appName: 'Physique-Chimie en mouvement', map: M1,
     gen: function (key, d) {
       var kind = key.slice(0, 1), k = key.slice(2);

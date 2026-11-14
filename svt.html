@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-dDer68/uvmVSxGoE7NhwMhZKGgZ+Nj0Gg+BwyjnGSzs=' 'sha256-M1GuQuYETx+5w5XnCh2zzKq+hsIa0D36gVuGOHh2i4Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-ekmU3XosnUDm2a5IlEnQpVormS3G1Q/LDpUMjHw6/VU=' 'sha256-uz+2jjaOzvuceGaIUVP6dT70b8/sMbn5QiSYvchJVLI='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.">
 <link rel="canonical" href="https://taalim.men/svt.html">
@@ -246,7 +246,7 @@ svg .small{font-family:var(--f-body);font-size:12px;text-anchor:middle;dominant-
 <style>:root{--grad:linear-gradient(90deg,#6ccdb6,#9b92dc)}a.chap{border-color:#6ccdb6}input[type=range]{accent-color:#6ccdb6}</style>
 </head>
 <body>
-<style>h2.lvl{font-size:20px;margin:30px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}h2.lvl span{color:var(--teal);font-weight:600;margin-inline-start:.4em}</style>
+<style>h2.lvl{font-size:20px;margin:30px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}h2.lvl span{color:var(--teal);font-weight:600;margin-inline-start:.4em}.appro{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:none;color:var(--gold,#e8b84a);border:1px solid currentColor;border-radius:999px;padding:1px 8px}.appro-note{margin-top:26px}</style>
 <div class="wrap">
   <div class="view" id="home">
   <header>
@@ -877,6 +877,99 @@ document.addEventListener('click',function(e){
   M1['s3-10'] = { topics: ['b:rim'] };
   M1['s3-11'] = { topics: ['b:dys'] };
   window.LAB_CONFIG = {
+    riddles: [
+      {
+        "q": "Quelle cellule du sang transporte le dioxygène ?",
+        "qa": "أي خلية في الدم تنقل ثنائي الأوكسجين؟",
+        "o": [
+          "Les globules blancs",
+          "Les plaquettes",
+          "Les globules rouges",
+          "Le plasma"
+        ],
+        "a": 2,
+        "e": "Les globules rouges contiennent l’hémoglobine qui fixe le dioxygène.",
+        "ea": "تحتوي الكريات الحمراء على الهيموغلوبين الذي يثبت ثنائي الأوكسجين."
+      },
+      {
+        "q": "Où se fait l’essentiel de l’absorption des nutriments ?",
+        "qa": "أين يتم معظم امتصاص المغذيات؟",
+        "o": [
+          "L’estomac",
+          "L’intestin grêle",
+          "Le gros intestin",
+          "L’œsophage"
+        ],
+        "a": 1,
+        "e": "La paroi de l’intestin grêle est très plissée, ce qui offre une grande surface d’absorption.",
+        "ea": "جدار الأمعاء الدقيقة كثير الثنيات، فيوفر مساحة امتصاص كبيرة."
+      },
+      {
+        "q": "Combien de chromosomes contient une cellule non sexuelle humaine ?",
+        "qa": "كم صبغيا في خلية جسدية عند الإنسان؟",
+        "o": [
+          "23",
+          "46",
+          "92",
+          "48"
+        ],
+        "a": 1,
+        "e": "23 paires, soit 46 chromosomes. Les cellules sexuelles en ont 23.",
+        "ea": "23 زوجا أي 46 صبغيا. أما الخلايا الجنسية ففيها 23."
+      },
+      {
+        "q": "Chez une plante à fleurs, de quelle partie de la fleur le fruit se forme-t-il ?",
+        "qa": "عند نبات زهري، من أي جزء من الزهرة يتكوّن الثمر؟",
+        "o": [
+          "Du pétale",
+          "Du sépale",
+          "De l’ovaire",
+          "De l’étamine"
+        ],
+        "a": 2,
+        "e": "Après la fécondation, l’ovaire devient le fruit et les ovules deviennent les graines.",
+        "ea": "بعد الإخصاب يتحول المبيض إلى ثمرة وتتحول البويضات إلى بذور."
+      },
+      {
+        "q": "Un enfant reçoit un chromosome X de sa mère et un chromosome Y de son père. Quel est son sexe ?",
+        "qa": "طفل ورث صبغي X من أمه وصبغي Y من أبيه. ما جنسه؟",
+        "o": [
+          "Fille",
+          "Garçon",
+          "On ne peut pas savoir",
+          "Cela dépend de l’âge de la mère"
+        ],
+        "a": 1,
+        "e": "Le génotype XY correspond à un garçon. Les filles sont XX.",
+        "ea": "النمط XY يوافق ذكرا. أما الإناث فهن XX."
+      },
+      {
+        "q": "Dans une chaîne alimentaire, qui est le producteur ?",
+        "qa": "في سلسلة غذائية، من هو المنتِج؟",
+        "o": [
+          "Le carnivore",
+          "L’herbivore",
+          "Le décomposeur",
+          "La plante verte"
+        ],
+        "a": 3,
+        "e": "La plante verte fabrique sa matière organique grâce à la lumière : la photosynthèse.",
+        "ea": "النبات الأخضر يصنع مادته العضوية بفضل الضوء: التركيب الضوئي."
+      },
+      {
+        "q": "Les antibiotiques sont efficaces contre :",
+        "qa": "المضادات الحيوية فعّالة ضد:",
+        "o": [
+          "Les virus",
+          "Les bactéries",
+          "Tous les microbes",
+          "Les allergies"
+        ],
+        "a": 1,
+        "e": "Ils agissent sur les bactéries. Ils sont sans effet sur les virus comme celui de la grippe.",
+        "ea": "تؤثر في البكتيريا. ولا أثر لها على الفيروسات مثل فيروس الزكام."
+      }
+    ],
     app: 'svt', appName: 'SVT en mouvement', map: M1,
     gen: function (key, d) {
       var k = key.slice(2);
@@ -1004,6 +1097,14 @@ document.addEventListener('click',function(e){
     'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
+    '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
+    '.lab-riddle svg{width:56px;height:56px}',
+    '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
+    '.lab-riddle .rq{margin:0 0 8px;font-weight:600}',
+    '.lab-riddle .rd-opts{display:grid;gap:6px}',
+    '.lab-riddle .rd-opts button{font:inherit;text-align:left;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;min-height:40px;cursor:pointer}',
+    '.lab-riddle .rd-opts button.ok{border-color:var(--teal)}.lab-riddle .rd-opts button.ko{border-color:var(--coral)}',
+    '.lab-riddle .rd-fb{margin:8px 0 0}',
     '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
     '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}',
     '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
@@ -1190,7 +1291,7 @@ document.addEventListener('click',function(e){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -1795,7 +1896,39 @@ document.addEventListener('click',function(e){
   window.addEventListener('resize', function () { Zoom.apply(); });
   Zoom.apply();
 
+  /* énigme du jour : une question courte par matière, la même pour tous ce jour-là */
+  var MASCOT = '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M10 22 Q32 -2 54 22" fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round"/><circle cx="12" cy="20" r="3.6" fill="#e371cb"/><circle cx="32" cy="9" r="3.6" fill="#9b92dc"/><circle cx="52" cy="20" r="3.6" fill="#6ccdb6"/><circle cx="32" cy="40" r="19" fill="var(--surface-2)" stroke="var(--teal)" stroke-width="2.5"/><circle cx="25" cy="37" r="3" fill="var(--fg)"/><circle cx="39" cy="37" r="3" fill="var(--fg)"/><path d="M25 46 Q32 52 39 46" fill="none" stroke="var(--fg)" stroke-width="2.4" stroke-linecap="round"/></svg>';
+  function dayKey(now) { var d = new Date(now || Date.now()); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function riddleIndex(app, day, n) { return Math.floor(rng('riddle|' + app + '|' + day)() * n); }
+  Lab.riddleIndex = riddleIndex; Lab.dayKey = dayKey;
+  function riddleCard() {
+    var R = CFG.riddles, home = document.getElementById('home'), head = home && home.querySelector('header');
+    if (!R || !R.length || !head || home.querySelector('.lab-riddle')) return;
+    var day = dayKey(), r = R[riddleIndex(CFG.app, day, R.length)], saved = store.get('lab_rid', {});
+    var card = h('section', { 'class': 'lab-riddle lab-noprint', 'aria-label': 'Énigme du jour' });
+    var body = h('div');
+    body.innerHTML = '<h3>Énigme du jour · لغز اليوم</h3><p class="rq">' + esc(r.q) + '</p><p class="lab-ar rq" dir="rtl" lang="ar">' + esc(r.qa) + '</p>';
+    var opts = h('div', { 'class': 'rd-opts' }), fb = h('p', { 'class': 'rd-fb', 'aria-live': 'polite' });
+    function reveal(i) {
+      var bs = opts.querySelectorAll('button');
+      for (var k = 0; k < bs.length; k++) { bs[k].disabled = true; if (k === r.a) bs[k].classList.add('ok'); }
+      if (i !== r.a && bs[i]) bs[i].classList.add('ko');
+      fb.innerHTML = (i === r.a ? '<b>Exact.</b> ' : '<b>Pas tout à fait.</b> ') + esc(r.e) + '<span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin-top:4px">' + esc(r.ea) + '</span>';
+    }
+    r.o.forEach(function (t, i) {
+      var b = h('button', { type: 'button' }, esc(t));
+      b.addEventListener('click', function () { store.set('lab_rid', { day: day, app: CFG.app, pick: i }); reveal(i); });
+      opts.appendChild(b);
+    });
+    body.appendChild(opts); body.appendChild(fb);
+    card.innerHTML = MASCOT; card.appendChild(body);
+    head.parentNode.insertBefore(card, head.nextSibling);
+    if (saved && saved.day === day && saved.app === CFG.app && typeof saved.pick === 'number' && saved.pick >= 0 && saved.pick < r.o.length) reveal(saved.pick);
+  }
+  Lab.riddleCard = riddleCard;
+
   function boot() {
+    try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
     if (!Sess.cur() && !skip && CFG.app !== 'portal') openStart(); // l'accueil laisse d'abord choisir la matière
@@ -1832,6 +1965,7 @@ Lab.install(window.PC);
   'use strict';
   var PC = window.PC, ui = PC.ui, S = PC.S, h = PC.h, fmt = PC.fmt, clamp = PC.clamp, ease = PC.ease;
   var EY = '3<sup>e</sup> année · ';
+  var APPRO = '<span class="appro" title="Hors du programme allégé 2023-2024">Approfondissement · تعمّق</span>';
   var T = 'var(--teal)', P = 'var(--pink)', C = 'var(--coral)', L = 'var(--lav)';
   var BLUE = '#6f8cff', RED = '#f27b60';
   function lerp(a, b, t) { return a + (b - a) * t; }
@@ -2173,7 +2307,7 @@ Lab.install(window.PC);
     ui.text(el, 'Le modèle est qualitatif : le rein ajuste le volume et la concentration pour garder l’eau du corps constante.', 'px-cap');
     draw();
   }
-  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition', title: 'L’excrétion urinaire chez l’Homme', ar: 'الإطراح البولي عند الإنسان',
+  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition · ' + APPRO, title: 'L’excrétion urinaire chez l’Homme', ar: 'الإطراح البولي عند الإنسان',
     lessons: function () { return [
       { short: 'Appareil urinaire', title: 'L’appareil urinaire', intro: 'Suis le trajet de l’urine, du rein jusqu’à l’extérieur.', build: appareil,
         retenir: ['L’appareil urinaire comprend : deux reins, deux uretères, la vessie et l’urètre.', 'Le sang arrive au rein par l’<b>artère rénale</b> et repart par la <b>veine rénale</b>, appauvri en urée.'],
@@ -2654,7 +2788,7 @@ Lab.install(window.PC);
       { id: 'is', t: 'Infections', c: C, d: 'Les infections sexuellement transmissibles (IST) se préviennent. Le préservatif protège. Dépister et soigner tôt évite les complications.' }
     ]);
   }
-  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé', title: 'Les dysfonctionnements du système immunitaire', ar: 'اختلالات الجهاز المناعي',
+  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé · ' + APPRO, title: 'Les dysfonctionnements du système immunitaire', ar: 'اختلالات الجهاز المناعي',
     lessons: function () { return [
       { short: 'SIDA', title: 'Le SIDA', intro: 'Comment le VIH affaiblit les défenses de l’organisme ?', build: sida,
         retenir: ['Le <b>VIH</b> infecte et détruit les <b>lymphocytes T4</b>.', 'Le <b>SIDA</b> est le stade où l’organisme ne se défend plus correctement : des maladies graves apparaissent.'],
@@ -3340,6 +3474,7 @@ Lab.install(window.PC);
     ['s3-10', 'Les réponses immunitaires', 'الاستجابات المناعية', 'Santé', '3'],
     ['s3-11', 'Les dysfonctionnements du système immunitaire', 'اختلالات الجهاز المناعي', 'Santé', '3']
   ];
+  var APPROS = { 's3-4': 1, 's3-11': 1 };
   function home() {
     var box = PC.$('#chapters'); if (!box) return; box.replaceChildren();
     LV.forEach(function (lv) {
@@ -3348,11 +3483,12 @@ Lab.install(window.PC);
       var grid = h('div', { 'class': 'chap-grid' });
       list.forEach(function (c, i) {
         var a = h('a', { 'class': 'chap', href: '#' + c[0] });
-        a.innerHTML = '<strong>' + (i + 1) + '. ' + c[1] + '</strong><span class="ar-t" dir="rtl" lang="ar">' + c[2] + '</span><small>Disponible · ' + c[3] + '</small>';
+        a.innerHTML = '<strong>' + (i + 1) + '. ' + c[1] + '</strong><span class="ar-t" dir="rtl" lang="ar">' + c[2] + '</span><small>Disponible · ' + c[3] + (APPROS[c[0]] ? ' · <span class="appro">Approfondissement</span>' : '') + '</small>';
         grid.appendChild(a);
       });
       box.appendChild(grid);
     });
+    box.appendChild(h('p', { 'class': 'lab-note appro-note' }, 'Repère : ces chapitres s’appuient sur le programme officiel de SVT du collège (version adaptée 2023-2024 du ministère). « Approfondissement » signale un chapitre hors de ce programme allégé, utile pour aller plus loin. <span dir="rtl" lang="ar" style="display:block;margin-top:4px">تستند الفصول إلى برنامج علوم الحياة والأرض الرسمي (النسخة المتكيفة 2023-2024). وسم «تعمّق» يعني فصلا خارج هذا البرنامج المخفف.</span>'));
   }
   PC.onHome = home; home();
   window.addEventListener('load', function () { PC.route(); });

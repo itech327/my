@@ -116,6 +116,14 @@
     'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
+    '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
+    '.lab-riddle svg{width:56px;height:56px}',
+    '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
+    '.lab-riddle .rq{margin:0 0 8px;font-weight:600}',
+    '.lab-riddle .rd-opts{display:grid;gap:6px}',
+    '.lab-riddle .rd-opts button{font:inherit;text-align:left;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;min-height:40px;cursor:pointer}',
+    '.lab-riddle .rd-opts button.ok{border-color:var(--teal)}.lab-riddle .rd-opts button.ko{border-color:var(--coral)}',
+    '.lab-riddle .rd-fb{margin:8px 0 0}',
     '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
     '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}',
     '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
@@ -302,7 +310,7 @@
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -907,7 +915,39 @@
   window.addEventListener('resize', function () { Zoom.apply(); });
   Zoom.apply();
 
+  /* énigme du jour : une question courte par matière, la même pour tous ce jour-là */
+  var MASCOT = '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M10 22 Q32 -2 54 22" fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round"/><circle cx="12" cy="20" r="3.6" fill="#e371cb"/><circle cx="32" cy="9" r="3.6" fill="#9b92dc"/><circle cx="52" cy="20" r="3.6" fill="#6ccdb6"/><circle cx="32" cy="40" r="19" fill="var(--surface-2)" stroke="var(--teal)" stroke-width="2.5"/><circle cx="25" cy="37" r="3" fill="var(--fg)"/><circle cx="39" cy="37" r="3" fill="var(--fg)"/><path d="M25 46 Q32 52 39 46" fill="none" stroke="var(--fg)" stroke-width="2.4" stroke-linecap="round"/></svg>';
+  function dayKey(now) { var d = new Date(now || Date.now()); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function riddleIndex(app, day, n) { return Math.floor(rng('riddle|' + app + '|' + day)() * n); }
+  Lab.riddleIndex = riddleIndex; Lab.dayKey = dayKey;
+  function riddleCard() {
+    var R = CFG.riddles, home = document.getElementById('home'), head = home && home.querySelector('header');
+    if (!R || !R.length || !head || home.querySelector('.lab-riddle')) return;
+    var day = dayKey(), r = R[riddleIndex(CFG.app, day, R.length)], saved = store.get('lab_rid', {});
+    var card = h('section', { 'class': 'lab-riddle lab-noprint', 'aria-label': 'Énigme du jour' });
+    var body = h('div');
+    body.innerHTML = '<h3>Énigme du jour · لغز اليوم</h3><p class="rq">' + esc(r.q) + '</p><p class="lab-ar rq" dir="rtl" lang="ar">' + esc(r.qa) + '</p>';
+    var opts = h('div', { 'class': 'rd-opts' }), fb = h('p', { 'class': 'rd-fb', 'aria-live': 'polite' });
+    function reveal(i) {
+      var bs = opts.querySelectorAll('button');
+      for (var k = 0; k < bs.length; k++) { bs[k].disabled = true; if (k === r.a) bs[k].classList.add('ok'); }
+      if (i !== r.a && bs[i]) bs[i].classList.add('ko');
+      fb.innerHTML = (i === r.a ? '<b>Exact.</b> ' : '<b>Pas tout à fait.</b> ') + esc(r.e) + '<span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin-top:4px">' + esc(r.ea) + '</span>';
+    }
+    r.o.forEach(function (t, i) {
+      var b = h('button', { type: 'button' }, esc(t));
+      b.addEventListener('click', function () { store.set('lab_rid', { day: day, app: CFG.app, pick: i }); reveal(i); });
+      opts.appendChild(b);
+    });
+    body.appendChild(opts); body.appendChild(fb);
+    card.innerHTML = MASCOT; card.appendChild(body);
+    head.parentNode.insertBefore(card, head.nextSibling);
+    if (saved && saved.day === day && saved.app === CFG.app && typeof saved.pick === 'number' && saved.pick >= 0 && saved.pick < r.o.length) reveal(saved.pick);
+  }
+  Lab.riddleCard = riddleCard;
+
   function boot() {
+    try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
     if (!Sess.cur() && !skip && CFG.app !== 'portal') openStart(); // l'accueil laisse d'abord choisir la matière

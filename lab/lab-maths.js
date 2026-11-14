@@ -216,6 +216,86 @@
   T('c3-15', ['stat']);
 
   window.LAB_CONFIG = {
+    riddles: [
+      {
+        "q": "Je pense à un nombre, je le double, j’ajoute 6, puis je divise par 2. J’obtiens 11. Quel est mon nombre ?",
+        "qa": "فكرت في عدد، ضاعفته، أضفت 6 ثم قسمت على 2 فوجدت 11. ما هو العدد؟",
+        "o": [
+          "5",
+          "8",
+          "11",
+          "14"
+        ],
+        "a": 1,
+        "e": "(2x + 6) ÷ 2 = x + 3. Donc x + 3 = 11 et x = 8.",
+        "ea": "(2x + 6) ÷ 2 = x + 3. إذن x + 3 = 11 و x = 8."
+      },
+      {
+        "q": "Combien de diagonales a un hexagone ?",
+        "qa": "كم قطرا للسداسي؟",
+        "o": [
+          "6",
+          "12",
+          "9",
+          "18"
+        ],
+        "a": 2,
+        "e": "Chaque sommet se relie à 3 autres sommets non voisins : 6 × 3 ÷ 2 = 9.",
+        "ea": "كل رأس يتصل بثلاثة رؤوس غير مجاورة: 6 × 3 ÷ 2 = 9."
+      },
+      {
+        "q": "Un carré a un périmètre de 20 cm. Quelle est son aire ?",
+        "qa": "محيط مربع 20 سم. ما مساحته؟",
+        "o": [
+          "20 cm²",
+          "40 cm²",
+          "100 cm²",
+          "25 cm²"
+        ],
+        "a": 3,
+        "e": "Le côté vaut 20 ÷ 4 = 5 cm. L’aire vaut 5 × 5 = 25 cm².",
+        "ea": "الضلع = 20 ÷ 4 = 5 سم. المساحة = 5 × 5 = 25 سم²."
+      },
+      {
+        "q": "Quel est le plus petit entier positif divisible à la fois par 2, 3 et 4 ?",
+        "qa": "ما هو أصغر عدد صحيح موجب يقبل القسمة على 2 و3 و4 معا؟",
+        "o": [
+          "12",
+          "6",
+          "24",
+          "9"
+        ],
+        "a": 0,
+        "e": "Les multiples de 4 sont 4, 8, 12… Le premier qui est aussi multiple de 3 est 12.",
+        "ea": "مضاعفات 4: 4 و8 و12... أول مضاعف منها يقبل القسمة على 3 هو 12."
+      },
+      {
+        "q": "On multiplie le côté d’un carré par 3. Par combien l’aire est-elle multipliée ?",
+        "qa": "ضربنا ضلع مربع في 3. في كم تضرب مساحته؟",
+        "o": [
+          "3",
+          "6",
+          "12",
+          "9"
+        ],
+        "a": 3,
+        "e": "Le nouveau côté est 3c, donc l’aire est (3c)² = 9c².",
+        "ea": "الضلع الجديد 3c إذن المساحة (3c)² = 9c²."
+      },
+      {
+        "q": "La moyenne de 4, 8 et x est égale à 8. Que vaut x ?",
+        "qa": "معدل الأعداد 4 و8 و x يساوي 8. كم قيمة x؟",
+        "o": [
+          "8",
+          "10",
+          "12",
+          "14"
+        ],
+        "a": 2,
+        "e": "La somme vaut 3 × 8 = 24. Donc x = 24 − 4 − 8 = 12.",
+        "ea": "المجموع = 3 × 8 = 24. إذن x = 24 − 4 − 8 = 12."
+      }
+    ],
     app: 'maths', appName: 'Maths en mouvement', map: M1,
     gen: function (key, d) {
       var G = expo();

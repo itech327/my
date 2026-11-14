@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-QEkemep/WW92Deg5ZL5g3xbMlOEx/x9ll6QZM3Cpk3Q=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-wTPyhQrUUCzWWecsOb4onkVCtZA+98GYaKz4lnjXyDY=' 'sha256-HpTjGq7PoNP8QPazRJ02O1Srx726OnqZojGHhllzBPE=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-Vn7tT0Xe221AuikET0N2ful6vPJyrmz7/8gIqfloZw0=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-LJbYP6ej880zDVt8ebWRx3zJ2tARIVaeBJW12fyejiw=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-+m+YCOaHioQh8pqrdmBWaPYqTSVaKIq6tM8oVH4LpQs=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-wTPyhQrUUCzWWecsOb4onkVCtZA+98GYaKz4lnjXyDY=' 'sha256-HpTjGq7PoNP8QPazRJ02O1Srx726OnqZojGHhllzBPE=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-Vn7tT0Xe221AuikET0N2ful6vPJyrmz7/8gIqfloZw0=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-LJbYP6ej880zDVt8ebWRx3zJ2tARIVaeBJW12fyejiw=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie.html">
@@ -618,6 +618,86 @@ document.addEventListener('click',function(e){
   T('c3-16', ['g:power']);
 
   window.LAB_CONFIG = {
+    riddles: [
+      {
+        "q": "Un glaçon flotte dans un verre d’eau rempli à ras bord. Quand il a fondu, le verre déborde-t-il ?",
+        "qa": "قطعة ثلج تطفو في كأس ماء ممتلئ حتى الحافة. عند ذوبانها هل ينسكب الماء؟",
+        "o": [
+          "Oui, un peu",
+          "Non, le niveau ne change pas",
+          "Oui, beaucoup",
+          "Le verre se vide"
+        ],
+        "a": 1,
+        "e": "Le glaçon déplace un volume d’eau de même masse que lui. En fondant, il donne exactement ce volume d’eau liquide.",
+        "ea": "قطعة الثلج تزيح حجما من الماء له نفس كتلتها. عند الذوبان تعطي بالضبط هذا الحجم من الماء السائل."
+      },
+      {
+        "q": "Comment s’appelle le passage de l’état liquide à l’état solide ?",
+        "qa": "ماذا نسمي الانتقال من الحالة السائلة إلى الحالة الصلبة؟",
+        "o": [
+          "La fusion",
+          "La vaporisation",
+          "La solidification",
+          "La condensation"
+        ],
+        "a": 2,
+        "e": "Liquide vers solide : solidification. Solide vers liquide : fusion.",
+        "ea": "من سائل إلى صلب: التصلب. ومن صلب إلى سائل: الانصهار."
+      },
+      {
+        "q": "Quelle grandeur est conservée quand la glace fond ?",
+        "qa": "ما المقدار الذي يبقى ثابتا عندما يذوب الثلج؟",
+        "o": [
+          "Le volume",
+          "La masse",
+          "La forme",
+          "La masse volumique"
+        ],
+        "a": 1,
+        "e": "La masse se conserve lors d’un changement d’état. Le volume et la masse volumique changent.",
+        "ea": "تبقى الكتلة ثابتة خلال تغيّر الحالة. أما الحجم والكتلة الحجمية فيتغيران."
+      },
+      {
+        "q": "Une voiture parcourt 90 km en 1 h 30. Quelle est sa vitesse moyenne ?",
+        "qa": "قطعت سيارة 90 كم في ساعة ونصف. ما سرعتها المتوسطة؟",
+        "o": [
+          "45 km/h",
+          "60 km/h",
+          "90 km/h",
+          "135 km/h"
+        ],
+        "a": 1,
+        "e": "v = d ÷ t = 90 ÷ 1,5 = 60 km/h.",
+        "ea": "v = d ÷ t = 90 ÷ 1,5 = 60 كم/س."
+      },
+      {
+        "q": "On dissout du sel dans de l’eau. Quel type de mélange obtient-on ?",
+        "qa": "أذبنا ملحا في الماء. ما نوع الخليط الناتج؟",
+        "o": [
+          "Un mélange hétérogène",
+          "Un corps pur",
+          "Un mélange homogène",
+          "Un élément chimique"
+        ],
+        "a": 2,
+        "e": "On ne distingue plus le sel de l’eau à l’œil nu : le mélange est homogène.",
+        "ea": "لا نميّز الملح عن الماء بالعين المجردة: الخليط متجانس."
+      },
+      {
+        "q": "Un seul fil relie directement les deux bornes d’une pile. Comment nomme-t-on cette situation, à ne jamais reproduire ?",
+        "qa": "سلك واحد يصل مباشرة بين قطبي عمود. ماذا نسمي هذه الوضعية التي يجب ألا نكررها؟",
+        "o": [
+          "Un circuit en série",
+          "Un circuit en dérivation",
+          "Un circuit ouvert",
+          "Un court-circuit"
+        ],
+        "a": 3,
+        "e": "C’est un court-circuit : le courant est très intense, le fil et la pile chauffent. Il est dangereux.",
+        "ea": "هذا هو القصر الكهربائي: تصبح الشدة كبيرة جدا فيسخن السلك والعمود. وهو خطير."
+      }
+    ],
     app: 'pc', appName: 'Physique-Chimie en mouvement', map: M1,
     gen: function (key, d) {
       var kind = key.slice(0, 1), k = key.slice(2);
@@ -747,6 +827,14 @@ document.addEventListener('click',function(e){
     'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
+    '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
+    '.lab-riddle svg{width:56px;height:56px}',
+    '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
+    '.lab-riddle .rq{margin:0 0 8px;font-weight:600}',
+    '.lab-riddle .rd-opts{display:grid;gap:6px}',
+    '.lab-riddle .rd-opts button{font:inherit;text-align:left;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;min-height:40px;cursor:pointer}',
+    '.lab-riddle .rd-opts button.ok{border-color:var(--teal)}.lab-riddle .rd-opts button.ko{border-color:var(--coral)}',
+    '.lab-riddle .rd-fb{margin:8px 0 0}',
     '.lab-modal{position:fixed;inset:0;z-index:100;background:rgba(5,4,10,.82);display:grid;place-items:center;padding:16px;overflow:auto}',
     '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}',
     '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
@@ -933,7 +1021,7 @@ document.addEventListener('click',function(e){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -1538,7 +1626,39 @@ document.addEventListener('click',function(e){
   window.addEventListener('resize', function () { Zoom.apply(); });
   Zoom.apply();
 
+  /* énigme du jour : une question courte par matière, la même pour tous ce jour-là */
+  var MASCOT = '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M10 22 Q32 -2 54 22" fill="none" stroke="var(--teal)" stroke-width="3" stroke-linecap="round"/><circle cx="12" cy="20" r="3.6" fill="#e371cb"/><circle cx="32" cy="9" r="3.6" fill="#9b92dc"/><circle cx="52" cy="20" r="3.6" fill="#6ccdb6"/><circle cx="32" cy="40" r="19" fill="var(--surface-2)" stroke="var(--teal)" stroke-width="2.5"/><circle cx="25" cy="37" r="3" fill="var(--fg)"/><circle cx="39" cy="37" r="3" fill="var(--fg)"/><path d="M25 46 Q32 52 39 46" fill="none" stroke="var(--fg)" stroke-width="2.4" stroke-linecap="round"/></svg>';
+  function dayKey(now) { var d = new Date(now || Date.now()); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function riddleIndex(app, day, n) { return Math.floor(rng('riddle|' + app + '|' + day)() * n); }
+  Lab.riddleIndex = riddleIndex; Lab.dayKey = dayKey;
+  function riddleCard() {
+    var R = CFG.riddles, home = document.getElementById('home'), head = home && home.querySelector('header');
+    if (!R || !R.length || !head || home.querySelector('.lab-riddle')) return;
+    var day = dayKey(), r = R[riddleIndex(CFG.app, day, R.length)], saved = store.get('lab_rid', {});
+    var card = h('section', { 'class': 'lab-riddle lab-noprint', 'aria-label': 'Énigme du jour' });
+    var body = h('div');
+    body.innerHTML = '<h3>Énigme du jour · لغز اليوم</h3><p class="rq">' + esc(r.q) + '</p><p class="lab-ar rq" dir="rtl" lang="ar">' + esc(r.qa) + '</p>';
+    var opts = h('div', { 'class': 'rd-opts' }), fb = h('p', { 'class': 'rd-fb', 'aria-live': 'polite' });
+    function reveal(i) {
+      var bs = opts.querySelectorAll('button');
+      for (var k = 0; k < bs.length; k++) { bs[k].disabled = true; if (k === r.a) bs[k].classList.add('ok'); }
+      if (i !== r.a && bs[i]) bs[i].classList.add('ko');
+      fb.innerHTML = (i === r.a ? '<b>Exact.</b> ' : '<b>Pas tout à fait.</b> ') + esc(r.e) + '<span class="lab-ar" dir="rtl" lang="ar" style="display:block;margin-top:4px">' + esc(r.ea) + '</span>';
+    }
+    r.o.forEach(function (t, i) {
+      var b = h('button', { type: 'button' }, esc(t));
+      b.addEventListener('click', function () { store.set('lab_rid', { day: day, app: CFG.app, pick: i }); reveal(i); });
+      opts.appendChild(b);
+    });
+    body.appendChild(opts); body.appendChild(fb);
+    card.innerHTML = MASCOT; card.appendChild(body);
+    head.parentNode.insertBefore(card, head.nextSibling);
+    if (saved && saved.day === day && saved.app === CFG.app && typeof saved.pick === 'number' && saved.pick >= 0 && saved.pick < r.o.length) reveal(saved.pick);
+  }
+  Lab.riddleCard = riddleCard;
+
   function boot() {
+    try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
     if (!Sess.cur() && !skip && CFG.app !== 'portal') openStart(); // l'accueil laisse d'abord choisir la matière
