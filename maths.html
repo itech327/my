@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-EB3mRnzQql3OTQjeuCcmQMWqg3vxC/QwsgIv+3p1+a4=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-HnFUTEAhoO5aO0N0nVHhHO+2octvZ3X3ihpxeHG5HoM=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-BTISD84nTF955bMypeMkHm2h75AeDC3ZjzdMSw8PCYA=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6834,6 +6834,82 @@ G.nmd=function(s){
   return num('Calcule '+pf(p1,d1)+' ÷ '+pf(p2,d2)+' (décimal ou fraction).',n/d,'Diviser, c’est multiplier par l’inverse : '+pf(p1,d1)+' × '+(p2<0?'('+fr(d2,p2)+')':fr(d2,p2))+' donne '+fr(n,d)+' = '+fs(n,d)+'.','Diviser par une fraction, c’est multiplier par son inverse.',{sol:fs(n,d),tol:6e-3});
 };
 
+/* ---------- 3AC période 1 semaine 1 : diviseurs, critères, PGCD, PPCM ---------- */
+function dvs(n){var out=[],i;for(i=1;i<=n;i++)if(n%i===0)out.push(i);return out}
+function lcm2(a,b){return a*b/gcd(a,b)}
+function mlist(k,upto){var out=[],i;for(i=1;i*k<=upto;i++)out.push(k*i);return out}
+G.ndvd=function(s){
+  var b,q,r,a,n,d,k,N,m,wrongs,pool;
+  if(s===1){
+    b=ri(3,9);q=ri(3,12);r=ri(1,b-1);a=b*q+r;
+    return num('Quel est le reste de la division euclidienne de '+a+' par '+b+' ?',r,a+' = '+b+' × '+q+' + '+r+' avec '+r+' < '+b+'. Le reste est '+r+'.','Cherche le plus grand multiple de '+b+' qui ne dépasse pas '+a+'.');
+  }
+  if(s===2){
+    d=ri(3,9);q=ri(4,9);N=d*q;pool=[];
+    for(m=2;m<N;m++)if(N%m!==0)pool.push(m);
+    wrongs=shuffle(pool).slice(0,3);
+    return qcm('Lequel de ces nombres est un diviseur de '+N+' ?',String(d),wrongs.map(String),N+' = '+d+' × '+q+' : le reste de la division euclidienne de '+N+' par '+d+' est 0. Donc '+d+' est un diviseur de '+N+'.','Un diviseur donne un reste égal à 0.');
+  }
+  k=ri(3,9);N=ri(25,60);
+  return num('Quel est le plus grand multiple de '+k+' strictement inférieur à '+N+' ?',k*Math.floor((N-1)/k),'Les multiples de '+k+' sont '+mlist(k,N+k).filter(function(v){return v<N}).slice(-4).join(' ; ')+' ... Le dernier inférieur à '+N+' est '+(k*Math.floor((N-1)/k))+'.','Calcule les produits de '+k+' par 1, 2, 3, ... jusqu’à dépasser '+N+'.');
+};
+function digs(n){return String(n).split('').map(Number)}
+function dsum(n){return digs(n).reduce(function(x,y){return x+y},0)}
+G.ncrit=function(s){
+  var X,cands,i,v,div,non,right,lim,a,c,sm,d,N;
+  if(s===1){
+    X=pick([2,3,5,9]);div=null;non=[];lim=0;
+    while((!div||non.length<3)&&lim++<400){
+      v=ri(100,999);
+      if(v%X===0){if(!div)div=v}
+      else if(non.length<3&&non.indexOf(v)<0)non.push(v);
+    }
+    var why=X===2?'son chiffre des unités est pair':X===5?'son chiffre des unités est 0 ou 5':'la somme de ses chiffres '+dsum(div)+' est divisible par '+X;
+    return qcm('Lequel de ces nombres est divisible par '+X+' ?',String(div),non.map(String),div+' est divisible par '+X+' car '+why+'.','Utilise le critère de divisibilité par '+X+'.');
+  }
+  if(s===2){
+    do{a=ri(1,9);c=ri(1,9);sm=a+c}while(sm%9===0);
+    d=(9-(sm%9))%9;
+    return num('Quel chiffre faut-il écrire à la place de ? pour que le nombre '+a+'?'+c+' soit divisible par 9 ?',d,'La somme des chiffres doit être divisible par 9. '+a+' + '+c+' = '+sm+'. Il faut ajouter '+d+' pour obtenir '+(sm+d)+', multiple de 9.','Calcule la somme des chiffres connus, puis complète jusqu’au multiple de 9.');
+  }
+  div=null;non=[];lim=0;
+  while((!div||non.length<3)&&lim++<600){
+    v=ri(1000,9999);
+    if(v%4===0){if(!div)div=v}
+    else if(non.length<3&&non.indexOf(v)<0)non.push(v);
+  }
+  return qcm('Lequel de ces nombres est divisible par 4 ?',String(div),non.map(String),'Les deux derniers chiffres de '+div+' forment '+(div%100)+', qui est un multiple de 4. Donc '+div+' est divisible par 4.','Regarde le nombre formé par les deux derniers chiffres.');
+};
+G.npgcd=function(s){
+  var g,p,q,a,b,k;
+  function cop(){do{p=ri(2,9);q=ri(2,9)}while(p===q||gcd(p,q)!==1)}
+  if(s===1){
+    g=ri(2,6);cop();a=g*p;b=g*q;
+    return num('Détermine le PGCD de '+a+' et '+b+'.',g,'Diviseurs de '+a+' : '+dvs(a).join(' ; ')+'. Diviseurs de '+b+' : '+dvs(b).join(' ; ')+'. Diviseurs communs : '+dvs(g).filter(function(v){return a%v===0&&b%v===0}).join(' ; ')+'. Le plus grand est '+g+'.','Écris les diviseurs de chaque nombre, puis cherche le plus grand diviseur commun.');
+  }
+  if(s===2){
+    a=ri(3,15);k=ri(3,9);b=a*k;
+    return num('Détermine le PGCD de '+a+' et '+b+'.',a,b+' = '+a+' × '+k+' : '+a+' divise '+b+'. Le PGCD est donc le plus petit des deux nombres : '+a+'.','Regarde si l’un des nombres divise l’autre.');
+  }
+  g=ri(3,12);cop();a=g*p;b=g*q;
+  return num('Détermine le PGCD de '+a+' et '+b+'.',g,'Diviseurs communs de '+a+' et '+b+' : '+dvs(g).join(' ; ')+'. Le plus grand est '+g+'. Vérification : '+a+' = '+g+' × '+p+' et '+b+' = '+g+' × '+q+'.','Cherche le plus grand nombre qui divise les deux.');
+};
+G.nppcm=function(s){
+  var a,b,g,p,q,k,l,la,lb;
+  if(s===1){
+    do{a=ri(2,9);b=ri(2,9)}while(a===b||a%b===0||b%a===0);
+    l=lcm2(a,b);
+    return num('Détermine le PPCM de '+a+' et '+b+'.',l,'Multiples de '+a+' : '+mlist(a,l).join(' ; ')+'. Multiples de '+b+' : '+mlist(b,l).join(' ; ')+'. Le premier multiple commun est '+l+'.','Écris les multiples de chaque nombre jusqu’au premier multiple commun.');
+  }
+  if(s===2){
+    a=ri(3,12);k=ri(3,9);b=a*k;
+    return num('Détermine le PPCM de '+a+' et '+b+'.',b,b+' est un multiple de '+a+' ('+b+' = '+a+' × '+k+'). Le PPCM est donc le plus grand des deux nombres : '+b+'.','Regarde si l’un des nombres est un multiple de l’autre.');
+  }
+  g=ri(2,9);do{p=ri(2,9);q=ri(2,9)}while(p===q||gcd(p,q)!==1);
+  a=g*p;b=g*q;l=g*p*q;
+  return num('Détermine le PPCM de '+a+' et '+b+' en utilisant leur PGCD.',l,'PGCD('+a+' ; '+b+') = '+g+'. PPCM = '+a+' × '+b+' ÷ '+g+' = '+(a*b)+' ÷ '+g+' = '+l+'.','PPCM = produit des deux nombres divisé par leur PGCD.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -9029,6 +9105,113 @@ D({id:'pi3-3',lv:3,period:1,dom:'Nombres',t:'Ordre, comparaison et encadrement',
   ar:['لمقارنة عددين موجبين يمكن مقارنة مربعيهما. ولتأطير تعبير نطبّق العمليات على أطراف التأطير: الضرب في عدد موجب يحافظ على الترتيب، والضرب في عدد سالب يعكسه.','مثلاً 1,41 < √2 < 1,42 يعطي بعد الضرب في 3: 4,23 < 3√2 < 4,26.'],
   arw:[['comparer','مقارنة'],['encadrement','تأطير'],['valeur approchée','قيمة تقريبية'],['carré','مربع'],['ordre','ترتيب']]});
 
+D({id:'pi3-16',lv:3,period:1,dom:'Nombres',t:'Diviseurs et multiples d’un entier',at:'قواسم ومضاعفات عدد صحيح',
+  obj:'Reconnaître les diviseurs et les multiples d’un nombre entier positif.',keys:['ndvd'],
+  lex:[['diviseur','قاسم'],['multiple','مضاعف'],['division euclidienne','القسمة الإقليدية'],['quotient','الخارج'],['reste','الباقي'],['divisible','قابل للقسمة']],
+  pre:[
+    ['Dans la division euclidienne de 17 par 5, le reste est 2.',true,'17 = 5 × 3 + 2 et 2 < 5.'],
+    ['Si le reste de la division euclidienne de a par b est 0, alors b est un diviseur de a.',true,'C’est la définition d’un diviseur.'],
+    ['Le nombre 0 n’est le multiple d’aucun entier.',false,'0 = 3 × 0 : 0 est un multiple de tout entier.']],
+  plan:['J’écris l’égalité de la division euclidienne.','Je détermine si le reste est égal à 0 ou différent de 0.','Je conclus.'],
+  ex:[
+    E('7 est-il un diviseur de 42 ?',[
+      ['Étape 1 · 42 = 7 × 6 + 0','J’écris l’égalité de la division euclidienne de 42 par 7.'],
+      ['Étape 2 · le reste est 0','Le reste est égal à 0.'],
+      ['<b>Étape 3 · oui, 7 est un diviseur de 42</b>','Je conclus.']]),
+    E('5 est-il un diviseur de 28 ?',[
+      ['Étape 1 · 28 = 5 × 5 + 3','J’écris l’égalité de la division euclidienne de 28 par 5.'],
+      ['Étape 2 · le reste est 3, différent de 0','Le reste n’est pas nul.'],
+      ['<b>Étape 3 · non, 5 n’est pas un diviseur de 28</b>','Je conclus.']]),
+    E('Détermine les multiples de 3 inférieurs à 29.',[
+      ['Étape 1 · 3 × 0 = 0 ; 3 × 1 = 3 ; 3 × 2 = 6 ; ...','Je calcule les produits de 3 par 0, 1, 2, 3, ...'],
+      ['Étape 2 · 3 × 9 = 27 et 3 × 10 = 30','Je m’arrête au dernier multiple inférieur à 29 : 27.'],
+      ['<b>Étape 3 · 0 ; 3 ; 6 ; 9 ; 12 ; 15 ; 18 ; 21 ; 24 ; 27</b>','J’écris tous les multiples trouvés.']])],
+  ret:['b est un diviseur de a si le reste de la division euclidienne de a par b est 0. On dit aussi que a est divisible par b, ou que a est un multiple de b.','Le reste est toujours positif ou nul et strictement inférieur au diviseur.','Les multiples de b sont les produits de b par les entiers 0, 1, 2, 3, ...'],
+  ar:['b قاسم للعدد a إذا كان باقي القسمة الإقليدية لـ a على b يساوي 0. نقول أيضا إن a قابل للقسمة على b، أو إن a مضاعف لـ b.','الباقي دائما موجب أو منعدم وأصغر قطعا من القاسم. مضاعفات b هي جداءات b في الأعداد 0 و1 و2 و3 ...'],
+  arw:[['diviseur','قاسم'],['multiple','مضاعف'],['division euclidienne','قسمة إقليدية'],['reste','باقي'],['quotient','خارج القسمة']]});
+
+D({id:'pi3-17',lv:3,period:1,dom:'Nombres',t:'Les critères de divisibilité',at:'معايير قابلية القسمة',
+  obj:'Utiliser les critères de divisibilité par 2, 3, 4, 5 et 9.',keys:['ncrit'],
+  lex:[['critère de divisibilité','معيار قابلية القسمة'],['chiffre des unités','رقم الوحدات'],['somme des chiffres','مجموع الأرقام'],['pair','زوجي'],['divisible','قابل للقسمة']],
+  pre:[
+    ['Un nombre est divisible par 2 si son chiffre des unités est pair.',true,'0, 2, 4, 6 ou 8.'],
+    ['Un nombre est divisible par 5 si son chiffre des dizaines est 0 ou 5.',false,'C’est le chiffre des unités qui compte : 0 ou 5.'],
+    ['Si la somme des chiffres d’un nombre est divisible par 9, le nombre est divisible par 9.',true,'Par exemple 4 + 5 = 9, donc 45 est divisible par 9.']],
+  plan:['Je repère le critère à appliquer.','Je calcule ce que le critère demande.','Je conclus.'],
+  ex:[
+    E('2 745 est-il divisible par 5 ?',[
+      ['Étape 1 · critère de 5 : chiffre des unités 0 ou 5','Je repère le critère.'],
+      ['Étape 2 · le chiffre des unités de 2 745 est 5','Je regarde ce chiffre.'],
+      ['<b>Étape 3 · oui, 2 745 est divisible par 5</b>','Je conclus.']]),
+    E('4 725 est-il divisible par 3 ? par 9 ?',[
+      ['Étape 1 · critères de 3 et de 9 : somme des chiffres','Je repère le critère.'],
+      ['Étape 2 · 4 + 7 + 2 + 5 = 18','18 = 3 × 6 et 18 = 9 × 2.'],
+      ['<b>Étape 3 · oui pour 3, oui pour 9</b>','Je conclus.']]),
+    E('7 316 est-il divisible par 4 ?',[
+      ['Étape 1 · critère de 4 : les deux derniers chiffres','Je repère le critère.'],
+      ['Étape 2 · les deux derniers chiffres forment 16, et 16 = 4 × 4','16 est un multiple de 4.'],
+      ['<b>Étape 3 · oui, 7 316 est divisible par 4</b>','Je conclus.']]),
+    E('5 431 est-il divisible par 2 ?',[
+      ['Étape 1 · critère de 2 : chiffre des unités pair','Je repère le critère.'],
+      ['Étape 2 · le chiffre des unités de 5 431 est 1, impair','1 n’est pas dans la liste 0, 2, 4, 6, 8.'],
+      ['<b>Étape 3 · non, 5 431 n’est pas divisible par 2</b>','Je conclus.']])],
+  ret:['Par 2 : le chiffre des unités est 0, 2, 4, 6 ou 8. Par 5 : le chiffre des unités est 0 ou 5.','Par 3 : la somme des chiffres est divisible par 3. Par 9 : la somme des chiffres est divisible par 9.','Par 4 : le nombre formé par les deux derniers chiffres est divisible par 4.'],
+  ar:['القسمة على 2: رقم الوحدات زوجي. القسمة على 5: رقم الوحدات 0 أو 5. القسمة على 3 (أو 9): مجموع الأرقام يقبل القسمة على 3 (أو 9).','القسمة على 4: العدد المكون من آخر رقمين يقبل القسمة على 4.'],
+  arw:[['critère de divisibilité','معيار قابلية القسمة'],['chiffre des unités','رقم الوحدات'],['somme des chiffres','مجموع الأرقام'],['pair','زوجي'],['impair','فردي']]});
+
+D({id:'pi3-18',lv:3,period:1,dom:'Nombres',t:'Le PGCD de deux entiers',at:'القاسم المشترك الأكبر لعددين',
+  obj:'Déterminer le plus grand diviseur commun de deux entiers positifs.',keys:['npgcd'],
+  lex:[['PGCD','ق.م.أ'],['diviseur commun','قاسم مشترك'],['diviseur','قاسم'],['énumération','تعداد'],['plus grand','الأكبر']],
+  pre:[
+    ['1 est un diviseur commun de tous les entiers.',true,'1 divise tous les entiers.'],
+    ['Le PGCD de deux nombres est plus petit que chacun d’eux.',false,'Il peut être égal au plus petit : PGCD(3 ; 9) = 3.'],
+    ['Si 9 divise 63, alors PGCD(63 ; 9) = 9.',true,'Le plus petit nombre est le PGCD quand il divise l’autre.']],
+  plan:['J’écris tous les diviseurs du premier nombre.','J’écris tous les diviseurs du second nombre.','Je détermine les diviseurs communs.','Je conclus : le PGCD est le plus grand diviseur commun.'],
+  ex:[
+    E('Détermine PGCD(36 ; 24).',[
+      ['Étape 1 · diviseurs de 24 : 1 ; 2 ; 3 ; 4 ; 6 ; 8 ; 12 ; 24','Je les écris tous.'],
+      ['Étape 2 · diviseurs de 36 : 1 ; 2 ; 3 ; 4 ; 6 ; 9 ; 12 ; 18 ; 36','Je les écris tous.'],
+      ['Étape 3 · diviseurs communs : 1 ; 2 ; 3 ; 4 ; 6 ; 12','Ils sont dans les deux listes.'],
+      ['<b>Étape 4 · PGCD(36 ; 24) = 12</b>','Le plus grand diviseur commun.']]),
+    E('Détermine PGCD(18 ; 30).',[
+      ['Étape 1 · diviseurs de 18 : 1 ; 2 ; 3 ; 6 ; 9 ; 18','Je les écris tous.'],
+      ['Étape 2 · diviseurs de 30 : 1 ; 2 ; 3 ; 5 ; 6 ; 10 ; 15 ; 30','Je les écris tous.'],
+      ['Étape 3 · diviseurs communs : 1 ; 2 ; 3 ; 6','Ils sont dans les deux listes.'],
+      ['<b>Étape 4 · PGCD(18 ; 30) = 6</b>','Le plus grand diviseur commun.']]),
+    E('Détermine PGCD(63 ; 9).',[
+      ['Étape 1 · diviseurs de 9 : 1 ; 3 ; 9','Je les écris tous.'],
+      ['Étape 2 · diviseurs de 63 : 1 ; 3 ; 7 ; 9 ; 21 ; 63','Je les écris tous.'],
+      ['Étape 3 · diviseurs communs : 1 ; 3 ; 9','Ils sont dans les deux listes.'],
+      ['<b>Étape 4 · PGCD(63 ; 9) = 9</b>','Raccourci : 9 divise 63, donc le PGCD est 9.']])],
+  ret:['Le PGCD de deux entiers est le plus grand de leurs diviseurs communs.','Pour le trouver : j’écris les diviseurs de chaque nombre, je repère les diviseurs communs, je prends le plus grand.','Si le plus petit nombre divise le plus grand, c’est lui le PGCD.'],
+  ar:['القاسم المشترك الأكبر (PGCD) لعددين هو أكبر عدد يقسمهما معا. أكتب قواسم كل عدد، أحدد القواسم المشتركة، ثم آخذ أكبرها.','إذا كان العدد الأصغر يقسم العدد الأكبر فهو القاسم المشترك الأكبر. مثلا PGCD(63 ; 9) = 9.'],
+  arw:[['PGCD','القاسم المشترك الأكبر'],['diviseur commun','قاسم مشترك'],['diviseur','قاسم'],['plus grand','الأكبر'],['énumération','تعداد']]});
+
+D({id:'pi3-19',lv:3,period:1,dom:'Nombres',t:'Le PPCM de deux entiers',at:'المضاعف المشترك الأصغر لعددين',
+  obj:'Déterminer le plus petit multiple commun de deux entiers positifs.',keys:['nppcm'],
+  lex:[['PPCM','م.م.أ'],['multiple commun','مضاعف مشترك'],['multiple','مضاعف'],['non nul','غير منعدم'],['plus petit','الأصغر']],
+  pre:[
+    ['Le PPCM de deux nombres est le plus petit multiple commun non nul.',true,'On ne retient pas 0.'],
+    ['Le PPCM de 6 et de 8 est 12.',false,'12 n’est pas un multiple de 8. Le PPCM est 24.'],
+    ['Si 48 est un multiple de 6, alors PPCM(48 ; 6) = 48.',true,'Le plus grand nombre est déjà un multiple commun.']],
+  plan:['J’écris les premiers multiples de chaque nombre.','Je repère les multiples communs.','Je conclus : le PPCM est le plus petit multiple commun non nul.'],
+  ex:[
+    E('Détermine PPCM(7 ; 4).',[
+      ['Étape 1 · multiples de 7 : 7 ; 14 ; 21 ; 28 ; 35 et multiples de 4 : 4 ; 8 ; 12 ; 16 ; 20 ; 24 ; 28','J’écris les premiers multiples.'],
+      ['Étape 2 · multiple commun : 28','28 est dans les deux listes.'],
+      ['<b>Étape 3 · PPCM(7 ; 4) = 28</b>','Le plus petit multiple commun non nul.']]),
+    E('Détermine PPCM(8 ; 6).',[
+      ['Étape 1 · multiples de 8 : 8 ; 16 ; 24 ; 32 et multiples de 6 : 6 ; 12 ; 18 ; 24 ; 30','J’écris les premiers multiples.'],
+      ['Étape 2 · multiple commun : 24','24 est dans les deux listes.'],
+      ['<b>Étape 3 · PPCM(8 ; 6) = 24</b>','Le plus petit multiple commun non nul.']]),
+    E('Détermine PPCM(75 ; 60) avec le PGCD.',[
+      ['Étape 1 · PGCD(75 ; 60) = 15','On calcule d’abord le PGCD.'],
+      ['Étape 2 · 75 × 60 = 4 500','Le produit des deux nombres.'],
+      ['<b>Étape 3 · PPCM(75 ; 60) = 4 500 ÷ 15 = 300</b>','PPCM = produit ÷ PGCD.']])],
+  ret:['Le PPCM de deux entiers est le plus petit de leurs multiples communs non nuls.','Pour le trouver : j’écris les premiers multiples de chaque nombre, je repère les multiples communs, je prends le plus petit.','Si un nombre est multiple de l’autre, le PPCM est le plus grand. Sinon PPCM = produit des nombres ÷ PGCD.'],
+  ar:['المضاعف المشترك الأصغر (PPCM) لعددين هو أصغر مضاعف مشترك غير منعدم. أكتب أوائل مضاعفات كل عدد، أحدد المضاعفات المشتركة، ثم آخذ أصغرها.','إذا كان أحد العددين مضاعفا للآخر فالـ PPCM هو الأكبر. وإلا فإن PPCM يساوي الجداء مقسوما على PGCD.'],
+  arw:[['PPCM','المضاعف المشترك الأصغر'],['multiple commun','مضاعف مشترك'],['multiple','مضاعف'],['plus petit','الأصغر'],['produit','جداء']]});
+
 /* ===== PÉRIODE 2 ===== */
 var NL=SC.nl(-6,2,{every:1,x0:30,x1:370});
 D({id:'pi3-4',lv:3,period:2,dom:'Algèbre',t:'Équations et inéquations',at:'المعادلات والمتراجحات',
@@ -9259,7 +9442,7 @@ P.evalPage({id:'pe3-4',lv:3,period:4,keys:['vec','rep','droite','vec','rep','dro
 P.evalPage({id:'pe3-5',lv:3,period:5,keys:['vol','agr','fonc','droite','stat','effC','vol','fonc']});
 
 P.setLevel(3,['pr-2','pr-3','pr-4'],[
-  {title:'Racines, identités remarquables, ordre',seqs:['pi3-1','pi3-2','pi3-3']},
+  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-1','pi3-2','pi3-3']},
   {title:'Équations, systèmes et Pythagore',seqs:['pi3-4','pi3-5','pi3-6']},
   {title:'Thalès, angles inscrits et triangles semblables',seqs:['pi3-7','pi3-8','pi3-9']},
   {title:'Vecteurs, repère et droites',seqs:['pi3-10','pi3-11','pi3-12']},

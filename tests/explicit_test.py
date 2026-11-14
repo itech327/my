@@ -18,7 +18,7 @@ with sync_playwright() as p:
     pg.goto('file://' + os.path.join(ROOT, 'maths.html')); pg.wait_for_timeout(800)
     # générateurs : 400 tirages par clé et niveau
     bad = pg.evaluate("""function(){
-      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly','nneg','nabs','nval','ncmp','nadd1','nadd2','nadd3','nsub','nexp','ndec','npb','nmul','nmuls','ndiv','nmulc','nmd'],MM=window.MM;
+      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly','nneg','nabs','nval','ncmp','nadd1','nadd2','nadd3','nsub','nexp','ndec','npb','nmul','nmuls','ndiv','nmulc','nmd','ndvd','ncrit','npgcd','nppcm'],MM=window.MM;
       keys.forEach(function(k){[1,2,3].forEach(function(s){for(var i=0;i<400;i++){
         var it=MM.genItem(k,s),txt=JSON.stringify(it);
         if(/undefined|NaN|\\[object/.test(txt)){out.push(k+s+' texte '+it.q);break}
@@ -137,7 +137,20 @@ with sync_playwright() as p:
         if(it.o.length!==3||it.o[it.a]!==(v<0?'négatif':'positif')){bad.push('nmulc3 '+it.q);break}}
       return bad}()""")
     check(not wk4, 'semaine 4 (1AC) : produits, quotients, décimaux, fractions exacts (%s)' % (wk4[:2],))
-    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x'), ('pi1-16', 'Les nombres négatifs'), ('pi1-17', 'Droite graduée et abscisse'), ('pi1-18', 'La valeur absolue'), ('pi1-19', 'Comparer et ranger'), ('pi1-20', 'Additionner sur la droite numérique'), ('pi1-21', 'Additionner avec les valeurs absolues'), ('pi1-22', 'Commutativité et associativité'), ('pi1-23', 'La soustraction des nombres entiers'), ('pi1-24', 'Expressions numériques'), ('pi1-25', 'décimaux et des fractions'), ('pi1-26', 'Résoudre un problème'), ('pi1-27', 'Multiplier des entiers de signes différents'), ('pi1-28', 'Multiplier des entiers de même signe'), ('pi1-29', 'Diviser des nombres entiers'), ('pi1-30', 'Commutativité et associativité de la multiplication'), ('pi1-31', 'Multiplier et diviser des décimaux')):
+
+    wk31 = pg.evaluate("""function(){var MM=window.MM,bad=[],i,it,m;
+      function g(a,b){while(b){var t=b;b=a%b;a=t}return a}
+      for(i=0;i<300;i++){it=MM.genItem('ndvd',1);m=/de (\\d+) par (\\d+)/.exec(it.q);if(!m||+m[1]%+m[2]!==it.a){bad.push('ndvd1 '+it.q);break}}
+      for(i=0;i<300;i++){it=MM.genItem('ndvd',2);m=/diviseur de (\\d+)/.exec(it.q);if(it.o.length!==4||+m[1]%+it.o[it.a]!==0||it.o.filter(function(v){return +m[1]%+v===0}).length!==1){bad.push('ndvd2 '+it.q+it.o);break}}
+      for(i=0;i<300;i++){it=MM.genItem('ndvd',3);m=/de (\\d+) strictement inférieur à (\\d+)/.exec(it.q);if(!m||it.a%+m[1]!==0||it.a>=+m[2]||it.a+ +m[1]<+m[2]){bad.push('ndvd3 '+it.q+it.a);break}}
+      for(i=0;i<300;i++){it=MM.genItem('ncrit',1);m=/divisible par (\\d+)/.exec(it.q);var X=+m[1];if(it.o.length!==4||it.o.filter(function(v){return +v%X===0}).length!==1||+it.o[it.a]%X!==0){bad.push('ncrit1 '+it.q+it.o);break}}
+      for(i=0;i<300;i++){it=MM.genItem('ncrit',2);m=/nombre (\\d)\\?(\\d) soit/.exec(it.q);if(!m||it.a<1||it.a>8||(+m[1]+it.a+ +m[2])%9!==0){bad.push('ncrit2 '+it.q+it.a);break}}
+      for(i=0;i<300;i++){it=MM.genItem('ncrit',3);if(it.o.length!==4||it.o.filter(function(v){return +v%4===0}).length!==1||+it.o[it.a]%4!==0){bad.push('ncrit3 '+it.o);break}}
+      [1,2,3].forEach(function(s){for(var i=0;i<300;i++){var it=MM.genItem('npgcd',s),m=/PGCD de (\\d+) et (\\d+)/.exec(it.q);if(!m||g(+m[1],+m[2])!==it.a){bad.push('npgcd'+s+' '+it.q+it.a);break}}});
+      [1,2,3].forEach(function(s){for(var i=0;i<300;i++){var it=MM.genItem('nppcm',s),m=/PPCM de (\\d+) et (\\d+)/.exec(it.q);if(!m||+m[1]*+m[2]/g(+m[1],+m[2])!==it.a){bad.push('nppcm'+s+' '+it.q+it.a);break}}});
+      return bad}()""")
+    check(not wk31, '3AC semaine 1 : diviseurs, critères, PGCD, PPCM exacts (%s)' % (wk31[:2],))
+    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x'), ('pi1-16', 'Les nombres négatifs'), ('pi1-17', 'Droite graduée et abscisse'), ('pi1-18', 'La valeur absolue'), ('pi1-19', 'Comparer et ranger'), ('pi1-20', 'Additionner sur la droite numérique'), ('pi1-21', 'Additionner avec les valeurs absolues'), ('pi1-22', 'Commutativité et associativité'), ('pi1-23', 'La soustraction des nombres entiers'), ('pi1-24', 'Expressions numériques'), ('pi1-25', 'décimaux et des fractions'), ('pi1-26', 'Résoudre un problème'), ('pi1-27', 'Multiplier des entiers de signes différents'), ('pi1-28', 'Multiplier des entiers de même signe'), ('pi1-29', 'Diviser des nombres entiers'), ('pi1-30', 'Commutativité et associativité de la multiplication'), ('pi1-31', 'Multiplier et diviser des décimaux'), ('pi3-16', 'Diviseurs et multiples'), ('pi3-17', 'critères de divisibilité'), ('pi3-18', 'Le PGCD'), ('pi3-19', 'Le PPCM')):
         pg.evaluate("location.hash='#%s'" % cid); pg.wait_for_timeout(500)
         sec = pg.locator('#%s' % cid)
         check(sec.count() == 1 and title in sec.inner_text(), cid + ' : page affichée')
@@ -158,6 +171,10 @@ with sync_playwright() as p:
     pg.locator('#plevels button').nth(0).click(); pg.wait_for_timeout(400)
     hrefs1 = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
     check(all(('#pi1-%d' % n) in hrefs1 for n in range(16,32)), 'séquences listées dans le parcours pionnier 1AC')
+    pg.evaluate("location.hash='#home'"); pg.wait_for_timeout(300)
+    pg.locator('#plevels button').nth(2).click(); pg.wait_for_timeout(400)
+    hrefs3 = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
+    check(all(('#pi3-%d' % n) in hrefs3 for n in range(16,20)), 'séquences listées dans le parcours pionnier 3AC')
     check(not errs, 'aucune erreur JS %s' % errs[:1])
     b.close()
 print('FAILS: %d' % len(fails))
