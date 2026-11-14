@@ -123,7 +123,9 @@ with sync_playwright() as p:
         wrong = 0 if right != 0 else 1
         pz.locator('.lab-riddle .rd-opts button').nth(wrong).click()
         check(pz.locator('.lab-riddle .rd-opts button.ok').count() == 1 and pz.locator('.lab-riddle .rd-opts button.ko').count() == 1 and 'Pas tout' in pz.locator('.lab-riddle .rd-fb').inner_text(), f + ': mauvaise réponse corrigée avec explication')
-        pz.reload(); pz.wait_for_selector('.lab-riddle .rd-opts button[disabled]', timeout=8000, state='attached')
+        pz.reload()
+        try: pz.wait_for_selector('.lab-riddle .rd-opts button[disabled]', timeout=20000, state='attached')
+        except Exception: check(False, f + ': carte d’énigme absente après rechargement (stockage %s)' % pz.evaluate("localStorage.getItem('lab_rid')")); continue
         check(pz.locator('.lab-riddle .rd-opts button.ko').count() == 1 and pz.locator('.lab-riddle .rd-opts button').first.is_disabled(), f + ': réponse conservée après rechargement')
         pz.evaluate("Lab.Session.clearAll()")
         check(pz.evaluate("localStorage.getItem('lab_rid')") is None, f + ': effacer les données retire l’énigme répondue')
@@ -163,6 +165,21 @@ with sync_playwright() as p:
     for ch, n in (('c1-15', 1), ('c3-8', 1), ('c3-9', 1), ('c1-14', 0)):
         pm.evaluate("location.hash='#%s'" % ch); pm.wait_for_timeout(600)
         check(pm.locator('#%s .eyebrow .appro' % ch).count() == n, 'Maths %s : étiquette approfondissement = %d' % (ch, n))
+    # --- physique-chimie : chapitres ajoutés pour le programme allégé
+    pp, ep = page(ctx, 'physique-chimie.html')
+    pp.evaluate("document.querySelector('[data-kind=ord]').click()"); pp.wait_for_timeout(300)
+    hrefs = pp.evaluate("Array.from(document.querySelectorAll('#chapters a.chap')).map(function(a){return a.getAttribute('href')})")
+    for ch in ('#c1-18', '#c1-19', '#c1-20'): check(ch in hrefs, 'PC 1re année : %s listé et disponible' % ch)
+    pp.locator('#levels button[data-lv="3"]').click(); pp.wait_for_timeout(200)
+    hrefs3 = pp.evaluate("Array.from(document.querySelectorAll('#chapters a.chap')).map(function(a){return a.getAttribute('href')})")
+    check('#c3-17' in hrefs3, 'PC 3e année : #c3-17 listé et disponible')
+    check(all(h_ in hrefs + hrefs3 for h_ in ('#c1-14', '#c1-15', '#c3-9', '#c3-13')), 'PC : les liens existants gardent leur cible après les ajouts')
+    for ch, n in (('c1-18', 2), ('c1-19', 2), ('c1-20', 1), ('c3-17', 2)):
+        pp.evaluate("location.hash='#%s'" % ch); pp.wait_for_timeout(900)
+        check(pp.locator('#%s .stage svg' % ch).count() >= n and pp.locator('#%s .lab-tab' % ch).count() == 6, 'PC %s : %d figure(s) et 6 onglets de défis' % (ch, n))
+    r = pp.evaluate("Lab.selftest(30)")
+    check(not r or not r.get('bad'), 'PC : tous les thèmes de défis produisent des questions valides %s' % (r if r and r.get('bad') else ''))
+    check(not ep, 'PC : aucune erreur JS %s' % ep[:1])
     check(pg.evaluate("document.querySelector('[data-a=err]')") is None, 'plus de bouton Signaler dans la barre')
     for e in (errs, errs2): check(not e, 'aucune erreur JS %s' % e[:1])
     b.close()

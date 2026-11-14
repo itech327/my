@@ -2190,6 +2190,84 @@ quiz:[
  {q:'1 kWh est égal à :',o:['1000 J','3 600 000 J','60 J'],a:1,e:'1 kWh = 1000 W × 3600 s = 3 600 000 J.'},
  {q:'Une lampe de 100 W fonctionne 10 s. L’énergie consommée est :',o:['10 J','100 J','1000 J'],a:2,e:'E = 100 × 10 = 1000 J.'}
 ]});
+
+/* ============ 3AC · Trajectoire et types de mouvement ============ */
+PC.chapter({id:'c3-17',eyebrow:EY+'Mécanique',title:'Trajectoire et types de mouvement',ar:'المسار وأنواع الحركة',
+lessons:[
+{short:'Trajectoire',title:'Trajectoire, translation et rotation',
+ intro:'Choisis un mobile. Suis la trace de sa trajectoire dans le référentiel du sol.',
+ build:function(el){
+  var kind='rect',x=0,trail=[];
+  btnRow(el,[['rect','Voiture sur la route'],['circ','Cheval de manège'],['para','Balle lancée']],function(k){kind=k;trail=[];x=0;upd()},0);
+  var svg=ui.stage(el,400,230,'Trajectoire d’un mobile');
+  var path=S('path',{d:'',style:'fill:none;stroke:var(--teal);stroke-width:2.2;stroke-dasharray:4 5;opacity:.8'},svg);
+  var dot=S('circle',{r:9,style:'fill:var(--pink)'},svg);
+  var chips=ui.chips(el),vd=ui.verdict(el);
+  function pos(u){
+    if(kind==='rect')return [30+u*340,150];
+    if(kind==='circ')return [200+Math.cos(u*6.2832-1.57)*75,115+Math.sin(u*6.2832-1.57)*75];
+    return [30+u*340,190-4*u*(1-u)*130];
+  }
+  function upd(){
+    var d={rect:['rectiligne','translation rectiligne'],circ:['circulaire','rotation autour de l’axe'],para:['curviligne','translation curviligne']}[kind];
+    chips.set(ui.chip('trajectoire '+d[0],T)+ui.chip(d[1],P,true));
+    vd.set(kind==='circ'?'Le point décrit un cercle autour d’un axe : c’est une rotation.':(kind==='rect'?'Le point décrit une droite : trajectoire rectiligne.':'Le point décrit une courbe : trajectoire curviligne.'),'ok');
+  }
+  upd();
+  PC.anim(svg,function(dt){
+    x=(x+dt*.3)%1;
+    var p=pos(x);
+    if(x<dt*.3)trail=[];
+    trail.push(p);if(trail.length>90)trail.shift();
+    dot.setAttribute('cx',p[0]);dot.setAttribute('cy',p[1]);
+    path.setAttribute('d',trail.length>1?'M'+trail.map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1)}).join('L'):'');
+  });
+ },
+ retenir:['La <b>trajectoire</b> est la ligne décrite par un point du corps dans un référentiel : <b>rectiligne</b>, <b>circulaire</b> ou <b>curviligne</b>.','Le <b>type</b> du mouvement est la <b>translation</b> ou la <b>rotation</b>.','La trajectoire dépend du <b>référentiel</b> choisi.'],
+ ar:{e:['<b>المسار</b> هو الخط الذي ترسمه نقطة من الجسم بالنسبة إلى مرجع: <b>مستقيمي</b> أو <b>دائري</b> أو <b>منحني</b>.','نميز بين نوع الحركة: <b>حركة إزاحة</b> أو <b>حركة دوران</b>.','يتعلق المسار بالمرجع المختار.'],
+  u:'اختر المتحرك وراقب الأثر الذي يتركه في المرجع الأرضي.',
+  w:[['trajectoire','المسار'],['translation','إزاحة'],['rotation','دوران'],['référentiel','المرجع']]}},
+{short:'Nature du mouvement',title:'Uniforme, accéléré ou retardé ?',
+ intro:'Voici des positions relevées à intervalles de temps égaux. Compare les distances entre deux positions.',
+ build:function(el){
+  var k='u',x=0;
+  btnRow(el,[['u','Mouvement 1'],['a','Mouvement 2'],['r','Mouvement 3']],function(v){k=v;x=0;upd()},0);
+  var svg=ui.stage(el,400,200,'Chronophotographie');
+  S('path',{d:'M20 130H380','class':'thin',style:'stroke:#fff;opacity:.4'},svg);
+  var dots=[],gaps=[];
+  for(var i=0;i<=8;i++){dots.push(S('circle',{cy:100,r:6,style:'fill:var(--pink)'},svg));}
+  for(var j=0;j<8;j++)gaps.push(S('text',{y:150,'class':'small',style:'text-anchor:middle;fill:var(--teal)'},svg));
+  var chips=ui.chips(el),vd=ui.verdict(el);
+  function xs(i){
+    if(k==='u')return 60+35*i;
+    if(k==='a')return 60+14*i+3*i*(i-1);
+    return 60+56*i-3*i*(i-1);
+  }
+  function upd(){
+    var prev=null,gp=[];
+    for(var i=0;i<=8;i++){
+      var xx=xs(i);dots[i].setAttribute('cx',xx);
+      if(i>0){var g=xx-prev;gaps[i-1].setAttribute('x',(xx+prev)/2);gaps[i-1].textContent=fmt(g,0);gp.push(g)}
+      prev=xx;
+    }
+    var nat=k==='u'?'uniforme':(k==='a'?'accéléré':'retardé');
+    chips.set(ui.chip('mouvement '+nat,k==='u'?T:(k==='a'?C:V)));
+    vd.set(k==='u'?'Les distances sont égales : le mouvement est uniforme.':(k==='a'?'Les distances augmentent : le mouvement est accéléré.':'Les distances diminuent : le mouvement est retardé.'),'ok');
+  }
+  upd();
+ },
+ retenir:['On classe la <b>nature</b> du mouvement avec une chronophotographie : positions relevées à <b>intervalles de temps égaux</b>.','Distances <b>égales</b> : mouvement <b>uniforme</b>. Distances qui <b>augmentent</b> : <b>accéléré</b>. Distances qui <b>diminuent</b> : <b>retardé</b>.','Il ne faut pas confondre le <b>type</b> (translation, rotation) et la <b>nature</b> (uniforme, accéléré, retardé).'],
+ ar:{e:['نصنّف <b>طبيعة</b> الحركة بواسطة التصوير المتتالي: مواضع مسجلة في <b>فترات زمنية متساوية</b>.','المسافات <b>متساوية</b>: حركة <b>منتظمة</b>. المسافات <b>تزداد</b>: حركة <b>متسارعة</b>. المسافات <b>تنقص</b>: حركة <b>متباطئة</b>.','لا نخلط بين <b>نوع</b> الحركة (إزاحة أو دوران) و<b>طبيعتها</b> (منتظمة أو متسارعة أو متباطئة).'],
+  u:'اختر حركة وقارن الأعداد المكتوبة بين كل موضعين متتاليين.',
+  w:[['mouvement uniforme','حركة منتظمة'],['mouvement accéléré','حركة متسارعة'],['mouvement retardé','حركة متباطئة'],['chronophotographie','التصوير المتتالي']]}}
+],
+quiz:[
+ {q:'La trajectoire d’un point est :',o:['la ligne qu’il décrit dans un référentiel','sa vitesse moyenne','sa masse'],a:0,e:'C’est la ligne décrite par ce point.'},
+ {q:'Le mouvement d’un cheval de manège est une :',o:['rotation','translation rectiligne','chute libre'],a:0,e:'Il tourne autour d’un axe.'},
+ {q:'Des positions successives à intervalles de temps égaux sont de plus en plus espacées. Le mouvement est :',o:['uniforme','accéléré','retardé'],a:1,e:'Les distances augmentent.'},
+ {q:'Des distances égales entre positions à intervalles égaux indiquent un mouvement :',o:['uniforme','accéléré','retardé'],a:0,e:'La vitesse est constante.'},
+ {q:'Quelle paire décrit le type puis la nature d’un mouvement ?',o:['translation, uniforme','uniforme, rotation','accéléré, curviligne'],a:0,e:'Le type est translation ou rotation ; la nature est uniforme, accéléré ou retardé.'}
+]});
 })();
 
 </script>
@@ -2840,6 +2918,194 @@ quiz:[
  {q:'Le fusible sert à :',o:['augmenter la lumière','couper le circuit en cas de surintensité','mesurer l’intensité'],a:1,e:'Il fond et ouvre le circuit.'},
  {q:'Je dois :',o:['toucher une prise avec les mains mouillées','débrancher avant de réparer','brancher dix appareils sur une prise'],a:1,e:'Toujours couper le courant avant d’intervenir.'},
  {q:'Un disjoncteur :',o:['se remet en marche après avoir été réarmé','fond à chaque fois','n’existe pas à la maison'],a:0,e:'Contrairement au fusible, on le réarme.'}
+]});
+
+/* ============ 1AC · Température et chaleur ============ */
+PC.chapter({id:'c1-18',lazy:true,eyebrow:EY+'Matière et environnement',title:'Température et chaleur',ar:'درجة الحرارة والحرارة',
+lessons:[
+{short:'Le thermomètre',title:'Mesurer une température',
+ intro:'Règle la température du bain. Observe le niveau de l’alcool coloré dans le tube, puis choisis un repère.',
+ build:function(el){
+  var tv=37;
+  var svg=ui.stage(el,400,260,'Thermomètre à alcool');
+  var x0=190,top=24,bot=200,tmin=-10,tmax=110;
+  function yOf(t){return bot-(t-tmin)/(tmax-tmin)*(bot-top)}
+  S('rect',{x:x0-8,y:top-6,width:16,height:bot-top+18,rx:8,style:'fill:none;stroke:#fff;stroke-width:2.4'},svg);
+  S('circle',{cx:x0,cy:bot+20,r:20,style:'fill:none;stroke:#fff;stroke-width:2.4'},svg);
+  var col=S('rect',{x:x0-4,width:8,style:'fill:var(--coral)'},svg);
+  var bulb=S('circle',{cx:x0,cy:bot+20,r:16,style:'fill:var(--coral)'},svg);
+  for(var t=tmin;t<=tmax;t+=10){
+    var y=yOf(t);
+    S('path',{d:'M'+(x0+12)+' '+y+'L'+(x0+22)+' '+y,'class':'thin',style:'stroke:#fff'},svg);
+    U.t(svg,x0+28,y+4,t+'','small');
+  }
+  U.t(svg,x0+70,yOf(0)+4,'← fusion de la glace','small','text-anchor:start;fill:var(--teal)');
+  U.t(svg,x0+70,yOf(100)+4,'← ébullition de l’eau','small','text-anchor:start;fill:var(--teal)');
+  var rd=S('text',{x:60,y:120,'class':'vl',style:'font-style:normal;font-size:30px;fill:var(--coral)'},svg);
+  var sl,chips=ui.chips(el),inf=ui.info(el);
+  sl=ui.slider(el,{label:'Température',min:-10,max:110,step:1,value:37,color:C,fmt:function(v){return v+' °C'}},function(v){tv=v;upd()});
+  U.row(el,[['0','Glace fondante'],['37','Corps humain'],['100','Eau qui bout']],function(k){tv=+k;sl.set(tv);upd()},-1);
+  function upd(){
+    var y=yOf(tv);
+    col.setAttribute('y',y);col.setAttribute('height',bot+20-y);
+    rd.textContent=tv+' °C';
+    chips.set(ui.chip('θ = '+tv+' °C',C)+ui.chip(tv<=0?'glace possible':(tv>=100?'eau qui bout':'eau liquide'),T,true));
+    inf.set('<p>L’alcool coloré <b>se dilate</b> quand il est chauffé : il monte dans le tube. On lit la graduation en degrés Celsius (°C).</p>');
+  }
+  upd();
+ },
+ retenir:['La <b>température</b> se mesure avec un <b>thermomètre</b>, en degrés Celsius (<b>°C</b>).','Dans un thermomètre à alcool, le liquide <b>se dilate</b> et monte quand la température augmente.','Repères : <b>0 °C</b> pour la fusion de la glace, <b>100 °C</b> pour l’ébullition de l’eau (pression normale), environ <b>37 °C</b> pour le corps humain.'],
+ ar:{e:['<b>درجة الحرارة</b> تقاس بالمحرار (الترمومتر) وحدتها <b>الدرجة السلسيوسية °C</b>.','في المحرار الكحولي يتمدد السائل الملوّن عند التسخين فيرتفع في الأنبوب، ونقرأ التدريج المقابل لمستواه.','مرجعان للتدريج: <b>0 °C</b> انصهار الجليد، و<b>100 °C</b> غليان الماء تحت الضغط العادي. وحرارة جسم الإنسان حوالي <b>37 °C</b>.'],
+  u:'حرّك المنزلق لتغيير الحرارة وراقب ارتفاع السائل في الأنبوب، أو اختر أحد المراجع الثلاثة.',
+  w:[['thermomètre','محرار'],['température','درجة الحرارة'],['degré Celsius','درجة سلسيوس'],['fusion','انصهار'],['ébullition','غليان']]}},
+{short:'Chaleur ou température ?',title:'Chaleur et température ne sont pas la même chose',
+ intro:'Deux béchers reçoivent la même chaleur du même brûleur. Fais avancer la durée de chauffage et compare.',
+ build:function(el){
+  var mn=0;
+  var svg=ui.stage(el,400,250,'Deux béchers chauffés');
+  function bech(cx,w,lev,name){
+    S('path',{d:'M'+(cx-w/2)+' 60V200Q'+(cx-w/2)+' 210 '+(cx-w/2+10)+' 210H'+(cx+w/2-10)+'Q'+(cx+w/2)+' 210 '+(cx+w/2)+' 200V60','class':'wire',style:'stroke:#fff;fill:none'},svg);
+    var wt=S('rect',{x:cx-w/2+2,width:w-4,style:'fill:var(--teal);fill-opacity:.55'},svg);
+    wt.setAttribute('y',210-lev);wt.setAttribute('height',lev-2);
+    U.t(svg,cx,246,name,'small','text-anchor:middle');
+    var fl=S('path',{d:'M'+(cx-14)+' 232q14 -34 28 0z',style:'fill:var(--lamp);opacity:.0'},svg);
+    return {wt:wt,fl:fl,cx:cx};
+  }
+  var a=bech(110,110,70,'100 mL'),b=bech(290,110,140,'300 mL');
+  var ta=S('text',{x:110,y:40,'class':'vl',style:'font-style:normal;font-size:24px;text-anchor:middle'},svg);
+  var tb=S('text',{x:290,y:40,'class':'vl',style:'font-style:normal;font-size:24px;text-anchor:middle'},svg);
+  var chips=ui.chips(el),inf=ui.info(el);
+  ui.slider(el,{label:'Durée de chauffage',min:0,max:10,step:1,value:0,color:P,fmt:function(v){return v+' min'}},function(v){mn=v;upd()});
+  function th(v,rate){return Math.min(100,20+rate*v)}
+  function upd(){
+    var t1=th(mn,8),t2=th(mn,8/3);
+    ta.textContent=fmt(t1,0)+' °C';tb.textContent=fmt(t2,0)+' °C';
+    ta.style.fill=t1>=60?'var(--coral)':'var(--teal)';tb.style.fill=t2>=60?'var(--coral)':'var(--teal)';
+    [a,b].forEach(function(x){x.fl.style.opacity=mn>0?.9:0});
+    chips.set(ui.chip('même chaleur reçue',P,true)+ui.chip('100 mL : '+fmt(t1,0)+' °C',C)+ui.chip('300 mL : '+fmt(t2,0)+' °C',T));
+    inf.set('<p>'+(mn===0?'Au départ, les deux liquides sont à <b>20 °C</b>.':'Le brûleur donne <b>la même chaleur</b> aux deux béchers, mais la température de la petite quantité d’eau monte <b>plus vite</b>.')+'</p><p class="small">Valeurs d’un modèle simple, sans pertes.</p>');
+  }
+  upd();
+ },
+ retenir:['La <b>chaleur</b> est une énergie qui passe d’un corps chaud vers un corps plus froid. La <b>température</b> se lit au thermomètre.','Avec la même chaleur reçue, une <b>petite quantité</b> d’eau s’échauffe <b>plus</b> qu’une grande quantité.','Pendant un changement d’état d’un corps pur, la température reste <b>constante</b> (palier).'],
+ ar:{e:['<b>الحرارة</b> شكل من أشكال الطاقة تنتقل من الجسم الساخن إلى الجسم الأبرد. أما <b>درجة الحرارة</b> فنقيسها بالمحرار.','عندما نعطي الكمية نفسها من الحرارة، ترتفع درجة حرارة كمية صغيرة من الماء أكثر من كمية كبيرة.','خلال تحول حالة جسم خالص، تبقى درجة الحرارة <b>ثابتة</b> (هضبة).'],
+  u:'حرّك منزلق مدة التسخين وقارن ارتفاع درجة الحرارة في الكأسين، علما أن الحرارة المقدَّمة متساوية.',
+  w:[['chaleur','حرارة'],['température','درجة الحرارة'],['palier','هضبة'],['énergie','طاقة']]}}
+],
+quiz:[
+ {q:'Quel appareil mesure la température ?',o:['le thermomètre','le dynamomètre','l’ampèremètre'],a:0,e:'Le thermomètre donne la température en °C.'},
+ {q:'À quelle température la glace fond-elle (pression normale) ?',o:['0 °C','37 °C','100 °C'],a:0,e:'La fusion de la glace a lieu à 0 °C.'},
+ {q:'Dans un thermomètre à alcool, quand la température monte, l’alcool :',o:['se dilate et monte','se contracte','disparaît'],a:0,e:'Le liquide se dilate : le niveau monte dans le tube.'},
+ {q:'On donne la même chaleur à 100 mL et à 300 mL d’eau. Laquelle devient la plus chaude ?',o:['les 100 mL','les 300 mL','elles sont à la même température'],a:0,e:'Une petite quantité d’eau s’échauffe davantage.'},
+ {q:'Pendant la fusion de la glace, la température du mélange eau et glace :',o:['augmente','reste constante','diminue'],a:1,e:'C’est un palier de température.'}
+]});
+
+/* ============ 1AC · Conservation de la masse ============ */
+PC.chapter({id:'c1-19',lazy:true,eyebrow:EY+'Matière et environnement',title:'Conservation de la masse et du volume',ar:'انحفاظ الكتلة والحجم',
+lessons:[
+{short:'Glace et eau',title:'Quand la glace fond',
+ intro:'Fais fondre un bloc de glace de 90 g. Lis la balance et le volume.',
+ build:function(el){
+  var f=0;
+  var svg=ui.stage(el,400,240,'Fonte d’un bloc de glace');
+  S('path',{d:'M140 50V190Q140 200 150 200H250Q260 200 260 190V50','class':'wire',style:'stroke:#fff;fill:none'},svg);
+  var ice=S('rect',{x:146,width:108,style:'fill:#fff;fill-opacity:.7'},svg);
+  var wat=S('rect',{x:146,width:108,style:'fill:var(--teal);fill-opacity:.6'},svg);
+  S('rect',{x:300,y:70,width:80,height:42,rx:8,style:'fill:none;stroke:#fff;stroke-width:2.4'},svg);
+  var ms=S('text',{x:340,y:98,'class':'vl',style:'font-style:normal;font-size:22px;text-anchor:middle;fill:var(--pink)'},svg);
+  U.t(svg,340,60,'balance','small','text-anchor:middle');
+  var vs=S('text',{x:60,y:110,'class':'vl',style:'font-style:normal;font-size:20px;text-anchor:middle;fill:var(--teal)'},svg);
+  U.t(svg,60,86,'volume','small','text-anchor:middle');
+  var chips=ui.chips(el),inf=ui.info(el);
+  ui.slider(el,{label:'Fonte',min:0,max:100,step:5,value:0,color:T,fmt:function(v){return v+' %'}},function(v){f=v;upd()});
+  function upd(){
+    var vol=98-.08*f,vi=98*(1-f/100),vw=90*(f/100);
+    var hh=function(v){return v*1.15};
+    var yw=198-hh(vw);ice.setAttribute('y',yw-hh(vi));ice.setAttribute('height',hh(vi));wat.setAttribute('y',yw);wat.setAttribute('height',hh(vw));
+    ms.textContent='90 g';vs.textContent=fmt(vol,0)+' cm³';
+    chips.set(ui.chip('masse = 90 g',P)+ui.chip('volume ≈ '+fmt(vol,0)+' cm³',T));
+    inf.set('<p>La <b>masse reste 90 g</b> pendant toute la fonte. Le <b>volume diminue</b> : l’eau liquide occupe moins de place que la glace.</p>');
+  }
+  upd();
+ },
+ retenir:['Lors d’un changement d’état, la <b>masse se conserve</b>.','Le <b>volume ne se conserve pas</b> : l’eau qui gèle augmente d’environ 9 % de volume.','Une bouteille pleine d’eau peut éclater au congélateur.'],
+ ar:{e:['عند تغيّر حالة الماء <b>تنحفظ الكتلة</b>: كتلة الجليد تساوي كتلة الماء الناتج عن انصهاره.','أما <b>الحجم فلا ينحفظ</b>: يزداد حجم الماء بحوالي 9% عند تجمّده، ولذلك قد تنفجر قنينة مملوءة بالماء في المجمّد.'],
+  u:'حرّك منزلق «Fonte» وراقب الميزان ثابتا عند 90 g بينما يتغير الحجم.',
+  w:[['masse','كتلة'],['volume','حجم'],['conservation','انحفاظ'],['balance','ميزان']]}},
+{short:'Dissolution du sel',title:'Dissoudre du sel dans l’eau',
+ intro:'Ajoute du sel dans 100 g d’eau. Le sel disparaît à la vue : que dit la balance ?',
+ build:function(el){
+  var s=10;
+  var svg=ui.stage(el,400,230,'Dissolution du sel');
+  S('path',{d:'M130 50V180Q130 190 140 190H230Q240 190 240 180V50','class':'wire',style:'stroke:#fff;fill:none'},svg);
+  S('rect',{x:136,y:100,width:98,height:86,style:'fill:var(--teal);fill-opacity:.5'},svg);
+  var grains=S('g',null,svg);
+  for(var i=0;i<12;i++)S('rect',{x:140+(i%6)*15,y:170+Math.floor(i/6)*6,width:6,height:6,style:'fill:#fff'},grains);
+  S('rect',{x:290,y:70,width:90,height:42,rx:8,style:'fill:none;stroke:#fff;stroke-width:2.4'},svg);
+  var ms=S('text',{x:335,y:98,'class':'vl',style:'font-style:normal;font-size:20px;text-anchor:middle;fill:var(--pink)'},svg);
+  U.t(svg,335,60,'balance','small','text-anchor:middle');
+  var chips=ui.chips(el),inf=ui.info(el),dis=false;
+  ui.slider(el,{label:'Masse de sel',min:0,max:30,step:2,value:10,color:P,fmt:function(v){return v+' g'}},function(v){s=v;upd()});
+  var ctl=ui.controls(el);
+  ui.btn(ctl,'Mélanger',function(){dis=!dis;upd()});
+  function upd(){
+    grains.style.opacity=dis?0:1;
+    ms.textContent=(100+s)+' g';
+    chips.set(ui.chip('eau : 100 g',T)+ui.chip('sel : '+s+' g',P)+ui.chip('solution : '+(100+s)+' g',C));
+    inf.set('<p>'+(dis?'Le sel est <b>dissous</b> : on ne le voit plus, mais la balance indique toujours <b>'+(100+s)+' g</b>.':'Les grains de sel sont encore visibles au fond. La balance indique <b>'+(100+s)+' g</b>.')+' Masse de la solution = masse de l’eau + masse du sel.</p>');
+  }
+  upd();
+ },
+ retenir:['Lors d’une dissolution, la masse se conserve : <b>m(solution) = m(eau) + m(sel)</b>.','Le sel dissous n’est plus visible mais il est toujours présent.'],
+ ar:{e:['عند إذابة الملح في الماء <b>تنحفظ الكتلة</b>: كتلة المحلول = كتلة الماء + كتلة الملح.','الملح الذائب لا يُرى لكنه ما زال موجودا في المحلول.'],
+  u:'اختر كتلة الملح ثم اضغط «Mélanger» وراقب أن الميزان لا ينقص.',
+  w:[['dissolution','انحلال (إذابة)'],['solution','محلول'],['sel','ملح'],['masse','كتلة']]}}
+],
+quiz:[
+ {q:'Un bloc de glace de 200 g fond. La masse de l’eau obtenue est :',o:['200 g','180 g','220 g'],a:0,e:'La masse se conserve.'},
+ {q:'Quand la glace fond, son volume :',o:['diminue','augmente','ne change jamais'],a:0,e:'L’eau liquide occupe moins de volume que la glace.'},
+ {q:'On dissout 20 g de sel dans 100 g d’eau. La masse de la solution est :',o:['80 g','100 g','120 g'],a:2,e:'100 + 20 = 120 g.'},
+ {q:'Pourquoi une bouteille pleine d’eau peut-elle éclater au congélateur ?',o:['l’eau qui gèle augmente de volume','l’eau perd de la masse','l’eau devient gaz'],a:0,e:'La glace occupe plus de volume que l’eau liquide.'},
+ {q:'Lors d’un changement d’état, quelle grandeur se conserve toujours ?',o:['la masse','le volume','la température'],a:0,e:'La masse se conserve, pas le volume.'}
+]});
+
+/* ============ 1AC · Influence de la résistance sur l'intensité ============ */
+PC.chapter({id:'c1-20',lazy:true,eyebrow:EY+'Électricité',title:'Influence de la résistance sur l’intensité',ar:'تأثير المقاومة على شدة التيار',
+lessons:[
+{short:'R et I',title:'Changer la résistance dans un circuit',
+ intro:'La pile garde 6 V. Choisis un conducteur ohmique et lis l’intensité sur l’ampèremètre.',
+ build:function(el){
+  var r=30;
+  var svg=ui.stage(el,400,230,'Circuit avec un conducteur ohmique');
+  S('path',{d:'M60 170V60H340V170H60','class':'wire',style:'stroke:#fff;fill:none'},svg);
+  S('rect',{x:48,y:100,width:24,height:40,style:'fill:var(--surface);stroke:none'},svg);
+  S('path',{d:'M52 110H68M58 124H62','class':'thin',style:'stroke:#fff;stroke-width:3'},svg);
+  U.t(svg,36,122,'6 V','small','text-anchor:end');
+  S('rect',{x:160,y:48,width:80,height:24,rx:4,style:'fill:var(--surface);stroke:var(--pink);stroke-width:2.4'},svg);
+  var rt=S('text',{x:200,y:36,'class':'small',style:'text-anchor:middle;fill:var(--pink)'},svg);
+  S('circle',{cx:340,cy:115,r:22,style:'fill:var(--surface);stroke:var(--teal);stroke-width:2.4'},svg);
+  U.t(svg,340,121,'A','small','text-anchor:middle;fill:var(--teal);font-size:18px');
+  var rd=S('text',{x:340,y:206,'class':'vl',style:'font-style:normal;font-size:20px;text-anchor:middle;fill:var(--teal)'},svg);
+  var chips=ui.chips(el),inf=ui.info(el);
+  ui.slider(el,{label:'Résistance R',min:10,max:100,step:10,value:30,color:P,fmt:function(v){return v+' Ω'}},function(v){r=v;upd()});
+  function upd(){
+    var i=6000/r;
+    rt.textContent='R = '+r+' Ω';rd.textContent=fmt(i,0)+' mA';
+    chips.set(ui.chip('R = '+r+' Ω',P)+ui.chip('I = '+fmt(i,0)+' mA',T));
+    inf.set('<p>Quand la résistance <b>augmente</b>, l’intensité du courant <b>diminue</b>. Avec 20 Ω, puis 40 Ω : l’intensité est divisée par 2.</p>');
+  }
+  upd();
+ },
+ retenir:['La <b>résistance</b> d’un conducteur ohmique se mesure en <b>ohms (Ω)</b> avec un <b>ohmmètre</b>, hors du circuit alimenté.','Dans un circuit avec la même pile, plus la résistance est <b>grande</b>, plus l’intensité du courant est <b>petite</b>.','Si on double la résistance (à tension constante), l’intensité est divisée par 2.'],
+ ar:{e:['<b>مقاومة</b> موصل أومي تقاس بـ<b>الأوم (Ω)</b> بواسطة جهاز الأومتر، وهي خارج الدارة المغذّاة.','في دارة تحتوي على العمود نفسه، كلما كانت المقاومة <b>أكبر</b> كانت شدة التيار <b>أصغر</b>.','إذا ضاعفنا المقاومة (والتوتر ثابت) تُقسم شدة التيار على 2.'],
+  u:'غيّر قيمة المقاومة بالمنزلق وراقب قراءة الأمبيرمتر.',
+  w:[['résistance','مقاومة'],['intensité','شدة التيار'],['ohm','أوم'],['conducteur ohmique','موصل أومي'],['ohmmètre','أومتر']]}}
+],
+quiz:[
+ {q:'L’unité de la résistance électrique est :',o:['l’ohm (Ω)','l’ampère (A)','le volt (V)'],a:0,e:'Le symbole de l’ohm est Ω.'},
+ {q:'L’appareil qui mesure une résistance est :',o:['l’ohmmètre','l’ampèremètre','le thermomètre'],a:0,e:'On le branche hors du circuit alimenté.'},
+ {q:'Avec la même pile, quand la résistance augmente, l’intensité :',o:['augmente','diminue','ne change pas'],a:1,e:'R grande, I petite.'},
+ {q:'On remplace un conducteur de 20 Ω par un conducteur de 40 Ω (même pile). L’intensité :',o:['double','est divisée par 2','reste la même'],a:1,e:'La résistance double, l’intensité est divisée par 2.'}
 ]});
 })();
 
@@ -3834,7 +4100,7 @@ quiz:[
 var PC=window.PC,$=PC.$,$$=PC.$$,h=PC.h;
 
 var A='Matière et environnement',E='Électricité',LU='Lumière',MA='Les matériaux',ME='Mécanique';
-function mk(list,lv){return list.map(function(x,i){return {t:(i+1)+'. '+x[0],d:x[1],ar:x[2],n:i+1,href:x[3]||('#c'+lv+'-'+(i+1))}})}
+function mk(list,lv){var k=0;return list.map(function(x,i){if(!x[4])k++;return {t:(i+1)+'. '+x[0],d:x[1],ar:x[2],n:i+1,href:x[3]||('#c'+lv+'-'+k)}})}
 PC.curr={
 1:mk([
  ['L’eau',A,'الماء'],
@@ -3843,6 +4109,8 @@ PC.curr={
  ['Pression et pression atmosphérique',A,'الضغط والضغط الجوي'],
  ['Le modèle particulaire de la matière',A,'النموذج الدقائقي للمادة','#c1-2-l1'],
  ['Transformations physiques de la matière',A,'التحولات الفيزيائية للمادة','#c1-2-l2'],
+ ['Température et chaleur',A,'درجة الحرارة والحرارة','#c1-18',1],
+ ['Conservation de la masse et du volume',A,'انحفاظ الكتلة والحجم','#c1-19',1],
  ['Les mélanges',A,'الخلائط'],
  ['Séparation des constituants d’un mélange',A,'فصل مكونات خليط'],
  ['Traitement des eaux',A,'معالجة المياه'],
@@ -3852,6 +4120,7 @@ PC.curr={
  ['Les montages en série et en dérivation',E,'التركيب على التوالي وعلى التوازي','#c1-16-l2'],
  ['Le courant électrique continu',E,'التيار الكهربائي المستمر'],
  ['Mesure de l’intensité du courant',E,'قياس شدة التيار الكهربائي'],
+ ['Influence de la résistance sur l’intensité',E,'تأثير المقاومة على شدة التيار','#c1-20',1],
  ['Loi des nœuds et additivité des tensions',E,'قانون العقد وإضافية التوترات','#c1-16'],
  ['Protection contre les dangers du courant',E,'الوقاية من أخطار التيار الكهربائي']
 ],1),
@@ -3880,6 +4149,7 @@ PC.curr={
  ['Identification de quelques ions',MA,'التعرف على بعض الأيونات'],
  ['Dangers de quelques matériaux',MA,'أخطار بعض المواد'],
  ['Mouvement et repos',ME,'الحركة والسكون','#c3-9-l2'],
+ ['Trajectoire et types de mouvement',ME,'المسار وأنواع الحركة','#c3-17',1],
  ['La vitesse moyenne',ME,'السرعة المتوسطة'],
  ['Actions mécaniques et effets',ME,'الأفعال الميكانيكية وتأثيراتها'],
  ['Notion de force',ME,'مفهوم القوة'],
@@ -4317,6 +4587,59 @@ B.meca={look:['Le mouvement dépend du <b>référentiel</b>.','Une <b>force</b> 
  [3,'L’attraction de la Terre sur un objet est une action :',['à distance','de contact uniquement','nulle'],0,'Elle s’exerce sans contact.']],
  ar:'الحركة نسبية بالنسبة للمرجع. القوة تُميَّز بنقطة التأثير وخط التأثير والمنحى والشدة (بالنيوتن). يكون جسم صلب خاضع لقوتين في توازن إذا كان لهما نفس خط التأثير ومنحيان متعاكسان ونفس الشدة.',
  w:[['force','قوة'],['référentiel','المرجع'],['intensité','شدة'],['action à distance','فعل عن بعد']]};
+
+B.chal={look:['Le <b>thermomètre</b> mesure la <b>température</b> en degrés Celsius (°C).','<b>0 °C</b> : fusion de la glace. <b>100 °C</b> : ébullition de l’eau (pression normale).','La <b>chaleur</b> est une énergie qui passe du corps chaud vers le corps froid.'],
+ q:[
+ [1,'L’appareil qui mesure la température est :',['le thermomètre','la balance','l’éprouvette'],0,'Le thermomètre donne la température en °C.'],
+ [1,'L’unité usuelle de la température est :',['le degré Celsius','le newton','le litre'],0,'On la note °C.'],
+ [1,'La glace fond à :',['0 °C','37 °C','100 °C'],0,'La fusion de la glace a lieu à 0 °C.'],
+ [2,'Dans un thermomètre à alcool, quand la température augmente, l’alcool :',['se dilate et monte','se contracte','change de couleur sans bouger'],0,'Le liquide se dilate : son niveau monte dans le tube.'],
+ [2,'La chaleur passe spontanément :',['du corps chaud vers le corps froid','du corps froid vers le corps chaud','dans les deux sens à la fois'],0,'La chaleur se transfère du chaud vers le froid.'],
+ [2,'La température de l’eau qui bout (pression normale) vaut :',['100 °C','50 °C','0 °C'],0,'C’est la température d’ébullition de l’eau.'],
+ [3,'Même chaleur reçue : lequel s’échauffe le plus ?',['100 mL d’eau','300 mL d’eau','ils s’échauffent pareil'],0,'La petite quantité d’eau s’échauffe davantage.'],
+ [3,'Pendant la fusion de la glace, la température du mélange :',['reste constante','augmente','diminue'],0,'C’est un palier de température pour un corps pur.'],
+ [3,'Il faut placer le réservoir d’un thermomètre :',['dans le liquide sans toucher les parois','hors du liquide','contre le fond du récipient chauffé'],0,'On mesure la température du liquide lui-même.']],
+ ar:'درجة الحرارة تقاس بالمحرار بالدرجة السلسيوسية. الحرارة طاقة تنتقل من الجسم الساخن إلى الجسم الأبرد. الجليد ينصهر عند 0 درجة والماء يغلي عند 100 درجة، وخلال تغيّر الحالة تبقى الحرارة ثابتة.',
+ w:[['thermomètre','محرار'],['température','درجة الحرارة'],['chaleur','حرارة'],['dilatation','تمدد']]};
+
+B.masse2={look:['Lors d’un changement d’état, la <b>masse se conserve</b>.','Le <b>volume ne se conserve pas</b> : l’eau qui gèle augmente de volume.','Dissolution : <b>m(solution) = m(eau) + m(sel)</b>.'],
+ q:[
+ [1,'Un bloc de glace de 100 g fond. La masse de l’eau obtenue est :',['100 g','90 g','110 g'],0,'La masse se conserve.'],
+ [1,'Quand la glace fond, sa masse :',['ne change pas','augmente','diminue'],0,'La masse se conserve lors d’un changement d’état.'],
+ [2,'Quand l’eau gèle, son volume :',['augmente','diminue','ne change pas'],0,'L’eau qui gèle augmente d’environ 9 % de volume.'],
+ [2,'On dissout 10 g de sel dans 100 g d’eau. La masse de la solution est :',['110 g','100 g','90 g'],0,'100 + 10 = 110 g.'],
+ [2,'Une bouteille pleine d’eau peut éclater au congélateur parce que :',['la glace occupe plus de volume','l’eau perd de la masse','l’eau devient un gaz'],0,'Le volume augmente à la congélation.'],
+ [3,'Lors d’un changement d’état, la grandeur qui se conserve est :',['la masse','le volume','la masse volumique'],0,'La masse se conserve ; le volume et la masse volumique changent.'],
+ [3,'On dissout 25 g de sucre dans 200 g d’eau. La masse de la solution est :',['225 g','200 g','175 g'],0,'Masse de la solution = 200 + 25 = 225 g.'],
+ [3,'Le sel dissous dans l’eau :',['est toujours présent mais invisible','a disparu','est devenu un gaz'],0,'La balance montre que sa masse est toujours là.']],
+ ar:'عند تغيّر حالة الماء تنحفظ الكتلة ولا ينحفظ الحجم. الماء الذي يتجمد يزداد حجمه. وفي الإذابة: كتلة المحلول تساوي كتلة الماء زائد كتلة المذاب.',
+ w:[['masse','كتلة'],['volume','حجم'],['conservation','انحفاظ'],['dissolution','إذابة']]};
+
+B.rint={look:['La résistance se mesure en <b>ohms (Ω)</b> avec un <b>ohmmètre</b>.','Même pile : plus la résistance est <b>grande</b>, plus l’intensité est <b>petite</b>.'],
+ q:[
+ [1,'L’unité de la résistance électrique est :',['l’ohm','l’ampère','le volt'],0,'Le symbole de l’ohm est Ω.'],
+ [1,'L’appareil qui mesure une résistance est :',['l’ohmmètre','l’ampèremètre','le voltmètre'],0,'On le branche hors du circuit alimenté.'],
+ [2,'Avec la même pile, quand la résistance augmente, l’intensité :',['diminue','augmente','ne change pas'],0,'R grande, I petite.'],
+ [2,'On remplace 20 Ω par 40 Ω (même pile). L’intensité :',['est divisée par 2','double','reste la même'],0,'La résistance double, l’intensité est divisée par 2.'],
+ [2,'Le symbole Ω désigne :',['l’ohm','l’ampère','le watt'],0,'Ω est le symbole de l’ohm.'],
+ [3,'On remplace 10 Ω par 30 Ω (même pile). L’intensité :',['est divisée par 3','est multipliée par 3','ne change pas'],0,'La résistance est multipliée par 3 : l’intensité est divisée par 3.'],
+ [3,'Avec une pile de 6 V, laquelle donne la plus grande intensité ?',['10 Ω','50 Ω','100 Ω'],0,'La plus petite résistance donne la plus grande intensité.'],
+ [3,'L’intensité dans un circuit est de 200 mA avec 30 Ω. Avec 60 Ω et la même pile, elle vaut :',['100 mA','400 mA','200 mA'],0,'La résistance double : 200 ÷ 2 = 100 mA.']],
+ ar:'تقاس المقاومة بالأوم Ω بجهاز الأومتر. في دارة بالعمود نفسه، كلما زادت المقاومة نقصت شدة التيار.',
+ w:[['résistance','مقاومة'],['ohm','أوم'],['intensité','شدة التيار'],['ohmmètre','أومتر']]};
+
+B.mvt={look:['La <b>trajectoire</b> est la ligne décrite par un point dans un référentiel.','<b>Type</b> : translation ou rotation. <b>Nature</b> : uniforme, accéléré ou retardé.','Chronophotographie : distances égales → uniforme ; croissantes → accéléré ; décroissantes → retardé.'],
+ q:[
+ [1,'La trajectoire d’un point est :',['la ligne qu’il décrit dans un référentiel','sa masse','sa durée de mouvement'],0,'C’est la ligne décrite par ce point.'],
+ [1,'Le mouvement d’un cheval de manège est :',['une rotation','une translation rectiligne','un repos'],0,'Il tourne autour d’un axe.'],
+ [2,'Distances égales entre positions à intervalles de temps égaux : le mouvement est :',['uniforme','accéléré','retardé'],0,'La vitesse est constante.'],
+ [2,'Distances de plus en plus grandes : le mouvement est :',['accéléré','uniforme','retardé'],0,'La vitesse augmente.'],
+ [2,'Distances de plus en plus petites : le mouvement est :',['retardé','uniforme','accéléré'],0,'La vitesse diminue.'],
+ [3,'Un point décrit une ligne droite. Sa trajectoire est :',['rectiligne','circulaire','curviligne non droite'],0,'Une droite : trajectoire rectiligne.'],
+ [3,'Quelle paire donne le type puis la nature d’un mouvement ?',['translation, uniforme','uniforme, rotation','accéléré, curviligne'],0,'Le type est translation ou rotation ; la nature est uniforme, accéléré ou retardé.'],
+ [3,'La trajectoire d’un même point change selon :',['le référentiel choisi','la couleur du point','l’heure de la journée'],0,'Le mouvement est relatif au référentiel.']],
+ ar:'المسار هو الخط الذي ترسمه نقطة بالنسبة إلى مرجع. نميز بين نوع الحركة (إزاحة أو دوران) وطبيعتها (منتظمة أو متسارعة أو متباطئة).',
+ w:[['trajectoire','المسار'],['translation','إزاحة'],['rotation','دوران'],['mouvement uniforme','حركة منتظمة']]};
 })();
 
 </script>

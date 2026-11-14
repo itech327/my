@@ -73,6 +73,9 @@
   T('c1-15', ['b:res']);
   T('c1-16', ['g:node', 'g:tens']);
   T('c1-17', ['b:secu']);
+  T('c1-18', ['b:chal']);
+  T('c1-19', ['b:masse2']);
+  T('c1-20', ['b:rint']);
   T('c2-2', ['b:air', 'g:air']);
   T('c2-3', ['b:mol', 'g:atoms']);
   T('c2-4', ['b:comb', 'g:mass']);
@@ -93,6 +96,7 @@
   T('c3-13', ['g:weight']);
   T('c3-14', ['g:ohm', 'b:res']);
   T('c3-16', ['g:power']);
+  T('c3-17', ['b:mvt']);
 
   window.LAB_CONFIG = {
     riddles: [
