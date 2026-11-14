@@ -5430,6 +5430,60 @@ G.nmul=function(s){
   return num('Calcule '+rl(sa*a)+' × '+rl(-sa*b)+'.',-a*b,'Signe du produit : négatif. Valeur absolue : '+a+' × '+b+' = '+(a*b)+'. Résultat : '+sg(-a*b)+'.','Détermine le signe, puis la valeur absolue.');
 };
 
+/* ---------- 1AC semaine 4 : produit, quotient, décimaux et fractions ---------- */
+G.nmuls=function(s){
+  var a,b,sa,t;
+  if(s===1||s===3){
+    a=s===1?ri(2,9):ri(6,15);b=s===1?ri(2,9):ri(3,12);sa=ri(0,1)?1:-1;
+    return num('Calcule '+rl(sa*a)+' × '+rl(sa*b)+'.',a*b,'Les signes sont identiques : le produit est positif. La valeur absolue est '+a+' × '+b+' = '+(a*b)+'. Résultat : '+sg(a*b)+'.','Signes identiques : le produit est positif.');
+  }
+  a=ri(2,12);b=ri(2,12);sa=ri(0,1)?1:-1;
+  return qcm('Quel est le signe du produit '+rl(sa*a)+' × '+rl(sa*b)+' ?','positif',['négatif','nul'],'Les deux nombres sont '+(sa>0?'positifs':'négatifs')+'. Deux signes identiques donnent un produit positif.','Signes identiques : le produit est positif.');
+};
+G.ndiv=function(s){
+  var b,q,sa,p,d,sg2;
+  if(s===1||s===2){
+    b=ri(2,9);q=ri(2,9);sa=ri(0,1)?1:-1;sg2=s===1?-sa:sa;
+    return num('Calcule '+rl(sa*b*q)+' ÷ '+rl(sg2*b)+'.',sa*sg2*q,(s===1?'Les signes sont différents : le quotient est négatif. ':'Les signes sont identiques : le quotient est positif. ')+'La valeur absolue est '+(b*q)+' ÷ '+b+' = '+q+'. Résultat : '+sg(sa*sg2*q)+'.',s===1?'Signes différents : le quotient est négatif.':'Signes identiques : le quotient est positif.');
+  }
+  do{p=ri(1,9);d=ri(2,9)}while(p%d===0);
+  sa=ri(0,1)?1:-1;sg2=ri(0,1)?1:-1;
+  return num('Calcule '+rl(sa*p)+' ÷ '+rl(sg2*d)+' (décimal ou fraction).',sa*sg2*p/d,'Signe du quotient : '+(sa*sg2>0?'positif':'négatif')+'. Valeur absolue : '+fr(p,d)+'. Résultat : '+fs(sa*sg2*p,d)+'.','Détermine le signe, puis écris la valeur absolue sous forme de fraction.',{sol:fs(sa*sg2*p,d),tol:6e-3});
+};
+G.nmulc=function(s){
+  var a,b,c,m,y,sa,sb,sc2,f,neg,i,arr;
+  if(s===1){
+    do{a=nz(-6,6);b=nz(-6,6);c=nz(-6,6)}while(Math.abs(a)===1&&Math.abs(b)===1&&Math.abs(c)===1);
+    neg=[a,b,c].filter(function(v){return v<0}).length;
+    return num('Calcule '+rl(a)+' × '+rl(b)+' × '+rl(c)+'.',a*b*c,'Il y a '+neg+' facteur'+(neg>1?'s':'')+' négatif'+(neg>1?'s':'')+' : le produit est '+(neg%2?'négatif':'positif')+'. Valeur absolue : '+Math.abs(a)+' × '+Math.abs(b)+' × '+Math.abs(c)+' = '+(Math.abs(a*b*c))+'. Résultat : '+sg(a*b*c)+'.','Compte les facteurs négatifs : nombre pair, produit positif.');
+  }
+  if(s===2){
+    m=pick([[25,4],[5,2],[50,2],[20,5],[25,8],[5,20]]);y=ri(3,9);sa=ri(0,1)?1:-1;sb=ri(0,1)?1:-1;sc2=ri(0,1)?1:-1;
+    a=sa*m[0];b=sb*y;c=sc2*m[1];
+    return num('Calcule '+rl(a)+' × '+rl(b)+' × '+rl(c)+' en regroupant les facteurs bien choisis.',a*b*c,'Je regroupe '+rl(a)+' × '+rl(c)+' = '+sg(a*c)+'. Puis '+sg(a*c)+' × '+rl(b)+' = '+sg(a*b*c)+'.','Cherche deux facteurs dont le produit est simple.');
+  }
+  do{arr=[nz(-5,5),nz(-5,5),nz(-5,5),nz(-5,5)]}while(false);
+  neg=arr.filter(function(v){return v<0}).length;
+  return qcm('Quel est le signe du produit '+arr.map(rl).join(' × ')+' ?',neg%2?'négatif':'positif',neg%2?['positif','nul']:['négatif','nul'],'Il y a '+neg+' facteur'+(neg>1?'s':'')+' négatif'+(neg>1?'s':'')+' : '+(neg%2?'nombre impair, produit négatif.':'nombre pair, produit positif.'),'Un nombre pair de facteurs négatifs donne un produit positif.');
+};
+G.nmd=function(s){
+  var a,b,q,r,sa,sb,p1,d1,p2,d2,mul,n,d;
+  if(s===1){
+    a=ri(2,19)/10;b=ri(2,19)/10;sa=ri(0,1)?1:-1;sb=ri(0,1)?1:-1;r=Math.round(sa*sb*a*b*100)/100;
+    return num('Calcule '+rl(sa*a)+' × '+rl(sb*b)+'.',r,'Signe : '+(sa*sb>0?'positif':'négatif')+'. Valeur absolue : '+sg(a)+' × '+sg(b)+' = '+sg(Math.round(a*b*100)/100)+'. Résultat : '+sg(r)+'.','Règle des signes, puis calcul avec les décimaux positifs.');
+  }
+  if(s===2){
+    b=ri(2,25)/10;q=ri(2,30)/10;sa=ri(0,1)?1:-1;sb=ri(0,1)?1:-1;a=Math.round(b*q*100)/100;
+    return num('Calcule '+rl(sa*a)+' ÷ '+rl(sb*b)+'.',sa*sb*q,'Signe : '+(sa*sb>0?'positif':'négatif')+'. Valeur absolue : '+sg(a)+' ÷ '+sg(b)+' = '+sg(q)+'. Résultat : '+sg(sa*sb*q)+'.','Règle des signes, puis division des décimaux positifs.');
+  }
+  p1=nz(-7,7);d1=ri(2,7);p2=nz(-7,7);d2=ri(2,7);mul=ri(0,1);
+  if(mul){n=p1*p2;d=d1*d2;
+    return num('Calcule '+pf(p1,d1)+' × '+pf(p2,d2)+' (décimal ou fraction).',n/d,'Règle des signes : résultat '+(n>0?'positif':'négatif')+'. Je multiplie : '+fr(p1,d1)+' × '+fr(p2,d2)+' donne '+fr(n,d)+' = '+fs(n,d)+'.','Numérateur × numérateur, dénominateur × dénominateur.',{sol:fs(n,d),tol:6e-3});
+  }
+  n=p1*d2;d=d1*p2;
+  return num('Calcule '+pf(p1,d1)+' ÷ '+pf(p2,d2)+' (décimal ou fraction).',n/d,'Diviser, c’est multiplier par l’inverse : '+pf(p1,d1)+' × '+(p2<0?'('+fr(d2,p2)+')':fr(d2,p2))+' donne '+fr(n,d)+' = '+fs(n,d)+'.','Diviser par une fraction, c’est multiplier par son inverse.',{sol:fs(n,d),tol:6e-3});
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -6535,6 +6589,104 @@ D({id:'pi1-27',lv:1,period:1,dom:'Nombres',t:'Multiplier des entiers de signes d
   ar:['جداء عددين صحيحين بإشارتين مختلفتين سالب. قيمته المطلقة هي جداء القيمتين المطلقتين للعاملين.','للحساب: أحدد الإشارة، ثم القيمة المطلقة، ثم أكتب النتيجة. مثلا (−2) × (+3) = −6.'],
   arw:[['produit','جداء'],['facteur','عامل'],['signe','إشارة'],['valeur absolue','قيمة مطلقة'],['négatif','سالب']]});
 
+D({id:'pi1-28',lv:1,period:1,dom:'Nombres',t:'Multiplier des entiers de même signe',at:'ضرب أعداد صحيحة لها نفس الإشارة',
+  obj:'Multiplier deux nombres entiers relatifs de même signe.',keys:['nmuls'],
+  lex:[['produit','جداء'],['facteur','عامل'],['signe','إشارة'],['valeur absolue','القيمة المطلقة'],['positif','موجب']],
+  pre:[
+    ['Le produit de deux entiers de signes différents est négatif.',true,'C’est la règle de la séance précédente.'],
+    ['(−3) × (−2) = −6.',false,'Deux signes identiques donnent un produit positif : (−3) × (−2) = 6.'],
+    ['Un nombre est déterminé par son signe et sa valeur absolue.',true,'Par exemple −5 a pour signe − et pour valeur absolue 5.']],
+  plan:['Je détermine le signe du produit.','Je détermine la valeur absolue du produit.','Je donne le résultat.'],
+  ex:[
+    E('Calcule (−5) × (−4).',[
+      ['Étape 1 · les signes sont identiques','Le signe du produit est positif.'],
+      ['Étape 2 · la valeur absolue du produit est 5 × 4 = 20','Je multiplie les valeurs absolues.'],
+      ['<b>Étape 3 · (−5) × (−4) = 20</b>','Je donne le résultat.']]),
+    E('Calcule (−7) × (−3).',[
+      ['Étape 1 · les signes sont identiques','Le signe du produit est positif.'],
+      ['Étape 2 · la valeur absolue du produit est 7 × 3 = 21','Je multiplie les valeurs absolues.'],
+      ['<b>Étape 3 · (−7) × (−3) = 21</b>','Je donne le résultat.']]),
+    E('Calcule (+6) × (+4).',[
+      ['Étape 1 · les signes sont identiques','Le signe du produit est positif.'],
+      ['Étape 2 · la valeur absolue du produit est 6 × 4 = 24','Je multiplie les valeurs absolues.'],
+      ['<b>Étape 3 · (+6) × (+4) = 24</b>','Je donne le résultat.']])],
+  ret:['Le produit de deux entiers de même signe est positif.','Sa valeur absolue est le produit des valeurs absolues des deux facteurs.','Pour calculer : je détermine le signe, puis la valeur absolue, puis je donne le résultat.'],
+  ar:['جداء عددين صحيحين لهما نفس الإشارة موجب. قيمته المطلقة هي جداء القيمتين المطلقتين للعاملين.','للحساب: أحدد الإشارة، ثم القيمة المطلقة، ثم أكتب النتيجة. مثلا (−5) × (−4) = 20.'],
+  arw:[['produit','جداء'],['facteur','عامل'],['signe','إشارة'],['valeur absolue','قيمة مطلقة'],['positif','موجب']]});
+
+D({id:'pi1-29',lv:1,period:1,dom:'Nombres',t:'Diviser des nombres entiers',at:'قسمة الأعداد الصحيحة',
+  obj:'Effectuer la division de nombres entiers relatifs.',keys:['ndiv'],
+  lex:[['quotient','خارج القسمة'],['division','القسمة'],['signe','إشارة'],['valeur absolue','القيمة المطلقة'],['inverse','مقلوب'],['fraction','كسر']],
+  pre:[
+    ['Le quotient de deux entiers de signes différents est négatif.',true,'La règle des signes est la même que pour le produit.'],
+    ['(−12) ÷ (−3) = −4.',false,'Signes identiques : le quotient est positif. (−12) ÷ (−3) = 4.'],
+    ['Diviser par un nombre, c’est multiplier par son inverse.',true,'Par exemple, diviser par 2, c’est multiplier par 1/2.']],
+  plan:['Je détermine le signe et la valeur absolue du quotient.','J’écris le résultat sous forme d’un entier ou d’une fraction.'],
+  ex:[
+    E('Calcule (−12) ÷ (+3).',[
+      ['Étape 1 · signes différents, donc le quotient est négatif ; valeur absolue 12 ÷ 3 = 4','Je détermine le signe et la valeur absolue.'],
+      ['<b>Étape 2 · (−12) ÷ (+3) = −4</b>','Résultat entier.']]),
+    E('Calcule (−20) ÷ (−4).',[
+      ['Étape 1 · signes identiques, donc le quotient est positif ; valeur absolue 20 ÷ 4 = 5','Je détermine le signe et la valeur absolue.'],
+      ['<b>Étape 2 · (−20) ÷ (−4) = 5</b>','Résultat entier.']]),
+    E('Écris (+3) ÷ (−2) sous forme d’une fraction.',[
+      ['Étape 1 · signes différents, donc le quotient est négatif ; valeur absolue '+fr(3,2),'3 n’est pas divisible par 2.'],
+      ['<b>Étape 2 · (+3) ÷ (−2) = '+fr(-3,2)+'</b>','Résultat sous forme de fraction.']])],
+  ret:['Le quotient de deux entiers de signes différents est négatif. Le quotient de deux entiers de même signe est positif.','Sa valeur absolue est le quotient des valeurs absolues.','Quand le quotient n’est pas un entier, je l’écris sous forme d’une fraction : diviser par b, c’est multiplier par l’inverse de b.'],
+  ar:['خارج عددين صحيحين بإشارتين مختلفتين سالب، وبنفس الإشارة موجب. قيمته المطلقة هي خارج القيمتين المطلقتين.','إذا لم يكن الخارج عددا صحيحا أكتبه على شكل كسر. القسمة على b هي الضرب في مقلوب b. مثلا (+3) ÷ (−2) = −3/2.'],
+  arw:[['quotient','خارج القسمة'],['division','قسمة'],['signe','إشارة'],['inverse','مقلوب'],['fraction','كسر']]});
+
+D({id:'pi1-30',lv:1,period:1,dom:'Nombres',t:'Commutativité et associativité de la multiplication',at:'تبادلية وتجميعية الضرب',
+  obj:'Utiliser la commutativité et l’associativité de la multiplication des entiers relatifs.',keys:['nmulc'],
+  lex:[['commutativité','التبادلية'],['associativité','التجميعية'],['facteur','عامل'],['signe du produit','إشارة الجداء'],['pair','زوجي'],['impair','فردي']],
+  pre:[
+    ['Si je change l’ordre des facteurs, le produit ne change pas.',true,'C’est la commutativité de la multiplication.'],
+    ['(−2) × 3 × (−4) est négatif.',false,'Il y a deux facteurs négatifs : le produit est positif.'],
+    ['Pour calculer plus vite, on peut regrouper 25 et 4.',true,'25 × 4 = 100, un calcul simple.']],
+  plan:['Je détermine d’abord le signe du produit.','Je multiplie les valeurs absolues des facteurs.'],
+  ex:[
+    E('Calcule (−5) × (−3) × 2.',[
+      ['Étape 1 · deux facteurs négatifs, nombre pair : le produit est positif','Je détermine le signe.'],
+      ['<b>Étape 2 · 5 × 3 × 2 = 30, donc le produit est 30</b>','Autre méthode : (−5) × 2 = −10, puis (−10) × (−3) = 30.']]),
+    E('Calcule (+5) × (−7) × 4.',[
+      ['Étape 1 · un seul facteur négatif, nombre impair : le produit est négatif','Je détermine le signe.'],
+      ['<b>Étape 2 · 5 × 7 × 4 = 140, donc le produit est −140</b>','Autre méthode : 5 × 4 = 20, puis 20 × (−7) = −140.']]),
+    E('Calcule (−2) × 9 × (−5).',[
+      ['Étape 1 · deux facteurs négatifs, nombre pair : le produit est positif','Je détermine le signe.'],
+      ['<b>Étape 2 · 2 × 9 × 5 = 90, donc le produit est 90</b>','Je regroupe 2 × 5 = 10, puis 10 × 9 = 90.']])],
+  ret:['Commutativité : on peut changer l’ordre des facteurs. Associativité : on peut changer le groupement des facteurs.','Le produit est positif si le nombre de facteurs négatifs est pair. Il est négatif si ce nombre est impair.','Pour calculer : je détermine d’abord le signe, puis je multiplie les valeurs absolues.'],
+  ar:['التبادلية: يمكن تغيير ترتيب العوامل. التجميعية: يمكن تغيير طريقة تجميع العوامل دون تغيير الجداء.','الجداء موجب إذا كان عدد العوامل السالبة زوجيا، وسالب إذا كان فرديا. للحساب: أحدد الإشارة أولا ثم أضرب القيم المطلقة.'],
+  arw:[['commutativité','تبادلية'],['associativité','تجميعية'],['facteur','عامل'],['pair','زوجي'],['impair','فردي']]});
+
+D({id:'pi1-31',lv:1,period:1,dom:'Nombres',t:'Multiplier et diviser des décimaux et des fractions',at:'ضرب وقسمة الأعداد العشرية والكسور',
+  obj:'Appliquer les règles de la multiplication et de la division aux nombres décimaux et aux fractions.',keys:['nmd'],
+  lex:[['nombre décimal','عدد عشري'],['fraction','كسر'],['règle des signes','قاعدة الإشارات'],['inverse','مقلوب'],['numérateur','البسط'],['dénominateur','المقام']],
+  pre:[
+    ['Pour multiplier deux nombres décimaux, on applique d’abord la règle des signes.',true,'Puis on multiplie les valeurs absolues.'],
+    ['(−0,5) × (−4) = −2.',false,'Signes identiques : le produit est positif. Résultat : 2.'],
+    ['Pour diviser par une fraction, on multiplie par son inverse.',true,'Par exemple diviser par 2/3, c’est multiplier par 3/2.']],
+  plan:['Je repère l’opération et les nombres.','J’applique les règles des signes.','Je calcule et je simplifie avec les règles de calcul des nombres positifs.'],
+  ex:[
+    E('Calcule 0,25 × (−0,1).',[
+      ['Étape 1 · multiplication de deux décimaux','Je repère l’opération.'],
+      ['Étape 2 · signes différents : le produit est négatif','Règle des signes.'],
+      ['<b>Étape 3 · 0,25 × 0,1 = 0,025, donc le produit est −0,025</b>','Je calcule avec les positifs.']]),
+    E('Calcule (−15,7) ÷ 2,5.',[
+      ['Étape 1 · division de deux décimaux','Je repère l’opération.'],
+      ['Étape 2 · signes différents : le quotient est négatif','Règle des signes.'],
+      ['<b>Étape 3 · 15,7 ÷ 2,5 = 6,28, donc le quotient est −6,28</b>','Je calcule avec les positifs.']]),
+    E('Calcule '+fr(2,3)+' × ('+fr(-5,4)+').',[
+      ['Étape 1 · multiplication de deux fractions','Je repère l’opération.'],
+      ['Étape 2 · signes différents : le produit est négatif','Règle des signes.'],
+      ['<b>Étape 3 · '+fr(2,3)+' × '+fr(5,4)+' = '+fr(10,12)+' = '+fr(5,6)+', donc le produit est '+fr(-5,6)+'</b>','Je multiplie puis je simplifie.']]),
+    E('Calcule '+fr(3,4)+' ÷ ('+fr(-9,8)+').',[
+      ['Étape 1 · division de deux fractions : je multiplie par l’inverse','L’inverse de '+fr(9,8)+' est '+fr(8,9)+'.'],
+      ['Étape 2 · signes différents : le quotient est négatif','Règle des signes.'],
+      ['<b>Étape 3 · '+fr(3,4)+' × '+fr(8,9)+' = '+fr(24,36)+' = '+fr(2,3)+', donc le quotient est '+fr(-2,3)+'</b>','Je multiplie puis je simplifie.']])],
+  ret:['Pour multiplier ou diviser des décimaux ou des fractions : je repère l’opération, j’applique les règles des signes, puis je calcule avec les nombres positifs.','Fractions : numérateur × numérateur, dénominateur × dénominateur.','Diviser par une fraction, c’est multiplier par son inverse.'],
+  ar:['لضرب أو قسمة أعداد عشرية أو كسور: أحدد العملية، أطبق قاعدة الإشارات، ثم أحسب بالأعداد الموجبة وأبسط.','في الكسور: البسط في البسط والمقام في المقام. القسمة على كسر هي الضرب في مقلوبه.'],
+  arw:[['nombre décimal','عدد عشري'],['fraction','كسر'],['règle des signes','قاعدة الإشارات'],['inverse','مقلوب'],['numérateur','بسط'],['dénominateur','مقام']]});
+
 /* ===== PÉRIODE 2 ===== */
 D({id:'pi1-4',lv:1,period:2,dom:'Nombres',t:'Relatifs : soustraire, multiplier, puissances de 10',at:'الطرح والضرب في Z ثم قوى العدد 10',
   obj:'Soustraire et multiplier des relatifs ; utiliser les puissances de 10.',keys:['rel','pow','sci'],
@@ -6761,7 +6913,7 @@ P.evalPage({id:'pe1-4',lv:1,period:4,keys:['aire','perim','cercle','rep','vec','
 P.evalPage({id:'pe1-5',lv:1,period:5,keys:['vol','prop','pct','vit','ech','stat','effC','vol']});
 
 P.setLevel(1,['pr-1','pr-2','pr-3'],[
-  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-20','pi1-21','pi1-22','pi1-23','pi1-24','pi1-25','pi1-26','pi1-27','pi1-1','pi1-2','pi1-3']},
+  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-20','pi1-21','pi1-22','pi1-23','pi1-24','pi1-25','pi1-26','pi1-27','pi1-28','pi1-29','pi1-30','pi1-31','pi1-1','pi1-2','pi1-3']},
   {title:'Calcul littéral, équations, puissances',seqs:['pi1-4','pi1-5','pi1-6']},
   {title:'Droites, angles et symétrie centrale',seqs:['pi1-7','pi1-8','pi1-9']},
   {title:'Parallélogrammes, cercle et repérage',seqs:['pi1-10','pi1-11','pi1-12']},
