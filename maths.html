@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-COXhSxiPQAXPWYn00sJSiM57FAcF0yZZNYN96lt8yBI=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-gvki6XHTFbU6bK1aRArtRaxuZ35EDx6HmnP4sYR7uLU=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-I9XQNk7JTJyFU9yQC7sPk9SNmwXwRJU8UMqfqaM2bpk=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-bTschY0GQf0aRuPtvE8z/D1xQO82+zm7hyfeMjPAhFk=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -7094,6 +7094,65 @@ G.nreel=function(s){
   return num('Combien de nombres irrationnels y a-t-il dans la liste : '+items.join(' ; ')+' ?',cnt,'Les irrationnels sont les nombres à écriture décimale illimitée non périodique : racines de nombres qui ne sont pas des carrés parfaits, et π. Il y en a '+cnt+'.','Les entiers, fractions et décimaux sont rationnels.');
 };
 
+/* ---------- 3AC période 1 semaine 4 : calculs avec les racines carrées ---------- */
+function divsOf(n){var o=[],i;for(i=2;i<n;i++)if(n%i===0)o.push(i);return o}
+G.nrp=function(s){
+  var r,a,b,sa,wr,k;
+  if(s===1||s===2){
+    r=ri(2,9);a=pick(divsOf(r*r));b=r*r/a;
+    if(s===1)return num('Calcule √'+a+' × √'+b+'.',r,'Règle du produit : √'+a+' × √'+b+' = √('+a+' × '+b+') = √'+(r*r)+' = '+r+'.','Mets les deux nombres sous une seule racine.');
+    sa=ri(0,1)?1:-1;
+    return num('Calcule '+(sa<0?'(−√'+a+')':'√'+a)+' × √'+b+'.',sa*r,'Signe : '+(sa<0?'négatif':'positif')+'. √'+a+' × √'+b+' = √'+(r*r)+' = '+r+'. Résultat : '+sg(sa*r)+'.','Règle des signes, puis règle du produit.');
+  }
+  do{a=ri(2,9);b=ri(2,9)}while(a===b||isSq(a*b));
+  wr=['√'+(a+b),String(a*b),'√'+(a*b*2)];
+  wr=distinct('√'+(a*b),wr);
+  return qcm('Écris √'+a+' × √'+b+' sous la forme d’une seule racine carrée.','√'+(a*b),wr,'Règle du produit : √'+a+' × √'+b+' = √('+a+' × '+b+') = √'+(a*b)+'.','On multiplie les nombres sous les racines.');
+};
+G.nrq=function(s){
+  var r,b,a,sa,m,wr;
+  if(s===1||s===2){
+    r=ri(2,9);b=ri(2,9);a=b*r*r;
+    if(s===1)return num('Calcule √'+a+' ÷ √'+b+'.',r,'Règle du quotient : √'+a+' ÷ √'+b+' = √('+a+' ÷ '+b+') = √'+(r*r)+' = '+r+'.','Mets les deux nombres sous une seule racine.');
+    sa=ri(0,1)?1:-1;
+    return num('Calcule '+(sa<0?'(−√'+a+')':'√'+a)+' ÷ √'+b+'.',sa*r,'Signe : '+(sa<0?'négatif':'positif')+'. √'+a+' ÷ √'+b+' = √'+(r*r)+' = '+r+'. Résultat : '+sg(sa*r)+'.','Règle des signes, puis règle du quotient.');
+  }
+  do{b=ri(2,9);m=ri(2,20)}while(isSq(m));
+  a=b*m;
+  wr=['√'+(a-b),String(m),'√'+(m+b)];
+  wr=distinct('√'+m,wr);
+  return qcm('Écris √'+a+' ÷ √'+b+' sous la forme d’une seule racine carrée.','√'+m,wr,'Règle du quotient : √'+a+' ÷ √'+b+' = √('+a+' ÷ '+b+') = √'+m+'.','On divise les nombres sous les racines.');
+};
+G.nrs=function(s){
+  var ps=[2,3,5,7],p,q,r,n,e,pool;
+  if(s===1){
+    do{p=pick(ps);q=pick(ps)}while(p===q);
+    n=p*p*q*q;
+    return num('Écris √'+n+' sans le symbole radical.',p*q,n+' = '+p+'² × '+q+'². Donc √'+n+' = √('+p+'² × '+q+'²) = '+p+' × '+q+' = '+(p*q)+'.','Décompose en facteurs premiers, puis regroupe en carrés.');
+  }
+  if(s===2){
+    pool=shuffle(ps).slice(0,3);p=pool[0];q=pool[1];r=pool[2];
+    n=p*p*q*q*r*r;
+    return num('Écris √'+n+' sans le symbole radical.',p*q*r,n+' = '+p+'² × '+q+'² × '+r+'². Donc √'+n+' = '+p+' × '+q+' × '+r+' = '+(p*q*r)+'.','Décompose en facteurs premiers, puis regroupe en carrés.');
+  }
+  do{p=pick(ps);q=pick(ps)}while(p===q);
+  e=pick([2,3]);n=Math.pow(p,2*e)*q*q;
+  return num('Écris √'+n+' sans le symbole radical.',Math.pow(p,e)*q,n+' = '+p+'<sup>'+(2*e)+'</sup> × '+q+'² = ('+p+'<sup>'+e+'</sup>)² × '+q+'². Donc √'+n+' = '+Math.pow(p,e)+' × '+q+' = '+(Math.pow(p,e)*q)+'.','Une puissance paire est un carré : p<sup>4</sup> = (p²)².');
+};
+G.nrb=function(s){
+  var a,b;
+  if(s===1){
+    a=ri(2,12);
+    return num('Écris '+a+' sous la forme √n. Quelle est la valeur de n ?',a*a,a+' = √'+(a*a)+' car '+a+'² = '+(a*a)+'. Donc n = '+(a*a)+'.','Un nombre positif a est égal à √(a²).');
+  }
+  if(s===2){
+    a=ri(2,6);b=ri(2,7);
+    return num('Écris '+a+'√'+b+' sous la forme √n. Quelle est la valeur de n ?',a*a*b,a+'√'+b+' = √'+(a*a)+' × √'+b+' = √('+(a*a)+' × '+b+') = √'+(a*a*b)+'. Donc n = '+(a*a*b)+'.','Écris d’abord '+a+' avec un radical : '+a+' = √'+(a*a)+'.');
+  }
+  a=ri(4,12);b=ri(2,6);
+  return num('Écris '+a+'√'+b+' sous la forme √n. Quelle est la valeur de n ?',a*a*b,a+'√'+b+' = √'+(a*a)+' × √'+b+' = √'+(a*a*b)+'. Donc n = '+(a*a*b)+'.','Écris d’abord '+a+' avec un radical : '+a+' = √'+(a*a)+'.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -9647,6 +9706,112 @@ D({id:'pi3-29',lv:3,period:1,dom:'Nombres',t:'Rationnels, irrationnels et réels
   ar:['العدد الجذري يمكن كتابته على شكل كسر، وكل عدد صحيح جذري. العدد ذو الكتابة العشرية غير المنتهية وغير الدورية عدد غير جذري (√2 وπ...).','الأعداد الجذرية وغير الجذرية تشكل معا مجموعة الأعداد الحقيقية.'],
   arw:[['nombre rationnel','عدد جذري'],['nombre irrationnel','عدد غير جذري'],['nombre réel','عدد حقيقي'],['fraction','كسر'],['entier','عدد صحيح']]});
 
+D({id:'pi3-30',lv:3,period:1,dom:'Nombres',t:'Produit de deux racines carrées',at:'جداء جذرين مربعين',
+  obj:'Appliquer la règle du produit de deux racines carrées.',keys:['nrp'],
+  lex:[['racine carrée','الجذر المربع'],['radical','الجذر'],['produit','جداء'],['règle des signes','قاعدة الإشارات'],['simplifier','بسّط']],
+  pre:[
+    ['Pour a ≥ 0 et b ≥ 0, √a × √b = √(a × b).',true,'C’est la règle du produit.'],
+    ['√4 + √9 = √13.',false,'√4 + √9 = 2 + 3 = 5. La règle du produit ne s’applique pas à l’addition.'],
+    ['√2 × √2 = 2.',true,'√2 × √2 = √4 = 2.']],
+  plan:['J’applique la règle des signes.','J’applique la règle du produit.','J’effectue le calcul à l’intérieur du radical.','Je donne le résultat final, en simplifiant si possible.'],
+  ex:[
+    E('Calcule √2 × √8.',[
+      ['Étape 1 · les deux nombres sont positifs : le produit est positif','Règle des signes.'],
+      ['Étape 2 · √2 × √8 = √(2 × 8)','Règle du produit.'],
+      ['Étape 3 · 2 × 8 = 16, donc √16','Je calcule à l’intérieur du radical.'],
+      ['<b>Étape 4 · √16 = 4</b>','Résultat final.']]),
+    E('Calcule (−√3) × √12.',[
+      ['Étape 1 · un facteur négatif et un facteur positif : le produit est négatif','Règle des signes.'],
+      ['Étape 2 · −√(3 × 12)','Règle du produit sur les valeurs absolues.'],
+      ['Étape 3 · 3 × 12 = 36, donc −√36','Je calcule à l’intérieur du radical.'],
+      ['<b>Étape 4 · −√36 = −6</b>','Résultat final.']]),
+    E('Calcule √5 × √20.',[
+      ['Étape 1 · les deux nombres sont positifs : le produit est positif','Règle des signes.'],
+      ['Étape 2 · √5 × √20 = √(5 × 20)','Règle du produit.'],
+      ['Étape 3 · 5 × 20 = 100, donc √100','Je calcule à l’intérieur du radical.'],
+      ['<b>Étape 4 · √100 = 10</b>','Résultat final.']])],
+  ret:['Pour a ≥ 0 et b ≥ 0 : √a × √b = √(a × b).','Je commence par la règle des signes, puis je multiplie sous le radical, puis je simplifie.','Attention : √a + √b n’est pas égal à √(a + b).'],
+  ar:['إذا كان a ≥ 0 و b ≥ 0 فإن √a × √b = √(a × b). أحدد الإشارة أولا، ثم أضرب تحت الجذر، ثم أبسط النتيجة.','انتبه: √a + √b لا تساوي √(a + b). مثلا √2 × √8 = √16 = 4.'],
+  arw:[['racine carrée','الجذر المربع'],['radical','الجذر'],['produit','جداء'],['règle des signes','قاعدة الإشارات'],['simplifier','بسّط']]});
+
+D({id:'pi3-31',lv:3,period:1,dom:'Nombres',t:'Quotient de deux racines carrées',at:'خارج جذرين مربعين',
+  obj:'Appliquer la règle du quotient de deux racines carrées.',keys:['nrq'],
+  lex:[['racine carrée','الجذر المربع'],['quotient','خارج القسمة'],['radical','الجذر'],['règle des signes','قاعدة الإشارات'],['simplifier','بسّط']],
+  pre:[
+    ['Pour a ≥ 0 et b > 0, √a ÷ √b = √(a ÷ b).',true,'C’est la règle du quotient.'],
+    ['√20 ÷ √5 = √15.',false,'Il faut diviser : 20 ÷ 5 = 4 et √4 = 2.'],
+    ['On ne peut pas diviser par √0.',true,'La division par 0 est impossible.']],
+  plan:['J’applique la règle des signes.','J’applique la règle du quotient.','J’effectue le calcul à l’intérieur du radical.','Je donne le résultat final, en simplifiant si possible.'],
+  ex:[
+    E('Calcule √72 ÷ √2.',[
+      ['Étape 1 · les deux nombres sont positifs : le quotient est positif','Règle des signes.'],
+      ['Étape 2 · √72 ÷ √2 = √(72 ÷ 2)','Règle du quotient.'],
+      ['Étape 3 · 72 ÷ 2 = 36, donc √36','Je calcule à l’intérieur du radical.'],
+      ['<b>Étape 4 · √36 = 6</b>','Résultat final.']]),
+    E('Calcule (−√48) ÷ √3.',[
+      ['Étape 1 · un nombre négatif et un nombre positif : le quotient est négatif','Règle des signes.'],
+      ['Étape 2 · −√(48 ÷ 3)','Règle du quotient sur les valeurs absolues.'],
+      ['Étape 3 · 48 ÷ 3 = 16, donc −√16','Je calcule à l’intérieur du radical.'],
+      ['<b>Étape 4 · −√16 = −4</b>','Résultat final.']]),
+    E('Calcule √45 ÷ √5.',[
+      ['Étape 1 · les deux nombres sont positifs : le quotient est positif','Règle des signes.'],
+      ['Étape 2 · √45 ÷ √5 = √(45 ÷ 5)','Règle du quotient.'],
+      ['Étape 3 · 45 ÷ 5 = 9, donc √9','Je calcule à l’intérieur du radical.'],
+      ['<b>Étape 4 · √9 = 3</b>','Résultat final.']])],
+  ret:['Pour a ≥ 0 et b > 0 : √a ÷ √b = √(a ÷ b).','Je commence par la règle des signes, puis je divise sous le radical, puis je simplifie.','On ne divise jamais par 0.'],
+  ar:['إذا كان a ≥ 0 و b > 0 فإن √a ÷ √b = √(a ÷ b). أحدد الإشارة أولا، ثم أقسم تحت الجذر، ثم أبسط النتيجة.','لا نقسم أبدا على 0. مثلا √72 ÷ √2 = √36 = 6.'],
+  arw:[['racine carrée','الجذر المربع'],['quotient','خارج القسمة'],['radical','الجذر'],['règle des signes','قاعدة الإشارات'],['simplifier','بسّط']]});
+
+D({id:'pi3-32',lv:3,period:1,dom:'Nombres',t:'Écrire une racine carrée sans le radical',at:'كتابة جذر مربع دون رمز الجذر',
+  obj:'Écrire une racine carrée exacte sans le symbole radical, grâce à la décomposition en facteurs premiers.',keys:['nrs'],
+  lex:[['facteur premier','عامل أولي'],['produit de carrés','جداء مربعات'],['radical','الجذر'],['carré parfait','مربع كامل'],['exposant','أس']],
+  pre:[
+    ['√(a² × b²) = a × b pour a et b positifs.',true,'√(a² × b²) = √(a²) × √(b²) = a × b.'],
+    ['√100 = 50.',false,'√100 = 10 car 10² = 100.'],
+    ['2<sup>4</sup> = (2²)².',true,'Une puissance paire est un carré.']],
+  plan:['Je décompose en produit de facteurs premiers.','Je transforme cette décomposition en produit de carrés.','J’applique les règles de calcul.'],
+  ex:[
+    E('Écris √225 sans radical.',[
+      ['Étape 1 · 225 = 3 × 3 × 5 × 5','Je décompose 225 en facteurs premiers.'],
+      ['Étape 2 · 225 = 3² × 5²','Je regroupe les facteurs en carrés.'],
+      ['<b>Étape 3 · √225 = √(3² × 5²) = 3 × 5 = 15</b>','Je calcule.']]),
+    E('Écris √36 sans radical.',[
+      ['Étape 1 · 36 = 2 × 2 × 3 × 3','Je décompose 36 en facteurs premiers.'],
+      ['Étape 2 · 36 = 2² × 3²','Je regroupe les facteurs en carrés.'],
+      ['<b>Étape 3 · √36 = √(2² × 3²) = 2 × 3 = 6</b>','Je calcule.']]),
+    E('Écris √400 sans radical.',[
+      ['Étape 1 · 400 = 2<sup>4</sup> × 5²','Je décompose 400 en facteurs premiers.'],
+      ['Étape 2 · 400 = (2²)² × 5²','2<sup>4</sup> = (2²)².'],
+      ['<b>Étape 3 · √400 = 2² × 5 = 4 × 5 = 20</b>','Je calcule.']])],
+  ret:['Pour écrire √n sans radical : je décompose n en facteurs premiers, je transforme la décomposition en produit de carrés, puis j’applique √(a² × b²) = a × b.','Une puissance paire d’un nombre est un carré : p<sup>4</sup> = (p²)².'],
+  ar:['لكتابة √n دون رمز الجذر: أفكك n إلى جداء عوامل أولية، أحول التفكيك إلى جداء مربعات، ثم أطبق √(a² × b²) = a × b.','قوة زوجية لعدد هي مربع: 2⁴ = (2²)². مثلا √225 = 3 × 5 = 15.'],
+  arw:[['facteur premier','عامل أولي'],['produit de carrés','جداء مربعات'],['radical','الجذر'],['carré parfait','مربع كامل'],['exposant','أس']]});
+
+D({id:'pi3-33',lv:3,period:1,dom:'Nombres',t:'Faire entrer un nombre dans le radical',at:'إدخال عدد تحت الجذر',
+  obj:'Écrire un nombre sous un radical pour appliquer les règles du produit et du quotient.',keys:['nrb'],
+  lex:[['radical','الجذر'],['racine carrée','الجذر المربع'],['règle du produit','قاعدة الجداء'],['règle du quotient','قاعدة الخارج'],['carré','مربع']],
+  pre:[
+    ['5 = √25.',true,'√25 = 5 car 5² = 25.'],
+    ['3√2 = √6.',false,'3√2 = √9 × √2 = √18.'],
+    ['Pour entrer a sous le radical, on écrit a = √(a²).',true,'Puis on applique la règle du produit.']],
+  plan:['J’écris le nombre avec le radical.','J’applique la règle de multiplication de deux racines carrées.','Je donne le résultat.'],
+  ex:[
+    E('Écris 5√3 sous la forme √n.',[
+      ['Étape 1 · 5 = √25','J’écris le nombre 5 avec le radical.'],
+      ['Étape 2 · 5√3 = √25 × √3 = √(25 × 3)','Règle de multiplication de deux racines.'],
+      ['<b>Étape 3 · 5√3 = √75</b>','Je donne le résultat.']]),
+    E('Écris 2√7 sous la forme √n.',[
+      ['Étape 1 · 2 = √4','J’écris le nombre 2 avec le radical.'],
+      ['Étape 2 · 2√7 = √4 × √7 = √(4 × 7)','Règle de multiplication de deux racines.'],
+      ['<b>Étape 3 · 2√7 = √28</b>','Je donne le résultat.']]),
+    E('Écris 6√2 sous la forme √n.',[
+      ['Étape 1 · 6 = √36','J’écris le nombre 6 avec le radical.'],
+      ['Étape 2 · 6√2 = √36 × √2 = √(36 × 2)','Règle de multiplication de deux racines.'],
+      ['<b>Étape 3 · 6√2 = √72</b>','Je donne le résultat.']])],
+  ret:['Pour écrire un nombre positif a sous un radical : a = √(a²).','Ensuite j’applique la règle du produit : a√b = √(a²) × √b = √(a² × b).','Cela sert aussi pour comparer des racines ou calculer avec la règle du quotient.'],
+  ar:['لإدخال عدد موجب a تحت الجذر: a = √(a²). ثم أطبق قاعدة الجداء: a√b = √(a² × b).','هذا يفيد أيضا في مقارنة الجذور أو في استعمال قاعدة الخارج. مثلا 5√3 = √75.'],
+  arw:[['radical','الجذر'],['racine carrée','الجذر المربع'],['règle du produit','قاعدة الجداء'],['règle du quotient','قاعدة الخارج'],['carré','مربع']]});
+
 /* ===== PÉRIODE 2 ===== */
 var NL=SC.nl(-6,2,{every:1,x0:30,x1:370});
 D({id:'pi3-4',lv:3,period:2,dom:'Algèbre',t:'Équations et inéquations',at:'المعادلات والمتراجحات',
@@ -9877,7 +10042,7 @@ P.evalPage({id:'pe3-4',lv:3,period:4,keys:['vec','rep','droite','vec','rep','dro
 P.evalPage({id:'pe3-5',lv:3,period:5,keys:['vol','agr','fonc','droite','stat','effC','vol','fonc']});
 
 P.setLevel(3,['pr-2','pr-3','pr-4'],[
-  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-20','pi3-21','pi3-22','pi3-23','pi3-24','pi3-25','pi3-26','pi3-27','pi3-28','pi3-29','pi3-1','pi3-2','pi3-3']},
+  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-20','pi3-21','pi3-22','pi3-23','pi3-24','pi3-25','pi3-26','pi3-27','pi3-28','pi3-29','pi3-30','pi3-31','pi3-32','pi3-33','pi3-1','pi3-2','pi3-3']},
   {title:'Équations, systèmes et Pythagore',seqs:['pi3-4','pi3-5','pi3-6']},
   {title:'Thalès, angles inscrits et triangles semblables',seqs:['pi3-7','pi3-8','pi3-9']},
   {title:'Vecteurs, repère et droites',seqs:['pi3-10','pi3-11','pi3-12']},
