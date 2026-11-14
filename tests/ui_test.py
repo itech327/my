@@ -34,7 +34,7 @@ with sync_playwright() as p:
         pg.evaluate("location.hash='#%s'" % chap)
         pg.wait_for_timeout(500)
         tabs = pg.locator('#%s .lab-tab' % chap)
-        check(tabs.count() == 5, f + ': 5 onglets de niveau dans ' + chap)
+        check(tabs.count() == 6, f + ': 6 onglets (4 niveaux, adaptatif, examen) dans ' + chap)
         for lvl in range(5):
             pg.locator('#%s .lab-tab' % chap).nth(lvl).click()
             pg.locator('#%s .btn:has-text("Lancer la série")' % chap).click()
