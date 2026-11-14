@@ -1,0 +1,14 @@
+{
+  "key": "tech",
+  "name": "Technologie",
+  "name_ar": "التكنولوجيا",
+  "glyph": "⚙",
+  "lead": "Cours de technologie du collège, 3e année : systèmes techniques, chaîne d’information, chaîne d’énergie, dessin technique et énergies renouvelables, avec des figures animées et un résumé en arabe sous chaque leçon.",
+  "lead_ar": "دروس التكنولوجيا للسنة الثالثة إعدادي: الأنظمة التقنية، سلسلة المعلومات، سلسلة الطاقة، الرسم التقني والطاقات المتجددة، مع رسوم متحركة وشرح بالعربية تحت كل درس.",
+  "desc": "Technologie, 3e année du collège : systèmes techniques, chaînes d’information et d’énergie, dessin technique, énergies renouvelables. Figures animées et résumés en arabe.",
+  "color": "#f27b60",
+  "gradient": "linear-gradient(90deg,#f27b60,#e371cb)",
+  "site_url": "https://technologie.taalim.men/",
+  "portal_url": "https://taalim.men/",
+  "levels": [["2", "2<sup>e</sup> année", "السنة الثانية"], ["3", "3<sup>e</sup> année", "السنة الثالثة"]]
+}
