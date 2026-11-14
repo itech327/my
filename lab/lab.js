@@ -116,6 +116,8 @@
     'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
+    '.lab-balance{margin:16px 0;padding:10px 14px;border-inline-start:3px solid var(--teal);background:var(--surface);border-radius:8px;font-size:14px}',
+    '.lab-balance .lab-ar{display:block;margin-top:4px}',
     '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
     '.lab-riddle svg{width:56px;height:56px}',
     '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
@@ -310,7 +312,7 @@
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -673,7 +675,9 @@
         var again = h('button', { type: 'button', 'class': 'btn' }, 'Nouvelle série'); again.addEventListener('click', run); act.appendChild(again);
         if (lvl && lvl < 4 && pct >= 80) { var up = h('button', { type: 'button', 'class': 'btn' }, 'Niveau suivant'); up.addEventListener('click', function () { level = lvl + 1; drawTabs(); intro(); run(); }); act.appendChild(up); }
         if (Sess.cur()) { var rp = h('button', { type: 'button', 'class': 'btn ghost' }, 'Mon rapport'); rp.addEventListener('click', function () { openReport(Sess.cur()); }); act.appendChild(rp); }
-        s.appendChild(act); holder.innerHTML = ''; holder.appendChild(s);
+        s.appendChild(act);
+        if (balanceDue(Date.now())) { s.appendChild(balanceNote('series')); store.set('lab_bal', Date.now()); }
+        holder.innerHTML = ''; holder.appendChild(s);
         drawTabs();
         try { s.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' }); } catch (_) {}
       }
@@ -946,7 +950,25 @@
   }
   Lab.riddleCard = riddleCard;
 
+  /* mot d'équilibre : la plateforme complète la classe, elle ne la remplace pas */
+  var BAL = {
+    foot: ['Cette plateforme accompagne ton apprentissage et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
+      'هذه المنصة رفيق لتعلّمك وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
+    series: ['Un mot sur l’équilibre : cette plateforme complète tes cours et ne les remplace pas. Ton établissement et tes enseignantes et enseignants restent ta référence. Note ce que tu n’as pas compris et pose tes questions en classe.',
+      'كلمة في التوازن: هذه المنصة تكمّل دروسك ولا تغني عنها. مؤسستك وأساتذتك هم المرجع. دوّن ما لم تفهمه واطرحه في القسم.']
+  };
+  function balanceNote(kind) { return h('p', { 'class': 'lab-balance lab-noprint' }, esc(BAL[kind][0]) + '<span class="lab-ar" dir="rtl" lang="ar">' + esc(BAL[kind][1]) + '</span>'); }
+  function balanceDue(now) { var t = Number(store.get('lab_bal', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
+  Lab.balanceDue = balanceDue;
+  function footNote() {
+    if (document.querySelector('.lab-balance.foot')) return;
+    var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
+    if (f && f.parentNode) f.parentNode.insertBefore(n, f);
+    else { var w = document.querySelector('.wrap'); if (w) w.appendChild(n); }
+  }
+
   function boot() {
+    try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-bcTrqZjAOkU5AjPua7IUcFS362uURtYs7Sl+4mRlg4s=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-3ecPjMqk3wB95zvScE/AYCCq5wZC/om4sp9BYc3xaM0=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-+dPOIHjuBbcAkGYGrza8eqJzqLOiaEWFp/881dJT4L0=' 'sha256-RPOSMKCPUU9QwL5psgcPu2mRW/Sc9N/k0sPlSPlOMjU=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-WjAkqe4DQKYDvHfTdLZx26ArcDizBp48viQmz8pf9xQ=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -51,6 +51,7 @@ body{
 }
 .wrap{max-width:760px;margin:0 auto;padding-block:20px 56px}
 b,strong{font-weight:700}
+.appro{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:none;color:#e8b84a;border:1px solid currentColor;border-radius:999px;padding:1px 8px}
 .kicker,.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
 h1,h2,h3,h4{margin:0;text-wrap:balance}
 h1.display{
@@ -1896,6 +1897,8 @@ window.addEventListener('load',function(){
     'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
+    '.lab-balance{margin:16px 0;padding:10px 14px;border-inline-start:3px solid var(--teal);background:var(--surface);border-radius:8px;font-size:14px}',
+    '.lab-balance .lab-ar{display:block;margin-top:4px}',
     '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
     '.lab-riddle svg{width:56px;height:56px}',
     '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
@@ -2090,7 +2093,7 @@ window.addEventListener('load',function(){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -2453,7 +2456,9 @@ window.addEventListener('load',function(){
         var again = h('button', { type: 'button', 'class': 'btn' }, 'Nouvelle série'); again.addEventListener('click', run); act.appendChild(again);
         if (lvl && lvl < 4 && pct >= 80) { var up = h('button', { type: 'button', 'class': 'btn' }, 'Niveau suivant'); up.addEventListener('click', function () { level = lvl + 1; drawTabs(); intro(); run(); }); act.appendChild(up); }
         if (Sess.cur()) { var rp = h('button', { type: 'button', 'class': 'btn ghost' }, 'Mon rapport'); rp.addEventListener('click', function () { openReport(Sess.cur()); }); act.appendChild(rp); }
-        s.appendChild(act); holder.innerHTML = ''; holder.appendChild(s);
+        s.appendChild(act);
+        if (balanceDue(Date.now())) { s.appendChild(balanceNote('series')); store.set('lab_bal', Date.now()); }
+        holder.innerHTML = ''; holder.appendChild(s);
         drawTabs();
         try { s.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' }); } catch (_) {}
       }
@@ -2726,7 +2731,25 @@ window.addEventListener('load',function(){
   }
   Lab.riddleCard = riddleCard;
 
+  /* mot d'équilibre : la plateforme complète la classe, elle ne la remplace pas */
+  var BAL = {
+    foot: ['Cette plateforme accompagne ton apprentissage et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
+      'هذه المنصة رفيق لتعلّمك وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
+    series: ['Un mot sur l’équilibre : cette plateforme complète tes cours et ne les remplace pas. Ton établissement et tes enseignantes et enseignants restent ta référence. Note ce que tu n’as pas compris et pose tes questions en classe.',
+      'كلمة في التوازن: هذه المنصة تكمّل دروسك ولا تغني عنها. مؤسستك وأساتذتك هم المرجع. دوّن ما لم تفهمه واطرحه في القسم.']
+  };
+  function balanceNote(kind) { return h('p', { 'class': 'lab-balance lab-noprint' }, esc(BAL[kind][0]) + '<span class="lab-ar" dir="rtl" lang="ar">' + esc(BAL[kind][1]) + '</span>'); }
+  function balanceDue(now) { var t = Number(store.get('lab_bal', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
+  Lab.balanceDue = balanceDue;
+  function footNote() {
+    if (document.querySelector('.lab-balance.foot')) return;
+    var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
+    if (f && f.parentNode) f.parentNode.insertBefore(n, f);
+    else { var w = document.querySelector('.wrap'); if (w) w.appendChild(n); }
+  }
+
   function boot() {
+    try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
@@ -3454,7 +3477,7 @@ function cylindre(el){
   }
   draw();
 }
-M.chapter({id:'c1-15',eyebrow:'1<sup>re</sup> année · Chapitre 15 · Géométrie',title:'Prismes et cylindres droits',
+M.chapter({id:'c1-15',eyebrow:'1<sup>re</sup> année · Chapitre 15 · Géométrie · <span class="appro" title="Hors du programme adapté 2023-2024">Approfondissement · تعمّق</span>',title:'Prismes et cylindres droits',
   lessons:[
     {short:'Le pavé droit',title:'Volume et aires d’un pavé droit',intro:'Change les dimensions. Les lignes fines montrent la hauteur découpée en couches de 1 cm.',build:pave,
       retenir:['<b>Volume d’un prisme droit</b> = aire de la base × hauteur.','Pour un pavé droit : V = longueur × largeur × hauteur.','<b>Aire latérale</b> = périmètre de la base × hauteur.']},
@@ -5380,7 +5403,7 @@ function polygoneRegulier(el){
   }
   draw();
 }
-M.chapter({id:'c3-8',eyebrow:'3<sup>e</sup> année · Chapitre 8 · Géométrie',title:'Angles inscrits, angles au centre',
+M.chapter({id:'c3-8',eyebrow:'3<sup>e</sup> année · Chapitre 8 · Géométrie · <span class="appro" title="Hors du programme adapté 2023-2024">Approfondissement · تعمّق</span>',title:'Angles inscrits, angles au centre',
   lessons:[
     {short:'Angle inscrit et angle au centre',title:'Angle inscrit et angle au centre',intro:'A, B et M sont sur le cercle. Déplace-les : l’angle au centre qui intercepte l’arc AB est toujours le double de l’angle inscrit AMB.',build:angleInscrit,
       retenir:['Un <b>angle inscrit</b> a son sommet sur le cercle. Un <b>angle au centre</b> a son sommet au centre.','Si un angle inscrit et un angle au centre interceptent le même arc, l’angle au centre mesure le <b>double</b> : <span class="math">AOB = 2 × AMB</span>.','Un angle inscrit mesure la moitié de l’arc qu’il intercepte.']},
@@ -5539,7 +5562,7 @@ function ombre(el){
   }
   draw();
 }
-M.chapter({id:'c3-9',eyebrow:'3<sup>e</sup> année · Chapitre 9 · Géométrie',title:'Triangles isométriques et triangles semblables',
+M.chapter({id:'c3-9',eyebrow:'3<sup>e</sup> année · Chapitre 9 · Géométrie · <span class="appro" title="Hors du programme adapté 2023-2024">Approfondissement · تعمّق</span>',title:'Triangles isométriques et triangles semblables',
   lessons:[
     {short:'Isométriques',title:'Triangles isométriques',intro:'Deux triangles sont isométriques s’ils peuvent se superposer. Choisis un cas, règle les mesures, puis appuie sur « Superposer ».',build:isometriques,
       retenir:['Deux triangles <b>isométriques</b> ont leurs côtés égaux deux à deux et leurs angles égaux deux à deux.','<b>CCC</b> : trois côtés égaux deux à deux.','<b>CAC</b> : un angle égal compris entre deux côtés égaux deux à deux.','<b>ACA</b> : un côté égal et les deux angles adjacents égaux deux à deux.']},

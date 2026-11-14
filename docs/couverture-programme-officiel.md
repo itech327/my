@@ -52,3 +52,36 @@ Les titres de l'application recouvrent les chapitres de l'adaptation 2024 pour l
 3. SVT 2e : reproduction et hérédité, puis tectonique des plaques.
 4. SVT 1re : milieu et alimentation, puis géologie externe.
 5. Relire les textes de 2009 pour confirmer l'ordre et les objectifs de chaque chapitre.
+
+## Revue du 14 novembre 2026 sur le document officiel
+
+Source relue : « Document de référence relatif à l'adaptation des programmes scolaires », ministère de l'Éducation nationale, du Préscolaire et des Sports, direction des curricula, janvier 2024 (copie sur moutamadris.ma). Le texte est issu d'un OCR : les titres ont été recoupés entre les versions arabe et française. Ce document porte sur l'année 2023-2024. Sa validité en 2026-2027 n'est pas vérifiée.
+
+### Contenus supprimés du programme allégé (liste officielle)
+
+- SVT 1re année : comparaison des régimes carnivore et herbivore ; production de matière et flux d'énergie ; rappels sur les états et le cycle de l'eau.
+- SVT 2e année : modèle de structure interne du globe ; métamorphisme ; formation des chaînes de montagnes ; reproduction asexuée chez les végétaux.
+- SVT 3e année : circulation sanguine ; excrétion urinaire ; caractéristiques du muscle squelettique ; dysfonctionnement du système immunitaire (allergie, SIDA) ; problèmes liés à la transfusion sanguine.
+- Maths 1re année : périmètres et aires ; prisme droit et cylindre. Maths 3e année : angles inscrits et angles au centre ; triangles isométriques et semblables. Maths 2e année : aucun contenu supprimé.
+- Physique-chimie : le document ne donne pas de liste explicite de suppressions.
+
+### Étiquettes « Approfondissement » posées dans l'application
+
+- SVT, chapitres entiers : s3-4 (excrétion urinaire) et s3-11 (dysfonctionnements immunitaires).
+- SVT, leçons : s1-3 « Animaux » (régimes), s2-1 « La Terre » et « Montagnes », s3-3 « Cœur » (circulation), s3-8 « Propriétés » (muscle).
+- Maths, chapitres : c1-15 (prismes et cylindres), c3-8 (angles inscrits), c3-9 (triangles isométriques et semblables). Le chapitre « périmètres et aires » de la 1re année n'existe pas comme chapitre séparé.
+
+### Termes arabes alignés sur la terminologie officielle
+
+« الجراثيم » (et non الميكروبات), « الإبراز البولي » (et non الإطراح البولي), « اضطرابات جهاز المناعة », « التنفس في أوساط مختلفة ». Le titre français du chapitre s3-9 devient « Les micro-organismes », comme dans la version française du document.
+
+### Lacunes confirmées en physique-chimie (contenus conservés dans le programme allégé)
+
+- 1re année : chaleur et température, conservation de la masse et du volume ; influence de la résistance sur l'intensité (partie ordinaire).
+- 3e année : trajectoire, mouvements uniforme, accéléré et retardé.
+Ces points restent à écrire.
+
+### Limites
+
+- Aucun fait scientifique n'est relié individuellement à une page de source. Le repère se fait au niveau du programme.
+- Les 19 énigmes du jour et les chapitres SVT 1re et 2e année n'ont pas été relus par un enseignant.

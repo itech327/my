@@ -285,7 +285,7 @@
       { short: 'Le sang', title: 'La composition du sang', intro: 'Centrifuge le sang pour séparer ses constituants.', build: sang,
         retenir: ['Le sang contient du <b>plasma</b> et des cellules : globules rouges, globules blancs et plaquettes.', 'Les globules rouges transportent le dioxygène, les globules blancs défendent l’organisme, les plaquettes participent à la coagulation.'],
         ar: { e: ['الدم سائل يتكوّن من البلازما والخلايا الدموية: الكريات الحمراء تنقل الأوكسجين، الكريات البيضاء تدافع عن الجسم، والصفائح الدموية تساهم في التخثّر.'], u: 'اضغط «Centrifuger» لفصل مكوّنات الدم كما يحدث في المختبر.', w: [['plasma', 'البلازما'], ['globule rouge', 'كرية حمراء'], ['globule blanc', 'كرية بيضاء'], ['plaquette', 'صفيحة دموية'], ['centrifugation', 'الطرد المركزي']] } },
-      { short: 'Cœur', title: 'Le cœur et la double circulation', intro: 'Suis le sang dans la petite et la grande circulation. Change la fréquence cardiaque.', build: coeur,
+      { label: 'Leçon 2 · ' + APPRO, short: 'Cœur', title: 'Le cœur et la double circulation', intro: 'Suis le sang dans la petite et la grande circulation. Change la fréquence cardiaque.', build: coeur,
         retenir: ['Le cœur a quatre cavités : deux oreillettes et deux ventricules.', '<b>Petite circulation</b> : cœur droit → poumons → cœur gauche.', '<b>Grande circulation</b> : cœur gauche → organes → cœur droit.', 'Débit cardiaque = fréquence cardiaque × volume d’éjection systolique.'],
         ar: { e: ['للقلب أربع حجرات: أذينان وبُطينان. الدورة الدموية عند الإنسان مزدوجة ومغلقة: الدورة الصغرى (القلب الأيمن ← الرئتان ← القلب الأيسر) والدورة الكبرى (القلب الأيسر ← الأعضاء ← القلب الأيمن).', 'التدفّق القلبي = التواتر القلبي × حجم الدفع الانقباضي.'], u: 'اختر نوع الدورة من الأعلى. حرّك المنزلق لتغيير عدد نبضات القلب وشاهد التدفّق القلبي.', w: [['oreillette', 'أذين'], ['ventricule', 'بطين'], ['artère', 'شريان'], ['veine', 'وريد'], ['débit cardiaque', 'التدفّق القلبي'], ['fréquence cardiaque', 'التواتر القلبي']] } }
     ]; },
@@ -346,7 +346,7 @@
     ui.text(el, 'Le modèle est qualitatif : le rein ajuste le volume et la concentration pour garder l’eau du corps constante.', 'px-cap');
     draw();
   }
-  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition · ' + APPRO, title: 'L’excrétion urinaire chez l’Homme', ar: 'الإطراح البولي عند الإنسان',
+  PC.chapter({ id: 's3-4', lazy: true, eyebrow: EY + 'Nutrition · ' + APPRO, title: 'L’excrétion urinaire chez l’Homme', ar: 'الإبراز البولي عند الإنسان',
     lessons: function () { return [
       { short: 'Appareil urinaire', title: 'L’appareil urinaire', intro: 'Suis le trajet de l’urine, du rein jusqu’à l’extérieur.', build: appareil,
         retenir: ['L’appareil urinaire comprend : deux reins, deux uretères, la vessie et l’urètre.', 'Le sang arrive au rein par l’<b>artère rénale</b> et repart par la <b>veine rénale</b>, appauvri en urée.'],
@@ -435,7 +435,7 @@
     lessons: function () { return [
       { short: 'Phagocytose', title: 'Les défenses de l’organisme', intro: 'Observe comment un phagocyte détruit un microbe.', build: phago,
         retenir: ['La peau et les muqueuses sont des barrières naturelles.', 'Les <b>phagocytes</b> (globules blancs) ingèrent et digèrent les microbes : c’est la <b>phagocytose</b>.'],
-        ar: { e: ['الجلد والأغشية المخاطية حواجز طبيعية تمنع دخول الميكروبات. إذا دخل ميكروب إلى الجسم تلتهمه الخلايا البلعمية (نوع من الكريات البيضاء) وتهضمه: هذه هي الالتهام (phagocytose).'], u: 'اضغط «Étape suivante» لتشاهد خطوات الالتهام واحدة بعد أخرى.', w: [['microbe', 'ميكروب'], ['phagocyte', 'خلية بلعمية'], ['phagocytose', 'الالتهام'], ['immunité', 'المناعة']] } },
+        ar: { e: ['الجلد والأغشية المخاطية حواجز طبيعية تمنع دخول الجراثيم. إذا دخل ميكروب إلى الجسم تلتهمه الخلايا البلعمية (نوع من الكريات البيضاء) وتهضمه: هذه هي الالتهام (phagocytose).'], u: 'اضغط «Étape suivante» لتشاهد خطوات الالتهام واحدة بعد أخرى.', w: [['microbe', 'ميكروب'], ['phagocyte', 'خلية بلعمية'], ['phagocytose', 'الالتهام'], ['immunité', 'المناعة']] } },
       { short: 'Anticorps', title: 'Antigènes et anticorps', intro: 'Un anticorps est spécifique : il s’ajuste à un seul antigène.', build: anticorps,
         retenir: ['Un <b>antigène</b> est une molécule étrangère reconnue par l’organisme.', 'Les lymphocytes fabriquent des <b>anticorps</b> spécifiques de l’antigène.'],
         ar: { e: ['المستضدّ (antigène) جزيء غريب يتعرّف عليه الجسم. تُنتج الخلايا اللمفاوية أجسامًا مضادّة (anticorps) خاصة بكل مستضدّ، تتّحد معه كما يتّحد المفتاح بقفله.'], u: 'اختر الجسم المضاد الذي ينطبق شكله على المستضدّ.', w: [['antigène', 'مستضدّ'], ['anticorps', 'جسم مضاد'], ['lymphocyte', 'خلية لمفاوية'], ['spécifique', 'نوعي (خاص)']] } },
@@ -635,7 +635,7 @@
   }
   PC.chapter({ id: 's3-8', lazy: true, eyebrow: EY + 'Relation', title: 'Le système musculaire', ar: 'الجهاز العضلي',
     lessons: function () { return [
-      { short: 'Propriétés', title: 'Les propriétés du muscle', intro: 'Trois propriétés expliquent le fonctionnement d’un muscle squelettique.', build: proprietes,
+      { label: 'Leçon 1 · ' + APPRO, short: 'Propriétés', title: 'Les propriétés du muscle', intro: 'Trois propriétés expliquent le fonctionnement d’un muscle squelettique.', build: proprietes,
         retenir: ['Le muscle squelettique est <b>excitable</b>, <b>contractile</b> et <b>élastique</b>.', 'Les muscles sont reliés aux os par des <b>tendons</b>.'],
         ar: { e: ['العضلة الهيكلية لها ثلاث خاصيات: القابلية للتنبّه (تستجيب للتنبيه)، والانقباضية (تقصر وتتسمّك عند الانقباض)، والمرونة (ترجع إلى طولها الأصلي بعد الانقباض). ترتبط العضلات بالعظام بواسطة الأوتار.'], u: 'اضغط على كل خاصية لتقرأ تعريفها.', w: [['excitabilité', 'القابلية للتنبّه'], ['contractilité', 'الانقباضية'], ['élasticité', 'المرونة'], ['tendon', 'وتر']] } },
       { short: 'Énergie', title: 'La contraction et l’énergie du muscle', intro: 'Suis ce que reçoit et ce que rejette un muscle qui travaille.', build: energieMuscle,
@@ -681,17 +681,17 @@
       { id: 'an', t: 'Antibiotiques', c: '#e9b84a', d: 'Les antibiotiques agissent seulement contre les <b>bactéries</b>, pas contre les virus. On les prend sur ordonnance, sans arrêter le traitement trop tôt.' }
     ]);
   }
-  PC.chapter({ id: 's3-9', lazy: true, eyebrow: EY + 'Santé', title: 'Les microbes', ar: 'الميكروبات',
+  PC.chapter({ id: 's3-9', lazy: true, eyebrow: EY + 'Santé', title: 'Les micro-organismes', ar: 'الجراثيم',
     lessons: function () { return [
       { short: 'Diversité', title: 'La diversité des microorganismes', intro: 'Touche chaque onglet pour découvrir les grands groupes de microbes.', build: diversite,
         retenir: ['Les microbes sont des êtres <b>microscopiques</b> : bactéries, virus, champignons microscopiques et protozoaires.', 'Certains sont utiles, d’autres sont <b>pathogènes</b> : ils provoquent des maladies.'],
-        ar: { e: ['الميكروبات كائنات مجهرية لا تُرى بالعين المجردة: البكتيريا، والفيروسات، والفطريات المجهرية، والأوليات. بعضها نافع، مثل بكتيريا اللبن وخميرة الخبز، وبعضها ممرض يسبب الأمراض. الفيروسات أصغر من البكتيريا وليس لها بنية خلوية، ولا تتكاثر إلا داخل خلية حية.'], u: 'اضغط على كل لسان لتتعرف على المجموعة وأمثلتها.', w: [['microbe', 'ميكروب'], ['bactérie', 'بكتيريا'], ['virus', 'فيروس'], ['champignon', 'فطر'], ['protozoaire', 'أولي'], ['pathogène', 'ممرض']] } },
+        ar: { e: ['الجراثيم كائنات مجهرية لا تُرى بالعين المجردة: البكتيريا، والفيروسات، والفطريات المجهرية، والأوليات. بعضها نافع، مثل بكتيريا اللبن وخميرة الخبز، وبعضها ممرض يسبب الأمراض. الفيروسات أصغر من البكتيريا وليس لها بنية خلوية، ولا تتكاثر إلا داخل خلية حية.'], u: 'اضغط على كل لسان لتتعرف على المجموعة وأمثلتها.', w: [['microbe', 'ميكروب'], ['bactérie', 'بكتيريا'], ['virus', 'فيروس'], ['champignon', 'فطر'], ['protozoaire', 'أولي'], ['pathogène', 'ممرض']] } },
       { short: 'Dangers', title: 'Les dangers des microbes pathogènes', intro: 'Suis les étapes : de l’entrée du microbe à la maladie.', build: danger,
         retenir: ['Un microbe pathogène <b>entre</b> dans l’organisme, <b>se multiplie</b>, puis peut libérer des <b>toxines</b>.', 'Les maladies infectieuses peuvent être <b>contagieuses</b>.'],
-        ar: { e: ['يدخل الميكروب الممرض إلى الجسم عبر الأنف أو الفم أو جرح أو الدم، ثم يتكاثر بسرعة، وقد يفرز سموما تُتلف الخلايا. تظهر الأعراض مثل الحمى والألم والتعب. ويمكن أن تنتقل بعض الأمراض من شخص إلى آخر، وهذا هو العدوى.'], u: 'اضغط «Étape suivante» لتتبع مراحل الإصابة.', w: [['toxine', 'سمّ ميكروبي'], ['contagion', 'عدوى'], ['maladie infectieuse', 'مرض معدٍ']] } },
+        ar: { e: ['يدخل الجرثوم الممرض إلى الجسم عبر الأنف أو الفم أو جرح أو الدم، ثم يتكاثر بسرعة، وقد يفرز سموما تُتلف الخلايا. تظهر الأعراض مثل الحمى والألم والتعب. ويمكن أن تنتقل بعض الأمراض من شخص إلى آخر، وهذا هو العدوى.'], u: 'اضغط «Étape suivante» لتتبع مراحل الإصابة.', w: [['toxine', 'سمّ ميكروبي'], ['contagion', 'عدوى'], ['maladie infectieuse', 'مرض معدٍ']] } },
       { short: 'Se protéger', title: 'Se protéger des microbes', intro: 'Quels gestes limitent les infections ?', build: proteger,
         retenir: ['Hygiène des mains, des aliments et de l’eau, soin des plaies et vaccination protègent des microbes.', 'Les <b>antibiotiques</b> sont inefficaces contre les virus.'],
-        ar: { e: ['للوقاية من الميكروبات: غسل اليدين بالصابون، وغسل الخضر والفواكه وطهي اللحم جيدا وشرب ماء صالح للشرب، وتنظيف الجروح وتعقيمها، والتلقيح. المضادات الحيوية تؤثر في البكتيريا فقط ولا تؤثر في الفيروسات، ويجب أخذها بوصفة الطبيب.'], w: [['antibiotique', 'مضاد حيوي'], ['vaccin', 'لقاح'], ['désinfecter', 'عقّم']] } }
+        ar: { e: ['للوقاية من الجراثيم: غسل اليدين بالصابون، وغسل الخضر والفواكه وطهي اللحم جيدا وشرب ماء صالح للشرب، وتنظيف الجروح وتعقيمها، والتلقيح. المضادات الحيوية تؤثر في البكتيريا فقط ولا تؤثر في الفيروسات، ويجب أخذها بوصفة الطبيب.'], w: [['antibiotique', 'مضاد حيوي'], ['vaccin', 'لقاح'], ['désinfecter', 'عقّم']] } }
     ]; },
     quiz: [
       { q: 'Quel microbe n’a pas de structure cellulaire ?', o: ['Le virus', 'La bactérie', 'Le protozoaire'], a: 0, e: 'Un virus se multiplie seulement dans une cellule vivante.' },
@@ -749,7 +749,7 @@
     lessons: function () { return [
       { short: 'Non spécifique', title: 'La réponse immunitaire non spécifique', intro: 'Avance étape par étape : de la blessure à la destruction des microbes.', build: nonSpec,
         retenir: ['La <b>réponse non spécifique</b> est immédiate et identique pour tous les microbes.', 'Elle comprend les barrières (peau), l’<b>inflammation</b> et la <b>phagocytose</b>.'],
-        ar: { e: ['الاستجابة المناعية غير النوعية فورية وتكون نفسها تجاه كل الميكروبات. تبدأ بالحواجز الطبيعية مثل الجلد، فإذا دخل الميكروب يحدث التهاب: احمرار وحرارة وانتفاخ وألم، ثم تأتي الخلايا البلعمية وتلتهم الميكروبات.'], u: 'اضغط «Étape suivante» لتتبع مراحل الاستجابة.', w: [['réponse non spécifique', 'استجابة غير نوعية'], ['inflammation', 'التهاب'], ['phagocyte', 'خلية بلعمية'], ['phagocytose', 'الالتهام']] } },
+        ar: { e: ['الاستجابة المناعية غير النوعية فورية وتكون نفسها تجاه كل الجراثيم. تبدأ بالحواجز الطبيعية مثل الجلد، فإذا دخل الجرثوم يحدث التهاب: احمرار وحرارة وانتفاخ وألم، ثم تأتي الخلايا البلعمية وتلتهم الجراثيم.'], u: 'اضغط «Étape suivante» لتتبع مراحل الاستجابة.', w: [['réponse non spécifique', 'استجابة غير نوعية'], ['inflammation', 'التهاب'], ['phagocyte', 'خلية بلعمية'], ['phagocytose', 'الالتهام']] } },
       { short: 'Humorale', title: 'La réponse spécifique à médiation humorale', intro: 'Les anticorps circulent dans le sang : suis leur fabrication.', build: humorale,
         retenir: ['Un <b>lymphocyte B</b> reconnaît un antigène, se multiplie et donne des <b>plasmocytes</b>.', 'Les plasmocytes fabriquent des <b>anticorps</b> spécifiques, libérés dans le sang.'],
         ar: { e: ['في الاستجابة النوعية ذات الوسيط الخلطي تتعرف اللمفاويات B على المستضد، وتتكاثر وتتحول إلى خلايا بلازمية (بلازموسيت). تصنع هذه الخلايا أجساما مضادة نوعية تنتقل في الدم وتتثبت على المستضد، ثم تلتهم الخلايا البلعمية المعقد المتكون.'], u: 'اضغط «Étape suivante» لتتبع تصنيع الأجسام المضادة.', w: [['lymphocyte B', 'لمفاوية B'], ['plasmocyte', 'خلية بلازمية'], ['anticorps', 'جسم مضاد'], ['antigène', 'مستضد']] } },
@@ -827,7 +827,7 @@
       { id: 'is', t: 'Infections', c: C, d: 'Les infections sexuellement transmissibles (IST) se préviennent. Le préservatif protège. Dépister et soigner tôt évite les complications.' }
     ]);
   }
-  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé · ' + APPRO, title: 'Les dysfonctionnements du système immunitaire', ar: 'اختلالات الجهاز المناعي',
+  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé · ' + APPRO, title: 'Les dysfonctionnements du système immunitaire', ar: 'اضطرابات جهاز المناعة',
     lessons: function () { return [
       { short: 'SIDA', title: 'Le SIDA', intro: 'Comment le VIH affaiblit les défenses de l’organisme ?', build: sida,
         retenir: ['Le <b>VIH</b> infecte et détruit les <b>lymphocytes T4</b>.', 'Le <b>SIDA</b> est le stade où l’organisme ne se défend plus correctement : des maladies graves apparaissent.'],
@@ -963,7 +963,7 @@
   }
   PC.chapter({ id: 's2-1', lazy: true, eyebrow: EY2 + 'Géologie', title: 'La tectonique des plaques', ar: 'تكتونية الصفائح',
     lessons: function () { return [
-      { short: 'La Terre', title: 'La structure interne de la Terre', intro: 'Touche chaque couche pour découvrir sa nature.', build: terre,
+      { label: 'Leçon 1 · ' + APPRO, short: 'La Terre', title: 'La structure interne de la Terre', intro: 'Touche chaque couche pour découvrir sa nature.', build: terre,
         retenir: ['La Terre comprend la <b>croûte</b>, le <b>manteau</b> et le <b>noyau</b>.', 'La <b>lithosphère</b> rigide (croûte et haut du manteau) est découpée en plaques.'],
         ar: { e: ['تتكون الأرض من القشرة والجبة والنواة. القشرة أرق طبقة، والجبة صخور ساخنة سميكة، والنواة الخارجية سائلة من الحديد والنيكل، والنواة الداخلية صلبة. القشرة وجزء من الجبة العليا يكوّنان الغلاف الصخري الصلب، وهو مقسّم إلى صفائح.'], u: 'اضغط على كل طبقة لتقرأ خصائصها.', w: [['croûte', 'القشرة'], ['manteau', 'الجبة'], ['noyau', 'النواة'], ['lithosphère', 'الغلاف الصخري']] } },
       { short: 'Dérive', title: 'La dérive des continents', intro: 'Quels arguments ont convaincu Wegener ?', build: derive,
@@ -978,7 +978,7 @@
       { short: 'Volcans', title: 'Les volcans', intro: 'De la chambre magmatique à la coulée de lave.', build: function (el) { volcan(el); volcanTypes(el); },
         retenir: ['Un volcan rejette du <b>magma</b> (appelé lave en surface), des gaz et des cendres.', 'Les volcans sont surtout situés aux limites de plaques et aux points chauds.'],
         ar: { e: ['البركان فتحة في القشرة يخرج منها الصهارة، وتسمى حمما عند وصولها إلى السطح، مع غازات ورماد. تتراكم الصهارة في غرفة صهارية ثم تصعد عبر المدخنة وتخرج من الفوهة. من البراكين ما هو دفقي حممه سائلة، ومنها ما هو انفجاري عنيف. توجد البراكين غالبا عند حدود الصفائح وفوق النقاط الساخنة. لا يوجد بركان نشط في المغرب.'], u: 'اضغط «Étape suivante» ثم اختر نوع البركان.', w: [['volcan', 'بركان'], ['magma', 'صهارة'], ['lave', 'حمم'], ['cratère', 'فوهة']] } },
-      { short: 'Montagnes', title: 'La formation des chaînes de montagnes', intro: 'Avance étape par étape pour voir naître une chaîne.', build: montagnes,
+      { label: 'Leçon 6 · ' + APPRO, short: 'Montagnes', title: 'La formation des chaînes de montagnes', intro: 'Avance étape par étape pour voir naître une chaîne.', build: montagnes,
         retenir: ['Les chaînes de montagnes se forment à la <b>convergence</b> de plaques.', 'Les roches se plient (plis) et se cassent (failles).'],
         ar: { e: ['تتكون سلاسل الجبال عند تقارب صفيحتين قاريتين. تنضغط الصخور والرواسب بينهما فتنثني (طيّات) وتنكسر (صدوع)، ثم تتسمك القشرة وترتفع فتظهر سلسلة جبلية. من الأمثلة جبال الهيمالايا، وجبال الأطلس التي نتجت جزئيا عن تقارب إفريقيا وأوروبا.'], u: 'اضغط «Étape suivante» لتتبع تكوّن الجبال.', w: [['chaîne de montagnes', 'سلسلة جبلية'], ['pli', 'طية'], ['compression', 'انضغاط']] } }
     ]; },
@@ -1259,7 +1259,7 @@
       { id: 'ph', t: 'Photosynthèse', c: C, d: 'À la lumière, les parties vertes font aussi la <b>photosynthèse</b> : elles consomment du dioxyde de carbone et rejettent du dioxygène, souvent en plus grande quantité que la respiration.' }
     ]);
   }
-  PC.chapter({ id: 's1-2', lazy: true, eyebrow: EY1 + 'Respiration', title: 'La respiration chez les êtres vivants', ar: 'التنفس عند الكائنات الحية',
+  PC.chapter({ id: 's1-2', lazy: true, eyebrow: EY1 + 'Respiration', title: 'La respiration chez les êtres vivants', ar: 'التنفس في أوساط مختلفة',
     lessons: function () { return [
       { short: 'Animaux', title: 'La respiration des animaux', intro: 'Dans l’eau ou dans l’air : quel organe pour quel milieu ?', build: respAnim,
         retenir: ['Les poissons respirent par des <b>branchies</b>, les mammifères et les oiseaux par des <b>poumons</b>.', 'Les insectes utilisent des <b>trachées</b>, le ver de terre sa <b>peau</b>.'],
@@ -1310,7 +1310,7 @@
       { short: 'Plantes', title: 'La nutrition des plantes vertes', intro: 'Suis le trajet de l’eau et du dioxyde de carbone dans la plante.', build: nutriVeg,
         retenir: ['Les racines absorbent l’<b>eau</b> et les <b>sels minéraux</b> (sève brute).', 'Les feuilles fabriquent de la matière organique par <b>photosynthèse</b> (sève élaborée).'],
         ar: { e: ['تمتص الجذور الماء والأملاح المعدنية فتكوّن العصارة الخام التي تصعد في الساق إلى الأوراق. تمتص الأوراق ثنائي أكسيد الكربون من الهواء. وبفضل الضوء واليخضور تصنع النبتة مادة عضوية، وهذا هو التركيب الضوئي، وتطرح الأكسجين. تتوزع المواد المصنّعة في العصارة المنتشرة (العصارة المُصنَّعة) أو تُخزّن في البذور والدرنات والثمار.'], u: 'اضغط «Étape suivante» لتتبع التغذية.', w: [['sève brute', 'عصارة خام'], ['sève élaborée', 'عصارة مُصنَّعة'], ['chlorophylle', 'يخضور'], ['sels minéraux', 'أملاح معدنية']] } },
-      { short: 'Animaux', title: 'Les régimes alimentaires des animaux', intro: 'Les dents et le régime : quel lien ?', build: regimeAnim,
+      { label: 'Leçon 3 · ' + APPRO, short: 'Animaux', title: 'Les régimes alimentaires des animaux', intro: 'Les dents et le régime : quel lien ?', build: regimeAnim,
         retenir: ['Le <b>carnivore</b> mange de la chair, l’<b>herbivore</b> des végétaux, l’<b>omnivore</b> les deux.', 'Les dents sont adaptées au régime.'],
         ar: { e: ['الحيوان آكل اللحوم له أسنان مدببة وقاطعة، والحيوان آكل الأعشاب له قواطع وأضراس عريضة مسطحة لطحن النباتات وجهازه الهضمي طويل، والحيوان القارت يأكل اللحوم والنباتات معا. شكل الأسنان يتلاءم مع النظام الغذائي.'], w: [['carnivore', 'آكل اللحوم'], ['herbivore', 'آكل الأعشاب'], ['dent', 'سن']] } }
     ]; },
@@ -1490,7 +1490,7 @@
   ];
   var CH = [
     ['s1-1', 'Le milieu naturel et la cellule', 'الوسط الطبيعي والخلية', 'Le milieu', '1'],
-    ['s1-2', 'La respiration chez les êtres vivants', 'التنفس عند الكائنات الحية', 'Respiration', '1'],
+    ['s1-2', 'La respiration chez les êtres vivants', 'التنفس في أوساط مختلفة', 'Respiration', '1'],
     ['s1-3', 'La nutrition et les régimes alimentaires', 'التغذية والأنظمة الغذائية', 'Nutrition', '1'],
     ['s1-4', 'Chaînes alimentaires et équilibres naturels', 'السلاسل الغذائية والتوازنات الطبيعية', 'Équilibres', '1'],
     ['s1-5', 'La classification des êtres vivants', 'تصنيف الكائنات الحية', 'Classification', '1'],
@@ -1505,13 +1505,13 @@
     ['s3-6', 'L’éducation nutritionnelle', 'التربية الغذائية', 'Nutrition', '3'],
     ['s3-2', 'La respiration chez l’Homme', 'التنفّس عند الإنسان', 'Nutrition', '3'],
     ['s3-3', 'Le sang et la circulation sanguine', 'الدم والدورة الدموية', 'Nutrition', '3'],
-    ['s3-4', 'L’excrétion urinaire chez l’Homme', 'الإطراح البولي عند الإنسان', 'Nutrition', '3'],
+    ['s3-4', 'L’excrétion urinaire chez l’Homme', 'الإبراز البولي عند الإنسان', 'Nutrition', '3'],
     ['s3-7', 'Le système nerveux', 'الجهاز العصبي', 'Relation', '3'],
     ['s3-8', 'Le système musculaire', 'الجهاز العضلي', 'Relation', '3'],
-    ['s3-9', 'Les microbes', 'الميكروبات', 'Santé', '3'],
+    ['s3-9', 'Les micro-organismes', 'الجراثيم', 'Santé', '3'],
     ['s3-5', 'L’immunité', 'المناعة', 'Santé', '3'],
     ['s3-10', 'Les réponses immunitaires', 'الاستجابات المناعية', 'Santé', '3'],
-    ['s3-11', 'Les dysfonctionnements du système immunitaire', 'اختلالات الجهاز المناعي', 'Santé', '3']
+    ['s3-11', 'Les dysfonctionnements du système immunitaire', 'اضطرابات جهاز المناعة', 'Santé', '3']
   ];
   var APPROS = { 's3-4': 1, 's3-11': 1 };
   function home() {
@@ -1527,7 +1527,21 @@
       });
       box.appendChild(grid);
     });
+    var REF = [
+      ['1<sup>re</sup> année', 'الأولى', ['La relation entre les êtres vivants et leurs interactions avec le milieu naturel', 'Les phénomènes géologiques externes'], ['العلاقات بين الكائنات الحية وتفاعلها مع الوسط', 'الظواهر الجيولوجية الخارجية'],
+        'Comparaison des régimes carnivore et herbivore ; production de matière et flux d’énergie ; rappels sur les états de l’eau et le cycle de l’eau.', 'الدراسة المقارنة للنظام الغذائي اللاحم والعاشب ؛ إنتاج المادة وتدفق الطاقة ؛ تذكير بحالات الماء ودورته.'],
+      ['2<sup>e</sup> année', 'الثانية', ['Les phénomènes géologiques internes', 'La reproduction des êtres vivants et la transmission des caractères héréditaires chez l’Homme'], ['الظواهر الجيولوجية الباطنية', 'التوالد عند الكائنات الحية وانتقال الصفات الوراثية عند الإنسان'],
+        'Modèle de structure interne du globe ; métamorphisme ; formation des chaînes de montagnes ; reproduction asexuée chez les végétaux.', 'نموذج البنية الداخلية للكرة الأرضية ؛ التحول ؛ تكوّن السلاسل الجبلية ؛ التوالد اللاجنسي عند النباتات.'],
+      ['3<sup>e</sup> année', 'الثالثة', ['Les fonctions de nutrition chez l’Homme et éducation nutritionnelle', 'Les fonctions de relation chez l’Homme et immunologie'], ['وظائف الاقتيات والتربية الغذائية', 'وظائف الربط وعلم المناعة'],
+        'Circulation sanguine ; excrétion urinaire ; caractéristiques du muscle squelettique ; dysfonctionnement du système immunitaire (allergie, SIDA) ; problèmes liés à la transfusion sanguine.', 'الدوران الدموي ؛ الإبراز البولي ؛ خاصيات العضلة الهيكلية ؛ اضطرابات جهاز المناعة (الحساسية، السيدا) ؛ المشاكل المتعلقة بنقل الدم.']
+    ];
+    var det = h('details', { 'class': 'lab-note appro-note' });
+    det.innerHTML = '<summary><b>Repères du programme officiel · مراجع البرنامج الرسمي</b></summary>' + REF.map(function (r) {
+      return '<p><b>' + r[0] + ' · <span dir="rtl" lang="ar">' + r[1] + '</span></b><br>' + r[2].map(function (x, i) { return 'Unité ' + (i + 1) + ' : ' + x + ' <span dir="rtl" lang="ar" style="display:block">الوحدة ' + (i + 1) + ': ' + r[3][i] + '</span>'; }).join('') +
+        '<em>Contenus supprimés du programme allégé : </em>' + r[4] + ' <span dir="rtl" lang="ar" style="display:block"><em>المضامين المحذوفة: </em>' + r[5] + '</span></p>';
+    }).join('') + '<p>Source : « Document de référence relatif à l’adaptation des programmes scolaires », ministère de l’Éducation nationale, du Préscolaire et des Sports, direction des curricula, janvier 2024. Document publié sur le site du ministère, men.gov.ma.<span dir="rtl" lang="ar" style="display:block">المصدر: وثيقة مرجعية في شأن تكييف البرامج الدراسية، وزارة التربية الوطنية والتعليم الأولي والرياضة، مديرية المناهج، يناير 2024. منشورة على موقع الوزارة men.gov.ma.</span></p>';
     box.appendChild(h('p', { 'class': 'lab-note appro-note' }, 'Repère : ces chapitres s’appuient sur le programme officiel de SVT du collège (version adaptée 2023-2024 du ministère). « Approfondissement » signale un chapitre hors de ce programme allégé, utile pour aller plus loin. <span dir="rtl" lang="ar" style="display:block;margin-top:4px">تستند الفصول إلى برنامج علوم الحياة والأرض الرسمي (النسخة المتكيفة 2023-2024). وسم «تعمّق» يعني فصلا خارج هذا البرنامج المخفف.</span>'));
+    box.appendChild(det);
   }
   PC.onHome = home; home();
   window.addEventListener('load', function () { PC.route(); });

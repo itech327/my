@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-+m+YCOaHioQh8pqrdmBWaPYqTSVaKIq6tM8oVH4LpQs=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-wTPyhQrUUCzWWecsOb4onkVCtZA+98GYaKz4lnjXyDY=' 'sha256-HpTjGq7PoNP8QPazRJ02O1Srx726OnqZojGHhllzBPE=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-Vn7tT0Xe221AuikET0N2ful6vPJyrmz7/8gIqfloZw0=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-LJbYP6ej880zDVt8ebWRx3zJ2tARIVaeBJW12fyejiw=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-UWja8tJhAT5V+OXPza5F/s/lSm8BW5E631mcIR+QVc8=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-wTPyhQrUUCzWWecsOb4onkVCtZA+98GYaKz4lnjXyDY=' 'sha256-HpTjGq7PoNP8QPazRJ02O1Srx726OnqZojGHhllzBPE=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-Vn7tT0Xe221AuikET0N2ful6vPJyrmz7/8gIqfloZw0=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-LJbYP6ej880zDVt8ebWRx3zJ2tARIVaeBJW12fyejiw=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie.html">
@@ -827,6 +827,8 @@ document.addEventListener('click',function(e){
     'body.lab-has-bar{padding-bottom:96px}',
     '.lab-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);display:inline-block}',
     '.lab-dot.off{background:var(--muted)}',
+    '.lab-balance{margin:16px 0;padding:10px 14px;border-inline-start:3px solid var(--teal);background:var(--surface);border-radius:8px;font-size:14px}',
+    '.lab-balance .lab-ar{display:block;margin-top:4px}',
     '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
     '.lab-riddle svg{width:56px;height:56px}',
     '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
@@ -1021,7 +1023,7 @@ document.addEventListener('click',function(e){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -1384,7 +1386,9 @@ document.addEventListener('click',function(e){
         var again = h('button', { type: 'button', 'class': 'btn' }, 'Nouvelle série'); again.addEventListener('click', run); act.appendChild(again);
         if (lvl && lvl < 4 && pct >= 80) { var up = h('button', { type: 'button', 'class': 'btn' }, 'Niveau suivant'); up.addEventListener('click', function () { level = lvl + 1; drawTabs(); intro(); run(); }); act.appendChild(up); }
         if (Sess.cur()) { var rp = h('button', { type: 'button', 'class': 'btn ghost' }, 'Mon rapport'); rp.addEventListener('click', function () { openReport(Sess.cur()); }); act.appendChild(rp); }
-        s.appendChild(act); holder.innerHTML = ''; holder.appendChild(s);
+        s.appendChild(act);
+        if (balanceDue(Date.now())) { s.appendChild(balanceNote('series')); store.set('lab_bal', Date.now()); }
+        holder.innerHTML = ''; holder.appendChild(s);
         drawTabs();
         try { s.scrollIntoView({ block: 'center', behavior: reduceMotion() ? 'auto' : 'smooth' }); } catch (_) {}
       }
@@ -1657,7 +1661,25 @@ document.addEventListener('click',function(e){
   }
   Lab.riddleCard = riddleCard;
 
+  /* mot d'équilibre : la plateforme complète la classe, elle ne la remplace pas */
+  var BAL = {
+    foot: ['Cette plateforme accompagne ton apprentissage et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
+      'هذه المنصة رفيق لتعلّمك وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
+    series: ['Un mot sur l’équilibre : cette plateforme complète tes cours et ne les remplace pas. Ton établissement et tes enseignantes et enseignants restent ta référence. Note ce que tu n’as pas compris et pose tes questions en classe.',
+      'كلمة في التوازن: هذه المنصة تكمّل دروسك ولا تغني عنها. مؤسستك وأساتذتك هم المرجع. دوّن ما لم تفهمه واطرحه في القسم.']
+  };
+  function balanceNote(kind) { return h('p', { 'class': 'lab-balance lab-noprint' }, esc(BAL[kind][0]) + '<span class="lab-ar" dir="rtl" lang="ar">' + esc(BAL[kind][1]) + '</span>'); }
+  function balanceDue(now) { var t = Number(store.get('lab_bal', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
+  Lab.balanceDue = balanceDue;
+  function footNote() {
+    if (document.querySelector('.lab-balance.foot')) return;
+    var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
+    if (f && f.parentNode) f.parentNode.insertBefore(n, f);
+    else { var w = document.querySelector('.wrap'); if (w) w.appendChild(n); }
+  }
+
   function boot() {
+    try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
     var skip = false; try { skip = sessionStorage.getItem('lab_skip') === '1'; } catch (_) {}
