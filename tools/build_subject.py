@@ -22,7 +22,9 @@ def subj(js): return js.replace('/*__SUBJECT__*/null', SUBJ)
 
 if os.path.isdir(OUT): shutil.rmtree(OUT)
 os.makedirs(OUT)
-for d in ('fonts', 'icons'): shutil.copytree(os.path.join(ROOT, d), os.path.join(OUT, d))
+shutil.copytree(os.path.join(ROOT, 'fonts'), os.path.join(OUT, 'fonts'))
+_ic = os.path.join(ROOT, 'matiere', 'icons')
+shutil.copytree(_ic if os.path.isdir(_ic) else os.path.join(ROOT, 'icons'), os.path.join(OUT, 'icons'))
 for f in ('lab/lab.js', 'lab/notify-config.js'):
     wr(f, rd(f))
 
