@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-h1zhQ9ZSU7Kc3HjXkUs1roa/SePFWM1/V/2jpnihG7s=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-lGxciOndFra66o/OYdare+PNHcJWJBymEjHjmVhN8wY=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-qTIUh4glVs/J0eJ9UVnXJC3c7gIQDcX7cuwayjsZSVQ=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-FeYQtcJxe7YTBypW1lYQrxCQwuobkiHjco2kJ/AhRQY=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6714,6 +6714,72 @@ G.nsub=function(s){
   return num('Calcule '+rl(a)+' − '+rl(b)+' − '+rl(c)+'.',a-b-c,'Je remplace chaque soustraction par l’addition de l’opposé : '+rl(a)+' + '+rl(-b)+' + '+rl(-c)+' = '+sg(a-b-c)+'.','Soustraire un nombre, c’est ajouter son opposé, deux fois.');
 };
 
+/* ---------- 1AC : expressions, décimaux, fractions, problèmes, produit ---------- */
+function pf(n,d){return n<0?'('+fr(n,d)+')':fr(n,d)}
+G.nexp=function(s){
+  var a,b,c,d,x,t,P,N,i,list,ex;
+  if(s===1){
+    a=ri(1,20);b=ri(1,20);c=ri(1,20);
+    return num('Calcule '+a+' − '+b+' + '+c+'.',a-b+c,'Je transforme la soustraction : '+a+' + '+rl(-b)+' + '+c+'. Positifs : '+a+' + '+c+' = '+(a+c)+'. Négatif : '+sg(-b)+'. Résultat : '+(a+c)+' + '+rl(-b)+' = '+sg(a-b+c)+'.','Soustraire un nombre, c’est ajouter son opposé.');
+  }
+  if(s===2){
+    a=nz(-12,12);b=nz(-12,12);c=nz(-12,12);d=nz(-12,12);
+    list=[a,-b,c,-d];P=0;N=0;
+    for(i=0;i<4;i++){if(list[i]>0)P+=list[i];else N+=list[i]}
+    return num('Calcule '+rl(a)+' − '+rl(b)+' + '+rl(c)+' − '+rl(d)+'.',a-b+c-d,'Je transforme les soustractions : '+list.map(rl).join(' + ')+'. Somme des positifs : '+sg(P)+'. Somme des négatifs : '+sg(N)+'. Résultat : '+rl(P)+' + '+rl(N)+' = '+sg(P+N)+'.','Remplace chaque soustraction par l’addition de l’opposé, puis regroupe.');
+  }
+  x=ri(5,20);a=nz(-12,12);b=nz(-12,12);
+  return num('Calcule '+rl(x)+' + '+rl(a)+' − '+rl(b)+' + '+rl(-x)+'.',a-b,'Les nombres '+sg(x)+' et '+sg(-x)+' sont opposés : ils s’annulent. Il reste '+rl(a)+' − '+rl(b)+' = '+rl(a)+' + '+rl(-b)+' = '+sg(a-b)+'.','Cherche d’abord les nombres opposés.');
+};
+G.ndec=function(s){
+  var a,b,d,p,q,sub,r,sgn;
+  function dc(){return nz(-99,99)/10}
+  if(s===1){
+    sgn=ri(0,1)?1:-1;a=sgn*ri(11,99)/10;b=sgn*ri(11,99)/10;
+    r=Math.round((a+b)*10)/10;
+    return num('Calcule '+rl(a)+' + '+rl(b)+'.',r,'Les deux nombres ont le même signe ('+(sgn>0?'+':'−')+'). Je garde ce signe et j’additionne les valeurs absolues : '+sg(Math.abs(a))+' + '+sg(Math.abs(b))+' = '+sg(Math.abs(r))+'. Résultat : '+sg(r)+'.','Même signe : on garde le signe et on additionne les distances à 0.');
+  }
+  if(s===2){
+    do{a=dc();b=dc()}while(a*b>0||Math.abs(a)===Math.abs(b));
+    sub=ri(0,1);
+    if(sub){r=Math.round((a-b)*10)/10;
+      if(a*(-b)>0)return num('Calcule '+rl(a)+' − '+rl(b)+'.',r,'Soustraire '+rl(b)+', c’est ajouter son opposé : '+rl(a)+' + '+rl(-b)+'. Les deux nombres ont le même signe : j’additionne '+sg(Math.abs(a))+' + '+sg(Math.abs(b))+' = '+sg(Math.abs(r))+'. Résultat : '+sg(r)+'.','Soustraire, c’est ajouter l’opposé.');
+    }
+    r=Math.round((a+b)*10)/10;
+    return num('Calcule '+rl(a)+' + '+rl(b)+'.',r,'Les signes sont contraires. Je garde le signe du nombre de plus grande valeur absolue et je soustrais : '+sg(Math.max(Math.abs(a),Math.abs(b)))+' − '+sg(Math.min(Math.abs(a),Math.abs(b)))+' = '+sg(Math.abs(r))+'. Résultat : '+sg(r)+'.','Signes contraires : on soustrait les distances à 0.');
+  }
+  d=ri(3,9);p=nz(-9,9);q=nz(-9,9);sub=ri(0,1);
+  if(sub){return num('Calcule '+pf(p,d)+' − '+pf(q,d)+' (décimal ou fraction).',(p-q)/d,'Soustraire, c’est ajouter l’opposé : '+pf(p,d)+' + '+pf(-q,d)+'. Même dénominateur : '+fr(p-q,d)+' = '+fs(p-q,d)+'.','Même dénominateur : on calcule avec les numérateurs.',{sol:fs(p-q,d),tol:6e-3});}
+  return num('Calcule '+pf(p,d)+' + '+pf(q,d)+' (décimal ou fraction).',(p+q)/d,'Même dénominateur : j’additionne les numérateurs relatifs '+rl(p)+' + '+rl(q)+' = '+sg(p+q)+'. Résultat : '+fr(p+q,d)+' = '+fs(p+q,d)+'.','Même dénominateur : on calcule avec les numérateurs.',{sol:fs(p+q,d),tol:6e-3});
+};
+G.npb=function(s){
+  var a,b,c,w,x,y,z;
+  if(s===1){
+    a=nz(-40,40);b=ri(10,60);c=ri(10,60);
+    return num('Le solde d’un compte est de '+sg(a)+' €. Il reçoit '+b+' € puis paie '+c+' €. Quel est le solde final, en euros ?',a+b-c,'Un gain s’écrit avec + et une perte avec −. Expression : '+rl(a)+' + '+b+' − '+c+' = '+sg(a+b)+' − '+c+' = '+sg(a+b-c)+'.','Reçu : +. Payé : −.',{u:'€'});
+  }
+  if(s===2){
+    a=nz(-10,10);b=ri(3,15);c=ri(3,15);
+    return num('À 6 h, la température est de '+sg(a)+' °C. Elle baisse de '+b+' °C puis elle monte de '+c+' °C. Quelle est la température finale, en °C ?',a-b+c,'Une baisse s’écrit avec − et une hausse avec +. Expression : '+rl(a)+' − '+b+' + '+c+' = '+sg(a-b)+' + '+c+' = '+sg(a-b+c)+'.','Baisse : −. Hausse : +.',{u:'°C'});
+  }
+  x=ri(5,20);y=ri(5,20);z=ri(5,20);w=ri(5,20);
+  return num('Dans un jeu, une équipe marque +'+x+' points, puis −'+y+' points, puis −'+z+' points, puis +'+w+' points. Quel est son score final ?',x-y-z+w,'Expression : '+sg(x)+' + '+rl(-y)+' + '+rl(-z)+' + '+sg(w)+'. Positifs : '+(x+w)+'. Négatifs : '+sg(-y-z)+'. Score : '+sg(x-y-z+w)+'.','Regroupe les gains, puis les pertes.');
+};
+G.nmul=function(s){
+  var a,b,sa,r,opts;
+  if(s===1){
+    a=ri(2,9);b=ri(2,9);sa=ri(0,1)?1:-1;
+    return num('Calcule '+rl(sa*a)+' × '+rl(-sa*b)+'.',-a*b,'Les signes sont différents : le produit est négatif. La valeur absolue est '+a+' × '+b+' = '+(a*b)+'. Résultat : '+sg(-a*b)+'.','Signes différents : le produit est négatif.');
+  }
+  if(s===2){
+    a=ri(2,12);b=ri(2,12);sa=ri(0,1)?1:-1;
+    opts=['positif','négatif','nul'];
+    return qcm('Quel est le signe du produit '+rl(sa*a)+' × '+rl(-sa*b)+' ?','négatif',['positif','nul'],'Un nombre est '+(sa>0?'positif':'négatif')+' et l’autre est '+(sa>0?'négatif':'positif')+'. Deux signes différents donnent un produit négatif.','Signes différents : le produit est négatif.');
+  }
+  a=ri(6,15);b=ri(3,12);sa=ri(0,1)?1:-1;
+  return num('Calcule '+rl(sa*a)+' × '+rl(-sa*b)+'.',-a*b,'Signe du produit : négatif. Valeur absolue : '+a+' × '+b+' = '+(a*b)+'. Résultat : '+sg(-a*b)+'.','Détermine le signe, puis la valeur absolue.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7711,6 +7777,114 @@ D({id:'pi1-23',lv:1,period:1,dom:'Nombres',t:'La soustraction des nombres entier
   ar:['طرح عدد معناه جمع مقابله: a − b = a + (−b). بعد ذلك أطبق قاعدة جمع الأعداد الصحيحة النسبية.','مثلا 5 − (−2) = 5 + 2 = 7، و 3 − 7 = 3 + (−7) = −4.'],
   arw:[['soustraction','طرح'],['opposé','مقابل'],['règle','قاعدة'],['addition','جمع'],['résultat','نتيجة']]});
 
+D({id:'pi1-24',lv:1,period:1,dom:'Nombres',t:'Expressions numériques : additions et soustractions',at:'العبارات العددية: الجمع والطرح',
+  obj:'Calculer une expression numérique contenant des additions et des soustractions de nombres entiers relatifs.',keys:['nexp'],
+  lex:[['expression numérique','عبارة عددية'],['parenthèses','أقواس'],['nombres opposés','أعداد متقابلة'],['positifs','الموجبة'],['négatifs','السالبة'],['somme','مجموع']],
+  pre:[
+    ['Soustraire un nombre, c’est ajouter son opposé.',true,'Par exemple 5 − 3 = 5 + (−3).'],
+    ['Deux nombres opposés ont pour somme 0.',true,'Par exemple 8 + (−8) = 0.'],
+    ['(−4) + 6 − 3 = −13.',false,'(−4) + 6 + (−3) = −1.']],
+  plan:['Je transforme les soustractions en additions.','J’enlève les signes + et les parenthèses.','J’élimine les nombres opposés.','Je regroupe les positifs et les négatifs, et je calcule chaque somme.','J’effectue l’opération finale.'],
+  ex:[
+    E('Calcule (+6) − (+10) + (−2).',[
+      ['Étape 1 · (+6) + (−10) + (−2)','Soustraire (+10), c’est ajouter (−10).'],
+      ['Étape 2 · 6 − 10 − 2','J’enlève les signes + et les parenthèses.'],
+      ['Étape 3 · il n’y a pas de nombres opposés','Je passe à l’étape suivante.'],
+      ['Étape 4 · positifs : 6 ; négatifs : −10 − 2 = −12','Je calcule chaque somme.'],
+      ['<b>Étape 5 · 6 + (−12) = −6</b>','Résultat.']]),
+    E('Calcule 9 − (−4) + (−9) − 7.',[
+      ['Étape 1 · 9 + 4 + (−9) + (−7)','Soustraire (−4), c’est ajouter 4. Soustraire 7, c’est ajouter (−7).'],
+      ['Étape 2 · 9 + 4 − 9 − 7','J’enlève les parenthèses.'],
+      ['Étape 3 · 9 et −9 sont opposés : ils s’annulent','Il reste 4 − 7.'],
+      ['Étape 4 · positifs : 4 ; négatifs : −7','Une seule valeur de chaque côté.'],
+      ['<b>Étape 5 · 4 + (−7) = −3</b>','Résultat.']]),
+    E('Calcule 15 − 8 + (−6) − (−2) + 10.',[
+      ['Étape 1 · 15 + (−8) + (−6) + 2 + 10','Soustraire (−2), c’est ajouter 2.'],
+      ['Étape 2 · 15 − 8 − 6 + 2 + 10','J’enlève les parenthèses.'],
+      ['Étape 3 · il n’y a pas de nombres opposés','Je passe à l’étape suivante.'],
+      ['Étape 4 · positifs : 15 + 2 + 10 = 27 ; négatifs : −8 − 6 = −14','Je calcule chaque somme.'],
+      ['<b>Étape 5 · 27 + (−14) = 13</b>','Résultat.']])],
+  ret:['Pour calculer une expression avec additions et soustractions : je transforme les soustractions en additions, j’enlève les signes + et les parenthèses, j’élimine les nombres opposés.','Je regroupe les positifs et les négatifs, je calcule chaque somme, puis j’effectue l’opération finale.','Soustraire un nombre, c’est ajouter son opposé.'],
+  ar:['لحساب عبارة عددية فيها جمع وطرح: أحول الطرح إلى جمع المقابل، أحذف الأقواس وإشارات + الزائدة، ثم أحذف الأعداد المتقابلة لأن مجموعها 0.','أجمع الأعداد الموجبة على حدة والسالبة على حدة، ثم أنجز العملية الأخيرة. مثلا 9 − (−4) + (−9) − 7 = −3.'],
+  arw:[['expression numérique','عبارة عددية'],['parenthèses','أقواس'],['nombres opposés','أعداد متقابلة'],['positifs','أعداد موجبة'],['négatifs','أعداد سالبة']]});
+
+D({id:'pi1-25',lv:1,period:1,dom:'Nombres',t:'Addition et soustraction des décimaux et des fractions',at:'جمع وطرح الأعداد العشرية والكسور',
+  obj:'Appliquer les règles d’addition et de soustraction aux nombres décimaux et aux fractions.',keys:['ndec'],
+  lex:[['nombre décimal','عدد عشري'],['fraction','كسر'],['même dénominateur','نفس المقام'],['valeur absolue','القيمة المطلقة'],['opposé','المقابل'],['somme','مجموع']],
+  pre:[
+    ['Pour additionner deux nombres décimaux de même signe, on garde ce signe et on additionne les valeurs absolues.',true,'C’est la règle 1, valable pour tous les nombres.'],
+    ['(−2,5) + (+1,5) = −4.',false,'Signes contraires : 2,5 − 1,5 = 1, avec le signe −. Résultat : −1.'],
+    ['Soustraire une fraction, c’est ajouter son opposé.',true,'La règle de la soustraction est la même pour tous les nombres.']],
+  plan:['Je transforme la soustraction en addition de l’opposé.','J’observe les signes : même signe ou signes contraires.','J’applique la règle 1 ou la règle 2 avec les valeurs absolues.'],
+  ex:[
+    E('Calcule (−2,5) + (−1,3).',[
+      ['Étape 1 · c’est déjà une addition','Il n’y a rien à transformer.'],
+      ['Étape 2 · les deux nombres sont négatifs : même signe','Règle 1.'],
+      ['<b>Étape 3 · je garde −, j’additionne 2,5 + 1,3 = 3,8</b>','Résultat : −3,8.']]),
+    E('Calcule (+4,2) + (−6,5).',[
+      ['Étape 1 · c’est déjà une addition','Il n’y a rien à transformer.'],
+      ['Étape 2 · signes contraires : + et −','Règle 2.'],
+      ['<b>Étape 3 · plus grande valeur absolue : 6,5, signe − ; je soustrais 6,5 − 4,2 = 2,3</b>','Résultat : −2,3.']]),
+    E('Calcule '+fr(2,7)+' − '+fr(5,7)+'.',[
+      ['Étape 1 · '+fr(2,7)+' + ('+fr(-5,7)+')','Soustraire '+fr(5,7)+', c’est ajouter son opposé.'],
+      ['Étape 2 · même dénominateur : je calcule avec les numérateurs','2 + (−5).'],
+      ['<b>Étape 3 · signes contraires : 5 − 2 = 3, signe −</b>','Résultat : '+fr(-3,7)+'.']]),
+    E('Calcule 3,4 − (−2,6).',[
+      ['Étape 1 · 3,4 + 2,6','Soustraire (−2,6), c’est ajouter 2,6.'],
+      ['Étape 2 · les deux nombres sont positifs : même signe','Règle 1.'],
+      ['<b>Étape 3 · je garde +, j’additionne 3,4 + 2,6 = 6</b>','Résultat : 6.']])],
+  ret:['Les règles d’addition et de soustraction sont les mêmes pour les entiers, les décimaux et les fractions.','Même signe : je garde le signe et j’additionne les valeurs absolues. Signes contraires : je garde le signe de la plus grande valeur absolue et je soustrais.','Pour soustraire : j’ajoute l’opposé. Pour les fractions, je travaille avec le même dénominateur.'],
+  ar:['قواعد الجمع والطرح نفسها بالنسبة للأعداد الصحيحة والعشرية والكسور. نفس الإشارة: أحتفظ بالإشارة وأجمع القيمتين المطلقتين. إشارتان مختلفتان: أحتفظ بإشارة الأكبر قيمة مطلقة وأطرح.','للطرح: أضيف المقابل. وبالنسبة للكسور أشتغل بنفس المقام. مثلا (+4,2) + (−6,5) = −2,3.'],
+  arw:[['nombre décimal','عدد عشري'],['fraction','كسر'],['même dénominateur','نفس المقام'],['valeur absolue','قيمة مطلقة'],['opposé','مقابل']]});
+
+D({id:'pi1-26',lv:1,period:1,dom:'Nombres',t:'Résoudre un problème avec l’addition et la soustraction',at:'حل مسألة بالجمع والطرح',
+  obj:'Résoudre un problème en utilisant l’addition et la soustraction des nombres relatifs.',keys:['npb'],
+  lex:[['gain','ربح'],['perte','خسارة'],['solde','رصيد'],['expression','عبارة'],['résultat','نتيجة']],
+  pre:[
+    ['Un gain s’écrit avec le signe + et une perte avec le signe −.',true,'C’est la convention du problème.'],
+    ['Une baisse de température de 5 °C s’écrit +5.',false,'Une baisse s’écrit −5.'],
+    ['Pour une suite de gains et de pertes, on additionne les nombres relatifs.',true,'Chaque gain ou perte est un nombre relatif.']],
+  plan:['Je représente chaque gain ou hausse par + et chaque perte ou baisse par −.','J’écris l’expression numérique dans l’ordre du problème.','Je calcule l’expression.','Je rédige la réponse avec l’unité.'],
+  ex:[
+    E('Le solde d’un compte est de −20 €. Il reçoit 50 € puis paie 35 €. Quel est le solde final ?',[
+      ['Étape 1 · départ −20 ; reçu +50 ; payé −35','Un gain est positif, une perte est négative.'],
+      ['Étape 2 · (−20) + 50 + (−35)','J’écris l’expression dans l’ordre.'],
+      ['Étape 3 · (−20) + 50 = 30 puis 30 + (−35) = −5','Je calcule.'],
+      ['<b>Étape 4 · le solde final est −5 €</b>','Je réponds avec l’unité.']]),
+    E('À 6 h, il fait −4 °C. La température baisse de 3 °C puis monte de 9 °C. Quelle est la température finale ?',[
+      ['Étape 1 · départ −4 ; baisse −3 ; hausse +9','Une baisse est négative, une hausse est positive.'],
+      ['Étape 2 · (−4) + (−3) + 9','J’écris l’expression dans l’ordre.'],
+      ['Étape 3 · (−4) + (−3) = −7 puis −7 + 9 = 2','Je calcule.'],
+      ['<b>Étape 4 · la température finale est 2 °C</b>','Je réponds avec l’unité.']])],
+  ret:['Pour résoudre un problème : je représente gains et hausses par +, pertes et baisses par −.','J’écris l’expression dans l’ordre du problème, je la calcule, puis je rédige la réponse avec l’unité.'],
+  ar:['لحل مسألة: أمثل الربح والارتفاع بإشارة + والخسارة والانخفاض بإشارة −. أكتب العبارة العددية حسب ترتيب المسألة.','أحسب العبارة ثم أكتب الجواب مع الوحدة. مثلا (−20) + 50 + (−35) = −5 €.'],
+  arw:[['gain','ربح'],['perte','خسارة'],['solde','رصيد'],['hausse','ارتفاع'],['baisse','انخفاض']]});
+
+D({id:'pi1-27',lv:1,period:1,dom:'Nombres',t:'Multiplier des entiers de signes différents',at:'ضرب أعداد صحيحة بإشارتين مختلفتين',
+  obj:'Multiplier deux nombres entiers de signes différents.',keys:['nmul'],
+  lex:[['produit','جداء'],['facteur','عامل'],['signe','إشارة'],['valeur absolue','القيمة المطلقة'],['négatif','سالب']],
+  pre:[
+    ['Un nombre est déterminé par son signe et sa valeur absolue.',true,'Par exemple −5 a pour signe − et pour valeur absolue 5.'],
+    ['La valeur absolue de −6 est −6.',false,'Une valeur absolue est une distance : elle est positive. Ici elle vaut 6.'],
+    ['3 × 4 = 12.',true,'Le produit de deux nombres positifs est positif.']],
+  plan:['Je détermine le signe du produit.','Je détermine la valeur absolue du produit.','Je donne le résultat.'],
+  ex:[
+    E('Calcule (−2) × (+3).',[
+      ['Étape 1 · les signes sont différents','Le signe du produit est négatif.'],
+      ['Étape 2 · la valeur absolue du produit est 2 × 3 = 6','Je multiplie les valeurs absolues.'],
+      ['<b>Étape 3 · (−2) × (+3) = −6</b>','Je donne le résultat.']]),
+    E('Calcule (+4) × (−6).',[
+      ['Étape 1 · les signes sont différents','Le signe du produit est négatif.'],
+      ['Étape 2 · la valeur absolue du produit est 4 × 6 = 24','Je multiplie les valeurs absolues.'],
+      ['<b>Étape 3 · (+4) × (−6) = −24</b>','Je donne le résultat.']]),
+    E('Calcule (−7) × (+5).',[
+      ['Étape 1 · les signes sont différents','Le signe du produit est négatif.'],
+      ['Étape 2 · la valeur absolue du produit est 7 × 5 = 35','Je multiplie les valeurs absolues.'],
+      ['<b>Étape 3 · (−7) × (+5) = −35</b>','Je donne le résultat.']])],
+  ret:['Le produit de deux entiers de signes différents est négatif.','Sa valeur absolue est le produit des valeurs absolues des deux facteurs.','Pour calculer : je détermine le signe, puis la valeur absolue, puis je donne le résultat.'],
+  ar:['جداء عددين صحيحين بإشارتين مختلفتين سالب. قيمته المطلقة هي جداء القيمتين المطلقتين للعاملين.','للحساب: أحدد الإشارة، ثم القيمة المطلقة، ثم أكتب النتيجة. مثلا (−2) × (+3) = −6.'],
+  arw:[['produit','جداء'],['facteur','عامل'],['signe','إشارة'],['valeur absolue','قيمة مطلقة'],['négatif','سالب']]});
+
 /* ===== PÉRIODE 2 ===== */
 D({id:'pi1-4',lv:1,period:2,dom:'Nombres',t:'Relatifs : soustraire, multiplier, puissances de 10',at:'الطرح والضرب في Z ثم قوى العدد 10',
   obj:'Soustraire et multiplier des relatifs ; utiliser les puissances de 10.',keys:['rel','pow','sci'],
@@ -7937,7 +8111,7 @@ P.evalPage({id:'pe1-4',lv:1,period:4,keys:['aire','perim','cercle','rep','vec','
 P.evalPage({id:'pe1-5',lv:1,period:5,keys:['vol','prop','pct','vit','ech','stat','effC','vol']});
 
 P.setLevel(1,['pr-1','pr-2','pr-3'],[
-  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-20','pi1-21','pi1-22','pi1-23','pi1-1','pi1-2','pi1-3']},
+  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-20','pi1-21','pi1-22','pi1-23','pi1-24','pi1-25','pi1-26','pi1-27','pi1-1','pi1-2','pi1-3']},
   {title:'Calcul littéral, équations, puissances',seqs:['pi1-4','pi1-5','pi1-6']},
   {title:'Droites, angles et symétrie centrale',seqs:['pi1-7','pi1-8','pi1-9']},
   {title:'Parallélogrammes, cercle et repérage',seqs:['pi1-10','pi1-11','pi1-12']},
