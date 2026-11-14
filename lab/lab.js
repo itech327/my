@@ -118,6 +118,7 @@
     '.lab-dot.off{background:var(--muted)}',
     '.lab-balance{margin:16px 0;padding:10px 14px;border-inline-start:3px solid var(--teal);background:var(--surface);border-radius:8px;font-size:14px}',
     '.lab-balance .lab-ar{display:block;margin-top:4px}',
+    '.lab-welcome{margin:12px 0 16px}.lab-welcome p{margin:0}.lab-welcome .lab-ar{margin-top:6px}.lab-welcome .btn{margin-top:10px}',
     '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
     '.lab-riddle svg{width:56px;height:56px}',
     '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
@@ -312,7 +313,7 @@
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal', 'lab_wel'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -952,14 +953,29 @@
 
   /* mot d'équilibre : la plateforme complète la classe, elle ne la remplace pas */
   var BAL = {
-    foot: ['Cette plateforme accompagne ton apprentissage et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
-      'هذه المنصة رفيق لتعلّمك وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
+    foot: ['Cette plateforme fait partie de ton chemin d’apprentissage et de réussite, et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
+      'هذه المنصة جزء من طريقك نحو التعلم والنجاح، وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
     series: ['Un mot sur l’équilibre : cette plateforme complète tes cours et ne les remplace pas. Ton établissement et tes enseignantes et enseignants restent ta référence. Note ce que tu n’as pas compris et pose tes questions en classe.',
       'كلمة في التوازن: هذه المنصة تكمّل دروسك ولا تغني عنها. مؤسستك وأساتذتك هم المرجع. دوّن ما لم تفهمه واطرحه في القسم.']
   };
   function balanceNote(kind) { return h('p', { 'class': 'lab-balance lab-noprint' }, esc(BAL[kind][0]) + '<span class="lab-ar" dir="rtl" lang="ar">' + esc(BAL[kind][1]) + '</span>'); }
   function balanceDue(now) { var t = Number(store.get('lab_bal', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.balanceDue = balanceDue;
+  var WEL = ['Bienvenue ! Cette plateforme fait partie de ton chemin d’apprentissage et de réussite. Elle complète tes cours sans les remplacer : être présent aux séances officielles, en classe, dans ton établissement, avec tes enseignantes et enseignants, reste indispensable. Merci à eux et à ton établissement pour leur engagement. Ici, tu révises et tu t’entraînes pour profiter encore mieux de chaque cours.',
+    'مرحبا بك! هذه المنصة جزء من طريقك نحو التعلم والنجاح، وهي تكمّل دروسك ولا تغني عنها. الحضور إلى الحصص الرسمية داخل فصول مؤسستك مع أساتذتك أمر لا غنى عنه، ولهم ولمؤسستك كل التقدير والشكر على جهودهم. هنا تراجع وتتدرب لتستفيد أكثر من كل حصة.'];
+  function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
+  Lab.welcomeDue = welcomeDue;
+  function welcome() {
+    var w = document.querySelector('.wrap');
+    if (!w || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
+    var n = h('section', { 'class': 'lab-balance lab-welcome lab-noprint', 'aria-label': 'Bienvenue' });
+    n.innerHTML = '<p>' + esc(WEL[0]) + '</p><p class="lab-ar" dir="rtl" lang="ar">' + esc(WEL[1]) + '</p>';
+    var b = h('button', { 'type': 'button', 'class': 'btn ghost' }, 'Merci, j’ai compris · شكرا، فهمت');
+    b.addEventListener('click', function () { if (n.parentNode) n.parentNode.removeChild(n); });
+    n.appendChild(b);
+    w.insertBefore(n, w.firstChild);
+    store.set('lab_wel', Date.now());
+  }
   function footNote() {
     if (document.querySelector('.lab-balance.foot')) return;
     var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
@@ -968,6 +984,7 @@
   }
 
   function boot() {
+    try { welcome(); } catch (_) {}
     try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();

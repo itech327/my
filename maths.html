@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-IltbqxjDaVJGwZ6xJJlFYVwMRSNY27GY8KF1cb7eChg=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-QLE0/6HJY6sZ6/ki+lmPOvXyA3mlNndzKSIlRa+lRRw=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -1899,6 +1899,7 @@ window.addEventListener('load',function(){
     '.lab-dot.off{background:var(--muted)}',
     '.lab-balance{margin:16px 0;padding:10px 14px;border-inline-start:3px solid var(--teal);background:var(--surface);border-radius:8px;font-size:14px}',
     '.lab-balance .lab-ar{display:block;margin-top:4px}',
+    '.lab-welcome{margin:12px 0 16px}.lab-welcome p{margin:0}.lab-welcome .lab-ar{margin-top:6px}.lab-welcome .btn{margin-top:10px}',
     '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
     '.lab-riddle svg{width:56px;height:56px}',
     '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
@@ -2093,7 +2094,7 @@ window.addEventListener('load',function(){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal', 'lab_wel'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -2733,14 +2734,29 @@ window.addEventListener('load',function(){
 
   /* mot d'équilibre : la plateforme complète la classe, elle ne la remplace pas */
   var BAL = {
-    foot: ['Cette plateforme accompagne ton apprentissage et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
-      'هذه المنصة رفيق لتعلّمك وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
+    foot: ['Cette plateforme fait partie de ton chemin d’apprentissage et de réussite, et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
+      'هذه المنصة جزء من طريقك نحو التعلم والنجاح، وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
     series: ['Un mot sur l’équilibre : cette plateforme complète tes cours et ne les remplace pas. Ton établissement et tes enseignantes et enseignants restent ta référence. Note ce que tu n’as pas compris et pose tes questions en classe.',
       'كلمة في التوازن: هذه المنصة تكمّل دروسك ولا تغني عنها. مؤسستك وأساتذتك هم المرجع. دوّن ما لم تفهمه واطرحه في القسم.']
   };
   function balanceNote(kind) { return h('p', { 'class': 'lab-balance lab-noprint' }, esc(BAL[kind][0]) + '<span class="lab-ar" dir="rtl" lang="ar">' + esc(BAL[kind][1]) + '</span>'); }
   function balanceDue(now) { var t = Number(store.get('lab_bal', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.balanceDue = balanceDue;
+  var WEL = ['Bienvenue ! Cette plateforme fait partie de ton chemin d’apprentissage et de réussite. Elle complète tes cours sans les remplacer : être présent aux séances officielles, en classe, dans ton établissement, avec tes enseignantes et enseignants, reste indispensable. Merci à eux et à ton établissement pour leur engagement. Ici, tu révises et tu t’entraînes pour profiter encore mieux de chaque cours.',
+    'مرحبا بك! هذه المنصة جزء من طريقك نحو التعلم والنجاح، وهي تكمّل دروسك ولا تغني عنها. الحضور إلى الحصص الرسمية داخل فصول مؤسستك مع أساتذتك أمر لا غنى عنه، ولهم ولمؤسستك كل التقدير والشكر على جهودهم. هنا تراجع وتتدرب لتستفيد أكثر من كل حصة.'];
+  function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
+  Lab.welcomeDue = welcomeDue;
+  function welcome() {
+    var w = document.querySelector('.wrap');
+    if (!w || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
+    var n = h('section', { 'class': 'lab-balance lab-welcome lab-noprint', 'aria-label': 'Bienvenue' });
+    n.innerHTML = '<p>' + esc(WEL[0]) + '</p><p class="lab-ar" dir="rtl" lang="ar">' + esc(WEL[1]) + '</p>';
+    var b = h('button', { 'type': 'button', 'class': 'btn ghost' }, 'Merci, j’ai compris · شكرا، فهمت');
+    b.addEventListener('click', function () { if (n.parentNode) n.parentNode.removeChild(n); });
+    n.appendChild(b);
+    w.insertBefore(n, w.firstChild);
+    store.set('lab_wel', Date.now());
+  }
   function footNote() {
     if (document.querySelector('.lab-balance.foot')) return;
     var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
@@ -2749,6 +2765,7 @@ window.addEventListener('load',function(){
   }
 
   function boot() {
+    try { welcome(); } catch (_) {}
     try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
