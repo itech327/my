@@ -836,7 +836,7 @@
     if (st.ch.length) {
       st.ch.sort(function (a, b) { return a.ok / a.n - b.ok / b.n; });
       html += '<h3 dir="rtl">حسب الفصل</h3><div class="scroll-x"><table><tr><th>Application</th><th>Chapitre</th><th>Questions</th><th>Réussite</th><th>Temps moyen</th></tr>' +
-        st.ch.map(function (c) { var p = Math.round(100 * c.ok / c.n); return '<tr><td>' + esc(c.app === 'maths' ? 'Maths' : 'Physique-Chimie') + '</td><td>' + esc(c.title) + '</td><td>' + c.ok + '/' + c.n + '</td><td class="' + (p >= 60 ? 'good' : 'bad') + '">' + p + ' %</td><td>' + Math.round(c.ms / c.n / 1000) + ' s</td></tr>'; }).join('') + '</table></div>';
+        st.ch.map(function (c) { var p = Math.round(100 * c.ok / c.n); return '<tr><td>' + esc(({maths: 'Maths', pc: 'Physique-Chimie', svt: 'SVT'})[c.app] || c.app || '') + '</td><td>' + esc(c.title) + '</td><td>' + c.ok + '/' + c.n + '</td><td class="' + (p >= 60 ? 'good' : 'bad') + '">' + p + ' %</td><td>' + Math.round(c.ms / c.n / 1000) + ' s</td></tr>'; }).join('') + '</table></div>';
       var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; });
       html += '<h3 dir="rtl">توصيات</h3>';
       if (weak.length) html += weak.slice(0, 6).map(function (c) { return '<div class="rp-rec" dir="rtl">راجع فصل <a href="#' + esc(c.chap) + '" data-go="' + esc(c.chap) + '">' + esc(c.title) + '</a>: نسبة النجاح ' + Math.round(100 * c.ok / c.n) + '%. ابدأ بالمستوى «سهل» ثم تدرّج.</div>'; }).join('');
