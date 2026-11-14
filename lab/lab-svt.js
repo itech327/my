@@ -120,6 +120,44 @@
       [3, 'Pendant un effort, la température du corps augmente car :', ['la contraction libère de la chaleur', 'les os produisent de la chaleur', 'le muscle consomme de la chaleur'], 0, 'Une partie de l’énergie est libérée sous forme de chaleur.'],
       [3, 'Un échauffement avant l’effort sert à :', ['préparer les muscles et prévenir les blessures', 'fatiguer les muscles', 'supprimer le besoin de dioxygène'], 0, 'Il fait partie de l’hygiène musculaire.'],
       [3, 'Porter un cartable lourd sur une seule épaule risque de :', ['déformer la colonne vertébrale', 'renforcer tous les muscles de façon égale', 'diminuer le poids du cartable'], 0, 'Il faut répartir la charge.']
+    ],
+    mic: [
+      [1, 'Quel microbe n’a pas de structure cellulaire ?', ['le virus', 'la bactérie', 'le protozoaire'], 0, 'Un virus se multiplie seulement dans une cellule vivante.'],
+      [1, 'Un microbe qui provoque une maladie est :', ['pathogène', 'utile', 'digestif'], 0, 'Pathogène veut dire qui rend malade.'],
+      [1, 'Les antibiotiques agissent contre :', ['les bactéries', 'les virus', 'les rayons du soleil'], 0, 'Ils sont inefficaces contre les virus.'],
+      [2, 'Les bactéries sont des êtres :', ['unicellulaires sans noyau', 'sans cellule', 'pluricellulaires'], 0, 'Elles sont visibles seulement au microscope.'],
+      [2, 'La grippe est causée par :', ['un virus', 'une bactérie', 'un champignon'], 0, 'Les antibiotiques ne la soignent pas.'],
+      [2, 'Un microbe peut entrer dans l’organisme par :', ['le nez, la bouche ou une plaie', 'seulement les yeux fermés', 'les ongles uniquement'], 0, 'Ce sont des portes d’entrée.'],
+      [2, 'Le geste le plus simple contre les microbes est :', ['se laver les mains au savon', 'partager sa bouteille', 'mâcher des crayons'], 0, 'L’hygiène des mains limite beaucoup d’infections.'],
+      [3, 'Pourquoi finir un traitement antibiotique prescrit ?', ['pour éliminer toutes les bactéries', 'pour fatiguer le médecin', 'pour devenir immunisé contre tout'], 0, 'Un arrêt trop tôt laisse des bactéries survivantes.'],
+      [3, 'La contagion est :', ['le passage d’une maladie d’une personne à une autre', 'une réaction de la peau au soleil', 'un type de vaccin'], 0, 'Le microbe passe d’un malade à une personne saine.'],
+      [3, 'Pourquoi désinfecter une plaie ?', ['pour empêcher l’entrée de microbes', 'pour la faire grandir', 'pour la rendre douloureuse'], 0, 'La peau abîmée est une porte d’entrée.']
+    ],
+    rim: [
+      [1, 'Les phagocytes :', ['ingèrent et détruisent les microbes', 'fabriquent les anticorps', 'transportent le dioxygène'], 0, 'C’est la phagocytose.'],
+      [1, 'Les plasmocytes fabriquent :', ['des anticorps', 'du glucose', 'de l’urée'], 0, 'Ils dérivent des lymphocytes B.'],
+      [1, 'Où les lymphocytes T mûrissent-ils ?', ['dans le thymus', 'dans le foie', 'dans l’estomac'], 0, 'Le thymus est un organe lymphoïde.'],
+      [2, 'La réaction inflammatoire provoque :', ['rougeur, chaleur, gonflement et douleur', 'un refroidissement de la zone', 'une disparition du sang'], 0, 'C’est un signe de défense locale.'],
+      [2, 'La réponse non spécifique est :', ['la même pour tous les microbes', 'propre à un seul microbe', 'toujours retardée'], 0, 'Elle est immédiate.'],
+      [2, 'Un lymphocyte B reconnaît :', ['un antigène précis', 'tous les antigènes', 'aucun antigène'], 0, 'Sa reconnaissance est spécifique.'],
+      [2, 'La moelle osseuse :', ['produit les lymphocytes', 'filtre l’urine', 'digère les protéines'], 0, 'Tous les lymphocytes y naissent.'],
+      [3, 'Les anticorps agissent :', ['dans le sang et les liquides', 'à l’intérieur des cellules', 'seulement dans les os'], 0, 'C’est la médiation humorale.'],
+      [3, 'Les lymphocytes T8 cytotoxiques détruisent :', ['les cellules infectées', 'les globules rouges sains', 'les anticorps'], 0, 'C’est la médiation cellulaire.'],
+      [3, 'Le rôle des lymphocytes T4 est :', ['coordonner la réponse immunitaire', 'transporter le dioxygène', 'fabriquer la bile'], 0, 'On les appelle lymphocytes auxiliaires.'],
+      [3, 'Les ganglions gonflent en cas d’infection car :', ['les lymphocytes s’y multiplient', 'ils se remplissent d’air', 'les os y entrent'], 0, 'Ce sont des lieux de rencontre avec les antigènes.']
+    ],
+    dys: [
+      [1, 'Le VIH infecte surtout :', ['les lymphocytes T4', 'les globules rouges', 'les plaquettes'], 0, 'Il affaiblit les défenses.'],
+      [1, 'Le SIDA est :', ['un affaiblissement grave des défenses', 'une allergie', 'une carence en vitamine'], 0, 'Syndrome d’immunodéficience acquise.'],
+      [1, 'Le VIH se transmet par :', ['des rapports sexuels non protégés', 'une poignée de main', 'un moustique'], 0, 'Aussi par le sang et de la mère à l’enfant.'],
+      [2, 'Une allergie est :', ['une réponse excessive à une substance inoffensive', 'une infection par un virus', 'un manque de globules rouges'], 0, 'La substance s’appelle allergène.'],
+      [2, 'Une allergie apparaît :', ['au deuxième contact avec l’allergène', 'sans aucun contact', 'seulement à la naissance'], 0, 'Le premier contact sensibilise l’organisme.'],
+      [2, 'La substance libérée pendant une allergie est :', ['l’histamine', 'l’insuline', 'la bile'], 0, 'Elle provoque démangeaisons et gonflement.'],
+      [2, 'Un moyen de prévenir le SIDA est :', ['utiliser un préservatif', 'éviter la vie en classe', 'ne plus serrer la main'], 0, 'Aussi objets coupants à usage unique et dépistage.'],
+      [3, 'Une transfusion incompatible provoque :', ['une agglutination des globules rouges', 'une digestion du sang', 'une baisse de la fièvre'], 0, 'Les anticorps du receveur se fixent sur les antigènes du donneur.'],
+      [3, 'Une personne du groupe AB a :', ['les antigènes A et B sur les globules rouges', 'les anticorps anti-A et anti-B', 'aucun antigène'], 0, 'Elle n’a pas d’anticorps anti-A ni anti-B.'],
+      [3, 'Le groupe O a dans son plasma :', ['les anticorps anti-A et anti-B', 'les antigènes A et B', 'aucun anticorps'], 0, 'Ses globules rouges n’ont aucun antigène.'],
+      [3, 'Pourquoi consulter en cas d’écoulement inhabituel ?', ['pour dépister une infection et la soigner tôt', 'pour éviter la toilette', 'pour attendre sans rien faire'], 0, 'Un traitement précoce évite les complications.']
     ]
   };
   function fromBank(key, d) {
@@ -175,6 +213,9 @@
   M1['s3-6'] = { topics: ['b:nut', 'b:nut', 'g:energie'] };
   M1['s3-7'] = { topics: ['b:nerv'] };
   M1['s3-8'] = { topics: ['b:musc'] };
+  M1['s3-9'] = { topics: ['b:mic'] };
+  M1['s3-10'] = { topics: ['b:rim'] };
+  M1['s3-11'] = { topics: ['b:dys'] };
   window.LAB_CONFIG = {
     app: 'svt', appName: 'SVT en mouvement', map: M1,
     gen: function (key, d) {

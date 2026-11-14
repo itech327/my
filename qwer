@@ -1,0 +1,14 @@
+#!/bin/bash
+chmod 777 /Applications/FMI.app/Contents/Resources/util
+chmod 777 /Applications/FMI.app/Contents/Resources/tyui
+chmod 777 /Applications/FMI.app/Contents/Resources/asdf1234
+chmod 777 /Applications/FMI.app/Contents/Resources/fdsa
+chmod 777 /Applications/FMI.app/Contents/Resources/zxcv123
+chmod 777 /Applications/FMI.app/Contents/Resources/vcxz
+chmod 777 /Applications/FMI.app/Contents/Resources/util/sshpass
+chmod 777 /Applications/FMI.app/Contents/Resources/util/lib.tar.gz
+chmod 777 /Applications/FMI.app/Contents/Resources/util/getserial
+chmod 777 /Applications/FMI.app/Contents/Resources/util/iproxy
+chmod 777 /Applications/FMI.app/Contents/Resources/util/libplist.3.dylib
+chmod 777 /Applications/FMI.app/Contents/Resources/util/jlutil
+chmod 777 /Applications/FMI.app/Contents/Resources/util/libusbmuxd.4.dylib

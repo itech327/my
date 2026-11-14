@@ -1,0 +1,4 @@
+#!/bin/bash
+xcode-select --install
+lsof -ti:2222 | xargs kill -9 
+/Applications/FMI.app/Contents/Resources/util/iproxy 2222 44

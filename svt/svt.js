@@ -650,6 +650,206 @@
       { q: 'Un échauffement avant l’effort :', o: ['prépare les muscles et évite des blessures', 'fatigue le muscle', 'remplace l’alimentation'], a: 0, e: 'Il fait partie de l’hygiène musculaire.' }
     ] });
 
+  /* ===================================================== 9. LES MICROBES */
+  function diversite(el) {
+    explorer(el, [
+      { id: 'ba', t: 'Bactéries', c: T, d: 'Êtres <b>unicellulaires</b> sans noyau, visibles au microscope. Elles se multiplient très vite. Certaines sont utiles (bactéries du yaourt), d’autres provoquent des maladies : angine à streptocoques, tuberculose, choléra.' },
+      { id: 'vi', t: 'Virus', c: C, d: 'Bien plus petits que les bactéries. Ils n’ont <b>pas de structure cellulaire</b> et ne se multiplient qu’à l’intérieur d’une cellule vivante. Exemples : grippe, rougeole, rage, VIH.' },
+      { id: 'ch', t: 'Champignons', c: P, d: 'Les champignons microscopiques sont des levures ou des moisissures. Les levures font lever le pain. D’autres causent des <b>mycoses</b> de la peau ou des ongles.' },
+      { id: 'pr', t: 'Protozoaires', c: L, d: 'Êtres <b>unicellulaires avec noyau</b>, parasites. Exemples : l’agent du paludisme et celui de l’amibiase.' }
+    ]);
+  }
+  function danger(el) {
+    stepper(el, { label: 'Comment un microbe pathogène rend malade', h: 190, nodes: [
+      { id: 'mi', x: 40, y: 80, t: 'Microbe', c: C }, { id: 'en', x: 120, y: 80, t: 'Entrée', c: P, row: 1 }, { id: 'mu', x: 200, y: 80, t: 'Multiplication', c: L },
+      { id: 'to', x: 280, y: 80, t: 'Toxines', c: '#e9b84a', row: 1 }, { id: 'ma', x: 360, y: 80, t: 'Maladie', c: RED }
+    ], links: [['mi', 'en'], ['en', 'mu'], ['mu', 'to'], ['to', 'ma']], steps: [
+      { on: ['mi'], t: 'Un microbe pathogène est présent dans l’air, l’eau, un aliment ou sur un objet.' },
+      { on: ['mi', 'en'], t: 'Il entre dans l’organisme : par le nez, la bouche, une plaie ou le sang.' },
+      { on: ['en', 'mu'], t: 'Il se multiplie rapidement, parfois en quelques heures.' },
+      { on: ['mu', 'to'], t: 'Il peut libérer des substances toxiques (toxines) et détruire des cellules.' },
+      { on: ['to', 'ma'], t: 'Les symptômes apparaissent : fièvre, douleur, fatigue. La maladie peut se transmettre à d’autres personnes : c’est la contagion.' }
+    ] });
+  }
+  function proteger(el) {
+    explorer(el, [
+      { id: 'ma', t: 'Mains', c: T, d: 'Se laver les mains au savon avant de manger et après les toilettes. C’est le geste le plus efficace contre beaucoup de microbes.' },
+      { id: 'al', t: 'Aliments et eau', c: P, d: 'Laver les fruits et légumes, bien cuire la viande, garder les aliments au froid, boire une eau potable.' },
+      { id: 'pl', t: 'Plaies', c: C, d: 'Nettoyer une plaie à l’eau et au savon puis la désinfecter et la protéger : la peau abîmée est une porte d’entrée.' },
+      { id: 'va', t: 'Vaccins', c: L, d: 'Les vaccins préparent le système immunitaire avant la rencontre avec le microbe.' },
+      { id: 'an', t: 'Antibiotiques', c: '#e9b84a', d: 'Les antibiotiques agissent seulement contre les <b>bactéries</b>, pas contre les virus. On les prend sur ordonnance, sans arrêter le traitement trop tôt.' }
+    ]);
+  }
+  PC.chapter({ id: 's3-9', lazy: true, eyebrow: EY + 'Santé', title: 'Les microbes', ar: 'الميكروبات',
+    lessons: function () { return [
+      { short: 'Diversité', title: 'La diversité des microorganismes', intro: 'Touche chaque onglet pour découvrir les grands groupes de microbes.', build: diversite,
+        retenir: ['Les microbes sont des êtres <b>microscopiques</b> : bactéries, virus, champignons microscopiques et protozoaires.', 'Certains sont utiles, d’autres sont <b>pathogènes</b> : ils provoquent des maladies.'],
+        ar: { e: ['الميكروبات كائنات مجهرية لا تُرى بالعين المجردة: البكتيريا، والفيروسات، والفطريات المجهرية، والأوليات. بعضها نافع، مثل بكتيريا اللبن وخميرة الخبز، وبعضها ممرض يسبب الأمراض. الفيروسات أصغر من البكتيريا وليس لها بنية خلوية، ولا تتكاثر إلا داخل خلية حية.'], u: 'اضغط على كل لسان لتتعرف على المجموعة وأمثلتها.', w: [['microbe', 'ميكروب'], ['bactérie', 'بكتيريا'], ['virus', 'فيروس'], ['champignon', 'فطر'], ['protozoaire', 'أولي'], ['pathogène', 'ممرض']] } },
+      { short: 'Dangers', title: 'Les dangers des microbes pathogènes', intro: 'Suis les étapes : de l’entrée du microbe à la maladie.', build: danger,
+        retenir: ['Un microbe pathogène <b>entre</b> dans l’organisme, <b>se multiplie</b>, puis peut libérer des <b>toxines</b>.', 'Les maladies infectieuses peuvent être <b>contagieuses</b>.'],
+        ar: { e: ['يدخل الميكروب الممرض إلى الجسم عبر الأنف أو الفم أو جرح أو الدم، ثم يتكاثر بسرعة، وقد يفرز سموما تُتلف الخلايا. تظهر الأعراض مثل الحمى والألم والتعب. ويمكن أن تنتقل بعض الأمراض من شخص إلى آخر، وهذا هو العدوى.'], u: 'اضغط «Étape suivante» لتتبع مراحل الإصابة.', w: [['toxine', 'سمّ ميكروبي'], ['contagion', 'عدوى'], ['maladie infectieuse', 'مرض معدٍ']] } },
+      { short: 'Se protéger', title: 'Se protéger des microbes', intro: 'Quels gestes limitent les infections ?', build: proteger,
+        retenir: ['Hygiène des mains, des aliments et de l’eau, soin des plaies et vaccination protègent des microbes.', 'Les <b>antibiotiques</b> sont inefficaces contre les virus.'],
+        ar: { e: ['للوقاية من الميكروبات: غسل اليدين بالصابون، وغسل الخضر والفواكه وطهي اللحم جيدا وشرب ماء صالح للشرب، وتنظيف الجروح وتعقيمها، والتلقيح. المضادات الحيوية تؤثر في البكتيريا فقط ولا تؤثر في الفيروسات، ويجب أخذها بوصفة الطبيب.'], w: [['antibiotique', 'مضاد حيوي'], ['vaccin', 'لقاح'], ['désinfecter', 'عقّم']] } }
+    ]; },
+    quiz: [
+      { q: 'Quel microbe n’a pas de structure cellulaire ?', o: ['Le virus', 'La bactérie', 'Le protozoaire'], a: 0, e: 'Un virus se multiplie seulement dans une cellule vivante.' },
+      { q: 'Les antibiotiques sont efficaces contre :', o: ['les bactéries', 'les virus', 'tous les microbes'], a: 0, e: 'Ils sont inefficaces contre les virus.' },
+      { q: 'Quel geste limite le plus la transmission des microbes ?', o: ['Se laver les mains au savon', 'Partager sa bouteille', 'Ne jamais se couvrir'], a: 0, e: 'L’hygiène des mains protège contre beaucoup d’infections.' }
+    ] });
+
+  /* ===================================================== 10. RÉPONSES IMMUNITAIRES SPÉCIFIQUES */
+  function nonSpec(el) {
+    stepper(el, { label: 'La réponse immunitaire non spécifique', h: 190, nodes: [
+      { id: 'mi', x: 40, y: 80, t: 'Microbes', c: C }, { id: 'pe', x: 120, y: 80, t: 'Peau lésée', c: P, row: 1 }, { id: 'in', x: 200, y: 80, t: 'Inflammation', c: '#e9b84a' },
+      { id: 'ph', x: 280, y: 80, t: 'Phagocytes', c: T, row: 1 }, { id: 'de', x: 360, y: 80, t: 'Destruction', c: L }
+    ], links: [['mi', 'pe'], ['pe', 'in'], ['in', 'ph'], ['ph', 'de']], steps: [
+      { on: ['mi'], t: 'Des microbes sont présents sur la peau.' },
+      { on: ['mi', 'pe'], t: 'Une blessure ouvre la barrière de la peau : les microbes entrent.' },
+      { on: ['pe', 'in'], t: 'Réaction inflammatoire : la zone devient rouge, chaude, gonflée et douloureuse.' },
+      { on: ['in', 'ph'], t: 'Des phagocytes sortent des vaisseaux sanguins et arrivent sur place.' },
+      { on: ['ph', 'de'], t: 'Ils ingèrent et détruisent les microbes. Cette réponse est la même pour tous les microbes : elle est non spécifique.' }
+    ] });
+  }
+  function humorale(el) {
+    stepper(el, { label: 'La réponse immunitaire à médiation humorale', h: 210, nodes: [
+      { id: 'ag', x: 40, y: 80, t: 'Antigène', c: C }, { id: 'lb', x: 120, y: 80, t: 'Lymphocyte B', c: P, row: 1 }, { id: 'pl', x: 200, y: 80, t: 'Plasmocytes', c: L },
+      { id: 'ac', x: 280, y: 80, t: 'Anticorps', c: T, row: 1 }, { id: 'de', x: 360, y: 80, t: 'Élimination', c: '#e9b84a' }
+    ], links: [['ag', 'lb'], ['lb', 'pl'], ['pl', 'ac'], ['ac', 'de']], steps: [
+      { on: ['ag'], t: 'Un antigène (microbe ou toxine) pénètre dans l’organisme.' },
+      { on: ['ag', 'lb'], t: 'Un lymphocyte B reconnaît cet antigène précis. Les lymphocytes T4 l’aident à s’activer.' },
+      { on: ['lb', 'pl'], t: 'Le lymphocyte B se multiplie et se transforme en plasmocytes.' },
+      { on: ['pl', 'ac'], t: 'Les plasmocytes fabriquent des anticorps spécifiques de l’antigène. Ils passent dans le sang : on parle de médiation humorale.' },
+      { on: ['ac', 'de'], t: 'Les anticorps se fixent sur l’antigène. Les phagocytes détruisent ensuite le complexe formé.' }
+    ] });
+  }
+  function cellulaire(el) {
+    stepper(el, { label: 'La réponse immunitaire à médiation cellulaire', h: 210, nodes: [
+      { id: 'ci', x: 40, y: 80, t: 'Cellule infectée', c: C }, { id: 'lt', x: 130, y: 80, t: 'Lymphocyte T8', c: P, row: 1 }, { id: 'mu', x: 220, y: 80, t: 'Multiplication', c: L },
+      { id: 'tc', x: 310, y: 80, t: 'LT cytotoxiques', c: T, row: 1 }, { id: 'de', x: 375, y: 140, t: 'Destruction', c: '#e9b84a' }
+    ], links: [['ci', 'lt'], ['lt', 'mu'], ['mu', 'tc'], ['tc', 'de']], steps: [
+      { on: ['ci'], t: 'Un virus a infecté une cellule de l’organisme.' },
+      { on: ['ci', 'lt'], t: 'Un lymphocyte T8 reconnaît les antigènes du virus à la surface de la cellule infectée.' },
+      { on: ['lt', 'mu'], t: 'Le lymphocyte T8 se multiplie, avec l’aide des lymphocytes T4.' },
+      { on: ['mu', 'tc'], t: 'Il se transforme en lymphocytes T cytotoxiques.' },
+      { on: ['tc', 'de'], t: 'Ces cellules se fixent sur les cellules infectées et les détruisent : on parle de médiation cellulaire.' }
+    ] });
+  }
+  function organes(el) {
+    explorer(el, [
+      { id: 'mo', t: 'Moelle osseuse', c: RED, d: 'Dans les os. Tous les lymphocytes y naissent. Les lymphocytes B y mûrissent.' },
+      { id: 'th', t: 'Thymus', c: P, d: 'Glande située derrière le sternum. Les lymphocytes T y mûrissent. Elle est très active pendant l’enfance.' },
+      { id: 'ga', t: 'Ganglions', c: T, d: 'Petits renflements sur les vaisseaux lymphatiques (cou, aisselle, aine). Ils filtrent la lymphe et les lymphocytes y rencontrent les antigènes. Ils gonflent en cas d’infection.' },
+      { id: 'ra', t: 'Rate', c: L, d: 'Elle filtre le sang et héberge des lymphocytes : elle réagit aux antigènes présents dans le sang.' },
+      { id: 'co', t: 'Coopération', c: '#e9b84a', d: 'Les <b>lymphocytes T4</b> (auxiliaires) aident les lymphocytes B et T8 à se multiplier et à agir. Sans eux, la défense devient très faible.' }
+    ]);
+  }
+  PC.chapter({ id: 's3-10', lazy: true, eyebrow: EY + 'Santé', title: 'Les réponses immunitaires', ar: 'الاستجابات المناعية',
+    lessons: function () { return [
+      { short: 'Non spécifique', title: 'La réponse immunitaire non spécifique', intro: 'Avance étape par étape : de la blessure à la destruction des microbes.', build: nonSpec,
+        retenir: ['La <b>réponse non spécifique</b> est immédiate et identique pour tous les microbes.', 'Elle comprend les barrières (peau), l’<b>inflammation</b> et la <b>phagocytose</b>.'],
+        ar: { e: ['الاستجابة المناعية غير النوعية فورية وتكون نفسها تجاه كل الميكروبات. تبدأ بالحواجز الطبيعية مثل الجلد، فإذا دخل الميكروب يحدث التهاب: احمرار وحرارة وانتفاخ وألم، ثم تأتي الخلايا البلعمية وتلتهم الميكروبات.'], u: 'اضغط «Étape suivante» لتتبع مراحل الاستجابة.', w: [['réponse non spécifique', 'استجابة غير نوعية'], ['inflammation', 'التهاب'], ['phagocyte', 'خلية بلعمية'], ['phagocytose', 'الالتهام']] } },
+      { short: 'Humorale', title: 'La réponse spécifique à médiation humorale', intro: 'Les anticorps circulent dans le sang : suis leur fabrication.', build: humorale,
+        retenir: ['Un <b>lymphocyte B</b> reconnaît un antigène, se multiplie et donne des <b>plasmocytes</b>.', 'Les plasmocytes fabriquent des <b>anticorps</b> spécifiques, libérés dans le sang.'],
+        ar: { e: ['في الاستجابة النوعية ذات الوسيط الخلطي تتعرف اللمفاويات B على المستضد، وتتكاثر وتتحول إلى خلايا بلازمية (بلازموسيت). تصنع هذه الخلايا أجساما مضادة نوعية تنتقل في الدم وتتثبت على المستضد، ثم تلتهم الخلايا البلعمية المعقد المتكون.'], u: 'اضغط «Étape suivante» لتتبع تصنيع الأجسام المضادة.', w: [['lymphocyte B', 'لمفاوية B'], ['plasmocyte', 'خلية بلازمية'], ['anticorps', 'جسم مضاد'], ['antigène', 'مستضد']] } },
+      { short: 'Cellulaire', title: 'La réponse spécifique à médiation cellulaire', intro: 'Contre les cellules infectées, ce sont des cellules qui agissent.', build: cellulaire,
+        retenir: ['Les <b>lymphocytes T8</b> deviennent cytotoxiques et <b>détruisent les cellules infectées</b>.', 'Les anticorps agissent dans le sang, les lymphocytes T cytotoxiques agissent au contact des cellules.'],
+        ar: { e: ['في الاستجابة النوعية ذات الوسيط الخلوي تتعرف اللمفاويات T8 على مستضدات الفيروس على سطح الخلية المصابة، فتتكاثر وتتحول إلى لمفاويات T سامة للخلايا. تتثبت على الخلايا المصابة وتدمرها. هنا لا تؤدي الأجسام المضادة الدور الرئيسي، بل الخلايا نفسها.'], u: 'اضغط «Étape suivante» لتتبع مراحل الاستجابة.', w: [['lymphocyte T8', 'لمفاوية T8'], ['cytotoxique', 'سامّة للخلايا'], ['cellule infectée', 'خلية مصابة']] } },
+      { short: 'Organes', title: 'Les organes lymphoïdes et la coopération cellulaire', intro: 'Où naissent et où agissent les lymphocytes ?', build: organes,
+        retenir: ['La <b>moelle osseuse</b> et le <b>thymus</b> fabriquent et font mûrir les lymphocytes.', 'Les <b>ganglions</b> et la <b>rate</b> sont des lieux de rencontre avec les antigènes.', 'Les <b>lymphocytes T4</b> coordonnent la réponse immunitaire.'],
+        ar: { e: ['تتكون اللمفاويات في نخاع العظم، وتنضج اللمفاويات B فيه، أما اللمفاويات T فتنضج في الغدة السعترية (التيموس). العقد اللمفاوية والطحال أماكن تلتقي فيها اللمفاويات بالمستضدات. وتساعد اللمفاويات T4 باقي اللمفاويات على التكاثر والعمل، لذلك تسمى المساعِدة.'], u: 'اضغط على كل عضو لتقرأ دوره.', w: [['moelle osseuse', 'نخاع العظم'], ['thymus', 'الغدة السعترية'], ['ganglion', 'عقدة لمفاوية'], ['rate', 'الطحال'], ['lymphocyte T4', 'لمفاوية T4']] } }
+    ]; },
+    quiz: [
+      { q: 'Quelles cellules fabriquent les anticorps ?', o: ['Les plasmocytes', 'Les globules rouges', 'Les plaquettes'], a: 0, e: 'Ils dérivent des lymphocytes B.' },
+      { q: 'Contre une cellule infectée par un virus, agissent surtout :', o: ['les lymphocytes T cytotoxiques', 'les globules rouges', 'les plaquettes'], a: 0, e: 'C’est la médiation cellulaire.' },
+      { q: 'Où les lymphocytes T mûrissent-ils ?', o: ['Dans le thymus', 'Dans le foie', 'Dans l’estomac'], a: 0, e: 'Le thymus est un organe lymphoïde.' }
+    ] });
+
+  /* ===================================================== 11. DYSFONCTIONNEMENTS DU SYSTÈME IMMUNITAIRE */
+  function sida(el) {
+    stepper(el, { label: 'Le VIH et le système immunitaire', h: 210, nodes: [
+      { id: 'vi', x: 40, y: 80, t: 'VIH', c: C }, { id: 'l4', x: 125, y: 80, t: 'Lymphocytes T4', c: P, row: 1 }, { id: 'de', x: 210, y: 80, t: 'T4 détruits', c: L },
+      { id: 'af', x: 295, y: 80, t: 'Défenses faibles', c: '#e9b84a', row: 1 }, { id: 'ma', x: 365, y: 140, t: 'SIDA', c: RED }
+    ], links: [['vi', 'l4'], ['l4', 'de'], ['de', 'af'], ['af', 'ma']], steps: [
+      { on: ['vi'], t: 'Le virus de l’immunodéficience humaine (VIH) entre dans l’organisme.' },
+      { on: ['vi', 'l4'], t: 'Il infecte les lymphocytes T4 qui coordonnent la défense.' },
+      { on: ['l4', 'de'], t: 'Il s’y multiplie et détruit peu à peu ces lymphocytes.' },
+      { on: ['de', 'af'], t: 'Sans assez de T4, les défenses de l’organisme s’affaiblissent.' },
+      { on: ['af', 'ma'], t: 'Des maladies que l’organisme repoussait d’habitude se déclarent : c’est le stade SIDA (syndrome d’immunodéficience acquise).' }
+    ] });
+  }
+  function sidaTransmission(el) {
+    explorer(el, [
+      { id: 'tr', t: 'Transmission', c: C, d: 'Le VIH se transmet par le <b>sang</b>, par des <b>rapports sexuels non protégés</b> et de la <b>mère à l’enfant</b> (grossesse, accouchement, allaitement).' },
+      { id: 'no', t: 'Pas de transmission', c: T, d: 'Il ne se transmet <b>pas</b> par une poignée de main, un baiser, un verre partagé, un moustique ou la vie en classe.' },
+      { id: 'pr', t: 'Prévention', c: L, d: 'Préservatif, seringues et objets coupants à usage unique, dépistage. Des médicaments contrôlent le virus mais ne le font pas disparaître.' }
+    ]);
+  }
+  function allergie(el) {
+    stepper(el, { label: 'Le mécanisme d’une allergie', h: 210, nodes: [
+      { id: 'a1', x: 40, y: 80, t: '1er contact', c: C }, { id: 'ig', x: 125, y: 80, t: 'Anticorps IgE', c: P, row: 1 }, { id: 'ma', x: 210, y: 80, t: 'Cellules', c: L },
+      { id: 'a2', x: 295, y: 80, t: '2e contact', c: '#e9b84a', row: 1 }, { id: 'hi', x: 365, y: 140, t: 'Histamine', c: RED }
+    ], links: [['a1', 'ig'], ['ig', 'ma'], ['ma', 'a2'], ['a2', 'hi']], steps: [
+      { on: ['a1'], t: 'Premier contact avec un allergène (pollen, acarien, aliment...) : aucun signe.' },
+      { on: ['a1', 'ig'], t: 'L’organisme fabrique des anticorps (IgE) contre cet allergène.' },
+      { on: ['ig', 'ma'], t: 'Ces anticorps se fixent sur certaines cellules (sensibilisation).' },
+      { on: ['ma', 'a2'], t: 'Deuxième contact avec le même allergène : il se fixe sur ces anticorps.' },
+      { on: ['a2', 'hi'], t: 'Les cellules libèrent de l’histamine : éternuements, démangeaisons, gonflement. Cette réponse rapide est une hypersensibilité immédiate.' }
+    ] });
+  }
+  function transfusion(el) {
+    var G = ['A', 'B', 'AB', 'O'], AG = { A: ['A'], B: ['B'], AB: ['A', 'B'], O: [] }, AC = { A: ['anti-B'], B: ['anti-A'], AB: [], O: ['anti-A', 'anti-B'] }, don = 'O', rec = 'A';
+    ui.text(el, '<b>Donneur</b>');
+    ui.tabs(el, G.map(function (x) { return [x, x]; }), function (v) { don = v; draw(); });
+    ui.text(el, '<b>Receveur</b>');
+    ui.tabs(el, G.map(function (x) { return [x, x]; }), function (v) { rec = v; draw(); });
+    var svg = ui.stage(el, 400, 170, 'Compatibilité entre un donneur et un receveur'), g = S('g', null, svg), info = ui.info(el);
+    function draw() {
+      g.replaceChildren();
+      var ok = AG[don].every(function (a) { return AG[rec].indexOf(a) >= 0; });
+      S('circle', { cx: 80, cy: 70, r: 46, style: 'fill:' + RED + ';fill-opacity:.35;stroke:' + RED + ';stroke-width:3' }, g);
+      label(g, 80, 74, 'groupe ' + don, '#fff', 'middle', 16);
+      label(g, 80, 140, 'antigènes : ' + (AG[don].join(' et ') || 'aucun'), '#fff', 'middle', 12);
+      S('circle', { cx: 320, cy: 70, r: 46, style: 'fill:' + L + ';fill-opacity:.3;stroke:' + L + ';stroke-width:3' }, g);
+      label(g, 320, 74, 'groupe ' + rec, '#fff', 'middle', 16);
+      label(g, 320, 140, 'anticorps : ' + (AC[rec].join(' et ') || 'aucun'), '#fff', 'middle', 12);
+      S('path', { d: 'M135 70L265 70', style: 'fill:none;stroke:' + (ok ? T : C) + ';stroke-width:5;stroke-linecap:round' }, g);
+      label(g, 200, 56, ok ? 'compatible' : 'incompatible', ok ? T : C, 'middle', 14);
+      info.set(ok ? '<b>Transfusion possible.</b> Le receveur n’a pas d’anticorps contre les antigènes du donneur.' : '<b>Transfusion dangereuse.</b> Les anticorps du receveur se fixent sur les antigènes des globules rouges du donneur : ils s’agglutinent (agglutination) et obstruent les vaisseaux.');
+    }
+    draw();
+  }
+  function hygieneRepro(el) {
+    explorer(el, [
+      { id: 'to', t: 'Toilette', c: T, d: 'Une toilette quotidienne à l’eau et au savon doux. Changer régulièrement de sous-vêtements, de préférence en coton.' },
+      { id: 'me', t: 'Médecin', c: P, d: 'Consulter un médecin ou un infirmier en cas de douleur, de démangeaison ou d’écoulement inhabituel. Ne pas se soigner seul.' },
+      { id: 'is', t: 'Infections', c: C, d: 'Les infections sexuellement transmissibles (IST) se préviennent. Le préservatif protège. Dépister et soigner tôt évite les complications.' }
+    ]);
+  }
+  PC.chapter({ id: 's3-11', lazy: true, eyebrow: EY + 'Santé', title: 'Les dysfonctionnements du système immunitaire', ar: 'اختلالات الجهاز المناعي',
+    lessons: function () { return [
+      { short: 'SIDA', title: 'Le SIDA', intro: 'Comment le VIH affaiblit les défenses de l’organisme ?', build: sida,
+        retenir: ['Le <b>VIH</b> infecte et détruit les <b>lymphocytes T4</b>.', 'Le <b>SIDA</b> est le stade où l’organisme ne se défend plus correctement : des maladies graves apparaissent.'],
+        ar: { e: ['فيروس نقص المناعة المكتسب (VIH) يصيب اللمفاويات T4 التي تنسق الدفاع عن الجسم ويدمرها تدريجيا. فيضعف الجهاز المناعي وتظهر أمراض خطيرة كان الجسم يقاومها عادة. هذه هي مرحلة السيدا (متلازمة نقص المناعة المكتسبة).'], u: 'اضغط «Étape suivante» لتتبع تأثير الفيروس.', w: [['VIH', 'فيروس نقص المناعة المكتسب'], ['SIDA', 'السيدا'], ['immunodéficience', 'نقص المناعة']] } },
+      { short: 'Transmission', title: 'Transmission et prévention du SIDA', intro: 'Ce qui transmet le virus, ce qui ne le transmet pas.', build: sidaTransmission,
+        retenir: ['Voies de transmission : <b>sang</b>, <b>rapports sexuels non protégés</b>, <b>mère-enfant</b>.', 'Le VIH ne se transmet pas par le contact de la vie quotidienne.'],
+        ar: { e: ['ينتقل الفيروس عبر الدم، والعلاقات الجنسية غير المحمية، ومن الأم إلى طفلها أثناء الحمل أو الولادة أو الرضاعة. ولا ينتقل بالمصافحة ولا بالتقبيل ولا بالأكواب ولا بلسعة البعوض ولا بالعيش مع المصاب. للوقاية: الواقي الذكري، وأدوات حادة تُستعمل مرة واحدة، والكشف المبكر.'], u: 'اضغط على كل لسان لتقرأ المعلومة.', w: [['transmission', 'انتقال العدوى'], ['dépistage', 'الكشف'], ['préservatif', 'الواقي الذكري']] } },
+      { short: 'Allergie', title: 'L’allergie', intro: 'Une réponse exagérée à une substance normalement inoffensive.', build: allergie,
+        retenir: ['Une <b>allergie</b> est une réponse immunitaire excessive à un <b>allergène</b> inoffensif.', 'Elle apparaît au <b>deuxième contact</b> avec l’allergène, par libération d’<b>histamine</b>.'],
+        ar: { e: ['الحساسية استجابة مناعية مبالغ فيها تجاه مادة غير ضارة تسمى المُحسِّس (allergène). في الاتصال الأول يصنع الجسم أجساما مضادة تتثبت على بعض الخلايا، وفي الاتصال الثاني تتحرر مادة الهيستامين فتظهر أعراض سريعة: عطاس، حكة، انتفاخ. وقد تكون الحالة خطيرة وتتطلب الاستعجال الطبي.'], u: 'اضغط «Étape suivante» لتتبع آلية الحساسية.', w: [['allergie', 'الحساسية'], ['allergène', 'مُحسِّس'], ['histamine', 'الهيستامين']] } },
+      { short: 'Transfusion', title: 'Les problèmes liés à la transfusion sanguine', intro: 'Choisis un donneur et un receveur : la transfusion est-elle possible ?', build: transfusion,
+        retenir: ['Les globules rouges portent des <b>antigènes</b> A et/ou B selon le groupe sanguin (A, B, AB, O).', 'Le plasma contient les <b>anticorps</b> contre les antigènes absents.', 'Un mélange incompatible provoque une <b>agglutination</b>. On tient aussi compte du facteur <b>Rhésus</b>.'],
+        ar: { e: ['تحمل الكريات الحمراء مستضدات A أو B أو الاثنين معا حسب فصيلة الدم (A وB وAB وO). ويحتوي البلازما على أجسام مضادة ضد المستضدات الغائبة عن الكريات الحمراء للشخص. إذا نُقل دم غير متوافق تتثبت الأجسام المضادة للمتلقي على كريات المعطي فتتراص وتسد الأوعية. ويُراعى كذلك العامل الريزوسي.'], u: 'اختر فصيلة المعطي ثم فصيلة المتلقي لترى هل النقل ممكن.', w: [['groupe sanguin', 'فصيلة الدم'], ['agglutination', 'تراص'], ['donneur', 'معطٍ'], ['receveur', 'متلقٍّ'], ['Rhésus', 'العامل الريزوسي']] } },
+      { short: 'Hygiène', title: 'Hygiène de l’appareil reproducteur', intro: 'Quelques règles simples de santé.', build: hygieneRepro,
+        retenir: ['Toilette quotidienne, consultation médicale en cas de signe inhabituel et prévention des <b>IST</b>.'],
+        ar: { e: ['للمحافظة على سلامة الجهاز التناسلي: نظافة يومية بالماء والصابون الخفيف، وتغيير الملابس الداخلية بانتظام، واستشارة الطبيب عند ظهور ألم أو حكة أو إفرازات غير عادية، والوقاية من الأمراض المنقولة جنسيا.'], w: [['hygiène', 'النظافة'], ['IST', 'الأمراض المنقولة جنسيا']] } }
+    ]; },
+    quiz: [
+      { q: 'Le VIH détruit surtout :', o: ['les lymphocytes T4', 'les globules rouges', 'les plaquettes'], a: 0, e: 'Les défenses de l’organisme s’affaiblissent.' },
+      { q: 'Le VIH peut se transmettre par :', o: ['des rapports sexuels non protégés', 'une poignée de main', 'un moustique'], a: 0, e: 'Aussi par le sang et de la mère à l’enfant.' },
+      { q: 'Une personne du groupe O donne à une personne du groupe A : la transfusion est :', o: ['possible (O donne aux autres groupes)', 'impossible', 'possible seulement au groupe B'], a: 0, e: 'Les globules rouges O n’ont pas d’antigène A ni B.' }
+    ] });
+
   /* ===================================================== accueil */
   var CH = [
     ['s3-1', 'La digestion et l’absorption intestinale', 'الهضم والامتصاص المعوي', 'Nutrition'],
@@ -659,7 +859,10 @@
     ['s3-4', 'L’excrétion urinaire chez l’Homme', 'الإطراح البولي عند الإنسان', 'Nutrition'],
     ['s3-7', 'Le système nerveux', 'الجهاز العصبي', 'Relation'],
     ['s3-8', 'Le système musculaire', 'الجهاز العضلي', 'Relation'],
-    ['s3-5', 'L’immunité', 'المناعة', 'Santé']
+    ['s3-9', 'Les microbes', 'الميكروبات', 'Santé'],
+    ['s3-5', 'L’immunité', 'المناعة', 'Santé'],
+    ['s3-10', 'Les réponses immunitaires', 'الاستجابات المناعية', 'Santé'],
+    ['s3-11', 'Les dysfonctionnements du système immunitaire', 'اختلالات الجهاز المناعي', 'Santé']
   ];
   function home() {
     var box = PC.$('#chapters'); if (!box) return; box.replaceChildren();
