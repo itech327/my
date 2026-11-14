@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-9lPq+R31O/F8C1UXIYCIHwwGpUyiG/GX1sHSECHDqvo=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-yiDY76wbAtVfJxFvIahxjn/VA6SF4Ysw7U8JF8P7d9s=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-GLeWzlXbIY54gqR7hrzXIoYW10kXBeJvhLNVkM19f2g=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-FNZykQvslOoz1RmXH5BoY/vsxoa8qlR9NjaTNWyey8Q=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6500,6 +6500,56 @@ G.psub=function(s){
   return qcm('Effectue la soustraction : ('+pStr(p.A,p.vs)+') − ('+pStr(p.B,p.vs)+').',right,ws,'Je transforme la soustraction en addition de l’opposé : je change le signe de tous les termes de ('+pStr(p.B,p.vs)+'). J’enlève les parenthèses, je regroupe, je calcule. Résultat : '+right+'.','Le signe − change le signe de chaque terme du second polynôme, pas seulement du premier.');
 };
 
+/* ---------- multiplication de monômes et de polynômes, suites de motifs ---------- */
+function fo(a,b){return tm(a,[1],['n'],true)+(b>0?' + '+b:b<0?' − '+(-b):'')}
+G.pmon=function(s){
+  var vs=s===1?['x']:['x','y'],c1,c2,e1,e2,res,right;
+  if(s===1){c1=ri(2,9);c2=ri(2,9);e1=[ri(1,4)];e2=[ri(1,4)]}
+  else if(s===2){c1=nz(-9,9);c2=nz(-9,9);e1=[ri(1,3),ri(0,2)];e2=[ri(0,3),ri(1,2)]}
+  else{c1=nz(-9,-2);c2=nz(-9,9);if(Math.abs(c2)===1)c2=-3;e1=[ri(1,3),ri(1,3)];e2=[ri(1,3),ri(1,3)]}
+  var es=e1.map(function(v,i){return v+e2[i]});
+  res=[[c1*c2,es]];right=pStr(res,vs);
+  var wr=[pStr([[c1+c2,es]],vs),pStr([[c1*c2,e1.map(function(v,i){return v*e2[i]})]],vs),pStr([[-c1*c2,es]],vs),pStr([[c1*c2,es.map(function(v,i){return i===0?v+1:v})]],vs)];
+  return qcm('Calcule ('+tm(c1,e1,vs,true)+') × ('+tm(c2,e2,vs,true)+').',right,distinct(right,wr).slice(0,3),'Je multiplie les coefficients : '+rl(c1)+' × '+rl(c2)+' = '+(c1*c2)+'. Je multiplie les variables : j’additionne les exposants de chaque variable. Résultat : '+right+'.','Les coefficients se multiplient, les exposants de la même variable s’additionnent.');
+};
+G.pbim=function(s){
+  var vs=s===3?['x','y']:['x'],cm,em,B,i,prod,right,wr,e0;
+  if(s===1){cm=ri(2,5);em=[1];B=[[ri(1,3),[1]],[ri(1,6),[0]]]}
+  else if(s===2){cm=nz(-5,5);em=[ri(1,2)];B=[[nz(-4,4),[1]],[nz(-7,7),[0]]]}
+  else{cm=nz(-5,5);em=[1,1];B=[[nz(-4,4),[1,0]],[nz(-6,6),[0,1]]]}
+  prod=B.map(function(t){return [cm*t[0],t[1].map(function(v,j){return v+em[j]})]});
+  right=pStr(prod,vs);
+  wr=[pStr([prod[0],[cm*B[1][0],B[1][1]]],vs),pStr([prod[0],[-prod[1][0],prod[1][1]]],vs),pStr([[-prod[0][0],prod[0][1]],prod[1]],vs),pStr([prod[0],[B[1][0],prod[1][1]]],vs),pStr([[cm+B[0][0],prod[0][1]],prod[1]],vs)];
+  return qcm('Développe '+tm(cm,em,vs,true)+'('+pStr(B,vs)+').',right,distinct(right,wr).slice(0,3),'Je multiplie le monôme par chaque terme du binôme : '+prod.map(function(t){return '('+tm(t[0],t[1],vs,true)+')'}).join(' et ')+'. Résultat : '+right+'.','N’oublie pas de multiplier le second terme aussi, et surveille les signes.');
+};
+G.pbb=function(s){
+  var a,b,c,d,res,right,wr,vs=['x'];
+  if(s===1){a=1;c=1;b=ri(1,6);d=ri(1,6)}
+  else if(s===2){a=ri(1,4);c=ri(1,4);b=ri(1,6);d=ri(1,6)}
+  else{a=ri(1,4);c=ri(1,4);b=nz(-6,6);d=nz(-6,6)}
+  res=[[a*c,[2]],[a*d+b*c,[1]],[b*d,[0]]];right=pStr(res,vs);
+  wr=[pStr([[a*c,[2]],[b*d,[0]]],vs),pStr([[a*c,[2]],[a*d+b*c,[1]],[-b*d,[0]]],vs),pStr([[a*c,[2]],[a*d-b*c,[1]],[b*d,[0]]],vs),pStr([[a*c,[2]],[a*d+b*c+1,[1]],[b*d,[0]]],vs)];
+  return qcm('Développe ('+pStr([[a,[1]],[b,[0]]],vs)+')('+pStr([[c,[1]],[d,[0]]],vs)+').',right,distinct(right,wr).slice(0,3),'Je distribue : ('+tm(a*c,[2],vs,true)+') + ('+tm(a*d,[1],vs,true)+') + ('+tm(b*c,[1],vs,true)+') + ('+tm(b*d,[0],vs,true)+'). J’additionne les termes de même degré : '+right+'.','Chaque terme du premier binôme multiplie chaque terme du second : quatre produits.');
+};
+G.ppat=function(s){
+  var a,b,u1,it=pick(['carrés','jetons','points','bâtonnets']),k,right,wr,intro;
+  if(s===1){
+    a=ri(2,5);u1=a+ri(1,4);
+    return num('Rang 1 : '+u1+' '+it+', rang 2 : '+(u1+a)+' '+it+', rang 3 : '+(u1+2*a)+' '+it+'. Combien y en a-t-il au rang 4 ?',u1+3*a,'D’un rang au suivant, on ajoute '+a+'. Rang 4 : '+(u1+2*a)+' + '+a+' = '+(u1+3*a)+'.','Cherche ce qu’on ajoute d’un rang au suivant.');
+  }
+  if(s===2){
+    a=ri(2,5);b=ri(0,4);u1=a+b;right=fo(a,b);
+    wr=[fo(a+1,b),fo(a,b+1),fo(a,b?b+2:2),fo(1,u1),fo(u1,0)];
+    return qcm('Rang 1 : '+u1+' '+it+', rang 2 : '+(u1+a)+' '+it+', rang 3 : '+(u1+2*a)+' '+it+'. Quelle formule donne le nombre d’éléments au rang n ?',right,distinct(right,wr).slice(0,3),'On ajoute '+a+' à chaque rang : la formule commence par '+tm(a,[1],['n'],true)+'. Au rang 1 on a '+u1+', donc il faut ajouter '+b+'. Formule : '+right+'.','Teste ta formule avec n = 1 et n = 2.');
+  }
+  if(ri(0,1)){
+    b=pick([2,3]);k=ri(4,6);
+    return num('Ligne 1 : 1 lettre, ligne 2 : '+b+' lettres, ligne 3 : '+(b*b)+' lettres. À chaque ligne, le nombre est multiplié par '+b+'. Combien de lettres à la ligne '+k+' ?',Math.pow(b,k-1),'Ligne n : '+b+sp('n − 1')+'. Ligne '+k+' : '+b+sp(k-1)+' = '+Math.pow(b,k-1)+'.','On multiplie par '+b+' à chaque nouvelle ligne : combien de fois à partir de la ligne 1 ?');
+  }
+  a=ri(2,5);b=ri(0,4);u1=a+b;k=ri(8,15);
+  return num('Rang 1 : '+u1+' '+it+', rang 2 : '+(u1+a)+' '+it+', rang 3 : '+(u1+2*a)+' '+it+'. Combien y en a-t-il au rang '+k+' ?',a*k+b,'Formule : '+fo(a,b)+'. Au rang '+k+' : '+a+' × '+k+(b?' + '+b:'')+' = '+(a*k+b)+'.','Trouve d’abord la formule au rang n, puis remplace n.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7788,6 +7838,106 @@ D({id:'pi2-21',lv:2,period:1,dom:'Algèbre',t:'Soustraire deux polynômes',at:'�
   ar:['لطرح كثير حدود نحول الطرح إلى جمع المقابل: نغير إشارة جميع حدود كثير الحدود المطروح. ثم نحذف الأقواس ونجمع الحدود المتشابهة ونحسب.','الخطأ الشائع: تغيير إشارة الحد الأول فقط. الإشارة − أمام القوس تغير إشارة كل الحدود داخله.'],
   arw:[['soustraction','طرح'],['opposé','مقابل'],['signe','إشارة'],['parenthèses','أقواس'],['calculer','أحسب']]});
 
+D({id:'pi2-22',lv:2,period:1,dom:'Algèbre',t:'Multiplier deux monômes',at:'ضرب وحيدتي حد',
+  obj:'Effectuer la multiplication de deux monômes.',keys:['pmon'],
+  lex:[['multiplication','ضرب'],['produit','جداء'],['monôme','وحيدة حد'],['coefficient','معامل'],['entre eux','فيما بينها']],
+  pre:[
+    ['Pour multiplier deux monômes, on multiplie les coefficients entre eux et les variables entre elles.',true,'Les nombres avec les nombres, les lettres avec les lettres.'],
+    ['x<sup>2</sup> × x<sup>3</sup> = x<sup>6</sup>.',false,'On additionne les exposants : x<sup>2</sup> × x<sup>3</sup> = x<sup>5</sup>.'],
+    ['(−2x) × (3x) = −6x<sup>2</sup>.',true,'−2 × 3 = −6 et x × x = x<sup>2</sup>.']],
+  plan:['Je regroupe les coefficients d’une part et les variables d’autre part.','J’effectue les calculs séparément.','J’écris le résultat simplifié.'],
+  ex:[
+    E('Calcule (3x<sup>2</sup>) × (4x<sup>3</sup>).',[
+      ['Étape 1 · (3 × 4) × (x<sup>2</sup> × x<sup>3</sup>)','Coefficients d’un côté, variables de l’autre.'],
+      ['Étape 2 · 3 × 4 = 12 et x<sup>2</sup> × x<sup>3</sup> = x<sup>2 + 3</sup> = x<sup>5</sup>','On additionne les exposants.'],
+      ['<b>Étape 3 · 12x<sup>5</sup></b>','Résultat simplifié.']]),
+    E('Calcule (−2xy) × (5x<sup>2</sup>y<sup>3</sup>).',[
+      ['Étape 1 · (−2 × 5) × (x × x<sup>2</sup>) × (y × y<sup>3</sup>)','x et y ont chacun l’exposant 1 dans le premier monôme.'],
+      ['Étape 2 · −10 ; x<sup>1 + 2</sup> = x<sup>3</sup> ; y<sup>1 + 3</sup> = y<sup>4</sup>','Chaque variable séparément.'],
+      ['<b>Étape 3 · −10x<sup>3</sup>y<sup>4</sup></b>','Résultat simplifié.']]),
+    E('Calcule (−3x<sup>2</sup>y) × (−2xy<sup>2</sup>).',[
+      ['Étape 1 · (−3 × (−2)) × (x<sup>2</sup> × x) × (y × y<sup>2</sup>)','Je regroupe.'],
+      ['Étape 2 · +6 ; x<sup>3</sup> ; y<sup>3</sup>','Moins par moins donne plus.'],
+      ['<b>Étape 3 · 6x<sup>3</sup>y<sup>3</sup></b>','Résultat simplifié.']])],
+  ret:['Pour multiplier deux monômes, je multiplie les coefficients entre eux et les variables entre elles.','Pour une même variable, j’additionne les exposants : x<sup>m</sup> × x<sup>n</sup> = x<sup>m + n</sup>.','Je respecte la règle des signes pour les coefficients.'],
+  ar:['لضرب وحيدتي حد: أضرب المعاملين فيما بينهما، وأضرب المتغيرات فيما بينها. وللمتغير نفسه أجمع الأسس: x² × x³ = x⁵.','لا نضرب الأسس بل نجمعها. ونطبق قاعدة الإشارات على المعاملين: سالب في سالب يعطي موجبا.'],
+  arw:[['multiplication','ضرب'],['produit','جداء'],['coefficient','معامل'],['exposant','أس'],['règle des signes','قاعدة الإشارات']]});
+
+D({id:'pi2-23',lv:2,period:1,dom:'Algèbre',t:'Multiplier un binôme par un monôme',at:'ضرب ثنائية حد في وحيدة حد',
+  obj:'Effectuer la multiplication d’un binôme par un monôme.',keys:['pbim'],
+  lex:[['développer','أنشر'],['distributivité','خاصية التوزيع'],['binôme','ثنائية حد'],['chaque terme','كل حد'],['produit','جداء']],
+  pre:[
+    ['k(a + b) = ka + kb.',true,'C’est la distributivité de la multiplication sur l’addition.'],
+    ['2x(x + 3) = 2x<sup>2</sup> + 3.',false,'Le second terme est aussi multiplié : 2x × 3 = 6x. Résultat : 2x<sup>2</sup> + 6x.'],
+    ['x × x = 2x.',false,'x × x = x<sup>2</sup>.']],
+  plan:['Je multiplie le monôme par chaque terme du binôme.','Je calcule chaque produit de monômes.'],
+  ex:[
+    E('Développe 2x(x + 5).',[
+      ['Étape 1 · (2x × x) + (2x × 5)','Le monôme multiplie chaque terme.'],
+      ['<b>Étape 2 · 2x<sup>2</sup> + 10x</b>','2x × x = 2x<sup>2</sup> et 2x × 5 = 10x.']]),
+    E('Développe −3x(2x − 4).',[
+      ['Étape 1 · (−3x × 2x) + (−3x × (−4))','Je garde le signe − de −4 entre parenthèses.'],
+      ['<b>Étape 2 · −6x<sup>2</sup> + 12x</b>','−3 × 2 = −6 et (−3) × (−4) = +12.']]),
+    E('Développe −xy(2x − y).',[
+      ['Étape 1 · (−xy × 2x) + (−xy × (−y))','Deux produits de monômes.'],
+      ['<b>Étape 2 · −2x<sup>2</sup>y + xy<sup>2</sup></b>','−xy × 2x = −2x<sup>2</sup>y et −xy × (−y) = +xy<sup>2</sup>.']])],
+  ret:['Pour développer k(a + b), je multiplie k par chaque terme : ka + kb.','Chaque produit est un produit de deux monômes : coefficients multipliés, exposants additionnés.','Attention aux signes et à ne pas oublier le second terme.'],
+  ar:['لنشر k(a + b) أضرب وحيدة الحد k في كل حد من الثنائية: ka + kb. وكل جداء هو ضرب وحيدتي حد.','أنتبه للإشارات، ولا أنسى ضرب الحد الثاني.'],
+  arw:[['développer','أنشر'],['distributivité','خاصية التوزيع'],['binôme','ثنائية حد'],['terme','حد'],['signe','إشارة']]});
+
+D({id:'pi2-24',lv:2,period:1,dom:'Algèbre',t:'Multiplier deux binômes',at:'ضرب ثنائيتي حد',
+  obj:'Effectuer la multiplication de deux binômes.',keys:['pbb'],
+  lex:[['développer','أنشر'],['facteur','عامل'],['règle des signes','قاعدة الإشارات'],['de même degré','من نفس الدرجة'],['binôme','ثنائية حد']],
+  pre:[
+    ['(x + 2)(x + 3) = x<sup>2</sup> + 6.',false,'Il y a quatre produits. (x + 2)(x + 3) = x<sup>2</sup> + 5x + 6.'],
+    ['Pour multiplier deux binômes, on calcule quatre produits.',true,'Chaque terme du premier multiplie chaque terme du second : 2 × 2 = 4 produits.'],
+    ['(−2) × (−3) = 6.',true,'Deux signes moins donnent un signe plus.']],
+  plan:['Je distribue chaque terme du premier binôme à chaque terme du second.','Je calcule chaque produit, en appliquant la règle des signes.','J’additionne les termes de même degré.'],
+  ex:[
+    E('Développe (x + 2)(x + 3).',[
+      ['Étape 1 · x × x ; x × 3 ; 2 × x ; 2 × 3','Quatre produits.'],
+      ['Étape 2 · x<sup>2</sup> + 3x + 2x + 6','Tous les signes sont +.'],
+      ['<b>Étape 3 · x<sup>2</sup> + 5x + 6</b>','3x + 2x = 5x.']]),
+    E('Développe (2x + 1)(3x − 4).',[
+      ['Étape 1 · 2x × 3x ; 2x × (−4) ; 1 × 3x ; 1 × (−4)','Quatre produits.'],
+      ['Étape 2 · 6x<sup>2</sup> − 8x + 3x − 4','2x × (−4) = −8x.'],
+      ['<b>Étape 3 · 6x<sup>2</sup> − 5x − 4</b>','−8x + 3x = −5x.']]),
+    E('Développe (x − 3)(x − 5).',[
+      ['Étape 1 · x × x ; x × (−5) ; (−3) × x ; (−3) × (−5)','Quatre produits.'],
+      ['Étape 2 · x<sup>2</sup> − 5x − 3x + 15','(−3) × (−5) = +15.'],
+      ['<b>Étape 3 · x<sup>2</sup> − 8x + 15</b>','−5x − 3x = −8x.']])],
+  ret:['Pour multiplier deux binômes, chaque terme du premier multiplie chaque terme du second : quatre produits.','J’applique la règle des signes à chaque produit.','J’additionne les termes de même degré pour obtenir le résultat final.'],
+  ar:['لضرب ثنائيتي حد: كل حد من الأولى يضرب كل حد من الثانية، فنحصل على أربعة جداءات. أطبق قاعدة الإشارات على كل جداء.','ثم أجمع الحدود التي من نفس الدرجة. مثلا: (x + 2)(x + 3) = x² + 3x + 2x + 6 = x² + 5x + 6.'],
+  arw:[['développer','أنشر'],['binôme','ثنائية حد'],['produit','جداء'],['règle des signes','قاعدة الإشارات'],['de même degré','من نفس الدرجة']]});
+
+D({id:'pi2-25',lv:2,period:1,dom:'Algèbre',t:'Problème de motifs algébriques',at:'مسائل الأنماط الجبرية',
+  obj:'Résoudre un problème de motif : trouver la formule au rang n.',keys:['ppat'],
+  lex:[['motif','نمط'],['rang','رتبة'],['formule générale','الصيغة العامة'],['tableau de valeurs','جدول القيم'],['unité','الوحدة']],
+  pre:[
+    ['Le rang n est le nombre d’éléments de la figure.',false,'Le rang indique la place de la figure. Au rang 3, il peut y avoir 5 éléments.'],
+    ['Si on ajoute 3 à chaque rang, la formule commence par 3n.',true,'Le nombre qui s’ajoute à chaque rang est le coefficient de n.'],
+    ['Pour vérifier une formule, on la teste avec les premiers rangs.',true,'Si elle donne les bonnes valeurs aux rangs 1, 2 et 3, elle est crédible.']],
+  plan:['Je reconnais l’unité.','Je dessine l’élément suivant.','Je note le nombre d’éléments à chaque rang dans un tableau.','Je trouve la formule et je la vérifie.'],
+  ex:[
+    E('Rang 1 : 5 carrés, rang 2 : 8 carrés, rang 3 : 11 carrés. Trouve la formule au rang n.',[
+      ['Étape 1 · l’unité est le carré','C’est ce qu’on compte.'],
+      ['Étape 2 · je dessine le rang 4 : 14 carrés','On ajoute encore 3.'],
+      ['Étape 3 · tableau : 5 ; 8 ; 11 ; 14','On ajoute 3 à chaque rang.'],
+      ['<b>Étape 4 · formule : 3n + 2</b>','Test : n = 1 donne 3 + 2 = 5. n = 2 donne 8.']]),
+    E('Ligne 1 : 1 lettre, ligne 2 : 2 lettres, ligne 3 : 4 lettres. Combien à la ligne 6 ?',[
+      ['Étape 1 · l’unité est la lettre','On compte les lettres.'],
+      ['Étape 2 · je dessine la ligne 4 : 8 lettres','Le nombre double.'],
+      ['Étape 3 · tableau : 1 ; 2 ; 4 ; 8','On multiplie par 2 à chaque ligne.'],
+      ['<b>Étape 4 · formule : 2<sup>n − 1</sup>, donc 2<sup>5</sup> = 32</b>','Ligne 1 : 2<sup>0</sup> = 1.']]),
+    E('Rang 1 : 4 bâtonnets, rang 2 : 7, rang 3 : 10. Combien au rang 20 ?',[
+      ['Étape 1 · l’unité est le bâtonnet','On compte les bâtonnets.'],
+      ['Étape 2 · je dessine le rang 4 : 13 bâtonnets','On ajoute 3.'],
+      ['Étape 3 · tableau : 4 ; 7 ; 10 ; 13','Différence constante 3.'],
+      ['<b>Étape 4 · formule : 3n + 1, donc 3 × 20 + 1 = 61</b>','Test : n = 1 donne 4.']])],
+  ret:['Pour résoudre un problème de motif : je reconnais l’unité, je dessine l’élément suivant, je note les nombres dans un tableau, je trouve la formule.','Si on ajoute toujours a d’un rang au suivant, la formule est de la forme an + b. On trouve b avec le rang 1.','Le rang n n’est pas le nombre d’éléments. Je vérifie la formule avec les premiers rangs.'],
+  ar:['لحل مسألة نمط: أتعرف على الوحدة، أرسم العنصر الموالي، أسجل الأعداد في جدول، ثم أجد الصيغة العامة.','إذا كنا نضيف a في كل رتبة فالصيغة من الشكل an + b، ونجد b من الرتبة 1. ولا نخلط بين الرتبة n وعدد العناصر. نتحقق من الصيغة بالرتب الأولى.'],
+  arw:[['motif','نمط'],['rang','رتبة'],['formule','صيغة'],['tableau','جدول'],['unité','وحدة']]});
+
 /* ===== PÉRIODE 2 ===== */
 var ra=function(n){
   var r=[SC.rect(80,40,100,100,PK,'x²'),SC.rect(180,40,60,100,TL,'3x'),SC.rect(80,140,100,40,CO,'2x'),SC.rect(180,140,60,40,LV,'6')];
@@ -8002,7 +8152,7 @@ P.evalPage({id:'pe2-4',lv:2,period:4,keys:['tricerc','angTri','vec','vol','trice
 P.evalPage({id:'pe2-5',lv:2,period:5,keys:['prop','pct','vit','ech','stat','effC','prop','stat']});
 
 P.setLevel(2,['pr-1','pr-2','pr-3','pr-4'],[
-  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-18','pi2-19','pi2-20','pi2-21','pi2-1','pi2-2','pi2-3']},
+  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-18','pi2-19','pi2-20','pi2-21','pi2-22','pi2-23','pi2-24','pi2-25','pi2-1','pi2-2','pi2-3']},
   {title:'Calcul littéral, équations, ordre',seqs:['pi2-4','pi2-5','pi2-6']},
   {title:'Symétrie axiale, droites du triangle',seqs:['pi2-7','pi2-8','pi2-9']},
   {title:'Triangle rectangle, vecteurs et volumes',seqs:['pi2-10','pi2-11','pi2-12']},
