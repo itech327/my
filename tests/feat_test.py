@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Examen, révision, défi de la semaine, signalement d'erreur."""
+"""Examen, révision, défi de la semaine."""
 import os, sys, json
 from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -107,16 +107,8 @@ with sync_playwright() as p:
     c = qs(pg3, '.lab-modal', 10)
     check(a == c, 'défi : mêmes questions pour un autre élève la même semaine')
     check(pg3.evaluate("localStorage.getItem('lab_err')") is None, 'le défi ne touche pas aux erreurs par chapitre')
-    # --- signalement
-    pg4, errs4 = page(ctx)
-    pg4.evaluate("location.hash='#%s'" % CH); pg4.wait_for_timeout(400)
-    pg4.evaluate("document.querySelector('[data-a=err]').click()"); pg4.wait_for_timeout(200)
-    ta = pg4.locator('#lab-em')
-    check(ta.count() == 1 and 'Signalement' in ta.input_value() and 'URL' in ta.input_value(), 'signalement : message prérempli')
-    check(pg4.locator('#lab-em2').count() == 0, 'pas de bouton e-mail sans LAB_CONTACT')
-    pg4.locator('#lab-ex').click()
-    check(pg4.locator('.lab-modal').count() == 0, 'signalement : fermeture')
-    for e in (errs, errs2, errs4): check(not e, 'aucune erreur JS %s' % e[:1])
+    check(pg.evaluate("document.querySelector('[data-a=err]')") is None, 'plus de bouton Signaler dans la barre')
+    for e in (errs, errs2): check(not e, 'aucune erreur JS %s' % e[:1])
     b.close()
 print('\n%d échec(s)' % len(fails))
 sys.exit(1 if fails else 0)

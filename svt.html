@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-rT7EytP/T/SmSISMraRD5rpZBRDhSTa/eLLhN61m3lc=' 'sha256-M1GuQuYETx+5w5XnCh2zzKq+hsIa0D36gVuGOHh2i4Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-dDer68/uvmVSxGoE7NhwMhZKGgZ+Nj0Gg+BwyjnGSzs=' 'sha256-M1GuQuYETx+5w5XnCh2zzKq+hsIa0D36gVuGOHh2i4Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.">
 <link rel="canonical" href="https://taalim.men/svt.html">
@@ -1652,31 +1652,6 @@ document.addEventListener('click',function(e){
   }
   Lab.openWeek = openWeek;
 
-  /* signaler une erreur : message prêt à copier, rien n’est envoyé automatiquement */
-  function openErr() {
-    closeModal();
-    var cur = Lab.current && Lab.current(), page = (document.title || '').slice(0, 80);
-    var msg = 'Signalement · ' + CFG.appName + '\nPage : ' + page + '\nURL : ' + location.href.split('#')[0] + (location.hash ? '#' + location.hash.slice(1) : '') +
-      (cur ? '\nQuestion : ' + String(cur.q || cur.text || '').replace(/<[^>]+>/g, '').slice(0, 300) : '') + '\nProblème : ';
-    modal = h('div', { 'class': 'lab-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Signaler une erreur' });
-    modal.innerHTML = '<div class="lab-card"><h3>Signaler une erreur · إبلاغ عن خطأ</h3>' +
-      '<p class="lab-note">Décris le problème, puis copie le message et envoie-le à ton enseignant. Rien n’est envoyé automatiquement. · اكتب المشكلة ثم انسخ الرسالة وأرسلها لأستاذك. لا يُرسل شيء تلقائيا.</p>' +
-      '<textarea id="lab-em" rows="7" style="width:100%;font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px"></textarea>' +
-      '<p class="lab-err" id="lab-ok" role="status"></p>' +
-      '<div class="lab-actions"><button type="button" class="btn" id="lab-ec">Copier · نسخ</button>' + (window.LAB_CONTACT ? '<button type="button" class="btn ghost" id="lab-em2">E-mail</button>' : '') + '<button type="button" class="btn ghost" id="lab-ex">Fermer · إغلاق</button></div></div>';
-    document.body.appendChild(modal);
-    var ta = $('#lab-em', modal); ta.value = msg;
-    setTimeout(function () { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 30);
-    $('#lab-ec', modal).addEventListener('click', function () {
-      var done = function (ok) { $('#lab-ok', modal).textContent = ok ? 'Copié. · تم النسخ' : 'Sélectionne le texte et copie-le à la main. · حدد النص وانسخه يدويا'; if (!ok) ta.select(); };
-      try { navigator.clipboard.writeText(ta.value).then(function () { done(true); }, function () { done(false); }); } catch (_) { done(false); }
-    });
-    var em = $('#lab-em2', modal);
-    if (em) em.addEventListener('click', function () { location.href = 'mailto:' + encodeURIComponent(window.LAB_CONTACT) + '?subject=' + encodeURIComponent('Signalement') + '&body=' + encodeURIComponent(ta.value); });
-    $('#lab-ex', modal).addEventListener('click', closeModal);
-  }
-  Lab.openErr = openErr;
-
   /* ---------- application installable et hors ligne ---------- */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
@@ -1688,10 +1663,10 @@ document.addEventListener('click',function(e){
     if (!bar) { bar = h('div', { 'class': 'lab-bar2 lab-noprint', role: 'region', 'aria-label': 'Session' }); document.body.appendChild(bar); }
     var s = Sess.cur();
     if (!s) {
-      bar.innerHTML = '<span class="lab-dot off"></span><span>Sans session</span><button type="button" data-a="start">Démarrer</button>' + (Sess.hist().length ? '<button type="button" data-a="last">Dernier rapport</button>' : '') + (CFG.map ? '<button type="button" data-a="week">Défi</button>' : '') + '<button type="button" data-a="err">Signaler</button>' + '<button type="button" data-a="tog" aria-label="Réduire ou agrandir la barre">' + (isMin() ? '▴' : '▾') + '</button>';
+      bar.innerHTML = '<span class="lab-dot off"></span><span>Sans session</span><button type="button" data-a="start">Démarrer</button>' + (Sess.hist().length ? '<button type="button" data-a="last">Dernier rapport</button>' : '') + (CFG.map ? '<button type="button" data-a="week">Défi</button>' : '') + '<button type="button" data-a="tog" aria-label="Réduire ou agrandir la barre">' + (isMin() ? '▴' : '▾') + '</button>';
     } else {
       var st = stats(s);
-      bar.innerHTML = '<span class="lab-dot"></span><b>' + esc(s.name) + '</b><span>' + st.ok + '/' + st.n + '</span><button type="button" data-a="rep">Rapport</button><button type="button" data-a="end">Terminer</button>' + (CFG.map ? '<button type="button" data-a="week">Défi</button>' : '') + '<button type="button" data-a="err">Signaler</button>' + '<button type="button" data-a="tog" aria-label="Réduire ou agrandir la barre">' + (isMin() ? '▴' : '▾') + '</button>';
+      bar.innerHTML = '<span class="lab-dot"></span><b>' + esc(s.name) + '</b><span>' + st.ok + '/' + st.n + '</span><button type="button" data-a="rep">Rapport</button><button type="button" data-a="end">Terminer</button>' + (CFG.map ? '<button type="button" data-a="week">Défi</button>' : '') + '<button type="button" data-a="tog" aria-label="Réduire ou agrandir la barre">' + (isMin() ? '▴' : '▾') + '</button>';
     }
     bar.classList.toggle('min', isMin());
     document.body.classList.add('lab-has-bar');
@@ -1704,7 +1679,6 @@ document.addEventListener('click',function(e){
     if (a === 'tog') { try { sessionStorage.setItem('lab_barmin', isMin() ? '0' : '1'); } catch (_) {} render(); }
     else if (a === 'start') openStart();
     else if (a === 'week') openWeek();
-    else if (a === 'err') openErr();
     else if (a === 'rep') openReport(Sess.cur());
     else if (a === 'last') openReport(Sess.hist()[0]);
     else if (a === 'end') { if (confirm('Terminer la session et voir le rapport ? · إنهاء الجلسة وعرض التقرير؟')) openReport(Sess.end()); }
