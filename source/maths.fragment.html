@@ -5560,6 +5560,111 @@ G.nppcm=function(s){
   return num('Détermine le PPCM de '+a+' et '+b+' en utilisant leur PGCD.',l,'PGCD('+a+' ; '+b+') = '+g+'. PPCM = '+a+' × '+b+' ÷ '+g+' = '+(a*b)+' ÷ '+g+' = '+l+'.','PPCM = produit des deux nombres divisé par leur PGCD.');
 };
 
+/* ---------- 3AC période 1 semaine 2 : nombres premiers, décompositions, fractions, problèmes ---------- */
+function isP(n){var i;if(n<2)return false;for(i=2;i*i<=n;i++)if(n%i===0)return false;return true}
+function primesTo(n){var o=[],i;for(i=2;i<=n;i++)if(isP(i))o.push(i);return o}
+function decStr(f){return f.map(function(x){return x[1]===1?String(x[0]):x[0]+sp(x[1])}).join(' × ')}
+function decVal(f){return f.reduce(function(a,x){return a*Math.pow(x[0],x[1])},1)}
+function randDec(primes,k,maxE,maxN){
+  var f,lim=0,ps;
+  do{ps=shuffle(primes).slice(0,k).sort(function(a,b){return a-b});f=ps.map(function(p){return [p,ri(1,maxE)]});lim++}while(decVal(f)>maxN&&lim<200);
+  return f;
+}
+function decFacts(n){var f=[],p;for(p=2;p<=n;p++){if(n%p===0){var e=0;while(n%p===0){n/=p;e++}f.push([p,e])}}return f}
+G.npre=function(s){
+  var comp,primes,n,ps,lst,right,wr,p,i;
+  if(s===1){
+    right=pick(primesTo(97).filter(function(v){return v>10}));wr=[];
+    while(wr.length<3){i=ri(4,99);if(!isP(i)&&wr.indexOf(i)<0)wr.push(i)}
+    return qcm('Lequel de ces nombres est premier ?',String(right),wr.map(String),right+' n’a que deux diviseurs : 1 et '+right+'. Les autres nombres ont au moins un autre diviseur.','Un nombre premier a exactement deux diviseurs : 1 et lui-même.');
+  }
+  if(s===2){
+    n=ri(100,300);ps=primesTo(Math.floor(Math.sqrt(n)));
+    return num('Pour vérifier si '+n+' est premier, on teste les nombres premiers p tels que p × p ≤ '+n+'. Combien y en a-t-il ?',ps.length,'Les nombres premiers p tels que p × p ≤ '+n+' sont : '+ps.join(' ; ')+'. Il y en a '+ps.length+'.','Cherche le plus grand p dont le carré ne dépasse pas '+n+'.');
+  }
+  comp=[119,133,143,161,169,187,203,209,221,247,253,259,287,299];
+  right=pick(comp);primes=shuffle(primesTo(199).filter(function(v){return v>100})).slice(0,3);
+  p=2;while(right%p!==0)p++;
+  return qcm('Lequel de ces nombres n’est pas premier ?',String(right),primes.map(String),right+' = '+p+' × '+(right/p)+' : '+right+' est divisible par '+p+'. Il n’est donc pas premier.','Teste la divisibilité par 2, 3, 5, 7, 11, 13.');
+};
+G.nfac=function(s){
+  var f,right,wr,k,maxN,primes,w,idx,n,c,m;
+  if(s===1){k=2;maxN=72;primes=[2,3,5]}
+  else if(s===2){k=3;maxN=210;primes=[2,3,5,7]}
+  else{k=3;maxN=600;primes=[2,3,5,7,11]}
+  do{f=randDec(primes,k,s===2?1:3,maxN)}while(s!==2&&f.every(function(x){return x[1]===1}));
+  right=decStr(f);n=decVal(f);wr=[];
+  idx=ri(0,f.length-1);
+  w=f.map(function(x){return x.slice()});w[idx][1]=w[idx][1]+1;wr.push(decStr(w));
+  w=f.map(function(x){return x.slice()});if(w[idx][1]>1)w[idx][1]--;else w.splice(idx,1);wr.push(decStr(w));
+  w=f.map(function(x){return x.slice()});w[idx][1]=w[idx][1]+2;wr.push(decStr(w));
+  c=4;while(c<n&&(n%c!==0||isP(c)))c++;
+  if(c<n){m=n/c;wr.push(c+' × '+m)}
+  wr=distinct(right,wr);
+  return qcm('Quelle est la décomposition de '+n+' en produit de facteurs premiers ?',right,wr.slice(0,3),'On divise successivement par le plus petit nombre premier possible jusqu’à obtenir 1 : '+n+' = '+right+'.','Les facteurs doivent tous être des nombres premiers.');
+};
+G.npp=function(s){
+  var a,b,r,A,B,t,i,primes=[2,3,5,7],fa,fb,pg,pp,ps,e;
+  if(s===1||s===2){
+    do{fa=randDec(primes,3,3,600);fb=randDec(primes,3,3,600)}while(decVal(fa)===decVal(fb));
+    A=decVal(fa);B=decVal(fb);
+    t=s===1?'PGCD':'PPCM';
+    r=s===1?gcd(A,B):A*B/gcd(A,B);
+    return num('A = '+decStr(fa)+' et B = '+decStr(fb)+'. Calcule le '+t+' de A et de B.',r,s===1?'Je prends les facteurs premiers communs avec le plus petit exposant. Résultat : '+r+'.':'Je prends tous les facteurs premiers avec le plus grand exposant. Résultat : '+r+'.',s===1?'Facteurs communs, plus petits exposants.':'Tous les facteurs, plus grands exposants.');
+  }
+  do{fa=randDec(primes,3,3,600);fb=randDec(primes,3,3,600)}while(decVal(fa)===decVal(fb));
+  A=decVal(fa);B=decVal(fb);
+  return num('On donne A = '+A+' = '+decStr(decFacts(A))+' et B = '+B+' = '+decStr(decFacts(B))+'. Calcule le PGCD de '+A+' et de '+B+'.',gcd(A,B),'Facteurs premiers communs, plus petits exposants. Résultat : '+gcd(A,B)+'.','Facteurs communs, plus petits exposants.');
+};
+function fs2(n,d){return n+'/'+d}
+G.nfrac=function(s){
+  var g,p,q,a,b,right,wr,fr1,d,lst,lim,x,y;
+  function cop(){do{p=ri(2,9);q=ri(2,9)}while(p===q||gcd(p,q)!==1)}
+  if(s===1){
+    do{g=ri(2,9);cop();a=g*p;b=g*q}while(a>99||b>99);
+    wr=[fs2(q,p),fs2(p+1,q),fs2(p,q+1)];
+    d=2;while(d<=g&&(g%d!==0||d===g))d++;
+    if(d<g&&g%d===0)wr=[fs2(a/d,b/d),fs2(q,p),fs2(p+1,q)];
+    return qcm('Quelle est la forme irréductible de '+fr(a,b)+' ?',fs2(p,q),distinct(fs2(p,q),wr),'PGCD('+a+' ; '+b+') = '+g+'. On divise le numérateur et le dénominateur par '+g+' : '+fr(a,b)+' = '+fr(p,q)+'.','Divise le numérateur et le dénominateur par leur PGCD.');
+  }
+  if(s===2){
+    do{g=ri(2,12);cop();a=g*p;b=g*q}while(a>150||b>150);
+    return num('On simplifie '+fr(a,b)+' pour obtenir une fraction irréductible. Quel est le dénominateur de cette fraction ?',q,'PGCD('+a+' ; '+b+') = '+g+'. '+b+' ÷ '+g+' = '+q+'. La fraction irréductible est '+fr(p,q)+'.','Divise le dénominateur par le PGCD.');
+  }
+  lst=[];lim=0;
+  right=null;
+  while((!right||lst.length<3)&&lim++<500){
+    x=ri(2,40);y=ri(x+1,60);
+    if(gcd(x,y)===1){if(!right)right=fs2(x,y)}
+    else if(lst.length<3&&lst.indexOf(fs2(x,y))<0)lst.push(fs2(x,y));
+  }
+  var rp=right.split('/');
+  return qcm('Laquelle de ces fractions est irréductible ?',right,lst,'PGCD('+rp[0]+' ; '+rp[1]+') = 1 : '+rp[0]+' et '+rp[1]+' sont premiers entre eux. La fraction ne peut pas être simplifiée.','Une fraction est irréductible quand le PGCD du numérateur et du dénominateur est 1.');
+};
+G.nden=function(s){
+  var b,d,a,c,L;
+  do{b=ri(2,12);d=ri(2,12)}while(b===d||gcd(b,d)===b||gcd(b,d)===d);
+  L=b*d/gcd(b,d);a=ri(1,b-1);c=ri(1,d-1);
+  if(s===1){
+    return num('Quel est le plus petit dénominateur commun des fractions '+fr(a,b)+' et '+fr(c,d)+' ?',L,'C’est le PPCM de '+b+' et '+d+' : multiples de '+b+' et de '+d+' ... Le premier multiple commun est '+L+'.','Le plus petit dénominateur commun est le PPCM des dénominateurs.');
+  }
+  if(s===2){
+    return num('On réduit '+fr(a,b)+' et '+fr(c,d)+' au plus petit dénominateur commun. Quel est le numérateur de la première fraction ?',a*L/b,'Le dénominateur commun est PPCM('+b+' ; '+d+') = '+L+'. '+L+' = '+b+' × '+(L/b)+', donc '+fr(a,b)+' = '+fr(a*L/b,L)+'.','Multiplie le numérateur et le dénominateur par PPCM ÷ dénominateur.');
+  }
+  return num('On réduit '+fr(a,b)+' et '+fr(c,d)+' au plus petit dénominateur commun. Quelle est la somme des deux numérateurs obtenus ?',a*L/b+c*L/d,'Le dénominateur commun est '+L+'. '+fr(a,b)+' = '+fr(a*L/b,L)+' et '+fr(c,d)+' = '+fr(c*L/d,L)+'. Somme des numérateurs : '+(a*L/b)+' + '+(c*L/d)+' = '+(a*L/b+c*L/d)+'.','Réduis chaque fraction au dénominateur commun, puis additionne les numérateurs.');
+};
+G.nparith=function(s){
+  var g,p,q,A,B,m,n,L,names;
+  if(s===1||s===2){
+    do{g=ri(3,12);do{p=ri(2,9);q=ri(2,9)}while(p===q||gcd(p,q)!==1);A=g*p;B=g*q}while(A>120||B>120);
+    if(s===1)return num('Léa a '+A+' fraises tagada et '+B+' bonbons au citron. Elle veut faire des paquets identiques avec tous ses bonbons, chaque paquet contenant des deux sortes. Quel est le plus grand nombre de paquets possible ?',g,'Partage maximal en paquets identiques : j’utilise le PGCD. PGCD('+A+' ; '+B+') = '+g+'. Le plus grand nombre de paquets est '+g+'.','Partage en paquets identiques : PGCD.');
+    return num('Léa a '+A+' fraises tagada et '+B+' bonbons au citron. Elle fait le plus grand nombre possible de paquets identiques avec tous ses bonbons. Combien de fraises tagada y a-t-il dans un paquet ?',p,'PGCD('+A+' ; '+B+') = '+g+' paquets. Fraises par paquet : '+A+' ÷ '+g+' = '+p+'.','Divise le nombre de fraises par le PGCD.');
+  }
+  do{m=ri(4,15);n=ri(4,15)}while(m===n||gcd(m,n)===Math.min(m,n));
+  L=m*n/gcd(m,n);
+  return num('Deux cloches sonnent ensemble à 8 h. La première sonne toutes les '+m+' minutes et la seconde toutes les '+n+' minutes. Dans combien de minutes sonneront-elles de nouveau ensemble ?',L,'Événement qui se reproduit : j’utilise le PPCM. PPCM('+m+' ; '+n+') = '+L+'. Elles sonnent ensemble dans '+L+' minutes.','Événement qui se reproduit : PPCM.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7862,6 +7967,157 @@ D({id:'pi3-19',lv:3,period:1,dom:'Nombres',t:'Le PPCM de deux entiers',at:'ال�
   ar:['المضاعف المشترك الأصغر (PPCM) لعددين هو أصغر مضاعف مشترك غير منعدم. أكتب أوائل مضاعفات كل عدد، أحدد المضاعفات المشتركة، ثم آخذ أصغرها.','إذا كان أحد العددين مضاعفا للآخر فالـ PPCM هو الأكبر. وإلا فإن PPCM يساوي الجداء مقسوما على PGCD.'],
   arw:[['PPCM','المضاعف المشترك الأصغر'],['multiple commun','مضاعف مشترك'],['multiple','مضاعف'],['plus petit','الأصغر'],['produit','جداء']]});
 
+D({id:'pi3-20',lv:3,period:1,dom:'Nombres',t:'Les nombres premiers',at:'الأعداد الأولية',
+  obj:'Reconnaître et vérifier si un nombre est premier.',keys:['npre'],
+  lex:[['nombre premier','عدد أولي'],['diviseur','قاسم'],['nombre composé','عدد غير أولي'],['divisible','قابل للقسمة'],['carré','مربع']],
+  pre:[
+    ['Un nombre premier a exactement deux diviseurs : 1 et lui-même.',true,'Par exemple 41 n’a que deux diviseurs : 1 et 41.'],
+    ['Le nombre 1 est premier.',false,'1 n’a qu’un seul diviseur : lui-même. Il n’est pas premier.'],
+    ['2 est le seul nombre premier pair.',true,'Tout autre nombre pair est divisible par 2.']],
+  plan:['J’écris les nombres premiers p tels que p × p ≤ n.','Je vérifie si n est divisible par l’un de ces nombres premiers.','Je conclus.'],
+  ex:[
+    E('179 est-il premier ?',[
+      ['Étape 1 · 13 × 13 = 169 ≤ 179 et 17 × 17 = 289 > 179 : je teste 2 ; 3 ; 5 ; 7 ; 11 ; 13','Je choisis les nombres premiers à tester.'],
+      ['Étape 2 · 179 n’est divisible ni par 2, ni par 3, ni par 5, ni par 7, ni par 11, ni par 13','Les restes ne sont jamais 0 : 179 = 7 × 25 + 4 ; 179 = 11 × 16 + 3 ; 179 = 13 × 13 + 10.'],
+      ['<b>Étape 3 · 179 est un nombre premier</b>','Je conclus.']]),
+    E('247 est-il premier ?',[
+      ['Étape 1 · 15 × 15 = 225 ≤ 247 et 16 × 16 = 256 > 247 : je teste 2 ; 3 ; 5 ; 7 ; 11 ; 13','Je choisis les nombres premiers à tester.'],
+      ['Étape 2 · 247 = 13 × 19, donc 247 est divisible par 13','Les tests par 2, 3, 5, 7 et 11 échouent, celui par 13 réussit.'],
+      ['<b>Étape 3 · 247 n’est pas un nombre premier</b>','Je conclus.']]),
+    E('91 est-il premier ?',[
+      ['Étape 1 · 7 × 7 = 49 ≤ 91 et 11 × 11 = 121 > 91 : je teste 2 ; 3 ; 5 ; 7','Je choisis les nombres premiers à tester.'],
+      ['Étape 2 · 91 = 7 × 13, donc 91 est divisible par 7','Le test par 7 réussit.'],
+      ['<b>Étape 3 · 91 n’est pas un nombre premier</b>','Je conclus.']])],
+  ret:['Un nombre premier a exactement deux diviseurs : 1 et lui-même. Le nombre 1 n’est pas premier.','Pour vérifier si n est premier : je teste la divisibilité par les nombres premiers p tels que p × p ≤ n.','Si l’un d’eux divise n, n n’est pas premier. Sinon n est premier.'],
+  ar:['العدد الأولي له بالضبط قاسمان: 1 والعدد نفسه. العدد 1 ليس أوليا.','للتحقق من أن n أولي: أختبر قابلية القسمة على الأعداد الأولية p التي تحقق p × p ≤ n. إذا قسم أحدها n فليس أوليا، وإلا فهو أولي.'],
+  arw:[['nombre premier','عدد أولي'],['diviseur','قاسم'],['divisible','قابل للقسمة'],['nombre composé','عدد غير أولي'],['carré','مربع']]});
+
+D({id:'pi3-21',lv:3,period:1,dom:'Nombres',t:'Décomposer en produit de facteurs premiers',at:'التفكيك إلى جداء عوامل أولية',
+  obj:'Décomposer un entier positif en produit de facteurs premiers.',keys:['nfac'],
+  lex:[['facteur premier','عامل أولي'],['décomposition','تفكيك'],['produit','جداء'],['exposant','أس'],['quotient','خارج القسمة']],
+  pre:[
+    ['Dans une décomposition en facteurs premiers, tous les facteurs sont des nombres premiers.',true,'C’est la définition.'],
+    ['12 = 2 × 6 est la décomposition de 12 en facteurs premiers.',false,'6 n’est pas premier. La décomposition est 12 = 2² × 3.'],
+    ['2 × 2 × 3 peut s’écrire 2² × 3.',true,'Un exposant compte les répétitions d’un facteur.']],
+  plan:['Je divise le nombre par le plus petit nombre premier possible.','Je divise le quotient obtenu par le plus petit nombre premier possible.','Je continue ainsi jusqu’à obtenir 1.','J’écris le nombre comme produit des facteurs premiers.'],
+  ex:[
+    E('Décompose 156 en produit de facteurs premiers.',[
+      ['Étape 1 · 156 ÷ 2 = 78','Le plus petit nombre premier qui divise 156 est 2.'],
+      ['Étape 2 · 78 ÷ 2 = 39 puis 39 ÷ 3 = 13','2 ne divise plus 39, alors je passe à 3.'],
+      ['Étape 3 · 13 ÷ 13 = 1','Je m’arrête quand j’obtiens 1.'],
+      ['<b>Étape 4 · 156 = 2 × 2 × 3 × 13 = 2<sup>2</sup> × 3 × 13</b>','Je regroupe les facteurs identiques avec un exposant.']]),
+    E('Décompose 360 en produit de facteurs premiers.',[
+      ['Étape 1 · 360 ÷ 2 = 180','Le plus petit nombre premier qui divise 360 est 2.'],
+      ['Étape 2 · 180 ÷ 2 = 90 ; 90 ÷ 2 = 45 ; 45 ÷ 3 = 15 ; 15 ÷ 3 = 5','Je divise toujours par le plus petit nombre premier possible.'],
+      ['Étape 3 · 5 ÷ 5 = 1','Je m’arrête quand j’obtiens 1.'],
+      ['<b>Étape 4 · 360 = 2<sup>3</sup> × 3<sup>2</sup> × 5</b>','Trois fois le facteur 2, deux fois le facteur 3, une fois le facteur 5.']]),
+    E('Décompose 84 en produit de facteurs premiers.',[
+      ['Étape 1 · 84 ÷ 2 = 42','Le plus petit nombre premier qui divise 84 est 2.'],
+      ['Étape 2 · 42 ÷ 2 = 21 ; 21 ÷ 3 = 7','2 ne divise plus 21, alors je passe à 3.'],
+      ['Étape 3 · 7 ÷ 7 = 1','Je m’arrête quand j’obtiens 1.'],
+      ['<b>Étape 4 · 84 = 2<sup>2</sup> × 3 × 7</b>','Je regroupe les facteurs identiques.']])],
+  ret:['Pour décomposer un entier en produit de facteurs premiers : je divise par le plus petit nombre premier possible, puis je recommence avec le quotient jusqu’à obtenir 1.','J’écris ensuite le nombre comme produit de tous les diviseurs utilisés, avec des exposants pour les répétitions.','On peut aussi utiliser l’arbre de factorisation : on décompose en deux facteurs, puis on continue jusqu’à n’avoir que des nombres premiers.'],
+  ar:['لتفكيك عدد صحيح إلى جداء عوامل أولية: أقسمه على أصغر عدد أولي ممكن، ثم أكرر العملية مع الخارج إلى أن أحصل على 1.','أكتب العدد بعد ذلك جداء لكل القواسم المستعملة، وأستعمل الأسس للعوامل المكررة. مثلا 360 = 2³ × 3² × 5.'],
+  arw:[['facteur premier','عامل أولي'],['décomposition','تفكيك'],['produit','جداء'],['exposant','أس'],['quotient','خارج القسمة']]});
+
+D({id:'pi3-22',lv:3,period:1,dom:'Nombres',t:'PGCD et PPCM par la décomposition première',at:'PGCD وPPCM بواسطة التفكيك إلى عوامل أولية',
+  obj:'Déterminer le PGCD et le PPCM de deux entiers à partir de leurs décompositions en facteurs premiers.',keys:['npp'],
+  lex:[['facteur premier','عامل أولي'],['exposant','أس'],['facteur commun','عامل مشترك'],['PGCD','ق.م.أ'],['PPCM','م.م.أ']],
+  pre:[
+    ['Pour le PGCD, on prend uniquement les facteurs premiers communs.',true,'Le PGCD est un diviseur des deux nombres.'],
+    ['Pour le PPCM, on prend le plus petit exposant de chaque facteur.',false,'Pour le PPCM, on prend le plus grand exposant. Le plus petit sert pour le PGCD.'],
+    ['Le PGCD de deux nombres est toujours un diviseur de leur PPCM.',true,'Le PGCD divise les deux nombres, donc il divise aussi leur PPCM.']],
+  plan:['Je prends les facteurs premiers : tous pour le PPCM, seulement les communs pour le PGCD.','Je prends l’exposant : le plus grand pour le PPCM, le plus petit pour le PGCD.','Je calcule.'],
+  ex:[
+    E('156 = 2<sup>2</sup> × 3 × 13 et 360 = 2<sup>3</sup> × 3<sup>2</sup> × 5. Détermine le PPCM.',[
+      ['Étape 1 · tous les facteurs premiers : 2 ; 3 ; 5 ; 13','Je prends tous les facteurs des deux décompositions.'],
+      ['Étape 2 · plus grands exposants : 2<sup>3</sup> ; 3<sup>2</sup> ; 5 ; 13','Je prends le plus grand exposant de chaque facteur.'],
+      ['<b>Étape 3 · PPCM = 8 × 9 × 5 × 13 = 4 680</b>','Je calcule.']]),
+    E('156 = 2<sup>2</sup> × 3 × 13 et 360 = 2<sup>3</sup> × 3<sup>2</sup> × 5. Détermine le PGCD.',[
+      ['Étape 1 · facteurs premiers communs : 2 ; 3','Je prends uniquement les facteurs communs.'],
+      ['Étape 2 · plus petits exposants : 2<sup>2</sup> ; 3','Je prends le plus petit exposant de chaque facteur commun.'],
+      ['<b>Étape 3 · PGCD = 4 × 3 = 12</b>','Je calcule.']]),
+    E('140 = 2<sup>2</sup> × 5 × 7 et 150 = 2 × 3 × 5<sup>2</sup>. Détermine le PGCD et le PPCM.',[
+      ['Étape 1 · communs : 2 ; 5 pour le PGCD. Tous : 2 ; 3 ; 5 ; 7 pour le PPCM','Je choisis les facteurs.'],
+      ['Étape 2 · PGCD : 2 et 5. PPCM : 2<sup>2</sup> ; 3 ; 5<sup>2</sup> ; 7','Petits exposants pour le PGCD, grands exposants pour le PPCM.'],
+      ['<b>Étape 3 · PGCD = 2 × 5 = 10 et PPCM = 4 × 3 × 25 × 7 = 2 100</b>','Je calcule. Vérification : 140 × 150 ÷ 10 = 2 100.']])],
+  ret:['PGCD : je prends uniquement les facteurs premiers communs, avec le plus petit exposant.','PPCM : je prends tous les facteurs premiers des deux décompositions, avec le plus grand exposant.','Vérification : PGCD × PPCM = produit des deux nombres.'],
+  ar:['PGCD: آخذ العوامل الأولية المشتركة فقط بأصغر أس. PPCM: آخذ كل العوامل الأولية للتفكيكين بأكبر أس.','للتحقق: جداء PGCD وPPCM يساوي جداء العددين.'],
+  arw:[['facteur premier','عامل أولي'],['exposant','أس'],['facteur commun','عامل مشترك'],['PGCD','القاسم المشترك الأكبر'],['PPCM','المضاعف المشترك الأصغر']]});
+
+D({id:'pi3-23',lv:3,period:1,dom:'Nombres',t:'Simplifier une fraction',at:'تبسيط كسر',
+  obj:'Utiliser le PGCD pour rendre une fraction irréductible.',keys:['nfrac'],
+  lex:[['fraction irréductible','كسر غير قابل للاختزال'],['simplifier','اختزل'],['numérateur','البسط'],['dénominateur','المقام'],['PGCD','ق.م.أ'],['premiers entre eux','أوليان فيما بينهما']],
+  pre:[
+    ['Une fraction est irréductible quand le PGCD de son numérateur et de son dénominateur est 1.',true,'On ne peut plus la simplifier.'],
+    ['Pour simplifier une fraction, on ajoute le même nombre au numérateur et au dénominateur.',false,'On divise le numérateur et le dénominateur par le même nombre.'],
+    ['6/8 et 3/4 sont égales.',true,'On a divisé par 2 : 6 ÷ 2 = 3 et 8 ÷ 2 = 4.']],
+  plan:['Je détermine le PGCD du numérateur et du dénominateur.','Je divise le numérateur et le dénominateur par ce PGCD.','Je conclus : j’obtiens une fraction irréductible.'],
+  ex:[
+    E('Simplifie '+fr(105,30)+'.',[
+      ['Étape 1 · PGCD(105 ; 30) = 15','105 = 30 × 3 + 15 puis 30 = 15 × 2 + 0 : le dernier reste non nul est 15.'],
+      ['Étape 2 · 105 ÷ 15 = 7 et 30 ÷ 15 = 2','Je divise les deux termes par 15.'],
+      ['<b>Étape 3 · '+fr(105,30)+' = '+fr(7,2)+'</b>','7 et 2 sont premiers entre eux : la fraction est irréductible.']]),
+    E('Simplifie '+fr(81,36)+'.',[
+      ['Étape 1 · PGCD(81 ; 36) = 9','81 = 36 × 2 + 9 puis 36 = 9 × 4 + 0 : le dernier reste non nul est 9.'],
+      ['Étape 2 · 81 ÷ 9 = 9 et 36 ÷ 9 = 4','Je divise les deux termes par 9.'],
+      ['<b>Étape 3 · '+fr(81,36)+' = '+fr(9,4)+'</b>','9 et 4 sont premiers entre eux : la fraction est irréductible.']]),
+    E('Simplifie '+fr(23,45)+'.',[
+      ['Étape 1 · PGCD(23 ; 45) = 1','45 = 23 × 1 + 22 ; 23 = 22 × 1 + 1 ; 22 = 1 × 22 + 0 : le dernier reste non nul est 1.'],
+      ['Étape 2 · diviser par 1 ne change rien','Le numérateur et le dénominateur restent les mêmes.'],
+      ['<b>Étape 3 · '+fr(23,45)+' est déjà irréductible</b>','23 et 45 sont premiers entre eux.']])],
+  ret:['Pour simplifier une fraction au maximum : je calcule le PGCD du numérateur et du dénominateur, puis je divise les deux par ce PGCD.','La fraction obtenue est irréductible : son numérateur et son dénominateur sont premiers entre eux.','Pour calculer un PGCD, je peux utiliser les divisions successives : le PGCD est le dernier reste non nul.'],
+  ar:['لاختزال كسر إلى أقصى حد: أحسب PGCD للبسط والمقام ثم أقسم كليهما على هذا PGCD. الكسر الناتج غير قابل للاختزال.','لحساب PGCD يمكن استعمال القسمات المتتالية: PGCD هو آخر باق غير منعدم.'],
+  arw:[['fraction irréductible','كسر غير قابل للاختزال'],['numérateur','بسط'],['dénominateur','مقام'],['PGCD','القاسم المشترك الأكبر'],['premiers entre eux','أوليان فيما بينهما']]});
+
+D({id:'pi3-24',lv:3,period:1,dom:'Nombres',t:'Réduire deux fractions au même dénominateur',at:'توحيد مقامي كسرين',
+  obj:'Utiliser le PPCM pour trouver le plus petit dénominateur commun de deux fractions.',keys:['nden'],
+  lex:[['dénominateur commun','مقام مشترك'],['PPCM','م.م.أ'],['fraction','كسر'],['numérateur','البسط'],['multiplier','أضرب']],
+  pre:[
+    ['Le plus petit dénominateur commun de deux fractions est le PPCM de leurs dénominateurs.',true,'C’est le plus petit multiple commun non nul.'],
+    ['Pour changer le dénominateur, on multiplie seulement le dénominateur.',false,'On multiplie aussi le numérateur par le même nombre.'],
+    ['2/3 = 4/6.',true,'On multiplie le numérateur et le dénominateur par 2.']],
+  plan:['Je détermine le PPCM des deux dénominateurs.','Je cherche par quel nombre multiplier chaque dénominateur pour obtenir ce PPCM.','J’écris chaque fraction avec le dénominateur commun.'],
+  ex:[
+    E('Réduis '+fr(5,6)+' et '+fr(3,4)+' au même dénominateur.',[
+      ['Étape 1 · PPCM(6 ; 4) = 12','Multiples de 6 : 6, 12 ... Multiples de 4 : 4, 8, 12 ...'],
+      ['Étape 2 · 12 = 6 × 2 et 12 = 4 × 3','Je multiplie le premier dénominateur par 2 et le second par 3.'],
+      ['<b>Étape 3 · '+fr(5,6)+' = '+fr(10,12)+' et '+fr(3,4)+' = '+fr(9,12)+'</b>','Je multiplie aussi les numérateurs.']]),
+    E('Réduis '+fr(7,12)+' et '+fr(5,18)+' au même dénominateur.',[
+      ['Étape 1 · PPCM(12 ; 18) = 36','12 = 2² × 3 et 18 = 2 × 3² : PPCM = 4 × 9 = 36.'],
+      ['Étape 2 · 36 = 12 × 3 et 36 = 18 × 2','Je multiplie le premier dénominateur par 3 et le second par 2.'],
+      ['<b>Étape 3 · '+fr(7,12)+' = '+fr(21,36)+' et '+fr(5,18)+' = '+fr(10,36)+'</b>','Je multiplie aussi les numérateurs.']]),
+    E('Réduis '+fr(2,9)+' et '+fr(5,6)+' au même dénominateur.',[
+      ['Étape 1 · PPCM(9 ; 6) = 18','Multiples de 9 : 9, 18 ... Multiples de 6 : 6, 12, 18 ...'],
+      ['Étape 2 · 18 = 9 × 2 et 18 = 6 × 3','Je multiplie le premier dénominateur par 2 et le second par 3.'],
+      ['<b>Étape 3 · '+fr(2,9)+' = '+fr(4,18)+' et '+fr(5,6)+' = '+fr(15,18)+'</b>','Je multiplie aussi les numérateurs.']])],
+  ret:['Le plus petit dénominateur commun de deux fractions est le PPCM de leurs dénominateurs.','Pour chaque fraction, je multiplie le numérateur et le dénominateur par PPCM ÷ dénominateur.','Deux fractions de même dénominateur se comparent et s’additionnent facilement.'],
+  ar:['أصغر مقام مشترك لكسرين هو PPCM لمقاميهما. لكل كسر أضرب البسط والمقام في العدد PPCM ÷ المقام.','الكسران اللذان لهما نفس المقام يسهل ترتيبهما وجمعهما. مثلا 5/6 = 10/12 و 3/4 = 9/12.'],
+  arw:[['dénominateur commun','مقام مشترك'],['PPCM','المضاعف المشترك الأصغر'],['fraction','كسر'],['numérateur','بسط'],['dénominateur','مقام']]});
+
+D({id:'pi3-25',lv:3,period:1,dom:'Nombres',t:'Problèmes d’arithmétique avec le PGCD et le PPCM',at:'مسائل حسابية بالـ PGCD والـ PPCM',
+  obj:'Résoudre des problèmes d’arithmétique en utilisant le PGCD et le PPCM.',keys:['nparith'],
+  lex:[['problème','مسألة'],['paquets identiques','حزم متماثلة'],['partage','توزيع'],['PGCD','ق.م.أ'],['PPCM','م.م.أ'],['phrase réponse','جملة الجواب']],
+  pre:[
+    ['Pour un partage maximal en paquets identiques, on utilise le PGCD.',true,'Le PGCD est le plus grand diviseur commun.'],
+    ['Pour savoir quand un événement se reproduit en même temps, on utilise le PGCD.',false,'On utilise le PPCM : le plus petit multiple commun.'],
+    ['Après avoir calculé, on écrit toujours une phrase réponse.',true,'La phrase répond à la question posée.']],
+  plan:['Je choisis l’outil à utiliser : PGCD ou PPCM.','Je calcule le PGCD ou le PPCM des deux quantités.','J’exploite le résultat : je divise chaque quantité par le PGCD, ou j’ajoute le PPCM à l’heure de départ.','J’écris la phrase réponse.'],
+  ex:[
+    E('Nadia a 48 bonbons à la fraise et 36 au citron. Elle fait le plus grand nombre de paquets identiques avec tous les bonbons. Combien de paquets, et que contient chacun ?',[
+      ['Étape 1 · partage maximal en paquets identiques : j’utilise le PGCD','Je choisis l’outil.'],
+      ['Étape 2 · PGCD(48 ; 36) = 12','Je calcule le PGCD des deux quantités.'],
+      ['Étape 3 · 48 ÷ 12 = 4 et 36 ÷ 12 = 3','Je divise chaque quantité par le PGCD.'],
+      ['<b>Étape 4 · Nadia peut faire 12 paquets, chacun avec 4 bonbons à la fraise et 3 au citron.</b>','J’écris la phrase réponse.']]),
+    E('Deux cloches sonnent ensemble à 8 h. L’une sonne toutes les 12 minutes, l’autre toutes les 18 minutes. À quelle heure sonneront-elles de nouveau ensemble ?',[
+      ['Étape 1 · événement qui se reproduit : j’utilise le PPCM','Je choisis l’outil.'],
+      ['Étape 2 · PPCM(12 ; 18) = 36','Je calcule le PPCM des deux durées.'],
+      ['Étape 3 · 8 h + 36 minutes = 8 h 36','J’ajoute le PPCM à l’heure de départ.'],
+      ['<b>Étape 4 · Les deux cloches sonneront de nouveau ensemble à 8 h 36.</b>','J’écris la phrase réponse.']])],
+  ret:['Partage maximal en paquets identiques : j’utilise le PGCD. Événement qui se reproduit en même temps : j’utilise le PPCM.','Je calcule l’outil choisi, j’exploite le résultat, puis j’écris toujours une phrase réponse.'],
+  ar:['التوزيع الأقصى في حزم متماثلة يتطلب PGCD. حدث يتكرر في نفس الوقت يتطلب PPCM.','أحسب الأداة المختارة، أستغل النتيجة، ثم أكتب دائما جملة الجواب.'],
+  arw:[['problème','مسألة'],['paquets identiques','حزم متماثلة'],['PGCD','القاسم المشترك الأكبر'],['PPCM','المضاعف المشترك الأصغر'],['phrase réponse','جملة الجواب']]});
+
 /* ===== PÉRIODE 2 ===== */
 var NL=SC.nl(-6,2,{every:1,x0:30,x1:370});
 D({id:'pi3-4',lv:3,period:2,dom:'Algèbre',t:'Équations et inéquations',at:'المعادلات والمتراجحات',
@@ -8092,7 +8348,7 @@ P.evalPage({id:'pe3-4',lv:3,period:4,keys:['vec','rep','droite','vec','rep','dro
 P.evalPage({id:'pe3-5',lv:3,period:5,keys:['vol','agr','fonc','droite','stat','effC','vol','fonc']});
 
 P.setLevel(3,['pr-2','pr-3','pr-4'],[
-  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-1','pi3-2','pi3-3']},
+  {title:'Racines, identités remarquables, ordre',seqs:['pi3-16','pi3-17','pi3-18','pi3-19','pi3-20','pi3-21','pi3-22','pi3-23','pi3-24','pi3-25','pi3-1','pi3-2','pi3-3']},
   {title:'Équations, systèmes et Pythagore',seqs:['pi3-4','pi3-5','pi3-6']},
   {title:'Thalès, angles inscrits et triangles semblables',seqs:['pi3-7','pi3-8','pi3-9']},
   {title:'Vecteurs, repère et droites',seqs:['pi3-10','pi3-11','pi3-12']},

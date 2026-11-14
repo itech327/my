@@ -18,7 +18,7 @@ with sync_playwright() as p:
     pg.goto('file://' + os.path.join(ROOT, 'maths.html')); pg.wait_for_timeout(800)
     # générateurs : 400 tirages par clé et niveau
     bad = pg.evaluate("""function(){
-      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly','nneg','nabs','nval','ncmp','nadd1','nadd2','nadd3','nsub','nexp','ndec','npb','nmul','nmuls','ndiv','nmulc','nmd','ndvd','ncrit','npgcd','nppcm'],MM=window.MM;
+      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly','nneg','nabs','nval','ncmp','nadd1','nadd2','nadd3','nsub','nexp','ndec','npb','nmul','nmuls','ndiv','nmulc','nmd','ndvd','ncrit','npgcd','nppcm','npre','nfac','npp','nfrac','nden','nparith'],MM=window.MM;
       keys.forEach(function(k){[1,2,3].forEach(function(s){for(var i=0;i<400;i++){
         var it=MM.genItem(k,s),txt=JSON.stringify(it);
         if(/undefined|NaN|\\[object/.test(txt)){out.push(k+s+' texte '+it.q);break}
@@ -150,7 +150,32 @@ with sync_playwright() as p:
       [1,2,3].forEach(function(s){for(var i=0;i<300;i++){var it=MM.genItem('nppcm',s),m=/PPCM de (\\d+) et (\\d+)/.exec(it.q);if(!m||+m[1]*+m[2]/g(+m[1],+m[2])!==it.a){bad.push('nppcm'+s+' '+it.q+it.a);break}}});
       return bad}()""")
     check(not wk31, '3AC semaine 1 : diviseurs, critères, PGCD, PPCM exacts (%s)' % (wk31[:2],))
-    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x'), ('pi1-16', 'Les nombres négatifs'), ('pi1-17', 'Droite graduée et abscisse'), ('pi1-18', 'La valeur absolue'), ('pi1-19', 'Comparer et ranger'), ('pi1-20', 'Additionner sur la droite numérique'), ('pi1-21', 'Additionner avec les valeurs absolues'), ('pi1-22', 'Commutativité et associativité'), ('pi1-23', 'La soustraction des nombres entiers'), ('pi1-24', 'Expressions numériques'), ('pi1-25', 'décimaux et des fractions'), ('pi1-26', 'Résoudre un problème'), ('pi1-27', 'Multiplier des entiers de signes différents'), ('pi1-28', 'Multiplier des entiers de même signe'), ('pi1-29', 'Diviser des nombres entiers'), ('pi1-30', 'Commutativité et associativité de la multiplication'), ('pi1-31', 'Multiplier et diviser des décimaux'), ('pi3-16', 'Diviseurs et multiples'), ('pi3-17', 'critères de divisibilité'), ('pi3-18', 'Le PGCD'), ('pi3-19', 'Le PPCM')):
+
+    wk32 = pg.evaluate("""function(){var MM=window.MM,bad=[],i,it,m;
+      function g(a,b){while(b){var t=b;b=a%b;a=t}return a}
+      function isP(n){if(n<2)return false;for(var i=2;i*i<=n;i++)if(n%i===0)return false;return true}
+      function frs(q){var o=[],re=/<span class="fr"><span>(−?\\d+)<\\/span><span>(\\d+)<\\/span><\\/span>/g,m;while((m=re.exec(q)))o.push([+m[1].replace('−','-'),+m[2]]);return o}
+      function decv(s){var v=1,toks=s.replace(/<sup>(\\d+)<\\/sup>/g,'^$1').split(' × ');toks.forEach(function(t){var b=t.split('^');v*=Math.pow(+b[0],b[1]?+b[1]:1)});return v}
+      function allP(s){return s.replace(/<sup>(\\d+)<\\/sup>/g,'').split(' × ').every(function(t){return isP(+t)})}
+      for(i=0;i<300;i++){it=MM.genItem('npre',1);if(it.o.length!==4||it.o.filter(function(v){return isP(+v)}).length!==1||!isP(+it.o[it.a])){bad.push('npre1 '+it.o);break}}
+      for(i=0;i<300;i++){it=MM.genItem('npre',2);m=/≤ (\\d+)\\. Combien/.exec(it.q);var c=0;for(var p=2;p*p<=+m[1];p++)if(isP(p))c++;if(c!==it.a){bad.push('npre2 '+it.q);break}}
+      for(i=0;i<300;i++){it=MM.genItem('npre',3);if(it.o.length!==4||it.o.filter(function(v){return !isP(+v)}).length!==1||isP(+it.o[it.a])){bad.push('npre3 '+it.o);break}}
+      [1,2,3].forEach(function(s){for(var i=0;i<300;i++){var it=MM.genItem('nfac',s),m=/décomposition de (\\d+) en/.exec(it.q),n=+m[1];
+        var good=it.o.filter(function(o){return allP(o)&&decv(o)===n});
+        if(it.o.length<3||good.length!==1||it.o[it.a]!==good[0]){bad.push('nfac'+s+' '+it.q+it.o.join('|'));break}}});
+      [1,2].forEach(function(s){for(var i=0;i<300;i++){var it=MM.genItem('npp',s),m=/A = (.*?) et B = (.*?)\\. Calcule le (PGCD|PPCM)/.exec(it.q),A=decv(m[1]),B=decv(m[2]),r=m[3]==='PGCD'?g(A,B):A*B/g(A,B);if(r!==it.a){bad.push('npp'+s+' '+it.q);break}}});
+      for(i=0;i<300;i++){it=MM.genItem('npp',3);m=/A = (\\d+) = (.*?) et B = (\\d+) = (.*?)\\. Calcule/.exec(it.q);if(!m||decv(m[2])!==+m[1]||decv(m[4])!==+m[3]||g(+m[1],+m[3])!==it.a){bad.push('npp3 '+it.q);break}}
+      for(i=0;i<300;i++){it=MM.genItem('nfrac',1);var f=frs(it.q)[0],good=it.o.filter(function(o){var x=o.split('/');return +x[0]*f[1]===+x[1]*f[0]&&g(+x[0],+x[1])===1});
+        if(it.o.length<3||good.length!==1||it.o[it.a]!==good[0]){bad.push('nfrac1 '+it.q+it.o);break}}
+      for(i=0;i<300;i++){it=MM.genItem('nfrac',2);f=frs(it.q)[0];if(f[1]/g(f[0],f[1])!==it.a){bad.push('nfrac2 '+it.q);break}}
+      for(i=0;i<300;i++){it=MM.genItem('nfrac',3);var good3=it.o.filter(function(o){var x=o.split('/');return g(+x[0],+x[1])===1});if(it.o.length!==4||good3.length!==1||it.o[it.a]!==good3[0]){bad.push('nfrac3 '+it.o);break}}
+      [1,2,3].forEach(function(s){for(var i=0;i<300;i++){var it=MM.genItem('nden',s),f=frs(it.q),L=f[0][1]*f[1][1]/g(f[0][1],f[1][1]),r=s===1?L:s===2?f[0][0]*L/f[0][1]:f[0][0]*L/f[0][1]+f[1][0]*L/f[1][1];if(r!==it.a){bad.push('nden'+s+' '+it.q);break}}});
+      for(i=0;i<300;i++){it=MM.genItem('nparith',1);m=/a (\\d+) fraises tagada et (\\d+) bonbons/.exec(it.q);if(g(+m[1],+m[2])!==it.a){bad.push('nparith1 '+it.q);break}}
+      for(i=0;i<300;i++){it=MM.genItem('nparith',2);m=/a (\\d+) fraises tagada et (\\d+) bonbons/.exec(it.q);if(+m[1]/g(+m[1],+m[2])!==it.a){bad.push('nparith2 '+it.q);break}}
+      for(i=0;i<300;i++){it=MM.genItem('nparith',3);m=/toutes les (\\d+) minutes et la seconde toutes les (\\d+) minutes/.exec(it.q);if(+m[1]*+m[2]/g(+m[1],+m[2])!==it.a){bad.push('nparith3 '+it.q);break}}
+      return bad}()""")
+    check(not wk32, '3AC semaine 2 : premiers, décompositions, fractions, problèmes exacts (%s)' % (wk32[:2],))
+    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x'), ('pi1-16', 'Les nombres négatifs'), ('pi1-17', 'Droite graduée et abscisse'), ('pi1-18', 'La valeur absolue'), ('pi1-19', 'Comparer et ranger'), ('pi1-20', 'Additionner sur la droite numérique'), ('pi1-21', 'Additionner avec les valeurs absolues'), ('pi1-22', 'Commutativité et associativité'), ('pi1-23', 'La soustraction des nombres entiers'), ('pi1-24', 'Expressions numériques'), ('pi1-25', 'décimaux et des fractions'), ('pi1-26', 'Résoudre un problème'), ('pi1-27', 'Multiplier des entiers de signes différents'), ('pi1-28', 'Multiplier des entiers de même signe'), ('pi1-29', 'Diviser des nombres entiers'), ('pi1-30', 'Commutativité et associativité de la multiplication'), ('pi1-31', 'Multiplier et diviser des décimaux'), ('pi3-16', 'Diviseurs et multiples'), ('pi3-17', 'critères de divisibilité'), ('pi3-18', 'Le PGCD'), ('pi3-19', 'Le PPCM'), ('pi3-20', 'Les nombres premiers'), ('pi3-21', 'Décomposer en produit'), ('pi3-22', 'PGCD et PPCM par la décomposition'), ('pi3-23', 'Simplifier une fraction'), ('pi3-24', 'Réduire deux fractions'), ('pi3-25', 'Problèmes d’arithmétique')):
         pg.evaluate("location.hash='#%s'" % cid); pg.wait_for_timeout(500)
         sec = pg.locator('#%s' % cid)
         check(sec.count() == 1 and title in sec.inner_text(), cid + ' : page affichée')
@@ -174,7 +199,7 @@ with sync_playwright() as p:
     pg.evaluate("location.hash='#home'"); pg.wait_for_timeout(300)
     pg.locator('#plevels button').nth(2).click(); pg.wait_for_timeout(400)
     hrefs3 = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
-    check(all(('#pi3-%d' % n) in hrefs3 for n in range(16,20)), 'séquences listées dans le parcours pionnier 3AC')
+    check(all(('#pi3-%d' % n) in hrefs3 for n in range(16,26)), 'séquences listées dans le parcours pionnier 3AC')
     check(not errs, 'aucune erreur JS %s' % errs[:1])
     b.close()
 print('FAILS: %d' % len(fails))
