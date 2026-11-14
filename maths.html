@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-QjpVq8WXxcnIzfhR+794y7S7MzrYVS12QgjLBDUEwII=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-j8SkzjWNqretq6sDTI+3I8nLhGZMDwOu+xdfB0epkfw=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-h1zhQ9ZSU7Kc3HjXkUs1roa/SePFWM1/V/2jpnihG7s=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-lGxciOndFra66o/OYdare+PNHcJWJBymEjHjmVhN8wY=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6678,6 +6678,42 @@ G.ncmp=function(s){
   return qcm('Range dans l’ordre croissant : '+lst.map(sg).join(' ; ')+'.',right,distinct(right,wr).slice(0,3),'On sépare : négatifs '+sorted.filter(function(v){return v<0}).map(sg).join(' ; ')+' et positifs '+(sorted.filter(function(v){return v>0}).map(sg).join(' ; ')||'aucun')+'. Les négatifs sont avant les positifs ; entre négatifs, le plus éloigné de 0 est le plus petit. Ordre croissant : '+right+'.','Négatifs d’abord, du plus éloigné de 0 au plus proche, puis les positifs.');
 };
 
+/* ---------- 1AC : addition et soustraction des entiers relatifs ---------- */
+function pl(list){return list.map(rl).join(' + ')}
+G.nadd1=function(s){
+  var a,b,c;
+  if(s===1){a=nz(-6,6);b=nz(-5,5)}
+  else if(s===2){a=nz(-12,12);b=nz(-12,12)}
+  else{a=nz(-9,9);b=nz(-9,9);c=nz(-9,9);
+    return num('On part du point d’abscisse '+sg(a)+', on se déplace de '+sg(b)+' puis de '+sg(c)+'. Quelle est l’abscisse du point d’arrivée ?',a+b+c,'Premier déplacement : '+sg(a)+' + '+rl(b)+' = '+sg(a+b)+'. Second déplacement : '+sg(a+b)+' + '+rl(c)+' = '+sg(a+b+c)+'.','Déplace-toi vers la droite pour un nombre positif et vers la gauche pour un nombre négatif.');}
+  return num('Calcule '+rl(a)+' + '+rl(b)+' en utilisant la droite numérique.',a+b,'Je me place en '+sg(a)+'. Je me déplace de '+Math.abs(b)+' unités vers la '+(b>0?'droite':'gauche')+' car '+sg(b)+' est '+(b>0?'positif':'négatif')+'. J’arrive en '+sg(a+b)+'.','Positif : vers la droite. Négatif : vers la gauche.');
+};
+G.nadd2=function(s){
+  var a,b,sgn,k;
+  if(s===1){sgn=ri(0,1)?1:-1;a=sgn*ri(1,20);b=sgn*ri(1,20);return num('Calcule '+rl(a)+' + '+rl(b)+'.',a+b,'Les deux nombres ont le même signe ('+(sgn>0?'+':'−')+'). Règle 1 : je garde ce signe et j’additionne les valeurs absolues : '+Math.abs(a)+' + '+Math.abs(b)+' = '+(Math.abs(a)+Math.abs(b))+'. Résultat : '+sg(a+b)+'.','Même signe : on additionne les distances à 0 et on garde le signe.');}
+  if(s===2){do{a=nz(-20,20);b=nz(-20,20)}while(a*b>0||Math.abs(a)===Math.abs(b));return num('Calcule '+rl(a)+' + '+rl(b)+'.',a+b,'Les signes sont contraires. Règle 2 : je garde le signe du nombre qui a la plus grande valeur absolue, puis je soustrais la plus petite valeur absolue de la plus grande : '+Math.max(Math.abs(a),Math.abs(b))+' − '+Math.min(Math.abs(a),Math.abs(b))+' = '+Math.abs(a+b)+'. Résultat : '+sg(a+b)+'.','Signes contraires : on soustrait les distances à 0 et on garde le signe du plus éloigné.');}
+  k=ri(0,2);
+  if(k===0){sgn=ri(0,1)?1:-1;a=sgn*ri(1,20);b=sgn*ri(1,20)}
+  else if(k===1){do{a=nz(-20,20);b=nz(-20,20)}while(a*b>0||Math.abs(a)===Math.abs(b))}
+  else{a=nz(-20,20);b=-a}
+  var rules=['Règle 1 : même signe','Règle 2 : signes contraires','Règle 3 : nombres opposés (somme nulle)'];
+  return qcm('Quelle règle faut-il appliquer pour calculer '+rl(a)+' + '+rl(b)+' ?',rules[k],rules.filter(function(x,i){return i!==k}),k===0?'Les deux nombres ont le même signe.':k===1?'Les deux nombres ont des signes contraires et des valeurs absolues différentes.':'Les deux nombres sont opposés : leur somme est 0.','Observe d’abord les signes des deux nombres.');
+};
+G.nadd3=function(s){
+  var x,y,p1,n1,p2,n2,q,list,tot,ex;
+  if(s===1){x=ri(5,40);y=nz(-30,30);list=shuffle([x,y,-x]);tot=y;ex='Les nombres '+sg(x)+' et '+sg(-x)+' sont opposés : leur somme est 0. Il reste '+sg(y)+'.'}
+  else if(s===2){p1=ri(5,30);p2=ri(5,30);n1=-ri(5,30);n2=-ri(5,30);list=shuffle([p1,n1,p2,n2]);tot=p1+p2+n1+n2;ex='Je regroupe les positifs : '+p1+' + '+p2+' = '+(p1+p2)+'. Je regroupe les négatifs : '+sg(n1)+' + '+rl(n2)+' = '+sg(n1+n2)+'. Somme : '+sg(tot)+'.'}
+  else{x=ri(5,30);p1=ri(2,20);n1=-ri(2,20);q=nz(-15,15);list=shuffle([x,-x,p1,n1,q]);tot=p1+n1+q;ex='Les nombres '+sg(x)+' et '+sg(-x)+' s’annulent. Il reste '+sg(p1)+' + '+rl(n1)+' + '+rl(q)+' = '+sg(tot)+'.'}
+  return num('Calcule en regroupant les nombres bien choisis : '+pl(list)+'.',tot,ex,'Cherche des nombres opposés, ou regroupe les positifs puis les négatifs.');
+};
+G.nsub=function(s){
+  var a,b,c;
+  if(s===1){a=ri(1,15);b=ri(1,15);return num('Calcule '+a+' − '+b+'.',a-b,'Soustraire '+b+', c’est ajouter son opposé '+sg(-b)+' : '+a+' + '+rl(-b)+' = '+sg(a-b)+'.','Soustraire un nombre, c’est ajouter son opposé.');}
+  if(s===2){a=nz(-15,15);b=nz(-15,15);return num('Calcule '+rl(a)+' − '+rl(b)+'.',a-b,'Soustraire '+rl(b)+', c’est ajouter son opposé '+sg(-b)+' : '+rl(a)+' + '+rl(-b)+' = '+sg(a-b)+'.','Soustraire un nombre, c’est ajouter son opposé.');}
+  a=nz(-12,12);b=nz(-12,12);c=nz(-12,12);
+  return num('Calcule '+rl(a)+' − '+rl(b)+' − '+rl(c)+'.',a-b-c,'Je remplace chaque soustraction par l’addition de l’opposé : '+rl(a)+' + '+rl(-b)+' + '+rl(-c)+' = '+sg(a-b-c)+'.','Soustraire un nombre, c’est ajouter son opposé, deux fois.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7571,6 +7607,110 @@ D({id:'pi1-19',lv:1,period:1,dom:'Nombres',t:'Comparer et ranger des nombres',at
   ar:['كل عدد سالب أصغر من كل عدد موجب. وبين عددين سالبين يكون الأصغر هو الأبعد عن الصفر، مثلا −8 < −3.','للترتيب التصاعدي: أبدأ بالأعداد السالبة من الأبعد عن الصفر إلى الأقرب، ثم الأعداد الموجبة. وعلى المستقيم المدرج الأصغر هو الأقرب إلى اليسار.'],
   arw:[['comparer','قارن'],['ranger','رتب'],['ordre croissant','ترتيب تصاعدي'],['plus éloigné','أبعد'],['plus petit','أصغر']]});
 
+D({id:'pi1-20',lv:1,period:1,dom:'Nombres',t:'Additionner sur la droite numérique',at:'الجمع باستعمال المستقيم العددي',
+  obj:'Additionner deux nombres entiers relatifs en utilisant la droite numérique.',keys:['nadd1'],
+  lex:[['droite numérique','المستقيم العددي'],['se déplacer','ينتقل'],['abscisse','أفصول'],['somme','مجموع'],['vers la gauche','نحو اليسار']],
+  pre:[
+    ['Ajouter un nombre positif, c’est se déplacer vers la droite.',true,'Les nombres augmentent vers la droite.'],
+    ['Ajouter un nombre négatif, c’est se déplacer vers la droite.',false,'Ajouter un nombre négatif, c’est se déplacer vers la gauche.'],
+    ['(−2) + 3 = 1.',true,'On part de −2 et on avance de 3 vers la droite : on arrive en 1.']],
+  plan:['Je me place sur la droite numérique au point d’abscisse le premier nombre.','Je me déplace d’autant d’unités que la valeur absolue du deuxième nombre : vers la droite s’il est positif, vers la gauche s’il est négatif.','Je conclus : la somme est l’abscisse du point d’arrivée.'],
+  ex:[
+    E('Calcule (−2) + 3 avec la droite numérique.',[
+      ['Étape 1 · je me place en −2','Le premier nombre est −2.',NB.concat(SC.dot(NL,-2,TL,'−2'))],
+      ['Étape 2 · 3 est positif : je me déplace de 3 unités vers la droite','Je compte 3 unités.',NB.concat(SC.dot(NL,-2,TL,'−2'),SC.jump(NL,-2,1,PK,'+3'))],
+      ['<b>Étape 3 · j’arrive en 1, donc (−2) + 3 = 1</b>','La somme est l’abscisse du point d’arrivée.',NB.concat(SC.dot(NL,-2,TL),SC.jump(NL,-2,1,PK,'+3'),SC.dot(NL,1,PK,'1'))]]),
+    E('Calcule 2 + (−3) avec la droite numérique.',[
+      ['Étape 1 · je me place en 2','Le premier nombre est 2.',NB.concat(SC.dot(NL,2,TL,'2'))],
+      ['Étape 2 · −3 est négatif : je me déplace de 3 unités vers la gauche','La valeur absolue de −3 est 3.',NB.concat(SC.dot(NL,2,TL,'2'),SC.jump(NL,2,-1,PK,'−3'))],
+      ['<b>Étape 3 · j’arrive en −1, donc 2 + (−3) = −1</b>','Attention : ce n’est pas le même résultat que (−2) + 3.',NB.concat(SC.dot(NL,2,TL),SC.jump(NL,2,-1,PK,'−3'),SC.dot(NL,-1,PK,'−1'))]]),
+    E('Calcule (−4) + (−3) avec la droite numérique.',[
+      ['Étape 1 · je me place en −4','Le premier nombre est −4.',NB.concat(SC.dot(NL,-4,TL,'−4'))],
+      ['Étape 2 · −3 est négatif : je me déplace de 3 unités vers la gauche','Deux déplacements dans le même sens s’ajoutent.',NB.concat(SC.dot(NL,-4,TL,'−4'),SC.jump(NL,-4,-7,PK,'−3'))],
+      ['<b>Étape 3 · j’arrive en −7, donc (−4) + (−3) = −7</b>','Je conclus.',NB.concat(SC.dot(NL,-4,TL),SC.jump(NL,-4,-7,PK,'−3'),SC.dot(NL,-7,PK,'−7'))]])],
+  ret:['Pour additionner sur la droite numérique : je me place sur le premier nombre, je me déplace, je lis l’abscisse d’arrivée.','Deuxième nombre positif : vers la droite. Deuxième nombre négatif : vers la gauche. Le nombre d’unités est la valeur absolue du deuxième nombre.','La somme est l’abscisse du point d’arrivée.'],
+  ar:['لجمع عددين على المستقيم العددي: أضع نفسي عند أفصول العدد الأول، ثم أنتقل بعدد وحدات يساوي القيمة المطلقة للعدد الثاني. أنتقل نحو اليمين إذا كان العدد الثاني موجبا ونحو اليسار إذا كان سالبا.','المجموع هو أفصول نقطة الوصول. مثلا (−2) + 3 = 1.'],
+  arw:[['droite numérique','مستقيم عددي'],['abscisse','أفصول'],['somme','مجموع'],['valeur absolue','قيمة مطلقة'],['point d’arrivée','نقطة الوصول']]});
+
+D({id:'pi1-21',lv:1,period:1,dom:'Nombres',t:'Additionner avec les valeurs absolues',at:'الجمع باستعمال القيمة المطلقة',
+  obj:'Additionner deux nombres entiers relatifs avec la valeur absolue.',keys:['nadd2'],
+  lex:[['règle','قاعدة'],['valeur absolue','القيمة المطلقة'],['même signe','نفس الإشارة'],['signes contraires','إشارتان مختلفتان'],['somme','مجموع']],
+  pre:[
+    ['Pour additionner deux nombres de même signe, on garde ce signe et on additionne les valeurs absolues.',true,'Les deux déplacements vont dans le même sens : ils s’ajoutent.'],
+    ['(−7) + (+3) = −10.',false,'Signes contraires : 7 − 3 = 4, avec le signe de −7. Résultat : −4.'],
+    ['La somme de deux nombres opposés est égale à 0.',true,'Par exemple (−3) + (+3) = 0.']],
+  plan:['J’observe les signes des deux nombres.','J’applique la règle qui correspond à la situation : règle 1, règle 2 ou règle 3.'],
+  ex:[
+    E('Calcule (+7) + (+3).',[
+      ['Étape 1 · les deux nombres sont positifs','Même signe : +.'],
+      ['<b>Étape 2 · règle 1 : je garde +, j’additionne 7 + 3 = 10</b>','Résultat : 10.']]),
+    E('Calcule (−2) + (−5).',[
+      ['Étape 1 · les deux nombres sont négatifs','Même signe : −.'],
+      ['<b>Étape 2 · règle 1 : je garde −, j’additionne 2 + 5 = 7</b>','Résultat : −7.']]),
+    E('Calcule (−7) + (+3).',[
+      ['Étape 1 · signes contraires : − et +','Les signes sont différents.'],
+      ['<b>Étape 2 · règle 2 : plus grande valeur absolue : 7, signe − ; je soustrais 7 − 3 = 4</b>','Résultat : −4.']]),
+    E('Calcule (−3) + (+3).',[
+      ['Étape 1 · signes contraires, mêmes valeurs absolues','Les nombres −3 et 3 sont opposés.'],
+      ['<b>Étape 2 · règle 3 : la somme de deux nombres opposés est 0</b>','Résultat : 0.']])],
+  ret:['Règle 1 (même signe) : je garde le signe commun et j’additionne les valeurs absolues.','Règle 2 (signes contraires) : je garde le signe du nombre qui a la plus grande valeur absolue et je soustrais la plus petite valeur absolue de la plus grande.','Règle 3 : la somme de deux nombres opposés est 0.'],
+  ar:['القاعدة 1 (نفس الإشارة): أحتفظ بالإشارة المشتركة وأجمع القيمتين المطلقتين. القاعدة 2 (إشارتان مختلفتان): أحتفظ بإشارة العدد ذي القيمة المطلقة الأكبر وأطرح القيمة المطلقة الأصغر من الأكبر.','القاعدة 3: مجموع عددين متقابلين يساوي 0. مثلا (−7) + (+3) = −4.'],
+  arw:[['règle','قاعدة'],['valeur absolue','قيمة مطلقة'],['même signe','نفس الإشارة'],['signes contraires','إشارتان مختلفتان'],['opposés','متقابلان']]});
+
+D({id:'pi1-22',lv:1,period:1,dom:'Nombres',t:'Commutativité et associativité de l’addition',at:'تبادلية وتجميعية الجمع',
+  obj:'Utiliser la commutativité et l’associativité de l’addition pour calculer plus simplement.',keys:['nadd3'],
+  lex:[['commutativité','التبادلية'],['associativité','التجميعية'],['regrouper','أجمع'],['nombres opposés','أعداد متقابلة'],['somme','مجموع']],
+  pre:[
+    ['Si je change l’ordre des nombres dans une addition, la somme ne change pas.',true,'C’est la commutativité de l’addition.'],
+    ['(−3) + 5 = 5 + (−3).',true,'Les deux sommes valent 2.'],
+    ['Pour faciliter un calcul, on peut changer le signe d’un nombre.',false,'On change l’ordre ou le groupement, jamais le signe.']],
+  plan:['Je repère les nombres à regrouper : nombres opposés, ou nombres de même signe.','Je change leur ordre pour les placer côte à côte, sans changer leur signe.','Je regroupe et je calcule.'],
+  ex:[
+    E('Calcule 17 + (−8) + (−17).',[
+      ['Étape 1 · 17 et −17 sont opposés','Je les repère.'],
+      ['Étape 2 · 17 + (−17) + (−8)','Je les place côte à côte, sans changer leur signe.'],
+      ['<b>Étape 3 · (17 + (−17)) + (−8) = 0 + (−8) = −8</b>','Les nombres opposés s’annulent.']]),
+    E('Calcule 25 + (−13) + 15 + (−7).',[
+      ['Étape 1 · positifs : 25 et 15 ; négatifs : −13 et −7','Je repère les nombres de même signe.'],
+      ['Étape 2 · 25 + 15 + (−13) + (−7)','Je place les positifs ensemble, puis les négatifs.'],
+      ['<b>Étape 3 · (25 + 15) + ((−13) + (−7)) = 40 + (−20) = 20</b>','Je regroupe et je calcule.']]),
+    E('Calcule (−12) + 9 + 12 + (−4) + 6.',[
+      ['Étape 1 · −12 et 12 sont opposés ; il reste 9, −4 et 6','Je repère les opposés.'],
+      ['Étape 2 · (−12) + 12 + 9 + (−4) + 6','Je place les opposés côte à côte.'],
+      ['<b>Étape 3 · 0 + 9 + (−4) + 6 = 11</b>','9 + (−4) = 5 puis 5 + 6 = 11.']])],
+  ret:['Commutativité : on peut changer l’ordre des nombres dans une addition. Associativité : on peut changer le groupement.','Pour calculer par regroupement : je repère les nombres à regrouper, je les place côte à côte sans changer leur signe, je regroupe et je calcule.','Deux nombres opposés ont pour somme 0.'],
+  ar:['التبادلية: يمكن تغيير ترتيب الأعداد في الجمع دون أن يتغير المجموع. التجميعية: يمكن تغيير طريقة تجميع الأعداد.','للحساب بالتجميع: أحدد الأعداد التي سأجمعها (المتقابلة أو التي لها نفس الإشارة)، أضعها متجاورة دون تغيير إشاراتها، ثم أجمع.'],
+  arw:[['commutativité','تبادلية'],['associativité','تجميعية'],['regrouper','تجميع'],['opposés','متقابلان'],['somme','مجموع']]});
+
+D({id:'pi1-23',lv:1,period:1,dom:'Nombres',t:'La soustraction des nombres entiers',at:'طرح الأعداد الصحيحة',
+  obj:'Effectuer la soustraction de nombres entiers relatifs.',keys:['nsub'],
+  lex:[['soustraction','الطرح'],['opposé','المقابل'],['règle','قاعدة'],['résultat','نتيجة'],['différence','فرق']],
+  pre:[
+    ['Soustraire un nombre, c’est ajouter son opposé.',true,'C’est la règle de la soustraction.'],
+    ['5 − (−2) = 3.',false,'5 − (−2) = 5 + 2 = 7.'],
+    ['L’opposé de −8 est 8.',true,'Deux nombres opposés ne diffèrent que par le signe.']],
+  plan:['J’applique la règle : « soustraire un nombre, c’est ajouter son opposé ».','J’applique la règle de l’addition.','Je donne le résultat.'],
+  ex:[
+    E('Calcule 3 − 7.',[
+      ['Étape 1 · 3 − 7 = 3 + (−7)','L’opposé de 7 est −7.'],
+      ['Étape 2 · signes contraires : 7 − 3 = 4, signe −','Règle 2 de l’addition.'],
+      ['<b>Étape 3 · 3 − 7 = −4</b>','Résultat.']]),
+    E('Calcule 5 − (−2).',[
+      ['Étape 1 · 5 − (−2) = 5 + 2','L’opposé de −2 est 2.'],
+      ['Étape 2 · même signe : 5 + 2 = 7','Règle 1 de l’addition.'],
+      ['<b>Étape 3 · 5 − (−2) = 7</b>','Résultat.']]),
+    E('Calcule (−4) − (−9).',[
+      ['Étape 1 · (−4) − (−9) = (−4) + 9','L’opposé de −9 est 9.'],
+      ['Étape 2 · signes contraires : 9 − 4 = 5, signe +','La plus grande valeur absolue est 9.'],
+      ['<b>Étape 3 · (−4) − (−9) = 5</b>','Résultat.']]),
+    E('Calcule (−6) − 3.',[
+      ['Étape 1 · (−6) − 3 = (−6) + (−3)','L’opposé de 3 est −3.'],
+      ['Étape 2 · même signe − : 6 + 3 = 9','Règle 1 de l’addition.'],
+      ['<b>Étape 3 · (−6) − 3 = −9</b>','Résultat.']])],
+  ret:['Soustraire un nombre, c’est ajouter son opposé : a − b = a + (−b).','Ensuite j’applique la règle de l’addition des entiers relatifs.','L’opposé d’un nombre a le même nombre sans le signe, avec le signe contraire.'],
+  ar:['طرح عدد معناه جمع مقابله: a − b = a + (−b). بعد ذلك أطبق قاعدة جمع الأعداد الصحيحة النسبية.','مثلا 5 − (−2) = 5 + 2 = 7، و 3 − 7 = 3 + (−7) = −4.'],
+  arw:[['soustraction','طرح'],['opposé','مقابل'],['règle','قاعدة'],['addition','جمع'],['résultat','نتيجة']]});
+
 /* ===== PÉRIODE 2 ===== */
 D({id:'pi1-4',lv:1,period:2,dom:'Nombres',t:'Relatifs : soustraire, multiplier, puissances de 10',at:'الطرح والضرب في Z ثم قوى العدد 10',
   obj:'Soustraire et multiplier des relatifs ; utiliser les puissances de 10.',keys:['rel','pow','sci'],
@@ -7797,7 +7937,7 @@ P.evalPage({id:'pe1-4',lv:1,period:4,keys:['aire','perim','cercle','rep','vec','
 P.evalPage({id:'pe1-5',lv:1,period:5,keys:['vol','prop','pct','vit','ech','stat','effC','vol']});
 
 P.setLevel(1,['pr-1','pr-2','pr-3'],[
-  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-1','pi1-2','pi1-3']},
+  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-20','pi1-21','pi1-22','pi1-23','pi1-1','pi1-2','pi1-3']},
   {title:'Calcul littéral, équations, puissances',seqs:['pi1-4','pi1-5','pi1-6']},
   {title:'Droites, angles et symétrie centrale',seqs:['pi1-7','pi1-8','pi1-9']},
   {title:'Parallélogrammes, cercle et repérage',seqs:['pi1-10','pi1-11','pi1-12']},
