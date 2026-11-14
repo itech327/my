@@ -22,12 +22,24 @@ def inject_extra(frag, key):
     k = frag.rindex('<script>')
     return frag[:k] + '<script>\n' + EXTRA[key] + '\n</script>\n' + frag[k:]
 
+# Couleur propre à chaque matière, la même que sur la page d'accueil
+THEME = {
+    'maths': ('#e371cb', 'linear-gradient(90deg,#e371cb,#9b92dc)'),
+    'pc': ('#9b92dc', 'linear-gradient(90deg,#9b92dc,#6ccdb6)'),
+    'svt': ('#6ccdb6', 'linear-gradient(90deg,#6ccdb6,#9b92dc)'),
+}
+def theme(html, key):
+    acc, grad = THEME[key]
+    css = '<style>:root{--grad:' + grad + '}a.chap{border-color:' + acc + '}input[type=range]{accent-color:' + acc + '}</style>\n'
+    assert html.count('</head>') == 1
+    return html.replace('</head>', css + '</head>', 1)
+
 # Maths : le fragment est déjà un document complet
 m = rd('source/maths.fragment.html')
 m = inject(m, 'M.route=route;', 'lab/lab-maths.js', 'MM', 'maths')
 m = inject_extra(m, 'maths')
 m = m.rstrip() + '\n'
-wr('maths.html', m.lstrip())
+wr('maths.html', theme(m.lstrip(), 'maths'))
 
 # Physique-chimie : le fragment commence au <title>
 p = rd('source/physique-chimie.fragment.html')
@@ -35,7 +47,7 @@ p = inject(p, 'PC.route=route;', 'lab/lab-pc.js', 'PC', 'pc')
 p = inject_extra(p, 'pc')
 k = p.index('</style>') + len('</style>')
 head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-wr('physique-chimie.html', head + p[:k].lstrip() + '\n</head>\n<body>' + p[k:] + '\n</body>\n</html>\n')
+wr('physique-chimie.html', theme(head + p[:k].lstrip() + '\n</head>\n<body>' + p[k:] + '\n</body>\n</html>\n', 'pc'))
 
 # SVT : même cadre que la physique-chimie (CSS + première balise script), contenu propre
 fr = rd('source/physique-chimie.fragment.html')
@@ -66,7 +78,7 @@ svt_body = '''
 sv = inject(framework, 'PC.route=route;', 'lab/lab-svt.js', 'PC', 'svt')
 sv = sv + '\n<script>\n' + rd('svt/svt.js') + '\n</script>\n'
 head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-wr('svt.html', head + head_css.lstrip() + '\n</head>\n<body>' + svt_body + sv + '\n</body>\n</html>\n')
+wr('svt.html', theme(head + head_css.lstrip() + '\n</head>\n<body>' + svt_body + sv + '\n</body>\n</html>\n', 'svt'))
 print('ok', len(m), len(p), len(sv))
 
 # ---------------------------------------------------------------------------
