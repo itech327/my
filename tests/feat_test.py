@@ -123,7 +123,7 @@ with sync_playwright() as p:
         wrong = 0 if right != 0 else 1
         pz.locator('.lab-riddle .rd-opts button').nth(wrong).click()
         check(pz.locator('.lab-riddle .rd-opts button.ok').count() == 1 and pz.locator('.lab-riddle .rd-opts button.ko').count() == 1 and 'Pas tout' in pz.locator('.lab-riddle .rd-fb').inner_text(), f + ': mauvaise réponse corrigée avec explication')
-        pz.reload(); pz.wait_for_timeout(500)
+        pz.reload(); pz.wait_for_selector('.lab-riddle', timeout=8000); pz.wait_for_timeout(400)
         check(pz.locator('.lab-riddle .rd-opts button.ko').count() == 1 and pz.locator('.lab-riddle .rd-opts button').first.is_disabled(), f + ': réponse conservée après rechargement')
         pz.evaluate("Lab.Session.clearAll()")
         check(pz.evaluate("localStorage.getItem('lab_rid')") is None, f + ': effacer les données retire l’énigme répondue')
