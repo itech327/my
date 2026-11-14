@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-Cmx5HPtbyWRxL+DeHDyUzHn3fF02PPc1dmk1npAAkr4=' 'sha256-JxG2dcRfaNz00ybaI2uqCeUJ9JxituJRK3LHvA/Z1Ro='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-h4fS3HoG+MDw2n9aeRFVmvHVMM7b/fcJK9P+uhsv5WU=' 'sha256-Xn5s8xnqHb7CAoHOOIBaItBAKzfANjZq/TbT9eTmHxI='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Technologie, 3e année du collège : systèmes techniques, chaînes d’information et d’énergie, dessin technique, énergies renouvelables. Figures animées et résumés en arabe.">
 <link rel="canonical" href="https://technologie.taalim.men/">
@@ -539,7 +539,12 @@ document.addEventListener('click',function(e){
       [2, 'La structure « tant que … faire » est :', ['répétitive', 'linéaire', 'conditionnelle'], 0, 'Elle répète des actions.'],
       [2, 'Une variable est :', ['une case mémoire nommée', 'un câble', 'une pile'], 0, 'Sa valeur peut changer.'],
       [3, 'Téléverser un programme, c’est :', ['l’envoyer dans la carte', 'le supprimer', 'le dessiner'], 0, 'Il passe de l’ordinateur à la mémoire de la carte.'],
-      [3, 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', ['conditionnelle', 'répétitive', 'linéaire'], 0, 'Le choix dépend d’une condition.']
+      [3, 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', ['conditionnelle', 'répétitive', 'linéaire'], 0, 'Le choix dépend d’une condition.'],
+      [1, 'Quelle fonction réalise le microcontrôleur de la carte Arduino ?', ['Traiter', 'Alimenter', 'Transmettre'], 0, 'Le microcontrôleur exécute le programme : il traite les informations.'],
+      [2, 'Quelle fonction est exécutée une seule fois au démarrage d’un programme Arduino ?', ['setup()', 'loop()', 'delay()'], 0, 'setup() s’exécute une fois, loop() se répète sans fin.'],
+      [2, 'Quelle instruction définit une broche comme sortie ?', ['pinMode(broche, OUTPUT)', 'digitalRead(broche)', 'delay(broche)'], 0, 'pinMode choisit le mode de la broche.'],
+      [3, 'Que fait l’instruction delay(500) ?', ['elle attend 500 millisecondes', 'elle attend 500 secondes', 'elle répète 500 fois'], 0, 'Le delay est exprimé en millisecondes.'],
+      [3, 'Avec digitalRead(btnPin) puis digitalWrite(ledPin, val), la LED :', ['recopie l’état du bouton', 'clignote toujours', 'reste éteinte'], 0, 'La valeur lue est recopiée sur la LED.']
     ],
     comm: [
       [1, 'Un voyant lumineux est une communication :', ['visuelle', 'sonore', 'câblée'], 0, 'Il informe par la lumière.'],
@@ -579,7 +584,11 @@ document.addEventListener('click',function(e){
       [2, 'Quelle solution transforme une rotation en translation ?', ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], 0, 'La crémaillère avance en ligne droite.'],
       [2, 'La bielle-manivelle donne une translation :', ['alternative', 'continue dans un seul sens', 'nulle'], 0, 'Le coulisseau fait des allers-retours.'],
       [3, 'Si la roue menée est plus petite que la roue menante, elle tourne :', ['plus vite', 'moins vite', 'à la même vitesse'], 0, 'r = D₁ ÷ D₂ est supérieur à 1.'],
-      [3, 'Quelle solution permet une très forte réduction de vitesse ?', ['la roue et la vis sans fin', 'les roues de friction', 'la poulie-courroie de même diamètre'], 0, 'Un tour de vis fait avancer la roue d’une dent.']
+      [3, 'Quelle solution permet une très forte réduction de vitesse ?', ['la roue et la vis sans fin', 'les roues de friction', 'la poulie-courroie de même diamètre'], 0, 'Un tour de vis fait avancer la roue d’une dent.'],
+      [1, 'Quel système transforme une rotation en translation ?', ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], 0, 'La crémaillère avance en ligne droite.'],
+      [2, 'Dans un système vis-écrou, un tour de vis fait avancer l’écrou :', ['d’un pas', 'de deux pas', 'de la moitié d’un pas'], 0, 'Le pas est la translation obtenue pour un tour.'],
+      [3, 'Un système bielle-manivelle transforme :', ['une rotation continue en translation alternative', 'une translation en rotation lente', 'une rotation en lumière'], 0, 'Le piston fait des allers-retours.'],
+      [3, 'Un système pignon-crémaillère est :', ['réversible', 'toujours irréversible', 'sans mouvement'], 0, 'On peut passer de la rotation à la translation et inversement.']
     ],
     agir: [
       [1, 'Le foret d’une perceuse est :', ['l’effecteur', 'le capteur', 'le pré-actionneur'], 0, 'Il agit directement sur la pièce.'],
@@ -627,7 +636,11 @@ document.addEventListener('click',function(e){
       [2, 'Deux appareils rendent le même service. Le moins gourmand a :', ['la meilleure efficacité énergétique', 'la moins bonne efficacité', 'aucune efficacité'], 0, 'Il consomme moins pour le même service.'],
       [2, 'Quelle classe est la plus gourmande ?', ['G', 'A', 'C'], 0, 'G est en bas de l’échelle.'],
       [3, 'Le diagramme des exigences décrit :', ['les fonctions et les contraintes', 'les composants électroniques', 'les utilisateurs uniquement'], 0, 'Il précise ce que le système doit faire.'],
-      [3, 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], 0, 'Une photorésistance détecte la tombée de la nuit.']
+      [3, 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], 0, 'Une photorésistance détecte la tombée de la nuit.'],
+      [1, 'Dans le diagramme des exigences du robot auto-tampon, quel bloc satisfait « Se propulser » ?', ['les moteurs', 'le pare-chocs', 'l’interrupteur'], 0, 'Les moteurs propulsent le robot sur le sol.'],
+      [2, 'Une exigence de raffinement :', ['précise une exigence unitaire', 'représente un bloc', 'remplace l’utilisateur'], 0, 'Elle apporte des informations qualitatives ou quantitatives.'],
+      [2, 'La liaison de contenance relie :', ['deux exigences', 'un bloc et un utilisateur', 'deux blocs seulement'], 0, 'Une exigence est contenue dans une autre.'],
+      [3, 'Dans un diagramme de cas d’utilisation, la relation entre « utilisateur » et « homme » est :', ['une généralisation', 'une satisfaction', 'un raffinement'], 0, 'Homme et femme sont des cas particuliers d’utilisateur.']
     ]
   };
   function fromBank(key, d) {
@@ -654,6 +667,14 @@ document.addEventListener('click',function(e){
       var dd = pick([10, 20, 25, 30, 40, 50]);
       if (d === 3) return num('Sur un dessin à l’échelle 1:' + e + ', une longueur mesure ' + dd + ' mm. Quelle est la longueur réelle ?', dd * e, 'mm', dd + ' × ' + e + ' = ' + (dd * e) + ' mm.', 'Longueur réelle = longueur dessinée × ' + e + '.');
       return num('Une pièce mesure ' + r + ' mm en réalité et ' + (r / e) + ' mm sur le dessin. Quel est le dénominateur n de l’échelle 1:n ?', e, '', r + ' ÷ ' + (r / e) + ' = ' + e + '.', 'n = longueur réelle ÷ longueur dessinée.');
+    },
+    mvt: function (d) {
+      var R = pick([20, 30, 40, 45, 50]), th = pick([0.5, 1, 1.5, 2, 3]), Pm = pick([1, 2, 3, 4]), n = ri(5, 25);
+      if (d === 1) return num('Un pignon de rayon ' + R + ' mm tourne de ' + fm(th, 1) + ' rad. De combien avance la crémaillère, en mm ?', R * th, 'mm', 'L = R × θ = ' + R + ' × ' + fm(th, 1) + ' = ' + fm(R * th, 1) + ' mm.', 'Utilise L = R × θ, avec θ en radians.', 0.1);
+      if (d === 2) return num('Une vis de pas ' + Pm + ' mm fait ' + n + ' tours. De combien avance l’écrou, en mm ?', Pm * n, 'mm', 'L = P × n = ' + Pm + ' × ' + n + ' = ' + (Pm * n) + ' mm.', 'Un tour fait avancer l’écrou d’un pas.');
+      if (d === 3) { var V = pick([2, 4, 5, 8, 10]); return num('Une vis de pas ' + Pm + ' mm doit faire avancer un écrou à ' + V + ' mm/s. Combien de tours par seconde doit faire la vis ?', V / Pm, 'tr/s', 'n = V ÷ P = ' + V + ' ÷ ' + Pm + ' = ' + fm(V / Pm, 2) + ' tr/s.', 'Divise la vitesse par le pas.', 0.01); }
+      var V4 = pick([2, 4, 5, 10]);
+      return num('Une vis de pas ' + Pm + ' mm avance à ' + V4 + ' mm/s. Elle est entraînée par un motoréducteur de rapport 1/48. Quelle est la vitesse du moteur, en tr/s ?', V4 / Pm * 48, 'tr/s', 'Vis : ' + V4 + ' ÷ ' + Pm + ' = ' + fm(V4 / Pm, 2) + ' tr/s ; moteur : × 48 = ' + fm(V4 / Pm * 48, 1) + ' tr/s.', 'Le moteur tourne 48 fois plus vite que la vis.', 0.1);
     },
     puiss: function (d) {
       var sf = ri(1, 6), g0 = ri(2, 10) * 100, eta = pick([15, 18, 20]);
@@ -706,7 +727,7 @@ document.addEventListener('click',function(e){
   M['t3-5'] = { topics: ['b:ali', 'b:ali', 'g:auto'] };
   M['t3-6'] = { topics: ['b:dis'] };
   M['t3-7'] = { topics: ['b:conv'] };
-  M['t3-8'] = { topics: ['b:trans', 'b:trans', 'g:ratio'] };
+  M['t3-8'] = { topics: ['b:trans', 'b:trans', 'g:ratio', 'g:mvt'] };
   M['t3-9'] = { topics: ['b:agir'] };
   M['t3-10'] = { topics: ['b:des', 'b:des', 'g:ech'] };
   M['t3-11'] = { topics: ['b:ener'] };
@@ -2199,6 +2220,83 @@ function televerser(el) {
   paint();
 }
 
+function arduino(el) {
+  var svg = ui.stage(el, 400, 240, 'La carte Arduino UNO et un programme'), g = S('g', null, svg), dyn = S('g', null, svg);
+  var info = ui.info(el), chips = ui.chips(el), verd = ui.verdict(el);
+  var code = h('pre', { 'class': 'px-cap', style: 'white-space:pre-wrap;margin:8px 0 0;font:600 13px/1.5 ui-monospace,Menlo,monospace;color:var(--fg);direction:ltr;text-align:left' });
+  var mode = 'carte', sel = 'puce', ms = 1000, t = 0, btn = false, led = false, hl = -1;
+  var PARTS = {
+    puce: ['Microcontrôleur', 'Il rassemble sur une seule puce un processeur, des mémoires et des ports d’entrées-sorties. Il exécute le programme : c’est la fonction <b>Traiter</b>.'],
+    usb: ['Connexion USB', 'Elle alimente la carte en 5 V et permet de <b>téléverser</b> le programme depuis l’ordinateur.'],
+    jack: ['Prise jack', 'Elle permet d’alimenter la carte avec une tension de 7 V à 12 V (batterie ou bloc secteur).'],
+    reg: ['Régulateur', 'Il fournit la tension de 5 V nécessaire au fonctionnement de la carte, même si on alimente par la prise jack.'],
+    num: ['Broches numériques', 'On y branche des actionneurs (LED, moteur) ou des capteurs qui donnent une information binaire : 0 ou 1. Courant maximal : 40 mA par broche.'],
+    ana: ['Broches analogiques', 'Elles lisent une tension variable entre 0 V et 5 V : on y branche des capteurs comme la photorésistance.'],
+    rst: ['Bouton de remise à zéro', 'Il relance le programme depuis le début.'],
+    qz: ['Quartz', 'Il impose la fréquence de fonctionnement du microcontrôleur : 16 MHz.']
+  };
+  var BOX = { usb: [4, 38, 46, 36], jack: [4, 128, 46, 40], reg: [58, 134, 36, 26], puce: [170, 94, 90, 48], num: [150, 28, 220, 20], ana: [150, 192, 160, 20], rst: [308, 130, 28, 24], qz: [270, 96, 26, 20] };
+  var NAMES = { usb: 'USB', jack: 'jack', reg: '5 V', puce: 'microcontrôleur', num: 'broches numériques (0 à 13)', ana: 'broches analogiques (A0 à A5)', rst: 'reset', qz: '16 MHz' };
+  var CODES = {
+    blink: ['int led = 13;', 'void setup() {', '  pinMode(led, OUTPUT);', '}', 'void loop() {', '  digitalWrite(led, HIGH);', '  delay(1000);', '  digitalWrite(led, LOW);', '  delay(1000);', '}'],
+    bouton: ['int ledPin = 13;', 'int btnPin = 7;', 'void setup() {', '  pinMode(ledPin, OUTPUT);', '  pinMode(btnPin, INPUT);', '}', 'void loop() {', '  int val = digitalRead(btnPin);', '  digitalWrite(ledPin, val);', '}']
+  };
+  var kind = 'blink';
+  var board = S('rect', { x: 0, y: 18, width: 380, height: 204, rx: 14, style: 'fill:#0f5a63;fill-opacity:.55;stroke:' + T + ';stroke-width:2' }, g);
+  var zones = {};
+  Object.keys(BOX).forEach(function (k) {
+    var b = BOX[k], r = S('rect', { x: b[0], y: b[1], width: b[2], height: b[3], rx: 4, style: 'fill:#fff;fill-opacity:.12;stroke:#fff;stroke-opacity:.5;stroke-width:1.5;cursor:pointer' }, g);
+    r.addEventListener('click', function () { sel = k; paint(); }); zones[k] = r;
+  });
+  txt(g, 215, 122, 'ATmega', INK, 'middle', 11, true);
+  txt(g, 27, 59, 'USB', INK, 'middle', 9, true); txt(g, 27, 151, 'jack', INK, 'middle', 9, true); txt(g, 76, 150, '5 V', INK, 'middle', 9, true); txt(g, 322, 146, 'reset', INK, 'middle', 8.5, true); txt(g, 283, 110, '16 MHz', INK, 'middle', 7.5, true);
+  txt(g, 260, 66, 'broches numériques', 'rgba(255,255,255,.7)', 'middle', 9.5); txt(g, 230, 184, 'broches analogiques', 'rgba(255,255,255,.7)', 'middle', 9.5);
+  function codeText() { var L = CODES[kind]; code.textContent = L.map(function (x, i) { return (i === hl ? '▶ ' : '  ') + (kind === 'blink' && /delay\(/.test(x) ? '  delay(' + ms + ');' : x); }).join('\n'); }
+  function paint() {
+    Object.keys(zones).forEach(function (k) { zones[k].style.fillOpacity = mode === 'carte' && k === sel ? .45 : (mode === 'carte' ? .12 : .06); zones[k].style.strokeWidth = mode === 'carte' && k === sel ? 3 : 1.5; });
+    if (mode === 'carte') {
+      chips.set(ui.chip('Fonctionnement : 5 V', T) + ui.chip('Alimentation conseillée : 7 à 12 V', GOLD) + ui.chip('Fréquence : 16 MHz', P));
+      info.set('<b>' + PARTS[sel][0] + '.</b> ' + PARTS[sel][1] + ' <span style="opacity:.75">(' + NAMES[sel] + ')</span>');
+      verd.set('Touche une zone de la carte pour lire son rôle.', '');
+    } else {
+      chips.set(ui.chip('setup() : une seule fois', T) + ui.chip('loop() : en boucle', P));
+      info.set(kind === 'blink' ? '<b>pinMode</b> choisit si la broche est une sortie. <b>digitalWrite</b> met la broche à 1 (HIGH, 5 V) ou à 0 (LOW). <b>delay</b> attend un nombre de millisecondes. La LED clignote avec une période de ' + (2 * ms) + ' ms.' : '<b>digitalRead</b> lit l’état du bouton (0 ou 1) et <b>digitalWrite</b> recopie cette valeur sur la LED : maintiens le bouton.');
+      verd.set(led ? 'La broche 13 est à 5 V : la LED est allumée.' : 'La broche 13 est à 0 V : la LED est éteinte.', led ? 'ok' : '');
+    }
+    codeText();
+  }
+  el.appendChild(code);
+  ui.tabs(el, [['carte', 'La carte'], ['blink', 'Clignoter'], ['bouton', 'Bouton et LED']], function (k) {
+    if (k === 'carte') mode = 'carte'; else { mode = 'prog'; kind = k; t = 0; hl = -1; }
+    ctl.style.display = mode === 'prog' && kind === 'blink' ? '' : 'none'; code.style.display = mode === 'prog' ? '' : 'none'; paint();
+  });
+  var ctl = ui.controls(el);
+  ui.slider(ctl, { label: 'Durée du delay', min: 200, max: 2000, value: ms, step: 100, color: GOLD, fmt: function (v) { return v + ' ms'; } }, function (v) { ms = v; paint(); });
+  ctl.style.display = 'none'; code.style.display = 'none';
+  svg.addEventListener('pointerdown', function (e) { if (mode === 'prog' && kind === 'bouton') btn = true; });
+  window.addEventListener('pointerup', function () { btn = false; });
+  var last = '';
+  PC.anim(svg, function (dt) {
+    dyn.replaceChildren();
+    var i;
+    for (i = 0; i < 14; i++) { rect(dyn, 154 + i * 15, 34, 8, 8, '#fff', .5, 1, 0); }
+    for (i = 0; i < 6; i++) { rect(dyn, 154 + i * 26, 196, 8, 8, '#fff', .5, 1, 0); }
+    if (mode === 'prog') {
+      var nl;
+      if (kind === 'blink') {
+        t += dt * 1000; var cyc = 2 * ms + 600, tt = t % (cyc + 600);
+        if (t < 500) { nl = 2; led = false; } else {
+          var u = (t - 500) % (2 * ms + 400);
+          if (u < 200) { nl = 5; led = true; } else if (u < 200 + ms) { nl = 6; led = true; } else if (u < 400 + ms) { nl = 7; led = false; } else { nl = 8; led = false; }
+        }
+      } else { led = btn; nl = btn ? 8 : 7; }
+      if (nl !== hl || String(led) !== last) { hl = nl; last = String(led); paint(); }
+      circ(dyn, 360, 84, 11, C, led ? .9 : .12, 3); txt(dyn, 360, 108, 'LED (13)', C, 'middle', 9.5);
+      if (kind === 'bouton') { rect(dyn, 338, 140, 34, 26, btn ? GOLD : '#fff', btn ? .8 : .12, 6, 2); txt(dyn, 355, 180, 'bouton (7)', GOLD, 'middle', 9.5); }
+    }
+  });
+  paint();
+}
 PC.chapter({ id: 't3-3', lazy: true, eyebrow: EY + 'Module 2 · Chaîne d’information', title: 'La fonction « Traiter »', ar: 'الوظيفة «معالجة المعلومة»',
   lessons: function () { return [
     { short: 'Organigramme', title: 'Un algorithme et son organigramme', intro: 'Règle la luminosité et suis le trajet dans l’organigramme de l’éclairage automatique.', build: organigramme,
@@ -2212,14 +2310,19 @@ PC.chapter({ id: 't3-3', lazy: true, eyebrow: EY + 'Module 2 · Chaîne d’info
       ar: { e: ['المتغيّر خانة ذاكرة لها اسم وقيمتها قابلة للتغيّر أثناء التنفيذ. البرنامج هو ترجمة الخوارزمية إلى لغة تفهمها البطاقة الإلكترونية.'], u: 'اضغط على الزر لتزيد قيمة المتغيّر n.', w: [['variable', 'متغيّر'], ['programme', 'برنامج']] } },
     { short: 'Carte', title: 'Saisir, vérifier, téléverser, tester', intro: 'Suis les quatre étapes qui mènent du programme au système qui fonctionne.', build: televerser,
       retenir: ['<b>Saisir</b> le programme, le <b>vérifier</b>, le <b>téléverser</b> dans la carte électronique, puis <b>tester</b> le système.'],
-      ar: { e: ['ندخل البرنامج ثم نتحقق منه ثم نرفعه إلى البطاقة الإلكترونية (téléverser) ثم نختبر اشتغال النظام.'], u: 'اضغط على الزر للانتقال من مرحلة إلى أخرى.', w: [['téléverser', 'رفع البرنامج إلى البطاقة'], ['carte électronique', 'بطاقة إلكترونية']] } }
+      ar: { e: ['ندخل البرنامج ثم نتحقق منه ثم نرفعه إلى البطاقة الإلكترونية (téléverser) ثم نختبر اشتغال النظام.'], u: 'اضغط على الزر للانتقال من مرحلة إلى أخرى.', w: [['téléverser', 'رفع البرنامج إلى البطاقة'], ['carte électronique', 'بطاقة إلكترونية']] } },
+    { short: 'Arduino', title: 'La carte Arduino et son programme', intro: 'Touche les zones de la carte, puis lis un programme qui commande une LED.', build: arduino,
+      retenir: ['<b>Arduino</b> est une carte électronique programmable : son microcontrôleur traite les informations des capteurs pour commander les actionneurs.', 'Un programme contient <b>setup()</b>, exécutée une seule fois, et <b>loop()</b>, répétée sans fin.', 'Instructions : <b>pinMode</b> (entrée ou sortie), <b>digitalWrite</b>, <b>digitalRead</b>, <b>delay</b> (en ms).'],
+      ar: { e: ['أردوينو بطاقة إلكترونية قابلة للبرمجة، يعالج متحكّمها المصغّر معلومات اللواقط ليتحكم في المنفِّذات. يحتوي البرنامج على الدالة setup() التي تنفَّذ مرة واحدة والدالة loop() التي تتكرر باستمرار. التعليمات: pinMode لتحديد الدخول أو الخروج، و digitalWrite للكتابة، و digitalRead للقراءة، و delay للانتظار بالميلي ثانية.'], u: 'المس منطقة من اللوحة لتعرف دورها، ثم جرّب برنامج الوميض وبرنامج الزر.', w: [['carte Arduino', 'بطاقة أردوينو'], ['microcontrôleur', 'متحكّم مصغّر'], ['broche', 'طرف'], ['téléverser', 'رفع البرنامج'], ['boucle', 'حلقة']] } }
   ]; },
   quiz: [
     { q: 'Quel symbole représente un test dans un organigramme ?', o: ['le losange', 'l’ovale', 'le rectangle'], a: 0, e: 'Le losange pose une question à deux réponses : oui ou non.' },
     { q: 'La structure « tant que … faire » est :', o: ['répétitive', 'linéaire', 'conditionnelle'], a: 0, e: 'Elle répète des actions tant que la condition est vraie.' },
     { q: 'Une variable sert à :', o: ['mémoriser une valeur qui peut changer', 'alimenter la carte', 'dessiner l’organigramme'], a: 0, e: 'C’est une case mémoire nommée.' },
     { q: 'Téléverser un programme, c’est :', o: ['l’envoyer dans la mémoire de la carte', 'le supprimer', 'le dessiner'], a: 0, e: 'Il est transféré de l’ordinateur vers la carte électronique.' },
-    { q: 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', o: ['conditionnelle', 'répétitive', 'linéaire'], a: 0, e: 'Le choix dépend d’une condition.' }
+    { q: 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', o: ['conditionnelle', 'répétitive', 'linéaire'], a: 0, e: 'Le choix dépend d’une condition.' },
+    { q: 'Dans un programme Arduino, la fonction exécutée en boucle est :', o: ['loop()', 'setup()', 'delay()'], a: 0, e: 'setup() s’exécute une seule fois, loop() se répète.' },
+    { q: 'L’instruction delay(1000) fait attendre :', o: ['une seconde', 'une milliseconde', 'dix secondes'], a: 0, e: 'Le delay est exprimé en millisecondes.' }
   ]
 });
 
@@ -2606,6 +2709,61 @@ function transformation(el) {
     }
   });
 }
+function calculsMvt(el) {
+  var svg = ui.stage(el, 400, 240, 'Calculs sur la transformation du mouvement'), g = S('g', null, svg), dyn = S('g', null, svg);
+  var info = ui.info(el), chips = ui.chips(el), verd = ui.verdict(el);
+  var cur = 'pc', R = 45, deg = 0, Pm = 1, V = 5, t = 0, X = 0;
+  var TARGET = 70.7;
+  var ctl = ui.controls(el);
+  function calc() {
+    if (cur === 'pc') {
+      var th = deg * Math.PI / 180, L = R * th, ok = Math.abs(L - TARGET) < 1.5;
+      chips.set(ui.chip('θ = ' + fm(th, 2) + ' rad (' + deg + '°)', T) + ui.chip('L = ' + fm(L, 1) + ' mm', GOLD) + ui.chip('Objectif : ' + fm(TARGET, 1) + ' mm', P));
+      verd.set(ok ? 'Objectif atteint : le trou oblong est percé. Avec R = ' + R + ' mm, il faut θ = ' + fm(TARGET / R, 2) + ' rad, soit ' + Math.round(TARGET / R * 180 / Math.PI) + '°.' : (L < TARGET ? 'Le forêt n’est pas assez descendu.' : 'Le forêt est descendu trop bas.'), ok ? 'ok' : '');
+      info.set('Dans un système pignon-crémaillère : <b>L = R × θ</b> (L en mm, R en mm, θ en radians). On convertit : θ(°) = θ(rad) × 180 ÷ π. Règle l’angle du levier pour que le forêt descende de ' + fm(TARGET, 1) + ' mm.');
+    } else {
+      var ns = V / Pm, nm = ns * 48;
+      chips.set(ui.chip('Vis : ' + fm(ns, 1) + ' tr/s', GOLD) + ui.chip('Moteur : ' + fm(nm * 60, 0) + ' tr/min', P) + ui.chip('ω = ' + fm(nm * 2 * Math.PI, 0) + ' rad/s', T));
+      verd.set('Il faut un moteur de ' + fm(nm * 60, 0) + ' tr/min pour pousser à ' + V + ' mm/s.', '');
+      info.set('Dans un système vis-écrou, <b>1 tour de vis = 1 pas P</b> de translation, donc <b>V = P × n</b>. Le motoréducteur de rapport k = 1/48 tourne 48 fois plus vite que la vis : <b>n<sub>moteur</sub> = V ÷ (P × k)</b>.');
+    }
+  }
+  function show(k) {
+    cur = k; ctl.replaceChildren();
+    if (k === 'pc') {
+      ui.slider(ctl, { label: 'Angle du levier', min: 0, max: 360, value: deg, step: 5, color: T, fmt: function (v) { return v + '°'; } }, function (v) { deg = v; calc(); });
+      ui.slider(ctl, { label: 'Rayon du pignon R', min: 20, max: 60, value: R, step: 5, color: GOLD, fmt: function (v) { return v + ' mm'; } }, function (v) { R = v; calc(); });
+    } else {
+      ui.slider(ctl, { label: 'Pas P', min: 1, max: 4, value: Pm, step: 1, color: GOLD, fmt: function (v) { return v + ' mm'; } }, function (v) { Pm = v; calc(); });
+      ui.slider(ctl, { label: 'Vitesse de translation V', min: 1, max: 10, value: V, step: 1, color: T, fmt: function (v) { return v + ' mm/s'; } }, function (v) { V = v; calc(); });
+    }
+    calc();
+  }
+  ui.tabs(el, [['pc', 'Perceuse : pignon-crémaillère'], ['ve', 'Robot : vis-écrou']], show);
+  el.appendChild(ctl);
+  show('pc');
+  PC.anim(svg, function (dt) {
+    dyn.replaceChildren(); var i;
+    if (cur === 'pc') {
+      var rs = R * .9, rx = 240, cx = rx - rs, cy = 104, th = deg * Math.PI / 180, L = R * th, lp = Math.min(L, 76);
+      circ(dyn, cx, cy, rs, T, .15, 3); ln(dyn, cx, cy, cx + Math.cos(th - Math.PI / 2) * rs, cy + Math.sin(th - Math.PI / 2) * rs, '#fff', 4);
+      rect(dyn, rx, 14, 22, 224, '#fff', .06, 4, 1.5);
+      rect(dyn, 200, 150, 190, 86, '#fff', .08, 4, 1.5);
+      var cyh = 96 + lp; rect(dyn, rx - 6, cyh, 34, 24, GOLD, .6, 4, 2.5);
+      ln(dyn, rx + 11, cyh + 24, rx + 11, cyh + 64, '#fff', 3);
+      ln(dyn, 200, 150 + TARGET, 390, 150 + TARGET, P, 1.5, '5 4'); txt(dyn, 340, 150 + TARGET - 5, 'profondeur à atteindre', P, 'middle', 10);
+      txt(dyn, cx, cy - rs - 8, 'pignon', T, 'middle', 11); txt(dyn, rx + 11, 10, 'crémaillère', 'rgba(255,255,255,.7)', 'middle', 10.5);
+    } else {
+      t += dt * V * .12; X = (t % 1);
+      var ns = V / Pm; var sh = (t * 20) % 18;
+      rect(dyn, 40, 96, 300, 28, 'rgba(255,255,255,1)', .06, 4, 2);
+      for (i = -1; i < 18; i++) { var xx = 40 + i * 18 + sh; if (xx > 40 && xx < 336) ln(dyn, xx, 96, xx + 10, 124, GOLD, 2.5); }
+      var nx = 50 + X * 230; rect(dyn, nx, 78, 52, 64, T, .5, 6, 2.5); txt(dyn, nx + 26, 114, 'écrou', '#fff', 'middle', 11);
+      rect(dyn, 8, 90, 32, 40, P, .5, 6, 2.5); txt(dyn, 24, 148, 'moteur', P, 'middle', 10);
+      txt(dyn, 200, 190, 'P = ' + Pm + ' mm par tour · V = ' + V + ' mm/s', GOLD, 'middle', 11.5);
+    }
+  });
+}
 PC.chapter({ id: 't3-8', lazy: true, eyebrow: EY + 'Module 3 · Chaîne d’énergie', title: 'La fonction « Transmettre »', ar: 'الوظيفة «نقل الحركة»',
   lessons: function () { return [
     { short: 'Transmission', title: 'Transmettre un mouvement', intro: 'Choisis une solution, change les tailles des roues et regarde la vitesse de la roue menée.', build: transmission,
@@ -2613,14 +2771,19 @@ PC.chapter({ id: 't3-8', lazy: true, eyebrow: EY + 'Module 3 · Chaîne d’éne
       ar: { e: ['نقل الحركة يعني الحفاظ على نوعها (دوران) مع نقلها من محور إلى آخر: بكرة وسير، سلسلة وعجلات مسنّنة، مسنّنات، عجلات احتكاك. نسبة السرعة = n₂ ÷ n₁ = D₁ ÷ D₂ = Z₁ ÷ Z₂.'], u: 'غيّر حجم العجلتين وراقب سرعة العجلة المنقادة.', w: [['transmission du mouvement', 'نقل الحركة'], ['poulie-courroie', 'بكرة وسير'], ['engrenage', 'مسنّنات'], ['roue menante', 'عجلة قائدة'], ['roue menée', 'عجلة منقادة'], ['réducteur', 'مخفِّض السرعة']] } },
     { short: 'Transformation', title: 'Transformer un mouvement', intro: 'Observe comment une rotation devient une translation, ou une rotation lente.', build: transformation,
       retenir: ['<b>Transformer</b> un mouvement, c’est en changer la nature : rotation vers translation.', 'Bielle-manivelle : translation alternative. Pignon-crémaillère et vis-écrou : translation. Roue et vis sans fin : rotation lente d’axe perpendiculaire.'],
-      ar: { e: ['تحويل الحركة يعني تغيير طبيعتها: من دوران إلى انتقال. الذراع والكرنك يعطي انتقالا ترددّيا، الترس والمجرى المسنّن والبرغي والصامولة يعطيان انتقالا مستقيما، والعجلة والبرغي اللانهائي يعطيان دورانا بطيئا بمحور عمودي.'], u: 'اختر تبويبا وغيّر السرعة والاتجاه.', w: [['transformation du mouvement', 'تحويل الحركة'], ['bielle-manivelle', 'ذراع وكرنك'], ['pignon-crémaillère', 'ترس ومجرى مسنّن'], ['vis-écrou', 'برغي وصامولة'], ['vis sans fin', 'برغي لانهائي']] } }
+      ar: { e: ['تحويل الحركة يعني تغيير طبيعتها: من دوران إلى انتقال. الذراع والكرنك يعطي انتقالا ترددّيا، الترس والمجرى المسنّن والبرغي والصامولة يعطيان انتقالا مستقيما، والعجلة والبرغي اللانهائي يعطيان دورانا بطيئا بمحور عمودي.'], u: 'اختر تبويبا وغيّر السرعة والاتجاه.', w: [['transformation du mouvement', 'تحويل الحركة'], ['bielle-manivelle', 'ذراع وكرنك'], ['pignon-crémaillère', 'ترس ومجرى مسنّن'], ['vis-écrou', 'برغي وصامولة'], ['vis sans fin', 'برغي لانهائي']] } },
+    { short: 'Calculs', title: 'Calculer une transformation', intro: 'Résous deux problèmes de l’atelier : la perceuse à colonne et le robot pousseur.', build: calculsMvt,
+      retenir: ['Pignon-crémaillère : <b>L = R × θ</b> et <b>V = R × ω</b> (θ en radians).', 'Vis-écrou : <b>L = P × n</b> (n tours) et <b>V = P × n par seconde</b>. Un tour fait avancer d’un pas P.', 'Pour passer des degrés aux radians : θ(rad) = θ(°) × π ÷ 180.'],
+      ar: { e: ['في نظام البينيون والمجرى المسنّن: الإزاحة L = R × θ بشرط أن تكون الزاوية بالراديان. في نظام اللولب والصامولة: دورة واحدة تعطي إزاحة تساوي الخطوة P، فتكون V = P × n. لتحويل الدرجات إلى راديان نضرب في π ثم نقسم على 180.'], u: 'غيّر الزاوية أو الشعاع لتصل إلى العمق المطلوب، ثم جرّب اللولب والصامولة.', w: [['crémaillère', 'مجرى مسنّن'], ['pas', 'خطوة اللولب'], ['pignon', 'عجلة مسنّنة صغيرة'], ['rad', 'راديان']] } }
   ]; },
   quiz: [
     { q: 'Un pignon de 20 dents entraîne un pignon de 40 dents. Le second tourne :', o: ['deux fois moins vite', 'deux fois plus vite', 'à la même vitesse'], a: 0, e: 'r = 20 ÷ 40 = 0,5 : c’est un réducteur.' },
     { q: 'La bielle-manivelle transforme :', o: ['une rotation en translation alternative', 'une translation en chaleur', 'une rotation en lumière'], a: 0, e: 'Le coulisseau fait des allers-retours.' },
     { q: 'Deux engrenages en contact tournent :', o: ['en sens inverses', 'dans le même sens', 'sans jamais tourner'], a: 0, e: 'Les dents s’engrènent et inversent le sens.' },
     { q: 'Quelle solution transforme une rotation en translation ?', o: ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], a: 0, e: 'La crémaillère avance en ligne droite.' },
-    { q: 'Quand la roue menée est plus petite que la roue menante, elle tourne :', o: ['plus vite', 'moins vite', 'à la même vitesse'], a: 0, e: 'r = D₁ ÷ D₂ est supérieur à 1.' }
+    { q: 'Quand la roue menée est plus petite que la roue menante, elle tourne :', o: ['plus vite', 'moins vite', 'à la même vitesse'], a: 0, e: 'r = D₁ ÷ D₂ est supérieur à 1.' },
+    { q: 'Un pignon de rayon 45 mm tourne de 1,57 rad. La crémaillère avance de :', o: ['environ 70,7 mm', 'environ 28,7 mm', 'environ 1,57 mm'], a: 0, e: 'L = R × θ = 45 × 1,57 ≈ 70,7 mm.' },
+    { q: 'Une vis de pas 2 mm fait 10 tours. L’écrou avance de :', o: ['20 mm', '12 mm', '5 mm'], a: 0, e: 'L = P × n = 2 × 10 = 20 mm.' }
   ]
 });
 
@@ -3130,6 +3293,59 @@ function etiquette(el) {
   }
   paint();
 }
+function exigences(el) {
+  var svg = ui.stage(el, 400, 250, 'Diagramme des exigences du robot auto-tampon'), g = S('g', null, svg), dyn = S('g', null, svg);
+  var info = ui.info(el), verd = ui.verdict(el), chips = ui.chips(el);
+  var EX = [
+    ['1.1', 'Énergie', 'S’alimenter avec une énergie embarquée.', 'Accumulateur 7,4 V'],
+    ['1.2', 'Marche\nArrêt', 'Mettre le robot sous tension.', 'Interrupteur'],
+    ['1.3', 'Départ', 'Synchroniser le circuit de temporisation de recul à la mise sous tension (5 s).', 'Circuit de\ntemporisation'],
+    ['1.4', 'Propulsion', 'Se propulser sur le sol.', 'Deux moteurs'],
+    ['1.5', 'Obstacles', 'Détecter l’obstacle par contact.', 'Pare-chocs'],
+    ['1.6', 'Marche\narrière', 'Reculer si le robot touche un obstacle. Raffinement 1.6.1 : générer deux temporisations réglables et différentes.', 'Deux\ntemporisateurs']
+  ];
+  var W = 60, X0 = 4, GAP = 6, YB = 96;
+  rect(g, 120, 6, 160, 40, P, .22, 8, 2); txt(g, 200, 22, 'Exigence 1', INK, 'middle', 10, true); txt(g, 200, 36, 'Se déplacer dans un espace contraint', INK, 'middle', 8.5);
+  EX.forEach(function (e, i) {
+    var x = X0 + i * (W + GAP);
+    ln(g, 200, 46, x + W / 2, YB, 'rgba(255,255,255,.35)', 1.5);
+    var r = rect(g, x, YB, W, 44, L, .2, 6, 2);
+    txt(g, x + W / 2, YB + 14, e[0], GOLD, 'middle', 10, true);
+    e[1].split('\n').forEach(function (l, k, a) { txt(g, x + W / 2, YB + 27 + k * 10 - (a.length - 1) * 3, l, INK, 'middle', 8.5); });
+    var hit = S('rect', { x: x, y: YB, width: W, height: 44, style: 'fill:transparent;cursor:pointer' }, g);
+    hit.addEventListener('click', function () { choose(i); });
+    hit.setAttribute('tabindex', '0'); hit.setAttribute('role', 'button'); hit.setAttribute('aria-label', 'Exigence ' + e[0] + ' ' + e[1].replace('\n', ' '));
+    hit.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); choose(i); } });
+  });
+  var queue, done, wrong;
+  function start() { queue = PC.shuffle([0, 1, 2, 3, 4, 5]); done = {}; wrong = 0; paint(''); }
+  function paint(msg) {
+    dyn.replaceChildren();
+    EX.forEach(function (e, i) {
+      if (!done[i]) return; var x = X0 + i * (W + GAP);
+      ln(dyn, x + W / 2, YB + 44, x + W / 2, 178, T, 2, '5 4'); txt(dyn, x + W / 2, 168, '« satisfy »', T, 'middle', 7.5);
+      rect(dyn, x, 182, W, 44, T, .25, 6, 2);
+      e[3].split('\n').forEach(function (l, k, a) { txt(dyn, x + W / 2, 202 + k * 10 - (a.length - 1) * 4, l, INK, 'middle', 8.5); });
+    });
+    var left = queue.length;
+    if (left) {
+      chips.set(ui.chip('Bloc à placer : ' + EX[queue[0]][3].replace('\n', ' '), T) + ui.chip('Restants : ' + left, GOLD));
+      info.set(msg || 'Touche l’<b>exigence</b> que ce <b>bloc</b> permet de satisfaire.');
+      verd.set('', '');
+    } else {
+      chips.set(ui.chip('Diagramme complet', T) + ui.chip('Erreurs : ' + wrong, wrong ? C : T));
+      info.set(msg || 'Chaque bloc satisfait une exigence : c’est la liaison <b>« satisfy »</b>.');
+      verd.set('Le diagramme est complet.', 'ok');
+    }
+  }
+  function choose(i) {
+    if (!queue.length || done[i]) return;
+    if (queue[0] === i) { done[i] = true; var q = queue.shift(); paint('<b>Exact.</b> Exigence ' + EX[i][0] + ' : ' + EX[i][2]); }
+    else { wrong++; paint('<b>Pas cette exigence.</b> Relis : ' + EX[queue[0]][3].replace('\n', ' ') + ' ne répond pas à « ' + EX[i][2].split('.')[0] + ' ».'); }
+  }
+  var ctl = ui.controls(el); ui.btn(ctl, 'Recommencer', start);
+  start();
+}
 var PROJ = {
   eol: { t: 'Projet 1 · Éolienne', d: ['Utilisateur : produire de l’énergie électrique à partir du vent. Option : stocker l’énergie produite.', 'Éolienne, vent, batterie de stockage, utilisateur de l’énergie.', 'Produire une tension utilisable ; résister au vent ; stocker l’énergie ; coût réduit.', 'Pales et rotor, génératrice (petit moteur CC), mât, diode de protection, batterie, voyant de charge.'] },
   pv: { t: 'Projet 2 · Maisonnette solaire', d: ['Utilisateur : éclairer la maisonnette la nuit sans intervenir.', 'Maisonnette, Soleil, panneau photovoltaïque, obscurité, utilisateur.', 'Alimenter l’éclairage avec l’énergie solaire ; s’allumer à la tombée de la nuit ; s’éteindre le jour.', 'Panneau photovoltaïque, batterie, photorésistance (interrupteur crépusculaire), transistor ou relais, lampe.'] },
@@ -3151,13 +3367,18 @@ PC.chapter({ id: 't3-14', lazy: true, eyebrow: EY + 'Module 5 · Énergies renou
       ar: { e: ['النجاعة الطاقية تقيس الطاقة اللازمة لتقديم الخدمة نفسها. في ملصق الطاقة، الفئة A هي الأكثر اقتصادا والفئة G هي الأكثر استهلاكا.'], u: 'اختر فئة من A إلى G ولاحظ الاستهلاك والتكلفة السنوية.', w: [['efficacité énergétique', 'نجاعة طاقية'], ['étiquette énergie', 'ملصق الطاقة'], ['classe', 'فئة']] } },
     { short: 'Projets', title: 'Les projets au choix', intro: 'Choisis un projet : lis son cahier des charges sous forme de quatre diagrammes.', build: projets,
       retenir: ['Chaque projet est décrit par un cahier des charges : <b>besoin</b>, <b>contexte</b>, <b>exigences</b>, <b>solutions techniques</b>.', 'Les projets utilisent les connaissances sur les énergies renouvelables et sur les fonctions techniques.'],
-      ar: { e: ['كل مشروع يوصف بدفتر تحملات: الحاجة، سياق الاستعمال، المتطلبات والحلول التقنية، ويُعبَّر عنها بمخططات لغة SysML.'], u: 'اختر مشروعا لقراءة دفتر تحملاته.', w: [['cahier des charges', 'دفتر التحملات'], ['exigences', 'متطلبات']] } }
+      ar: { e: ['كل مشروع يوصف بدفتر تحملات: الحاجة، سياق الاستعمال، المتطلبات والحلول التقنية، ويُعبَّر عنها بمخططات لغة SysML.'], u: 'اختر مشروعا لقراءة دفتر تحملاته.', w: [['cahier des charges', 'دفتر التحملات'], ['exigences', 'متطلبات']] } },
+    { short: 'Exigences', title: 'Lire un diagramme des exigences', intro: 'Le robot auto-tampon : associe chaque bloc à l’exigence qu’il satisfait.', build: exigences,
+      retenir: ['Une <b>exigence</b> est une fonction du système ou une contrainte. Un <b>bloc</b> est un composant qui la satisfait.', 'Liaisons : <b>contenance</b> (une exigence contient une autre), <b>raffinement</b> (précise une exigence), <b>satisfaction</b> (un bloc satisfait une exigence).'],
+      ar: { e: ['المتطلّب (exigence) هو وظيفة للنظام أو قيد عليه، والكتلة (bloc) هي المكوّن الذي يحقّقه. أنواع الروابط: الاحتواء، والتدقيق (raffinement) الذي يوضّح متطلبا، والإشباع (satisfy) الذي يربط كتلة بالمتطلب الذي تحقّقه.'], u: 'اختر المتطلب الذي تحقّقه الكتلة المعروضة.', w: [['exigence', 'متطلّب'], ['bloc', 'كتلة'], ['raffinement', 'تدقيق'], ['satisfaction', 'إشباع']] } }
   ]; },
   quiz: [
     { q: 'Quelle classe de l’étiquette énergie est la plus économe ?', o: ['A', 'D', 'G'], a: 0, e: 'La classe A consomme le moins.' },
     { q: 'Deux appareils rendent le même service. Le moins gourmand a :', o: ['la meilleure efficacité énergétique', 'la moins bonne efficacité', 'aucune efficacité'], a: 0, e: 'Il consomme moins d’énergie pour le même service.' },
     { q: 'Le diagramme des exigences décrit :', o: ['les fonctions et les contraintes', 'les composants électroniques', 'les utilisateurs uniquement'], a: 0, e: 'Il précise ce que le système doit faire et ses limites.' },
-    { q: 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', o: ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], a: 0, e: 'Une photorésistance détecte la tombée de la nuit.' }
+    { q: 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', o: ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], a: 0, e: 'Une photorésistance détecte la tombée de la nuit.' },
+    { q: 'Dans le robot auto-tampon, quel bloc détecte l’obstacle ?', o: ['le pare-chocs', 'l’accumulateur', 'l’interrupteur'], a: 0, e: 'Il détecte l’obstacle par contact.' },
+    { q: 'La liaison « satisfy » relie :', o: ['un bloc à une exigence', 'deux utilisateurs', 'deux exigences contenues'], a: 0, e: 'Le bloc satisfait l’exigence.' }
   ]
 });
 

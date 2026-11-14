@@ -285,6 +285,59 @@ function etiquette(el) {
   }
   paint();
 }
+function exigences(el) {
+  var svg = ui.stage(el, 400, 250, 'Diagramme des exigences du robot auto-tampon'), g = S('g', null, svg), dyn = S('g', null, svg);
+  var info = ui.info(el), verd = ui.verdict(el), chips = ui.chips(el);
+  var EX = [
+    ['1.1', 'Énergie', 'S’alimenter avec une énergie embarquée.', 'Accumulateur 7,4 V'],
+    ['1.2', 'Marche\nArrêt', 'Mettre le robot sous tension.', 'Interrupteur'],
+    ['1.3', 'Départ', 'Synchroniser le circuit de temporisation de recul à la mise sous tension (5 s).', 'Circuit de\ntemporisation'],
+    ['1.4', 'Propulsion', 'Se propulser sur le sol.', 'Deux moteurs'],
+    ['1.5', 'Obstacles', 'Détecter l’obstacle par contact.', 'Pare-chocs'],
+    ['1.6', 'Marche\narrière', 'Reculer si le robot touche un obstacle. Raffinement 1.6.1 : générer deux temporisations réglables et différentes.', 'Deux\ntemporisateurs']
+  ];
+  var W = 60, X0 = 4, GAP = 6, YB = 96;
+  rect(g, 120, 6, 160, 40, P, .22, 8, 2); txt(g, 200, 22, 'Exigence 1', INK, 'middle', 10, true); txt(g, 200, 36, 'Se déplacer dans un espace contraint', INK, 'middle', 8.5);
+  EX.forEach(function (e, i) {
+    var x = X0 + i * (W + GAP);
+    ln(g, 200, 46, x + W / 2, YB, 'rgba(255,255,255,.35)', 1.5);
+    var r = rect(g, x, YB, W, 44, L, .2, 6, 2);
+    txt(g, x + W / 2, YB + 14, e[0], GOLD, 'middle', 10, true);
+    e[1].split('\n').forEach(function (l, k, a) { txt(g, x + W / 2, YB + 27 + k * 10 - (a.length - 1) * 3, l, INK, 'middle', 8.5); });
+    var hit = S('rect', { x: x, y: YB, width: W, height: 44, style: 'fill:transparent;cursor:pointer' }, g);
+    hit.addEventListener('click', function () { choose(i); });
+    hit.setAttribute('tabindex', '0'); hit.setAttribute('role', 'button'); hit.setAttribute('aria-label', 'Exigence ' + e[0] + ' ' + e[1].replace('\n', ' '));
+    hit.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); choose(i); } });
+  });
+  var queue, done, wrong;
+  function start() { queue = PC.shuffle([0, 1, 2, 3, 4, 5]); done = {}; wrong = 0; paint(''); }
+  function paint(msg) {
+    dyn.replaceChildren();
+    EX.forEach(function (e, i) {
+      if (!done[i]) return; var x = X0 + i * (W + GAP);
+      ln(dyn, x + W / 2, YB + 44, x + W / 2, 178, T, 2, '5 4'); txt(dyn, x + W / 2, 168, '« satisfy »', T, 'middle', 7.5);
+      rect(dyn, x, 182, W, 44, T, .25, 6, 2);
+      e[3].split('\n').forEach(function (l, k, a) { txt(dyn, x + W / 2, 202 + k * 10 - (a.length - 1) * 4, l, INK, 'middle', 8.5); });
+    });
+    var left = queue.length;
+    if (left) {
+      chips.set(ui.chip('Bloc à placer : ' + EX[queue[0]][3].replace('\n', ' '), T) + ui.chip('Restants : ' + left, GOLD));
+      info.set(msg || 'Touche l’<b>exigence</b> que ce <b>bloc</b> permet de satisfaire.');
+      verd.set('', '');
+    } else {
+      chips.set(ui.chip('Diagramme complet', T) + ui.chip('Erreurs : ' + wrong, wrong ? C : T));
+      info.set(msg || 'Chaque bloc satisfait une exigence : c’est la liaison <b>« satisfy »</b>.');
+      verd.set('Le diagramme est complet.', 'ok');
+    }
+  }
+  function choose(i) {
+    if (!queue.length || done[i]) return;
+    if (queue[0] === i) { done[i] = true; var q = queue.shift(); paint('<b>Exact.</b> Exigence ' + EX[i][0] + ' : ' + EX[i][2]); }
+    else { wrong++; paint('<b>Pas cette exigence.</b> Relis : ' + EX[queue[0]][3].replace('\n', ' ') + ' ne répond pas à « ' + EX[i][2].split('.')[0] + ' ».'); }
+  }
+  var ctl = ui.controls(el); ui.btn(ctl, 'Recommencer', start);
+  start();
+}
 var PROJ = {
   eol: { t: 'Projet 1 · Éolienne', d: ['Utilisateur : produire de l’énergie électrique à partir du vent. Option : stocker l’énergie produite.', 'Éolienne, vent, batterie de stockage, utilisateur de l’énergie.', 'Produire une tension utilisable ; résister au vent ; stocker l’énergie ; coût réduit.', 'Pales et rotor, génératrice (petit moteur CC), mât, diode de protection, batterie, voyant de charge.'] },
   pv: { t: 'Projet 2 · Maisonnette solaire', d: ['Utilisateur : éclairer la maisonnette la nuit sans intervenir.', 'Maisonnette, Soleil, panneau photovoltaïque, obscurité, utilisateur.', 'Alimenter l’éclairage avec l’énergie solaire ; s’allumer à la tombée de la nuit ; s’éteindre le jour.', 'Panneau photovoltaïque, batterie, photorésistance (interrupteur crépusculaire), transistor ou relais, lampe.'] },
@@ -306,12 +359,17 @@ PC.chapter({ id: 't3-14', lazy: true, eyebrow: EY + 'Module 5 · Énergies renou
       ar: { e: ['النجاعة الطاقية تقيس الطاقة اللازمة لتقديم الخدمة نفسها. في ملصق الطاقة، الفئة A هي الأكثر اقتصادا والفئة G هي الأكثر استهلاكا.'], u: 'اختر فئة من A إلى G ولاحظ الاستهلاك والتكلفة السنوية.', w: [['efficacité énergétique', 'نجاعة طاقية'], ['étiquette énergie', 'ملصق الطاقة'], ['classe', 'فئة']] } },
     { short: 'Projets', title: 'Les projets au choix', intro: 'Choisis un projet : lis son cahier des charges sous forme de quatre diagrammes.', build: projets,
       retenir: ['Chaque projet est décrit par un cahier des charges : <b>besoin</b>, <b>contexte</b>, <b>exigences</b>, <b>solutions techniques</b>.', 'Les projets utilisent les connaissances sur les énergies renouvelables et sur les fonctions techniques.'],
-      ar: { e: ['كل مشروع يوصف بدفتر تحملات: الحاجة، سياق الاستعمال، المتطلبات والحلول التقنية، ويُعبَّر عنها بمخططات لغة SysML.'], u: 'اختر مشروعا لقراءة دفتر تحملاته.', w: [['cahier des charges', 'دفتر التحملات'], ['exigences', 'متطلبات']] } }
+      ar: { e: ['كل مشروع يوصف بدفتر تحملات: الحاجة، سياق الاستعمال، المتطلبات والحلول التقنية، ويُعبَّر عنها بمخططات لغة SysML.'], u: 'اختر مشروعا لقراءة دفتر تحملاته.', w: [['cahier des charges', 'دفتر التحملات'], ['exigences', 'متطلبات']] } },
+    { short: 'Exigences', title: 'Lire un diagramme des exigences', intro: 'Le robot auto-tampon : associe chaque bloc à l’exigence qu’il satisfait.', build: exigences,
+      retenir: ['Une <b>exigence</b> est une fonction du système ou une contrainte. Un <b>bloc</b> est un composant qui la satisfait.', 'Liaisons : <b>contenance</b> (une exigence contient une autre), <b>raffinement</b> (précise une exigence), <b>satisfaction</b> (un bloc satisfait une exigence).'],
+      ar: { e: ['المتطلّب (exigence) هو وظيفة للنظام أو قيد عليه، والكتلة (bloc) هي المكوّن الذي يحقّقه. أنواع الروابط: الاحتواء، والتدقيق (raffinement) الذي يوضّح متطلبا، والإشباع (satisfy) الذي يربط كتلة بالمتطلب الذي تحقّقه.'], u: 'اختر المتطلب الذي تحقّقه الكتلة المعروضة.', w: [['exigence', 'متطلّب'], ['bloc', 'كتلة'], ['raffinement', 'تدقيق'], ['satisfaction', 'إشباع']] } }
   ]; },
   quiz: [
     { q: 'Quelle classe de l’étiquette énergie est la plus économe ?', o: ['A', 'D', 'G'], a: 0, e: 'La classe A consomme le moins.' },
     { q: 'Deux appareils rendent le même service. Le moins gourmand a :', o: ['la meilleure efficacité énergétique', 'la moins bonne efficacité', 'aucune efficacité'], a: 0, e: 'Il consomme moins d’énergie pour le même service.' },
     { q: 'Le diagramme des exigences décrit :', o: ['les fonctions et les contraintes', 'les composants électroniques', 'les utilisateurs uniquement'], a: 0, e: 'Il précise ce que le système doit faire et ses limites.' },
-    { q: 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', o: ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], a: 0, e: 'Une photorésistance détecte la tombée de la nuit.' }
+    { q: 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', o: ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], a: 0, e: 'Une photorésistance détecte la tombée de la nuit.' },
+    { q: 'Dans le robot auto-tampon, quel bloc détecte l’obstacle ?', o: ['le pare-chocs', 'l’accumulateur', 'l’interrupteur'], a: 0, e: 'Il détecte l’obstacle par contact.' },
+    { q: 'La liaison « satisfy » relie :', o: ['un bloc à une exigence', 'deux utilisateurs', 'deux exigences contenues'], a: 0, e: 'Le bloc satisfait l’exigence.' }
   ]
 });

@@ -34,7 +34,12 @@
       [2, 'La structure « tant que … faire » est :', ['répétitive', 'linéaire', 'conditionnelle'], 0, 'Elle répète des actions.'],
       [2, 'Une variable est :', ['une case mémoire nommée', 'un câble', 'une pile'], 0, 'Sa valeur peut changer.'],
       [3, 'Téléverser un programme, c’est :', ['l’envoyer dans la carte', 'le supprimer', 'le dessiner'], 0, 'Il passe de l’ordinateur à la mémoire de la carte.'],
-      [3, 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', ['conditionnelle', 'répétitive', 'linéaire'], 0, 'Le choix dépend d’une condition.']
+      [3, 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', ['conditionnelle', 'répétitive', 'linéaire'], 0, 'Le choix dépend d’une condition.'],
+      [1, 'Quelle fonction réalise le microcontrôleur de la carte Arduino ?', ['Traiter', 'Alimenter', 'Transmettre'], 0, 'Le microcontrôleur exécute le programme : il traite les informations.'],
+      [2, 'Quelle fonction est exécutée une seule fois au démarrage d’un programme Arduino ?', ['setup()', 'loop()', 'delay()'], 0, 'setup() s’exécute une fois, loop() se répète sans fin.'],
+      [2, 'Quelle instruction définit une broche comme sortie ?', ['pinMode(broche, OUTPUT)', 'digitalRead(broche)', 'delay(broche)'], 0, 'pinMode choisit le mode de la broche.'],
+      [3, 'Que fait l’instruction delay(500) ?', ['elle attend 500 millisecondes', 'elle attend 500 secondes', 'elle répète 500 fois'], 0, 'Le delay est exprimé en millisecondes.'],
+      [3, 'Avec digitalRead(btnPin) puis digitalWrite(ledPin, val), la LED :', ['recopie l’état du bouton', 'clignote toujours', 'reste éteinte'], 0, 'La valeur lue est recopiée sur la LED.']
     ],
     comm: [
       [1, 'Un voyant lumineux est une communication :', ['visuelle', 'sonore', 'câblée'], 0, 'Il informe par la lumière.'],
@@ -74,7 +79,11 @@
       [2, 'Quelle solution transforme une rotation en translation ?', ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], 0, 'La crémaillère avance en ligne droite.'],
       [2, 'La bielle-manivelle donne une translation :', ['alternative', 'continue dans un seul sens', 'nulle'], 0, 'Le coulisseau fait des allers-retours.'],
       [3, 'Si la roue menée est plus petite que la roue menante, elle tourne :', ['plus vite', 'moins vite', 'à la même vitesse'], 0, 'r = D₁ ÷ D₂ est supérieur à 1.'],
-      [3, 'Quelle solution permet une très forte réduction de vitesse ?', ['la roue et la vis sans fin', 'les roues de friction', 'la poulie-courroie de même diamètre'], 0, 'Un tour de vis fait avancer la roue d’une dent.']
+      [3, 'Quelle solution permet une très forte réduction de vitesse ?', ['la roue et la vis sans fin', 'les roues de friction', 'la poulie-courroie de même diamètre'], 0, 'Un tour de vis fait avancer la roue d’une dent.'],
+      [1, 'Quel système transforme une rotation en translation ?', ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], 0, 'La crémaillère avance en ligne droite.'],
+      [2, 'Dans un système vis-écrou, un tour de vis fait avancer l’écrou :', ['d’un pas', 'de deux pas', 'de la moitié d’un pas'], 0, 'Le pas est la translation obtenue pour un tour.'],
+      [3, 'Un système bielle-manivelle transforme :', ['une rotation continue en translation alternative', 'une translation en rotation lente', 'une rotation en lumière'], 0, 'Le piston fait des allers-retours.'],
+      [3, 'Un système pignon-crémaillère est :', ['réversible', 'toujours irréversible', 'sans mouvement'], 0, 'On peut passer de la rotation à la translation et inversement.']
     ],
     agir: [
       [1, 'Le foret d’une perceuse est :', ['l’effecteur', 'le capteur', 'le pré-actionneur'], 0, 'Il agit directement sur la pièce.'],
@@ -122,7 +131,11 @@
       [2, 'Deux appareils rendent le même service. Le moins gourmand a :', ['la meilleure efficacité énergétique', 'la moins bonne efficacité', 'aucune efficacité'], 0, 'Il consomme moins pour le même service.'],
       [2, 'Quelle classe est la plus gourmande ?', ['G', 'A', 'C'], 0, 'G est en bas de l’échelle.'],
       [3, 'Le diagramme des exigences décrit :', ['les fonctions et les contraintes', 'les composants électroniques', 'les utilisateurs uniquement'], 0, 'Il précise ce que le système doit faire.'],
-      [3, 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], 0, 'Une photorésistance détecte la tombée de la nuit.']
+      [3, 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], 0, 'Une photorésistance détecte la tombée de la nuit.'],
+      [1, 'Dans le diagramme des exigences du robot auto-tampon, quel bloc satisfait « Se propulser » ?', ['les moteurs', 'le pare-chocs', 'l’interrupteur'], 0, 'Les moteurs propulsent le robot sur le sol.'],
+      [2, 'Une exigence de raffinement :', ['précise une exigence unitaire', 'représente un bloc', 'remplace l’utilisateur'], 0, 'Elle apporte des informations qualitatives ou quantitatives.'],
+      [2, 'La liaison de contenance relie :', ['deux exigences', 'un bloc et un utilisateur', 'deux blocs seulement'], 0, 'Une exigence est contenue dans une autre.'],
+      [3, 'Dans un diagramme de cas d’utilisation, la relation entre « utilisateur » et « homme » est :', ['une généralisation', 'une satisfaction', 'un raffinement'], 0, 'Homme et femme sont des cas particuliers d’utilisateur.']
     ]
   };
   function fromBank(key, d) {
@@ -149,6 +162,14 @@
       var dd = pick([10, 20, 25, 30, 40, 50]);
       if (d === 3) return num('Sur un dessin à l’échelle 1:' + e + ', une longueur mesure ' + dd + ' mm. Quelle est la longueur réelle ?', dd * e, 'mm', dd + ' × ' + e + ' = ' + (dd * e) + ' mm.', 'Longueur réelle = longueur dessinée × ' + e + '.');
       return num('Une pièce mesure ' + r + ' mm en réalité et ' + (r / e) + ' mm sur le dessin. Quel est le dénominateur n de l’échelle 1:n ?', e, '', r + ' ÷ ' + (r / e) + ' = ' + e + '.', 'n = longueur réelle ÷ longueur dessinée.');
+    },
+    mvt: function (d) {
+      var R = pick([20, 30, 40, 45, 50]), th = pick([0.5, 1, 1.5, 2, 3]), Pm = pick([1, 2, 3, 4]), n = ri(5, 25);
+      if (d === 1) return num('Un pignon de rayon ' + R + ' mm tourne de ' + fm(th, 1) + ' rad. De combien avance la crémaillère, en mm ?', R * th, 'mm', 'L = R × θ = ' + R + ' × ' + fm(th, 1) + ' = ' + fm(R * th, 1) + ' mm.', 'Utilise L = R × θ, avec θ en radians.', 0.1);
+      if (d === 2) return num('Une vis de pas ' + Pm + ' mm fait ' + n + ' tours. De combien avance l’écrou, en mm ?', Pm * n, 'mm', 'L = P × n = ' + Pm + ' × ' + n + ' = ' + (Pm * n) + ' mm.', 'Un tour fait avancer l’écrou d’un pas.');
+      if (d === 3) { var V = pick([2, 4, 5, 8, 10]); return num('Une vis de pas ' + Pm + ' mm doit faire avancer un écrou à ' + V + ' mm/s. Combien de tours par seconde doit faire la vis ?', V / Pm, 'tr/s', 'n = V ÷ P = ' + V + ' ÷ ' + Pm + ' = ' + fm(V / Pm, 2) + ' tr/s.', 'Divise la vitesse par le pas.', 0.01); }
+      var V4 = pick([2, 4, 5, 10]);
+      return num('Une vis de pas ' + Pm + ' mm avance à ' + V4 + ' mm/s. Elle est entraînée par un motoréducteur de rapport 1/48. Quelle est la vitesse du moteur, en tr/s ?', V4 / Pm * 48, 'tr/s', 'Vis : ' + V4 + ' ÷ ' + Pm + ' = ' + fm(V4 / Pm, 2) + ' tr/s ; moteur : × 48 = ' + fm(V4 / Pm * 48, 1) + ' tr/s.', 'Le moteur tourne 48 fois plus vite que la vis.', 0.1);
     },
     puiss: function (d) {
       var sf = ri(1, 6), g0 = ri(2, 10) * 100, eta = pick([15, 18, 20]);
@@ -201,7 +222,7 @@
   M['t3-5'] = { topics: ['b:ali', 'b:ali', 'g:auto'] };
   M['t3-6'] = { topics: ['b:dis'] };
   M['t3-7'] = { topics: ['b:conv'] };
-  M['t3-8'] = { topics: ['b:trans', 'b:trans', 'g:ratio'] };
+  M['t3-8'] = { topics: ['b:trans', 'b:trans', 'g:ratio', 'g:mvt'] };
   M['t3-9'] = { topics: ['b:agir'] };
   M['t3-10'] = { topics: ['b:des', 'b:des', 'g:ech'] };
   M['t3-11'] = { topics: ['b:ener'] };

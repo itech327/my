@@ -238,6 +238,83 @@ function televerser(el) {
   paint();
 }
 
+function arduino(el) {
+  var svg = ui.stage(el, 400, 240, 'La carte Arduino UNO et un programme'), g = S('g', null, svg), dyn = S('g', null, svg);
+  var info = ui.info(el), chips = ui.chips(el), verd = ui.verdict(el);
+  var code = h('pre', { 'class': 'px-cap', style: 'white-space:pre-wrap;margin:8px 0 0;font:600 13px/1.5 ui-monospace,Menlo,monospace;color:var(--fg);direction:ltr;text-align:left' });
+  var mode = 'carte', sel = 'puce', ms = 1000, t = 0, btn = false, led = false, hl = -1;
+  var PARTS = {
+    puce: ['Microcontrôleur', 'Il rassemble sur une seule puce un processeur, des mémoires et des ports d’entrées-sorties. Il exécute le programme : c’est la fonction <b>Traiter</b>.'],
+    usb: ['Connexion USB', 'Elle alimente la carte en 5 V et permet de <b>téléverser</b> le programme depuis l’ordinateur.'],
+    jack: ['Prise jack', 'Elle permet d’alimenter la carte avec une tension de 7 V à 12 V (batterie ou bloc secteur).'],
+    reg: ['Régulateur', 'Il fournit la tension de 5 V nécessaire au fonctionnement de la carte, même si on alimente par la prise jack.'],
+    num: ['Broches numériques', 'On y branche des actionneurs (LED, moteur) ou des capteurs qui donnent une information binaire : 0 ou 1. Courant maximal : 40 mA par broche.'],
+    ana: ['Broches analogiques', 'Elles lisent une tension variable entre 0 V et 5 V : on y branche des capteurs comme la photorésistance.'],
+    rst: ['Bouton de remise à zéro', 'Il relance le programme depuis le début.'],
+    qz: ['Quartz', 'Il impose la fréquence de fonctionnement du microcontrôleur : 16 MHz.']
+  };
+  var BOX = { usb: [4, 38, 46, 36], jack: [4, 128, 46, 40], reg: [58, 134, 36, 26], puce: [170, 94, 90, 48], num: [150, 28, 220, 20], ana: [150, 192, 160, 20], rst: [308, 130, 28, 24], qz: [270, 96, 26, 20] };
+  var NAMES = { usb: 'USB', jack: 'jack', reg: '5 V', puce: 'microcontrôleur', num: 'broches numériques (0 à 13)', ana: 'broches analogiques (A0 à A5)', rst: 'reset', qz: '16 MHz' };
+  var CODES = {
+    blink: ['int led = 13;', 'void setup() {', '  pinMode(led, OUTPUT);', '}', 'void loop() {', '  digitalWrite(led, HIGH);', '  delay(1000);', '  digitalWrite(led, LOW);', '  delay(1000);', '}'],
+    bouton: ['int ledPin = 13;', 'int btnPin = 7;', 'void setup() {', '  pinMode(ledPin, OUTPUT);', '  pinMode(btnPin, INPUT);', '}', 'void loop() {', '  int val = digitalRead(btnPin);', '  digitalWrite(ledPin, val);', '}']
+  };
+  var kind = 'blink';
+  var board = S('rect', { x: 0, y: 18, width: 380, height: 204, rx: 14, style: 'fill:#0f5a63;fill-opacity:.55;stroke:' + T + ';stroke-width:2' }, g);
+  var zones = {};
+  Object.keys(BOX).forEach(function (k) {
+    var b = BOX[k], r = S('rect', { x: b[0], y: b[1], width: b[2], height: b[3], rx: 4, style: 'fill:#fff;fill-opacity:.12;stroke:#fff;stroke-opacity:.5;stroke-width:1.5;cursor:pointer' }, g);
+    r.addEventListener('click', function () { sel = k; paint(); }); zones[k] = r;
+  });
+  txt(g, 215, 122, 'ATmega', INK, 'middle', 11, true);
+  txt(g, 27, 59, 'USB', INK, 'middle', 9, true); txt(g, 27, 151, 'jack', INK, 'middle', 9, true); txt(g, 76, 150, '5 V', INK, 'middle', 9, true); txt(g, 322, 146, 'reset', INK, 'middle', 8.5, true); txt(g, 283, 110, '16 MHz', INK, 'middle', 7.5, true);
+  txt(g, 260, 66, 'broches numériques', 'rgba(255,255,255,.7)', 'middle', 9.5); txt(g, 230, 184, 'broches analogiques', 'rgba(255,255,255,.7)', 'middle', 9.5);
+  function codeText() { var L = CODES[kind]; code.textContent = L.map(function (x, i) { return (i === hl ? '▶ ' : '  ') + (kind === 'blink' && /delay\(/.test(x) ? '  delay(' + ms + ');' : x); }).join('\n'); }
+  function paint() {
+    Object.keys(zones).forEach(function (k) { zones[k].style.fillOpacity = mode === 'carte' && k === sel ? .45 : (mode === 'carte' ? .12 : .06); zones[k].style.strokeWidth = mode === 'carte' && k === sel ? 3 : 1.5; });
+    if (mode === 'carte') {
+      chips.set(ui.chip('Fonctionnement : 5 V', T) + ui.chip('Alimentation conseillée : 7 à 12 V', GOLD) + ui.chip('Fréquence : 16 MHz', P));
+      info.set('<b>' + PARTS[sel][0] + '.</b> ' + PARTS[sel][1] + ' <span style="opacity:.75">(' + NAMES[sel] + ')</span>');
+      verd.set('Touche une zone de la carte pour lire son rôle.', '');
+    } else {
+      chips.set(ui.chip('setup() : une seule fois', T) + ui.chip('loop() : en boucle', P));
+      info.set(kind === 'blink' ? '<b>pinMode</b> choisit si la broche est une sortie. <b>digitalWrite</b> met la broche à 1 (HIGH, 5 V) ou à 0 (LOW). <b>delay</b> attend un nombre de millisecondes. La LED clignote avec une période de ' + (2 * ms) + ' ms.' : '<b>digitalRead</b> lit l’état du bouton (0 ou 1) et <b>digitalWrite</b> recopie cette valeur sur la LED : maintiens le bouton.');
+      verd.set(led ? 'La broche 13 est à 5 V : la LED est allumée.' : 'La broche 13 est à 0 V : la LED est éteinte.', led ? 'ok' : '');
+    }
+    codeText();
+  }
+  el.appendChild(code);
+  ui.tabs(el, [['carte', 'La carte'], ['blink', 'Clignoter'], ['bouton', 'Bouton et LED']], function (k) {
+    if (k === 'carte') mode = 'carte'; else { mode = 'prog'; kind = k; t = 0; hl = -1; }
+    ctl.style.display = mode === 'prog' && kind === 'blink' ? '' : 'none'; code.style.display = mode === 'prog' ? '' : 'none'; paint();
+  });
+  var ctl = ui.controls(el);
+  ui.slider(ctl, { label: 'Durée du delay', min: 200, max: 2000, value: ms, step: 100, color: GOLD, fmt: function (v) { return v + ' ms'; } }, function (v) { ms = v; paint(); });
+  ctl.style.display = 'none'; code.style.display = 'none';
+  svg.addEventListener('pointerdown', function (e) { if (mode === 'prog' && kind === 'bouton') btn = true; });
+  window.addEventListener('pointerup', function () { btn = false; });
+  var last = '';
+  PC.anim(svg, function (dt) {
+    dyn.replaceChildren();
+    var i;
+    for (i = 0; i < 14; i++) { rect(dyn, 154 + i * 15, 34, 8, 8, '#fff', .5, 1, 0); }
+    for (i = 0; i < 6; i++) { rect(dyn, 154 + i * 26, 196, 8, 8, '#fff', .5, 1, 0); }
+    if (mode === 'prog') {
+      var nl;
+      if (kind === 'blink') {
+        t += dt * 1000; var cyc = 2 * ms + 600, tt = t % (cyc + 600);
+        if (t < 500) { nl = 2; led = false; } else {
+          var u = (t - 500) % (2 * ms + 400);
+          if (u < 200) { nl = 5; led = true; } else if (u < 200 + ms) { nl = 6; led = true; } else if (u < 400 + ms) { nl = 7; led = false; } else { nl = 8; led = false; }
+        }
+      } else { led = btn; nl = btn ? 8 : 7; }
+      if (nl !== hl || String(led) !== last) { hl = nl; last = String(led); paint(); }
+      circ(dyn, 360, 84, 11, C, led ? .9 : .12, 3); txt(dyn, 360, 108, 'LED (13)', C, 'middle', 9.5);
+      if (kind === 'bouton') { rect(dyn, 338, 140, 34, 26, btn ? GOLD : '#fff', btn ? .8 : .12, 6, 2); txt(dyn, 355, 180, 'bouton (7)', GOLD, 'middle', 9.5); }
+    }
+  });
+  paint();
+}
 PC.chapter({ id: 't3-3', lazy: true, eyebrow: EY + 'Module 2 · Chaîne d’information', title: 'La fonction « Traiter »', ar: 'الوظيفة «معالجة المعلومة»',
   lessons: function () { return [
     { short: 'Organigramme', title: 'Un algorithme et son organigramme', intro: 'Règle la luminosité et suis le trajet dans l’organigramme de l’éclairage automatique.', build: organigramme,
@@ -251,14 +328,19 @@ PC.chapter({ id: 't3-3', lazy: true, eyebrow: EY + 'Module 2 · Chaîne d’info
       ar: { e: ['المتغيّر خانة ذاكرة لها اسم وقيمتها قابلة للتغيّر أثناء التنفيذ. البرنامج هو ترجمة الخوارزمية إلى لغة تفهمها البطاقة الإلكترونية.'], u: 'اضغط على الزر لتزيد قيمة المتغيّر n.', w: [['variable', 'متغيّر'], ['programme', 'برنامج']] } },
     { short: 'Carte', title: 'Saisir, vérifier, téléverser, tester', intro: 'Suis les quatre étapes qui mènent du programme au système qui fonctionne.', build: televerser,
       retenir: ['<b>Saisir</b> le programme, le <b>vérifier</b>, le <b>téléverser</b> dans la carte électronique, puis <b>tester</b> le système.'],
-      ar: { e: ['ندخل البرنامج ثم نتحقق منه ثم نرفعه إلى البطاقة الإلكترونية (téléverser) ثم نختبر اشتغال النظام.'], u: 'اضغط على الزر للانتقال من مرحلة إلى أخرى.', w: [['téléverser', 'رفع البرنامج إلى البطاقة'], ['carte électronique', 'بطاقة إلكترونية']] } }
+      ar: { e: ['ندخل البرنامج ثم نتحقق منه ثم نرفعه إلى البطاقة الإلكترونية (téléverser) ثم نختبر اشتغال النظام.'], u: 'اضغط على الزر للانتقال من مرحلة إلى أخرى.', w: [['téléverser', 'رفع البرنامج إلى البطاقة'], ['carte électronique', 'بطاقة إلكترونية']] } },
+    { short: 'Arduino', title: 'La carte Arduino et son programme', intro: 'Touche les zones de la carte, puis lis un programme qui commande une LED.', build: arduino,
+      retenir: ['<b>Arduino</b> est une carte électronique programmable : son microcontrôleur traite les informations des capteurs pour commander les actionneurs.', 'Un programme contient <b>setup()</b>, exécutée une seule fois, et <b>loop()</b>, répétée sans fin.', 'Instructions : <b>pinMode</b> (entrée ou sortie), <b>digitalWrite</b>, <b>digitalRead</b>, <b>delay</b> (en ms).'],
+      ar: { e: ['أردوينو بطاقة إلكترونية قابلة للبرمجة، يعالج متحكّمها المصغّر معلومات اللواقط ليتحكم في المنفِّذات. يحتوي البرنامج على الدالة setup() التي تنفَّذ مرة واحدة والدالة loop() التي تتكرر باستمرار. التعليمات: pinMode لتحديد الدخول أو الخروج، و digitalWrite للكتابة، و digitalRead للقراءة، و delay للانتظار بالميلي ثانية.'], u: 'المس منطقة من اللوحة لتعرف دورها، ثم جرّب برنامج الوميض وبرنامج الزر.', w: [['carte Arduino', 'بطاقة أردوينو'], ['microcontrôleur', 'متحكّم مصغّر'], ['broche', 'طرف'], ['téléverser', 'رفع البرنامج'], ['boucle', 'حلقة']] } }
   ]; },
   quiz: [
     { q: 'Quel symbole représente un test dans un organigramme ?', o: ['le losange', 'l’ovale', 'le rectangle'], a: 0, e: 'Le losange pose une question à deux réponses : oui ou non.' },
     { q: 'La structure « tant que … faire » est :', o: ['répétitive', 'linéaire', 'conditionnelle'], a: 0, e: 'Elle répète des actions tant que la condition est vraie.' },
     { q: 'Une variable sert à :', o: ['mémoriser une valeur qui peut changer', 'alimenter la carte', 'dessiner l’organigramme'], a: 0, e: 'C’est une case mémoire nommée.' },
     { q: 'Téléverser un programme, c’est :', o: ['l’envoyer dans la mémoire de la carte', 'le supprimer', 'le dessiner'], a: 0, e: 'Il est transféré de l’ordinateur vers la carte électronique.' },
-    { q: 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', o: ['conditionnelle', 'répétitive', 'linéaire'], a: 0, e: 'Le choix dépend d’une condition.' }
+    { q: 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', o: ['conditionnelle', 'répétitive', 'linéaire'], a: 0, e: 'Le choix dépend d’une condition.' },
+    { q: 'Dans un programme Arduino, la fonction exécutée en boucle est :', o: ['loop()', 'setup()', 'delay()'], a: 0, e: 'setup() s’exécute une seule fois, loop() se répète.' },
+    { q: 'L’instruction delay(1000) fait attendre :', o: ['une seconde', 'une milliseconde', 'dix secondes'], a: 0, e: 'Le delay est exprimé en millisecondes.' }
   ]
 });
 

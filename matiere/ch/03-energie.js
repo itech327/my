@@ -337,6 +337,61 @@ function transformation(el) {
     }
   });
 }
+function calculsMvt(el) {
+  var svg = ui.stage(el, 400, 240, 'Calculs sur la transformation du mouvement'), g = S('g', null, svg), dyn = S('g', null, svg);
+  var info = ui.info(el), chips = ui.chips(el), verd = ui.verdict(el);
+  var cur = 'pc', R = 45, deg = 0, Pm = 1, V = 5, t = 0, X = 0;
+  var TARGET = 70.7;
+  var ctl = ui.controls(el);
+  function calc() {
+    if (cur === 'pc') {
+      var th = deg * Math.PI / 180, L = R * th, ok = Math.abs(L - TARGET) < 1.5;
+      chips.set(ui.chip('θ = ' + fm(th, 2) + ' rad (' + deg + '°)', T) + ui.chip('L = ' + fm(L, 1) + ' mm', GOLD) + ui.chip('Objectif : ' + fm(TARGET, 1) + ' mm', P));
+      verd.set(ok ? 'Objectif atteint : le trou oblong est percé. Avec R = ' + R + ' mm, il faut θ = ' + fm(TARGET / R, 2) + ' rad, soit ' + Math.round(TARGET / R * 180 / Math.PI) + '°.' : (L < TARGET ? 'Le forêt n’est pas assez descendu.' : 'Le forêt est descendu trop bas.'), ok ? 'ok' : '');
+      info.set('Dans un système pignon-crémaillère : <b>L = R × θ</b> (L en mm, R en mm, θ en radians). On convertit : θ(°) = θ(rad) × 180 ÷ π. Règle l’angle du levier pour que le forêt descende de ' + fm(TARGET, 1) + ' mm.');
+    } else {
+      var ns = V / Pm, nm = ns * 48;
+      chips.set(ui.chip('Vis : ' + fm(ns, 1) + ' tr/s', GOLD) + ui.chip('Moteur : ' + fm(nm * 60, 0) + ' tr/min', P) + ui.chip('ω = ' + fm(nm * 2 * Math.PI, 0) + ' rad/s', T));
+      verd.set('Il faut un moteur de ' + fm(nm * 60, 0) + ' tr/min pour pousser à ' + V + ' mm/s.', '');
+      info.set('Dans un système vis-écrou, <b>1 tour de vis = 1 pas P</b> de translation, donc <b>V = P × n</b>. Le motoréducteur de rapport k = 1/48 tourne 48 fois plus vite que la vis : <b>n<sub>moteur</sub> = V ÷ (P × k)</b>.');
+    }
+  }
+  function show(k) {
+    cur = k; ctl.replaceChildren();
+    if (k === 'pc') {
+      ui.slider(ctl, { label: 'Angle du levier', min: 0, max: 360, value: deg, step: 5, color: T, fmt: function (v) { return v + '°'; } }, function (v) { deg = v; calc(); });
+      ui.slider(ctl, { label: 'Rayon du pignon R', min: 20, max: 60, value: R, step: 5, color: GOLD, fmt: function (v) { return v + ' mm'; } }, function (v) { R = v; calc(); });
+    } else {
+      ui.slider(ctl, { label: 'Pas P', min: 1, max: 4, value: Pm, step: 1, color: GOLD, fmt: function (v) { return v + ' mm'; } }, function (v) { Pm = v; calc(); });
+      ui.slider(ctl, { label: 'Vitesse de translation V', min: 1, max: 10, value: V, step: 1, color: T, fmt: function (v) { return v + ' mm/s'; } }, function (v) { V = v; calc(); });
+    }
+    calc();
+  }
+  ui.tabs(el, [['pc', 'Perceuse : pignon-crémaillère'], ['ve', 'Robot : vis-écrou']], show);
+  el.appendChild(ctl);
+  show('pc');
+  PC.anim(svg, function (dt) {
+    dyn.replaceChildren(); var i;
+    if (cur === 'pc') {
+      var rs = R * .9, rx = 240, cx = rx - rs, cy = 104, th = deg * Math.PI / 180, L = R * th, lp = Math.min(L, 76);
+      circ(dyn, cx, cy, rs, T, .15, 3); ln(dyn, cx, cy, cx + Math.cos(th - Math.PI / 2) * rs, cy + Math.sin(th - Math.PI / 2) * rs, '#fff', 4);
+      rect(dyn, rx, 14, 22, 224, '#fff', .06, 4, 1.5);
+      rect(dyn, 200, 150, 190, 86, '#fff', .08, 4, 1.5);
+      var cyh = 96 + lp; rect(dyn, rx - 6, cyh, 34, 24, GOLD, .6, 4, 2.5);
+      ln(dyn, rx + 11, cyh + 24, rx + 11, cyh + 64, '#fff', 3);
+      ln(dyn, 200, 150 + TARGET, 390, 150 + TARGET, P, 1.5, '5 4'); txt(dyn, 340, 150 + TARGET - 5, 'profondeur à atteindre', P, 'middle', 10);
+      txt(dyn, cx, cy - rs - 8, 'pignon', T, 'middle', 11); txt(dyn, rx + 11, 10, 'crémaillère', 'rgba(255,255,255,.7)', 'middle', 10.5);
+    } else {
+      t += dt * V * .12; X = (t % 1);
+      var ns = V / Pm; var sh = (t * 20) % 18;
+      rect(dyn, 40, 96, 300, 28, 'rgba(255,255,255,1)', .06, 4, 2);
+      for (i = -1; i < 18; i++) { var xx = 40 + i * 18 + sh; if (xx > 40 && xx < 336) ln(dyn, xx, 96, xx + 10, 124, GOLD, 2.5); }
+      var nx = 50 + X * 230; rect(dyn, nx, 78, 52, 64, T, .5, 6, 2.5); txt(dyn, nx + 26, 114, 'écrou', '#fff', 'middle', 11);
+      rect(dyn, 8, 90, 32, 40, P, .5, 6, 2.5); txt(dyn, 24, 148, 'moteur', P, 'middle', 10);
+      txt(dyn, 200, 190, 'P = ' + Pm + ' mm par tour · V = ' + V + ' mm/s', GOLD, 'middle', 11.5);
+    }
+  });
+}
 PC.chapter({ id: 't3-8', lazy: true, eyebrow: EY + 'Module 3 · Chaîne d’énergie', title: 'La fonction « Transmettre »', ar: 'الوظيفة «نقل الحركة»',
   lessons: function () { return [
     { short: 'Transmission', title: 'Transmettre un mouvement', intro: 'Choisis une solution, change les tailles des roues et regarde la vitesse de la roue menée.', build: transmission,
@@ -344,14 +399,19 @@ PC.chapter({ id: 't3-8', lazy: true, eyebrow: EY + 'Module 3 · Chaîne d’éne
       ar: { e: ['نقل الحركة يعني الحفاظ على نوعها (دوران) مع نقلها من محور إلى آخر: بكرة وسير، سلسلة وعجلات مسنّنة، مسنّنات، عجلات احتكاك. نسبة السرعة = n₂ ÷ n₁ = D₁ ÷ D₂ = Z₁ ÷ Z₂.'], u: 'غيّر حجم العجلتين وراقب سرعة العجلة المنقادة.', w: [['transmission du mouvement', 'نقل الحركة'], ['poulie-courroie', 'بكرة وسير'], ['engrenage', 'مسنّنات'], ['roue menante', 'عجلة قائدة'], ['roue menée', 'عجلة منقادة'], ['réducteur', 'مخفِّض السرعة']] } },
     { short: 'Transformation', title: 'Transformer un mouvement', intro: 'Observe comment une rotation devient une translation, ou une rotation lente.', build: transformation,
       retenir: ['<b>Transformer</b> un mouvement, c’est en changer la nature : rotation vers translation.', 'Bielle-manivelle : translation alternative. Pignon-crémaillère et vis-écrou : translation. Roue et vis sans fin : rotation lente d’axe perpendiculaire.'],
-      ar: { e: ['تحويل الحركة يعني تغيير طبيعتها: من دوران إلى انتقال. الذراع والكرنك يعطي انتقالا ترددّيا، الترس والمجرى المسنّن والبرغي والصامولة يعطيان انتقالا مستقيما، والعجلة والبرغي اللانهائي يعطيان دورانا بطيئا بمحور عمودي.'], u: 'اختر تبويبا وغيّر السرعة والاتجاه.', w: [['transformation du mouvement', 'تحويل الحركة'], ['bielle-manivelle', 'ذراع وكرنك'], ['pignon-crémaillère', 'ترس ومجرى مسنّن'], ['vis-écrou', 'برغي وصامولة'], ['vis sans fin', 'برغي لانهائي']] } }
+      ar: { e: ['تحويل الحركة يعني تغيير طبيعتها: من دوران إلى انتقال. الذراع والكرنك يعطي انتقالا ترددّيا، الترس والمجرى المسنّن والبرغي والصامولة يعطيان انتقالا مستقيما، والعجلة والبرغي اللانهائي يعطيان دورانا بطيئا بمحور عمودي.'], u: 'اختر تبويبا وغيّر السرعة والاتجاه.', w: [['transformation du mouvement', 'تحويل الحركة'], ['bielle-manivelle', 'ذراع وكرنك'], ['pignon-crémaillère', 'ترس ومجرى مسنّن'], ['vis-écrou', 'برغي وصامولة'], ['vis sans fin', 'برغي لانهائي']] } },
+    { short: 'Calculs', title: 'Calculer une transformation', intro: 'Résous deux problèmes de l’atelier : la perceuse à colonne et le robot pousseur.', build: calculsMvt,
+      retenir: ['Pignon-crémaillère : <b>L = R × θ</b> et <b>V = R × ω</b> (θ en radians).', 'Vis-écrou : <b>L = P × n</b> (n tours) et <b>V = P × n par seconde</b>. Un tour fait avancer d’un pas P.', 'Pour passer des degrés aux radians : θ(rad) = θ(°) × π ÷ 180.'],
+      ar: { e: ['في نظام البينيون والمجرى المسنّن: الإزاحة L = R × θ بشرط أن تكون الزاوية بالراديان. في نظام اللولب والصامولة: دورة واحدة تعطي إزاحة تساوي الخطوة P، فتكون V = P × n. لتحويل الدرجات إلى راديان نضرب في π ثم نقسم على 180.'], u: 'غيّر الزاوية أو الشعاع لتصل إلى العمق المطلوب، ثم جرّب اللولب والصامولة.', w: [['crémaillère', 'مجرى مسنّن'], ['pas', 'خطوة اللولب'], ['pignon', 'عجلة مسنّنة صغيرة'], ['rad', 'راديان']] } }
   ]; },
   quiz: [
     { q: 'Un pignon de 20 dents entraîne un pignon de 40 dents. Le second tourne :', o: ['deux fois moins vite', 'deux fois plus vite', 'à la même vitesse'], a: 0, e: 'r = 20 ÷ 40 = 0,5 : c’est un réducteur.' },
     { q: 'La bielle-manivelle transforme :', o: ['une rotation en translation alternative', 'une translation en chaleur', 'une rotation en lumière'], a: 0, e: 'Le coulisseau fait des allers-retours.' },
     { q: 'Deux engrenages en contact tournent :', o: ['en sens inverses', 'dans le même sens', 'sans jamais tourner'], a: 0, e: 'Les dents s’engrènent et inversent le sens.' },
     { q: 'Quelle solution transforme une rotation en translation ?', o: ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], a: 0, e: 'La crémaillère avance en ligne droite.' },
-    { q: 'Quand la roue menée est plus petite que la roue menante, elle tourne :', o: ['plus vite', 'moins vite', 'à la même vitesse'], a: 0, e: 'r = D₁ ÷ D₂ est supérieur à 1.' }
+    { q: 'Quand la roue menée est plus petite que la roue menante, elle tourne :', o: ['plus vite', 'moins vite', 'à la même vitesse'], a: 0, e: 'r = D₁ ÷ D₂ est supérieur à 1.' },
+    { q: 'Un pignon de rayon 45 mm tourne de 1,57 rad. La crémaillère avance de :', o: ['environ 70,7 mm', 'environ 28,7 mm', 'environ 1,57 mm'], a: 0, e: 'L = R × θ = 45 × 1,57 ≈ 70,7 mm.' },
+    { q: 'Une vis de pas 2 mm fait 10 tours. L’écrou avance de :', o: ['20 mm', '12 mm', '5 mm'], a: 0, e: 'L = P × n = 2 × 10 = 20 mm.' }
   ]
 });
 
