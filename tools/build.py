@@ -101,7 +101,7 @@ DESC = {
                 'Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.'),
  'teacher.html': ('Espace enseignant · Cours en mouvement', 'Espace réservé à l’enseignant.'),
 }
-FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b14'/%3E%3Cpath d='M6 22 L12 10 L18 20 L26 8' fill='none' stroke='%23e371cb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%230d0b14'/%3E%3Cpath d='M5 33Q24 -1 43 33' fill='none' stroke='%237066 96' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='24' r='5' fill='%23e371cb'/%3E%3Ccircle cx='24' cy='15' r='5' fill='%239b92dc'/%3E%3Ccircle cx='37' cy='24' r='5' fill='%236ccdb6'/%3E%3C/svg%3E"
 
 def notify_origin():
     m = re.search(r'LAB_NOTIFY_URL\s*=\s*"(https://[^"/]+)', rd('lab/notify-config.js'))
