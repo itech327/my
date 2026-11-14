@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-fnxneGtThYkoIRaNeMFp1qEO9snpohs7khu35gBqtls=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-1IlfvwaL/AcaG4B6/dm/zR/r1TnE6hEIFTUOkTV+Mcc=' 'sha256-vVj1Wq7tHrF9rJpGh6SBPowm1dd89s+L0A9njA/o4tU=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-rk+YoHBrGVDoyZmDJwBD0KrM2SG3nyauDu1+fbH241g=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-mbV5UMnIiJhHOXh1EeAzVpuU7OI3s+Zkm21DfNVrPbg=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-QELuusr34pyTKNwT7AkIZgvY2w+5jZLYBkQtKqabSCg=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-1IlfvwaL/AcaG4B6/dm/zR/r1TnE6hEIFTUOkTV+Mcc=' 'sha256-vVj1Wq7tHrF9rJpGh6SBPowm1dd89s+L0A9njA/o4tU=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-rk+YoHBrGVDoyZmDJwBD0KrM2SG3nyauDu1+fbH241g=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-mbV5UMnIiJhHOXh1EeAzVpuU7OI3s+Zkm21DfNVrPbg=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie.html">
@@ -789,7 +789,7 @@ document.addEventListener('click',function(e){
     '.lab-q.is-ok{border-color:var(--teal)}.lab-q.is-ko{border-color:var(--coral)}',
     '.lab-q{animation:labin .28s ease both}',
     '@keyframes labin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}',
-    '@media (prefers-reduced-motion:reduce){.lab-q{animation:none}}',
+    '@media (prefers-reduced-motion:reduce){.lab-q{animation:none}.lab-welcome{transition:none}}',
     '.lab-keys{display:flex;gap:6px}',
     '.lab-keys button{font:inherit;font-weight:700;font-size:20px;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;min-width:44px;min-height:44px;cursor:pointer}',
     '.lab-keys button:active{transform:translateY(1px)}',
@@ -833,6 +833,7 @@ document.addEventListener('click',function(e){
     '.lab-dot.off{background:var(--muted)}',
     '.lab-balance{margin:16px 0;padding:10px 14px;border-inline-start:3px solid var(--teal);background:var(--surface);border-radius:8px;font-size:14px}',
     '.lab-balance .lab-ar{display:block;margin-top:4px}',
+    '.lab-welcome{position:fixed;inset:0;z-index:120;background:rgba(5,4,10,.78);display:grid;place-items:center;padding:20px;transition:opacity .3s}.lab-welcome.out{opacity:0;pointer-events:none}.lab-welcome-card{max-width:440px;width:100%;padding:20px 20px 18px;border-radius:20px;background:var(--surface);border:1.5px solid var(--line);border-inline-start:4px solid var(--teal);box-shadow:0 18px 50px rgba(0,0,0,.45);text-align:start}.lab-welcome-card p{margin:0;font-size:15px;line-height:1.55}.lab-welcome-card .lab-ar{margin-top:8px;font-size:16px}.lab-welcome-card .btn{margin-top:14px}',
     '.lab-riddle{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:18px 0;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface)}',
     '.lab-riddle svg{width:56px;height:56px}',
     '.lab-riddle h3{margin:0 0 4px;font-size:15px}',
@@ -1027,7 +1028,7 @@ document.addEventListener('click',function(e){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game', 'lab_err', 'lab_rid', 'lab_bal', 'lab_wel'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -1667,14 +1668,36 @@ document.addEventListener('click',function(e){
 
   /* mot d'équilibre : la plateforme complète la classe, elle ne la remplace pas */
   var BAL = {
-    foot: ['Cette plateforme accompagne ton apprentissage et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
-      'هذه المنصة رفيق لتعلّمك وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
+    foot: ['Cette plateforme fait partie de ton chemin d’apprentissage et de réussite, et ne remplace pas ta classe. Les cours en présence, avec tes enseignantes et enseignants dans ton établissement, restent la base : ils expliquent, corrigent et encouragent comme aucune application ne peut le faire. Utilise cet espace pour réviser, t’entraîner et préparer tes questions pour le prochain cours.',
+      'هذه المنصة جزء من طريقك نحو التعلم والنجاح، وليست بديلا عن قسمك. الحصص الحضورية مع أساتذتك داخل مؤسستك هي الأساس، فهم يشرحون ويصحّحون ويشجّعون بما لا يستطيعه أي تطبيق. استعمل هذا الفضاء للمراجعة والتدرب وتحضير أسئلتك للحصة المقبلة.'],
     series: ['Un mot sur l’équilibre : cette plateforme complète tes cours et ne les remplace pas. Ton établissement et tes enseignantes et enseignants restent ta référence. Note ce que tu n’as pas compris et pose tes questions en classe.',
       'كلمة في التوازن: هذه المنصة تكمّل دروسك ولا تغني عنها. مؤسستك وأساتذتك هم المرجع. دوّن ما لم تفهمه واطرحه في القسم.']
   };
   function balanceNote(kind) { return h('p', { 'class': 'lab-balance lab-noprint' }, esc(BAL[kind][0]) + '<span class="lab-ar" dir="rtl" lang="ar">' + esc(BAL[kind][1]) + '</span>'); }
   function balanceDue(now) { var t = Number(store.get('lab_bal', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.balanceDue = balanceDue;
+  var WEL = ['Bienvenue ! Cette plateforme fait partie de ton chemin d’apprentissage et de réussite. Elle renforce ton lien avec ta classe et ton établissement, sans jamais remplacer les séances officielles ni tes enseignantes et enseignants. Merci à eux.',
+    'مرحبا بك! هذه المنصة جزء من طريقك نحو التعلم والنجاح. تعزّز انتماءك إلى قسمك ومؤسستك، ولا تغني عن الحصص الرسمية ولا عن أساتذتك. لهم كل الشكر والتقدير.'];
+  function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
+  Lab.welcomeDue = welcomeDue;
+  function welcome() {
+    if (!document.body || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
+    var n = h('div', { 'class': 'lab-welcome lab-noprint', 'role': 'status', 'aria-live': 'polite' }), done = false, tm = 0;
+    var c = h('div', { 'class': 'lab-welcome-card' });
+    c.innerHTML = '<p>' + esc(WEL[0]) + '</p><p class="lab-ar" dir="rtl" lang="ar">' + esc(WEL[1]) + '</p>';
+    var b = h('button', { 'type': 'button', 'class': 'btn' }, 'Merci, j’ai compris · شكرا، فهمت');
+    c.appendChild(b); n.appendChild(c);
+    function close() {
+      if (done) return; done = true; clearTimeout(tm);
+      n.classList.add('out');
+      setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 350);
+    }
+    b.addEventListener('click', close);
+    n.addEventListener('click', function (e) { if (e.target === n) close(); });
+    document.body.appendChild(n);
+    tm = setTimeout(close, 6000);
+    store.set('lab_wel', Date.now());
+  }
   function footNote() {
     if (document.querySelector('.lab-balance.foot')) return;
     var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
@@ -1683,6 +1706,7 @@ document.addEventListener('click',function(e){
   }
 
   function boot() {
+    try { welcome(); } catch (_) {}
     try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
     render(); tools(); Notify.open();
