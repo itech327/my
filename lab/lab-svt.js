@@ -1,4 +1,4 @@
-/* Configuration des défis : SVT en mouvement (3AC) */
+/* Configuration des défis : SVT en mouvement (1AC, 2AC, 3AC) */
 (function () {
   'use strict';
   function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
@@ -158,6 +158,151 @@
       [3, 'Une personne du groupe AB a :', ['les antigènes A et B sur les globules rouges', 'les anticorps anti-A et anti-B', 'aucun antigène'], 0, 'Elle n’a pas d’anticorps anti-A ni anti-B.'],
       [3, 'Le groupe O a dans son plasma :', ['les anticorps anti-A et anti-B', 'les antigènes A et B', 'aucun anticorps'], 0, 'Ses globules rouges n’ont aucun antigène.'],
       [3, 'Pourquoi consulter en cas d’écoulement inhabituel ?', ['pour dépister une infection et la soigner tôt', 'pour éviter la toilette', 'pour attendre sans rien faire'], 0, 'Un traitement précoce évite les complications.']
+    ],
+    tec: [
+      [1, 'Quelle couche de la Terre est liquide ?', ['Le noyau externe', 'Le manteau', 'La croûte'], 0, 'Le noyau externe est fait de fer et de nickel liquides.'],
+      [1, 'La lithosphère est découpée en :', ['plaques', 'couches de sable', 'nappes'], 0, 'Les plaques bougent de quelques centimètres par an.'],
+      [1, 'Le point de rupture d’un séisme en profondeur est :', ['le foyer', 'l’épicentre', 'le cratère'], 0, 'L’épicentre est juste au-dessus, en surface.'],
+      [2, 'Deux plaques qui s’écartent forment une limite :', ['divergente', 'convergente', 'transformante'], 0, 'De la nouvelle lithosphère se forme.'],
+      [2, 'La subduction est :', ['la plongée d’une plaque sous une autre', 'l’écartement de deux plaques', 'le glissement de deux plaques'], 0, 'Elle se produit aux limites convergentes.'],
+      [2, 'Que crache un volcan en éruption ?', ['du magma, des gaz et des cendres', 'de l’eau salée', 'du sable'], 0, 'Le magma en surface s’appelle lave.'],
+      [2, 'Wegener propose en 1912 :', ['la dérive des continents', 'la tectonique des plaques complète', 'la formation des volcans'], 0, 'Il manquait alors une explication de la force.'],
+      [3, 'Un argument de Wegener pour la dérive des continents est :', ['les mêmes fossiles sur deux continents éloignés', 'la forme des nuages', 'la couleur des océans'], 0, 'Mesosaurus vivait en Amérique du Sud et en Afrique.'],
+      [3, 'Une chaîne de montagnes se forme surtout à une limite :', ['convergente', 'divergente', 'sans plaques'], 0, 'La compression plie et casse les roches.'],
+      [3, 'Pendant un séisme, il faut :', ['se mettre à l’abri loin des fenêtres', 'prendre l’ascenseur', 'courir vers le balcon'], 0, 'L’ascenseur est dangereux.'],
+      [3, 'Quelle mesure décrit l’énergie libérée par un séisme ?', ['la magnitude', 'l’intensité', 'l’altitude'], 0, 'L’intensité décrit les effets en un lieu.']
+    ],
+    rea: [
+      [1, 'Un animal ovipare :', ['pond des œufs', 'garde le petit dans son corps', 'n’a pas de gamètes'], 0, 'L’embryon se développe dans l’œuf.'],
+      [1, 'Le spermatozoïde est le gamète :', ['mâle', 'femelle', 'neutre'], 0, 'L’ovule est le gamète femelle.'],
+      [1, 'Un animal vivipare est :', ['le chat', 'la poule', 'la tortue'], 0, 'Le petit se développe dans le corps de la mère.'],
+      [2, 'La fécondation de la grenouille est :', ['externe', 'interne', 'impossible'], 0, 'Les gamètes se rencontrent dans l’eau.'],
+      [2, 'La fusion d’un spermatozoïde et d’un ovule donne :', ['une cellule-œuf', 'un gamète', 'un têtard'], 0, 'Elle se divise ensuite pour former l’embryon.'],
+      [2, 'La métamorphose est le passage :', ['du têtard à la grenouille', 'de l’œuf au spermatozoïde', 'de la fleur au fruit'], 0, 'Elle change l’aspect de l’animal.'],
+      [2, 'Pourquoi la grenouille pond-elle beaucoup d’œufs ?', ['beaucoup sont perdus dans l’eau', 'elle aime pondre', 'les œufs sont très petits seulement'], 0, 'La fécondation externe est peu efficace.'],
+      [3, 'Un œuf de poule acheté au marché :', ['n’est pas fécondé', 'contient un poussin', 'est une cellule-œuf fécondée'], 0, 'Il n’y a pas eu de coq.'],
+      [3, 'La fécondation interne a lieu chez :', ['les mammifères', 'la plupart des poissons osseux', 'les têtards'], 0, 'Elle a lieu dans les voies génitales de la femelle.'],
+      [3, 'La cellule-œuf contient :', ['des informations des deux parents', 'seulement celles de la mère', 'aucune information'], 0, 'Elle résulte de la fusion de deux gamètes.']
+    ],
+    rep: [
+      [1, 'L’anthère contient :', ['le pollen', 'l’ovule', 'la graine'], 0, 'Elle fait partie de l’étamine.'],
+      [1, 'Après la fécondation, l’ovaire devient :', ['un fruit', 'un pétale', 'une racine'], 0, 'Il protège les graines.'],
+      [1, 'Les pétales sont souvent colorés pour :', ['attirer les insectes', 'protéger les racines', 'faire de l’ombre'], 0, 'Ils favorisent la pollinisation.'],
+      [2, 'Le pistil est :', ['l’organe femelle', 'l’organe mâle', 'un pétale'], 0, 'Il contient l’ovule dans l’ovaire.'],
+      [2, 'La pollinisation est :', ['le transport du pollen vers le stigmate', 'la chute de la graine', 'la formation du fruit'], 0, 'Le vent ou les insectes y participent.'],
+      [2, 'Le tube pollinique descend dans :', ['le style', 'la racine', 'le pétale'], 0, 'Il arrive à l’ovule.'],
+      [2, 'L’ovule fécondé devient :', ['une graine', 'un fruit', 'une feuille'], 0, 'La graine contient la plantule.'],
+      [3, 'La germination d’une graine demande :', ['de l’eau, de l’air et une température convenable', 'seulement de la lumière', 'du sel'], 0, 'La lumière n’est pas indispensable à la germination.'],
+      [3, 'Le rôle du fruit est :', ['protéger les graines et aider leur dissémination', 'fabriquer le pollen', 'attirer les insectes'], 0, 'Les animaux et le vent transportent graines et fruits.'],
+      [3, 'Une fleur est dite hermaphrodite si elle porte :', ['étamines et pistil', 'seulement des pétales', 'seulement un ovaire'], 0, 'Elle a des organes mâles et femelles.']
+    ],
+    reh: [
+      [1, 'Les testicules fabriquent :', ['les spermatozoïdes', 'les ovules', 'le lait'], 0, 'Ils fabriquent aussi la testostérone.'],
+      [1, 'L’utérus accueille :', ['l’embryon', 'le spermatozoïde seul', 'les aliments'], 0, 'Il se développe pendant la grossesse.'],
+      [1, 'La fécondation a lieu en général dans :', ['la trompe', 'le vagin', 'l’estomac'], 0, 'L’œuf descend ensuite vers l’utérus.'],
+      [2, 'La nidation est :', ['l’installation de l’embryon dans l’utérus', 'la naissance', 'la libération de l’ovule'], 0, 'Elle a lieu environ une semaine après la fécondation.'],
+      [2, 'Le placenta permet :', ['les échanges entre mère et fœtus', 'la digestion du bébé', 'la respiration par les poumons du fœtus'], 0, 'Il apporte dioxygène et nutriments.'],
+      [2, 'La grossesse dure environ :', ['neuf mois', 'trois mois', 'douze mois'], 0, 'Elle se termine par l’accouchement.'],
+      [2, 'Le seul moyen de contraception qui protège aussi des IST est :', ['le préservatif', 'la pilule', 'le stérilet'], 0, 'Il évite le contact entre les liquides.'],
+      [3, 'L’ovulation est :', ['la libération d’un ovule par l’ovaire', 'la formation du sperme', 'la naissance'], 0, 'Elle a lieu environ une fois par mois.'],
+      [3, 'Pourquoi demander l’avis d’un médecin avant une contraception médicale ?', ['pour choisir une méthode adaptée à sa santé', 'pour payer moins', 'pour retarder la puberté'], 0, 'Chaque méthode a ses indications.'],
+      [3, 'Le cordon ombilical relie :', ['le fœtus au placenta', 'la mère à la trompe', 'l’ovaire à l’utérus'], 0, 'Les échanges passent par lui.']
+    ],
+    her: [
+      [1, 'Combien de chromosomes a une cellule humaine ?', ['46', '23', '92'], 0, 'Cela fait 23 paires.'],
+      [1, 'Un spermatozoïde humain contient :', ['23 chromosomes', '46 chromosomes', '2 chromosomes'], 0, 'La cellule-œuf retrouve 46 chromosomes.'],
+      [1, 'Le caryotype est :', ['le classement des chromosomes par paires', 'une maladie', 'un organe'], 0, 'On y repère des anomalies.'],
+      [2, 'Un enfant XY est :', ['un garçon', 'une fille', 'cela dépend de la mère'], 0, 'Il a reçu un Y de son père.'],
+      [2, 'L’ovule porte toujours :', ['un X', 'un Y', 'un X ou un Y'], 0, 'Le sexe dépend du spermatozoïde.'],
+      [2, 'La chance d’avoir une fille est de :', ['une sur deux', 'une sur dix', 'toujours'], 0, 'La moitié des spermatozoïdes portent X.'],
+      [2, 'La trisomie 21 correspond à :', ['trois chromosomes 21', 'un chromosome Y en trop', 'un seul chromosome 21'], 0, 'Elle est le plus souvent non transmise par les parents.'],
+      [3, 'Parmi ces exemples, un caractère héréditaire est :', ['la couleur des yeux', 'un tatouage', 'une cicatrice'], 0, 'Les caractères acquis ne se transmettent pas.'],
+      [3, 'Le conseil génétique sert à :', ['informer sur le risque de maladie héréditaire', 'guérir la maladie', 'changer les chromosomes'], 0, 'Il aide les couples à décider.'],
+      [3, 'L’hémophilie est une maladie :', ['héréditaire', 'contagieuse', 'alimentaire'], 0, 'Le sang coagule mal.']
+    ],
+    mil: [
+      [1, 'Les composantes non vivantes d’un milieu sont :', ['abiotiques', 'biotiques', 'pluricellulaires'], 0, 'Exemples : eau, air, sol, lumière.'],
+      [1, 'Quelle structure existe seulement dans la cellule végétale ?', ['la paroi', 'le noyau', 'la membrane'], 0, 'Elle est rigide.'],
+      [1, 'La cellule est :', ['l’unité de base du vivant', 'un organe', 'un tissu'], 0, 'Tous les êtres vivants sont faits de cellules.'],
+      [2, 'Les chloroplastes permettent :', ['la photosynthèse', 'la digestion', 'la division'], 0, 'Ils contiennent la chlorophylle.'],
+      [2, 'Un être vivant formé d’une seule cellule est :', ['unicellulaire', 'pluricellulaire', 'minéral'], 0, 'Exemple : la bactérie.'],
+      [2, 'Le noyau de la cellule :', ['contrôle la cellule', 'fabrique la paroi', 'stocke l’eau'], 0, 'Il contient l’information héréditaire.'],
+      [2, 'Le grossissement total d’un microscope est :', ['le produit des grossissements de l’oculaire et de l’objectif', 'la somme des deux', 'la différence des deux'], 0, 'Exemple : 10 fois 40 donne 400.'],
+      [3, 'Pourquoi un désert et une forêt abritent-ils des espèces différentes ?', ['leurs conditions sont différentes', 'les espèces choisissent au hasard', 'la lumière manque partout'], 0, 'Chaque espèce est adaptée à son milieu.'],
+      [3, 'Une cellule d’épiderme d’oignon observée au microscope montre :', ['une paroi et un noyau', 'des chloroplastes toujours', 'aucun noyau'], 0, 'Les cellules de bulbe n’ont pas de chloroplastes.'],
+      [3, 'La vacuole de la cellule végétale :', ['stocke de l’eau et des substances', 'fabrique des spermatozoïdes', 'digère les protéines'], 0, 'Elle est souvent grande.']
+    ],
+    rsp: [
+      [1, 'Le poisson respire par :', ['des branchies', 'des poumons', 'la peau seulement'], 0, 'Les branchies prennent le dioxygène dissous.'],
+      [1, 'Le ver de terre respire par :', ['la peau', 'les poumons', 'les trachées'], 0, 'Sa peau doit rester humide.'],
+      [1, 'Les plantes respirent :', ['jour et nuit', 'seulement la nuit', 'seulement le jour'], 0, 'Elles respirent en permanence.'],
+      [2, 'Les insectes respirent grâce à :', ['des trachées', 'des poumons', 'des branchies'], 0, 'L’air entre par les stigmates.'],
+      [2, 'Les gaz entrent dans une feuille par :', ['les stomates', 'les racines', 'les fruits'], 0, 'Ce sont de petits pores.'],
+      [2, 'À la lumière, une plante verte rejette surtout :', ['du dioxygène', 'de l’azote', 'du méthane'], 0, 'C’est le résultat de la photosynthèse.'],
+      [2, 'Pourquoi un ver de terre sort-il à la surface après une grosse pluie ?', ['l’eau remplit le sol et l’air manque', 'il cherche du soleil', 'il veut boire'], 0, 'Il manque de dioxygène dans la terre inondée.'],
+      [3, 'Un têtard respire par :', ['des branchies', 'des poumons', 'la trachée'], 0, 'Il se transforme ensuite.'],
+      [3, 'La respiration consomme :', ['du dioxygène et rejette du dioxyde de carbone', 'du dioxyde de carbone et rejette du dioxygène', 'de l’azote'], 0, 'La photosynthèse fait l’inverse.'],
+      [3, 'Une grenouille adulte respire par :', ['la peau et les poumons', 'des branchies seulement', 'des trachées'], 0, 'Sa peau est humide.']
+    ],
+    ntr: [
+      [1, 'Le régime de l’Homme est :', ['omnivore', 'herbivore', 'carnivore'], 0, 'Il mange des aliments d’origine animale et végétale.'],
+      [1, 'La photosynthèse a lieu dans :', ['les parties vertes de la plante', 'les racines', 'les graines sèches'], 0, 'Les chloroplastes contiennent la chlorophylle.'],
+      [1, 'Un herbivore mange :', ['des végétaux', 'de la chair', 'du sable'], 0, 'Exemple : le mouton.'],
+      [2, 'La sève brute contient :', ['de l’eau et des sels minéraux', 'du glucose', 'du dioxygène seulement'], 0, 'Elle monte des racines vers les feuilles.'],
+      [2, 'La sève élaborée contient :', ['des substances organiques fabriquées', 'seulement de l’eau', 'seulement des sels minéraux'], 0, 'Elle est distribuée à toute la plante.'],
+      [2, 'Un animal à molaires plates est :', ['herbivore', 'carnivore', 'insectivore'], 0, 'Elles servent à broyer.'],
+      [2, 'Pour fabriquer sa matière, la plante verte a besoin de :', ['lumière, eau et dioxyde de carbone', 'seulement d’eau', 'de viande'], 0, 'C’est la photosynthèse.'],
+      [3, 'Pourquoi les besoins alimentaires d’un adolescent sportif sont-ils plus élevés ?', ['il dépense plus d’énergie', 'il dort plus', 'il boit moins'], 0, 'Les besoins dépendent de l’âge et de l’activité.'],
+      [3, 'Les canines pointues sont caractéristiques :', ['d’un carnivore', 'd’un herbivore', 'd’une plante'], 0, 'Elles servent à déchirer la chair.'],
+      [3, 'L’amidon est :', ['une réserve fabriquée par la plante', 'un sel minéral', 'un gaz'], 0, 'Il est stocké dans graines et tubercules.']
+    ],
+    cha: [
+      [1, 'Dans une chaîne alimentaire, le producteur est :', ['la plante verte', 'le lion', 'la bactérie'], 0, 'Il fabrique sa matière organique.'],
+      [1, 'Les décomposeurs sont surtout :', ['des bactéries et des champignons', 'des oiseaux', 'des herbivores'], 0, 'Ils transforment la matière morte.'],
+      [1, 'L’énergie d’une chaîne alimentaire vient :', ['du Soleil', 'de la Lune', 'du sol seul'], 0, 'Les plantes captent la lumière.'],
+      [2, 'Un consommateur de premier ordre est :', ['un herbivore', 'un carnivore', 'un décomposeur'], 0, 'Il mange le producteur.'],
+      [2, 'Si les grenouilles disparaissent, les sauterelles :', ['se multiplient', 'disparaissent aussi', 'ne changent pas'], 0, 'Elles ne sont plus mangées.'],
+      [2, 'Un équilibre naturel est :', ['une situation stable entre les espèces', 'un milieu sans êtres vivants', 'une chaîne sans producteur'], 0, 'Les effectifs varient peu.'],
+      [2, 'Quelle action peut rompre un équilibre naturel ?', ['la pêche excessive', 'la pluie normale', 'la nuit'], 0, 'Une espèce devient trop rare.'],
+      [3, 'Dans le réseau, un animal peut appartenir à :', ['plusieurs chaînes', 'une seule chaîne', 'aucune chaîne'], 0, 'Les chaînes se croisent.'],
+      [3, 'Pourquoi les décomposeurs sont-ils indispensables ?', ['ils rendent des éléments minéraux aux plantes', 'ils fabriquent la lumière', 'ils mangent les producteurs seulement'], 0, 'La matière circule.'],
+      [3, 'Quelle mesure protège la nature ?', ['créer des parcs nationaux', 'brûler les forêts', 'chasser sans limite'], 0, 'Exemple : Souss-Massa.']
+    ],
+    cla: [
+      [1, 'Un animal à poils et à mamelles est :', ['un mammifère', 'un reptile', 'un poisson'], 0, 'Les mamelles produisent du lait.'],
+      [1, 'Combien de pattes a un insecte ?', ['6', '8', '10'], 0, 'L’araignée a 8 pattes.'],
+      [1, 'Un animal à plumes est :', ['un oiseau', 'un reptile', 'un mammifère'], 0, 'Les oiseaux ont aussi un bec.'],
+      [2, 'La grenouille est :', ['un amphibien', 'un reptile', 'un poisson'], 0, 'Sa peau est nue et humide.'],
+      [2, 'Les vertébrés ont :', ['une colonne vertébrale', 'une coquille', 'six pattes'], 0, 'Le squelette est interne.'],
+      [2, 'L’araignée est :', ['un arachnide', 'un insecte', 'un crustacé'], 0, 'Elle a huit pattes et pas d’antennes.'],
+      [2, 'Les reptiles ont la peau couverte :', ['d’écailles sèches', 'de poils', 'de plumes'], 0, 'Ils sont presque tous ovipares.'],
+      [3, 'Le crabe est :', ['un crustacé', 'un insecte', 'un mollusque'], 0, 'Il a une carapace et vit dans l’eau.'],
+      [3, 'Quel critère sépare les mammifères des reptiles ?', ['les poils et les mamelles', 'la couleur', 'la taille'], 0, 'C’est un critère de classification.'],
+      [3, 'Le dauphin est :', ['un mammifère', 'un poisson', 'un reptile'], 0, 'Il allaite ses petits et respire par des poumons.']
+    ],
+    sed: [
+      [1, 'Les fragments de roches sont déplacés par :', ['l’eau, le vent et la glace', 'le Soleil seul', 'les volcans seulement'], 0, 'C’est le transport.'],
+      [1, 'Quelle roche fait effervescence avec un acide ?', ['le calcaire', 'le grès', 'le sel gemme'], 0, 'C’est le test du calcaire.'],
+      [1, 'Un fossile est :', ['la trace ou le reste d’un être vivant dans une roche', 'une pierre précieuse', 'un volcan éteint'], 0, 'On en trouve dans les roches sédimentaires.'],
+      [2, 'Dans des couches non déformées, la plus ancienne est :', ['celle du bas', 'celle du haut', 'celle du milieu'], 0, 'Principe de superposition.'],
+      [2, 'Le grès est formé de :', ['grains de sable collés', 'coquilles seulement', 'lave refroidie'], 0, 'C’est une roche détritique.'],
+      [2, 'Les évaporites se forment :', ['quand l’eau s’évapore', 'sous un volcan', 'dans le ciel'], 0, 'Exemples : sel gemme, gypse.'],
+      [2, 'La sédimentation est :', ['le dépôt de particules en couches', 'la destruction des roches', 'la formation de volcans'], 0, 'Elle suit le transport.'],
+      [3, 'Un fossile stratigraphique permet de :', ['dater les couches', 'mesurer la température', 'trouver du pétrole sans preuve'], 0, 'Son espèce a vécu peu de temps et sur de grandes zones.'],
+      [3, 'Quelle étape suit la compaction et la cimentation ?', ['la formation de la roche sédimentaire', 'l’érosion', 'le transport'], 0, 'Les sédiments deviennent roche.'],
+      [3, 'Dans un cycle sédimentaire, que devient une roche sédimentaire remontée en surface ?', ['elle est érodée à son tour', 'elle disparaît', 'elle devient liquide'], 0, 'Le cycle recommence.']
+    ],
+    eau: [
+      [1, 'Une roche qui laisse passer l’eau est :', ['perméable', 'imperméable', 'magmatique'], 0, 'L’eau s’y infiltre.'],
+      [1, 'Quelle action économise l’eau ?', ['le goutte-à-goutte', 'arroser en plein midi', 'laisser le robinet ouvert'], 0, 'Il apporte l’eau aux racines.'],
+      [1, 'Une nappe d’eau souterraine se forme au-dessus d’une couche :', ['imperméable', 'perméable', 'de sable sec'], 0, 'L’eau s’y accumule.'],
+      [2, 'Le bassin versant est :', ['la zone qui draine l’eau vers un cours d’eau', 'un barrage', 'une nappe seulement'], 0, 'Il alimente la rivière.'],
+      [2, 'Une cause de pollution de l’eau est :', ['les eaux usées', 'la pluie', 'la neige'], 0, 'Il y a aussi engrais et pesticides.'],
+      [2, 'Un barrage sert à :', ['stocker l’eau', 'creuser une nappe', 'salir l’eau'], 0, 'Il régularise l’eau des rivières.'],
+      [2, 'Une source apparaît quand :', ['une nappe affleure à la surface', 'il pleut', 'on creuse un barrage'], 0, 'L’eau sort de terre.'],
+      [3, 'Pourquoi la surexploitation d’une nappe est-elle dangereuse ?', ['son niveau baisse', 'elle gèle', 'elle devient salée par la pluie'], 0, 'On pompe plus qu’elle n’en reçoit.'],
+      [3, 'Le stress hydrique signifie :', ['les besoins en eau dépassent les ressources', 'l’eau est abondante', 'l’eau est gelée'], 0, 'Le Maroc est concerné.'],
+      [3, 'Quelle mesure réduit les pertes d’eau ?', ['réparer les fuites', 'arroser en plein soleil', 'creuser plus de puits sans contrôle'], 0, 'Les fuites gaspillent beaucoup d’eau.']
     ]
   };
   function fromBank(key, d) {
@@ -205,6 +350,18 @@
   };
 
   var M1 = {};
+  M1['s1-1'] = { topics: ['b:mil'] };
+  M1['s1-2'] = { topics: ['b:rsp'] };
+  M1['s1-3'] = { topics: ['b:ntr'] };
+  M1['s1-4'] = { topics: ['b:cha'] };
+  M1['s1-5'] = { topics: ['b:cla'] };
+  M1['s1-6'] = { topics: ['b:sed'] };
+  M1['s1-7'] = { topics: ['b:eau'] };
+  M1['s2-1'] = { topics: ['b:tec'] };
+  M1['s2-2'] = { topics: ['b:rea'] };
+  M1['s2-3'] = { topics: ['b:rep'] };
+  M1['s2-4'] = { topics: ['b:reh'] };
+  M1['s2-5'] = { topics: ['b:her'] };
   M1['s3-1'] = { topics: ['b:dig', 'b:dig', 'g:energie'] };
   M1['s3-2'] = { topics: ['b:resp', 'b:resp', 'g:vent'] };
   M1['s3-3'] = { topics: ['b:circ', 'b:circ', 'g:debit'] };

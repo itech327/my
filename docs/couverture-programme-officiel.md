@@ -12,16 +12,17 @@
 
 | Niveau | Unité du programme (heures après adaptation) | Dans l'application |
 | --- | --- | --- |
-| 1re | Relations entre êtres vivants et milieu (23 h) : milieu naturel, êtres microscopiques, respiration, alimentation, chaînes et réseaux alimentaires, classification, équilibres naturels | Rien |
-| 1re | Phénomènes géologiques externes (18 h) : érosion, transport, dépôt, fossiles, roches sédimentaires, ressources en eau | Rien |
-| 2e | Phénomènes géologiques internes (16 h) : tectonique des plaques, séismes, volcans, montagnes | Rien |
-| 2e | Reproduction et hérédité (20 h) : reproduction animale, végétale, humaine, régulation des naissances, hérédité | Rien |
+| 1re | Relations entre êtres vivants et milieu (23 h) : milieu naturel, êtres microscopiques, respiration, alimentation, chaînes et réseaux alimentaires, classification, équilibres naturels | s1-1 à s1-5 |
+| 1re | Phénomènes géologiques externes (18 h) : érosion, transport, dépôt, fossiles, roches sédimentaires, ressources en eau | s1-6, s1-7 |
+| 2e | Phénomènes géologiques internes (16 h) : tectonique des plaques, séismes, volcans, montagnes | s2-1 |
+| 2e | Reproduction et hérédité (20 h) : reproduction animale, végétale, humaine, régulation des naissances, hérédité | s2-2 à s2-5 |
 | 3e | Éducation nutritionnelle et fonctions de nutrition (20 h) | s3-1, s3-2, s3-3, s3-6 |
 | 3e | Fonctions de relation et immunologie (19 h) | s3-5, s3-7, s3-8, s3-9, s3-10, s3-11 |
 
 Notes :
 - Les chapitres s3-4 (excrétion urinaire), SIDA, allergie et transfusion sont retirés du programme allégé 2023-2024. Ils restent dans l'application comme approfondissement, à signaler dans l'interface.
-- Les deux années 1re et 2e représentent environ 79 h de programme sans aucun chapitre. C'est le plus grand manque.
+- Les 12 chapitres des années 1re et 2e ont été écrits le 14 novembre 2026 (branche svt-1ac-2ac). Ils n'ont pas encore été relus par un enseignant de SVT. À faire avant toute publication : relecture scientifique, vérification des termes arabes avec le manuel officiel, ajout de l'étiquette « approfondissement » sur les chapitres hors programme allégé.
+- Termes arabes à confirmer avec le manuel : magnitude (قدر الزلزال), subduction (اندساس), caryotype (خريطة صبغية), trisomie (تثلث صبغي).
 
 ## Physique-chimie
 

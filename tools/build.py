@@ -57,22 +57,23 @@ s0 = fr.index('<script>')
 s1 = fr.index('</script>', s0) + len('</script>')
 framework = fr[s0:s1]
 svt_body = '''
+<style>h2.lvl{font-size:20px;margin:30px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}h2.lvl span{color:var(--teal);font-weight:600;margin-inline-start:.4em}</style>
 <div class="wrap">
   <div class="view" id="home">
   <header>
     <p class="kicker">Collège · option française</p>
     <h1 class="display">SVT en mouvement</h1>
-    <p class="lead">Cours de sciences de la vie et de la Terre de la 3<sup>e</sup> année du collège : nutrition, système nerveux, muscles et santé, avec des figures animées et un résumé en arabe sous chaque leçon.</p>
-    <p class="lead ar-lead" dir="rtl" lang="ar">دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والجهازان العصبي والعضلي والصحة، مع رسوم متحركة وشرح بالعربية تحت كل درس.</p>
+    <p class="lead">Cours de sciences de la vie et de la Terre du collège, de la 1<sup>re</sup> à la 3<sup>e</sup> année : milieu et géologie, reproduction et hérédité, nutrition, système nerveux, muscles et santé, avec des figures animées et un résumé en arabe sous chaque leçon.</p>
+    <p class="lead ar-lead" dir="rtl" lang="ar">دروس علوم الحياة والأرض للسنوات الأولى والثانية والثالثة إعدادي: الوسط والجيولوجيا، والتوالد والوراثة، والتغذية، والجهازان العصبي والعضلي، والصحة، مع رسوم متحركة وشرح بالعربية تحت كل درس.</p>
   </header>
   <section aria-label="Chapitres">
-    <p class="kicker">3<sup>e</sup> année · Chapitres</p>
-    <div class="chap-grid" id="chapters"></div>
+    <p class="kicker">Chapitres par niveau</p>
+    <div id="chapters"></div>
     <p class="lead" style="margin-top:18px"><a class="btn ghost" href="index.html">← Toutes les matières</a></p>
   </section>
   </div>
   <div id="more"></div>
-  <footer>SVT en mouvement · collège, option française · 3<sup>e</sup> année</footer>
+  <footer>SVT en mouvement · collège, option française</footer>
 </div>
 '''
 sv = inject(framework, 'PC.route=route;', 'lab/lab-svt.js', 'PC', 'svt')
