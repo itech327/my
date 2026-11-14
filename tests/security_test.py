@@ -4,7 +4,7 @@ import os, re, sys, base64, hashlib, json
 from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGES = ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']
-ALLOWED = ('https://ipwho.is', 'https://ipapi.co', 'https://api.ipify.org', 'http://www.w3.org/2000/svg', 'https://itech327.github.io', 'https://www.w3.org/1999/xhtml')
+ALLOWED = ('https://ipwho.is', 'https://ipapi.co', 'https://api.ipify.org', 'http://www.w3.org/2000/svg', 'https://itech327.github.io', 'https://technologie.taalim.men', 'https://www.w3.org/1999/xhtml')
 fails = []
 def check(c, m):
     print(('PASS ' if c else 'FAIL ') + m)
