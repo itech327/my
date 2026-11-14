@@ -199,6 +199,7 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 .px-hint{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--surface-2);color:var(--lav);font-size:15px}
 .px-score{font-weight:600;margin:10px 0}
 .px-ex{font-size:18px;margin:14px 0 6px}
+.px-plan,.px-lex{background:var(--surface);border:1px solid var(--line);border-inline-start:3px solid var(--teal);border-radius:14px;padding:6px 16px 12px;margin:12px 0}.px-plan ol{margin:6px 0 0;padding-inline-start:1.3em}.px-plan li{margin:0 0 4px}
 .px-board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-height:56px;font-family:var(--f-math);font-size:20px;overflow-x:auto}
 .px-line{padding:4px 0}
 .px-line.new{animation:pxin .45s ease}
@@ -4997,6 +4998,56 @@ G.sys=function(s){
 };
 
 /* ---------- racines carrées ---------- */
+/* ---------- séances explicites 2AC : puissances, carrés parfaits, racine carrée, monômes ---------- */
+function sp(n){return '<sup>'+n+'</sup>'}
+function isSq(n){var r=Math.round(Math.sqrt(n));return r*r===n}
+G.pexp=function(s){
+  var t=ri(0,2),a=ri(2,6),n=ri(2,4),b,k,r;
+  if(s===1){
+    if(t===0)return num(a+sp(n)+' = ?',Math.pow(a,n),'L’exposant est '+n+' : on écrit la base '+a+' '+n+' fois. '+a+sp(n)+' = '+new Array(n).fill(a).join(' × ')+' = '+Math.pow(a,n)+'.','Écris le produit de facteurs égaux à la base.');
+    if(t===1)return num('Dans '+a+sp(n)+', quelle est la valeur de l’exposant ?',n,'L’exposant est le petit nombre écrit en haut à droite : '+n+'.','Regarde le petit nombre placé en haut.');
+    return num('Combien de facteurs égaux à '+a+' y a-t-il dans '+a+sp(n)+' ?',n,'L’exposant '+n+' indique '+n+' facteurs égaux à la base '+a+'.','L’exposant dit combien de facteurs on multiplie.');
+  }
+  if(s===2){
+    b=pick([2,3,5,10]);k=ri(3,5);r=new Array(k).fill(b).join(' × ');
+    if(t===0)return qcm('Écris '+r+' sous forme de puissance.',b+sp(k),distinct(b+sp(k),[k+sp(b),b+sp(k-1),(b*k)+'']),'Le facteur '+b+' est répété '+k+' fois : '+b+sp(k)+'.','Quelle est la base ? Combien de fois est-elle répétée ?');
+    if(t===1)return num(Math.pow(b,k)+' = '+b+'<sup>?</sup> (donne l’exposant).',k,'On décompose '+Math.pow(b,k)+' = '+r+'. La base '+b+' est répétée '+k+' fois, donc l’exposant est '+k+'.','Décompose le nombre en facteurs égaux à '+b+'.');
+    var z=ri(3,7);return num('Combien de zéros y a-t-il dans 10'+sp(z)+' écrit en chiffres ?',z,'Pour une puissance de 10, l’exposant est le nombre de zéros : 10'+sp(z)+' = 1'+new Array(z+1).join('0')+'.','Écris 10 × 10 × … et compte.');
+  }
+  if(t===0){var c=ri(2,4),e=ri(2,4),v=Math.pow(-c,e);return num(rl(-c)+sp(e)+' = ?',v,'Le signe dépend du nombre de facteurs négatifs : '+e+' facteurs, donc le résultat est '+(v<0?'négatif':'positif')+' : '+sg(v)+'.','Compte les facteurs négatifs : pair donne positif, impair donne négatif.')}
+  if(t===1){var u=ri(2,5),w=ri(2,4);return num('Calcule '+u+sp(w)+' − '+u+' × '+w+'.',Math.pow(u,w)-u*w,u+sp(w)+' = '+Math.pow(u,w)+' et '+u+' × '+w+' = '+(u*w)+'. Donc '+Math.pow(u,w)+' − '+(u*w)+' = '+(Math.pow(u,w)-u*w)+'.','Une puissance n’est pas une multiplication par l’exposant.')}
+  var d1=ri(2,4),d2=ri(2,3);return num('Calcule '+d1+sp(d2)+' + '+d2+sp(d1)+'.',Math.pow(d1,d2)+Math.pow(d2,d1),d1+sp(d2)+' = '+Math.pow(d1,d2)+' et '+d2+sp(d1)+' = '+Math.pow(d2,d1)+'. La somme est '+(Math.pow(d1,d2)+Math.pow(d2,d1))+'.','Calcule chaque puissance séparément.');
+};
+G.cpar=function(s){
+  var k,n,p,q,a,b,i,cnt,list;
+  if(s===1){k=ri(3,12);n=k*k;return qcm('Lequel de ces nombres est un carré parfait ?',String(n),distinct(n,[n-1,n+2,n+k]),n+' = '+k+' × '+k+' = '+k+sp(2)+' : c’est le carré d’un entier.','Cherche le nombre qui s’écrit n × n avec n entier.')}
+  if(s===2){k=ri(4,15);n=k*k;return num(n+' = n'+sp(2)+' avec n entier positif. Donne n.',k,k+' × '+k+' = '+n+', donc '+n+' = '+k+sp(2)+'.','Cherche un nombre dont le carré est '+n+'.')}
+  p=ri(3,8);q=p+ri(3,6);a=p*p-ri(0,p-2);b=q*q+ri(0,q);cnt=q-p+1;list=[];
+  for(i=p;i<=q;i++)list.push(i*i);
+  return num('Combien y a-t-il de carrés parfaits entre '+a+' et '+b+' (bornes comprises) ?',cnt,'Les carrés parfaits sont '+list.join(', ')+' : il y en a '+cnt+'.','Liste les carrés des entiers qui tombent dans l’intervalle.');
+};
+G.rnec=function(s){
+  var k,n,t,m;
+  if(s===1){k=ri(3,13);return num('Le nombre positif dont le carré est '+(k*k)+' est ? (donne sa valeur)',k,k+' × '+k+' = '+(k*k)+', donc la racine carrée de '+(k*k)+' est '+k+'.','Teste des entiers jusqu’à trouver '+(k*k)+'.')}
+  if(s===2){do{n=ri(3,60)}while(isSq(n));k=Math.floor(Math.sqrt(n));return num('Le nombre positif dont le carré est '+n+' est compris entre deux entiers consécutifs k et k + 1. Que vaut k ?',k,k+sp(2)+' = '+(k*k)+' et '+(k+1)+sp(2)+' = '+((k+1)*(k+1))+'. Comme '+(k*k)+' &lt; '+n+' &lt; '+((k+1)*(k+1))+', le nombre est entre '+k+' et '+(k+1)+'.','Encadre '+n+' entre deux carrés parfaits consécutifs.')}
+  do{n=ri(2,60)}while(isSq(n));t=Math.floor(Math.sqrt(n)*10)/10;
+  return num('Le nombre positif dont le carré est '+n+' est compris entre deux nombres à un chiffre après la virgule : t et t + 0,1. Que vaut t ?',t,'On teste : '+fm(t,1)+sp(2)+' = '+fm(t*t,2)+' &lt; '+n+' et '+fm(t+0.1,1)+sp(2)+' = '+fm((t+0.1)*(t+0.1),2)+' &gt; '+n+'. Donc t = '+fm(t,1)+'.','Teste les dixièmes un à un.');
+};
+function monoStr(c,vars,ex,showOne){
+  var cs=(c===1&&!showOne)?'':(c===-1&&!showOne)?'−':(c<0?'−'+(-c):String(c)),out=cs;
+  vars.forEach(function(v,i){out+=v+(ex[i]>1?sp(ex[i]):'')});
+  return out;
+}
+G.mono=function(s){
+  var pool=['x','y','z','a','b'],nv=s===3?3:ri(1,2),vars=shuffle(pool).slice(0,nv),ex=[],i,tot=0,c,m;
+  if(s===3){ex=[ri(1,3),1,ri(2,4)]}else{for(i=0;i<nv;i++)ex.push(ri(1,4))}
+  for(i=0;i<nv;i++)tot+=ex[i];
+  if(s===1){c=ri(2,9);m=monoStr(c,vars,ex);return num('Quel est le coefficient du monôme '+m+' ?',c,'Le coefficient est le facteur numérique : '+c+'.','C’est le nombre qui multiplie les variables.')}
+  if(s===2){c=nz(-9,9);if(Math.abs(c)===1)c=3;m=monoStr(c,vars,ex);var expl=vars.map(function(v,j){return 'l’exposant de '+v+' est '+ex[j]}).join(', ');return num('Quel est le degré du monôme '+m+' ?',tot,'On additionne les exposants : '+expl+'. Le degré est '+ex.join(' + ')+' = '+tot+'.','Additionne les exposants de toutes les variables, sans oublier ceux qui valent 1.')}
+  c=nz(-9,9);if(Math.abs(c)===1)c=-2;m=monoStr(c,vars,ex);
+  return num('Quel est le degré du monôme '+m+' ? Attention aux exposants qui ne sont pas écrits.',tot,'La variable '+vars[1]+' n’a pas d’exposant écrit : son exposant est 1. Degré : '+ex.join(' + ')+' = '+tot+'.','Une variable sans exposant écrit a l’exposant 1.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -5460,16 +5511,34 @@ function fixBack(id){
   sec.insertBefore(h('a',{'class':'back',href:'#home'},'← Mon parcours'),sec.firstChild);
   sec.appendChild(h('a',{'class':'back back-bottom',href:'#home',style:'margin-top:32px'},'← Retour à mon parcours'));
 }
+function planBox(el,d){
+  var b=h('div',{'class':'px-plan'});
+  b.innerHTML='<p class="px-ex"><b>Étapes à suivre · خطوات الحل</b></p><ol class="px-steps">'+d.plan.map(function(t){return '<li><span class="px-m">'+t+'</span></li>'}).join('')+'</ol>';
+  el.appendChild(b);
+}
+function vfItem(v){
+  return {t:'qcm',q:'Vrai ou faux ? '+v[0],o:['Vrai','Faux'],a:v[1]?0:1,e:v[2],h:'Relis la définition, puis décide.'};
+}
+function prep(el,d){
+  var lx=h('div',{'class':'px-lex'});
+  lx.innerHTML='<p class="px-ex"><b>Ma carte lexicale · معجمي</b></p><ul class="ar-words">'+d.lex.map(function(x){return '<li><span class="fr-w" dir="ltr" lang="fr">'+x[0]+'</span><span>'+x[1]+'</span></li>'}).join('')+'</ul>';
+  el.appendChild(lx);
+  el.appendChild(h('p',{'class':'px-ex'},'<b>Vrai ou faux ? On réveille ce qu’on sait déjà.</b>'));
+  var box=h('div',{'class':'px-set'});el.appendChild(box);
+  d.pre.forEach(function(v){box.appendChild(card(vfItem(v),{mode:'guided'}))});
+}
 P.seq=function(d){
   var eyebrow='Collège pionnier · '+LV[d.lv]+(d.period?' · Période '+d.period:'')+' · '+d.dom;
-  M.chapter({id:d.id,eyebrow:eyebrow,title:d.t,lessons:[
-    {short:'Je regarde',title:'Je regarde',intro:d.obj,build:function(el){
-        worked(el,d.ex);
-        el.insertAdjacentHTML('beforeend',arBox({e:d.ar,u:'شاهد المثال خطوة بخطوة بزر <bdi dir="ltr">Étape suivante</bdi>، ثم انتقل إلى <bdi dir="ltr">Nous faisons</bdi> لتجرّب مع المساعدة، وأخيراً <bdi dir="ltr">Je fais seul</bdi> لتعمل وحدك.',w:d.arw}));
-      },retenir:d.ret},
-    {short:'Nous faisons',title:'Nous faisons',intro:'On s’entraîne ensemble : tu peux demander un indice, et on recommence si besoin.',build:function(el){guided(el,d.guided||d.keys,3)}},
-    {short:'Je fais seul',title:'Je fais seul',intro:'Choisis ton niveau d’étoiles. Une série de 5 questions : 4 bonnes réponses gagnent l’étoile.',build:function(el){series(el,{id:d.id,keys:d.keys,count:5})}}
-  ]});
+  var L=[];
+  if(d.pre&&d.lex)L.push({short:'Je me prépare',title:'Je me prépare',intro:'Avant de commencer : le lexique de la séance et trois questions pour réveiller ce que tu sais déjà.',build:function(el){prep(el,d)}});
+  L.push({short:'Je regarde',title:'Je regarde',intro:d.obj,build:function(el){
+      if(d.plan)planBox(el,d);
+      worked(el,d.ex);
+      el.insertAdjacentHTML('beforeend',arBox({e:d.ar,u:'شاهد المثال خطوة بخطوة بزر <bdi dir="ltr">Étape suivante</bdi>، ثم انتقل إلى <bdi dir="ltr">Nous faisons</bdi> لتجرّب مع المساعدة، وأخيراً <bdi dir="ltr">Je fais seul</bdi> لتعمل وحدك.',w:d.arw}));
+    },retenir:d.ret});
+  L.push({short:'Nous faisons',title:'Nous faisons',intro:'On s’entraîne ensemble : tu peux demander un indice, et on recommence si besoin.',build:function(el){guided(el,d.guided||d.keys,3)}});
+  L.push({short:'Je fais seul',title:'Je fais seul',intro:'Choisis ton niveau d’étoiles. Une série de 5 questions : 4 bonnes réponses gagnent l’étoile.',build:function(el){series(el,{id:d.id,keys:d.keys,count:5})}});
+  M.chapter({id:d.id,eyebrow:eyebrow,title:d.t,lessons:L});
   fixBack(d.id);
 };
 
@@ -6086,6 +6155,87 @@ D({id:'pi2-3',lv:2,period:1,dom:'Nombres',t:'Les puissances',at:'القوى',
   ar:['عند ضرب قوتين لهما نفس الأساس نجمع الأسين، وعند القسمة نطرح الأسين. وعند رفع قوة إلى قوة نضرب الأسين.','الكتابة العلمية لعدد هي a × 10 أس n حيث 1 ≤ a < 10. الأعداد الصغيرة لها أس سالب والأعداد الكبيرة لها أس موجب.'],
   arw:[['puissance','قوة'],['exposant','أس'],['base','أساس'],['écriture scientifique','كتابة علمية'],['inverse','مقلوب']]});
 
+
+/* ===== PÉRIODE 1 · SEMAINE 1 : séances à enseignement explicite ===== */
+D({id:'pi2-15',lv:2,period:1,dom:'Nombres',t:'Puissances à exposant positif et carrés parfaits',at:'القوى بأس موجب والمربعات الكاملة',
+  obj:'Calculer une puissance, écrire un nombre sous forme de puissance et reconnaître un carré parfait.',keys:['pexp','cpar'],
+  lex:[['puissance','قوة'],['base','أساس'],['exposant','أس'],['carré','مربع'],['cube','مكعب'],['carré parfait','مربع كامل']],
+  pre:[
+    ['5 + 5 + 5 s’écrit 3 × 5.',true,'Une addition répétée du même nombre devient une multiplication.'],
+    ['Le produit (−2) × (−2) × (−2) est positif.',false,'Il y a trois facteurs négatifs, un nombre impair : le produit est négatif.'],
+    ['Une multiplication répétée du même nombre s’écrit avec une puissance.',true,'Par exemple 4 × 4 × 4 s’écrit 4<sup>3</sup>.']],
+  plan:['J’identifie la base et l’exposant.','J’écris la puissance sous forme de produit de facteurs égaux.','J’effectue les calculs.'],
+  ex:[
+    E('Calcule 3<sup>4</sup>.',[
+      ['Étape 1 · 3<sup>4</sup>','La base est 3, l’exposant est 4.'],
+      ['Étape 2 · 3 × 3 × 3 × 3','L’exposant 4 dit : j’écris la base 4 fois.'],
+      ['Étape 3 · 9 × 3 × 3 = 27 × 3','Je calcule de gauche à droite.'],
+      ['<b>3<sup>4</sup> = 81</b>','Attention : ce n’est pas 3 × 4 = 12.']]),
+    E('Écris 1 000 sous forme de puissance.',[
+      ['1 000','Je cherche un facteur qui se répète.'],
+      ['10 × 10 × 10','1 000 = 10 × 100 = 10 × 10 × 10.'],
+      ['la base est 10, il est répété 3 fois','Le nombre de répétitions donne l’exposant.'],
+      ['<b>1 000 = 10<sup>3</sup></b>','Pour une puissance de 10, l’exposant est le nombre de zéros.']]),
+    E('Les nombres 64 et 50 sont-ils des carrés parfaits ?',[
+      ['64','Je cherche deux facteurs égaux : 8 × 8 = 64.'],
+      ['64 = 8<sup>2</sup>','64 s’écrit sous la forme d’un carré d’entier.'],
+      ['50','7<sup>2</sup> = 49 et 8<sup>2</sup> = 64 : 50 est entre les deux.'],
+      ['<b>64 est un carré parfait, 50 non.</b>','Aucun entier n’a pour carré 50.']])],
+  ret:['a<sup>n</sup> = a × a × … × a (n facteurs égaux à a). La base est a, l’exposant est n.','a<sup>2</sup> se lit « a au carré » et a<sup>3</sup> « a au cube ». Pour 10<sup>n</sup>, l’exposant est le nombre de zéros.','Un carré parfait est le carré d’un nombre entier : 1, 4, 9, 16, 25, 36, 49, 64…'],
+  ar:['القوة a أس n هي جداء n عاملا متساويا كلٌّ منها يساوي a. العدد a هو الأساس والعدد n هو الأس. انتبه: 3 أس 4 تساوي 81 وليس 12.','المربع الكامل هو مربع عدد صحيح، مثل 49 لأن 49 = 7 × 7. أما 50 فلا يساوي مربع أي عدد صحيح.'],
+  arw:[['puissance','قوة'],['base','أساس'],['exposant','أس'],['carré parfait','مربع كامل'],['facteur','عامل']]});
+
+D({id:'pi2-16',lv:2,period:1,dom:'Nombres',t:'Pourquoi la racine carrée ?',at:'لماذا نحتاج إلى الجذر المربع؟',
+  obj:'Reconnaître la nécessité de la racine carrée : chercher le nombre positif dont le carré est donné.',keys:['rnec','cpar'],
+  lex:[['racine carrée','جذر مربع'],['carré parfait','مربع كامل'],['compris entre … et …','محصور بين … و …'],['environ égal à','يساوي تقريبا'],['positif','موجب']],
+  pre:[
+    ['Le carré de 9 est 18.',false,'Le carré de 9 est 9 × 9 = 81. On ne double pas le nombre.'],
+    ['49 est un carré parfait.',true,'49 = 7 × 7.'],
+    ['(−5)<sup>2</sup> = 25.',true,'Deux facteurs négatifs donnent un produit positif.']],
+  plan:['Je cherche un entier dont le carré est le nombre donné.','Je poursuis la recherche parmi les nombres décimaux, si nécessaire.','Je conclus.'],
+  ex:[
+    E('Trouve le nombre positif dont le carré est 121.',[
+      ['Étape 1 · 10<sup>2</sup> = 100 et 12<sup>2</sup> = 144','121 est entre 100 et 144 : je teste 11.'],
+      ['11<sup>2</sup> = 121','J’ai trouvé un entier : l’étape 2 n’est pas nécessaire.'],
+      ['Étape 3 · le nombre cherché est 11','Je conclus.'],
+      ['<b>√121 = 11</b>','On lit « racine carrée de 121 est égale à 11 ».']]),
+    E('Trouve le nombre positif dont le carré est 5.',[
+      ['Étape 1 · 2<sup>2</sup> = 4 et 3<sup>2</sup> = 9','5 est entre 4 et 9 : le nombre est entre 2 et 3, ce n’est pas un entier.'],
+      ['Étape 2 · 2,2<sup>2</sup> = 4,84 et 2,3<sup>2</sup> = 5,29','Aucun nombre à un chiffre après la virgule ne convient : il est entre 2,2 et 2,3.'],
+      ['On peut continuer avec 2, 3, 4 chiffres…','On trouve des encadrements de plus en plus fins, mais jamais une valeur décimale exacte.'],
+      ['<b>Étape 3 · le nombre positif de carré 5 se note √5</b>','On lit « racine carrée de 5 ». Il vaut environ 2,24.']])],
+  ret:['La racine carrée d’un nombre positif a est le nombre positif dont le carré est a. On la note √a.','Si a est un carré parfait, √a est un entier : √49 = 7.','Sinon, √a n’est pas décimal : on l’encadre entre deux entiers consécutifs, puis entre des décimaux de plus en plus proches.'],
+  ar:['الجذر المربع لعدد موجب a هو العدد الموجب الذي مربعه يساوي a ونكتبه √a. مثلا √121 = 11 لأن 11 × 11 = 121.','عندما لا يكون العدد مربعا كاملا، مثل 5، لا نجد عددا عشريا مربعه يساوي 5 بالضبط. لهذا نحتاج إلى رمز الجذر √5، ونكتفي بتأطيره بين عددين.'],
+  arw:[['racine carrée','جذر مربع'],['carré parfait','مربع كامل'],['compris entre','محصور بين'],['encadrer','أؤطر'],['positif','موجب']]});
+
+D({id:'pi2-17',lv:2,period:1,dom:'Algèbre',t:'Monômes : coefficient, variables, degré',at:'وحيدات الحد: المعامل والمتغيرات والدرجة',
+  obj:'Identifier le coefficient, les variables et le degré d’un monôme.',keys:['mono'],
+  lex:[['monôme','وحيدة حد'],['variable','متغير'],['coefficient','معامل'],['degré','درجة'],['somme','مجموع']],
+  pre:[
+    ['3x + 2 est composé d’un seul terme.',false,'Il y a deux termes séparés par le signe +.'],
+    ['Dans 4xy, la variable y a l’exposant 1.',true,'Quand aucun exposant n’est écrit, l’exposant est 1.'],
+    ['Dans −7a, le coefficient est 7.',false,'Le coefficient garde son signe : il vaut −7.']],
+  plan:['J’identifie le coefficient.','J’identifie les variables.','J’identifie le degré.'],
+  ex:[
+    E('Identifie le coefficient, les variables et le degré de 5x<sup>2</sup>y.',[
+      ['Étape 1 · coefficient : 5','C’est le facteur numérique, avec son signe.'],
+      ['Étape 2 · variables : x et y','Ce sont les lettres.'],
+      ['Étape 3 · exposants : 2 et 1','y n’a pas d’exposant écrit : son exposant est 1.'],
+      ['<b>degré = 2 + 1 = 3</b>','Le degré est la somme des exposants de toutes les variables.']]),
+    E('Même question pour −3ab<sup>3</sup>.',[
+      ['Étape 1 · coefficient : −3','Le signe fait partie du coefficient.'],
+      ['Étape 2 · variables : a et b','Deux variables.'],
+      ['Étape 3 · exposants : 1 et 3','a a l’exposant 1.'],
+      ['<b>degré = 1 + 3 = 4</b>','Ce n’est pas 3 : il faut additionner.']]),
+    E('Même question pour x<sup>2</sup>y<sup>3</sup>.',[
+      ['Étape 1 · coefficient : 1','Aucun nombre n’est écrit devant : le coefficient est 1.'],
+      ['Étape 2 · variables : x et y','Deux variables.'],
+      ['Étape 3 · exposants : 2 et 3','Je les additionne.'],
+      ['<b>degré = 2 + 3 = 5</b>','Le coefficient n’intervient pas dans le degré.']])],
+  ret:['Un monôme est une expression à un seul terme : un coefficient suivi de variables, par exemple 5x<sup>2</sup>y.','Le coefficient est le facteur numérique avec son signe. S’il n’est pas écrit, il vaut 1.','Le degré est la somme des exposants de toutes les variables. Une variable sans exposant écrit a l’exposant 1.'],
+  ar:['وحيدة الحد هي تعبير حرفي من حد واحد، مثل 5x²y. المعامل هو العدد المضروب في المتغيرات مع إشارته. وإذا لم يُكتب عدد فالمعامل 1.','درجة وحيدة الحد هي مجموع أسس جميع متغيراتها. المتغير الذي لا أس له مكتوبا أسه 1. في 5x²y الدرجة 2 + 1 = 3.'],
+  arw:[['monôme','وحيدة حد'],['coefficient','معامل'],['variable','متغير'],['degré','درجة'],['exposant','أس']]});
+
 /* ===== PÉRIODE 2 ===== */
 var ra=function(n){
   var r=[SC.rect(80,40,100,100,PK,'x²'),SC.rect(180,40,60,100,TL,'3x'),SC.rect(80,140,100,40,CO,'2x'),SC.rect(180,140,60,40,LV,'6')];
@@ -6300,7 +6450,7 @@ P.evalPage({id:'pe2-4',lv:2,period:4,keys:['tricerc','angTri','vec','vol','trice
 P.evalPage({id:'pe2-5',lv:2,period:5,keys:['prop','pct','vit','ech','stat','effC','prop','stat']});
 
 P.setLevel(2,['pr-1','pr-2','pr-3','pr-4'],[
-  {title:'Rationnels et puissances',seqs:['pi2-1','pi2-2','pi2-3']},
+  {title:'Puissances, racine carrée, monômes, rationnels',seqs:['pi2-15','pi2-16','pi2-17','pi2-1','pi2-2','pi2-3']},
   {title:'Calcul littéral, équations, ordre',seqs:['pi2-4','pi2-5','pi2-6']},
   {title:'Symétrie axiale, droites du triangle',seqs:['pi2-7','pi2-8','pi2-9']},
   {title:'Triangle rectangle, vecteurs et volumes',seqs:['pi2-10','pi2-11','pi2-12']},
