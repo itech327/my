@@ -58,7 +58,7 @@ with sync_playwright() as p:
 
     # ---- enseignant : page avec API simulée ----
     ctx = b.new_context(viewport={'width': 1000, 'height': 800}, service_workers='block')
-    state = {'mode': 'ok', 'deleted': None}
+    state = {'mode': 'ok', 'deleted': None, 'auth': []}
     now = 1_800_000_000_000
     def ev(i, ts, cls, sid, typ, name, data): return {'id': i, 'ts': ts, 'cls': cls, 'sid': sid, 'type': typ, 'app': 'Maths', 'name': name, 'data': data}
     EV = [
@@ -69,8 +69,11 @@ with sync_playwright() as p:
     ]
     def api(r):
         u = r.request.url
+        if '/api/teacher/' in u:
+            state['auth'].append(r.request.headers.get('authorization'))
+            if r.request.headers.get('authorization') != 'Bearer cle-enseignant-123': return r.fulfill(status=401, body='{}')
         if '/api/teacher/events' in u:
-            if state['mode'] == '403': return r.fulfill(status=403, body='{}')
+            if state['mode'] == '503': return r.fulfill(status=503, body='{}')
             return r.fulfill(status=200, content_type='application/json', body=json.dumps({'now': now, 'classes': [{'cls': 'AB12', 'n': 2}, {'cls': 'ZZ99', 'n': 1}], 'events': EV}))
         if '/api/teacher/delete' in u:
             state['deleted'] = json.loads(r.request.post_data)['sid']; return r.fulfill(status=200, content_type='application/json', body='{"ok":true,"deleted":1}')
@@ -80,7 +83,14 @@ with sync_playwright() as p:
     pg = ctx.new_page(); errs = []
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.on('dialog', lambda d: d.accept())
-    pg.goto(BASE + '/teacher'); pg.wait_for_timeout(800)
+    pg.goto(BASE + '/teacher'); pg.wait_for_timeout(600)
+    check(pg.is_visible('#key') and not pg.is_visible('#out') and not state['auth'], 'sans clé : formulaire, aucun appel à l’API')
+    pg.fill('#key', 'mauvaise-cle-long'); pg.click('#login button'); pg.wait_for_timeout(600)
+    check('Clé incorrecte' in pg.inner_text('#status') and pg.is_visible('#key'), 'mauvaise clé : message et retour au formulaire')
+    check(pg.evaluate("sessionStorage.getItem('teacher_key')") is None, 'mauvaise clé : non conservée')
+    pg.fill('#key', 'cle-enseignant-123'); pg.click('#login button'); pg.wait_for_timeout(800)
+    check(state['auth'][-1] == 'Bearer cle-enseignant-123', 'clé envoyée en Authorization')
+    check(pg.evaluate("localStorage.length") == 0, 'clé jamais dans localStorage')
     check(pg.locator('#students tbody tr').count() == 3, 'trois élèves listés')
     txt = pg.inner_text('#students')
     check('Salma' in txt and '80 %' in txt and '16/20' in txt, 'Salma : 16/20, 80 %')
@@ -94,8 +104,9 @@ with sync_playwright() as p:
     check(state['deleted'] == 's2', 'suppression envoyée pour la bonne session')
     check('robots' in pg.evaluate("document.head.innerHTML") and 'noindex' in pg.evaluate("document.head.innerHTML"), 'balise noindex')
     check(not errs, 'aucune erreur JS %s' % errs[:2])
-    state['mode'] = '403'; pg.click('#refresh'); pg.wait_for_timeout(500)
-    check('Accès refusé' in pg.inner_text('#status'), 'message clair quand Access refuse')
+    state['mode'] = '503'; pg.click('#refresh'); pg.wait_for_timeout(500)
+    check('pas encore configuré' in pg.inner_text('#status'), 'message clair quand le relais n’est pas configuré')
+    pg.click('#logout'); check(pg.is_visible('#key') and pg.evaluate("sessionStorage.getItem('teacher_key')") is None, 'Quitter : clé effacée')
     ctx.close(); b.close()
 srv.shutdown()
 print('FAILS: %d' % len(fails)); sys.exit(1 if fails else 0)

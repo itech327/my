@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-P0Awe7l5N+TIN5Ga3m9FjzxbJc7GZyYXHIRaEQcHGxg='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-IcJJP3nBc3YaodUTvgXV6whHsJD/r9iKJUaH1zz8Xw8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Espace réservé à l’enseignant.">
 <link rel="canonical" href="https://taalim.men/teacher.html">
@@ -29,7 +29,8 @@ h1{font-size:clamp(26px,6vw,38px);margin:0 0 4px;background:var(--grad);-webkit-
 h2{font-size:17px;margin:26px 0 8px}
 .muted{color:var(--muted)}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
-select,button{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;min-height:42px;padding:6px 12px}
+select,button,input{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;min-height:42px;padding:6px 12px}
+input{min-width:240px}
 button{cursor:pointer;font-weight:600}
 button:hover,button:focus-visible,select:focus-visible{border-color:var(--pink);outline:none}
 button.danger{color:var(--coral)}
@@ -55,12 +56,19 @@ tr:last-child td{border-bottom:0}
   <h1>Espace enseignant</h1>
   <p class="muted">Résultats des élèves qui ont accepté le suivi. <span class="ar" lang="ar" dir="rtl">نتائج التلاميذ الذين وافقوا على المتابعة.</span></p>
 
-  <div class="bar">
+  <form id="login" class="bar" hidden>
+    <label for="key" class="muted">Clé enseignant · مفتاح الأستاذ</label>
+    <input id="key" type="password" autocomplete="current-password" minlength="12" required>
+    <button type="submit">Entrer</button>
+  </form>
+
+  <div class="bar" id="filters" hidden>
     <label for="cls" class="muted">Classe</label>
     <select id="cls"><option value="">Toutes</option></select>
     <label for="days" class="muted">Période</label>
     <select id="days"><option value="7">7 jours</option><option value="30" selected>30 jours</option><option value="90">90 jours</option><option value="180">180 jours</option></select>
     <button type="button" id="refresh">Actualiser</button>
+    <button type="button" id="logout">Quitter</button>
   </div>
 
   <div id="status" class="msg" role="status">Chargement…</div>
@@ -75,6 +83,7 @@ tr:last-child td{border-bottom:0}
     <p class="small muted">Données conservées 180 jours. Le bouton « Supprimer » efface toutes les données d’un élève, par exemple à la demande d’un parent.</p>
   </div>
 </div>
+<script src="lab/notify-config.js"></script>
 <script>
 (function () {
   var $ = function (s) { return document.querySelector(s); };
@@ -91,19 +100,30 @@ tr:last-child td{border-bottom:0}
   function status(t, err) { var s = $('#status'); s.hidden = !t; s.textContent = t || ''; s.className = 'msg' + (err ? ' err' : ''); }
 
   var firstLoad = true;
+  function base() { return (window.LAB_NOTIFY_URL || '').replace(/\/+$/, ''); }
+  function key() { try { return sessionStorage.getItem('teacher_key') || ''; } catch (_) { return ''; } }
+  function authHeaders(extra) { var h = { Authorization: 'Bearer ' + key() }; for (var k in extra) h[k] = extra[k]; return h; }
+  function showLogin(msg) {
+    $('#login').hidden = false; $('#filters').hidden = true; $('#out').hidden = true;
+    status(msg || '', !!msg); $('#key').focus();
+  }
   function load() {
+    if (!base()) { status('Relais non configuré.', true); return; }
+    if (!key()) { showLogin(''); return; }
+    $('#login').hidden = true; $('#filters').hidden = false;
     status('Chargement…'); $('#out').hidden = true;
     var q = '?days=' + encodeURIComponent($('#days').value) + ($('#cls').value ? '&cls=' + encodeURIComponent($('#cls').value) : '');
-    fetch('/api/teacher/events' + q, { credentials: 'same-origin', cache: 'no-store' }).then(function (r) {
-      if (r.status === 403) throw new Error('Accès refusé. Connecte-toi avec l’adresse autorisée.');
-      if (r.status === 503) throw new Error('La base de données n’est pas encore reliée au relais.');
+    fetch(base() + '/api/teacher/events' + q, { headers: authHeaders(), cache: 'no-store' }).then(function (r) {
+      if (r.status === 401) { try { sessionStorage.removeItem('teacher_key'); } catch (_) {} throw { login: 'Clé incorrecte.' }; }
+      if (r.status === 429) throw new Error('Trop d’essais. Réessaie dans 10 minutes.');
+      if (r.status === 503) throw new Error('Le relais n’est pas encore configuré (clé ou base de données).');
       if (!r.ok) throw new Error('Erreur ' + r.status);
       return r.json();
     }).then(function (d) {
       if (firstLoad || $('#cls').options.length <= 1) fillClasses(d.classes || []);
       firstLoad = false;
       draw(d); status('');
-    }).catch(function (e) { status(e.message || 'Erreur réseau', true); });
+    }).catch(function (e) { if (e && e.login) showLogin(e.login); else status((e && e.message) || 'Erreur réseau', true); });
   }
   function fillClasses(list) {
     var s = $('#cls'), cur = s.value; s.innerHTML = '';
@@ -158,11 +178,17 @@ tr:last-child td{border-bottom:0}
 
   function del(s) {
     if (!window.confirm('Supprimer toutes les données de « ' + s.name + ' » ? Cette action est définitive.')) return;
-    fetch('/api/teacher/delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid: s.sid }) })
+    fetch(base() + '/api/teacher/delete', { method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }), body: JSON.stringify({ sid: s.sid }) })
       .then(function (r) { if (!r.ok) throw new Error('Suppression impossible (' + r.status + ')'); load(); })
       .catch(function (e) { status(e.message, true); });
   }
 
+  $('#login').addEventListener('submit', function (e) {
+    e.preventDefault();
+    try { sessionStorage.setItem('teacher_key', $('#key').value); } catch (_) {}
+    $('#key').value = ''; firstLoad = true; load();
+  });
+  $('#logout').addEventListener('click', function () { try { sessionStorage.removeItem('teacher_key'); } catch (_) {} showLogin(''); });
   $('#refresh').addEventListener('click', load);
   $('#cls').addEventListener('change', load);
   $('#days').addEventListener('change', function () { firstLoad = true; load(); });
