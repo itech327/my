@@ -276,8 +276,8 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
   <header>
     <p class="kicker">Collège · option française</p>
     <h1 class="display">Maths en mouvement</h1>
-    <p class="lead">Cours de mathématiques de la 1<sup>re</sup>, de la 2<sup>e</sup> et de la 3<sup>e</sup> année du collège, pour les collèges ordinaires comme pour les collèges pionniers, avec des figures que l’on peut déplacer et des animations pour chaque notion.</p>
-    <p class="lead ar-lead" dir="rtl" lang="ar">دروس الرياضيات للسنوات الأولى والثانية والثالثة إعدادي، للإعدادية العادية وللإعدادية الرائدة، وتحت كل درس شرح بالعربية مع المصطلحات الفرنسية ومقابلها.</p>
+    <p class="lead">Cours de mathématiques de la 1<sup>re</sup>, de la 2<sup>e</sup> et de la 3<sup>e</sup> année du collège, pour les collèges ordinaires, avec des figures que l’on peut déplacer et des animations pour chaque notion.</p>
+    <p class="lead ar-lead" dir="rtl" lang="ar">دروس الرياضيات للسنوات الأولى والثانية والثالثة إعدادي، للإعدادية العادية، وتحت كل درس شرح بالعربية مع المصطلحات الفرنسية ومقابلها.</p>
   </header>
 
   <section aria-label="Choisir le type de collège et le niveau">
@@ -660,7 +660,11 @@ function makeHandles(svg,pts,b,onMove){
   var kinds=$$('#kinds .kind'),ord=$('#ord'),pion=$('#pion'),hint=$('#kindhint'),pbox=$('#pcontent');
   var kind=null,plv=1;
   try{kind=localStorage.getItem('mm-kind');plv=+localStorage.getItem('mm-plv')||1}catch(_){}
+  /* Parcours pionnier masqué : seul le collège ordinaire est proposé. Pour le revoir : ?pion=1 dans l'adresse, ou localStorage show-pion = 1. */
+  var SHOWP=/[?&]pion=1(&|$)/.test(location.search);try{if(localStorage.getItem('show-pion')==='1')SHOWP=true}catch(_){}
   if(kind!=='ord'&&kind!=='pion')kind=null;
+  if(!SHOWP)kind='ord';
+  if(!SHOWP){var kk=$('#kinds'),k1=kk&&kk.previousElementSibling,k2=$('#ord > .kicker');kk.style.display='none';hint.style.display='none';if(k1)k1.style.display='none';if(k2)k2.textContent='1 · Mon niveau'}
   if(plv<1||plv>3)plv=1;
   function store(k,v){try{localStorage.setItem(k,v)}catch(_){}}
   function renderP(){var m=window.MM&&window.MM.pion;if(m&&kind==='pion')m.render(pbox,plv)}

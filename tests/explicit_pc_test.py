@@ -15,7 +15,7 @@ with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')
     ctx = b.new_context(viewport={'width': 420, 'height': 900})
-    ctx.add_init_script("try{localStorage.setItem('pc-save',JSON.stringify({kind:'pion',plv:1}));localStorage.setItem('lab_auto','0');localStorage.setItem('lab_wel',String(Date.now()));sessionStorage.setItem('lab_skip','1');sessionStorage.setItem('lab_barmin','0')}catch(e){}")
+    ctx.add_init_script("try{localStorage.setItem('show-pion','1');localStorage.setItem('pc-save',JSON.stringify({kind:'pion',plv:1}));localStorage.setItem('lab_auto','0');localStorage.setItem('lab_wel',String(Date.now()));sessionStorage.setItem('lab_skip','1');sessionStorage.setItem('lab_barmin','0')}catch(e){}")
     pg = ctx.new_page(); errs = []
     pg.on('pageerror', lambda e: errs.append(str(e)))
     pg.route('**/*', lambda r: r.abort() if r.request.url.startswith('http') else r.continue_())

@@ -5,8 +5,8 @@ Trois applications de cours pour le collège, option française. Chaque fichier 
 | Fichier | Contenu |
 | --- | --- |
 | `index.html` | Portail, démarrage de session, rapport |
-| `maths.html` | Maths en mouvement, 1re à 3e année, collège ordinaire et pionnier |
-| `physique-chimie.html` | Physique-Chimie en mouvement, 1re à 3e année, ordinaire et pionnier |
+| `maths.html` | Maths en mouvement, 1re à 3e année, collège ordinaire (parcours pionnier masqué, visible avec ?pion=1) |
+| `physique-chimie.html` | Physique-Chimie en mouvement, 1re à 3e année, ordinaire (parcours pionnier masqué, visible avec ?pion=1) |
 | `svt.html` | SVT en mouvement, 3e année : digestion, respiration, circulation, excrétion, immunité |
 
 ## Ce qui a été ajouté
