@@ -8,6 +8,9 @@ def check(c, m):
     print(('PASS ' if c else 'FAIL ') + m)
     if not c: fails.append(m)
 IDS1 = ['pi1-%d' % n for n in range(13, 19)]
+IDS2 = ['pi2-%d' % n for n in range(12, 17)]
+IDS3 = ['pi3-%d' % n for n in range(10, 14)]
+ALL = IDS1 + IDS2 + IDS3
 with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')
@@ -29,16 +32,18 @@ with sync_playwright() as p:
           var len=o.map(function(t){return t.length});
         });
         if(lv[1]<3||lv[2]<3||lv[3]<3)out.push(id+' niveaux '+JSON.stringify(lv));
-      });return out}""", IDS1)
+      });return out}""", ALL)
     check(not bad, 'banques saines : %s' % (bad[:3],))
     # les deux bonnes réponses ne sont pas toujours les plus longues
-    longest = pg.evaluate("""function(ids){var n=0,t=0;ids.forEach(function(id){window.PC.bank[id].q.forEach(function(x){t++;var m=0,mi=0;x[2].forEach(function(o,i){if(o.length>m){m=o.length;mi=i}});if(mi===x[3])n++})});return [n,t]}""", IDS1)
+    longest = pg.evaluate("""function(ids){var n=0,t=0;ids.forEach(function(id){window.PC.bank[id].q.forEach(function(x){t++;var m=0,mi=0;x[2].forEach(function(o,i){if(o.length>m){m=o.length;mi=i}});if(mi===x[3])n++})});return [n,t]}""", ALL)
     check(longest[0] <= longest[1] * 0.75, 'la bonne réponse n’est pas toujours la plus longue (%d / %d)' % tuple(longest))
     d = pg.evaluate("window.PC.pion.data[1].periods[0].seqs")
+    d2 = pg.evaluate("window.PC.pion.data[2].periods[0].seqs"); d3 = pg.evaluate("window.PC.pion.data[3].periods[0].seqs")
+    check(d2[:5] == IDS2 and d3[:4] == IDS3, 'séquences 2AC et 3AC en tête de la période 1 : %s %s' % (d2, d3))
     check(d[:6] == IDS1, 'séquences 1AC en tête de la période 1 : %s' % (d[:7],))
     links = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
     check(all(('#' + i) in links for i in IDS1), 'séquences listées dans le parcours pionnier 1AC')
-    for i in IDS1:
+    for i in ALL:
         pg.goto('file://' + os.path.join(ROOT, 'physique-chimie.html') + '#' + i); pg.wait_for_timeout(500)
         heads = pg.evaluate("Array.from(document.querySelectorAll('#%s .lesson h3')).map(function(h){return h.textContent})" % i)
         check(heads == ['Je me prépare', 'Je regarde', 'Nous faisons', 'Je fais seul'], i + ' : quatre étapes %s' % (heads,))

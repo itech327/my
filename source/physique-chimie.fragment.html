@@ -4699,6 +4699,11 @@ S('pi2-8',{t:'Ombre portée',ar:'الظل',g:['shadow'],lk:'c2-10',look:'H = h �
 S('pi2-9',{t:'Lumière et couleurs',ar:'الضوء والألوان',b:'col',lk:'c2-9'});
 S('pi2-10',{t:'Matières et pollution de l’air',ar:'المواد وتلوث الهواء',b:'pol'});
 S('pi2-11',{t:'L’installation électrique domestique',ar:'التركيب الكهربائي المنزلي',b:'dom'});
+S('pi2-12',{t:'Corps pur simple, corps pur composé, mélange',ar:'جسم نقي بسيط ومركب وخليط',b:'pi2-12',x:1});
+S('pi2-13',{t:'La formule chimique d’une molécule',ar:'الصيغة الكيميائية للجزيء',b:'pi2-13',x:1});
+S('pi2-14',{t:'Le tableau périodique',ar:'الجدول الدوري',b:'pi2-14',x:1});
+S('pi2-15',{t:'Décrire un atome',ar:'وصف الذرة',b:'pi2-15',x:1});
+S('pi2-16',{t:'La neutralité électrique de l’atome',ar:'التعادل الكهربائي للذرة',b:'pi2-16',x:1});
 /* 3e année */
 S('pi3-1',{t:'Solutions acides et basiques',ar:'المحاليل الحمضية والأساسية',b:'ph',lk:'c3-4'});
 S('pi3-2',{t:'Identification des ions',ar:'التعرف على الأيونات',b:'ion',lk:'c3-6'});
@@ -4709,6 +4714,10 @@ S('pi3-6',{t:'Forces et équilibre',ar:'القوى والتوازن',b:'meca',lk
 S('pi3-7',{t:'Masse et poids',ar:'الكتلة والوزن',g:['weight'],lk:'c3-13',look:'P = m × g (Terre : g ≈ 10 N/kg)',aru:'الوزن P = m × g. على الأرض g ≈ 10 N/kg وعلى القمر ≈ 1,6 N/kg.',w:[['poids','وزن'],['masse','كتلة'],['newton','نيوتن']]});
 S('pi3-8',{t:'La loi d’Ohm',ar:'قانون أوم',g:['ohm'],lk:'c3-14',look:'U = R × I',aru:'قانون أوم: U = R × I. ومنه I = U ÷ R وR = U ÷ I.',w:[['résistance','مقاومة'],['tension','توتر'],['intensité','شدة التيار']]});
 S('pi3-9',{t:'Puissance et énergie électriques',ar:'القدرة والطاقة الكهربائية',g:['power'],lk:'c3-16',look:'P = U × I · E = P × t',aru:'القدرة P = U × I، والطاقة E = P × t (بالكيلوواط ساعة إذا كانت P بـ kW وt بالساعة).',w:[['puissance','قدرة'],['énergie','طاقة'],['kilowattheure','كيلوواط ساعة']]});
+S('pi3-10',{t:'Classer les ions',ar:'تصنيف الأيونات',b:'pi3-10',x:1});
+S('pi3-11',{t:'La formule d’un ion monoatomique',ar:'صيغة الأيون أحادي الذرة',b:'pi3-11',x:1});
+S('pi3-12',{t:'Identifier les ions en solution',ar:'التعرف على الأيونات في المحلول',b:'pi3-12',x:1});
+S('pi3-13',{t:'Formule et nom d’un composé ionique',ar:'صيغة واسم مركب أيوني',b:'pi3-13',x:1});
 
 /* ---------- séances explicites (collège pionnier) : lexique, préparation, plan, exemples, banque ---------- */
 var X={};
@@ -4862,6 +4871,229 @@ XS('pi1-18',{
 });
 
 
+/* ===== 2e année · période 1 (tâches lues dans les séances disponibles) ===== */
+XS('pi2-12',{
+ obj:'Déterminer si un corps est un corps pur simple, un corps pur composé ou un mélange, en décrivant ses molécules.',
+ lex:[['molécule','جزيء'],['atome','ذرة'],['corps pur simple','جسم نقي بسيط'],['corps pur composé','جسم نقي مركب'],['mélange','خليط'],['type de molécules','نوع الجزيئات'],['composition','تركيب']],
+ pre:[['Une molécule est formée d’atomes liés entre eux.',true,'Une molécule contient au moins deux atomes liés.'],['Un corps pur contient plusieurs types de molécules.',false,'Un corps pur contient un seul type de molécules.'],['L’air est un mélange.',true,'Il contient entre autres du diazote et du dioxygène.']],
+ plan:['Je compte le nombre de types de molécules : un seul type, c’est un corps pur ; plusieurs types, c’est un mélange.','Pour un corps pur, je regarde les atomes d’une molécule : un seul type d’atome, c’est un corps pur simple ; plusieurs types, c’est un corps pur composé.','Je conclus avec une phrase.'],
+ ex:[
+  {q:'Le dioxygène est formé de molécules O₂ toutes identiques. Quelle est la nature du dioxygène ?',rows:[['Étape 1','Toutes les molécules sont identiques : un seul type, c’est un corps pur.'],['Étape 2','Chaque molécule O₂ ne contient que des atomes d’oxygène : un seul type d’atome.'],['Étape 3','Le dioxygène est un <b>corps pur simple</b>.']]},
+  {q:'L’eau est formée de molécules H₂O toutes identiques. Quelle est la nature de l’eau pure ?',rows:[['Étape 1','Toutes les molécules sont identiques : c’est un corps pur.'],['Étape 2','Chaque molécule H₂O contient deux types d’atomes : l’hydrogène et l’oxygène.'],['Étape 3','L’eau pure est un <b>corps pur composé</b>.']]},
+  {q:'L’air contient des molécules N₂ et des molécules O₂. Quelle est sa nature ?',rows:[['Étape 1','Il y a deux types de molécules : c’est un mélange.'],['Étape 2','Inutile de regarder les atomes : on ne le fait que pour un corps pur.'],['Étape 3','L’air est un <b>mélange</b>.']]}],
+ ret:['<b>Corps pur</b> : un seul type de molécules. <b>Mélange</b> : plusieurs types.','Corps pur <b>simple</b> : un seul type d’atome. Corps pur <b>composé</b> : plusieurs types d’atomes.'],
+ e:['إذا كان الجسم يحتوي على نوع واحد من الجزيئات فهو جسم نقي، وإذا احتوى على أنواع متعددة فهو خليط.','الجسم النقي البسيط جزيئاته من نوع واحد من الذرات (مثل O₂)، والجسم النقي المركب جزيئاته من عدة أنواع من الذرات (مثل H₂O).'],
+ w:[['corps pur simple','جسم نقي بسيط'],['corps pur composé','جسم نقي مركب'],['mélange','خليط']]
+},{
+ q:[
+ xq(1,'Un corps pur contient :',['un seul type de molécules','plusieurs types de molécules','aucune molécule'],0,'Toutes les molécules d’un corps pur sont identiques.'),
+ xq(1,'Une molécule est formée :',['d’atomes liés entre eux','d’un seul électron','d’un mélange'],0,'Les atomes se lient pour former une molécule.'),
+ xq(1,'L’air est :',['un mélange','un corps pur simple','un corps pur composé'],0,'Il contient plusieurs types de molécules.'),
+ xq(2,'Le dihydrogène est formé de molécules H₂. C’est :',['un corps pur simple','un corps pur composé','un mélange'],0,'Un seul type de molécules et un seul type d’atome.'),
+ xq(2,'Le dioxyde de carbone est formé de molécules CO₂ identiques. C’est :',['un corps pur composé','un corps pur simple','un mélange'],0,'Un seul type de molécules, formées de deux types d’atomes : carbone et oxygène.'),
+ xq(2,'Quelle est la première étape pour déterminer la nature d’un corps ?',['je compte les types de molécules','je mesure la masse','je regarde la couleur'],0,'On compte d’abord les types de molécules.'),
+ xq(3,'Un échantillon contient des molécules H₂O et des molécules NaCl dissoutes. C’est :',['un mélange','un corps pur simple','un corps pur composé'],0,'Il y a plusieurs types de constituants.'),
+ xq(3,'Un corps pur composé est formé de molécules qui contiennent :',['au moins deux types d’atomes','un seul type d’atome','aucun atome'],0,'Ce sont les atomes différents qui rendent le corps composé.'),
+ xq(3,'Le dioxygène O₂ est un corps pur simple parce que :',['ses molécules ne contiennent que des atomes d’oxygène','il contient plusieurs types de molécules','il contient de l’hydrogène'],0,'Un seul type de molécules et un seul type d’atome.')]
+});
+
+XS('pi2-13',{
+ obj:'Déterminer la formule chimique d’une molécule à partir des atomes qui la composent.',
+ lex:[['formule chimique','الصيغة الكيميائية'],['symbole','رمز'],['indice','دليل (رقم صغير)'],['atome','ذرة'],['hydrogène','هيدروجين'],['oxygène','أكسجين'],['carbone','كربون']],
+ pre:[['Le symbole de l’oxygène est O.',true,'O vient de oxygène.'],['Dans H₂O, l’indice 2 se rapporte à l’oxygène.',false,'L’indice 2 se rapporte à l’atome H, placé juste avant.'],['Quand il n’y a qu’un atome, on n’écrit pas l’indice 1.',true,'On écrit H₂O et pas H₂O₁.']],
+ plan:['Je repère les atomes de la molécule et j’écris leurs symboles.','Je compte le nombre de chaque sorte d’atome.','J’écris la formule : chaque symbole suivi de son nombre en indice, sans écrire 1.'],
+ ex:[
+  {q:'Une molécule d’eau contient 2 atomes d’hydrogène et 1 atome d’oxygène. Quelle est sa formule ?',rows:[['Étape 1','Les atomes sont l’hydrogène (H) et l’oxygène (O).'],['Étape 2','Il y a 2 atomes H et 1 atome O.'],['Étape 3','On écrit H₂O : l’indice 1 ne s’écrit pas.']]},
+  {q:'Une molécule de méthane contient 1 atome de carbone et 4 atomes d’hydrogène. Quelle est sa formule ?',rows:[['Étape 1','Les atomes sont le carbone (C) et l’hydrogène (H).'],['Étape 2','Il y a 1 atome C et 4 atomes H.'],['Étape 3','On écrit CH₄.']]},
+  {q:'Une molécule de dioxyde de carbone contient 1 atome de carbone et 2 atomes d’oxygène. Quelle est sa formule ?',rows:[['Étape 1','Les atomes sont le carbone (C) et l’oxygène (O).'],['Étape 2','Il y a 1 atome C et 2 atomes O.'],['Étape 3','On écrit CO₂.']]}],
+ ret:['Formule chimique : les <b>symboles</b> des atomes, chacun suivi de son <b>nombre</b> en indice.','On n’écrit pas l’indice 1. Exemples : H₂O, CO₂, CH₄.'],
+ e:['الصيغة الكيميائية للجزيء تكتب برموز الذرات، وبعد كل رمز عدد الذرات كدليل صغير أسفله.','لا نكتب الدليل 1. مثال: H₂O وCO₂ وCH₄.'],
+ w:[['formule chimique','الصيغة الكيميائية'],['symbole','رمز'],['indice','دليل']]
+},{
+ q:[
+ xq(1,'Une molécule contient 2 atomes d’hydrogène et 1 atome d’oxygène. Sa formule est :',['H₂O','HO₂','H₂O₂'],0,'2 atomes H donnent H₂ et 1 atome O s’écrit O.'),
+ xq(1,'Le symbole de l’atome de carbone est :',['C','Ca','Co'],0,'Le symbole du carbone est C.'),
+ xq(1,'Dans la formule CO₂, il y a :',['1 atome de carbone et 2 atomes d’oxygène','2 atomes de carbone et 1 atome d’oxygène','1 atome de carbone et 1 atome d’oxygène'],0,'L’indice 2 se rapporte à O.'),
+ xq(2,'Une molécule contient 1 atome de carbone et 4 atomes d’hydrogène. Sa formule est :',['CH₄','C₄H','C₄H₄'],0,'1 atome C s’écrit C, 4 atomes H s’écrivent H₄.'),
+ xq(2,'La formule du dioxygène est O₂. Une molécule contient :',['2 atomes d’oxygène','1 atome d’oxygène','2 atomes de dioxyde'],0,'L’indice 2 indique deux atomes O.'),
+ xq(2,'Dans la formule NH₃, combien d’atomes y a-t-il en tout ?',['4','3','2'],0,'1 atome N et 3 atomes H : 1 + 3 = 4.'),
+ xq(3,'Une molécule contient 2 atomes de carbone, 6 atomes d’hydrogène et 1 atome d’oxygène. Sa formule est :',['C₂H₆O','C₂H₆O₁','CH₂O₆'],0,'On écrit chaque symbole avec son nombre, sans l’indice 1.'),
+ xq(3,'Pourquoi n’écrit-on pas H₂O₁ ?',['l’indice 1 ne s’écrit pas','l’oxygène n’a pas de symbole','H₂O₁ est une autre molécule'],0,'Un seul atome se note simplement par son symbole.'),
+ xq(3,'La formule C₃H₈ indique :',['3 atomes de carbone et 8 atomes d’hydrogène','8 atomes de carbone et 3 atomes d’hydrogène','11 atomes de carbone'],0,'Chaque indice se rapporte au symbole placé juste avant.')]
+});
+
+XS('pi2-14',{
+ obj:'Extraire des informations sur un élément chimique à partir de sa position dans le tableau périodique.',
+ lex:[['tableau périodique','الجدول الدوري'],['élément chimique','عنصر كيميائي'],['numéro atomique','العدد الذري'],['ligne','سطر (دورة)'],['colonne','عمود'],['symbole','رمز']],
+ pre:[['Les éléments du tableau périodique sont rangés par numéro atomique croissant.',true,'Z augmente de gauche à droite et de ligne en ligne.'],['Le numéro atomique se note Z.',true,'Z est le numéro atomique.'],['Tous les éléments d’une même ligne ont le même symbole.',false,'Chaque élément a son propre symbole.']],
+ plan:['Je repère l’élément : son symbole ou sa position (ligne et colonne).','Je lis son numéro atomique Z dans la case.','Je note les informations demandées : nom, symbole, Z, ligne et colonne.'],
+ ex:[
+  {q:'Dans le tableau périodique, l’élément de symbole C est à la ligne 2, colonne 14. Quelles informations peut-on donner ?',rows:[['Étape 1','Je repère la case du symbole C.'],['Étape 2','Dans la case, je lis Z = 6.'],['Étape 3','C est l’élément carbone, de numéro atomique 6, à la ligne 2 et à la colonne 14.']]},
+  {q:'On cherche l’élément de numéro atomique 11. Où se trouve-t-il ?',rows:[['Étape 1','Je cherche la case dont le numéro atomique est 11.'],['Étape 2','Je lis son symbole : Na.'],['Étape 3','L’élément sodium (Na) est à la ligne 3 et à la colonne 1.']]}],
+ ret:['Le tableau périodique range les éléments par <b>numéro atomique Z</b> croissant.','Chaque case donne le <b>symbole</b> et le numéro atomique ; la position donne la <b>ligne</b> et la <b>colonne</b>.'],
+ e:['الجدول الدوري يرتب العناصر حسب العدد الذري Z تصاعديا.','كل خانة فيها رمز العنصر وعدده الذري، وموقعها يعطي السطر والعمود.'],
+ w:[['numéro atomique','العدد الذري'],['ligne','سطر'],['colonne','عمود']]
+},{
+ q:[
+ xq(1,'Le symbole de l’élément oxygène est :',['O','Ox','Og'],0,'Le symbole de l’oxygène est O.'),
+ xq(1,'Dans le tableau périodique, les éléments sont rangés par :',['numéro atomique croissant','ordre alphabétique','couleur'],0,'Le classement suit Z croissant.'),
+ xq(1,'Le numéro atomique de l’hydrogène est :',['1','2','8'],0,'L’hydrogène est le premier élément : Z = 1.'),
+ xq(2,'Quel élément a pour numéro atomique 6 ?',['le carbone','l’oxygène','l’azote'],0,'Z = 6 correspond au carbone.'),
+ xq(2,'Quel élément a pour numéro atomique 8 ?',['l’oxygène','le carbone','l’hélium'],0,'Z = 8 correspond à l’oxygène.'),
+ xq(2,'Quelle est la première étape pour extraire des informations du tableau ?',['je repère l’élément (symbole ou position)','je calcule sa masse','je dessine un atome'],0,'On commence par repérer la case de l’élément.'),
+ xq(3,'L’élément de numéro atomique 11 est :',['le sodium','le magnésium','le lithium'],0,'Z = 11 correspond au sodium Na.'),
+ xq(3,'Entre le carbone (Z = 6) et l’oxygène (Z = 8), il y a l’élément de numéro atomique :',['7 (l’azote)','9 (le fluor)','5 (le bore)'],0,'7 est entre 6 et 8 : c’est l’azote.'),
+ xq(3,'Pourquoi l’hélium (Z = 2) est-il placé après l’hydrogène (Z = 1) ?',['son numéro atomique est plus grand','il est plus léger','il est un gaz'],0,'Le classement se fait par numéro atomique croissant.')]
+});
+
+XS('pi2-15',{
+ obj:'Décrire un atome à partir de son modèle : noyau, protons, neutrons et électrons.',
+ lex:[['atome','ذرة'],['noyau','نواة'],['électron','إلكترون'],['proton','بروتون'],['neutron','نوترون'],['nucléon','نكليون'],['numéro atomique','العدد الذري']],
+ pre:[['Un atome est formé d’un noyau et d’électrons.',true,'Les électrons tournent autour du noyau.'],['Le noyau contient des électrons.',false,'Le noyau contient des protons et des neutrons.'],['Les protons et les neutrons s’appellent des nucléons.',true,'Ce sont les constituants du noyau.']],
+ plan:['Je repère le noyau et les électrons dans le modèle de l’atome.','J’utilise le numéro atomique Z : il donne le nombre de protons et le nombre d’électrons.','Je calcule le nombre de neutrons : nombre de nucléons moins Z.'],
+ ex:[
+  {q:'L’atome de carbone a pour numéro atomique Z = 6. Son noyau compte 12 nucléons. Décrire cet atome.',rows:[['Étape 1','L’atome est formé d’un noyau et d’électrons autour du noyau.'],['Étape 2','Z = 6 : le noyau contient 6 protons et l’atome possède 6 électrons.'],['Étape 3','Nombre de neutrons : 12 − 6 = 6 neutrons.']]},
+  {q:'L’atome de sodium a pour numéro atomique Z = 11. Son noyau compte 23 nucléons. Décrire cet atome.',rows:[['Étape 1','L’atome est formé d’un noyau et d’électrons autour du noyau.'],['Étape 2','Z = 11 : le noyau contient 11 protons et l’atome possède 11 électrons.'],['Étape 3','Nombre de neutrons : 23 − 11 = 12 neutrons.']]}],
+ ret:['Atome = <b>noyau</b> (protons + neutrons) + <b>électrons</b>.','Z = nombre de <b>protons</b> = nombre d’<b>électrons</b>. Neutrons = nucléons − Z.'],
+ e:['الذرة تتكون من نواة (بروتونات ونوترونات) وإلكترونات تدور حولها.','العدد الذري Z يساوي عدد البروتونات وعدد الإلكترونات. وعدد النوترونات = عدد النكليونات − Z.'],
+ w:[['noyau','نواة'],['proton','بروتون'],['neutron','نوترون'],['électron','إلكترون'],['nucléon','نكليون']]
+},{
+ q:[
+ xq(1,'Un atome est formé :',['d’un noyau et d’électrons','uniquement d’électrons','uniquement de neutrons'],0,'Le noyau est entouré d’électrons.'),
+ xq(1,'Le noyau d’un atome contient :',['des protons et des neutrons','des électrons','des molécules'],0,'Les nucléons sont les protons et les neutrons.'),
+ xq(1,'Les électrons sont situés :',['autour du noyau','dans le noyau','hors de l’atome'],0,'Ils se déplacent autour du noyau.'),
+ xq(2,'Un atome a pour numéro atomique Z = 8. Son noyau contient :',['8 protons','8 neutrons','8 électrons'],0,'Z est le nombre de protons du noyau.'),
+ xq(2,'Un atome a Z = 8. Combien possède-t-il d’électrons ?',['8','16','0'],0,'Il y a autant d’électrons que de protons.'),
+ xq(2,'Quelle est la deuxième étape pour décrire un atome ?',['j’utilise le numéro atomique Z','je calcule le volume','je mesure la masse'],0,'Z donne le nombre de protons et d’électrons.'),
+ xq(3,'Un atome a Z = 6 et 12 nucléons. Son nombre de neutrons est :',['6','12','18'],0,'12 − 6 = 6 neutrons.'),
+ xq(3,'Un atome a Z = 11 et 23 nucléons. Son nombre de neutrons est :',['12','11','34'],0,'23 − 11 = 12 neutrons.'),
+ xq(3,'Le nombre de nucléons d’un atome est égal :',['au nombre de protons plus le nombre de neutrons','au nombre d’électrons','au nombre de protons moins celui des neutrons'],0,'Nucléons = protons + neutrons.')]
+});
+
+XS('pi2-16',{
+ obj:'Vérifier la neutralité électrique d’un atome à partir des charges électriques de ses constituants.',
+ lex:[['charge électrique','شحنة كهربائية'],['charge élémentaire','الشحنة الأولية'],['neutralité électrique','التعادل الكهربائي'],['noyau','نواة'],['électron','إلكترون'],['proton','بروتون']],
+ pre:[['Un proton porte une charge électrique positive.',true,'La charge d’un proton est +e.'],['Un électron porte une charge électrique positive.',false,'La charge d’un électron est −e.'],['Un atome est électriquement neutre.',true,'Les charges positives et négatives se compensent.']],
+ plan:['Je détermine la charge électrique du noyau.','Je détermine la charge électrique de l’ensemble des électrons de cet atome.','Je vérifie la neutralité électrique de cet atome.'],
+ ex:[
+  {q:'L’atome de carbone C a pour numéro atomique Z = 6. Son noyau comporte 12 nucléons. Vérifier que cet atome est neutre.',rows:[['Étape 1','Le noyau contient 6 protons, chacun de charge +e. Charge du noyau : <b>+6e</b>.'],['Étape 2','L’atome a 6 électrons, chacun de charge −e. Charge des électrons : <b>−6e</b>.'],['Étape 3','Charge de l’atome : +6e − 6e = 0. L’atome de carbone est <b>électriquement neutre</b>.']]},
+  {q:'L’atome de sodium Na a pour numéro atomique Z = 11. Vérifier que cet atome est neutre.',rows:[['Étape 1','Le noyau contient 11 protons. Charge du noyau : <b>+11e</b>.'],['Étape 2','L’atome a 11 électrons. Charge des électrons : <b>−11e</b>.'],['Étape 3','Charge de l’atome : +11e − 11e = 0. L’atome de sodium est <b>électriquement neutre</b>.']]}],
+ ret:['Charge du noyau : <b>+Ze</b>. Charge des électrons : <b>−Ze</b>.','Leur somme est nulle : l’atome est <b>électriquement neutre</b>.'],
+ e:['شحنة النواة موجبة +Ze، وشحنة الإلكترونات سالبة −Ze. مجموعهما يساوي صفرا، لذلك الذرة متعادلة كهربائيا.','e هي الشحنة الأولية: البروتون +e والإلكترون −e.'],
+ w:[['charge élémentaire','الشحنة الأولية'],['neutralité électrique','التعادل الكهربائي'],['charge électrique','شحنة كهربائية']]
+},{
+ q:[
+ xq(1,'La charge électrique d’un proton est :',['+e','−e','0'],0,'Un proton porte la charge élémentaire positive.'),
+ xq(1,'La charge électrique d’un électron est :',['−e','+e','0'],0,'Un électron porte la charge élémentaire négative.'),
+ xq(1,'Un atome est :',['électriquement neutre','chargé positivement','chargé négativement'],0,'Il a autant de charges positives que de négatives.'),
+ xq(2,'Un atome a Z = 8. La charge de son noyau est :',['+8e','−8e','+16e'],0,'Le noyau contient 8 protons de charge +e.'),
+ xq(2,'Un atome a Z = 8. La charge de l’ensemble de ses électrons est :',['−8e','+8e','0'],0,'Il a 8 électrons de charge −e.'),
+ xq(2,'Quelle est la première étape pour vérifier la neutralité d’un atome ?',['je détermine la charge du noyau','je dessine l’atome','je mesure sa masse'],0,'On commence par la charge du noyau.'),
+ xq(3,'Un atome a Z = 6. Quelle est la charge totale de l’atome ?',['0','+6e','−6e'],0,'+6e − 6e = 0.'),
+ xq(3,'Le noyau d’un atome a pour charge +11e. Combien l’atome a-t-il d’électrons ?',['11','12','22'],0,'Pour être neutre, il a autant d’électrons que de protons.'),
+ xq(3,'Pourquoi la charge d’un atome est-elle nulle ?',['les charges du noyau et des électrons se compensent','il n’a pas de charges','il n’a pas d’électrons'],0,'+Ze et −Ze s’annulent.')]
+});
+
+/* ===== 3e année · période 1 (tâches lues dans les séances disponibles) ===== */
+XS('pi3-10',{
+ obj:'Classer un ion : cation ou anion, ion monoatomique ou ion polyatomique.',
+ lex:[['ion','أيون'],['cation','كاتيون'],['anion','أنيون'],['ion monoatomique','أيون أحادي الذرة'],['ion polyatomique','أيون متعدد الذرات'],['charge','شحنة']],
+ pre:[['Un cation porte une charge positive.',true,'Un cation a perdu des électrons.'],['Un anion porte une charge positive.',false,'Un anion porte une charge négative.'],['L’ion Na⁺ est formé d’un seul atome.',true,'Il est monoatomique.']],
+ plan:['Je regarde le signe de la charge : + pour un cation, − pour un anion.','Je regarde la composition : un seul atome, c’est un ion monoatomique ; plusieurs atomes, c’est un ion polyatomique.','Je conclus avec les deux mots.'],
+ ex:[
+  {q:'Classer l’ion Cl⁻.',rows:[['Étape 1','Le signe est − : c’est un anion.'],['Étape 2','Un seul atome (Cl) : c’est un ion monoatomique.'],['Étape 3','Cl⁻ est un <b>anion monoatomique</b>.']]},
+  {q:'Classer l’ion Cu²⁺.',rows:[['Étape 1','Le signe est + : c’est un cation.'],['Étape 2','Un seul atome (Cu) : c’est un ion monoatomique.'],['Étape 3','Cu²⁺ est un <b>cation monoatomique</b>.']]},
+  {q:'Classer l’ion SO₄²⁻.',rows:[['Étape 1','Le signe est − : c’est un anion.'],['Étape 2','Il contient cinq atomes (un S et quatre O) : c’est un ion polyatomique.'],['Étape 3','SO₄²⁻ est un <b>anion polyatomique</b>.']]}],
+ ret:['<b>Cation</b> : charge positive. <b>Anion</b> : charge négative.','<b>Monoatomique</b> : un seul atome. <b>Polyatomique</b> : plusieurs atomes.'],
+ e:['الكاتيون أيون موجب الشحنة والأنيون أيون سالب الشحنة.','الأيون أحادي الذرة يتكون من ذرة واحدة (Na⁺)، والمتعدد الذرات من عدة ذرات (SO₄²⁻).'],
+ w:[['cation','كاتيون'],['anion','أنيون'],['monoatomique','أحادي الذرة'],['polyatomique','متعدد الذرات']]
+},{
+ q:[
+ xq(1,'Un cation est un ion de charge :',['positive','négative','nulle'],0,'Un cation porte une charge positive.'),
+ xq(1,'Un anion est un ion de charge :',['négative','positive','nulle'],0,'Un anion porte une charge négative.'),
+ xq(1,'L’ion Na⁺ est :',['un cation','un anion','un atome neutre'],0,'Sa charge est positive.'),
+ xq(2,'L’ion Cl⁻ est :',['un anion monoatomique','un cation monoatomique','un anion polyatomique'],0,'Charge négative et un seul atome.'),
+ xq(2,'L’ion Cu²⁺ est :',['un cation monoatomique','un anion monoatomique','un cation polyatomique'],0,'Charge positive et un seul atome.'),
+ xq(2,'Quelle est la première étape pour classer un ion ?',['je regarde le signe de la charge','je compte les protons','je mesure sa masse'],0,'Le signe de la charge donne cation ou anion.'),
+ xq(3,'L’ion SO₄²⁻ est :',['un anion polyatomique','un cation polyatomique','un anion monoatomique'],0,'Charge négative, plusieurs atomes.'),
+ xq(3,'L’ion NH₄⁺ est :',['un cation polyatomique','un anion polyatomique','un cation monoatomique'],0,'Charge positive, plusieurs atomes.'),
+ xq(3,'Un ion polyatomique est formé :',['de plusieurs atomes liés portant une charge','d’un seul atome','d’une molécule neutre'],0,'Il contient plusieurs atomes et porte une charge.')]
+});
+
+XS('pi3-11',{
+ obj:'Écrire la formule d’un ion monoatomique en connaissant le nombre d’électrons gagnés ou perdus par l’atome.',
+ lex:[['électron','إلكترون'],['gagner','يكتسب'],['perdre','يفقد'],['formule d’un ion','صيغة الأيون'],['charge','شحنة'],['atome','ذرة']],
+ pre:[['Un atome qui perd des électrons devient un cation.',true,'Il a plus de protons que d’électrons.'],['Un atome qui gagne des électrons devient un cation.',false,'Il devient un anion.'],['L’atome de sodium qui perd un électron donne l’ion Na⁺.',true,'La charge +1 s’écrit +.']],
+ plan:['J’identifie si l’atome perd ou gagne des électrons.','Je note le nombre n d’électrons perdus ou gagnés.','J’écris le symbole de l’atome avec la charge : n+ si perte, n− si gain.'],
+ ex:[
+  {q:'L’atome de magnésium Mg perd 2 électrons. Quelle est la formule de l’ion formé ?',rows:[['Étape 1','L’atome perd des électrons : il devient un cation.'],['Étape 2','Nombre d’électrons perdus : n = 2.'],['Étape 3','La formule est <b>Mg²⁺</b>.']]},
+  {q:'L’atome de chlore Cl gagne 1 électron. Quelle est la formule de l’ion formé ?',rows:[['Étape 1','L’atome gagne un électron : il devient un anion.'],['Étape 2','Nombre d’électrons gagnés : n = 1.'],['Étape 3','La formule est <b>Cl⁻</b> : on n’écrit pas le 1.']]}],
+ ret:['Perte de <b>n</b> électrons : ion <b>X<sup>n+</sup></b> (cation).','Gain de <b>n</b> électrons : ion <b>X<sup>n−</sup></b> (anion). On n’écrit pas 1.'],
+ e:['إذا فقدت الذرة n إلكترونات أصبحت كاتيونا Xⁿ⁺، وإذا اكتسبت n إلكترونات أصبحت أنيونا Xⁿ⁻.','لا نكتب الرقم 1: Na⁺ وCl⁻.'],
+ w:[['gagner un électron','اكتساب إلكترون'],['perdre un électron','فقدان إلكترون']]
+},{
+ q:[
+ xq(1,'Un atome qui perd des électrons devient :',['un cation','un anion','un atome neutre'],0,'La charge devient positive.'),
+ xq(1,'Un atome qui gagne des électrons devient :',['un anion','un cation','un noyau'],0,'La charge devient négative.'),
+ xq(1,'L’atome de sodium Na perd 1 électron. L’ion formé est :',['Na⁺','Na⁻','Na²⁺'],0,'Perte d’un électron : charge +, sans écrire 1.'),
+ xq(2,'L’atome de magnésium Mg perd 2 électrons. L’ion formé est :',['Mg²⁺','Mg²⁻','Mg⁺'],0,'Perte de deux électrons : charge 2+.'),
+ xq(2,'L’atome d’oxygène O gagne 2 électrons. L’ion formé est :',['O²⁻','O²⁺','O⁻'],0,'Gain de deux électrons : charge 2−.'),
+ xq(2,'Quelle est la première étape pour écrire la formule d’un ion monoatomique ?',['j’identifie si l’atome perd ou gagne des électrons','je calcule la masse','je compte les atomes'],0,'On détermine d’abord s’il y a perte ou gain.'),
+ xq(3,'L’atome d’aluminium Al perd 3 électrons. L’ion formé est :',['Al³⁺','Al³⁻','Al⁺'],0,'Perte de trois électrons : charge 3+.'),
+ xq(3,'L’atome de chlore Cl gagne 1 électron. L’ion formé est :',['Cl⁻','Cl⁺','Cl¹⁻'],0,'Gain d’un électron : charge −, sans écrire 1.'),
+ xq(3,'Un atome de cuivre perd 2 électrons. L’ion est :',['Cu²⁺','Cu²⁻','Cu⁺'],0,'La perte donne un cation de charge 2+.')]
+});
+
+XS('pi3-12',{
+ obj:'Identifier un ion présent dans une solution grâce à un test de reconnaissance.',
+ lex:[['test de reconnaissance','اختبار التعرف'],['précipité','راسب'],['soude','الصودا (هيدروكسيد الصوديوم)'],['nitrate d’argent','نترات الفضة'],['solution','محلول'],['réactif','كاشف']],
+ pre:[['Un précipité est un solide qui se forme dans une solution.',true,'On le voit apparaître au fond ou dans le liquide.'],['La soude permet de tester les ions chlorure.',false,'Les ions chlorure se testent avec le nitrate d’argent.'],['La couleur du précipité aide à identifier l’ion.',true,'Chaque ion donne un précipité de couleur particulière.']],
+ plan:['Je choisis le réactif : la soude pour les ions métalliques, le nitrate d’argent pour l’ion chlorure.','J’ajoute le réactif à la solution et j’observe la couleur du précipité.','Je conclus avec le tableau : bleu pour Cu²⁺, vert pour Fe²⁺, rouille pour Fe³⁺, blanc qui noircit pour Cl⁻.'],
+ ex:[
+  {q:'On ajoute de la soude à une solution : il se forme un précipité bleu. Quel ion contient la solution ?',rows:[['Étape 1','Le réactif utilisé est la soude, test des ions métalliques.'],['Étape 2','Le précipité formé est bleu.'],['Étape 3','Un précipité bleu avec la soude identifie l’ion <b>Cu²⁺</b>.']]},
+  {q:'On ajoute du nitrate d’argent à une solution : il se forme un précipité blanc qui noircit à la lumière. Quel ion contient la solution ?',rows:[['Étape 1','Le réactif utilisé est le nitrate d’argent, test de l’ion chlorure.'],['Étape 2','Le précipité formé est blanc et noircit à la lumière.'],['Étape 3','Cela identifie l’ion <b>Cl⁻</b>.']]}],
+ ret:['Soude : <b>Cu²⁺</b> précipité bleu, <b>Fe²⁺</b> précipité vert, <b>Fe³⁺</b> précipité rouille.','Nitrate d’argent : <b>Cl⁻</b> précipité blanc qui noircit à la lumière.'],
+ e:['نضيف كاشفا إلى المحلول ونلاحظ لون الراسب: مع الصودا، Cu²⁺ راسب أزرق وFe²⁺ راسب أخضر وFe³⁺ راسب لونه صدأ.','مع نترات الفضة، Cl⁻ يعطي راسبا أبيض يسود تحت الضوء.'],
+ w:[['précipité','راسب'],['soude','الصودا'],['nitrate d’argent','نترات الفضة']]
+},{
+ q:[
+ xq(1,'Avec la soude, l’ion Cu²⁺ donne un précipité :',['bleu','vert','rouille'],0,'Cu²⁺ donne un précipité bleu.'),
+ xq(1,'Avec la soude, l’ion Fe²⁺ donne un précipité :',['vert','bleu','blanc qui noircit'],0,'Fe²⁺ donne un précipité vert.'),
+ xq(1,'Avec la soude, l’ion Fe³⁺ donne un précipité :',['rouille','bleu','vert'],0,'Fe³⁺ donne un précipité de couleur rouille.'),
+ xq(2,'Quel réactif identifie l’ion chlorure Cl⁻ ?',['le nitrate d’argent','la soude','l’eau'],0,'Le nitrate d’argent forme un précipité blanc avec Cl⁻.'),
+ xq(2,'Un précipité blanc qui noircit à la lumière se forme avec le nitrate d’argent. L’ion est :',['Cl⁻','Cu²⁺','Fe³⁺'],0,'C’est le test de l’ion chlorure.'),
+ xq(2,'Quelle est la première étape pour identifier un ion ?',['je choisis le réactif adapté','je pèse la solution','je chauffe la solution'],0,'Il faut d’abord choisir le bon réactif.'),
+ xq(3,'Une solution donne un précipité vert avec la soude. Elle contient :',['Fe²⁺','Cu²⁺','Cl⁻'],0,'Le précipité vert caractérise Fe²⁺.'),
+ xq(3,'Une solution donne un précipité bleu avec la soude. Elle contient :',['Cu²⁺','Fe³⁺','Cl⁻'],0,'Le précipité bleu caractérise Cu²⁺.'),
+ xq(3,'Pourquoi n’utilise-t-on pas la soude pour identifier Cl⁻ ?',['le chlorure se teste avec le nitrate d’argent','la soude est dangereuse','Cl⁻ n’existe pas en solution'],0,'Chaque ion a son réactif de test.')]
+});
+
+XS('pi3-13',{
+ obj:'Déterminer la formule et le nom d’un composé ionique à partir des ions qui le composent.',
+ lex:[['composé ionique','مركب أيوني'],['ion','أيون'],['neutralité électrique','التعادل الكهربائي'],['formule','صيغة'],['cation','كاتيون'],['anion','أنيون']],
+ pre:[['Un composé ionique est électriquement neutre.',true,'Les charges positives et négatives se compensent.'],['Dans la formule d’un composé ionique, on écrit les charges des ions.',false,'On écrit seulement les symboles et les indices.'],['On écrit le cation avant l’anion dans la formule.',true,'Exemple : NaCl, Na⁺ avant Cl⁻.']],
+ plan:['J’identifie le nombre de chaque ion pour vérifier la neutralité électrique.','J’écris la formule chimique du composé ionique : le cation d’abord, sans les charges.','Je nomme le composé ionique : le nom de l’anion d’abord, puis celui du cation.'],
+ ex:[
+  {q:'Un composé est formé d’ions Cu²⁺ et d’ions Cl⁻. Donner sa formule et son nom.',rows:[['Étape 1','Cu²⁺ porte +2. Il faut 2 ions Cl⁻ pour −2 : +2 − 2 = 0.'],['Étape 2','Formule : <b>CuCl₂</b> (1 Cu, 2 Cl).'],['Étape 3','Nom : <b>chlorure de cuivre II</b>.']]},
+  {q:'Un composé est formé d’ions Na⁺ et d’ions Cl⁻. Donner sa formule et son nom.',rows:[['Étape 1','Na⁺ porte +1 et Cl⁻ porte −1 : un ion de chaque suffit.'],['Étape 2','Formule : <b>NaCl</b>.'],['Étape 3','Nom : <b>chlorure de sodium</b>.']]},
+  {q:'Un composé est formé d’ions Al³⁺ et d’ions O²⁻. Donner sa formule et son nom.',rows:[['Étape 1','2 ions Al³⁺ donnent +6 et 3 ions O²⁻ donnent −6 : la somme est nulle.'],['Étape 2','Formule : <b>Al₂O₃</b>.'],['Étape 3','Nom : <b>oxyde d’aluminium</b>.']]}],
+ ret:['Un composé ionique est <b>neutre</b> : la somme des charges est nulle.','Formule : le <b>cation</b> d’abord, sans charges. Nom : l’<b>anion</b> d’abord (chlorure de sodium).'],
+ e:['المركب الأيوني متعادل كهربائيا: مجموع الشحنات الموجبة والسالبة يساوي صفرا.','في الصيغة نكتب الكاتيون أولا دون الشحنات، وفي الاسم نذكر الأنيون أولا: NaCl كلورور الصوديوم.'],
+ w:[['composé ionique','مركب أيوني'],['neutralité électrique','التعادل الكهربائي'],['chlorure','كلورور'],['oxyde','أكسيد']]
+},{
+ q:[
+ xq(1,'Un composé ionique est :',['électriquement neutre','chargé positivement','chargé négativement'],0,'Ses charges positives et négatives se compensent.'),
+ xq(1,'La formule du composé formé par Na⁺ et Cl⁻ est :',['NaCl','NaCl₂','Na₂Cl'],0,'Un ion de chaque suffit pour que la somme soit nulle.'),
+ xq(1,'Le nom du composé NaCl est :',['chlorure de sodium','sodium de chlore','chlorate de sodium'],0,'On nomme l’anion d’abord : chlorure de sodium.'),
+ xq(2,'Un composé est formé d’ions Cu²⁺ et Cl⁻. Sa formule est :',['CuCl₂','Cu₂Cl','CuCl'],0,'Il faut 2 ions Cl⁻ pour compenser +2.'),
+ xq(2,'Le nom du composé CuCl₂ est :',['chlorure de cuivre II','cuivre de chlorure','chlorure de cuivre I'],0,'Le cation est Cu²⁺ : cuivre II.'),
+ xq(2,'Quelle est la première étape pour trouver la formule ?',['je détermine le nombre de chaque ion pour la neutralité','je nomme le composé','je pèse le composé'],0,'La neutralité fixe le nombre d’ions.'),
+ xq(3,'Un composé est formé d’ions Al³⁺ et O²⁻. Sa formule est :',['Al₂O₃','AlO','Al₃O₂'],0,'2 × (+3) + 3 × (−2) = 0.'),
+ xq(3,'Un composé est formé d’ions Mg²⁺ et Cl⁻. Sa formule est :',['MgCl₂','Mg₂Cl','MgCl'],0,'Il faut 2 ions Cl⁻ pour compenser +2.'),
+ xq(3,'Dans la formule d’un composé ionique, on écrit :',['les symboles et les indices, sans charges','les charges de chaque ion','seulement les anions'],0,'Les charges n’apparaissent pas dans la formule du composé.')]
+});
+
+
 var DATA={
  1:{remedial:['pr-1','pr-2','pr-3'],periods:[
   {title:'L’eau, les états de la matière et la masse volumique',seqs:['pi1-13','pi1-14','pi1-15','pi1-16','pi1-17','pi1-18','pi1-1','pi1-2','pi1-3']},
@@ -4871,14 +5103,14 @@ var DATA={
   {title:'Résistance et sécurité électrique',seqs:['pi1-11','pi1-12']}],
   test:['convm','convl','convt','prop','pct','rho','rho','node','tens','convd']},
  2:{remedial:['pr-1','pr-2','pr-3'],periods:[
-  {title:'L’air et ses constituants',seqs:['pi2-1','pi2-2']},
+  {title:'L’air et ses constituants',seqs:['pi2-12','pi2-13','pi2-14','pi2-15','pi2-16','pi2-1','pi2-2']},
   {title:'Molécules et atomes',seqs:['pi2-3','pi2-4']},
   {title:'Combustions et conservation de la masse',seqs:['pi2-5','pi2-6']},
   {title:'La lumière : propagation, ombres et couleurs',seqs:['pi2-7','pi2-8','pi2-9']},
   {title:'Pollution et électricité domestique',seqs:['pi2-10','pi2-11']}],
   test:['convl','prop','pct','convt','atoms','atoms','mass','mass','shadow','air']},
  3:{remedial:['pr-1','pr-2','pr-3'],periods:[
-  {title:'Acides, bases et ions',seqs:['pi3-1','pi3-2']},
+  {title:'Acides, bases et ions',seqs:['pi3-10','pi3-11','pi3-12','pi3-13','pi3-1','pi3-2']},
   {title:'Métaux et matériaux',seqs:['pi3-3']},
   {title:'Vitesse moyenne',seqs:['pi3-4','pi3-5']},
   {title:'Forces, équilibre, masse et poids',seqs:['pi3-6','pi3-7']},

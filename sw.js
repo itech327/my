@@ -1,7 +1,7 @@
 /* Service worker de « Cours en mouvement » : généré par tools/build.py.
    Pages : réseau d'abord, copie locale en secours (la mise à jour arrive dès qu'il y a du réseau).
    Polices et icônes : copie locale d'abord. Les services externes ne passent jamais par ici. */
-var V = 'cem-f25d7ba34e';
+var V = 'cem-2c7ede9093';
 var CORE = ["./", "maths", "physique-chimie", "svt", "confidentialite", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png", "lab/lab.js", "lab/notify-config.js", "fonts/cairo-arabic-400-normal.woff2", "fonts/cairo-arabic-600-normal.woff2", "fonts/cairo-arabic-700-normal.woff2", "fonts/cairo-latin-400-normal.woff2", "fonts/cairo-latin-600-normal.woff2", "fonts/cairo-latin-700-normal.woff2", "fonts/figtree-latin-400-normal.woff2", "fonts/figtree-latin-500-normal.woff2", "fonts/figtree-latin-700-normal.woff2", "fonts/fonts.css", "fonts/lobster-two-latin-700-italic.woff2", "fonts/lobster-two-latin-700-normal.woff2", "fonts/stix-two-text-latin-500-italic.woff2", "fonts/stix-two-text-latin-500-normal.woff2"];
 var SCOPE = self.registration.scope;
 
