@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-CPsREzTHBqKNZto/aR/5sa6M3IE8lERMrDVds26i7sQ=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-1IlfvwaL/AcaG4B6/dm/zR/r1TnE6hEIFTUOkTV+Mcc=' 'sha256-vVj1Wq7tHrF9rJpGh6SBPowm1dd89s+L0A9njA/o4tU=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-rk+YoHBrGVDoyZmDJwBD0KrM2SG3nyauDu1+fbH241g=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-mbV5UMnIiJhHOXh1EeAzVpuU7OI3s+Zkm21DfNVrPbg=' 'sha256-TDs+gD4dJjd3WEWbbj/FZJ/1Xe6mWGAs8NcHCp4TLh0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-CPsREzTHBqKNZto/aR/5sa6M3IE8lERMrDVds26i7sQ=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-1IlfvwaL/AcaG4B6/dm/zR/r1TnE6hEIFTUOkTV+Mcc=' 'sha256-vVj1Wq7tHrF9rJpGh6SBPowm1dd89s+L0A9njA/o4tU=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-rk+YoHBrGVDoyZmDJwBD0KrM2SG3nyauDu1+fbH241g=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-mbV5UMnIiJhHOXh1EeAzVpuU7OI3s+Zkm21DfNVrPbg=' 'sha256-UU0H2KjAR6DmKtG3RKQgl/zeV0xuhZE0CKiqa3ce9qk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie.html">
@@ -214,6 +214,8 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 .px-ex{font-size:18px;margin:14px 0 6px}
 .px-board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-height:56px;font-family:var(--f-math);font-size:20px;overflow-x:auto}
 .px-line{padding:4px 0}
+.px-plan,.px-lex{background:var(--surface);border:1px solid var(--line);border-inline-start:3px solid var(--teal);border-radius:14px;padding:6px 16px 12px;margin:12px 0}.px-plan ol{margin:6px 0 0;padding-inline-start:1.3em}.px-plan li{margin:0 0 4px}
+.px-board .px-line b{font-family:var(--f-body,inherit);font-size:.8em;color:var(--muted)}
 .px-line.new{animation:pxin .45s ease}
 @keyframes pxin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .px-cap{color:var(--muted);margin:8px 0 4px;min-height:24px}
@@ -5919,6 +5921,12 @@ S('pi1-9',{t:'La loi des nœuds',ar:'قانون العقد',g:['node'],lk:'c1-16
 S('pi1-10',{t:'L’additivité des tensions',ar:'إضافية التوترات',g:['tens'],lk:'c1-16-l2',look:'En série : U = U₁ + U₂',aru:'في التركيب على التسلسل: U = U₁ + U₂. وعلى التوازي: U = U₁ = U₂.',w:[['tension','توتر'],['série','تسلسل'],['volt','فولت']]});
 S('pi1-11',{t:'Résistance et intensité',ar:'المقاومة وشدة التيار',b:'res'});
 S('pi1-12',{t:'Protection contre les dangers',ar:'الوقاية من الأخطار',b:'secu'});
+S('pi1-13',{t:'Identifier l’état physique d’un corps',ar:'تحديد الحالة الفيزيائية لجسم',b:'pi1-13',x:1});
+S('pi1-14',{t:'Modéliser les trois états de la matière',ar:'نمذجة الحالات الفيزيائية الثلاث',b:'pi1-14',x:1});
+S('pi1-15',{t:'Déterminer la nature d’un corps',ar:'تحديد طبيعة جسم',b:'pi1-15',x:1});
+S('pi1-16',{t:'Expliquer les caractéristiques des états physiques',ar:'تفسير خصائص الحالات الفيزيائية',b:'pi1-16',x:1});
+S('pi1-17',{t:'Températures de fusion et d’ébullition',ar:'درجتا حرارة الانصهار والغليان',b:'pi1-17',x:1});
+S('pi1-18',{t:'Expliquer un changement d’état',ar:'تفسير تغيّر الحالة',b:'pi1-18',x:1});
 /* 2e année */
 S('pi2-1',{t:'L’air et ses constituants',ar:'الهواء ومكوّناته',b:'air',lk:'c2-2'});
 S('pi2-2',{t:'Volumes d’air et de dioxygène',ar:'حجوم الهواء وثنائي الأكسجين',g:['air'],lk:'c2-2-l2',look:'V(O₂) ≈ V(air) ÷ 5',aru:'حجم ثنائي الأكسجين حوالي خُمس حجم الهواء: V(O₂) ≈ V(air) ÷ 5.',w:[['air','هواء'],['dioxygène','ثنائي الأكسجين'],['volume','حجم']]});
@@ -5942,9 +5950,161 @@ S('pi3-7',{t:'Masse et poids',ar:'الكتلة والوزن',g:['weight'],lk:'c3
 S('pi3-8',{t:'La loi d’Ohm',ar:'قانون أوم',g:['ohm'],lk:'c3-14',look:'U = R × I',aru:'قانون أوم: U = R × I. ومنه I = U ÷ R وR = U ÷ I.',w:[['résistance','مقاومة'],['tension','توتر'],['intensité','شدة التيار']]});
 S('pi3-9',{t:'Puissance et énergie électriques',ar:'القدرة والطاقة الكهربائية',g:['power'],lk:'c3-16',look:'P = U × I · E = P × t',aru:'القدرة P = U × I، والطاقة E = P × t (بالكيلوواط ساعة إذا كانت P بـ kW وt بالساعة).',w:[['puissance','قدرة'],['énergie','طاقة'],['kilowattheure','كيلوواط ساعة']]});
 
+/* ---------- séances explicites (collège pionnier) : lexique, préparation, plan, exemples, banque ---------- */
+var X={};
+function XS(id,o,b){X[id]=o;B[id]=b}
+function xq(l,q,o,a,e){return [l,q,o,a,e]}
+
+/* ===== 1re année · période 1 ===== */
+XS('pi1-13',{
+ obj:'Identifier l’état physique d’un corps (solide, liquide ou gaz) à partir de ce que l’on observe.',
+ lex:[['état physique','حالة فيزيائية'],['solide','صلب'],['liquide','سائل'],['gaz','غاز'],['forme','شكل'],['volume','حجم'],['surface libre','سطح حر'],['récipient','إناء']],
+ pre:[['Un solide garde sa forme quand on le change de récipient.',true,'Un solide a une forme propre.'],['Un liquide a une forme propre.',false,'Un liquide prend la forme de son récipient.'],['Un gaz garde le même volume dans tous les récipients.',false,'Un gaz occupe tout le volume disponible.']],
+ plan:['Je vérifie si le corps change de forme ou non.','Je vérifie si le corps change de volume ou non.','Je vérifie si le corps a une surface libre horizontale.','Je déduis l’état physique du corps.'],
+ ex:[
+  {q:'Un corps X est versé dans un verre, puis dans une éprouvette. Il prend la forme de chaque récipient. Son volume reste égal à 50 mL. Sa surface est plane et horizontale.',rows:[['Étape 1','Forme : elle change avec le récipient.'],['Étape 2','Volume : il ne change pas, il reste 50 mL.'],['Étape 3','Surface libre : plane et horizontale, donc il y en a une.'],['Étape 4','Conclusion : le corps X est à l’état <b>liquide</b>.']]},
+  {q:'Un corps Y est enfermé dans une seringue de 10 mL. On tire le piston jusqu’à 30 mL. Le corps remplit toute la seringue et on ne voit aucune surface.',rows:[['Étape 1','Forme : elle change, il épouse la seringue.'],['Étape 2','Volume : il change, de 10 mL à 30 mL.'],['Étape 3','Surface libre : il n’y en a pas.'],['Étape 4','Conclusion : le corps Y est à l’état <b>gazeux</b>.']]}],
+ ret:['<b>Solide</b> : forme et volume propres.','<b>Liquide</b> : volume propre, forme du récipient, surface libre horizontale.','<b>Gaz</b> : ni forme ni volume propres, pas de surface libre.'],
+ e:['للتعرف على الحالة الفيزيائية نلاحظ ثلاثة أشياء: هل يتغير الشكل؟ هل يتغير الحجم؟ هل يوجد سطح حر أفقي؟','الصلب له شكل وحجم خاصان. السائل له حجم خاص ويأخذ شكل الإناء وله سطح حر أفقي. الغاز لا شكل له ولا حجم خاص ولا سطح حر.'],
+ w:[['forme','شكل'],['volume','حجم'],['surface libre','سطح حر']]
+},{
+ q:[
+ xq(1,'Un corps garde sa forme et son volume. Il est :',['à l’état solide','à l’état liquide','à l’état gazeux'],0,'Forme et volume propres : c’est un solide.'),
+ xq(1,'Un liquide versé dans un autre récipient :',['garde sa forme','prend la forme du récipient','disparaît'],1,'Un liquide prend la forme du récipient où il se trouve.'),
+ xq(1,'La surface libre d’un liquide au repos est :',['horizontale','inclinée','verticale'],0,'Au repos, la surface libre d’un liquide est plane et horizontale.'),
+ xq(2,'Un corps change de forme et de volume selon le récipient. Il est :',['à l’état gazeux','à l’état solide','à l’état liquide'],0,'Un gaz occupe tout le volume disponible et prend la forme du récipient.'),
+ xq(2,'Un corps change de forme mais garde son volume, avec une surface libre horizontale. Il est :',['à l’état liquide','à l’état solide','à l’état gazeux'],0,'Volume constant et surface libre horizontale : c’est un liquide.'),
+ xq(2,'Quelle est la première étape pour identifier l’état physique d’un corps ?',['Je vérifie s’il change de forme','Je mesure sa masse','Je le chauffe'],0,'On commence par observer la forme du corps dans différents récipients.'),
+ xq(3,'Un corps ne change pas de forme dans trois récipients différents. Son volume est constant et il n’a pas de surface libre horizontale. Il est :',['à l’état solide','à l’état liquide','à l’état gazeux'],0,'Il garde sa forme et son volume : c’est un solide.'),
+ xq(3,'Un corps remplit entièrement un flacon de 250 mL. On le transvase dans un flacon de 500 mL : il le remplit aussi. Il est :',['à l’état gazeux','à l’état liquide','à l’état solide'],0,'Son volume change avec le récipient : c’est un gaz.'),
+ xq(3,'Pour distinguer un liquide d’un gaz, on observe :',['le volume : constant pour un liquide, variable pour un gaz','la couleur du corps','la masse du récipient'],0,'Un liquide garde son volume, un gaz occupe tout l’espace disponible.')]
+});
+
+XS('pi1-14',{
+ obj:'Modéliser l’état solide, liquide ou gazeux d’un corps avec le modèle particulaire.',
+ lex:[['modèle particulaire','النموذج الدقائقي'],['particule','دقيقة'],['ordonné','منتظم'],['désordonné','غير منتظم'],['serrées','متراصة'],['éloignées','متباعدة'],['échantillon','عينة']],
+ pre:[['Dans un solide, les particules sont serrées.',true,'Elles sont serrées et ordonnées.'],['Dans un gaz, les particules sont serrées les unes contre les autres.',false,'Elles sont éloignées les unes des autres.'],['Dans un liquide, les particules sont rangées en ordre.',false,'Elles sont serrées mais désordonnées.']],
+ plan:['Je précise l’état physique du corps étudié.','Je rappelle les propriétés des particules dans cet état physique.','Je choisis un modèle de particule.','Je modélise un échantillon du corps.'],
+ ex:[
+  {q:'Modéliser un échantillon d’eau liquide.',rows:[['Étape 1','L’eau est à l’état <b>liquide</b>.'],['Étape 2','Les particules sont serrées, désordonnées, et elles glissent les unes sur les autres.'],['Étape 3','Je représente chaque particule d’eau par une petite boule.'],['Étape 4','Je dessine une dizaine de boules proches les unes des autres, sans aucun ordre.']]},
+  {q:'Modéliser un échantillon d’hélium gazeux.',rows:[['Étape 1','L’hélium est à l’état <b>gazeux</b>.'],['Étape 2','Les particules sont éloignées, désordonnées et très agitées.'],['Étape 3','Je représente chaque particule d’hélium par une petite boule.'],['Étape 4','Je dessine peu de boules, très espacées, réparties dans tout le récipient.']]}],
+ ret:['<b>Solide</b> : particules serrées et ordonnées.','<b>Liquide</b> : particules serrées et désordonnées.','<b>Gaz</b> : particules éloignées et désordonnées.'],
+ e:['في النموذج الدقائقي نمثل كل دقيقة بكرة صغيرة. في الصلب تكون الدقائق متراصة ومنتظمة، وفي السائل متراصة وغير منتظمة، وفي الغاز متباعدة وغير منتظمة.','لنمذجة عينة: نحدد الحالة، ثم نتذكر خصائص الدقائق، ثم نختار نموذج الدقيقة، ثم نرسم العينة.'],
+ w:[['particule','دقيقة'],['ordonné','منتظم'],['désordonné','غير منتظم'],['échantillon','عينة']]
+},{
+ q:[
+ xq(1,'Dans un solide, les particules sont :',['serrées et ordonnées','éloignées et désordonnées','serrées et désordonnées'],0,'Dans un solide, les particules sont serrées et rangées en ordre.'),
+ xq(1,'Dans un gaz, les particules sont :',['éloignées les unes des autres','serrées les unes contre les autres','rangées en ordre'],0,'Dans un gaz, il y a beaucoup de vide entre les particules.'),
+ xq(1,'Dans le modèle particulaire, on représente une particule par :',['une petite boule','une grande tache','un trait'],0,'On représente chaque particule par une petite boule.'),
+ xq(2,'Quel dessin modélise un liquide ?',['des boules proches, sans ordre','des boules alignées en rangées','des boules très espacées'],0,'Dans un liquide, les particules sont serrées mais désordonnées.'),
+ xq(2,'Dans un liquide, les particules :',['glissent les unes sur les autres','restent à une place fixe','sont très éloignées'],0,'Elles sont serrées mais peuvent glisser.'),
+ xq(2,'Pour modéliser un échantillon de gaz, on dessine :',['peu de boules, très espacées','des boules en rangées serrées','des boules serrées sans ordre'],0,'Les particules d’un gaz sont éloignées les unes des autres.'),
+ xq(3,'Un solide garde sa forme parce que ses particules :',['sont serrées, ordonnées et gardent leur place','glissent librement','sont éloignées'],0,'Serrées et ordonnées, elles ne changent pas de place.'),
+ xq(3,'Un gaz remplit tout le récipient parce que ses particules :',['sont éloignées et se déplacent dans tout l’espace','sont serrées','sont fixes'],0,'Éloignées et agitées, elles se répartissent dans tout l’espace disponible.'),
+ xq(3,'Quelle est la deuxième étape pour modéliser un état physique ?',['Je rappelle les propriétés des particules dans cet état','Je dessine directement','Je mesure la masse'],0,'Après avoir précisé l’état, on rappelle les propriétés des particules.')]
+});
+
+XS('pi1-15',{
+ obj:'Déterminer la nature d’un corps : corps pur, mélange homogène ou mélange hétérogène.',
+ lex:[['corps pur','جسم نقي'],['mélange','خليط'],['homogène','متجانس'],['hétérogène','غير متجانس'],['type de particules','نوع الدقائق'],['répartition','توزيع'],['tableau','جدول']],
+ pre:[['Un corps pur contient un seul type de particules.',true,'Toutes ses particules sont identiques.'],['Un mélange contient un seul type de particules.',false,'Un mélange contient au moins deux types de particules.'],['Dans un mélange homogène, les différentes particules sont réparties de façon uniforme.',true,'On ne distingue pas les constituants.']],
+ plan:['J’identifie le nombre de types de particules et je déduis s’il s’agit d’un corps pur ou d’un mélange.','Je décris la répartition des particules et je déduis si le mélange est homogène ou hétérogène.','Je conclus dans un tableau.'],
+ ex:[
+  {q:'Le modèle de l’eau distillée ne montre que des particules identiques.',rows:[['Étape 1','Toutes les particules sont identiques : il y a un seul type de particules, donc un corps pur.'],['Étape 2','Pas besoin de décrire la répartition : ce n’est pas un mélange.'],['Étape 3','Conclusion : l’eau distillée est un <b>corps pur</b>.']]},
+  {q:'Le modèle de l’eau salée montre deux types de particules, mélangées partout de la même manière.',rows:[['Étape 1','Il y a deux types de particules, donc c’est un mélange.'],['Étape 2','Les deux types sont répartis de façon uniforme : le mélange est homogène.'],['Étape 3','Conclusion : l’eau salée est un <b>mélange homogène</b>.']]},
+  {q:'Le modèle d’un mélange d’eau et d’huile montre deux types de particules séparés en deux zones.',rows:[['Étape 1','Il y a deux types de particules, donc c’est un mélange.'],['Étape 2','Les deux types sont séparés : la répartition n’est pas uniforme, le mélange est hétérogène.'],['Étape 3','Conclusion : le mélange eau et huile est un <b>mélange hétérogène</b>.']]}],
+ ret:['<b>Corps pur</b> : un seul type de particules.','<b>Mélange</b> : au moins deux types de particules.','Mélange <b>homogène</b> : répartition uniforme. Mélange <b>hétérogène</b> : constituants séparés.'],
+ e:['الجسم النقي يحتوي على نوع واحد من الدقائق. الخليط يحتوي على نوعين أو أكثر.','الخليط المتجانس تكون فيه الدقائق موزعة بشكل منتظم ولا نميز مكوناته. الخليط غير المتجانس تظهر فيه المكونات منفصلة.'],
+ w:[['corps pur','جسم نقي'],['mélange homogène','خليط متجانس'],['mélange hétérogène','خليط غير متجانس']]
+},{
+ q:[
+ xq(1,'Un corps pur contient :',['un seul type de particules','deux types de particules ou plus','aucune particule'],0,'Toutes les particules d’un corps pur sont identiques.'),
+ xq(1,'L’eau distillée est :',['un corps pur','un mélange homogène','un mélange hétérogène'],0,'Elle ne contient qu’un seul type de particules.'),
+ xq(1,'Un mélange contient :',['au moins deux types de particules','un seul type de particules','une seule particule'],0,'Un mélange est formé de plusieurs constituants.'),
+ xq(2,'Un modèle montre deux types de particules bien réparties partout. Le corps est :',['un mélange homogène','un mélange hétérogène','un corps pur'],0,'Deux types de particules, répartition uniforme : mélange homogène.'),
+ xq(2,'Un modèle montre deux types de particules séparés en deux zones. Le corps est :',['un mélange hétérogène','un mélange homogène','un corps pur'],0,'Les constituants sont séparés : mélange hétérogène.'),
+ xq(2,'La première étape pour déterminer la nature d’un corps est :',['compter les types de particules','mesurer sa masse','le chauffer'],0,'On identifie d’abord le nombre de types de particules.'),
+ xq(3,'Un modèle ne montre que des particules identiques. On conclut :',['c’est un corps pur','c’est un mélange homogène','c’est un mélange hétérogène'],0,'Un seul type de particules : corps pur.'),
+ xq(3,'L’eau et l’huile versées dans un verre forment :',['un mélange hétérogène','un mélange homogène','un corps pur'],0,'On distingue l’eau et l’huile : mélange hétérogène.'),
+ xq(3,'L’eau sucrée où le sucre est entièrement dissous est :',['un mélange homogène','un corps pur','un mélange hétérogène'],0,'Elle contient deux constituants, mais on ne les distingue pas : mélange homogène.')]
+});
+
+XS('pi1-16',{
+ obj:'Expliquer une caractéristique observable d’un corps (compressibilité, forme, volume) avec le modèle particulaire.',
+ lex:[['caractéristique','خاصية'],['variation','تغيّر'],['piston','مكبس'],['seringue','محقنة'],['comprimer','ضغط'],['compressible','قابل للانضغاط'],['expliquer','فسّر']],
+ pre:[['Un gaz peut être comprimé dans une seringue.',true,'Son volume diminue quand on pousse le piston.'],['Un liquide est très facile à comprimer.',false,'Un liquide est très peu compressible.'],['Les particules d’un gaz sont éloignées les unes des autres.',true,'Il y a beaucoup de vide entre elles.']],
+ plan:['J’identifie la caractéristique observable qui change dans cette expérience.','Je décris la variation de cette caractéristique.','J’utilise le modèle particulaire pour expliquer ce phénomène.'],
+ ex:[
+  {q:'On pousse le piston d’une seringue fermée qui contient de l’air. Le volume passe de 20 mL à 10 mL. Pourquoi ?',rows:[['Étape 1','La caractéristique qui change est le <b>volume</b> de l’air.'],['Étape 2','Le volume diminue : il passe de 20 mL à 10 mL.'],['Étape 3','Les particules d’air sont éloignées, elles peuvent se rapprocher : le volume diminue. L’air est compressible.']]},
+  {q:'On pousse le piston d’une seringue fermée qui contient de l’eau. Le volume ne change pas. Pourquoi ?',rows:[['Étape 1','La caractéristique observée est le <b>volume</b> de l’eau.'],['Étape 2','Le volume ne varie pas.'],['Étape 3','Les particules de l’eau sont déjà serrées, elles ne peuvent pas se rapprocher : l’eau est très peu compressible.']]}],
+ ret:['<b>Gaz</b> : particules éloignées, donc compressible.','<b>Liquide et solide</b> : particules serrées, donc très peu compressibles.'],
+ e:['لتفسير ظاهرة نحدد الخاصية الملاحظة التي تتغير، ثم نصف تغيّرها، ثم نستعمل النموذج الدقائقي للتفسير.','الغاز قابل للانضغاط لأن دقائقه متباعدة ويمكنها أن تقترب. السائل والصلب لا ينضغطان تقريباً لأن دقائقهما متراصة.'],
+ w:[['comprimer','ضغط'],['compressible','قابل للانضغاط'],['piston','مكبس'],['seringue','محقنة']]
+},{
+ q:[
+ xq(1,'Un gaz est compressible, c’est-à-dire :',['son volume peut diminuer quand on le comprime','son volume ne peut jamais changer','il devient solide'],0,'On peut diminuer le volume d’un gaz en le comprimant.'),
+ xq(1,'Quand on pousse le piston d’une seringue fermée remplie d’eau, le volume de l’eau :',['reste presque constant','diminue beaucoup','augmente'],0,'Un liquide est très peu compressible.'),
+ xq(1,'Quand on comprime un gaz, son volume :',['diminue','augmente','reste constant'],0,'Comprimer, c’est diminuer le volume.'),
+ xq(2,'On explique la compressibilité d’un gaz parce que ses particules sont :',['éloignées et peuvent se rapprocher','serrées et ordonnées','collées entre elles'],0,'Il y a de la place pour les rapprocher.'),
+ xq(2,'Pourquoi un liquide est-il très peu compressible ?',['ses particules sont déjà serrées','ses particules sont très éloignées','il n’a pas de particules'],0,'Les particules ne peuvent presque plus se rapprocher.'),
+ xq(2,'Quelle est la dernière étape pour expliquer une caractéristique ?',['j’utilise le modèle particulaire','je mesure la température','je change de récipient'],0,'On termine par l’explication avec le modèle particulaire.'),
+ xq(3,'Un solide garde sa forme parce que ses particules :',['sont serrées et gardent leur place','glissent librement','sont éloignées'],0,'Serrées et ordonnées, elles ne changent pas de place.'),
+ xq(3,'Un gaz se répand dans toute une pièce parce que ses particules :',['sont éloignées et très agitées','sont fixes','sont rangées en ordre'],0,'Éloignées et agitées, elles occupent tout l’espace.'),
+ xq(3,'Dans la seringue, le volume de l’air passe de 20 mL à 10 mL. Les particules d’air :',['se rapprochent','s’éloignent','changent de nature'],0,'Le volume diminue car les particules se rapprochent.')]
+});
+
+XS('pi1-17',{
+ obj:'Identifier la température de fusion ou d’ébullition d’un corps pur à partir d’un graphique.',
+ lex:[['température de fusion','درجة حرارة الانصهار'],['température d’ébullition','درجة حرارة الغليان'],['palier','هضبة'],['graphique','مبيان'],['axe des ordonnées','محور الأراتيب'],['corps pur','جسم نقي'],['unité','وحدة']],
+ pre:[['Pendant un changement d’état d’un corps pur, la température reste constante.',true,'Elle forme un palier sur la courbe.'],['L’eau pure bout à 100 °C au niveau de la mer.',true,'La température d’ébullition de l’eau est 100 °C.'],['La valeur du palier se lit sur l’axe des abscisses.',false,'La température se lit sur l’axe des ordonnées.']],
+ plan:['Je vérifie qu’il s’agit d’un corps pur.','Je trace la projection du palier sur l’axe des ordonnées.','Je note la température avec son unité.'],
+ ex:[
+  {q:'La courbe de chauffage de l’eau pure montre un palier horizontal pendant l’ébullition. Le palier est au niveau de 100 sur l’axe des ordonnées. Quelle est la température d’ébullition ?',rows:[['Étape 1','L’eau pure est un corps pur : la courbe a un palier.'],['Étape 2','Je projette le palier sur l’axe des ordonnées : je lis 100.'],['Étape 3','La température d’ébullition de l’eau est <b>100 °C</b>.']]},
+  {q:'La courbe de chauffage de la glace pure montre un palier pendant la fusion, au niveau de 0 sur l’axe des ordonnées. Quelle est la température de fusion ?',rows:[['Étape 1','La glace pure est un corps pur : la courbe a un palier.'],['Étape 2','Je projette le palier sur l’axe des ordonnées : je lis 0.'],['Étape 3','La température de fusion de la glace est <b>0 °C</b>.']]}],
+ ret:['Pendant un changement d’état d’un corps pur, la température reste constante : c’est un <b>palier</b>.','On lit la température du palier sur l’axe des <b>ordonnées</b>, avec son unité (°C).'],
+ e:['خلال تغير حالة جسم نقي تبقى درجة الحرارة ثابتة، فيظهر في المبيان جزء أفقي يسمى الهضبة.','لقراءة درجة الحرارة نسقط الهضبة على محور الأراتيب ونكتب القيمة مع وحدتها °C.'],
+ w:[['palier','هضبة'],['axe des ordonnées','محور الأراتيب'],['température de fusion','درجة حرارة الانصهار'],['température d’ébullition','درجة حرارة الغليان']]
+},{
+ q:[
+ xq(1,'La température d’ébullition de l’eau pure est :',['100 °C','0 °C','37 °C'],0,'L’eau pure bout à 100 °C.'),
+ xq(1,'La température de fusion de la glace pure est :',['0 °C','100 °C','−10 °C'],0,'La glace pure fond à 0 °C.'),
+ xq(1,'Pendant le palier d’une courbe de chauffage, le corps pur :',['change d’état','reste toujours solide','se décompose'],0,'Le palier correspond à un changement d’état.'),
+ xq(2,'Sur une courbe de chauffage, le palier est :',['une partie horizontale','une partie qui monte','une partie qui descend'],0,'La température reste constante, la courbe est horizontale.'),
+ xq(2,'On lit la température du palier sur l’axe :',['des ordonnées','des abscisses','du temps'],0,'La température est portée sur l’axe des ordonnées.'),
+ xq(2,'Un corps pur est chauffé. Le palier horizontal est à 80 °C et correspond à l’ébullition. La température d’ébullition est :',['80 °C','100 °C','0 °C'],0,'On lit la valeur du palier : 80 °C.'),
+ xq(3,'Un corps présente un palier à −7 °C pendant la fusion. Sa température de fusion est :',['−7 °C','7 °C','0 °C'],0,'On lit la valeur du palier avec son signe et son unité.'),
+ xq(3,'Pourquoi vérifie-t-on d’abord qu’il s’agit d’un corps pur ?',['seul un corps pur a un palier de température','pour mesurer sa masse','parce que le graphique l’exige'],0,'Pour un corps pur, la température reste constante pendant le changement d’état.'),
+ xq(3,'Pendant la fusion d’un corps pur, la température :',['reste constante','augmente sans cesse','diminue sans cesse'],0,'Elle reste constante : c’est le palier de fusion.')]
+});
+
+XS('pi1-18',{
+ obj:'Expliquer un phénomène lié aux changements d’état avec le modèle particulaire et la conservation de la masse.',
+ lex:[['changement d’état','تغيّر الحالة'],['fusion','انصهار'],['solidification','تجمّد'],['vaporisation','تبخّر'],['liquéfaction','تسييل'],['conservation de la masse','انحفاظ الكتلة'],['masse','كتلة']],
+ pre:[['La fusion est le passage de l’état solide à l’état liquide.',true,'Exemple : un glaçon qui fond.'],['Pendant un changement d’état, la masse augmente.',false,'La masse se conserve.'],['La vapeur d’eau est de l’eau à l’état gazeux.',true,'C’est la même eau, dans un autre état.']],
+ plan:['J’identifie les caractéristiques observables dans cette expérience.','Je décris ces caractéristiques.','J’utilise le modèle particulaire pour expliquer le phénomène.'],
+ ex:[
+  {q:'Un glaçon de 20 g fond dans un verre fermé. Expliquer ce qu’on observe.',rows:[['Étape 1','Les caractéristiques observables sont la forme et la masse.'],['Étape 2','Le solide devient liquide et sa forme change. La masse reste 20 g.'],['Étape 3','Les particules d’eau ne changent ni de nature ni de nombre. Seul leur arrangement change : elles passent de ordonnées à désordonnées. Donc la masse se conserve.']]},
+  {q:'De l’eau liquide bout dans une casserole. Expliquer ce qui change.',rows:[['Étape 1','Les caractéristiques observables sont le volume et la forme de l’eau.'],['Étape 2','L’eau liquide devient vapeur d’eau : elle occupe un plus grand volume.'],['Étape 3','Les particules d’eau restent les mêmes, mais elles s’éloignent et s’agitent davantage. C’est une vaporisation.']]}],
+ ret:['Lors d’un changement d’état, la <b>nature</b> et le <b>nombre</b> des particules ne changent pas.','Seul leur <b>arrangement</b> change, donc la <b>masse se conserve</b>.'],
+ e:['لتفسير ظاهرة تغير الحالة: نحدد الخصائص الملاحظة، ثم نصفها، ثم نستعمل النموذج الدقائقي.','أثناء تغير الحالة لا تتغير طبيعة الدقائق ولا عددها، وإنما يتغير ترتيبها فقط. لذلك تنحفظ الكتلة.'],
+ w:[['fusion','انصهار'],['vaporisation','تبخّر'],['conservation de la masse','انحفاظ الكتلة']]
+},{
+ q:[
+ xq(1,'Le passage de l’état solide à l’état liquide s’appelle :',['la fusion','la solidification','la liquéfaction'],0,'Un glaçon qui fond subit une fusion.'),
+ xq(1,'Le passage de l’état gazeux à l’état liquide s’appelle :',['la liquéfaction','la vaporisation','la fusion'],0,'Gaz vers liquide : liquéfaction.'),
+ xq(1,'Pendant un changement d’état, la masse :',['se conserve','augmente','diminue'],0,'La masse ne change pas.'),
+ xq(2,'Un glaçon de 20 g fond dans un récipient fermé. La masse de l’eau liquide est :',['20 g','10 g','40 g'],0,'La masse se conserve.'),
+ xq(2,'Quand l’eau bout, ses particules :',['s’éloignent et s’agitent davantage','se rapprochent','disparaissent'],0,'Le liquide devient gaz : les particules s’éloignent.'),
+ xq(2,'Lors de la solidification de l’eau, les particules :',['se rangent en ordre','s’éloignent','changent de nature'],0,'Dans un solide, les particules sont ordonnées.'),
+ xq(3,'Pourquoi la masse se conserve-t-elle lors d’un changement d’état ?',['le nombre de particules ne change pas','les particules disparaissent','les particules deviennent plus lourdes'],0,'Les mêmes particules sont présentes avant et après.'),
+ xq(3,'Lors de la fusion, ce qui change est :',['l’arrangement des particules','la nature des particules','le nombre de particules'],0,'Seul l’arrangement change.'),
+ xq(3,'Quelle est la première étape pour expliquer un phénomène ?',['j’identifie les caractéristiques observables','je dessine des particules','je calcule la masse'],0,'On commence par repérer ce qui s’observe.')]
+});
+
+
 var DATA={
  1:{remedial:['pr-1','pr-2','pr-3'],periods:[
-  {title:'L’eau, les états de la matière et la masse volumique',seqs:['pi1-1','pi1-2','pi1-3']},
+  {title:'L’eau, les états de la matière et la masse volumique',seqs:['pi1-13','pi1-14','pi1-15','pi1-16','pi1-17','pi1-18','pi1-1','pi1-2','pi1-3']},
   {title:'Modèle particulaire, mélanges et séparations',seqs:['pi1-4','pi1-5','pi1-6']},
   {title:'Circuit électrique, conducteurs et isolants',seqs:['pi1-7','pi1-8']},
   {title:'Loi des nœuds et additivité des tensions',seqs:['pi1-9','pi1-10']},
@@ -6102,8 +6262,57 @@ function example(el,sq){
 function seqEyebrow(id,lv,period){
   return 'Collège pionnier · '+(lv===0?LV[0]:LV[lv]+' · Période '+period)+' · Séquence';
 }
+/* ---------- séances explicites : exemples pas à pas, préparation ---------- */
+function vfItem(v){
+  return {t:'mcq',q:'Vrai ou faux ? '+v[0],o:['Vrai','Faux'],a:v[1]?0:1,e:v[2],h:'Relis le lexique, puis décide.'};
+}
+function planBox(el,x){
+  var b=h('div',{'class':'px-plan'});
+  b.innerHTML='<p class="px-ex"><b>Étapes à suivre · خطوات الحل</b></p><ol class="px-steps">'+x.plan.map(function(t){return '<li>'+t+'</li>'}).join('')+'</ol>';
+  el.appendChild(b);
+}
+function worked(el,exs){
+  var cur=0,k=0,qline=h('p',{'class':'px-q'}),board=h('div',{'class':'px-board'}),cap=h('p',{'class':'px-cap','aria-live':'polite'});
+  if(exs.length>1){ui.tabs(el,exs.map(function(e,i){return [i,'Exemple '+(i+1)]}),function(i){cur=+i;k=0;draw()})}
+  el.appendChild(qline);el.appendChild(board);el.appendChild(cap);
+  var ctl=ui.controls(el),nb=ui.btn(ctl,'Étape suivante',function(){if(k<exs[cur].rows.length){k++;draw()}});
+  ui.btn(ctl,'Tout voir',function(){k=exs[cur].rows.length;draw()});
+  ui.btn(ctl,'Recommencer',function(){k=0;draw()});
+  function draw(){
+    var e=exs[cur],i;
+    qline.innerHTML='<b>Exemple '+(cur+1)+'.</b> '+e.q;board.replaceChildren();cap.textContent='';
+    for(i=0;i<k;i++){board.appendChild(h('div',{'class':'px-line'+(i===k-1?' new':'')},'<b>'+e.rows[i][0]+'.</b> '+e.rows[i][1]))}
+    nb.disabled=k>=e.rows.length;
+  }
+  draw();
+}
+function prepare(el,x){
+  var lx=h('div',{'class':'px-lex'});
+  lx.innerHTML='<p class="px-ex"><b>Ma carte lexicale · معجمي</b></p><ul class="ar-words">'+x.lex.map(function(w){return '<li><span class="fr-w" dir="ltr" lang="fr">'+w[0]+'</span><span>'+w[1]+'</span></li>'}).join('')+'</ul>';
+  el.appendChild(lx);
+  el.appendChild(h('p',{'class':'px-ex'},'<b>Vrai ou faux ? On réveille ce qu’on sait déjà.</b>'));
+  var box=h('div',{'class':'px-set'});el.appendChild(box);
+  x.pre.forEach(function(v){box.appendChild(card(vfItem(v),{mode:'guided'}))});
+}
+function explicitLessons(id,sq,x){
+  return [
+   {short:'Je me prépare',title:'Je me prépare',label:'Étape 0',intro:'Avant de commencer : le lexique de la séance et trois questions pour réveiller ce que tu sais déjà.',build:function(el){prepare(el,x)}},
+   {short:'Je regarde',title:'Je regarde',label:'Étape 1',intro:x.obj,build:function(el){planBox(el,x);worked(el,x.ex);if(sq.lk)el.appendChild(h('p',null,'<a class="btn ghost" href="#'+sq.lk+'">Voir le cours animé</a>'))},retenir:x.ret,ar:{e:x.e,w:x.w,u:'شاهد المثال خطوة بخطوة بزر Étape suivante، ثم انتقل إلى Nous faisons لتجرّب مع المساعدة، وأخيراً Je fais seul لتعمل وحدك.'}},
+   {short:'Nous faisons',title:'Nous faisons',label:'Étape 2',intro:'Trois exercices guidés. Un indice est disponible si tu te trompes.',build:function(el){
+     var box=h('div',{'class':'px-set'});el.appendChild(box);
+     var ctl=ui.controls(el);
+     function build(){box.replaceChildren();itemsFor(sq,1,3).forEach(function(it){box.appendChild(card(it,{mode:'guided'}))})}
+     ui.btn(ctl,'Autres exercices',build);build();
+   }},
+   {short:'Je fais seul',title:'Je fais seul',label:'Étape 3',intro:'Une série de questions. Gagne une étoile avec au moins 80 % de bonnes réponses.',build:function(el){series(el,id,sq)}}
+  ];
+}
 function seqPage(id,lv,period){
   var sq=SEQ[id],bk=sq.b?B[sq.b]:null;
+  if(X[id]){
+    PC.chapter({id:id,lazy:true,eyebrow:seqEyebrow(id,lv,period),title:sq.t,ar:sq.ar,lessons:function(){return explicitLessons(id,sq,X[id])}});
+    return;
+  }
   PC.chapter({id:id,lazy:true,eyebrow:seqEyebrow(id,lv,period),title:sq.t,ar:sq.ar,lessons:function(){
     var ar={e:[bk?bk.ar:sq.aru],w:bk?bk.w:sq.w,u:'هذا الدرس في ثلاث خطوات: أشاهد المثال المحلول، ثم نعمل معاً مع إمكانية طلب تلميح، ثم أعمل وحدي لأربح النجمات (★) الثلاث.'};
     var ls=[
