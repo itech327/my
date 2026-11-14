@@ -88,7 +88,7 @@ print('ok', len(m), len(p), len(sv))
 import hashlib, base64, datetime
 SITE = os.environ.get('SITE_URL', 'https://itech327.github.io/my/').rstrip('/') + '/'
 DESC = {
- 'index.html': ('Cours en mouvement : maths, physique-chimie et SVT du collège',
+ 'index.html': ('Cours du collège en mouvement : maths, physique-chimie et SVT du collège',
                 'Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux.'),
  'maths.html': ('Maths en mouvement : cours de mathématiques du collège',
                 'Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.'),
