@@ -18,7 +18,7 @@ with sync_playwright() as p:
     pg.goto('file://' + os.path.join(ROOT, 'maths.html')); pg.wait_for_timeout(800)
     # générateurs : 400 tirages par clé et niveau
     bad = pg.evaluate("""function(){
-      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly'],MM=window.MM;
+      var out=[],keys=['pexp','cpar','rnec','mono','pdeg','pred','padd','psub','pmon','pbim','pbb','ppat','pdm','pdb','peq','pvaly','nneg','nabs','nval','ncmp'],MM=window.MM;
       keys.forEach(function(k){[1,2,3].forEach(function(s){for(var i=0;i<400;i++){
         var it=MM.genItem(k,s),txt=JSON.stringify(it);
         if(/undefined|NaN|\\[object/.test(txt)){out.push(k+s+' texte '+it.q);break}
@@ -70,7 +70,30 @@ with sync_playwright() as p:
         if(a*x+b*y!==c){bad.push(it.q+' => '+it.a);break}}
       return bad}()""")
     check(not eqs, 'équations : valeur calculée exacte (%s)' % (eqs[:2],))
-    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x')):
+    # 1AC : nombres négatifs, abscisses, valeur absolue, comparaison
+    neg = pg.evaluate("""function(){var MM=window.MM,bad=[];
+      function n(v){return +String(v).replace('−','-').replace(',','.')}
+      for(var i=0;i<400;i++){
+        var it=MM.genItem('nval',1),m=/valeur absolue de (−?\\d+) \\?$/.exec(it.q);
+        if(!m||Math.abs(n(m[1]))!==it.a){bad.push('nval1 '+it.q+' '+it.a);break}
+        it=MM.genItem('nabs',2);m=/abscisse (−?\\d+)\\. Le point B est situé à (\\d+) unités à droite/.exec(it.q);
+        if(!m||n(m[1])+n(m[2])!==it.a){bad.push('nabs2 '+it.q);break}
+        it=MM.genItem('nabs',3);m=/abscisse (−?\\d+)\\. Le point B est situé à (\\d+) unités à gauche/.exec(it.q);
+        if(!m||n(m[1])-n(m[2])!==it.a){bad.push('nabs3 '+it.q);break}
+        it=MM.genItem('nneg',2);m=/liste : (.*) \\?$/.exec(it.q);
+        if(!m||m[1].split(' ; ').filter(function(v){return n(v)<0}).length!==it.a){bad.push('nneg2 '+it.q);break}
+        it=MM.genItem('ncmp',3);m=/croissant : (.*)\\.$/.exec(it.q);
+        var sol=m[1].split(' ; ').map(n).sort(function(a,b){return a-b}).join(',');
+        var ch=it.o[it.a].split(' < ').map(n).join(',');
+        if(sol!==ch){bad.push('ncmp3 '+it.q+' => '+it.o[it.a]);break}
+        var other=it.o.filter(function(o,j){return j!==it.a&&o.split(' < ').map(n).join(',')===sol});
+        if(other.length){bad.push('ncmp3 distracteur '+it.q);break}
+        it=MM.genItem('ncmp',2);m=/Compare : (−?\\d+) ◻ \\(?(−?\\d+)\\)?$/.exec(it.q);
+        var r=n(m[1])<n(m[2])?'<':'>';if(it.o[it.a]!==r){bad.push('ncmp2 '+it.q);break}
+      }
+      return bad}()""")
+    check(not neg, 'nombres négatifs : réponses exactes (%s)' % (neg[:2],))
+    for cid, title in (('pi2-15', 'Puissances à exposant positif'), ('pi2-16', 'Pourquoi la racine carrée'), ('pi2-17', 'Monômes'), ('pi2-18', 'Polynômes : le degré'), ('pi2-19', 'Réduire un polynôme'), ('pi2-20', 'Additionner deux polynômes'), ('pi2-21', 'Soustraire deux polynômes'), ('pi2-22', 'Multiplier deux monômes'), ('pi2-23', 'Multiplier un binôme par un monôme'), ('pi2-24', 'Multiplier deux binômes'), ('pi2-25', 'Problème de motifs'), ('pi2-26', 'Diviser un monôme par un monôme'), ('pi2-27', 'Diviser un binôme par un monôme'), ('pi2-28', 'Traduire une situation'), ('pi2-29', 'Calculer y pour une valeur de x'), ('pi1-16', 'Les nombres négatifs'), ('pi1-17', 'Droite graduée et abscisse'), ('pi1-18', 'La valeur absolue'), ('pi1-19', 'Comparer et ranger')):
         pg.evaluate("location.hash='#%s'" % cid); pg.wait_for_timeout(500)
         sec = pg.locator('#%s' % cid)
         check(sec.count() == 1 and title in sec.inner_text(), cid + ' : page affichée')
@@ -87,6 +110,10 @@ with sync_playwright() as p:
     lv2 = pg.locator('#plevels button').nth(1); lv2.click(); pg.wait_for_timeout(400)
     hrefs = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
     check('#pi2-15' in hrefs and '#pi2-16' in hrefs and '#pi2-17' in hrefs and all(('#pi2-%d' % n) in hrefs for n in range(18,30)), 'séquences listées dans le parcours pionnier 2AC')
+    pg.evaluate("location.hash='#home'"); pg.wait_for_timeout(300)
+    pg.locator('#plevels button').nth(0).click(); pg.wait_for_timeout(400)
+    hrefs1 = pg.evaluate("Array.from(document.querySelectorAll('#pcontent a.chap')).map(function(a){return a.getAttribute('href')})")
+    check(all(('#pi1-%d' % n) in hrefs1 for n in (16,17,18,19)), 'séquences listées dans le parcours pionnier 1AC')
     check(not errs, 'aucune erreur JS %s' % errs[:1])
     b.close()
 print('FAILS: %d' % len(fails))

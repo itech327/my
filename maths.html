@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-J/dvjUx7p2m5Lc4yPHr/0FoAQxnsmaDWkyBjwJO5xP8=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-MnmM0ZTk5ZlZ2wePZaRioGm0dh26F7Wyd068KPhpafY=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-J7CF30izSPhKURDb1mBfrvN1iCw/mtonsmTU9mGFVVw=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-ROjizJYTMl3aeACeVsy7/UzijvMG3WRrL8wNM9AoLcs=' 'sha256-QjpVq8WXxcnIzfhR+794y7S7MzrYVS12QgjLBDUEwII=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-j8SkzjWNqretq6sDTI+3I8nLhGZMDwOu+xdfB0epkfw=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -6609,6 +6609,75 @@ G.pvaly=function(s){
   return num('Dans l’équation '+eq2(a,b,c)+', calcule x pour y = '+sg(y)+'.',x,'Je remplace y par '+rl(y)+' : '+sg(a)+'x '+(b*y<0?'− ':'+ ')+Math.abs(b*y)+' = '+sg(c)+'. J’isole x : '+sg(a)+'x = '+sg(c-b*y)+', donc x = '+sg(x)+'. Vérification : '+sg(a)+' × '+rl(x)+' + '+rl(b)+' × '+rl(y)+' = '+sg(c)+'.','Remplace y, déplace le terme connu de l’autre côté, puis divise.');
 };
 
+/* ---------- 1AC : nombres négatifs, droite graduée, valeur absolue, comparaison ---------- */
+G.nneg=function(s){
+  var k,a,i,list,cnt,d,t;
+  if(s===1){
+    k=ri(1,9);var others=shuffle([ri(1,9),ri(10,19),0,ri(2,8)]);
+    return qcm('Lequel de ces nombres est inférieur à 0 ?',sg(-k),distinct(sg(-k),others),sg(-k)+' porte le signe − : il est inférieur à 0. Les autres sont positifs ou nuls.','Un nombre inférieur à 0 est un nombre négatif.');
+  }
+  if(s===2){
+    list=[];cnt=0;
+    for(i=0;i<6;i++){a=ri(0,3)===0?0:nz(-9,9);list.push(a);if(a<0)cnt++}
+    return num('Combien de nombres négatifs y a-t-il dans la liste : '+list.map(sg).join(' ; ')+' ?',cnt,'Les nombres négatifs sont ceux qui sont strictement inférieurs à 0. Le nombre 0 n’est ni positif ni négatif. Il y en a '+cnt+'.','Compare chaque nombre à 0. Attention au nombre 0.');
+  }
+  d=ri(2,30);t=ri(0,4);
+  var cases=[
+    ['Un plongeur est à '+d+' m sous le niveau de la mer. Quel nombre exprime son altitude en mètres ?',-d,'« Sous le niveau de la mer » est en dessous de 0 : le nombre est négatif.'],
+    ['Il fait '+d+' °C en dessous de zéro. Quelle est la température ?',-d,'« En dessous de zéro » se traduit par un nombre négatif.'],
+    ['Le solde d’un compte est à découvert de '+d+' DH. Quel nombre exprime ce solde ?',-d,'Un découvert est une dette : le nombre est négatif.'],
+    ['Un oiseau vole à '+d+' m au-dessus du niveau de la mer. Quel nombre exprime son altitude ?',d,'« Au-dessus » du niveau 0 se traduit par un nombre positif.'],
+    ['Un ascenseur est descendu de '+d+' étages sous le rez-de-chaussée. Quel nombre exprime son étage ?',-d,'Sous le rez-de-chaussée (étage 0) : le nombre est négatif.']
+  ][t];
+  var r=cases[1];
+  return qcm(cases[0],sg(r),distinct(sg(r),[sg(-r),'0',sg(r>0?r+2:r-2)]),cases[2]+' Réponse : '+sg(r)+'.','Au-dessus de 0 : positif. En dessous de 0 : négatif.');
+};
+G.nabs=function(s){
+  var d,a,left;
+  if(s===1){
+    d=ri(1,9);left=ri(0,1)===1;
+    return num('Sur une droite graduée de pas 1, un point est situé à '+d+' unités à '+(left?'gauche':'droite')+' de l’origine O. Quelle est son abscisse ?',left?-d:d,'À gauche de O, l’abscisse est négative. À droite de O, elle est positive. Ici : '+sg(left?-d:d)+'.','Gauche de O : négatif. Droite de O : positif.');
+  }
+  if(s===2){
+    a=nz(-9,-1);d=ri(2,9);
+    return num('Sur une droite graduée, le point A a pour abscisse '+sg(a)+'. Le point B est situé à '+d+' unités à droite de A. Quelle est l’abscisse de B ?',a+d,'On part de '+sg(a)+' et on avance de '+d+' vers la droite : '+sg(a)+' + '+d+' = '+sg(a+d)+'.','Aller vers la droite fait augmenter l’abscisse.');
+  }
+  a=nz(-5,5);d=ri(3,9);
+  return num('Sur une droite graduée, le point A a pour abscisse '+sg(a)+'. Le point B est situé à '+d+' unités à gauche de A. Quelle est l’abscisse de B ?',a-d,'On part de '+sg(a)+' et on recule de '+d+' vers la gauche : '+sg(a)+' − '+d+' = '+sg(a-d)+'.','Aller vers la gauche fait diminuer l’abscisse.');
+};
+G.nval=function(s){
+  var a,k,b;
+  if(s===1){
+    a=nz(-15,15);
+    return num('Quelle est la valeur absolue de '+sg(a)+' ?',Math.abs(a),'La valeur absolue est la distance à 0. '+sg(a)+' est à '+Math.abs(a)+' unités de 0. Sa valeur absolue est '+Math.abs(a)+'.','Une distance n’est jamais négative.');
+  }
+  if(s===2){
+    k=ri(2,12);b=k+ri(1,4);
+    return qcm('Lequel de ces nombres n’a pas pour valeur absolue '+k+' ?',sg(b),distinct(sg(b),[sg(k),sg(-k)]),sg(k)+' et '+sg(-k)+' sont à '+k+' unités de 0. Le nombre '+sg(b)+' est à '+b+' unités de 0 : sa valeur absolue est '+b+'.','Deux nombres opposés ont la même valeur absolue.');
+  }
+  a=nz(-12,12);b=nz(-12,12);
+  return num('Calcule la somme de la valeur absolue de '+sg(a)+' et de la valeur absolue de '+sg(b)+'.',Math.abs(a)+Math.abs(b),'Valeur absolue de '+sg(a)+' : '+Math.abs(a)+'. Valeur absolue de '+sg(b)+' : '+Math.abs(b)+'. Somme : '+(Math.abs(a)+Math.abs(b))+'.','Remplace chaque nombre par sa distance à 0, puis additionne.');
+};
+G.ncmp=function(s){
+  var a,b,r,x,sorted,i;
+  if(s===1){
+    a=ri(1,9);b=ri(1,9);if(ri(0,1)){x=-a;a=b;b=x;}else{x=-b;b=a;a=x;}
+    r=a<b?'<':'>';
+    return qcm('Compare : '+sg(a)+' ◻ '+rl(b),r,['<','>','='].filter(function(c){return c!==r}),(a<0?sg(a)+' est négatif et '+sg(b)+' est positif':sg(a)+' est positif et '+sg(b)+' est négatif')+'. Un nombre négatif est inférieur à un nombre positif. Donc '+sg(a)+' '+r+' '+sg(b)+'.','Regarde d’abord les signes.');
+  }
+  if(s===2){
+    a=ri(1,15);do{b=ri(1,15)}while(b===a);a=-a;b=-b;
+    r=a<b?'<':'>';
+    return qcm('Compare : '+sg(a)+' ◻ '+rl(b),r,['<','>','='].filter(function(c){return c!==r}),'Les deux nombres sont négatifs. Le plus éloigné de 0 est le plus petit : '+sg(Math.min(a,b))+' est à '+Math.abs(Math.min(a,b))+' unités de 0, '+sg(Math.max(a,b))+' à '+Math.abs(Math.max(a,b))+'. Donc '+sg(a)+' '+r+' '+sg(b)+'.','Pour deux négatifs, le plus petit est celui qui est le plus loin de 0.');
+  }
+  var pool=shuffle([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]),lst=pool.slice(0,4);
+  if(lst.filter(function(v){return v<0}).length===0)lst[0]=-lst[0];
+  sorted=lst.slice().sort(function(p,q){return p-q});
+  var right=sorted.map(sg).join(' < ');
+  var wr=[sorted.slice().reverse().map(sg).join(' < '),lst.slice().sort(function(p,q){return Math.abs(p)-Math.abs(q)||p-q}).map(sg).join(' < '),sorted.map(function(v){return sg(-v)}).join(' < '),lst.map(sg).join(' < ')];
+  return qcm('Range dans l’ordre croissant : '+lst.map(sg).join(' ; ')+'.',right,distinct(right,wr).slice(0,3),'On sépare : négatifs '+sorted.filter(function(v){return v<0}).map(sg).join(' ; ')+' et positifs '+(sorted.filter(function(v){return v>0}).map(sg).join(' ; ')||'aucun')+'. Les négatifs sont avant les positifs ; entre négatifs, le plus éloigné de 0 est le plus petit. Ordre croissant : '+right+'.','Négatifs d’abord, du plus éloigné de 0 au plus proche, puis les positifs.');
+};
+
 G.sqrt=function(s){
   var k=ri(2,9),m=pick([2,3,5,6,7]),t=ri(0,s===1?0:2);
   if(s===1||t===0){var a=ri(2,15);return num('√'+(a*a)+' = ?',a,a+' × '+a+' = '+(a*a)+' et la racine carrée est positive : '+a+'.','Cherche le nombre positif dont le carré est '+(a*a)+'.')}
@@ -7411,6 +7480,97 @@ D({id:'pi1-3',lv:1,period:1,dom:'Nombres',t:'Les nombres relatifs : comparer et 
   ar:['الأعداد النسبية هي الأعداد الموجبة والسالبة. على المستقيم المدرّج كلما اتجهنا إلى اليسار صغر العدد، فمثلاً 7− أصغر من 3−.','عند جمع عددين لهما نفس الإشارة نجمع المسافتين إلى الصفر ونحتفظ بالإشارة. وعند اختلاف الإشارتين نطرح المسافتين ونأخذ إشارة العدد الأبعد عن الصفر.'],
   arw:[['nombre relatif','عدد نسبي'],['positif','موجب'],['négatif','سالب'],['distance à zéro','المسافة إلى الصفر'],['droite graduée','مستقيم مدرّج']]});
 
+D({id:'pi1-16',lv:1,period:1,dom:'Nombres',t:'Les nombres négatifs : les reconnaître',at:'الأعداد السالبة: كيف نتعرف عليها',
+  obj:'Identifier les nombres inférieurs à 0.',keys:['nneg'],
+  lex:[['nombre négatif','عدد سالب'],['nombre positif','عدد موجب'],['signe','إشارة'],['zéro','صفر'],['inférieur à','أصغر من']],
+  pre:[
+    ['Un nombre négatif est inférieur à 0.',true,'Les nombres négatifs sont les nombres qui sont plus petits que 0.'],
+    ['Le nombre 0 est un nombre négatif.',false,'0 n’est ni positif ni négatif.'],
+    ['Une température de −3 °C est en dessous de zéro.',true,'Le signe − indique un nombre inférieur à 0.']],
+  plan:['J’observe le signe de chaque nombre.','Je compare chaque nombre à 0.','Je conclus.'],
+  ex:[
+    E('Parmi 4 ; −7 ; 0 ; −2 ; 5, quels nombres sont inférieurs à 0 ?',[
+      ['Étape 1 · signes : 4 (+) ; −7 (−) ; 0 (aucun) ; −2 (−) ; 5 (+)','Je regarde le signe devant chaque nombre.',NB.concat(SC.dot(NL,-7,TL,'−7'),SC.dot(NL,-2,TL,'−2'),SC.dot(NL,0,PK,'0'),SC.dot(NL,4,PK,'4'))],
+      ['Étape 2 · −7 &lt; 0 ; −2 &lt; 0 ; 0 = 0 ; 4 &gt; 0 ; 5 &gt; 0','Je compare chaque nombre à 0.'],
+      ['<b>Étape 3 · −7 et −2</b>','Ce sont les seuls nombres inférieurs à 0. Le nombre 0 n’est pas négatif.']]),
+    E('Un plongeur est à 12 m sous le niveau de la mer. Quel nombre exprime son altitude ?',[
+      ['Étape 1 · « sous » le niveau de la mer','Le niveau de la mer correspond à 0.'],
+      ['Étape 2 · en dessous de 0','Le plongeur est plus bas que 0.'],
+      ['<b>Étape 3 · −12</b>','Un nombre en dessous de 0 est négatif.']]),
+    E('Il fait 5 °C au-dessus de zéro. Quel nombre exprime la température ?',[
+      ['Étape 1 · « au-dessus » de zéro','Zéro est le point de départ.'],
+      ['Étape 2 · au-dessus de 0','La température est plus haute que 0.'],
+      ['<b>Étape 3 · +5, c’est-à-dire 5</b>','Un nombre au-dessus de 0 est positif.']])],
+  ret:['Un nombre négatif est un nombre inférieur à 0 : il porte le signe −.','Un nombre positif est supérieur à 0. Le nombre 0 n’est ni positif ni négatif.','Au-dessus de 0 : positif. En dessous de 0 : négatif.'],
+  ar:['العدد السالب هو عدد أصغر من 0 وتوجد أمامه الإشارة −. والعدد الموجب أكبر من 0. أما 0 فليس موجبا ولا سالبا.','ما كان فوق الصفر نعبر عنه بعدد موجب، وما كان تحت الصفر نعبر عنه بعدد سالب. مثلا: 12 مترا تحت سطح البحر نكتبها −12.'],
+  arw:[['négatif','سالب'],['positif','موجب'],['signe','إشارة'],['en dessous de','تحت'],['au-dessus de','فوق']]});
+
+D({id:'pi1-17',lv:1,period:1,dom:'Nombres',t:'Droite graduée et abscisse',at:'المستقيم المدرج والأفصول',
+  obj:'Représenter des nombres positifs et négatifs sur une droite graduée et lire une abscisse.',keys:['nabs'],
+  lex:[['droite graduée','مستقيم مدرج'],['origine','الأصل'],['abscisse','أفصول'],['point','نقطة'],['unité','وحدة']],
+  pre:[
+    ['L’origine d’une droite graduée a pour abscisse 0.',true,'L’origine O est le point de départ des graduations.'],
+    ['Un point situé à gauche de l’origine a une abscisse positive.',false,'À gauche de l’origine, l’abscisse est négative.'],
+    ['Sur une droite graduée, plus on va vers la droite, plus l’abscisse est grande.',true,'Les nombres augmentent de gauche à droite.']],
+  plan:['J’observe la position du point par rapport à l’origine O.','Je donne l’abscisse du point.'],
+  ex:[
+    E('Sur une droite graduée de pas 1, le point A est à 3 unités à droite de O et le point B à 2 unités à gauche de O. Donne leurs abscisses.',[
+      ['Étape 1 · A est à droite de O ; B est à gauche de O','Je compare la position de chaque point à l’origine.',NB.concat(SC.dot(NL,3,PK,'A'),SC.dot(NL,-2,TL,'B'),SC.dot(NL,0,PK,'O'))],
+      ['<b>Étape 2 · A a pour abscisse 3 ; B a pour abscisse −2</b>','À droite : positif. À gauche : négatif. Je compte les unités depuis O.']]),
+    E('Le point C est à 6 unités à gauche de O. Quelle est son abscisse ?',[
+      ['Étape 1 · C est à gauche de O','La distance à O est 6.'],
+      ['<b>Étape 2 · l’abscisse de C est −6</b>','À gauche de O, l’abscisse est négative.']]),
+    E('Sur une droite graduée de 2 en 2, le point D est à la 3e graduation à gauche de O. Quelle est son abscisse ?',[
+      ['Étape 1 · D est à gauche de O, à 3 graduations','Chaque graduation vaut 2.'],
+      ['<b>Étape 2 · l’abscisse de D est −6</b>','3 graduations × 2 = 6 unités, à gauche : −6.']])],
+  ret:['Sur une droite graduée, chaque point est repéré par un nombre : son abscisse.','L’origine O a pour abscisse 0. À droite de O, les abscisses sont positives. À gauche de O, elles sont négatives.','Pour lire une abscisse : je regarde la position par rapport à O, puis je compte les unités.'],
+  ar:['على المستقيم المدرج تتحدد كل نقطة بعدد يسمى أفصولها. أفصول الأصل O هو 0. على يمين O تكون الأفاصيل موجبة وعلى يسار O تكون سالبة.','لقراءة الأفصول: أنظر هل النقطة على يمين O أم على يسارها، ثم أعد الوحدات.'],
+  arw:[['droite graduée','مستقيم مدرج'],['origine','أصل'],['abscisse','أفصول'],['à gauche','على اليسار'],['à droite','على اليمين']]});
+
+D({id:'pi1-18',lv:1,period:1,dom:'Nombres',t:'La valeur absolue',at:'القيمة المطلقة',
+  obj:'Reconnaître et déterminer la valeur absolue d’un nombre.',keys:['nval'],
+  lex:[['valeur absolue','القيمة المطلقة'],['distance à zéro','المسافة إلى الصفر'],['opposé','مقابل'],['signe','إشارة'],['nombre','عدد']],
+  pre:[
+    ['La valeur absolue d’un nombre est sa distance à 0.',true,'On mesure combien d’unités séparent le nombre de 0.'],
+    ['La valeur absolue de −4 est −4.',false,'Une distance n’est jamais négative : la valeur absolue de −4 est 4.'],
+    ['Deux nombres opposés ont la même valeur absolue.',true,'−4 et 4 sont tous les deux à 4 unités de 0.']],
+  plan:['J’identifie le signe du nombre, puis je détermine sa distance à 0.','Je conclus : sa valeur absolue est égale à cette distance.'],
+  ex:[
+    E('Détermine la valeur absolue de −7.',[
+      ['Étape 1 · signe − ; distance de −7 à 0 : 7 unités','Je compte les unités entre −7 et 0.',NB.concat(SC.dot(NL,-7,TL,'−7'),SC.dot(NL,0,PK,'0'))],
+      ['<b>Étape 2 · la valeur absolue de −7 est 7</b>','Elle est égale à la distance à 0.']]),
+    E('Détermine la valeur absolue de 5.',[
+      ['Étape 1 · signe + ; distance de 5 à 0 : 5 unités','5 est déjà positif.'],
+      ['<b>Étape 2 · la valeur absolue de 5 est 5</b>','Un nombre positif est égal à sa valeur absolue.']]),
+    E('Quels nombres ont pour valeur absolue 3 ?',[
+      ['Étape 1 · je cherche les nombres à 3 unités de 0','Il y en a un à droite de 0 et un à gauche.',NB.concat(SC.dot(NL,-3,TL,'−3'),SC.dot(NL,3,PK,'3'),SC.dot(NL,0,PK,'0'))],
+      ['<b>Étape 2 · 3 et −3</b>','Deux nombres opposés ont la même valeur absolue.']])],
+  ret:['La valeur absolue d’un nombre est sa distance à 0. Elle est toujours positive ou nulle.','Pour un nombre positif, la valeur absolue est le nombre lui-même. Pour un nombre négatif, c’est son opposé : on enlève le signe −.','Deux nombres opposés ont la même valeur absolue.'],
+  ar:['القيمة المطلقة لعدد هي المسافة بينه وبين 0، ولذلك فهي دائما موجبة أو منعدمة. القيمة المطلقة لـ −7 هي 7.','العددان المتقابلان لهما القيمة المطلقة نفسها، مثل 3 و −3.'],
+  arw:[['valeur absolue','قيمة مطلقة'],['distance','مسافة'],['opposé','مقابل'],['positif','موجب'],['nul','منعدم']]});
+
+D({id:'pi1-19',lv:1,period:1,dom:'Nombres',t:'Comparer et ranger des nombres',at:'مقارنة الأعداد وترتيبها',
+  obj:'Comparer deux nombres positifs ou négatifs et les ranger dans l’ordre croissant.',keys:['ncmp'],
+  lex:[['comparer','قارن'],['ranger','رتب'],['ordre croissant','ترتيب تصاعدي'],['ordre décroissant','ترتيب تنازلي'],['plus petit','أصغر']],
+  pre:[
+    ['Tout nombre négatif est inférieur à tout nombre positif.',true,'Les négatifs sont à gauche de 0, les positifs à droite.'],
+    ['Entre −2 et −5, le plus petit est −2.',false,'−5 est plus loin de 0 que −2 : −5 &lt; −2.'],
+    ['Sur la droite graduée, le plus petit nombre est celui qui est le plus à gauche.',true,'Les nombres augmentent de gauche à droite.']],
+  plan:['Je détermine les signes des deux nombres.','Je conclus, avec la propriété des signes ou la droite graduée.'],
+  ex:[
+    E('Compare −4 et 3.',[
+      ['Étape 1 · −4 est négatif ; 3 est positif','Les signes sont différents.',NB.concat(SC.dot(NL,-4,TL,'−4'),SC.dot(NL,3,PK,'3'))],
+      ['<b>Étape 2 · −4 &lt; 3</b>','Un nombre négatif est inférieur à un nombre positif.']]),
+    E('Compare −8 et −3.',[
+      ['Étape 1 · −8 et −3 sont négatifs','Les deux nombres ont le même signe.',NB.concat(SC.dot(NL,-8,TL,'−8'),SC.dot(NL,-3,PK,'−3'))],
+      ['<b>Étape 2 · −8 &lt; −3</b>','Entre deux négatifs, le plus petit est le plus éloigné de 0. Sur la droite, −8 est à gauche de −3.']]),
+    E('Range dans l’ordre croissant : 1 ; −1 ; 2 ; −2.',[
+      ['Étape 1 · négatifs : −1 et −2 ; positifs : 1 et 2','Je sépare les négatifs des positifs.',NB.concat(SC.dot(NL,-2,TL,'−2'),SC.dot(NL,-1,TL,'−1'),SC.dot(NL,1,PK,'1'),SC.dot(NL,2,PK,'2'))],
+      ['<b>Étape 2 · −2 &lt; −1 &lt; 1 &lt; 2</b>','Les négatifs d’abord : −2 est plus loin de 0 que −1. Puis les positifs.']])],
+  ret:['Tout nombre négatif est inférieur à tout nombre positif.','Entre deux nombres négatifs, le plus petit est celui qui est le plus éloigné de 0.','Pour ranger dans l’ordre croissant : les négatifs d’abord, du plus éloigné de 0 au plus proche, puis les positifs. Sur une droite graduée, le plus petit est le plus à gauche.'],
+  ar:['كل عدد سالب أصغر من كل عدد موجب. وبين عددين سالبين يكون الأصغر هو الأبعد عن الصفر، مثلا −8 < −3.','للترتيب التصاعدي: أبدأ بالأعداد السالبة من الأبعد عن الصفر إلى الأقرب، ثم الأعداد الموجبة. وعلى المستقيم المدرج الأصغر هو الأقرب إلى اليسار.'],
+  arw:[['comparer','قارن'],['ranger','رتب'],['ordre croissant','ترتيب تصاعدي'],['plus éloigné','أبعد'],['plus petit','أصغر']]});
+
 /* ===== PÉRIODE 2 ===== */
 D({id:'pi1-4',lv:1,period:2,dom:'Nombres',t:'Relatifs : soustraire, multiplier, puissances de 10',at:'الطرح والضرب في Z ثم قوى العدد 10',
   obj:'Soustraire et multiplier des relatifs ; utiliser les puissances de 10.',keys:['rel','pow','sci'],
@@ -7637,7 +7797,7 @@ P.evalPage({id:'pe1-4',lv:1,period:4,keys:['aire','perim','cercle','rep','vec','
 P.evalPage({id:'pe1-5',lv:1,period:5,keys:['vol','prop','pct','vit','ech','stat','effC','vol']});
 
 P.setLevel(1,['pr-1','pr-2','pr-3'],[
-  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-1','pi1-2','pi1-3']},
+  {title:'Les nombres : calculs, fractions, relatifs',seqs:['pi1-16','pi1-17','pi1-18','pi1-19','pi1-1','pi1-2','pi1-3']},
   {title:'Calcul littéral, équations, puissances',seqs:['pi1-4','pi1-5','pi1-6']},
   {title:'Droites, angles et symétrie centrale',seqs:['pi1-7','pi1-8','pi1-9']},
   {title:'Parallélogrammes, cercle et repérage',seqs:['pi1-10','pi1-11','pi1-12']},
