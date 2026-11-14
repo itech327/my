@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-9MHTPbECG9WUmUptk/dLabMcdvGzi0OvMU7VTEDmClE=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-3ecPjMqk3wB95zvScE/AYCCq5wZC/om4sp9BYc3xaM0=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-+dPOIHjuBbcAkGYGrza8eqJzqLOiaEWFp/881dJT4L0=' 'sha256-RPOSMKCPUU9QwL5psgcPu2mRW/Sc9N/k0sPlSPlOMjU=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-BLBp6kktJB0/Nt8wKZ8ZIa/SP72DXZrbSVmQXwo59C4=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-/4BOpJBgQA2tmTNi4HjVjVlue/UN3DrHK/GapSrip9g=' 'sha256-bezj1b3QuyR3nZ10Y6DiWmDmEOPdaBhLvduTz24iN6o=' 'sha256-3ecPjMqk3wB95zvScE/AYCCq5wZC/om4sp9BYc3xaM0=' 'sha256-nubBbZigfIsg45Wuh1q7LT/tjqmK6Esge7Iqika9TDs=' 'sha256-+dPOIHjuBbcAkGYGrza8eqJzqLOiaEWFp/881dJT4L0=' 'sha256-RPOSMKCPUU9QwL5psgcPu2mRW/Sc9N/k0sPlSPlOMjU=' 'sha256-VbHA9sJCBpecZxj+/dWfMCNowKRfFBlTQJpPTLKxyAI=' 'sha256-4zupi8GsJBF9xteb2YwB9LT4vs949XBCDE/8+A5HO10=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/W+hEVc4PlP7eKBb6Gh3UhgixxXl6P7Riv61ovhnsXA=' 'sha256-hDbjJITQJuwMbCY3p+Akg2RLdabj4acItoOv4cd45Gw=' 'sha256-tPoARCuWQdwv/L+JsQYSNJz91F50cv5C1W7j7W9nvPE=' 'sha256-Vz9voNOtWs5onu1hsUXwLFgRq8d+tFNtLKnAgPHX5dw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths.html">
@@ -1789,6 +1789,11 @@ window.addEventListener('load',function(){
     '.lab-sum{padding:16px 18px;border-radius:14px;border:1.5px solid transparent;background:linear-gradient(var(--surface),var(--surface)) padding-box,var(--grad) border-box;margin:12px 0}',
     '.lab-sum h4{font-family:var(--f-display,serif);font-style:italic;font-size:26px;margin:0 0 6px}',
     '.lab-sum p{margin:0 0 6px}',
+    '.lab-streak{color:var(--teal);font-weight:600}',
+    '.lab-newbadge{display:inline-block;margin:4px 6px 0 0;padding:4px 12px;border-radius:999px;border:1.5px solid var(--pink);font-weight:600}',
+    '.rp-badges{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}',
+    '.rp-badge{padding:6px 14px;border-radius:999px;border:1.5px solid var(--teal);font-weight:600}',
+    '.rp-badge.off{border-color:var(--line);color:var(--muted);font-weight:400}',
     '.lab-bar2{position:fixed;left:12px;bottom:12px;z-index:60;max-width:calc(100vw - 24px);display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--surface-2);border:1.5px solid var(--teal);border-radius:16px;padding:6px 10px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.45)}',
     '.lab-bar2 b{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}',
     '.lab-bar2 button{font:inherit;font-size:13px;font-weight:600;color:var(--fg);background:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;min-height:34px;cursor:pointer}',
@@ -1986,7 +1991,7 @@ window.addEventListener('load',function(){
     patch(c.id, function (x) { x.answers.push(rec); if (x.answers.length > 3000) x.answers.shift(); });
     emit();
   };
-  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
+  Sess.clearAll = function () { [K_CUR, K_HIST, K_PROG, K_NAME, 'lab_game'].forEach(store.del); try { sessionStorage.removeItem('lab_skip'); } catch (_) {} emit(); };
   function stats(s) {
     var a = (s && s.answers) || [], n = a.length, ok = a.filter(function (x) { return x.ok; }).length;
     var pts = a.reduce(function (t, x) { return t + (x.pts || 0); }, 0), hints = a.filter(function (x) { return x.hint; }).length;
@@ -2046,6 +2051,59 @@ window.addEventListener('load',function(){
     var p = progGet(), k = app + '|' + chap; p[k] = p[k] || {};
     if (!p[k][d] || p[k][d] < pct) p[k][d] = pct;
     store.set(K_PROG, p);
+  }
+
+  /* ---------- jours de suite et badges : gardés dans ce navigateur, jamais envoyés ---------- */
+  var K_GAME = 'lab_game';
+  function dayKey(t) { var d = new Date(t); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function validatedChapters() {
+    var p = progGet(), n = 0;
+    Object.keys(p).forEach(function (k) { var o = p[k] || {}; if (Object.keys(o).some(function (d) { return +o[d] >= 80; })) n++; });
+    return n;
+  }
+  function streakOf(days, now) {
+    var set = {}; days.forEach(function (d) { set[d] = 1; });
+    var t = now, n = 0;
+    if (!set[dayKey(t)]) t -= 864e5;            // la série reste vivante jusqu'à la fin du jour suivant
+    while (set[dayKey(t)] && n < 400) { n++; t -= 864e5; }
+    return n;
+  }
+  var BADGES = [
+    { id: 'first', fr: 'Première série', ar: 'أول سلسلة', ok: function (g) { return g.series >= 1; } },
+    { id: 'ten', fr: '10 séries', ar: '10 سلاسل', ok: function (g) { return g.series >= 10; } },
+    { id: 'perfect', fr: 'Sans faute', ar: 'علامة كاملة', ok: function (g) { return g.perfect >= 1; } },
+    { id: 'defi', fr: 'Défi réussi', ar: 'تحدٍّ ناجح', ok: function (g) { return g.defi >= 1; } },
+    { id: 'chap3', fr: '3 chapitres validés', ar: '3 دروس متقنة', ok: function () { return validatedChapters() >= 3; } },
+    { id: 'streak3', fr: '3 jours de suite', ar: '3 أيام متتالية', ok: function (g, now) { return streakOf(g.days, now) >= 3; } },
+    { id: 'streak7', fr: '7 jours de suite', ar: '7 أيام متتالية', ok: function (g, now) { return streakOf(g.days, now) >= 7; } }
+  ];
+  function gameGet() {
+    var g = store.get(K_GAME, {}); g = g && typeof g === 'object' && !Array.isArray(g) ? g : {};
+    var ids = BADGES.map(function (b) { return b.id; }), badges = {};
+    ids.forEach(function (id) { if (g.badges && isFinite(+g.badges[id]) && +g.badges[id] > 0) badges[id] = +g.badges[id]; });
+    return {
+      series: Math.round(snum(g.series, 0, 0, 1e6)), perfect: Math.round(snum(g.perfect, 0, 0, 1e6)), defi: Math.round(snum(g.defi, 0, 0, 1e6)),
+      days: (Array.isArray(g.days) ? g.days : []).filter(function (d) { return /^\d{4}-\d{2}-\d{2}$/.test(d); }).slice(-120), badges: badges
+    };
+  }
+  /* r = { pct, d } : appelé à chaque série terminée. Retourne le nombre de jours de suite et les nouveaux badges. */
+  function gameRecord(r, now) {
+    now = now || Date.now();
+    var g = gameGet(), today = dayKey(now);
+    g.series++; if (r.pct === 100) g.perfect++; if (r.d === 4 && r.pct >= 80) g.defi++;
+    if (g.days.indexOf(today) < 0) g.days.push(today);
+    g.days = g.days.slice(-120);
+    var fresh = [];
+    BADGES.forEach(function (b) { if (!g.badges[b.id] && b.ok(g, now)) { g.badges[b.id] = now; fresh.push(b); } });
+    store.set(K_GAME, g);
+    return { streak: streakOf(g.days, now), fresh: fresh };
+  }
+  Lab.Game = { record: gameRecord, get: gameGet, badges: BADGES, streak: function (now) { return streakOf(gameGet().days, now || Date.now()); } };
+  function gameHtml(res) {
+    if (!res) return '';
+    var out = '<p class="lab-streak">' + res.streak + (res.streak > 1 ? ' jours de suite' : ' jour') + ' · <span dir="rtl" lang="ar">' + res.streak + (res.streak > 2 ? ' أيام متتالية' : ' يوم') + '</span></p>';
+    if (res.fresh.length) out += '<p>' + res.fresh.map(function (b) { return '<span class="lab-newbadge">Badge : ' + esc(b.fr) + ' · <span dir="rtl" lang="ar">' + esc(b.ar) + '</span></span>'; }).join('') + '</p>';
+    return out;
   }
 
   /* ---------- fabrique de questions ---------- */
@@ -2243,9 +2301,10 @@ window.addEventListener('load',function(){
         if (lvl) progSet(CFG.app, ctx.id, lvl, pct);
         prog.firstChild.style.width = '100%';
         Notify.series({ app: CFG.app, chap: ctx.id, title: ctx.title, d: mode === 'adapt' ? 0 : level, good: good, asked: asked, pct: pct, pts: Math.round(pts * 10) / 10, max: max, timeout: !!timeout });
+        var game = null; try { game = gameRecord({ pct: pct, d: mode === 'adapt' ? 0 : level }); } catch (_) {}
         var msg = pct >= 80 ? 'Bravo : niveau validé.' : (pct >= 50 ? 'Bien. Relis la leçon puis recommence pour valider.' : 'Reprends le cours de ce chapitre, puis un niveau plus facile.');
         var ar = pct >= 80 ? 'أحسنت! تم اجتياز هذا المستوى.' : (pct >= 50 ? 'جيّد. راجع الدرس وأعد المحاولة للنجاح في المستوى.' : 'عُد إلى درس هذا الفصل ثم جرّب مستوى أسهل.');
-        var s = h('div', { 'class': 'lab-sum' }, '<h4>' + good + ' / ' + asked + ' · ' + pct + ' %</h4><p>' + pts + ' / ' + max + ' points' + (timeout ? ' · temps écoulé' : '') + '. ' + msg + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>');
+        var s = h('div', { 'class': 'lab-sum' }, '<h4>' + good + ' / ' + asked + ' · ' + pct + ' %</h4><p>' + pts + ' / ' + max + ' points' + (timeout ? ' · temps écoulé' : '') + '. ' + msg + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>' + gameHtml(game));
         var act = h('div', { 'class': 'lab-actions' });
         var again = h('button', { type: 'button', 'class': 'btn' }, 'Nouvelle série'); again.addEventListener('click', run); act.appendChild(again);
         if (lvl && lvl < 4 && pct >= 80) { var up = h('button', { type: 'button', 'class': 'btn' }, 'Niveau suivant'); up.addEventListener('click', function () { level = lvl + 1; drawTabs(); intro(); run(); }); act.appendChild(up); }
@@ -2278,6 +2337,7 @@ window.addEventListener('load',function(){
     try {
       var c = chapOf(el), d = r.d || 1, asked = Math.max(1, r.asked), pp = LV[d] ? LV[d].pts : 1;
       Notify.series({ app: CFG.app, chap: c.id, title: c.title, d: d, good: r.good, asked: asked, pct: Math.round(100 * r.good / asked), pts: Math.round(r.good * pp * 10) / 10, max: asked * pp, timeout: false });
+      gameRecord({ pct: Math.round(100 * r.good / asked), d: d });
     } catch (_) {}
   };
 
@@ -2386,6 +2446,9 @@ window.addEventListener('load',function(){
       var l = st.lv[k], p = l.n ? Math.round(100 * l.ok / l.n) : 0;
       return '<div class="rp-bar"><span>' + LV[k].ar + ' · ' + LV[k].fr + '</span><i><u style="width:' + p + '%"></u></i><span>' + l.ok + '/' + l.n + (l.n ? ' · ' + p + '%' : '') + '</span></div>';
     }).join('') + '</div>';
+    var gm = gameGet();
+    html += '<h3 dir="rtl">الشارات والمواظبة</h3><p class="rp-ar">أيام متتالية: ' + streakOf(gm.days, Date.now()) + ' · سلاسل مكتملة: ' + gm.series + '</p><div class="rp-badges" dir="rtl">' +
+      BADGES.map(function (b) { return '<span class="rp-badge' + (gm.badges[b.id] ? '' : ' off') + '">' + esc(b.ar) + ' · ' + esc(b.fr) + '</span>'; }).join('') + '</div>';
     if (st.ch.length) {
       st.ch.sort(function (a, b) { return a.ok / a.n - b.ok / b.n; });
       html += '<h3 dir="rtl">حسب الفصل</h3><div class="scroll-x"><table><tr><th>Application</th><th>Chapitre</th><th>Questions</th><th>Réussite</th><th>Temps moyen</th></tr>' +
