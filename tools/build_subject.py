@@ -58,7 +58,7 @@ body = '''
   </section>
   </div>
   <div id="more"></div>
-  <footer>__NAME__ en mouvement · collège, option française</footer>
+  <footer>__NAME__ en mouvement · collège, option française · Abdou Tech.</footer>
 </div>
 '''
 for k, v in (('__NAME__', C['name']), ('__LEAD__', C['lead']), ('__LEAD_AR__', C['lead_ar']), ('__PORTAL__', C['portal_url'])):
