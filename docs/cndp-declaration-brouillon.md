@@ -4,7 +4,12 @@ Statut : brouillon préparé le 15 novembre 2026. Rien n'a été déposé. Le d�
 
 ## Contenu attendu d'une déclaration
 
-D'après les guides consultés : finalité du traitement, catégories de données, destinataires, durée de conservation. Le formulaire F-214 est la déclaration normale conformément à une décision de la CNDP. Vérifier sur cndp.ma lequel s'applique à un site éducatif.
+D'après les guides consultés : finalité du traitement, catégories de données, destinataires, durée de conservation. Formulaires connus d'après la procédure de notification de la CNDP (juillet 2025) :
+
+- F-112 : demande d'autorisation préalable. Pièces demandées : copie du document de collecte du consentement, copie de la mention d'information, tout document utilisé pour la collecte.
+- F-113 et F-214 : formulaires pour un traitement couvert par une délibération type de la CNDP (autorisation ou déclaration normale conformément à une décision).
+
+Je n'ai trouvé aucune délibération type pour un site éducatif tenu par un enseignant. Le cas général serait donc une déclaration ou une autorisation hors modèle. La CNDP indique un numéro de contact, le 3020, et un « Guide conformité sites web » sur cndp.ma. Les consulter avant de choisir le formulaire.
 
 ## Réponses prêtes à copier, d'après le fonctionnement réel du site
 
