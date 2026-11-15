@@ -691,7 +691,10 @@
         ar: { e: ['يدخل الجرثوم الممرض إلى الجسم عبر الأنف أو الفم أو جرح أو الدم، ثم يتكاثر بسرعة، وقد يفرز سموما تُتلف الخلايا. تظهر الأعراض مثل الحمى والألم والتعب. ويمكن أن تنتقل بعض الأمراض من شخص إلى آخر، وهذا هو العدوى.'], u: 'اضغط «Étape suivante» لتتبع مراحل الإصابة.', w: [['toxine', 'سمّ ميكروبي'], ['contagion', 'عدوى'], ['maladie infectieuse', 'مرض معدٍ']] } },
       { short: 'Se protéger', title: 'Se protéger des microbes', intro: 'Quels gestes limitent les infections ?', build: proteger,
         retenir: ['Hygiène des mains, des aliments et de l’eau, soin des plaies et vaccination protègent des microbes.', 'Les <b>antibiotiques</b> sont inefficaces contre les virus.'],
-        ar: { e: ['للوقاية من الجراثيم: غسل اليدين بالصابون، وغسل الخضر والفواكه وطهي اللحم جيدا وشرب ماء صالح للشرب، وتنظيف الجروح وتعقيمها، والتلقيح. المضادات الحيوية تؤثر في البكتيريا فقط ولا تؤثر في الفيروسات، ويجب أخذها بوصفة الطبيب.'], w: [['antibiotique', 'مضاد حيوي'], ['vaccin', 'لقاح'], ['désinfecter', 'عقّم']] } }
+        ar: { e: ['للوقاية من الجراثيم: غسل اليدين بالصابون، وغسل الخضر والفواكه وطهي اللحم جيدا وشرب ماء صالح للشرب، وتنظيف الجروح وتعقيمها، والتلقيح. المضادات الحيوية تؤثر في البكتيريا فقط ولا تؤثر في الفيروسات، ويجب أخذها بوصفة الطبيب.'], w: [['antibiotique', 'مضاد حيوي'], ['vaccin', 'لقاح'], ['désinfecter', 'عقّم']] } },
+      { short: 'Hygiène', title: 'Hygiène de l’appareil reproducteur', intro: 'Quelques règles simples de santé.', build: hygieneRepro,
+        retenir: ['Toilette quotidienne, consultation médicale en cas de signe inhabituel et prévention des <b>IST</b>.'],
+        ar: { e: ['للمحافظة على سلامة الجهاز التناسلي: نظافة يومية بالماء والصابون الخفيف، وتغيير الملابس الداخلية بانتظام، واستشارة الطبيب عند ظهور ألم أو حكة أو إفرازات غير عادية، والوقاية من الأمراض المنقولة جنسيا.'], w: [['hygiène', 'النظافة'], ['IST', 'الأمراض المنقولة جنسيا']] } }
     ]; },
     quiz: [
       { q: 'Quel microbe n’a pas de structure cellulaire ?', o: ['Le virus', 'La bactérie', 'Le protozoaire'], a: 0, e: 'Un virus se multiplie seulement dans une cellule vivante.' },
@@ -841,9 +844,6 @@
       { short: 'Transfusion', title: 'Les problèmes liés à la transfusion sanguine', intro: 'Choisis un donneur et un receveur : la transfusion est-elle possible ?', build: transfusion,
         retenir: ['Les globules rouges portent des <b>antigènes</b> A et/ou B selon le groupe sanguin (A, B, AB, O).', 'Le plasma contient les <b>anticorps</b> contre les antigènes absents.', 'Un mélange incompatible provoque une <b>agglutination</b>. On tient aussi compte du facteur <b>Rhésus</b>.'],
         ar: { e: ['تحمل الكريات الحمراء مستضدات A أو B أو الاثنين معا حسب فصيلة الدم (A وB وAB وO). ويحتوي البلازما على أجسام مضادة ضد المستضدات الغائبة عن الكريات الحمراء للشخص. إذا نُقل دم غير متوافق تتثبت الأجسام المضادة للمتلقي على كريات المعطي فتتراص وتسد الأوعية. ويُراعى كذلك العامل الريزوسي.'], u: 'اختر فصيلة المعطي ثم فصيلة المتلقي لترى هل النقل ممكن.', w: [['groupe sanguin', 'فصيلة الدم'], ['agglutination', 'تراص'], ['donneur', 'معطٍ'], ['receveur', 'متلقٍّ'], ['Rhésus', 'العامل الريزوسي']] } },
-      { short: 'Hygiène', title: 'Hygiène de l’appareil reproducteur', intro: 'Quelques règles simples de santé.', build: hygieneRepro,
-        retenir: ['Toilette quotidienne, consultation médicale en cas de signe inhabituel et prévention des <b>IST</b>.'],
-        ar: { e: ['للمحافظة على سلامة الجهاز التناسلي: نظافة يومية بالماء والصابون الخفيف، وتغيير الملابس الداخلية بانتظام، واستشارة الطبيب عند ظهور ألم أو حكة أو إفرازات غير عادية، والوقاية من الأمراض المنقولة جنسيا.'], w: [['hygiène', 'النظافة'], ['IST', 'الأمراض المنقولة جنسيا']] } }
     ]; },
     quiz: [
       { q: 'Le VIH détruit surtout :', o: ['les lymphocytes T4', 'les globules rouges', 'les plaquettes'], a: 0, e: 'Les défenses de l’organisme s’affaiblissent.' },
