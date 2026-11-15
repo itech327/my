@@ -1653,9 +1653,30 @@ M.chapter({id:'c1-2',eyebrow:'1<sup>re</sup> année · Chapitre 2 · Numérique'
     },
       retenir:['Pour additionner deux fractions de dénominateurs différents, on les réduit d’abord au <b>même dénominateur</b>.','On additionne ensuite les numérateurs et on garde le dénominateur commun.','Exemple : <span class="math">1/2 + 1/3 = 3/6 + 2/6 = 5/6</span>.']},
     {short:'Encadrer une fraction',title:'Encadrer une fraction par deux décimaux',intro:'Change le numérateur et le dénominateur. Lis l’encadrement à l’unité, au dixième et au centième.',build:function(el){M.encadrer(el,false)},
-      retenir:['Encadrer une fraction, c’est trouver deux nombres décimaux consécutifs entre lesquels elle se trouve.','Plus on cherche de chiffres après la virgule, plus l’encadrement est précis : unité, dixième, centième.','Exemple : <span class="math">2,3 &lt; 7/3 &lt; 2,4</span>.']}
+      retenir:['Encadrer une fraction, c’est trouver deux nombres décimaux consécutifs entre lesquels elle se trouve.','Plus on cherche de chiffres après la virgule, plus l’encadrement est précis : unité, dixième, centième.','Exemple : <span class="math">2,3 &lt; 7/3 &lt; 2,4</span>.']},
+    {short:'Multiplier des fractions',title:'Multiplier deux fractions',intro:'On prend une fraction d’une fraction. Règle les deux fractions et regarde le carré partagé.',build:function(el){
+      var a=1,b=2,c=2,d=3;
+      ui.slider(el,{label:'Numérateur a',min:1,max:6,step:1,value:1,color:P},function(v){a=v;draw()});
+      ui.slider(el,{label:'Dénominateur b',min:2,max:6,step:1,value:2,color:P},function(v){b=v;draw()});
+      ui.slider(el,{label:'Numérateur c',min:1,max:6,step:1,value:2,color:T},function(v){c=v;draw()});
+      ui.slider(el,{label:'Dénominateur d',min:2,max:6,step:1,value:3,color:T},function(v){d=v;draw()});
+      var svg=ui.stage(el,400,220,'Un carré partagé en colonnes et en lignes'),g=S('g',{style:'fill:#fff'},svg),inf=ui.info(el);
+      function draw(){
+        g.replaceChildren();
+        var A=Math.min(a,b),Q=Math.min(c,d),sz=190,x0=105,y0=15,w=sz/b,hh=sz/d,i,j,num=A*Q,den=b*d,gg=gcd(num,den);
+        for(j=0;j<d;j++)for(i=0;i<b;i++){
+          var inc=i<A,inr=j<Q,f=inc&&inr?'var(--coral)':(inc?'var(--pink)':(inr?'var(--teal)':'transparent')),o=inc&&inr?0.9:((inc||inr)?0.35:0);
+          S('rect',{x:x0+i*w,y:y0+j*hh,width:w,height:hh,style:'fill:'+f+';fill-opacity:'+o+';stroke:#fff;stroke-width:1.2'},g);
+        }
+        S('rect',{x:x0,y:y0,width:sz,height:sz,style:'fill:none;stroke:#fff;stroke-width:2.4'},g);
+        inf.set('<p>'+A+'/'+b+' × '+Q+'/'+d+' = ('+A+' × '+Q+') / ('+b+' × '+d+') = <b>'+num+'/'+den+'</b>'+(gg>1?' = <b>'+(num/gg)+'/'+(den/gg)+'</b> après simplification':'')+'.</p><p>Les cases rouges sont '+num+' cases sur '+den+'.</p>');
+      }
+      draw();
+    },
+      retenir:['Pour multiplier deux fractions, on multiplie les numérateurs entre eux et les dénominateurs entre eux.','<span class="math">a/b × c/d = (a × c) / (b × d)</span>.','Exemple : <span class="math">1/2 × 2/3 = 2/6 = 1/3</span>. On simplifie ensuite si possible.']}
   ],
   quiz:[
+    {q:'1/2 × 2/3 = ?',o:['1/3','3/5','2/5'],a:0,e:'(1 × 2) / (2 × 3) = 2/6 = 1/3.'},
     {q:'1/2 + 1/3 = ?',o:['5/6','2/5','2/6'],a:0,e:'1/2 = 3/6 et 1/3 = 2/6, donc 3/6 + 2/6 = 5/6.'},
     {q:'Quel est l’encadrement de 7/3 au dixième ?',o:['2,3 < 7/3 < 2,4','2,2 < 7/3 < 2,3','2,4 < 7/3 < 2,5'],a:0,e:'7 ÷ 3 = 2,333…'},
     {q:'Quelle valeur manque : 2/3 = ?/12',o:['6','9','8','4'],a:2,e:'On multiplie 3 par 4 pour obtenir 12, donc 2 × 4 = 8.'},
@@ -2437,9 +2458,47 @@ M.chapter({id:'c1-16',eyebrow:'1<sup>re</sup> année · Chapitre 16 · Statistiq
       }
       draw();
     },
-      retenir:['L’<b>échelle</b> est le rapport entre une longueur sur le plan et la longueur réelle.','À l’échelle 1/50 000 : 1 cm sur la carte représente 50 000 cm, soit 500 m dans la réalité.','<b>Distance réelle = distance sur la carte × dénominateur de l’échelle.</b>']}
+      retenir:['L’<b>échelle</b> est le rapport entre une longueur sur le plan et la longueur réelle.','À l’échelle 1/50 000 : 1 cm sur la carte représente 50 000 cm, soit 500 m dans la réalité.','<b>Distance réelle = distance sur la carte × dénominateur de l’échelle.</b>']},
+    {short:'Vitesse moyenne',title:'La vitesse moyenne',intro:'Une voiture parcourt une distance en un certain temps. Règle les deux valeurs.',build:function(el){
+      var dist=120,t=2;
+      function f(x){return String(Math.round(x*10)/10).replace('.',',')}
+      ui.slider(el,{label:'Distance parcourue',min:10,max:300,step:10,value:120,color:P,fmt:function(v){return v+' km'}},function(v){dist=v;draw()});
+      ui.slider(el,{label:'Durée du trajet',min:0.5,max:5,step:0.5,value:2,color:T,fmt:function(v){return String(v).replace('.',',')+' h'}},function(v){t=v;draw()});
+      var svg=ui.stage(el,400,110,'Trajet d’une voiture sur une route'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+      function draw(){
+        g.replaceChildren();
+        S('path',{d:'M30 60H370',style:'stroke:#fff;stroke-opacity:.5;stroke-width:6;stroke-linecap:round;fill:none'},g);
+        S('circle',{cx:30,cy:60,r:6,style:'fill:var(--teal)'},g);
+        var ex=30+(dist/300)*340;
+        S('circle',{cx:ex,cy:60,r:8,style:'fill:var(--pink);stroke:#fff;stroke-width:2'},g);
+        S('text',{x:ex,y:36,'class':'pl',text:dist+' km',style:'fill:var(--pink)'},g);
+        S('text',{x:30,y:90,'class':'pl',text:'départ'},g);
+        var v=dist/t;
+        chips.set('<span class="chip plain">v = d ÷ t</span><span class="chip plain">'+dist+' ÷ '+String(t).replace('.',',')+' = <b>'+f(v)+' km/h</b></span>');
+        inf.set('<p>En moyenne, la voiture parcourt <b>'+f(v)+' km</b> chaque heure.</p>');
+      }
+      draw();
+    },
+      retenir:['La <b>vitesse moyenne</b> est la distance parcourue divisée par la durée du trajet : <span class="math">v = d ÷ t</span>.','Elle s’exprime en km/h ou en m/s.','Exemple : 120 km en 2 h donnent <span class="math">120 ÷ 2 = 60 km/h</span>.']},
+    {short:'Convertir les unités',title:'Convertir durées et vitesses',intro:'Règle les heures et les minutes, puis la vitesse en km/h.',build:function(el){
+      var hh=1,mm=30,kmh=72;
+      function f(x){return String(Math.round(x*100)/100).replace('.',',')}
+      ui.slider(el,{label:'Heures',min:0,max:5,step:1,value:1,color:P},function(v){hh=v;draw()});
+      ui.slider(el,{label:'Minutes',min:0,max:55,step:5,value:30,color:P},function(v){mm=v;draw()});
+      ui.slider(el,{label:'Vitesse',min:0,max:130,step:5,value:72,color:T,fmt:function(v){return v+' km/h'}},function(v){kmh=v;draw()});
+      var chips=ui.chips(el),inf=ui.info(el);
+      function draw(){
+        var dec=hh+mm/60;
+        chips.set('<span class="chip plain">'+hh+' h '+mm+' min = <b>'+f(dec)+' h</b></span><span class="chip plain">'+kmh+' km/h = <b>'+f(kmh/3.6)+' m/s</b></span>');
+        inf.set('<p><b>Durée :</b> on divise les minutes par 60 : '+mm+' ÷ 60 = '+f(mm/60)+' h.</p><p><b>Vitesse :</b> 1 km = 1 000 m et 1 h = 3 600 s. Pour passer de km/h à m/s, on divise par 3,6.</p>');
+      }
+      draw();
+    },
+      retenir:['Pour convertir des minutes en heures, on divise par 60 : <span class="math">1 h 30 min = 1,5 h</span>.','<span class="math">1 km = 1 000 m</span> et <span class="math">1 h = 3 600 s</span>.','Pour passer de km/h à m/s, on divise par 3,6. Pour passer de m/s à km/h, on multiplie par 3,6.']}
   ],
   quiz:[
+    {q:'Un cycliste parcourt 45 km en 3 h. Sa vitesse moyenne est :',o:['15 km/h','135 km/h','48 km/h'],a:0,e:'v = 45 ÷ 3 = 15 km/h.'},
+    {q:'36 km/h correspondent à :',o:['10 m/s','36 m/s','100 m/s'],a:0,e:'36 ÷ 3,6 = 10 m/s.'},
     {q:'4 stylos coûtent 10 DH. Combien coûtent 10 stylos ?',o:['25 DH','40 DH','14 DH'],a:0,e:'x = 10 × 10 ÷ 4 = 25 DH.'},
     {q:'Sur une carte à l’échelle 1/100 000, 3 cm représentent :',o:['3 km','30 km','300 m'],a:0,e:'3 × 100 000 = 300 000 cm = 3 km.'},
     {q:'2 kg de pommes coûtent 14 DH. Combien coûtent 5 kg ?',o:['35 DH','28 DH','70 DH','19 DH'],a:0,e:'Prix de 1 kg : 14 ÷ 2 = 7 DH. Donc 5 × 7 = 35 DH.'},
@@ -3157,9 +3216,40 @@ M.chapter({id:'c2-12',eyebrow:'2<sup>e</sup> année · Chapitre 14 · Géométri
     {short:'Translation',title:'La translation',intro:'Déplace A′ pour choisir le vecteur AA′. Tous les points de la figure glissent du même vecteur.',build:translation,
       retenir:['Une <b>translation</b> fait glisser tous les points de la figure de la même façon : même direction, même sens, même longueur.','Un vecteur est caractérisé par sa direction, son sens et sa longueur.','Si B′ est l’image de B et A′ celle de A, alors ABB′A′ est un parallélogramme : <span class="math">AB = A′B′</span>.']},
     {short:'Somme de vecteurs',title:'Somme de deux vecteurs',intro:'Déplace les points pour voir la relation de Chasles et la règle du parallélogramme.',build:chasles,
-      retenir:['<b>Relation de Chasles</b> : <span class="math">AB + BC = AC</span>.','<b>Règle du parallélogramme</b> : si ABCD est un parallélogramme, alors <span class="math">AB + AD = AC</span>.','Les coordonnées d’une somme s’obtiennent en additionnant les coordonnées.']}
+      retenir:['<b>Relation de Chasles</b> : <span class="math">AB + BC = AC</span>.','<b>Règle du parallélogramme</b> : si ABCD est un parallélogramme, alors <span class="math">AB + AD = AC</span>.','Les coordonnées d’une somme s’obtiennent en additionnant les coordonnées.']},
+    {short:'Égalité de vecteurs',title:'Égalité de deux vecteurs',intro:'Déplace le point B. Le point D se place pour que les vecteurs AB et DC restent égaux.',build:function(el){
+      var bx=6,by=3,ax=2,ay=2,cx=8,cy=6;
+      ui.slider(el,{label:'Abscisse de B',min:3,max:9,step:1,value:6,color:P},function(v){bx=v;draw()});
+      ui.slider(el,{label:'Ordonnée de B',min:1,max:5,step:1,value:3,color:T},function(v){by=v;draw()});
+      var svg=ui.stage(el,400,260,'Un parallélogramme ABCD sur un quadrillage'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+      function X(x){return 40+28*x}
+      function Y(y){return 250-28*y}
+      function arrow(x1,y1,x2,y2,col){
+        var dx=x2-x1,dy=y2-y1,l=Math.sqrt(dx*dx+dy*dy)||1,ux=dx/l,uy=dy/l;
+        S('path',{d:'M'+x1+' '+y1+'L'+x2+' '+y2,style:'stroke:'+col+';stroke-width:3.4;fill:none'},g);
+        S('polygon',{points:x2+','+y2+' '+(x2-12*ux+6*uy)+','+(y2-12*uy-6*ux)+' '+(x2-12*ux-6*uy)+','+(y2-12*uy+6*ux),style:'fill:'+col},g);
+      }
+      function draw(){
+        g.replaceChildren();
+        var dx=cx-bx+ax,dy=cy-by+ay,i;
+        for(i=0;i<=10;i++){S('path',{d:'M'+X(i)+' '+Y(0)+'V'+Y(8),style:'stroke:#fff;stroke-opacity:.12;fill:none'},g);}
+        for(i=0;i<=8;i++){S('path',{d:'M'+X(0)+' '+Y(i)+'H'+X(10),style:'stroke:#fff;stroke-opacity:.12;fill:none'},g);}
+        S('polygon',{points:X(ax)+','+Y(ay)+' '+X(bx)+','+Y(by)+' '+X(cx)+','+Y(cy)+' '+X(dx)+','+Y(dy),style:'fill:var(--lav);fill-opacity:.2;stroke:#fff;stroke-opacity:.5;stroke-width:1.6'},g);
+        arrow(X(ax),Y(ay),X(bx),Y(by),'var(--teal)');
+        arrow(X(dx),Y(dy),X(cx),Y(cy),'var(--teal)');
+        [['A',ax,ay],['B',bx,by],['C',cx,cy],['D',dx,dy]].forEach(function(p){
+          S('circle',{cx:X(p[1]),cy:Y(p[2]),r:4.5,style:'fill:var(--pink);stroke:#fff;stroke-width:1.6'},g);
+          S('text',{x:X(p[1])+(p[0]==='B'||p[0]==='C'?14:-14),y:Y(p[2])+(p[0]==='A'||p[0]==='B'?14:-14),'class':'pl',text:p[0]},g);
+        });
+        chips.set('<span class="chip plain">AB a pour coordonnées ('+(bx-ax)+' ; '+(by-ay)+')</span><span class="chip plain">DC a pour coordonnées ('+(cx-dx)+' ; '+(cy-dy)+')</span>');
+        inf.set('<p>Les deux vecteurs ont la <b>même direction</b>, le <b>même sens</b> et la <b>même longueur</b> : AB = DC.</p><p>Donc ABCD est un <b>parallélogramme</b>.</p>');
+      }
+      draw();
+    },
+      retenir:['Deux vecteurs sont <b>égaux</b> s’ils ont la même direction, le même sens et la même longueur.','<span class="math">AB = DC</span> si et seulement si <b>ABCD est un parallélogramme</b>.','Deux vecteurs égaux ont les mêmes coordonnées.']}
   ],
   quiz:[
+    {q:'Si AB = DC, alors le quadrilatère ABCD est :',o:['un parallélogramme','un trapèze quelconque','un cercle'],a:0,e:'AB = DC caractérise le parallélogramme ABCD.'},
     {q:'Dans une translation, un segment est transformé en…',o:['un segment plus long','un segment de même longueur et parallèle','un arc de cercle','un point'],a:1,e:'La translation conserve les longueurs et les directions.'},
     {q:'AB + BC = ?',o:['AC','BA','CB','AB'],a:0,e:'C’est la relation de Chasles.'},
     {q:'ABCD est un parallélogramme. Alors AB + AD = ?',o:['BD','AC','DC','0'],a:1,e:'C’est la règle du parallélogramme : la diagonale AC.'}
@@ -3260,9 +3350,32 @@ M.chapter({id:'c2-14',eyebrow:'2<sup>e</sup> année · Chapitre 16 · Statistiqu
     {short:'Pourcentages',title:'Pourcentages',intro:'Un pourcentage est une situation de proportionnalité dont le coefficient est p ÷ 100.',build:function(el){M.percentWidget(el)},
       retenir:['<b>p %</b> de T est égal à <span class="math">T × p ÷ 100</span>.','Une réduction de p % revient à payer <span class="math">(100 − p) %</span> du prix.']},
     {short:'Partage proportionnel',title:'Partager proportionnellement',intro:'On partage une somme en parts proportionnelles à des nombres donnés.',build:partage,
-      retenir:['Pour partager T proportionnellement à <span class="math">p₁, p₂, p₃</span>, on calcule la valeur d’une part : <span class="math">T ÷ (p₁ + p₂ + p₃)</span>.','Chaque personne reçoit alors sa valeur multipliée par son nombre de parts.']}
+      retenir:['Pour partager T proportionnellement à <span class="math">p₁, p₂, p₃</span>, on calcule la valeur d’une part : <span class="math">T ÷ (p₁ + p₂ + p₃)</span>.','Chaque personne reçoit alors sa valeur multipliée par son nombre de parts.']},
+    {short:'Fonction linéaire',title:'La fonction linéaire',intro:'Change le coefficient a. La droite passe toujours par l’origine du repère.',build:function(el){
+      var a=1.5;
+      function f(x){return String(Math.round(x*100)/100).replace('.',',').replace('-','−')}
+      ui.slider(el,{label:'Coefficient a',min:-2,max:2,step:0.5,value:1.5,color:P,fmt:function(v){return f(v)}},function(v){a=v;draw()});
+      var svg=ui.stage(el,400,260,'Représentation graphique de f(x) = ax'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+      var ox=200,oy=130,sx=50,sy=20;
+      function draw(){
+        g.replaceChildren();
+        var i;
+        for(i=-3;i<=3;i++){S('path',{d:'M'+(ox+i*sx)+' '+(oy-5)+'V'+(oy+5),style:'stroke:#fff;stroke-width:1.4;fill:none'},g);if(i)S('text',{x:ox+i*sx,y:oy+18,'class':'pl',text:String(i).replace('-','−'),style:'font-size:14px'},g)}
+        S('path',{d:'M20 '+oy+'H380',style:'stroke:#fff;stroke-opacity:.6;stroke-width:1.6;fill:none'},g);
+        S('path',{d:'M'+ox+' 10V250',style:'stroke:#fff;stroke-opacity:.6;stroke-width:1.6;fill:none'},g);
+        S('path',{d:'M'+(ox-3*sx)+' '+(oy+3*a*sy)+'L'+(ox+3*sx)+' '+(oy-3*a*sy),style:'stroke:var(--teal);stroke-width:3.6;stroke-linecap:round;fill:none'},g);
+        [1,2,-2].forEach(function(x){S('circle',{cx:ox+x*sx,cy:oy-a*x*sy,r:5,style:'fill:var(--pink);stroke:#fff;stroke-width:1.6'},g)});
+        S('circle',{cx:ox,cy:oy,r:4,style:'fill:#fff'},g);
+        chips.set('<span class="chip plain">f(x) = '+f(a)+' x</span><span class="chip plain">f(1) = '+f(a)+'</span><span class="chip plain">f(2) = '+f(2*a)+'</span><span class="chip plain">f(−2) = '+f(-2*a)+'</span>');
+        inf.set('<p>Le nombre <b>a</b> est le coefficient. '+(a>0?'Il est positif : la droite monte.':(a<0?'Il est négatif : la droite descend.':'Il est nul : la droite est confondue avec l’axe des abscisses.'))+'</p><p>Les images sont proportionnelles aux nombres de départ : <b>f(2) = 2 × f(1)</b>.</p>');
+      }
+      draw();
+    },
+      retenir:['Une <b>fonction linéaire</b> est une fonction <span class="math">f(x) = a x</span>, où a est un nombre fixe appelé <b>coefficient</b>.','Elle traduit une situation de proportionnalité : les images sont proportionnelles aux nombres de départ.','Sa représentation graphique est une <b>droite qui passe par l’origine</b> du repère.']}
   ],
   quiz:[
+    {q:'Si f(x) = 3x, alors f(2) = ?',o:['6','5','9'],a:0,e:'f(2) = 3 × 2 = 6.'},
+    {q:'La représentation graphique d’une fonction linéaire est :',o:['une droite passant par l’origine','une droite qui ne passe jamais par l’origine','un cercle'],a:0,e:'f(0) = a × 0 = 0 : la droite passe par l’origine.'},
     {q:'3 stylos coûtent 12 DH. Combien coûtent 7 stylos ?',o:['28 DH','21 DH','36 DH','84 DH'],a:0,e:'Un stylo coûte 4 DH, donc 7 stylos coûtent 28 DH.'},
     {q:'On partage 100 DH proportionnellement à 1 et 4. La plus grande part vaut…',o:['25 DH','75 DH','80 DH','50 DH'],a:2,e:'Il y a 5 parts de 20 DH. 4 parts = 80 DH.'},
     {q:'Un article coûte 200 DH. Avec une réduction de 15 %, il coûte…',o:['185 DH','170 DH','30 DH','215 DH'],a:1,e:'15 % de 200 = 30. Donc 200 − 30 = 170 DH.'}
@@ -9133,7 +9246,11 @@ var L={
      'مثال: '+m('2,3 < 7/3 < 2,4')+'.'],
   u:'غيّر البسط والمقام وانظر إلى موقع الكسر على المستقيم المدرّج.',
   w:[['encadrer','أطّر'],['encadrement','تأطير'],['dixième','جزء من عشرة'],['centième','جزء من مائة']]},
-
+'c1-2-l6':{
+  e:['لضرب كسرين نضرب البسطين معاً والمقامين معاً: '+m('a/b × c/d = (a × c) / (b × d)')+'.',
+     'مثال: '+m('1/2 × 2/3 = 2/6 = 1/3')+'. ثم نختزل إذا أمكن.'],
+  u:'غيّر البسطين والمقامين وراقب المربع المقسّم: المربعات الحمراء هي نتيجة الجداء.',
+  w:[['multiplier','اضرب'],['produit','جداء'],['numérateur','بسط'],['dénominateur','مقام'],['simplifier','اختزل']]},
 'c1-3-l1':{
   e:['العدد النسبي له إشارة (+ أو −) ومسافة إلى الصفر. على المستقيم المدرّج، كلما كانت النقطة أبعد نحو اليسار كان أفصولها أصغر.',
      'كل عدد سالب أصغر من كل عدد موجب. ومثال على الترتيب: '+m('−7 < −3 < 0 < 2')+'.'],
@@ -9291,7 +9408,16 @@ var L={
      'المسافة الحقيقية = المسافة على الخريطة × مقام السلّم.'],
   u:'اختر السلّم ثم غيّر المسافة على الخريطة وراقب المسافة الحقيقية.',
   w:[['échelle','سلّم'],['carte','خريطة'],['distance réelle','المسافة الحقيقية'],['plan','تصميم']]},
-
+'c1-16-l5':{
+  e:['<b>السرعة المتوسطة</b> هي المسافة المقطوعة مقسومة على مدة الرحلة: '+m('v = d ÷ t')+'. وتُعبَّر عنها بـ km/h أو m/s.',
+     'مثال: 120 km في ساعتين تعطي '+m('120 ÷ 2 = 60 km/h')+'.'],
+  u:'غيّر المسافة والمدة بالمنزلقين وتتبّع السرعة المتوسطة.',
+  w:[['vitesse moyenne','سرعة متوسطة'],['distance','مسافة'],['durée','مدة'],['trajet','رحلة']]},
+'c1-16-l6':{
+  e:['لتحويل الدقائق إلى ساعات نقسم على 60: '+m('1 h 30 min = 1,5 h')+'. ونتذكر أن '+m('1 km = 1 000 m')+' و'+m('1 h = 3 600 s')+'.',
+     'لتحويل km/h إلى m/s نقسم على 3,6، ولتحويل m/s إلى km/h نضرب في 3,6.'],
+  u:'غيّر الساعات والدقائق والسرعة وانظر إلى التحويلات.',
+  w:[['heure','ساعة'],['minute','دقيقة'],['convertir','حوّل'],['mètre par seconde','متر في الثانية']]},
 'c1-17-l1':{
   e:['<b>التكرار</b> (effectif) لقيمة هو عدد المرات التي تظهر فيها. <b>التردد</b> (fréquence) هو التكرار مقسوماً على التكرار الإجمالي، ونكتبه غالباً على شكل نسبة مئوية.',
      '<b>المنوال</b> (mode) هو القيمة ذات أكبر تكرار. وفي المخطط الدائري تكون زاوية القطاع متناسبة مع التكرار.'],
@@ -9486,7 +9612,11 @@ var L={
      'قاعدة متوازي الأضلاع: إذا كان ABCD متوازي أضلاع فإن '+m('AB + AD = AC')+'. وإحداثيات مجموع متجهتين هي مجموع إحداثياتهما.'],
   u:'اختر «Relation de Chasles» أو «Parallélogramme» وحرّك النقط. المتجهة الناتجة (البنفسجية) هي المجموع.',
   w:[['relation de Chasles','علاقة شال'],['somme de vecteurs','مجموع متجهتين'],['parallélogramme','متوازي الأضلاع']]},
-
+'c2-12-l3':{
+  e:['يكون متجهتان <b>متساويتين</b> إذا كان لهما نفس المنحى ونفس المنحى الموجّه ونفس الطول.',
+     m('AB = DC')+' إذا وفقط إذا كان الرباعي ABCD <b>متوازي أضلاع</b>. والمتجهتان المتساويتان لهما نفس الإحداثيتين.'],
+  u:'حرّك النقطة B بالمنزلقين ولاحظ أن D تتحرك لتبقى المتجهتان AB وDC متساويتين.',
+  w:[['vecteur','متجهة'],['égalité','تساوي'],['parallélogramme','متوازي الأضلاع'],['coordonnées','إحداثيتان'],['direction','منحى']]},
 'c2-13-l1':{
   e:['حجم الهرم '+m('V = ⅓ × B × h')+' حيث B مساحة القاعدة وh الارتفاع، أي ثلث حجم المنشور القائم الذي له نفس القاعدة ونفس الارتفاع.',
      'المساحة الجانبية لهرم منتظم قاعدته مربع هي مساحة 4 مثلثات متساوية الساقين: '+m('4 × (c × a ÷ 2)')+' حيث a ارتفاع الوجه الجانبي.'],
@@ -9512,7 +9642,11 @@ var L={
      'مثال: 100 درهم تقسم بتناسب مع 1 و4: هناك 5 أجزاء، قيمة كل جزء 20، فيأخذ الأول 20 والثاني 80.'],
   u:'غيّر المبلغ وعدد أجزاء كل شخص وراقب عرض كل جزء في الشريط.',
   w:[['partage proportionnel','قسمة تناسبية'],['part','جزء']]},
-
+'c2-14-l4':{
+  e:['الدالة الخطية هي دالة من الشكل '+m('f(x) = a x')+' حيث a عدد ثابت يسمى <b>المعامل</b>.',
+     'تترجم وضعية تناسبية: الصور متناسبة مع الأعداد الأصلية. وتمثيلها المبياني <b>مستقيم يمر من أصل المعلم</b>.'],
+  u:'غيّر المعامل a ولاحظ أن المستقيم يمر دائماً من الأصل، ويصعد إذا كان a موجباً وينزل إذا كان سالباً.',
+  w:[['fonction linéaire','دالة خطية'],['coefficient','معامل'],['origine','أصل المعلم'],['image','صورة'],['droite','مستقيم']]},
 'c2-15-l1':{
   e:['<b>المعدل</b> (moyenne) = مجموع كل القيم ÷ التكرار الإجمالي. وعندما نعطي جدول تكرارات نضرب كل قيمة في تكرارها ثم نجمع ونقسم على التكرار الإجمالي.',
      '<b>المدى</b> (étendue) هو الفرق بين أكبر قيمة وأصغر قيمة.'],

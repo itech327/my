@@ -12,16 +12,7 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 
 ## Résumé des lacunes probables
 
-- Mathématiques 1re : Produit de deux fractions (Lacune probable : aucune leçon sur la multiplication de fractions en 1AC.)
-- Mathématiques 1re : Vitesse moyenne (Lacune probable : présente en physique 3AC, absente des maths 1AC.)
-- Mathématiques 1re : Conversion d'unités (Lacune probable, à traiter avec la vitesse moyenne.)
-- Mathématiques 2e : Égalité de deux vecteurs (Lacune probable : vue seulement en 3AC (c3-10).)
-- Mathématiques 2e : Fonctions linéaires (Lacune probable : vues seulement en 3AC (c3-14).)
-- Physique-chimie 2e : Propriétés de l'air, compressibilité (Lacune probable : seul le gaz compressible de 1AC (c1-2) est traité.)
-- Physique-chimie 2e : Combustion de la cigarette (Lacune : aucune leçon sur le tabac.)
-- Physique-chimie 2e : Réduction de la pollution de l'air (Lacune probable : c2-7 traite surtout les sources.)
-- Physique-chimie 3e : Constituants de l'atome (Lacune probable : ni noyau ni électrons dans le contenu ordinaire.)
-- Physique-chimie 3e : Compteur électrique (Lacune probable : c3-16 traite l'énergie et le coût, pas le compteur.)
+Aucune lacune probable ne reste. Les dix lacunes trouvées ont reçu une leçon. Restent seulement les notions « à vérifier » plus bas.
 
 ## Mathématiques, 1re année (1AC)
 
@@ -31,7 +22,7 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | --- | --- | --- |
 | Écriture fractionnaire | c1-2 Les nombres fractionnaires | [ ] |
 | Addition et soustraction, dénominateurs différents | c1-2 Les nombres fractionnaires | [ ] |
-| Produit de deux fractions | **NON TROUVÉ.** Lacune probable : aucune leçon sur la multiplication de fractions en 1AC. | [ ] |
+| Produit de deux fractions | c1-2 Les nombres fractionnaires | [ ] |
 | Comparaison de fractions | c1-2 Les nombres fractionnaires | [ ] |
 
 ### Nombres décimaux relatifs
@@ -80,8 +71,8 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | Tableaux de proportionnalité | c1-16 Proportionnalité | [ ] |
 | Pourcentages | c1-16 Proportionnalité, c1-17 Statistiques | [ ] |
 | Échelles et cartes | c1-16 Proportionnalité | [ ] |
-| Vitesse moyenne | **NON TROUVÉ.** Lacune probable : présente en physique 3AC, absente des maths 1AC. | [ ] |
-| Conversion d'unités | **NON TROUVÉ.** Lacune probable, à traiter avec la vitesse moyenne. | [ ] |
+| Vitesse moyenne | c1-16 Proportionnalité | [ ] |
+| Conversion d'unités | c1-16 Proportionnalité | [ ] |
 | Notion de fonction | **NON TROUVÉ.** À vérifier : simple introduction dans le programme. | [ ] |
 | Tableaux, diagrammes en bâtons et circulaires | c1-17 Statistiques | [ ] |
 | Effectifs | c1-17 Statistiques | [ ] |
@@ -117,7 +108,7 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | Théorème de Pythagore | c2-17 Théorème de Pythagore | [ ] |
 | Valeurs approchées des nombres réels | c2-7 Ordre des nombres rationnels et opérations | [ ] |
 | Cosinus d'un angle aigu | c2-18 Cosinus d’un angle aigu | [ ] |
-| Égalité de deux vecteurs | **NON TROUVÉ.** Lacune probable : vue seulement en 3AC (c3-10). | [ ] |
+| Égalité de deux vecteurs | c2-12 Vecteurs et translations | [ ] |
 | Somme de deux vecteurs | c2-12 Vecteurs et translations | [ ] |
 | Translation | c2-12 Vecteurs et translations | [ ] |
 | Cône de révolution | c2-13 Pyramides et cônes de révolution | [ ] |
@@ -128,7 +119,7 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | Notion officielle | Où dans le site | Relu |
 | --- | --- | --- |
 | Proportionnalité | c2-14 Proportionnalité | [ ] |
-| Fonctions linéaires | **NON TROUVÉ.** Lacune probable : vues seulement en 3AC (c3-14). | [ ] |
+| Fonctions linéaires | c2-14 Proportionnalité | [ ] |
 | Alignement avec l'origine du repère | c2-14 Proportionnalité | [ ] |
 | Lecture d'une représentation graphique | c2-14 Proportionnalité, c2-15 Statistique | [ ] |
 | Effectif cumulé, fréquence cumulée | c2-15 Statistique | [ ] |
@@ -227,14 +218,14 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | --- | --- | --- |
 | Composition de l'atmosphère | c2-2 L’air et ses constituants | [ ] |
 | Mouvement de l'air, vent | c2-2 L’air et ses constituants, c2-5 La réaction chimique et ses lois, c2-14 L’installation électrique domestique | [ ] |
-| Propriétés de l'air, compressibilité | **NON TROUVÉ.** Lacune probable : seul le gaz compressible de 1AC (c1-2) est traité. | [ ] |
+| Propriétés de l'air, compressibilité | c2-2 L’air et ses constituants | [ ] |
 | Composants de l'air | c2-2 L’air et ses constituants, c2-7 La pollution de l’air, c2-4 La réaction chimique : les combustions | [ ] |
 | Molécule | c2-3 Les molécules et les atomes | [ ] |
 | Atome | c2-3 Les molécules et les atomes, c2-5 La réaction chimique et ses lois, c2-4 La réaction chimique : les combustions | [ ] |
 | Corps simple et corps composé | c2-3 Les molécules et les atomes | [ ] |
 | Combustion du carbone | c2-4 La réaction chimique : les combustions, c2-2 L’air et ses constituants | [ ] |
 | Combustion du butane | c2-4 La réaction chimique : les combustions | [ ] |
-| Combustion de la cigarette | **NON TROUVÉ.** Lacune : aucune leçon sur le tabac. | [ ] |
+| Combustion de la cigarette | c2-4 La réaction chimique : les combustions | [ ] |
 | Prévention des dangers des combustions | c2-4 La réaction chimique : les combustions, c2-7 La pollution de l’air | [ ] |
 | Réaction chimique | c2-5 La réaction chimique et ses lois, c2-4 La réaction chimique : les combustions | [ ] |
 | Conservation de la masse | c2-5 La réaction chimique et ses lois | [ ] |
@@ -243,7 +234,7 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | Matières naturelles et artificielles | c2-6 Matières naturelles et synthétiques | [ ] |
 | Pétrole et dérivés | c2-6 Matières naturelles et synthétiques | [ ] |
 | Causes de la pollution de l'air | c2-7 La pollution de l’air | [ ] |
-| Réduction de la pollution de l'air | **NON TROUVÉ.** Lacune probable : c2-7 traite surtout les sources. | [ ] |
+| Réduction de la pollution de l'air | c2-7 La pollution de l’air | [ ] |
 
 ### Lumière et image
 
@@ -284,15 +275,15 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | Notion officielle | Où dans le site | Relu |
 | --- | --- | --- |
 | Objets et matières, diversité des matériaux | c3-1 Matériaux de la vie quotidienne, c3-2 Matériaux et électricité, c3-7 Dangers de quelques matériaux | [ ] |
-| Constituants de l'atome | **NON TROUVÉ.** Lacune probable : ni noyau ni électrons dans le contenu ordinaire. | [ ] |
-| Ions | c3-4 Les solutions acides et basiques, c3-17 Trajectoire et types de mouvement, c3-12 Équilibre d’un solide soumis à deux forces | [ ] |
+| Constituants de l'atome | c3-6 Tests d’identification de quelques ions | [ ] |
+| Ions | c3-6 Tests d’identification de quelques ions, c3-16 L’énergie électrique, c3-4 Les solutions acides et basiques | [ ] |
 | Oxydation du fer | c3-3 Réactions de quelques matériaux avec l’air, c3-1 Matériaux de la vie quotidienne | [ ] |
-| Oxydation de l'aluminium | c3-5 Métaux, solutions acides et basiques, c3-1 Matériaux de la vie quotidienne, c3-3 Réactions de quelques matériaux avec l’air | [ ] |
+| Oxydation de l'aluminium | c3-5 Métaux, solutions acides et basiques, c3-1 Matériaux de la vie quotidienne, c3-6 Tests d’identification de quelques ions | [ ] |
 | Matières organiques et dioxygène | c3-1 Matériaux de la vie quotidienne | [ ] |
 | pH | c3-4 Les solutions acides et basiques, c3-2 Matériaux et électricité, c3-17 Trajectoire et types de mouvement | [ ] |
 | Précautions acides et bases | **NON TROUVÉ.** À vérifier : précautions peut-être dans c3-4 ou c3-7. | [ ] |
 | Réactions avec acides et bases | c3-5 Métaux, solutions acides et basiques | [ ] |
-| Tests d'identification des ions | pd Test de positionnement, c3-5 Métaux, solutions acides et basiques, c3-6 Tests d’identification de quelques ions | [ ] |
+| Tests d'identification des ions | c3-6 Tests d’identification de quelques ions, pd Test de positionnement, c3-5 Métaux, solutions acides et basiques | [ ] |
 | Dangers de certaines matières | c3-7 Dangers de quelques matériaux | [ ] |
 
 ### Mécanique et électricité
@@ -317,5 +308,5 @@ Pour relecture par un enseignant, un niveau à la fois. Chaque ligne est une not
 | Loi d'Ohm et résistance | c3-14 Résistance électrique et loi d’Ohm | [ ] |
 | Puissance électrique | c3-16 L’énergie électrique | [ ] |
 | Énergie électrique consommée | c3-16 L’énergie électrique | [ ] |
-| Compteur électrique | **NON TROUVÉ.** Lacune probable : c3-16 traite l'énergie et le coût, pas le compteur. | [ ] |
+| Compteur électrique | c3-16 L’énergie électrique | [ ] |
 

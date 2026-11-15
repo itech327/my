@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-CPsREzTHBqKNZto/aR/5sa6M3IE8lERMrDVds26i7sQ=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-oVYzUI28r/sEE3ulI6qD5yOfIR4WFXim+hsHLiiryOU=' 'sha256-VcKAZCzuHYo2kGzOXEygMZOtVGPF1sgI6dA/4nROwXk=' 'sha256-s1GsE95h/PrPnNbkE2BwHaIW7YGzW8eGDrnvLpX9d3o=' 'sha256-uvFn6mVqn11ziNOM9DuQ1L3gz/Q9dHJBfRLOhY8mt8w=' 'sha256-akPfzI6939z9jngwsc8J7G08N3w+4po9X7s9iFPykLw=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-iW8h82t55A1VFLGHYsxUA2Rn22n1GtUZelL/iU/upRw=' 'sha256-5OEfrD9FSheeTI7+6Yqn1NtFEq7eGMHNW1UQ3S9Q6rU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-CPsREzTHBqKNZto/aR/5sa6M3IE8lERMrDVds26i7sQ=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-oVYzUI28r/sEE3ulI6qD5yOfIR4WFXim+hsHLiiryOU=' 'sha256-TDhLLaAoyK8csqN3uEMabgBPzrWGMCI+HnRpkLrMBEI=' 'sha256-PVZ6WSjlR9PZQI6KkTidaly887/OUvifsewT7aCbl9M=' 'sha256-uvFn6mVqn11ziNOM9DuQ1L3gz/Q9dHJBfRLOhY8mt8w=' 'sha256-8ZnQbroxM3tv9pMoXeT2AS5A4QyQoG3AdxEarW7V/M0=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-iW8h82t55A1VFLGHYsxUA2Rn22n1GtUZelL/iU/upRw=' 'sha256-5OEfrD9FSheeTI7+6Yqn1NtFEq7eGMHNW1UQ3S9Q6rU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie.html">
@@ -2472,9 +2472,38 @@ lessons:[
  retenir:['Le <b>vent</b> est un déplacement d’air.','Il naît quand l’air chaud monte et que de l’air plus froid vient prendre sa place.'],
  ar:{e:['<b>الرياح</b> هي انتقال للهواء. تسخن الشمس الأرض بشكل غير متساو، فيسخن الهواء الملامس للأرض الساخنة ويصبح أخف فيصعد إلى الأعلى.','يترك الهواء الساخن مكانا فارغا قرب الأرض، فينتقل إليه هواء أبرد. هذا الانتقال هو الريح.'],
   u:'اضغط على المراحل الثلاث بالترتيب وتتبّع حركة الهواء.',
-  w:[['vent','رياح'],['air chaud','هواء ساخن'],['air froid','هواء بارد'],['déplacement','انتقال']]}}
+  w:[['vent','رياح'],['air chaud','هواء ساخن'],['air froid','هواء بارد'],['déplacement','انتقال']]}},
+{short:'L’air est compressible',title:'L’air est compressible',
+ intro:'Pousse le piston d’une seringue fermée pleine d’air. Observe les particules et la pression.',
+ build:function(el){
+  var vol=40;
+  ui.slider(el,{label:'Volume d’air',min:10,max:60,step:2,value:40,color:T,fmt:function(v){return v+' mL'}},function(v){vol=v;draw()});
+  var svg=ui.stage(el,400,170,'Seringue fermée contenant de l’air'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+  var pts=[],i;
+  for(i=0;i<24;i++)pts.push([((i*37)%100)/100,((i*61+17)%100)/100]);
+  function draw(){
+    g.replaceChildren();
+    var W=vol/60*280,x0=50,k;
+    S('rect',{x:x0,y:40,width:W,height:80,style:'fill:var(--teal);fill-opacity:.12;stroke:#fff;stroke-width:2.4'},g);
+    S('rect',{x:x0+W,y:30,width:8,height:100,style:'fill:var(--lav);stroke:#fff;stroke-width:2'},g);
+    S('path',{d:'M'+(x0+W+8)+' 80H370',style:'stroke:#fff;stroke-width:5;fill:none'},g);
+    S('rect',{x:366,y:58,width:10,height:44,rx:3,style:'fill:#fff'},g);
+    for(k=0;k<pts.length;k++)S('circle',{cx:x0+6+pts[k][0]*(W-12),cy:46+pts[k][1]*68,r:4,style:'fill:var(--pink)'},g);
+    var lvl=vol<=20?'forte':(vol<=40?'moyenne':'faible');
+    chips.set(ui.chip('Volume : '+vol+' mL',T)+ui.chip('Pression : '+lvl,vol<=20?C:(vol<=40?Y:V)));
+    inf.set('<p>'+(vol<=20?'Les particules sont très serrées. Elles heurtent souvent les parois : la pression est forte.':(vol<=40?'Les particules sont moins serrées : la pression est moyenne.':'Les particules ont beaucoup de place : la pression est faible.'))+'</p><p>Le nombre de particules ne change pas, seul leur espace change.</p>');
+  }
+  draw();
+ },
+ retenir:['L’air est un gaz <b>compressible</b> : on peut diminuer son volume.','Quand le volume diminue, les particules se rapprochent et la <b>pression augmente</b>.','L’air est aussi <b>expansible</b> : il occupe tout le volume qui lui est offert.'],
+ ar:{e:['الهواء غاز <b>قابل للانضغاط</b>: يمكن تصغير حجمه. وحين يصغر الحجم تقترب الدقائق من بعضها ويرتفع <b>الضغط</b>.',
+  'والهواء <b>قابل للتمدد</b> أيضاً: يملأ كل الحجم المتاح له.'],
+  u:'حرّك منزلق الحجم ولاحظ تقارب الدقائق الوردية وتغيّر الضغط. عدد الدقائق لا يتغير.',
+  w:[['compressible','قابل للانضغاط'],['expansible','قابل للتمدد'],['pression','ضغط'],['seringue','محقنة'],['piston','مكبس']]}}
 ],
 quiz:[
+ {q:'Quand on pousse le piston d’une seringue fermée pleine d’air, la pression :',o:['augmente','diminue','ne change pas'],a:0,e:'Les particules se rapprochent et heurtent plus souvent les parois.'},
+ {q:'Un gaz compressible est un gaz dont on peut :',o:['diminuer le volume','augmenter la masse','changer la couleur'],a:0,e:'Compressible veut dire que son volume peut diminuer.'},
  {q:'La couche d’ozone se trouve dans :',o:['la stratosphère','la troposphère','la thermosphère'],a:0,e:'Vers 20 à 30 km d’altitude.'},
  {q:'La couche d’ozone nous protège :',o:['d’une grande partie des rayons ultraviolets','de la pluie','du bruit'],a:0,e:'L’ozone absorbe une grande partie des ultraviolets du Soleil.'},
  {q:'Le vent est dû à :',o:['de l’air plus froid qui prend la place de l’air chaud qui monte','la rotation des nuages','la chute de la pluie'],a:0,e:'L’air chaud monte, l’air froid se déplace pour le remplacer.'},
@@ -2678,9 +2707,46 @@ lessons:[
   'نوازن المعادلة ذرة بعد ذرة: نبدأ بالكربون ثم الهيدروجين ثم الأكسجين، وإذا ظهر معامل عشري نضرب كل المعاملات في 2. المعادلة الموزونة: '+'<b>2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O</b>.',
   'إذا نقص ثنائي الأكسجين يكون الاحتراق غير تام ويتكوّن أحادي أوكسيد الكربون السام، لذلك يجب تهوية المطبخ.'],
   u:'اضغط على الخطوات من 1 إلى 5 وراقب جدول الذرات: الأخضر يعني أن عدد الذرات متساوٍ.',
-  w:[['butane','بوتان'],['équilibrer','وازن'],['coefficient','معامل'],['atome','ذرة'],['combustion complète','احتراق تام']]}}
+  w:[['butane','بوتان'],['équilibrer','وازن'],['coefficient','معامل'],['atome','ذرة'],['combustion complète','احتراق تام']]}},
+{short:'La cigarette',title:'La combustion de la cigarette',
+ intro:'Choisis une étape pour voir ce qui brûle, ce que contient la fumée et ses dangers.',
+ build:function(el){
+  var cur='br';
+  ui.tabs(el,[['br','Ce qui brûle'],['fu','La fumée'],['da','Les dangers']],function(k){cur=k;draw()});
+  var svg=ui.stage(el,400,120,'Une cigarette allumée'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+  function draw(){
+    g.replaceChildren();
+    S('rect',{x:60,y:50,width:60,height:20,style:'fill:var(--coral);fill-opacity:.8;stroke:#fff;stroke-width:1.6'},g);
+    S('rect',{x:120,y:50,width:170,height:20,style:'fill:#fff;fill-opacity:.85;stroke:#fff;stroke-width:1.6'},g);
+    S('rect',{x:290,y:50,width:14,height:20,style:'fill:var(--coral);stroke:#fff;stroke-width:1.6'},g);
+    S('circle',{cx:306,cy:60,r:6,style:'fill:var(--pink);fill-opacity:'+(cur==='br'?1:0.5)},g);
+    if(cur!=='br'){
+      S('path',{d:'M310 52C330 40 320 28 340 20C355 14 350 6 365 4',style:'stroke:var(--teal);stroke-width:3;fill:none;opacity:.8'},g);
+      S('path',{d:'M312 56C335 48 345 40 362 36',style:'stroke:var(--lav);stroke-width:3;fill:none;opacity:.8'},g);
+    }
+    S('text',{x:90,y:96,'class':'pl',text:'filtre',style:'font-size:15px'},g);
+    S('text',{x:205,y:96,'class':'pl',text:'tabac et papier',style:'font-size:15px'},g);
+    if(cur==='br'){
+      chips.set(ui.chip('Combustible : tabac et papier',C)+ui.chip('Comburant : dioxygène de l’air',T)+ui.chip('Énergie : la braise',P));
+      inf.set('<p>Le tabac et le papier sont des matières organiques. Quand on aspire, l’air arrive à la braise et la combustion continue.</p>');
+    }else if(cur==='fu'){
+      chips.set(ui.chip('CO₂ et H₂O',T)+ui.chip('CO : monoxyde de carbone',C)+ui.chip('Goudrons',V)+ui.chip('Nicotine',P));
+      inf.set('<p>La combustion du tabac est <b>incomplète</b> : elle produit du monoxyde de carbone et des goudrons, en plus du dioxyde de carbone et de l’eau.</p><p>La nicotine est une substance contenue dans le tabac.</p>');
+    }else{
+      chips.set(ui.chip('CO : gêne le transport du dioxygène par le sang',C)+ui.chip('Goudrons : se déposent dans les poumons',V)+ui.chip('Nicotine : crée une dépendance',P));
+      inf.set('<p>La fumée est dangereuse pour le fumeur et pour les personnes autour de lui. Le plus sûr est de ne pas commencer à fumer.</p>');
+    }
+  }
+  draw();
+ },
+ retenir:['Dans une cigarette, le <b>tabac</b> et le papier brûlent grâce au dioxygène de l’air.','La combustion est <b>incomplète</b> : la fumée contient du <b>monoxyde de carbone</b> toxique, des <b>goudrons</b> et de la <b>nicotine</b>.','Le tabagisme est dangereux pour la santé du fumeur et de son entourage.'],
+ ar:{e:['في السيجارة يحترق <b>التبغ</b> والورق بوجود ثنائي الأكسجين. الاحتراق <b>غير تام</b>، ولذلك يحتوي الدخان على <b>أحادي أوكسيد الكربون</b> السام و<b>القار</b> و<b>النيكوتين</b>.',
+  'التدخين خطر على صحة المدخن وعلى من حوله. وأسلم طريق هو ألا نبدأ التدخين.'],
+  u:'اختر المراحل الثلاث بالتتابع: ما يحترق، ثم مكونات الدخان، ثم الأخطار.',
+  w:[['cigarette','سيجارة'],['tabac','تبغ'],['goudron','قار'],['nicotine','نيكوتين'],['monoxyde de carbone','أحادي أوكسيد الكربون'],['tabagisme','التدخين']]}}
 ],
 quiz:[
+ {q:'La fumée d’une cigarette contient du monoxyde de carbone parce que la combustion est :',o:['incomplète','complète','impossible'],a:0,e:'Le manque de dioxygène donne du monoxyde de carbone.'},
  {q:'Quels produits donne la combustion complète du butane ?',o:['CO₂ et H₂O','CO et H₂','seulement du CO₂'],a:0,e:'Le butane contient du carbone et de l’hydrogène : CO₂ et H₂O.'},
  {q:'Dans 2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O, combien d’atomes d’oxygène y a-t-il après la flèche ?',o:['26','13','18'],a:0,e:'8 × 2 + 10 = 26, comme 13 × 2 à gauche.'},
  {q:'Pour qu’il y ait combustion, il faut :',o:['seulement un combustible','combustible, comburant et énergie','seulement de l’eau'],a:1,e:'Les trois éléments sont indispensables.'},
@@ -3155,6 +3221,38 @@ var IONS=[
 ];
 PC.chapter({id:'c3-6',eyebrow:EY+'Les matériaux',title:'Tests d’identification de quelques ions',ar:'التعرف على بعض الأيونات',
 lessons:[
+{short:'L’atome et les ions',title:'L’atome, les électrons et les ions',
+ intro:'Choisis un atome. Fais-lui perdre ou gagner des électrons et regarde la charge totale.',
+ build:function(el){
+  var AT=[['Na',11,'sodium'],['Mg',12,'magnésium'],['Al',13,'aluminium'],['Cl',17,'chlore'],['O',8,'oxygène']],cur=0,dl=0;
+  var ION={Na:[-1,'ion sodium'],Mg:[-2,'ion magnésium'],Al:[-3,'ion aluminium'],Cl:[1,'ion chlorure'],O:[2,'ion oxyde']};
+  var SUP={'1':'⁺','2':'²⁺','3':'³⁺','-1':'⁻','-2':'²⁻','-3':'³⁻'};
+  ui.tabs(el,AT.map(function(a,i){return [String(i),a[0]+' ('+a[2]+')']}),function(k){cur=+k;draw()});
+  ui.slider(el,{label:'Électrons gagnés ou perdus',min:-3,max:3,step:1,value:0,color:P,fmt:function(v){return v===0?'aucun':(v>0?'+'+v+' gagné'+(v>1?'s':''):(-v)+' perdu'+(-v>1?'s':''))}},function(v){dl=v;draw()});
+  var svg=ui.stage(el,400,230,'Un atome avec son noyau et ses électrons'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+  function draw(){
+    g.replaceChildren();
+    var a=AT[cur],p=a[1],e=Math.max(0,p+dl),ch=p-e,cx=200,cy=115,caps=[2,8,99],rad=[40,64,88],left=e,i,n,r,j;
+    for(r=0;r<3;r++)S('circle',{cx:cx,cy:cy,r:rad[r],style:'fill:none;stroke:#fff;stroke-opacity:.18;stroke-width:1.4'},g);
+    S('circle',{cx:cx,cy:cy,r:24,style:'fill:var(--coral);fill-opacity:.85;stroke:#fff;stroke-width:2'},g);
+    S('text',{x:cx,y:cy,'class':'pl',text:'+'+p,style:'font-size:16px'},g);
+    for(r=0;r<3;r++){
+      n=Math.min(left,caps[r]);left-=n;
+      for(j=0;j<n;j++){var t=2*Math.PI*j/n+r*0.5;S('circle',{cx:cx+rad[r]*Math.cos(t),cy:cy+rad[r]*Math.sin(t),r:4.5,style:'fill:var(--teal);stroke:#fff;stroke-width:1.2'},g)}
+    }
+    var sym=a[0]+(ch===0?'':(SUP[String(ch)]||''));
+    var kind=ch===0?'atome neutre':(ch>0?'ion positif (cation)':'ion négatif (anion)');
+    var known=ION[a[0]]&&ION[a[0]][0]===dl?' C’est l’'+ION[a[0]][1]+' '+sym+'.':'';
+    chips.set(ui.chip(sym,P)+ui.chip('Protons : '+p+' (charge +'+p+')',C)+ui.chip('Électrons : '+e+' (charge −'+e+')',T)+ui.chip('Charge totale : '+(ch>0?'+':(ch<0?'−':''))+Math.abs(ch),V));
+    inf.set('<p><b>'+kind+'</b>.'+known+'</p><p>'+(ch===0?'Il y a autant d’électrons que de protons : les charges se compensent.':(ch>0?'Il y a moins d’électrons que de protons : l’atome a perdu des électrons.':'Il y a plus d’électrons que de protons : l’atome a gagné des électrons.'))+'</p>');
+  }
+  draw();
+ },
+ retenir:['Un atome a un <b>noyau</b> chargé positivement (protons et neutrons) et des <b>électrons</b> chargés négativement qui l’entourent.','L’atome est <b>électriquement neutre</b> : il a autant d’électrons que de protons.','Un <b>ion</b> est un atome qui a perdu ou gagné des électrons. S’il perd des électrons, c’est un ion positif. S’il en gagne, c’est un ion négatif.'],
+ ar:{e:['للذرة <b>نواة</b> موجبة الشحنة تضم البروتونات والنوترونات، وتحيط بها <b>إلكترونات</b> سالبة الشحنة. الذرة <b>معتدلة كهربائياً</b> لأن عدد إلكتروناتها يساوي عدد بروتوناتها.',
+  '<b>الأيون</b> ذرة فقدت أو اكتسبت إلكترونات. إذا فقدت إلكترونات صارت أيوناً موجباً، وإذا اكتسبت صارت أيوناً سالباً.'],
+  u:'اختر ذرة ثم غيّر عدد الإلكترونات بالمنزلق وراقب الشحنة الكلية والرمز.',
+  w:[['atome','ذرة'],['noyau','نواة'],['électron','إلكترون'],['proton','بروتون'],['ion','أيون'],['cation','أيون موجب'],['anion','أيون سالب']]}},,
 {short:'Les précipités',title:'Identifier un ion avec un réactif',
  intro:'Choisis une solution inconnue, puis ajoute le réactif. La couleur du précipité révèle l’ion.',
  build:function(el){
@@ -3194,6 +3292,8 @@ lessons:[
   w:[['ion','أيون'],['précipité','راسب'],['soude','الصودا (هيدروكسيد الصوديوم)'],['nitrate d’argent','نترات الفضة'],['réactif','كاشف']]}}
 ],
 quiz:[
+ {q:'Un atome de sodium (11 protons) perd 1 électron. Il devient :',o:['Na⁺, un ion positif','Na⁻, un ion négatif','un atome neutre'],a:0,e:'Il reste 10 électrons pour 11 protons : la charge est +1.'},
+ {q:'Un atome neutre a :',o:['autant d’électrons que de protons','plus d’électrons que de protons','moins d’électrons que de protons'],a:0,e:'Les charges positives et négatives se compensent.'},
  {q:'Avec la soude, l’ion cuivre II donne un précipité :',o:['bleu','vert','blanc'],a:0,e:'Cu²⁺ : précipité bleu.'},
  {q:'Un précipité vert avec la soude indique l’ion :',o:['Cu²⁺','Fe²⁺','Fe³⁺'],a:1,e:'Fe²⁺ : précipité vert.'},
  {q:'Un précipité couleur rouille avec la soude indique l’ion :',o:['Fe²⁺','Fe³⁺','Zn²⁺'],a:1,e:'Fe³⁺ : précipité rouille.'},
@@ -3615,9 +3715,41 @@ lessons:[
  ar:{e:['<b>الطاقة الكهربائية</b> المستهلكة من طرف جهاز قدرته P خلال مدة t هي <span class="math" dir="ltr">E = P × t</span>. إذا كانت P بالواط وt بالثانية فإن E بالجول (J). وإذا كانت P بالكيلوواط وt بالساعة فإن E بالكيلوواط ساعة (kWh) وهي الوحدة المستعملة في فواتير الكهرباء.',
   'العلاقة بين الوحدتين: <span class="math" dir="ltr">1 kWh = 3 600 000 J</span>. الأجهزة ذات القدرة الكبيرة (مثل الفرن) تستهلك طاقة أكبر في نفس المدة.'],
   u:'اختر جهازاً وغيّر مدة استعماله اليومية. يعرض الشكل الطاقة اليومية بـ kWh والتكلفة التقريبية في الشهر (السعر المعروض مثال فقط).',
-  w:[['énergie électrique','الطاقة الكهربائية'],['kilowattheure','كيلوواط ساعة'],['joule','جول'],['facture','فاتورة']]}}
+  w:[['énergie électrique','الطاقة الكهربائية'],['kilowattheure','كيلوواط ساعة'],['joule','جول'],['facture','فاتورة']]}},
+{short:'Le compteur',title:'Lire le compteur électrique',
+ intro:'Le compteur additionne l’énergie consommée en kWh. Choisis la consommation du mois et le prix du kWh.',
+ build:function(el){
+  var old=12480,use=180,price=1.2;
+  function f(x){return String(Math.round(x*100)/100).replace('.',',')}
+  function grp(n){return String(n).replace(/\B(?=(\d{3})+$)/g,' ')}
+  ui.slider(el,{label:'Consommation du mois',min:0,max:600,step:10,value:180,color:P,fmt:function(v){return v+' kWh'}},function(v){use=v;draw()});
+  ui.slider(el,{label:'Prix du kWh (exemple)',min:0.8,max:2,step:0.1,value:1.2,color:T,fmt:function(v){return f(v)+' DH'}},function(v){price=Math.round(v*10)/10;draw()});
+  var svg=ui.stage(el,400,130,'Deux relevés du compteur électrique'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+  function row(y,label,val,col){
+    var d=String(val).padStart(5,'0'),i;
+    S('text',{x:200,y:y-8,'class':'pl',text:label,style:'font-size:15px'},g);
+    for(i=0;i<5;i++){
+      S('rect',{x:110+i*36,y:y,width:32,height:34,rx:4,style:'fill:'+col+';fill-opacity:.25;stroke:#fff;stroke-width:1.6'},g);
+      S('text',{x:126+i*36,y:y+17,'class':'pl',text:d.charAt(i),style:'font-size:20px;font-style:normal'},g);
+    }
+  }
+  function draw(){
+    g.replaceChildren();
+    row(24,'Index au début du mois',old,'var(--teal)');
+    row(84,'Index à la fin du mois',old+use,'var(--pink)');
+    chips.set(ui.chip('Consommation = '+grp(old+use)+' − '+grp(old)+' = '+use+' kWh',P)+ui.chip('Coût = '+use+' × '+f(price)+' = '+f(use*price)+' DH',T));
+    inf.set('<p>Le compteur ne remet pas son chiffre à zéro : il compte tout. La consommation est la <b>différence</b> entre deux relevés.</p><p>Le prix du kWh est un exemple. Il figure sur la facture.</p>');
+  }
+  draw();
+ },
+ retenir:['Le <b>compteur électrique</b> mesure l’énergie électrique consommée en <b>kilowattheures (kWh)</b>.','Consommation = nouvel index − ancien index.','Coût = énergie en kWh × prix du kWh.'],
+ ar:{e:['<b>العداد الكهربائي</b> يقيس الطاقة الكهربائية المستهلكة بالكيلوواط ساعة (kWh). الاستهلاك = المؤشر الجديد − المؤشر القديم.',
+  'التكلفة = الطاقة بـ kWh × ثمن الكيلوواط ساعة. ثمن الكيلوواط ساعة في هذا المثال تقريبي، والثمن الحقيقي مكتوب في الفاتورة.'],
+  u:'غيّر الاستهلاك وثمن الكيلوواط ساعة وراقب الفرق بين المؤشرين والتكلفة.',
+  w:[['compteur','عداد'],['kilowattheure','كيلوواط ساعة'],['index','مؤشر'],['facture','فاتورة'],['consommation','استهلاك']]}}
 ],
 quiz:[
+ {q:'Le compteur indique 12 480 kWh au début du mois et 12 660 kWh à la fin. La consommation est :',o:['180 kWh','25 140 kWh','12 480 kWh'],a:0,e:'12 660 − 12 480 = 180 kWh.'},
  {q:'Un appareil fonctionne sous 230 V avec un courant de 2 A. Sa puissance est :',o:['115 W','460 W','232 W'],a:1,e:'P = U × I = 230 × 2 = 460 W.'},
  {q:'Un four de 2 kW fonctionne 3 h. L’énergie consommée est :',o:['6 kWh','0,67 kWh','2 kWh'],a:0,e:'E = 2 × 3 = 6 kWh.'},
  {q:'Les inscriptions « 230 V ; 60 W » d’une lampe sont :',o:['ses grandeurs nominales','sa résistance','sa masse'],a:0,e:'Ce sont ses grandeurs nominales.'},
@@ -4682,9 +4814,33 @@ lessons:[
  retenir:['La <b>pollution de l’air</b> est la présence dans l’air de substances nocives : monoxyde de carbone (CO), dioxyde de soufre (SO₂), oxydes d’azote (NOₓ), particules fines…','Sources : transports, usines, chauffage, déchets brûlés. Certaines sources sont naturelles (volcans, tempêtes de sable).','Conséquences : maladies respiratoires, <b>pluies acides</b>, <b>effet de serre</b> (CO₂) et réchauffement climatique.','Gestes : transports en commun, vélo, arbres, énergies propres, moins de déchets brûlés.'],
  ar:{e:['<b>تلوث الهواء</b> هو وجود مواد ضارة في الهواء مثل أحادي أكسيد الكربون (CO) وثنائي أكسيد الكبريت (SO₂) وأكاسيد الأزوت (NOₓ) والدقائق الدقيقة.','مصادره: وسائل النقل والمصانع والتدفئة وحرق النفايات، ومنها مصادر طبيعية كالبراكين والعواصف الرملية. أضراره: أمراض الجهاز التنفسي و<b>الأمطار الحمضية</b> و<b>الاحتباس الحراري</b> بسبب ثنائي أكسيد الكربون.','للحد منه: استعمال النقل العمومي والدراجة، وغرس الأشجار، واستعمال الطاقات النظيفة.'],
   u:'زد عدد السيارات والمصانع وسترى الدخان يزداد ومؤشر جودة الهواء ينتقل نحو الخطر. ثم ازرع أشجاراً لترى أثرها.',
-  w:[['pollution','تلوث'],['polluant','ملوِّث'],['effet de serre','الاحتباس الحراري'],['pluie acide','مطر حمضي'],['particules fines','دقائق دقيقة']]}}
+  w:[['pollution','تلوث'],['polluant','ملوِّث'],['effet de serre','الاحتباس الحراري'],['pluie acide','مطر حمضي'],['particules fines','دقائق دقيقة']]}},
+{short:'Réduire la pollution',title:'Réduire la pollution de l’air',
+ intro:'Choisis des mesures. Observe la part d’émissions qui reste dans ce modèle simplifié.',
+ build:function(el){
+  var tr=0,fi=0,en=0;
+  ui.slider(el,{label:'Transports en commun et vélo',min:0,max:10,step:1,value:0,color:C,fmt:function(v){return v}},function(v){tr=v;draw()});
+  ui.slider(el,{label:'Filtres dans les usines',min:0,max:10,step:1,value:0,color:V,fmt:function(v){return v}},function(v){fi=v;draw()});
+  ui.slider(el,{label:'Énergies propres (soleil, vent)',min:0,max:10,step:1,value:0,color:T,fmt:function(v){return v}},function(v){en=v;draw()});
+  var bar=ui.stage(el,400,50,'Émissions restantes'),chips=ui.chips(el),inf=ui.info(el);
+  S('rect',{x:20,y:16,width:360,height:16,rx:8,style:'fill:#fff;fill-opacity:.15'},bar);
+  var fill=S('rect',{x:20,y:16,width:360,height:16,rx:8,style:'fill:var(--coral)'},bar);
+  function draw(){
+    var rest=100-(tr*2.5+fi*2.5+en*2),q=rest<=50?['Air nettement plus sain',T]:(rest<=80?['Amélioration',Y]:['Pollution élevée',C]);
+    fill.setAttribute('width',360*rest/100);fill.style.fill=q[1];
+    chips.set(ui.chip('Émissions restantes : '+Math.round(rest)+' %',q[1])+ui.chip(q[0],q[1]));
+    inf.set('<p>Ce modèle est simplifié : il sert à comparer des mesures, pas à donner des chiffres réels.</p><p>Autres gestes : planter des arbres, économiser l’énergie, ne pas brûler les déchets.</p>');
+  }
+  draw();
+ },
+ retenir:['On réduit la pollution de l’air en agissant sur ses sources : <b>transports</b>, <b>industries</b>, <b>énergie</b>.','Mesures : transports en commun, vélo, filtres dans les usines, énergies propres, plantation d’arbres.','Chaque geste individuel compte : économiser l’énergie, ne pas brûler les déchets.'],
+ ar:{e:['نقلّل تلوث الهواء بالتأثير على مصادره: <b>النقل</b> و<b>المصانع</b> و<b>الطاقة</b>.',
+  'من الإجراءات: النقل العمومي والدراجة، المصافي في المصانع، الطاقات النظيفة، غرس الأشجار، وترشيد استهلاك الطاقة وعدم حرق النفايات.'],
+  u:'حرّك المنزلقات الثلاثة ولاحظ كيف تنخفض نسبة الانبعاثات في هذا النموذج المبسّط.',
+  w:[['réduire','قلّل'],['énergie propre','طاقة نظيفة'],['filtre','مرشّح'],['transport en commun','نقل عمومي'],['émission','انبعاث']]}}
 ],
 quiz:[
+ {q:'Quelle mesure réduit la pollution de l’air ?',o:['Utiliser les transports en commun','Brûler les déchets','Laisser tourner les moteurs'],a:0,e:'Moins de véhicules individuels, moins d’émissions.'},
  {q:'Quelle activité pollue l’air ?',o:['La circulation automobile','Planter des arbres','Utiliser le vélo'],a:0,e:'Les moteurs rejettent des gaz polluants.'},
  {q:'Le gaz responsable surtout de l’effet de serre est :',o:['le dioxyde de carbone','le diazote','l’argon'],a:0,e:'Le CO₂ retient la chaleur.'},
  {q:'Les pluies acides sont dues à :',o:['SO₂ et NOₓ','O₂','N₂'],a:0,e:'Ils se dissolvent dans l’eau des nuages.'},
