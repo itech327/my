@@ -1349,11 +1349,27 @@
       { id: 'pr', t: 'Protection', c: P, d: 'Des parcs nationaux protègent la nature. Au Maroc, le parc national de Souss-Massa protège par exemple l’ibis chauve. Chacun peut agir : ne pas jeter de déchets, économiser l’eau, respecter les plantes et les animaux.' }
     ]);
   }
-  PC.chapter({ id: 's1-4', lazy: true, eyebrow: EY1 + 'Équilibres', title: 'Chaînes alimentaires et équilibres naturels', ar: 'السلاسل الغذائية والتوازنات الطبيعية',
+  function reseau(el) {
+    stepper(el, { label: 'Un réseau alimentaire', h: 260, nodes: [
+      { id: 'he', x: 110, y: 215, t: 'Herbe', c: T }, { id: 'ce', x: 290, y: 215, t: 'Céréales', c: T },
+      { id: 'sa', x: 60, y: 150, t: 'Sauterelle', c: P, row: 1 }, { id: 'so', x: 200, y: 150, t: 'Souris', c: P, row: 1 },
+      { id: 'gr', x: 60, y: 85, t: 'Grenouille', c: C }, { id: 'se', x: 190, y: 85, t: 'Serpent', c: RED }, { id: 'fa', x: 330, y: 85, t: 'Faucon', c: RED }
+    ], links: [['he', 'sa'], ['he', 'so'], ['ce', 'so'], ['sa', 'gr'], ['gr', 'se'], ['so', 'se'], ['so', 'fa'], ['se', 'fa']], steps: [
+      { on: ['he', 'ce'], t: 'Les plantes sont les <b>producteurs</b> : herbe et céréales.' },
+      { on: ['he', 'ce', 'sa', 'so'], t: 'La sauterelle mange l’herbe. La souris mange l’herbe et les céréales. Un producteur nourrit <b>plusieurs</b> consommateurs.' },
+      { on: ['sa', 'gr', 'so', 'se'], t: 'La grenouille mange la sauterelle. Le serpent mange la grenouille <b>et</b> la souris : il a deux proies.' },
+      { on: ['so', 'se', 'fa'], t: 'Le faucon mange la souris <b>et</b> le serpent. La souris a donc deux prédateurs.' },
+      { on: ['he', 'ce', 'sa', 'so', 'gr', 'se', 'fa'], t: 'Les chaînes alimentaires se croisent : c’est un <b>réseau alimentaire</b>. Si une espèce disparaît, plusieurs chaînes sont touchées.' }
+    ] });
+  }
+  PC.chapter({ id: 's1-4', lazy: true, eyebrow: EY1 + 'Équilibres', title: 'Chaînes, réseaux alimentaires et équilibres naturels', ar: 'السلاسل والشبكات الغذائية والتوازنات الطبيعية',
     lessons: function () { return [
       { short: 'Chaîne', title: 'Les chaînes alimentaires', intro: 'Avance étape par étape dans la chaîne.', build: chaine,
         retenir: ['Une chaîne alimentaire relie les êtres vivants qui se mangent : <b>producteur</b>, <b>consommateurs</b>, <b>décomposeurs</b>.', 'Tout commence par la lumière du Soleil et les plantes vertes.'],
         ar: { e: ['السلسلة الغذائية تربط بين كائنات حية يأكل بعضها بعضا. تبدأ بالمنتِج وهو النبات الأخضر الذي يصنع مادته بالضوء، ثم المستهلك من الدرجة الأولى وهو آكل أعشاب، ثم المستهلك من الدرجة الثانية وهو آكل لحوم. وعند موت الكائنات تحلل المحلِّلات (البكتيريا والفطريات) المادة العضوية إلى أملاح معدنية تستعملها النباتات.'], u: 'اضغط «Étape suivante» لتتبع السلسلة.', w: [['chaîne alimentaire', 'سلسلة غذائية'], ['producteur', 'منتِج'], ['consommateur', 'مستهلك'], ['décomposeur', 'محلِّل']] } },
+      { short: 'Réseau', title: 'Les réseaux alimentaires', intro: 'Suis les chaînes qui se croisent.', build: reseau,
+        retenir: ['Un <b>réseau alimentaire</b> est formé de plusieurs chaînes alimentaires reliées entre elles.', 'Un être vivant peut avoir plusieurs aliments et plusieurs prédateurs.'],
+        ar: { e: ['الشبكة الغذائية مجموعة من السلاسل الغذائية المتداخلة. الكائن الواحد قد يتغذى على أكثر من نوع، وقد يأكله أكثر من مفترس. فالفأر يأكل العشب والحبوب، ويأكله الثعبان والصقر. والثعبان يأكل الفأر والضفدع، ويأكله الصقر. لذلك فاختفاء نوع واحد يؤثر في عدة سلاسل.'], u: 'اضغط «Étape suivante» لتتبع الشبكة.', w: [['réseau alimentaire', 'شبكة غذائية'], ['proie', 'فريسة'], ['prédateur', 'مفترس'], ['producteur', 'منتِج']] } },
       { short: 'Disparition', title: 'Quand une espèce disparaît', intro: 'Choisis une espèce et lis les conséquences.', build: disparition,
         retenir: ['Dans une chaîne, les espèces dépendent les unes des autres.', 'La disparition d’une espèce déséquilibre toute la chaîne.'],
         ar: { e: ['تعتمد الأنواع على بعضها في السلسلة الغذائية، فاختفاء نوع واحد يؤثر في الباقين. إذا اختفى النبات جاعت كل الحيوانات بعده، وإذا اختفى المفترس تكاثر فريسته أكثر من اللازم وأكل مزيدا من الغذاء.'], u: 'اختر نوعا لترى النتيجة.', w: [['espèce', 'نوع'], ['proie', 'فريسة'], ['prédateur', 'مفترس']] } },
@@ -1364,6 +1380,8 @@
     quiz: [
       { q: 'Dans une chaîne alimentaire, le producteur est :', o: ['la plante verte', 'le lion', 'la bactérie'], a: 0, e: 'Il fabrique sa matière organique.' },
       { q: 'Les décomposeurs sont surtout :', o: ['des bactéries et des champignons', 'des insectes volants', 'des herbivores'], a: 0, e: 'Ils transforment la matière morte en éléments minéraux.' },
+      { q: 'Un réseau alimentaire est :', o: ['plusieurs chaînes alimentaires reliées entre elles', 'une seule chaîne très longue', 'un filet de pêche'], a: 0, e: 'Les chaînes se croisent parce qu’un animal mange plusieurs aliments.' },
+      { q: 'Dans le réseau étudié, la souris est mangée par :', o: ['le serpent et le faucon', 'la sauterelle seulement', 'personne'], a: 0, e: 'Elle a deux prédateurs : le serpent et le faucon.' },
       { q: 'Quelle action peut rompre un équilibre naturel ?', o: ['Une pêche excessive', 'Une pluie normale', 'Une nuit d’été'], a: 0, e: 'Une espèce devient trop rare.' }
     ] });
 
@@ -1492,7 +1510,7 @@
     ['s1-1', 'Le milieu naturel et la cellule', 'الوسط الطبيعي والخلية', 'Le milieu', '1'],
     ['s1-2', 'La respiration chez les êtres vivants', 'التنفس في أوساط مختلفة', 'Respiration', '1'],
     ['s1-3', 'La nutrition et les régimes alimentaires', 'التغذية والأنظمة الغذائية', 'Nutrition', '1'],
-    ['s1-4', 'Chaînes alimentaires et équilibres naturels', 'السلاسل الغذائية والتوازنات الطبيعية', 'Équilibres', '1'],
+    ['s1-4', 'Chaînes, réseaux alimentaires et équilibres naturels', 'السلاسل والشبكات الغذائية والتوازنات الطبيعية', 'Équilibres', '1'],
     ['s1-5', 'La classification des êtres vivants', 'تصنيف الكائنات الحية', 'Classification', '1'],
     ['s1-6', 'Le cycle sédimentaire et les fossiles', 'الدورة الرسوبية والأحافير', 'Géologie', '1'],
     ['s1-7', 'Les ressources en eau', 'الموارد المائية', 'Géologie', '1'],
