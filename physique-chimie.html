@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-CPsREzTHBqKNZto/aR/5sa6M3IE8lERMrDVds26i7sQ=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-QCQgKAynKd0ybvt3EM7EkqX9J1e3Nl/Cgx/LDFAtwXY=' 'sha256-1IlfvwaL/AcaG4B6/dm/zR/r1TnE6hEIFTUOkTV+Mcc=' 'sha256-vVj1Wq7tHrF9rJpGh6SBPowm1dd89s+L0A9njA/o4tU=' 'sha256-PRDUIMUl7nPB0xbVbY2rmGC2S+81v8wzNRkRSPVM4So=' 'sha256-nvkYqI9ShtgRRLba8EzOHZ3/XYds1DXhRwscbib5jc4=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-mbV5UMnIiJhHOXh1EeAzVpuU7OI3s+Zkm21DfNVrPbg=' 'sha256-InMrZb32OKs8A6Fymg0FvACUWKZlo8aaaqrZn5bwiiU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-CPsREzTHBqKNZto/aR/5sa6M3IE8lERMrDVds26i7sQ=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-Qw8P1TRjLTWnhAQ6IlF3j2icl4P7My/izXmOVww+aB8=' 'sha256-5Qa01s1mTXAE3IBSj5ae0CeRSLgW7EtrTkbTzpy1K1g=' 'sha256-s1GsE95h/PrPnNbkE2BwHaIW7YGzW8eGDrnvLpX9d3o=' 'sha256-vePls67UGtbVQM4BWq7LWUfui9B9OWK8obkxF8Z3zyI=' 'sha256-akPfzI6939z9jngwsc8J7G08N3w+4po9X7s9iFPykLw=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-mbV5UMnIiJhHOXh1EeAzVpuU7OI3s+Zkm21DfNVrPbg=' 'sha256-InMrZb32OKs8A6Fymg0FvACUWKZlo8aaaqrZn5bwiiU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie.html">
@@ -2408,9 +2408,76 @@ lessons:[
  ar:{e:['عندما تحترق شمعة داخل حجم محدود من الهواء فإنها تستهلك <b>ثنائي الأكسجين</b> ثم تنطفئ. يصعد الماء داخل الناقوس ليعوّض الغاز المستهلَك، ويكون الارتفاع حوالي <b>1/5</b> من الحجم، وهذا يوافق نسبة ثنائي الأكسجين في الهواء.',
   'الغاز المتبقي هو أساساً ثنائي الأزوت، وهو لا يساعد على الاحتراق.'],
   u:'اضغط «Allumer la bougie». انتظر حتى تنطفئ الشمعة، وانظر كم ارتفع الماء داخل الناقوس (نحو 21% من الحجم).',
-  w:[['bougie','شمعة'],['cloche','ناقوس'],['combustion','احتراق'],['consommer','استهلك']]}}
+  w:[['bougie','شمعة'],['cloche','ناقوس'],['combustion','احتراق'],['consommer','استهلك']]}},
+{short:'Couches',title:'Les couches de l’atmosphère',
+ intro:'Touche une couche pour la découvrir. Le schéma n’est pas à l’échelle.',
+ build:function(el){
+  var LY=[['tro','Troposphère','#5aa9e6','0 à 12 km environ','Couche où nous vivons. Elle contient presque tout l’air et la vapeur d’eau : c’est là que se forment les nuages, la pluie et le vent.'],
+          ['str','Stratosphère','#3b7be0','12 à 50 km environ','Elle contient la <b>couche d’ozone</b>, vers 20 à 30 km d’altitude. L’ozone absorbe une grande partie des rayons ultraviolets du Soleil, dangereux pour les êtres vivants.'],
+          ['mes','Mésosphère','#6a4bd0','50 à 80 km environ','L’air y est très rare et très froid. Les petits météorites s’y consument : on voit des étoiles filantes.'],
+          ['the','Thermosphère','#3a2f7a','au-dessus de 80 km','L’air y est extrêmement rare. On y observe les aurores polaires et la Station spatiale internationale y circule.']];
+  var H=[54,64,52,52],cur='tro';
+  ui.tabs(el,LY.map(function(l){return [l[0],l[1]]}),function(k){cur=k;draw()});
+  var svg=ui.stage(el,400,250,'Les couches de l’atmosphère'),g=S('g',null,svg),inf=ui.info(el),chips=ui.chips(el);
+  function draw(){
+    g.replaceChildren();
+    var y=232,i,ly;
+    for(i=0;i<4;i++){
+      ly=LY[i];y-=H[i];
+      S('rect',{x:70,y:y,width:150,height:H[i],style:'fill:'+ly[2]+';fill-opacity:'+(ly[0]===cur?.95:.4)+';stroke:#fff;stroke-width:'+(ly[0]===cur?3:1)},g);
+      S('text',{x:235,y:y+H[i]/2,'class':'small',text:ly[1],style:'text-anchor:start;fill:#fff;font-size:'+(ly[0]===cur?14:12)+'px;font-weight:'+(ly[0]===cur?700:400)},g);
+      if(ly[0]==='str'){
+        S('rect',{x:70,y:y+H[i]*.36,width:150,height:H[i]*.24,style:'fill:var(--teal);fill-opacity:.8'},g);
+        S('text',{x:145,y:y+H[i]*.48,'class':'tag',text:'ozone',style:'fill:#fff;font-size:11px'},g);
+      }
+    }
+    S('text',{x:40,y:236,'class':'small',text:'sol'},g);
+    var c=LY.filter(function(l){return l[0]===cur})[0];
+    chips.set(ui.chip(c[1],c[2])+ui.chip(c[3],null,true));
+    inf.set('<p>'+c[4]+'</p>');
+  }
+  draw();
+ },
+ retenir:['L’atmosphère est formée de couches : <b>troposphère</b>, <b>stratosphère</b>, <b>mésosphère</b> et <b>thermosphère</b>.','Nous vivons dans la troposphère, où se forment les nuages et le vent.','La <b>couche d’ozone</b>, dans la stratosphère, nous protège d’une grande partie des rayons ultraviolets du Soleil.'],
+ ar:{e:['يتكوّن الغلاف الجوي من طبقات: <b>التروبوسفير</b> وهي التي نعيش فيها وتتكوّن فيها الغيوم والأمطار والرياح، ثم <b>الستراتوسفير</b> ثم <b>الميزوسفير</b> ثم <b>الثرموسفير</b>.','توجد <b>طبقة الأوزون</b> في الستراتوسفير. تمتص هذه الطبقة جزءا كبيرا من الأشعة فوق البنفسجية الصادرة عن الشمس، وهي أشعة خطيرة على الكائنات الحية.'],
+  u:'اضغط على كل طبقة من علامات التبويب لتقرأ مميزاتها. الرسم ليس بمقياس حقيقي.',
+  w:[['atmosphère','غلاف جوي'],['troposphère','التروبوسفير'],['stratosphère','الستراتوسفير'],['couche d’ozone','طبقة الأوزون'],['rayons ultraviolets','الأشعة فوق البنفسجية']]}},
+{short:'Le vent',title:'D’où vient le vent ?',
+ intro:'Avance de l’étape 1 à l’étape 3 pour suivre le déplacement de l’air.',
+ build:function(el){
+  var st='1';
+  var T3={'1':'Le Soleil chauffe le sol de façon inégale. L’air en contact avec le sol chaud se réchauffe.','2':'L’air chaud est plus léger : il <b>monte</b>. Il laisse une place vide près du sol.','3':'L’air plus froid se déplace vers cette place vide : ce déplacement d’air est le <b>vent</b>.'};
+  ui.tabs(el,[['1','1. Le sol chauffe'],['2','2. L’air chaud monte'],['3','3. Le vent souffle']],function(k){st=k;draw()});
+  var svg=ui.stage(el,400,220,'Naissance du vent'),g=S('g',null,svg),inf=ui.info(el);
+  function arrow(x1,y1,x2,y2,c){
+    var a=Math.atan2(y2-y1,x2-x1),s=10;
+    S('path',{d:'M'+x1+' '+y1+'L'+x2+' '+y2,style:'stroke:'+c+';stroke-width:5;stroke-linecap:round;fill:none'},g);
+    S('path',{d:'M'+x2+' '+y2+'L'+(x2-s*Math.cos(a-.5))+' '+(y2-s*Math.sin(a-.5))+'M'+x2+' '+y2+'L'+(x2-s*Math.cos(a+.5))+' '+(y2-s*Math.sin(a+.5)),style:'stroke:'+c+';stroke-width:5;stroke-linecap:round;fill:none'},g);
+  }
+  function draw(){
+    g.replaceChildren();
+    S('circle',{cx:330,cy:34,r:20,style:'fill:var(--lamp)'},g);
+    for(var i=0;i<5;i++)S('path',{d:'M'+(300+i*15)+' 62L'+(292+i*20)+' 140',style:'stroke:var(--lamp);stroke-opacity:.55;stroke-width:2;stroke-dasharray:5 5;fill:none'},g);
+    S('rect',{x:20,y:170,width:180,height:26,style:'fill:var(--teal);fill-opacity:.55'},g);
+    S('rect',{x:200,y:170,width:180,height:26,style:'fill:var(--coral);fill-opacity:'+(st==='1'?.75:.9)},g);
+    S('text',{x:110,y:208,'class':'small',text:'sol frais'},g);
+    S('text',{x:290,y:208,'class':'small',text:'sol chaud'},g);
+    if(st!=='1')arrow(290,160,290,92,'var(--coral)');
+    if(st==='3')arrow(70,150,230,150,'var(--teal)');
+    if(st==='3')S('text',{x:150,y:132,'class':'tag',text:'vent',style:'fill:#fff'},g);
+    inf.set('<p>'+T3[st]+'</p>');
+  }
+  draw();
+ },
+ retenir:['Le <b>vent</b> est un déplacement d’air.','Il naît quand l’air chaud monte et que de l’air plus froid vient prendre sa place.'],
+ ar:{e:['<b>الرياح</b> هي انتقال للهواء. تسخن الشمس الأرض بشكل غير متساو، فيسخن الهواء الملامس للأرض الساخنة ويصبح أخف فيصعد إلى الأعلى.','يترك الهواء الساخن مكانا فارغا قرب الأرض، فينتقل إليه هواء أبرد. هذا الانتقال هو الريح.'],
+  u:'اضغط على المراحل الثلاث بالترتيب وتتبّع حركة الهواء.',
+  w:[['vent','رياح'],['air chaud','هواء ساخن'],['air froid','هواء بارد'],['déplacement','انتقال']]}}
 ],
 quiz:[
+ {q:'La couche d’ozone se trouve dans :',o:['la stratosphère','la troposphère','la thermosphère'],a:0,e:'Vers 20 à 30 km d’altitude.'},
+ {q:'La couche d’ozone nous protège :',o:['d’une grande partie des rayons ultraviolets','de la pluie','du bruit'],a:0,e:'L’ozone absorbe une grande partie des ultraviolets du Soleil.'},
+ {q:'Le vent est dû à :',o:['de l’air plus froid qui prend la place de l’air chaud qui monte','la rotation des nuages','la chute de la pluie'],a:0,e:'L’air chaud monte, l’air froid se déplace pour le remplacer.'},
  {q:'Quel gaz est le plus abondant dans l’air ?',o:['Le dioxygène','Le diazote','Le dioxyde de carbone'],a:1,e:'Le diazote représente environ 78 % de l’air.'},
  {q:'Quelle fraction du volume de l’air est du dioxygène ?',o:['environ 1/5','environ 1/2','environ 1/10'],a:0,e:'21 % ≈ 1/5.'},
  {q:'Dans l’expérience de la bougie, l’eau monte car :',o:['la bougie fond','le dioxygène a été consommé','l’air chauffe'],a:1,e:'La combustion consomme le dioxygène.'},
@@ -2445,9 +2512,9 @@ lessons:[
   upd();
   PC.anim(svg,function(dt,t){tt=t;mg.setAttribute('transform','translate(200 115) scale(3.1) rotate('+(Math.sin(t*1.2)*6)+')')});
  },
- retenir:['La matière est formée de <b>molécules</b>, elles-mêmes formées d’<b>atomes</b>.','La formule chimique indique les atomes de la molécule : <span class="math">H₂O</span> = 2 atomes d’hydrogène + 1 atome d’oxygène.','Un corps pur <b>simple</b> contient une seule sorte d’atome (O₂, H₂, N₂). Un corps pur <b>composé</b> en contient plusieurs (H₂O, CO₂, CH₄).'],
+ retenir:['La matière est formée de <b>molécules</b>, elles-mêmes formées d’<b>atomes</b>.','La formule chimique indique les atomes de la molécule : <span class="math">H₂O</span> = 2 atomes d’hydrogène + 1 atome d’oxygène.','Un corps pur <b>simple</b> contient une seule sorte d’atome (O₂, H₂, N₂). Un corps pur <b>composé</b> en contient plusieurs (H₂O, CO₂, CH₄).','Un atome est minuscule : son diamètre est de l’ordre de <b>0,1 nm</b>, soit 10<sup>−10</sup> m.'],
  ar:{e:['تتكوّن المادة من <b>جزيئات</b>، والجزيء يتكوّن من <b>ذرّات</b>. تعبّر الصيغة الكيميائية عن عدد ذرات كل عنصر في الجزيء، مثلاً <span class="math" dir="ltr">H₂O</span> جزيء الماء فيه ذرتا هيدروجين وذرة أكسجين واحدة.',
-  '<b>الجسم الخالص البسيط</b> يحتوي على نوع واحد من الذرات مثل O₂ وH₂ وN₂. أما <b>الجسم الخالص المركّب</b> فيحتوي على عدة أنواع من الذرات مثل H₂O وCO₂ وCH₄.'],
+  '<b>الجسم الخالص البسيط</b> يحتوي على نوع واحد من الذرات مثل O₂ وH₂ وN₂. أما <b>الجسم الخالص المركّب</b> فيحتوي على عدة أنواع من الذرات مثل H₂O وCO₂ وCH₄.','الذرة صغيرة جدا: قطرها من رتبة 0,1 nm أي 10<sup>−10</sup> m.'],
   u:'اختر جزيئاً من الأزرار، وانظر إلى الذرات المكوّنة له. كل لون يمثل نوعاً من الذرات: الأبيض للهيدروجين، المرجاني للأكسجين، الرمادي للكربون، الأزرق للأزوت.',
   w:[['atome','ذرّة'],['molécule','جزيء'],['formule chimique','الصيغة الكيميائية'],['corps pur simple','جسم خالص بسيط'],['corps pur composé','جسم خالص مركّب']]}},
 {short:'Compter les atomes',title:'Compter les atomes',
@@ -2907,9 +2974,40 @@ lessons:[
  ar:{e:['<b>كسوف الشمس</b> يحدث عندما يمر القمر بين الشمس والأرض فيُلقي ظلّه على الأرض. <b>خسوف القمر</b> يحدث عندما تمر الأرض بين الشمس والقمر فيدخل القمر في ظل الأرض.',
   'في منطقة <b>الظل</b> نشاهد الحدث <b>كلياً</b>، وفي منطقة <b>شبه الظل</b> (pénombre) نشاهده <b>جزئياً</b>. هذه الظواهر تفسّرها خاصية الانتشار المستقيم للضوء. الرسم غير مضبوط المقياس.'],
   u:'اختر «Éclipse de Soleil» وحرّك القمر نحو الأرض واضبط ارتفاعه حتى يقع ظله على الأرض. ثم اختر «Éclipse de Lune» وحرّك القمر عمودياً ليدخل في ظل الأرض.',
-  w:[['éclipse','كسوف / خسوف'],['ombre','ظل'],['pénombre','شبه الظل'],['total','كلي'],['partiel','جزئي']]}}
+  w:[['éclipse','كسوف / خسوف'],['ombre','ظل'],['pénombre','شبه الظل'],['total','كلي'],['partiel','جزئي']]}},
+{short:'Chambre noire',title:'La chambre noire',
+ intro:'Déplace l’objet et l’écran. Observe la taille et le sens de l’image.',
+ build:function(el){
+  var d=30,s=10,H=10;
+  var svg=ui.stage(el,400,240,'Chambre noire : un petit trou et un écran'),g=S('g',null,svg);
+  ui.slider(el,{label:'Distance objet-trou',min:20,max:60,step:5,value:30,color:P,fmt:function(v){return v+' cm'}},function(v){d=v;draw()});
+  ui.slider(el,{label:'Distance trou-écran',min:6,max:14,step:2,value:10,color:T,fmt:function(v){return v+' cm'}},function(v){s=v;draw()});
+  var chips=ui.chips(el),inf=ui.info(el);
+  function draw(){
+    g.replaceChildren();
+    var k=3,y0=120,xo=70,xh=xo+d*k,xs=xh+s*k,hp=H*6,hi=hp*s/d;
+    S('path',{d:'M'+xh+' 24V'+(y0-3)+'M'+xh+' '+(y0+3)+'V214',style:'stroke:#fff;stroke-width:5;fill:none'},g);
+    S('path',{d:'M'+xs+' 30V210',style:'stroke:var(--teal);stroke-width:4;fill:none'},g);
+    S('path',{d:'M'+xo+' '+y0+'H'+xs,style:'stroke:#fff;stroke-opacity:.3;stroke-dasharray:4 4;fill:none'},g);
+    S('path',{d:'M'+xo+' '+(y0-hp)+'L'+xs+' '+(y0+hi),style:'stroke:var(--lamp);stroke-width:2;fill:none'},g);
+    S('path',{d:'M'+xo+' '+y0+'V'+(y0-hp),style:'stroke:var(--pink);stroke-width:5;stroke-linecap:round;fill:none'},g);
+    S('path',{d:'M'+xs+' '+y0+'V'+(y0+hi),style:'stroke:var(--pink);stroke-width:5;stroke-linecap:round;fill:none'},g);
+    S('text',{x:xo,y:y0+20,'class':'small',text:'objet'},g);
+    S('text',{x:xh,y:14,'class':'small',text:'trou'},g);
+    S('text',{x:xs,y:226,'class':'small',text:'écran'},g);
+    chips.set(ui.chip('Image renversée',P)+ui.chip('Hauteur de l’image : '+fmt(H*s/d,1)+' cm',T));
+    inf.set('<p>Objet de 10 cm. Image ÷ objet = '+s+' ÷ '+d+' = '+fmt(s/d,2)+'. La lumière se propage en ligne droite : les rayons se croisent au trou.</p>');
+  }
+  draw();
+ },
+ retenir:['Une <b>chambre noire</b> est une boîte fermée percée d’un petit trou. Elle donne sur l’écran une image <b>renversée</b> de l’objet.','Cela montre que la lumière se propage <b>en ligne droite</b>.','Plus l’objet est proche du trou, ou plus l’écran en est éloigné, plus l’image est grande.'],
+ ar:{e:['<b>الغرفة المظلمة</b> علبة مغلقة بها ثقب صغير. تعطي على الشاشة صورة <b>مقلوبة</b> للجسم، لأن الأشعة الضوئية تتقاطع عند الثقب.','وهذا يثبت أن الضوء ينتشر <b>في خط مستقيم</b>. كلما اقترب الجسم من الثقب أو ابتعدت الشاشة عنه كبرت الصورة.'],
+  u:'حرّك المنزلقين وراقب حجم الصورة واتجاهها.',
+  w:[['chambre noire','غرفة مظلمة'],['image renversée','صورة مقلوبة'],['trou','ثقب'],['écran','شاشة'],['ligne droite','خط مستقيم']]}}
 ],
 quiz:[
+ {q:'L’image donnée par une chambre noire est :',o:['renversée','droite','toujours égale à l’objet'],a:0,e:'Les rayons se croisent au niveau du trou.'},
+ {q:'On rapproche l’objet du trou. L’image devient :',o:['plus grande','plus petite','identique'],a:0,e:'Image ÷ objet = distance trou-écran ÷ distance objet-trou : ce rapport augmente.'},
  {q:'Dans un milieu transparent et homogène, la lumière se propage :',o:['en cercle','en ligne droite','en zigzag'],a:1,e:'C’est la propagation rectiligne de la lumière.'},
  {q:'Si on rapproche un objet de la source, son ombre :',o:['diminue','grandit','ne change pas'],a:1,e:'Plus l’objet est proche de la source, plus l’ombre est grande.'},
  {q:'Une éclipse de Soleil se produit quand :',o:['la Terre est entre le Soleil et la Lune','la Lune est entre le Soleil et la Terre','le Soleil est entre la Terre et la Lune'],a:1,e:'La Lune cache le Soleil.'},
@@ -3152,9 +3250,38 @@ lessons:[
  ar:{e:['الحركة والسكون <b>نسبيان</b>: يتعلق الأمر بالجسم المرجعي (المرجع) الذي نلاحظ منه. راكب في حافلة يكون <b>ساكناً</b> بالنسبة للحافلة، لكنه <b>متحرك</b> بالنسبة للطريق.',
   'نصف الحركة بشكل <b>مسارها</b> (مستقيم، دائري، منحني) وبتغير سرعتها (منتظمة، متسارعة، متباطئة).'],
   u:'اختر المرجع «la route» أو «le bus». في المرجع الأول تبدو الأعمدة ثابتة والحافلة متحركة، وفي الثاني يبدو الراكب ثابتاً داخل الحافلة بينما تمرّ الأعمدة.',
-  w:[['référentiel','المرجع'],['trajectoire','المسار'],['repos','سكون'],['mouvement','حركة']]}}
+  w:[['référentiel','المرجع'],['trajectoire','المسار'],['repos','سكون'],['mouvement','حركة']]}},
+{short:'Sécurité routière',title:'Vitesse et distance d’arrêt',
+ intro:'Change la vitesse du véhicule et regarde la distance nécessaire pour s’arrêter.',
+ build:function(el){
+  var v=50;
+  var svg=ui.stage(el,400,140,'Distance de réaction et distance de freinage'),g=S('g',null,svg);
+  ui.slider(el,{label:'Vitesse',min:30,max:130,step:10,value:50,color:P,fmt:function(x){return x+' km/h'}},function(x){v=x;draw()});
+  var chips=ui.chips(el),inf=ui.info(el);
+  function draw(){
+    g.replaceChildren();
+    var vm=v/3.6,dr=vm*1,db=vm*vm/14,k=2.7,x0=26;
+    S('rect',{x:x0,y:58,width:dr*k,height:30,style:'fill:var(--pink);fill-opacity:.8'},g);
+    S('rect',{x:x0+dr*k,y:58,width:db*k,height:30,style:'fill:var(--coral);fill-opacity:.8'},g);
+    S('rect',{x:26,y:16,width:12,height:12,style:'fill:var(--pink);fill-opacity:.8'},g);
+    S('text',{x:44,y:23,'class':'small',text:'réaction',style:'text-anchor:start'},g);
+    S('rect',{x:130,y:16,width:12,height:12,style:'fill:var(--coral);fill-opacity:.8'},g);
+    S('text',{x:148,y:23,'class':'small',text:'freinage',style:'text-anchor:start'},g);
+    S('path',{d:'M'+x0+' 100V110M'+(x0+(dr+db)*k)+' 100V110M'+x0+' 105H'+(x0+(dr+db)*k),style:'stroke:#fff;stroke-width:2;fill:none'},g);
+    S('text',{x:x0,y:126,'class':'tag',text:'distance d’arrêt : '+fmt(dr+db,0)+' m',style:'fill:#fff;text-anchor:start'},g);
+    chips.set(ui.chip('Réaction : '+fmt(dr,0)+' m',P)+ui.chip('Freinage : '+fmt(db,0)+' m',C)+ui.chip('Arrêt : '+fmt(dr+db,0)+' m',T));
+    inf.set('<p>Modèle simplifié : temps de réaction de 1 s, route sèche. Si la vitesse double, la distance de freinage est multipliée par 4.</p>');
+  }
+  draw();
+ },
+ retenir:['<b>Distance d’arrêt</b> = distance de réaction + distance de freinage.','Si la vitesse double, la distance de réaction double, mais la distance de freinage est multipliée par 4.','Route mouillée, fatigue ou téléphone augmentent la distance d’arrêt : il faut ralentir et garder une distance de sécurité.'],
+ ar:{e:['<b>مسافة التوقف</b> = مسافة رد الفعل + مسافة الفرملة. مسافة رد الفعل هي ما يقطعه السائق قبل أن يضغط على الفرامل.','إذا تضاعفت السرعة تتضاعف مسافة رد الفعل، لكن مسافة الفرملة تتضاعف أربع مرات. والطريق المبللة أو التعب أو استعمال الهاتف تزيد مسافة التوقف، لذلك يجب تخفيف السرعة واحترام مسافة الأمان.'],
+  u:'حرّك منزلق السرعة وقارن بين 50 و100 km/h.',
+  w:[['distance d’arrêt','مسافة التوقف'],['temps de réaction','زمن رد الفعل'],['freinage','فرملة'],['sécurité routière','السلامة الطرقية']]}}
 ],
 quiz:[
+ {q:'La distance d’arrêt est égale à :',o:['distance de réaction + distance de freinage','distance de freinage seulement','vitesse × 2'],a:0,e:'Le conducteur roule d’abord pendant son temps de réaction, puis le véhicule freine.'},
+ {q:'Un véhicule roule deux fois plus vite. Sa distance de freinage est multipliée par :',o:['4','2','8'],a:0,e:'La distance de freinage augmente comme le carré de la vitesse.'},
  {q:'Une voiture parcourt 150 km en 2 h. Sa vitesse moyenne est :',o:['300 km/h','75 km/h','152 km/h'],a:1,e:'v = 150 ÷ 2 = 75 km/h.'},
  {q:'72 km/h correspondent à :',o:['20 m/s','72 m/s','259 m/s'],a:0,e:'72 ÷ 3,6 = 20 m/s.'},
  {q:'Un cycliste roule à 15 km/h pendant 2 h. La distance parcourue est :',o:['7,5 km','17 km','30 km'],a:2,e:'d = v × t = 15 × 2 = 30 km.'},
@@ -3205,9 +3332,43 @@ lessons:[
  ar:{e:['يكون جسم صلب خاضع لقوتين في <b>توازن</b> إذا تحققت ثلاثة شروط: للقوتين <b>نفس خط التأثير</b>، و<b>منحيان متعاكسان</b>، و<b>نفس الشدة</b> (<span class="math" dir="ltr">F₁ = F₂</span>).',
   'مثال: جسم معلّق بخيط ساكن، يخضع لوزنه (نحو الأسفل) ولقوة الخيط (نحو الأعلى) وهما متساويتان في الشدة.'],
   u:'اجعل شدة F₂ تساوي F₁ وأبقِ الخيط عمودياً (الميل 0°) فيتوازن الجسم. غيّر أحد الشروط لترى كيف يختل التوازن.',
-  w:[['équilibre','توازن'],['droite d’action','خط التأثير'],['intensité','شدة'],['force','قوة'],['poids','وزن'],['sens','منحى (اتجاه)']]}}
+  w:[['équilibre','توازن'],['droite d’action','خط التأثير'],['intensité','شدة'],['force','قوة'],['poids','وزن'],['sens','منحى (اتجاه)']]}},
+{short:'Centre de gravité',title:'Trouver le centre de gravité',
+ intro:'Suspends la plaque par un point, puis par un autre. Les droites verticales se croisent en G.',
+ build:function(el){
+  var PL=[[-62,-38],[48,-56],[76,12],[22,56],[-56,40]],VI=[0,2,4],NM=['A','B','C'],st=1;
+  var a=0,cx=0,cy=0,i,j,f;
+  for(i=0;i<PL.length;i++){j=(i+1)%PL.length;f=PL[i][0]*PL[j][1]-PL[j][0]*PL[i][1];a+=f;cx+=(PL[i][0]+PL[j][0])*f;cy+=(PL[i][1]+PL[j][1])*f}
+  var G=[cx/(3*a),cy/(3*a)];
+  ui.tabs(el,[['1','Suspendue en A'],['2','Puis en B'],['3','Puis en C']],function(k){st=+k;draw()});
+  var svg=ui.stage(el,400,250,'Plaque suspendue par un fil'),g=S('g',null,svg),inf=ui.info(el);
+  var TXT={1:'La plaque suspendue en A s’immobilise : son centre de gravité G est sur la verticale du point A.',2:'Suspendue en B, elle s’immobilise autrement. La verticale de B coupe la première droite en un point.',3:'Avec C, la troisième droite passe par le même point : c’est le <b>centre de gravité G</b>.'};
+  function draw(){
+    g.replaceChildren();
+    var V=PL[VI[st-1]],th=Math.PI/2-Math.atan2(G[1]-V[1],G[0]-V[0]),c=Math.cos(th),s=Math.sin(th);
+    function sc(p){var x=p[0]-V[0],y=p[1]-V[1];return [200+c*x-s*y,36+s*x+c*y]}
+    var pts=PL.map(function(p){var q=sc(p);return q[0].toFixed(1)+','+q[1].toFixed(1)}).join(' ');
+    var L=Math.sqrt(Math.pow(G[0]-V[0],2)+Math.pow(G[1]-V[1],2));
+    S('path',{d:'M200 4V36',style:'stroke:#fff;stroke-width:2;fill:none'},g);
+    S('polygon',{points:pts,style:'fill:var(--lav);fill-opacity:.45;stroke:var(--lav);stroke-width:2.4;stroke-linejoin:round'},g);
+    S('path',{d:'M200 36V'+(36+L+34),style:'stroke:#fff;stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:5 5;fill:none'},g);
+    var gs=sc(G);
+    for(i=0;i<st;i++){var u=sc(PL[VI[i]]);S('path',{d:'M'+u[0]+' '+u[1]+'L'+gs[0]+' '+gs[1],style:'stroke:var(--coral);stroke-width:2.4;fill:none'},g)}
+    for(i=0;i<st;i++){var w=sc(PL[VI[i]]);S('text',{x:w[0]+(w[0]<200?-12:12),y:w[1]-6,'class':'tag',text:NM[i],style:'fill:#fff'},g)}
+    S('circle',{cx:200,cy:36,r:4,style:'fill:#fff'},g);
+    if(st>1){S('circle',{cx:gs[0],cy:gs[1],r:5,style:'fill:var(--pink);stroke:#fff;stroke-width:2'},g);S('text',{x:gs[0]+14,y:gs[1]+4,'class':'tag',text:'G',style:'fill:var(--pink);font-size:16px'},g)}
+    inf.set('<p>'+TXT[st]+'</p>');
+  }
+  draw();
+ },
+ retenir:['Le <b>centre de gravité G</b> d’un corps est le point où s’applique son poids.','Un corps suspendu librement s’immobilise avec G sur la verticale du point de suspension.','On trouve G à l’intersection de deux verticales obtenues avec deux suspensions différentes.'],
+ ar:{e:['<b>مركز الثقل G</b> لجسم هو النقطة التي يؤثر فيها وزنه. عندما نعلّق جسما تعليقا حرا يتوازن بحيث يكون G على الخط الشاقولي المار من نقطة التعليق.','نحدد G تجريبيا بتعليق الصفيحة من نقطتين مختلفتين ورسم الخطين الشاقوليين، فيتقاطعان في G. والتعليق من نقطة ثالثة يؤكد النتيجة.'],
+  u:'اضغط على علامات التبويب الثلاث بالترتيب وتتبّع تقاطع الخطوط.',
+  w:[['centre de gravité','مركز الثقل'],['verticale','شاقولي'],['suspension','تعليق'],['plaque','صفيحة'],['poids','وزن']]}}
 ],
 quiz:[
+ {q:'Un solide suspendu par un fil s’immobilise. Son centre de gravité est :',o:['sur la verticale du point de suspension','toujours au milieu du solide','toujours en bas'],a:0,e:'Le poids et la tension du fil sont alignés.'},
+ {q:'Pour trouver expérimentalement le centre de gravité d’une plaque, on la suspend :',o:['par deux points différents','toujours par le même point','sans fil'],a:0,e:'Les deux verticales se croisent en G.'},
  {q:'Un solide soumis à deux forces est en équilibre si les forces ont :',o:['la même intensité seulement','même droite d’action, sens opposés, même intensité','des sens identiques'],a:1,e:'Ce sont les trois conditions.'},
  {q:'Un objet suspendu immobile à un fil : la force du fil a :',o:['la même direction que le poids et le même sens','la même droite d’action que le poids et un sens opposé','une intensité nulle'],a:1,e:'Le fil retient l’objet : sens opposé au poids.'},
  {q:'Si F₁ = 5 N et que le solide est en équilibre, alors F₂ vaut :',o:['0 N','5 N','10 N'],a:1,e:'F₂ = F₁.'},
@@ -4341,9 +4502,36 @@ lessons:[
  retenir:['La <b>résistance</b> d’un conducteur ohmique se mesure en <b>ohms (Ω)</b> avec un <b>ohmmètre</b>, hors du circuit alimenté.','Dans un circuit avec la même pile, plus la résistance est <b>grande</b>, plus l’intensité du courant est <b>petite</b>.','Si on double la résistance (à tension constante), l’intensité est divisée par 2.'],
  ar:{e:['<b>مقاومة</b> موصل أومي تقاس بـ<b>الأوم (Ω)</b> بواسطة جهاز الأومتر، وهي خارج الدارة المغذّاة.','في دارة تحتوي على العمود نفسه، كلما كانت المقاومة <b>أكبر</b> كانت شدة التيار <b>أصغر</b>.','إذا ضاعفنا المقاومة (والتوتر ثابت) تُقسم شدة التيار على 2.'],
   u:'غيّر قيمة المقاومة بالمنزلق وراقب قراءة الأمبيرمتر.',
-  w:[['résistance','مقاومة'],['intensité','شدة التيار'],['ohm','أوم'],['conducteur ohmique','موصل أومي'],['ohmmètre','أومتر']]}}
+  w:[['résistance','مقاومة'],['intensité','شدة التيار'],['ohm','أوم'],['conducteur ohmique','موصل أومي'],['ohmmètre','أومتر']]}},
+{short:'Code des couleurs',title:'Lire le code des couleurs',
+ intro:'Change la couleur de chaque bague. Les deux premières donnent des chiffres, la troisième donne le nombre de zéros.',
+ build:function(el){
+  var COL=[['noir','#1a1a1a'],['marron','#8a5a2b'],['rouge','#d9382f'],['orange','#f08a24'],['jaune','#f2d12e'],['vert','#3aa655'],['bleu','#2f6fd6'],['violet','#8a4fc9'],['gris','#9aa0a6'],['blanc','#f4f4f4']];
+  var d=[2,2,2];
+  var svg=ui.stage(el,400,150,'Conducteur ohmique avec ses bagues de couleur');
+  S('path',{d:'M20 75H110M290 75H380',style:'stroke:#fff;stroke-width:4;fill:none'},svg);
+  S('rect',{x:100,y:45,width:200,height:60,rx:22,style:'fill:#e9d3a8;stroke:#fff;stroke-width:2.4'},svg);
+  var bs=[135,170,205].map(function(x){return S('rect',{x:x,y:45,width:16,height:60,style:'fill:#000'},svg)});
+  S('rect',{x:262,y:45,width:16,height:60,style:'fill:#d4af37'},svg);
+  var chips=ui.chips(el);
+  function sl(label,i,min,max,color){ui.slider(el,{label:label,min:min,max:max,step:1,value:d[i],color:color,fmt:function(v){return COL[v][0]}},function(v){d[i]=v;upd()})}
+  sl('Bague 1',0,1,9,P);sl('Bague 2',1,0,9,T);sl('Bague 3',2,0,6,C);
+  function upd(){
+    bs.forEach(function(b,i){b.style.fill=COL[d[i]][1]});
+    var n=10*d[0]+d[1],v=n*Math.pow(10,d[2]),k=v/1e3,M=v/1e6;
+    var txt=v>=1e6?fmt(M,M%1?1:0)+' MΩ':(v>=1e3?fmt(k,k%1?1:0)+' kΩ':v+' Ω');
+    chips.set(ui.chip(n+' × 10<sup>'+d[2]+'</sup>',P)+ui.chip('R = '+txt,T)+ui.chip('Bague dorée : ± 5 %',C));
+  }
+  upd();
+ },
+ retenir:['Le <b>code des couleurs</b> donne la valeur de la résistance : deux bagues pour les chiffres et une bague pour le nombre de zéros (multiplicateur).','Exemple : rouge, rouge, rouge = 22 × 100 = 2 200 Ω = 2,2 kΩ.','La bague dorée indique la <b>tolérance</b> : ± 5 %.'],
+ ar:{e:['تُقرأ قيمة المقاومة من الحلقات الملونة: الحلقة الأولى والثانية تعطيان رقمين، والحلقة الثالثة هي <b>المضاعف</b> أي عدد الأصفار التي نضيفها.','مثال: أحمر، أحمر، أحمر يعطي 22 × 100 = 2200 Ω = 2,2 kΩ. أما الحلقة الذهبية فتدل على <b>التفاوت</b> وهو ± 5 %.'],
+  u:'غيّر لون كل حلقة بالمنزلقات الثلاثة وتتبّع قيمة المقاومة.',
+  w:[['code des couleurs','رمز الألوان'],['bague','حلقة'],['multiplicateur','مضاعف'],['tolérance','تفاوت'],['ohm','أوم']]}}
 ],
 quiz:[
+ {q:'Un conducteur ohmique a les bagues rouge, violet, orange. Sa valeur est :',o:['27 kΩ','2,7 kΩ','270 Ω'],a:0,e:'Rouge = 2, violet = 7, orange = 3 zéros : 27 × 1 000 = 27 000 Ω = 27 kΩ.'},
+ {q:'La troisième bague du code des couleurs indique :',o:['le nombre de zéros à ajouter','la tension de la pile','la couleur du fil'],a:0,e:'C’est le multiplicateur, une puissance de 10.'},
  {q:'L’unité de la résistance électrique est :',o:['l’ohm (Ω)','l’ampère (A)','le volt (V)'],a:0,e:'Le symbole de l’ohm est Ω.'},
  {q:'L’appareil qui mesure une résistance est :',o:['l’ohmmètre','l’ampèremètre','le thermomètre'],a:0,e:'On le branche hors du circuit alimenté.'},
  {q:'Avec la même pile, quand la résistance augmente, l’intensité :',o:['augmente','diminue','ne change pas'],a:1,e:'R grande, I petite.'},
@@ -4521,9 +4709,33 @@ lessons:[
  retenir:['Une <b>source primaire</b> de lumière produit sa propre lumière : le Soleil, une lampe allumée, une bougie, une étoile.','Un <b>objet éclairé</b> (diffusant) ne produit pas de lumière : il renvoie dans toutes les directions la lumière qu’il reçoit (la Lune, un livre, un mur).','Pour voir un objet, il faut que de la lumière provenant de cet objet <b>entre dans l’œil</b>.','La lumière traverse les milieux <b>transparents</b>, est partiellement transmise par les <b>translucides</b> et arrêtée par les <b>opaques</b>.'],
  ar:{e:['<b>المنبع الضوئي الأولي</b> ينتج الضوء بنفسه، مثل الشمس والمصباح المضاء والشمعة والنجوم.','<b>الجسم المضاء</b> لا ينتج الضوء، بل يعيد إرسال الضوء الذي يستقبله في كل الاتجاهات (القمر، الكتاب، الجدار). نرى الجسم فقط عندما يدخل إلى العين ضوء قادم منه.','الأوساط <b>الشفافة</b> تسمح بمرور الضوء، و<b>الشبه شفافة</b> تمرّر جزءاً منه، و<b>المعتمة</b> توقفه.'],
   u:'غيّر بين «Lampe allumée» و«Lampe éteinte» و«Écran opaque». النقاط الصفراء تمثل الضوء الذي ينتقل من المصباح إلى الجسم ثم إلى العين.',
-  w:[['source de lumière','منبع ضوئي'],['objet éclairé','جسم مضاء'],['diffuser','بعثر (نشر الضوء)'],['transparent','شفاف'],['translucide','شبه شفاف'],['opaque','معتم']]}}
+  w:[['source de lumière','منبع ضوئي'],['objet éclairé','جسم مضاء'],['diffuser','بعثر (نشر الضوء)'],['transparent','شفاف'],['translucide','شبه شفاف'],['opaque','معتم']]}},
+{short:'Récepteurs',title:'Les récepteurs de lumière',
+ intro:'Choisis un récepteur. Une source émet la lumière, un récepteur la reçoit.',
+ build:function(el){
+  var R=[['oeil','Œil','La lumière entre dans l’œil et atteint la rétine. Le cerveau interprète le signal : on voit.'],['photo','Capteur photo','Le capteur de l’appareil photo reçoit la lumière et la transforme en signal électrique : l’image est enregistrée.'],['sol','Cellule solaire','Elle reçoit la lumière du Soleil et produit de l’électricité.'],['feu','Feuille','La feuille d’une plante reçoit la lumière et s’en sert pour fabriquer sa matière : c’est la photosynthèse.']],cur='oeil';
+  ui.tabs(el,R.map(function(r){return [r[0],r[1]]}),function(k){cur=k;draw()});
+  var svg=ui.stage(el,400,170,'Une source de lumière et un récepteur'),g=S('g',null,svg),inf=ui.info(el);
+  function draw(){
+    g.replaceChildren();
+    S('circle',{cx:60,cy:85,r:26,style:'fill:var(--lamp)'},g);
+    S('text',{x:60,y:130,'class':'small',text:'source'},g);
+    [70,85,100].forEach(function(y){S('path',{d:'M92 '+y+'L262 '+y,style:'stroke:var(--lamp);stroke-width:2.4;stroke-dasharray:7 6;fill:none'},g)});
+    S('rect',{x:266,y:50,width:110,height:70,rx:14,style:'fill:var(--teal);fill-opacity:.35;stroke:var(--teal);stroke-width:2.6'},g);
+    var r=R.filter(function(x){return x[0]===cur})[0];
+    S('text',{x:321,y:85,'class':'tag',text:r[1],style:'fill:#fff'},g);
+    S('text',{x:321,y:138,'class':'small',text:'récepteur'},g);
+    inf.set('<p>'+r[2]+'</p>');
+  }
+  draw();
+ },
+ retenir:['Une <b>source</b> de lumière émet la lumière. Un <b>récepteur</b> de lumière la reçoit et réagit.','Exemples de récepteurs : l’œil, le capteur d’un appareil photo, la cellule solaire, la feuille d’une plante.'],
+ ar:{e:['<b>المصدر الضوئي</b> هو جسم يُصدر الضوء، أما <b>المستقبِل الضوئي</b> فهو جسم يستقبل الضوء ويتأثر به.','من أمثلة المستقبلات الضوئية: العين، ومجسّ آلة التصوير، والخلية الشمسية، وورقة النبات.'],
+  u:'اختر مستقبلا من علامات التبويب وانظر كيف يستعمل الضوء الذي يصله.',
+  w:[['source de lumière','مصدر ضوئي'],['récepteur de lumière','مستقبل ضوئي'],['œil','عين'],['cellule solaire','خلية شمسية'],['feuille','ورقة']]}}
 ],
 quiz:[
+ {q:'Lequel de ces objets est un récepteur de lumière ?',o:['la cellule solaire','la bougie allumée','le Soleil'],a:0,e:'Elle reçoit la lumière. La bougie et le Soleil sont des sources.'},
  {q:'Laquelle est une source primaire de lumière ?',o:['La Lune','Le Soleil','Un miroir'],a:1,e:'La Lune renvoie la lumière du Soleil.'},
  {q:'Dans une pièce sans lumière, on voit un livre :',o:['oui','non','seulement de loin'],a:1,e:'Aucune lumière n’atteint l’œil.'},
  {q:'Un milieu qui arrête la lumière est :',o:['opaque','transparent','translucide'],a:0,e:'Exemple : un mur.'},
@@ -4932,9 +5144,33 @@ lessons:[
  retenir:['Les matériaux de la vie quotidienne : <b>métaux</b> (fer, cuivre, aluminium), <b>plastiques</b>, <b>verre</b>, <b>bois</b>, <b>céramique</b>…','Tests simples : l’<b>aimant</b> (seul le fer et l’acier sont attirés), la <b>flottaison</b> (comparer la masse volumique à celle de l’eau) et la <b>conduction de la chaleur</b>.','Les métaux sont de bons conducteurs de chaleur et d’électricité ; le bois, le plastique et le verre sont isolants.'],
  ar:{e:['مواد الحياة اليومية كثيرة: <b>الفلزات</b> (الحديد، النحاس، الألومنيوم) و<b>البلاستيك</b> و<b>الزجاج</b> و<b>الخشب</b> و<b>السيراميك</b>.','نتعرف عليها باختبارات بسيطة: <b>المغناطيس</b> (لا ينجذب إليه إلا الحديد والفولاذ)، و<b>الطفو</b> (نقارن الكتلة الحجمية بكتلة الماء الحجمية 1 g/cm³)، و<b>توصيل الحرارة</b>. الفلزات موصلة جيدة للحرارة والكهرباء، أما الخشب والبلاستيك والزجاج فعازلة.'],
   u:'اختر الاختبار (مغناطيس، ماء، حرارة) ثم المادة. شاهد هل تنجذب أو تطفو أو تنتقل إليها الحرارة بسرعة.',
-  w:[['matériau','مادة (خامة)'],['métal','فلز'],['aimant','مغناطيس'],['flotter','طفا'],['conducteur thermique','موصل للحرارة'],['isolant','عازل']]}}
+  w:[['matériau','مادة (خامة)'],['métal','فلز'],['aimant','مغناطيس'],['flotter','طفا'],['conducteur thermique','موصل للحرارة'],['isolant','عازل']]}},
+{short:'Familles et emballages',title:'Familles de matériaux et choix d’un emballage',
+ intro:'Choisis une famille, puis regarde comment on choisit un emballage.',
+ build:function(el){
+  var F={
+   met:['Métaux',['Brillants','Conducteurs de la chaleur et du courant','Solides'],'Exemples : boîte de conserve, canette. Le fer rouille, l’aluminium est protégé par sa couche d’oxyde.'],
+   org:['Matières organiques',['Légères','Brûlent facilement','Souvent isolantes'],'Papier, carton, bois et plastiques. Les plastiques sont synthétiques : légers et souples, mais peu biodégradables. Exemples : bouteille, sachet.'],
+   ver:['Verre et céramique',['Durs mais cassants','Résistent à la plupart des produits chimiques','Isolants'],'Exemples : bocal, bouteille en verre, assiette. Le verre est transparent, la céramique résiste bien à la chaleur.'],
+   emb:['Choisir un emballage',['Solidité','Poids','Étanchéité et recyclage'],'On choisit selon l’usage : une bouteille d’eau en plastique (légère, incassable), une conserve en métal (étanche, protège de l’air), un produit acide comme le vinaigre en verre (il réagit peu avec le contenu).']},
+  cur='met';
+  ui.tabs(el,[['met','Métaux'],['org','Matières organiques'],['ver','Verre, céramique'],['emb','Emballage']],function(k){cur=k;draw()});
+  var chips=ui.chips(el),inf=ui.info(el);
+  function draw(){
+    var f=F[cur];
+    chips.set(f[1].map(function(t,i){return ui.chip(t,[P,T,C][i])}).join(''));
+    inf.set('<p><b>'+f[0]+'</b>. '+f[2]+'</p>');
+  }
+  draw();
+ },
+ retenir:['On classe les matériaux en familles : <b>métaux</b>, <b>matières organiques</b> (dont les plastiques), <b>verre et céramique</b>.','On choisit un emballage selon l’usage : solidité, poids, étanchéité, résistance aux produits et recyclage.'],
+ ar:{e:['تُصنَّف المواد إلى عائلات: <b>الفلزات</b> و<b>المواد العضوية</b> (ومنها البلاستيك) و<b>الزجاج والخزف</b>، ولكل عائلة خصائص تميّزها.','نختار مادة التعبئة والتغليف حسب الاستعمال: المتانة والوزن والإحكام ومقاومة المواد وقابلية إعادة التدوير.'],
+  u:'اضغط على كل عائلة ثم على «Emballage» لترى كيف نختار مادة التغليف.',
+  w:[['métal','فلز'],['matière organique','مادة عضوية'],['plastique','بلاستيك'],['verre','زجاج'],['céramique','خزف'],['emballage','تغليف']]}}
 ],
 quiz:[
+ {q:'Pour une conserve qui doit rester étanche et protégée de l’air, on utilise souvent :',o:['un métal','du papier','un tissu'],a:0,e:'La boîte de conserve est en acier ou en aluminium.'},
+ {q:'Le plastique appartient à la famille :',o:['des matières organiques','des métaux','du verre et de la céramique'],a:0,e:'Les plastiques sont des matériaux synthétiques de la famille organique.'},
  {q:'Quel matériau est attiré par un aimant ?',o:['Le cuivre','Le fer','Le verre'],a:1,e:'Le fer est magnétique.'},
  {q:'Un morceau de bois flotte car :',o:['sa masse volumique est inférieure à 1 g/cm³','il est léger en couleur','il est magnétique'],a:0,e:'ρ du bois < ρ de l’eau.'},
  {q:'Le bois est un :',o:['bon conducteur thermique','mauvais conducteur thermique','métal'],a:1,e:'C’est un isolant thermique.'},
