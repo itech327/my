@@ -4,7 +4,7 @@ Statut : brouillon préparé le 15 novembre 2026. Rien n'a été déposé. Le d�
 
 ## Contenu attendu d'une déclaration
 
-D'après les guides consultés : finalité du traitement, catégories de données, destinataires, durée de conservation. À confirmer sur le formulaire officiel (F-214 pour une déclaration normale).
+D'après les guides consultés : finalité du traitement, catégories de données, destinataires, durée de conservation. Le formulaire F-214 est la déclaration normale conformément à une décision de la CNDP. Vérifier sur cndp.ma lequel s'applique à un site éducatif.
 
 ## Réponses prêtes à copier, d'après le fonctionnement réel du site
 

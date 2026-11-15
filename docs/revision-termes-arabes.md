@@ -18,6 +18,8 @@ Statut : liste de travail pour relecture par un enseignant. Aucune de ces varian
 
 ## À trancher par un enseignant (variantes non confirmées)
 
+Attention : plusieurs lignes ne sont pas de vrais conflits. Un même mot français a parfois deux sens selon la matière (base, droite, ligne, longueur, direction, borne). Les variantes de forme seulement, avec ou sans article ou avec une précision entre parenthèses, sont sans gravité. Les vrais conflits de sens sont à chercher en premier.
+
 | Terme français | Variantes présentes sur le site |
 | --- | --- |
 | addition | جمع (maths) ; جمع (تأليف خطي) (maths) |
