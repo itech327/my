@@ -1069,7 +1069,7 @@ lessons:[
  ar:{e:['التوتر الكهربائي يُقاس بجهاز الفولتمتر وحدته الفولت (V). يُركَّب الفولتمتر على التوازي مع العنصر المراد قياس توتره.',
   'في التركيب على <b>التسلسل</b> يكون توتر المولّد مساوياً لمجموع توترات المصباحين: <span class="math" dir="ltr">U = U₁ + U₂</span>. هذه هي خاصية إضافية التوترات. في التركيب على <b>التوازي</b> يكون للمصباحين نفس توتر المولّد: <span class="math" dir="ltr">U = U₁ = U₂</span>.'],
   u:'اختر «En série» ثم غيّر U₁ وU₂ وانظر كيف يتغير توتر المولّد U ليساوي مجموعهما. ثم اختر «En dérivation» وغيّر U لترى أن التوتر نفسه عند المصباحين.',
-  w:[['tension','توتر'],['voltmètre','فولتمتر'],['volt','فولت'],['en série','على التسلسل'],['en dérivation','على التوازي']]}}
+  w:[['tension','توتر'],['voltmètre','فولتمتر'],['volt','فولت'],['en série','على التوالي'],['en dérivation','على التوازي']]}}
 ],
 quiz:[
  {q:'Dans un nœud, I = 0,5 A arrive et se partage en deux branches. Si I₁ = 0,2 A, alors I₂ vaut :',o:['0,7 A','0,3 A','0,1 A'],a:1,e:'I₂ = 0,5 − 0,2 = 0,3 A.'},
@@ -2770,9 +2770,9 @@ lessons:[
   });
  },
  retenir:['<b>Filtration</b> : séparer un solide insoluble d’un liquide (papier filtre).','<b>Décantation</b> : séparer deux liquides non miscibles ou laisser un solide se déposer.','<b>Évaporation</b> : récupérer le solide dissous (le sel) en faisant partir l’eau.','<b>Distillation</b> : vaporiser puis liquéfier pour récupérer l’eau pure (distillat).'],
- ar:{e:['لفصل مكوّنات خليط نستعمل تقنيات حسب نوع الخليط:','<b>الترشيح</b> (filtration): فصل مادة صلبة غير ذائبة عن سائل باستعمال ورق الترشيح.','<b>التصفيق / الترويق</b> (décantation): فصل سائلين غير قابلين للامتزاج بواسطة أنبوب الفصل، أو ترك مادة صلبة تترسب.','<b>التبخير</b> (évaporation): نحصل على المادة الصلبة المنحلّة (الملح) بعد تبخر الماء.','<b>التقطير</b> (distillation): نبخّر الماء ثم نبرّد البخار فيتكاثف لنحصل على الماء الخالص (المقطّر).'],
+ ar:{e:['لفصل مكوّنات خليط نستعمل تقنيات حسب نوع الخليط:','<b>الترشيح</b> (filtration): فصل مادة صلبة غير ذائبة عن سائل باستعمال ورق الترشيح.','<b>التصفيق</b> (décantation): فصل سائلين غير قابلين للامتزاج بواسطة أنبوب الفصل، أو ترك مادة صلبة تترسب.','<b>التبخير</b> (évaporation): نحصل على المادة الصلبة المنحلّة (الملح) بعد تبخر الماء.','<b>التقطير</b> (distillation): نبخّر الماء ثم نبرّد البخار فيتكاثف لنحصل على الماء الخالص (المقطّر).'],
   u:'اختر التقنية ثم اضغط «Lancer» أو حرّك منزلق «Avancement» لتتابع خطوات التجربة.',
-  w:[['filtration','ترشيح'],['décantation','تصفيق (ترويق)'],['évaporation','تبخير'],['distillation','تقطير'],['filtrat','رشاحة'],['distillat','مقطّر'],['insoluble','غير ذائب']]}}
+  w:[['filtration','ترشيح'],['décantation','تصفيق'],['évaporation','تبخير'],['distillation','تقطير'],['filtrat','رشاحة'],['distillat','مقطّر'],['insoluble','غير ذائب']]}}
 ],
 quiz:[
  {q:'Pour séparer le sable de l’eau, on utilise :',o:['la filtration','la distillation','l’évaporation'],a:0,e:'Le sable est retenu par le papier filtre.'},
@@ -2790,7 +2790,7 @@ lessons:[
   var cur=0;
   var ST=[
    ['Dégrillage','On retire les gros déchets (branches, plastiques) avec des grilles.','التصفية بالشبكات: إزالة النفايات الكبيرة'],
-   ['Décantation','On ajoute un produit qui rassemble les impuretés en flocons ; ils se déposent au fond.','الترويق: ترسّب الشوائب على شكل رقائق'],
+   ['Décantation','On ajoute un produit qui rassemble les impuretés en flocons ; ils se déposent au fond.','التصفيق: ترسّب الشوائب على شكل رقائق'],
    ['Filtration','L’eau traverse des couches de sable et de gravier qui retiennent les fines particules.','الترشيح عبر الرمل والحصى'],
    ['Désinfection','On ajoute un peu de chlore (ou de l’ozone) pour détruire les microbes.','التعقيم بالكلور لقتل الجراثيم']];
   var svg=ui.stage(el,400,230,'Station de traitement');
@@ -2830,7 +2830,7 @@ lessons:[
   });
  },
  retenir:['L’eau brute (rivière, barrage, nappe) n’est pas potable : elle contient des déchets, des particules et des microbes.','Étapes principales : <b>dégrillage</b> → <b>décantation</b> → <b>filtration</b> → <b>désinfection</b> (chlore).','Une eau <b>potable</b> est claire, sans odeur, sans microbes dangereux. Elle doit être économisée et protégée de la pollution.'],
- ar:{e:['الماء الخام (من الأنهار والسدود والفرشة المائية) غير صالح للشرب لأنه يحتوي على نفايات وشوائب وجراثيم.','تمر معالجة الماء عبر مراحل: <b>التصفية بالشبكات</b> لإزالة الأجسام الكبيرة، ثم <b>الترويق</b> حيث تتجمع الشوائب وترسب، ثم <b>الترشيح</b> عبر الرمل والحصى، وأخيراً <b>التعقيم</b> بالكلور لقتل الجراثيم. بعدها يصبح الماء <b>صالحاً للشرب</b>.'],
+ ar:{e:['الماء الخام (من الأنهار والسدود والفرشة المائية) غير صالح للشرب لأنه يحتوي على نفايات وشوائب وجراثيم.','تمر معالجة الماء عبر مراحل: <b>التصفية بالشبكات</b> لإزالة الأجسام الكبيرة، ثم <b>التصفيق</b> حيث تتجمع الشوائب وترسب، ثم <b>الترشيح</b> عبر الرمل والحصى، وأخيراً <b>التعقيم</b> بالكلور لقتل الجراثيم. بعدها يصبح الماء <b>صالحاً للشرب</b>.'],
   u:'اضغط على أي حوض لترى شرح مرحلته. لاحظ أن عدد الدقائق العالقة ينقص من حوض إلى آخر وأن لون الماء يصفو.',
   w:[['eau potable','ماء صالح للشرب'],['eau brute','ماء خام'],['dégrillage','تصفية بالشبكات'],['chlore','كلور'],['désinfection','تعقيم'],['impuretés','شوائب']]}}
 ],
@@ -3103,9 +3103,9 @@ lessons:[
   });
  },
  retenir:['Un <b>court-circuit</b> se produit quand les bornes d’un générateur sont reliées par un fil sans récepteur : l’intensité devient très grande et les fils chauffent.','Le <b>fusible</b> (ou le <b>disjoncteur</b>) coupe le circuit quand l’intensité est trop grande.','Règles de sécurité : ne pas toucher aux fils nus, ne pas utiliser d’appareils électriques avec les mains mouillées, ne pas brancher trop d’appareils sur la même prise, ne jamais réparer un appareil branché.'],
- ar:{e:['<b>الدارة القصيرة</b> (court-circuit) تحدث عندما نصل قطبَي المولّد بسلك فقط دون مستقبِل، فتصبح شدة التيار كبيرة جداً وتسخن الأسلاك وقد يشتعل حريق.','<b>المصهر</b> (fusible) و<b>القاطع</b> (disjoncteur) يقطعان الدارة تلقائياً عندما تتجاوز الشدة حداً معيناً.','قواعد السلامة: لا تلمس الأسلاك العارية، ولا تستعمل الأجهزة بيد مبللة، ولا توصل أجهزة كثيرة بنفس المأخذ، ولا تصلح جهازاً موصولاً بالتيار.'],
-  u:'اضغط على «Créer un court-circuit» لترى الأسلاك تسخن. جرّب مع المصهر ومن دونه، ثم اضغط «Remplacer le fusible».',
-  w:[['court-circuit','دارة قصيرة'],['fusible','مصهر'],['disjoncteur','قاطع تلقائي'],['danger','خطر'],['isolant','عازل']]}}
+ ar:{e:['<b>الدارة القصيرة</b> (court-circuit) تحدث عندما نصل قطبَي المولّد بسلك فقط دون مستقبِل، فتصبح شدة التيار كبيرة جداً وتسخن الأسلاك وقد يشتعل حريق.','<b>الصهيرة</b> (fusible) و<b>القاطع</b> (disjoncteur) يقطعان الدارة تلقائياً عندما تتجاوز الشدة حداً معيناً.','قواعد السلامة: لا تلمس الأسلاك العارية، ولا تستعمل الأجهزة بيد مبللة، ولا توصل أجهزة كثيرة بنفس المأخذ، ولا تصلح جهازاً موصولاً بالتيار.'],
+  u:'اضغط على «Créer un court-circuit» لترى الأسلاك تسخن. جرّب مع الصهيرة ومن دونه، ثم اضغط «Remplacer le fusible».',
+  w:[['court-circuit','دارة قصيرة'],['fusible','صهيرة'],['disjoncteur','قاطع تلقائي'],['danger','خطر'],['isolant','عازل']]}}
 ],
 quiz:[
  {q:'Un court-circuit provoque :',o:['une intensité très grande','une intensité nulle','une tension nulle partout'],a:0,e:'Les fils peuvent surchauffer.'},
@@ -4647,8 +4647,8 @@ B.eau={look:['L’eau du robinet est un <b>mélange</b> : elle contient de l’e
  [2,'On ajoute du chlore à l’eau pour :',['lui donner un goût','tuer les microbes','la rendre plus froide'],1,'C’est l’étape de désinfection.'],
  [3,'L’eau distillée est :',['un corps pur','un mélange homogène','un mélange hétérogène'],0,'Elle ne contient que de l’eau.'],
  [3,'On ne peut pas boire l’eau de mer directement car elle :',['est trop froide','contient trop de sels dissous','est un gaz'],1,'Les sels dissous la rendent impropre à la consommation.']],
- ar:'ماء الحنفية <b>خليط</b> لأنه يحتوي على الماء وأملاح معدنية ذائبة. لجعل الماء صالحاً للشرب نعالجه بالترسيب (decantation) ثم الترشيح (filtration) ثم التعقيم بالكلور.',
- w:[['eau potable','ماء صالح للشرب'],['décantation','ترسيب (تصفية بالترك)'],['filtration','ترشيح'],['désinfection','تعقيم']]};
+ ar:'ماء الحنفية <b>خليط</b> لأنه يحتوي على الماء وأملاح معدنية ذائبة. لجعل الماء صالحاً للشرب نعالجه بالتصفيق (decantation) ثم الترشيح (filtration) ثم التعقيم بالكلور.',
+ w:[['eau potable','ماء صالح للشرب'],['décantation','تصفيق'],['filtration','ترشيح'],['désinfection','تعقيم']]};
 
 B.etat={look:['Solide : forme et volume propres. Liquide : volume propre, forme du récipient. Gaz : ni forme ni volume propres.','<b>Fusion</b> solide → liquide ; <b>solidification</b> liquide → solide ; <b>vaporisation</b> liquide → gaz ; <b>liquéfaction</b> gaz → liquide.','Pendant un changement d’état d’un corps pur, la température reste <b>constante</b>.'],
  q:[
@@ -4691,8 +4691,8 @@ B.sep={look:['<b>Filtration</b> : sépare un solide d’un liquide. <b>Décantat
  [2,'La distillation sépare les constituants selon :',['leur couleur','leur température d’ébullition','leur masse'],1,'Chaque liquide bout à une température différente.'],
  [3,'Le liquide recueilli après filtration s’appelle :',['le filtrat','le résidu','le précipité'],0,'Le résidu est ce qui reste sur le filtre.'],
  [3,'Dans l’ampoule à décanter, l’huile se place :',['au-dessus de l’eau','au-dessous de l’eau','au milieu'],0,'L’huile est moins dense que l’eau.']],
- ar:'الترشيح يفصل صلباً عن سائل. الترسيب (بواسطة قمع الفصل) يفصل سائلين غير ممتزجين. التبخير يسمح باسترجاع المادة الصلبة الذائبة. التقطير يفصل السوائل حسب درجات غليانها.',
- w:[['filtration','ترشيح'],['décantation','ترسيب'],['évaporation','تبخير'],['distillation','تقطير'],['résidu','راسب (ما يبقى على المرشح)']]};
+ ar:'الترشيح يفصل صلباً عن سائل. التصفيق (بواسطة قمع الفصل) يفصل سائلين غير ممتزجين. التبخير يسمح باسترجاع المادة الصلبة الذائبة. التقطير يفصل السوائل حسب درجات غليانها.',
+ w:[['filtration','ترشيح'],['décantation','تصفيق'],['évaporation','تبخير'],['distillation','تقطير'],['résidu','راسب (ما يبقى على المرشح)']]};
 
 B.circ={look:['Un circuit simple : <b>pile</b> (générateur), <b>lampe</b> (récepteur), fils, parfois un <b>interrupteur</b>.','Le courant circule seulement si le circuit est <b>fermé</b>.','Sens conventionnel : de la borne <b>+</b> vers la borne <b>−</b> à l’extérieur de la pile.'],
  q:[
@@ -4724,7 +4724,7 @@ B.res={look:['Plus la <b>résistance</b> d’un circuit est grande, plus l’<b>
  [2,'Une lampe brille moins quand on ajoute une résistance en série car :',['l’intensité diminue','la pile est vide','la tension augmente'],0,'Le courant est plus faible.'],
  [3,'L’ampèremètre se branche :',['en série','en dérivation','n’importe comment'],0,'Le courant doit le traverser.'],
  [3,'Un fil très fin et très long a une résistance :',['plus grande','plus petite','nulle'],0,'La résistance augmente avec la longueur et diminue avec la section.']],
- ar:'كلما كبرت مقاومة الدارة صغرت شدة التيار. وحدة المقاومة الأوم (Ω). يُركَّب الأمبيرمتر على التسلسل في الدارة.',
+ ar:'كلما كبرت مقاومة الدارة صغرت شدة التيار. وحدة المقاومة الأوم (Ω). يُركَّب الأمبيرمتر على التوالي في الدارة.',
  w:[['résistance','مقاومة'],['ampèremètre','أمبيرمتر'],['intensité','شدة التيار'],['ohm','أوم']]};
 
 B.secu={look:['Règles de sécurité : ne pas toucher aux fils dénudés, ne pas utiliser d’appareil électrique avec les mains mouillées, utiliser des prises protégées.','Le <b>fusible</b> et le <b>disjoncteur</b> coupent le courant en cas de surintensité.'],
@@ -4735,7 +4735,7 @@ B.secu={look:['Règles de sécurité : ne pas toucher aux fils dénudés, ne pas
  [2,'Le disjoncteur :',['ouvre le circuit en cas de problème','augmente l’intensité','remplace la lampe'],0,'Il coupe automatiquement le courant.'],
  [3,'Un court-circuit provoque :',['une intensité très grande','une intensité nulle','une tension infinie'],0,'Risque d’échauffement et d’incendie.'],
  [3,'Que faire si une personne est électrisée ?',['la toucher tout de suite','couper le courant avant de l’aider','lui jeter de l’eau'],1,'On coupe le courant d’abord, puis on appelle les secours.']],
- ar:'قواعد السلامة: لا تلمس الأسلاك العارية ولا تستعمل جهازاً كهربائياً بأيدٍ مبللة. المنصهر (fusible) والقاطع التلقائي (disjoncteur) يقطعان التيار عند ارتفاع الشدة. إذا تعرّض شخص للصعق فاقطع التيار أولاً.',
+ ar:'قواعد السلامة: لا تلمس الأسلاك العارية ولا تستعمل جهازاً كهربائياً بأيدٍ مبللة. الصهيرة (fusible) والقاطع التلقائي (disjoncteur) يقطعان التيار عند ارتفاع الشدة. إذا تعرّض شخص للصعق فاقطع التيار أولاً.',
  w:[['fusible','منصهر'],['disjoncteur','قاطع تلقائي'],['court-circuit','تماس (دارة قصيرة)'],['électrisation','صعق كهربائي']]};
 
 /* ---------- 2e année ---------- */
@@ -4949,7 +4949,7 @@ S('pi1-6',{t:'Séparation des constituants',ar:'فصل المكونات',b:'sep'
 S('pi1-7',{t:'Le circuit électrique simple',ar:'الدارة الكهربائية البسيطة',b:'circ',lk:'c1-11'});
 S('pi1-8',{t:'Conducteurs, isolants et sécurité',ar:'الموصلات والعوازل والسلامة',b:'cond',lk:'c1-11-l2'});
 S('pi1-9',{t:'La loi des nœuds',ar:'قانون العقد',g:['node'],lk:'c1-16',look:'Au nœud : I = I₁ + I₂',aru:'شدة التيار في الفرع الرئيسي تساوي مجموع شدتي التيار في الفرعين: I = I₁ + I₂.',w:[['nœud','عقدة'],['intensité','شدة التيار'],['dérivation','تفرّع']]});
-S('pi1-10',{t:'L’additivité des tensions',ar:'إضافية التوترات',g:['tens'],lk:'c1-16-l2',look:'En série : U = U₁ + U₂',aru:'في التركيب على التسلسل: U = U₁ + U₂. وعلى التوازي: U = U₁ = U₂.',w:[['tension','توتر'],['série','تسلسل'],['volt','فولت']]});
+S('pi1-10',{t:'L’additivité des tensions',ar:'إضافية التوترات',g:['tens'],lk:'c1-16-l2',look:'En série : U = U₁ + U₂',aru:'في التركيب على التوالي: U = U₁ + U₂. وعلى التوازي: U = U₁ = U₂.',w:[['tension','توتر'],['série','تسلسل'],['volt','فولت']]});
 S('pi1-11',{t:'Résistance et intensité',ar:'المقاومة وشدة التيار',b:'res'});
 S('pi1-12',{t:'Protection contre les dangers',ar:'الوقاية من الأخطار',b:'secu'});
 S('pi1-13',{t:'Identifier l’état physique d’un corps',ar:'تحديد الحالة الفيزيائية لجسم',b:'pi1-13',x:1});
@@ -4970,7 +4970,7 @@ S('pi2-8',{t:'Ombre portée',ar:'الظل',g:['shadow'],lk:'c2-10',look:'H = h �
 S('pi2-9',{t:'Lumière et couleurs',ar:'الضوء والألوان',b:'col',lk:'c2-9'});
 S('pi2-10',{t:'Matières et pollution de l’air',ar:'المواد وتلوث الهواء',b:'pol'});
 S('pi2-11',{t:'L’installation électrique domestique',ar:'التركيب الكهربائي المنزلي',b:'dom'});
-S('pi2-12',{t:'Corps pur simple, corps pur composé, mélange',ar:'جسم نقي بسيط ومركب وخليط',b:'pi2-12',x:1});
+S('pi2-12',{t:'Corps pur simple, corps pur composé, mélange',ar:'جسم خالص بسيط ومركب وخليط',b:'pi2-12',x:1});
 S('pi2-13',{t:'La formule chimique d’une molécule',ar:'الصيغة الكيميائية للجزيء',b:'pi2-13',x:1});
 S('pi2-14',{t:'Le tableau périodique',ar:'الجدول الدوري',b:'pi2-14',x:1});
 S('pi2-15',{t:'Décrire un atome',ar:'وصف الذرة',b:'pi2-15',x:1});
@@ -5046,7 +5046,7 @@ XS('pi1-14',{
 
 XS('pi1-15',{
  obj:'Déterminer la nature d’un corps : corps pur, mélange homogène ou mélange hétérogène.',
- lex:[['corps pur','جسم نقي'],['mélange','خليط'],['homogène','متجانس'],['hétérogène','غير متجانس'],['type de particules','نوع الدقائق'],['répartition','توزيع'],['tableau','جدول']],
+ lex:[['corps pur','جسم خالص'],['mélange','خليط'],['homogène','متجانس'],['hétérogène','غير متجانس'],['type de particules','نوع الدقائق'],['répartition','توزيع'],['tableau','جدول']],
  pre:[['Un corps pur contient un seul type de particules.',true,'Toutes ses particules sont identiques.'],['Un mélange contient un seul type de particules.',false,'Un mélange contient au moins deux types de particules.'],['Dans un mélange homogène, les différentes particules sont réparties de façon uniforme.',true,'On ne distingue pas les constituants.']],
  plan:['J’identifie le nombre de types de particules et je déduis s’il s’agit d’un corps pur ou d’un mélange.','Je décris la répartition des particules et je déduis si le mélange est homogène ou hétérogène.','Je conclus dans un tableau.'],
  ex:[
@@ -5055,7 +5055,7 @@ XS('pi1-15',{
   {q:'Le modèle d’un mélange d’eau et d’huile montre deux types de particules séparés en deux zones.',rows:[['Étape 1','Il y a deux types de particules, donc c’est un mélange.'],['Étape 2','Les deux types sont séparés : la répartition n’est pas uniforme, le mélange est hétérogène.'],['Étape 3','Conclusion : le mélange eau et huile est un <b>mélange hétérogène</b>.']]}],
  ret:['<b>Corps pur</b> : un seul type de particules.','<b>Mélange</b> : au moins deux types de particules.','Mélange <b>homogène</b> : répartition uniforme. Mélange <b>hétérogène</b> : constituants séparés.'],
  e:['الجسم النقي يحتوي على نوع واحد من الدقائق. الخليط يحتوي على نوعين أو أكثر.','الخليط المتجانس تكون فيه الدقائق موزعة بشكل منتظم ولا نميز مكوناته. الخليط غير المتجانس تظهر فيه المكونات منفصلة.'],
- w:[['corps pur','جسم نقي'],['mélange homogène','خليط متجانس'],['mélange hétérogène','خليط غير متجانس']]
+ w:[['corps pur','جسم خالص'],['mélange homogène','خليط متجانس'],['mélange hétérogène','خليط غير متجانس']]
 },{
  q:[
  xq(1,'Un corps pur contient :',['un seul type de particules','deux types de particules ou plus','aucune particule'],0,'Toutes les particules d’un corps pur sont identiques.'),
@@ -5095,14 +5095,14 @@ XS('pi1-16',{
 
 XS('pi1-17',{
  obj:'Identifier la température de fusion ou d’ébullition d’un corps pur à partir d’un graphique.',
- lex:[['température de fusion','درجة حرارة الانصهار'],['température d’ébullition','درجة حرارة الغليان'],['palier','هضبة'],['graphique','مبيان'],['axe des ordonnées','محور الأراتيب'],['corps pur','جسم نقي'],['unité','وحدة']],
+ lex:[['température de fusion','درجة حرارة الانصهار'],['température d’ébullition','درجة حرارة الغليان'],['palier','هضبة'],['graphique','مبيان'],['axe des ordonnées','محور الأراتيب'],['corps pur','جسم خالص'],['unité','وحدة']],
  pre:[['Pendant un changement d’état d’un corps pur, la température reste constante.',true,'Elle forme un palier sur la courbe.'],['L’eau pure bout à 100 °C au niveau de la mer.',true,'La température d’ébullition de l’eau est 100 °C.'],['La valeur du palier se lit sur l’axe des abscisses.',false,'La température se lit sur l’axe des ordonnées.']],
  plan:['Je vérifie qu’il s’agit d’un corps pur.','Je trace la projection du palier sur l’axe des ordonnées.','Je note la température avec son unité.'],
  ex:[
   {q:'La courbe de chauffage de l’eau pure montre un palier horizontal pendant l’ébullition. Le palier est au niveau de 100 sur l’axe des ordonnées. Quelle est la température d’ébullition ?',rows:[['Étape 1','L’eau pure est un corps pur : la courbe a un palier.'],['Étape 2','Je projette le palier sur l’axe des ordonnées : je lis 100.'],['Étape 3','La température d’ébullition de l’eau est <b>100 °C</b>.']]},
   {q:'La courbe de chauffage de la glace pure montre un palier pendant la fusion, au niveau de 0 sur l’axe des ordonnées. Quelle est la température de fusion ?',rows:[['Étape 1','La glace pure est un corps pur : la courbe a un palier.'],['Étape 2','Je projette le palier sur l’axe des ordonnées : je lis 0.'],['Étape 3','La température de fusion de la glace est <b>0 °C</b>.']]}],
  ret:['Pendant un changement d’état d’un corps pur, la température reste constante : c’est un <b>palier</b>.','On lit la température du palier sur l’axe des <b>ordonnées</b>, avec son unité (°C).'],
- e:['خلال تغير حالة جسم نقي تبقى درجة الحرارة ثابتة، فيظهر في المبيان جزء أفقي يسمى الهضبة.','لقراءة درجة الحرارة نسقط الهضبة على محور الأراتيب ونكتب القيمة مع وحدتها °C.'],
+ e:['خلال تغير حالة جسم خالص تبقى درجة الحرارة ثابتة، فيظهر في المبيان جزء أفقي يسمى الهضبة.','لقراءة درجة الحرارة نسقط الهضبة على محور الأراتيب ونكتب القيمة مع وحدتها °C.'],
  w:[['palier','هضبة'],['axe des ordonnées','محور الأراتيب'],['température de fusion','درجة حرارة الانصهار'],['température d’ébullition','درجة حرارة الغليان']]
 },{
  q:[
@@ -5145,7 +5145,7 @@ XS('pi1-18',{
 /* ===== 2e année · période 1 (tâches lues dans les séances disponibles) ===== */
 XS('pi2-12',{
  obj:'Déterminer si un corps est un corps pur simple, un corps pur composé ou un mélange, en décrivant ses molécules.',
- lex:[['molécule','جزيء'],['atome','ذرة'],['corps pur simple','جسم نقي بسيط'],['corps pur composé','جسم نقي مركب'],['mélange','خليط'],['type de molécules','نوع الجزيئات'],['composition','تركيب']],
+ lex:[['molécule','جزيء'],['atome','ذرة'],['corps pur simple','جسم خالص بسيط'],['corps pur composé','جسم خالص مركب'],['mélange','خليط'],['type de molécules','نوع الجزيئات'],['composition','تركيب']],
  pre:[['Une molécule est formée d’atomes liés entre eux.',true,'Une molécule contient au moins deux atomes liés.'],['Un corps pur contient plusieurs types de molécules.',false,'Un corps pur contient un seul type de molécules.'],['L’air est un mélange.',true,'Il contient entre autres du diazote et du dioxygène.']],
  plan:['Je compte le nombre de types de molécules : un seul type, c’est un corps pur ; plusieurs types, c’est un mélange.','Pour un corps pur, je regarde les atomes d’une molécule : un seul type d’atome, c’est un corps pur simple ; plusieurs types, c’est un corps pur composé.','Je conclus avec une phrase.'],
  ex:[
@@ -5153,8 +5153,8 @@ XS('pi2-12',{
   {q:'L’eau est formée de molécules H₂O toutes identiques. Quelle est la nature de l’eau pure ?',rows:[['Étape 1','Toutes les molécules sont identiques : c’est un corps pur.'],['Étape 2','Chaque molécule H₂O contient deux types d’atomes : l’hydrogène et l’oxygène.'],['Étape 3','L’eau pure est un <b>corps pur composé</b>.']]},
   {q:'L’air contient des molécules N₂ et des molécules O₂. Quelle est sa nature ?',rows:[['Étape 1','Il y a deux types de molécules : c’est un mélange.'],['Étape 2','Inutile de regarder les atomes : on ne le fait que pour un corps pur.'],['Étape 3','L’air est un <b>mélange</b>.']]}],
  ret:['<b>Corps pur</b> : un seul type de molécules. <b>Mélange</b> : plusieurs types.','Corps pur <b>simple</b> : un seul type d’atome. Corps pur <b>composé</b> : plusieurs types d’atomes.'],
- e:['إذا كان الجسم يحتوي على نوع واحد من الجزيئات فهو جسم نقي، وإذا احتوى على أنواع متعددة فهو خليط.','الجسم النقي البسيط جزيئاته من نوع واحد من الذرات (مثل O₂)، والجسم النقي المركب جزيئاته من عدة أنواع من الذرات (مثل H₂O).'],
- w:[['corps pur simple','جسم نقي بسيط'],['corps pur composé','جسم نقي مركب'],['mélange','خليط']]
+ e:['إذا كان الجسم يحتوي على نوع واحد من الجزيئات فهو جسم خالص، وإذا احتوى على أنواع متعددة فهو خليط.','الجسم النقي البسيط جزيئاته من نوع واحد من الذرات (مثل O₂)، والجسم النقي المركب جزيئاته من عدة أنواع من الذرات (مثل H₂O).'],
+ w:[['corps pur simple','جسم خالص بسيط'],['corps pur composé','جسم خالص مركب'],['mélange','خليط']]
 },{
  q:[
  xq(1,'Un corps pur contient :',['un seul type de molécules','plusieurs types de molécules','aucune molécule'],0,'Toutes les molécules d’un corps pur sont identiques.'),
