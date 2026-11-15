@@ -978,15 +978,29 @@
       { short: 'Volcans', title: 'Les volcans', intro: 'De la chambre magmatique à la coulée de lave.', build: function (el) { volcan(el); volcanTypes(el); },
         retenir: ['Un volcan rejette du <b>magma</b> (appelé lave en surface), des gaz et des cendres.', 'Les volcans sont surtout situés aux limites de plaques et aux points chauds.'],
         ar: { e: ['البركان فتحة في القشرة يخرج منها الصهارة، وتسمى حمما عند وصولها إلى السطح، مع غازات ورماد. تتراكم الصهارة في غرفة صهارية ثم تصعد عبر المدخنة وتخرج من الفوهة. من البراكين ما هو دفقي حممه سائلة، ومنها ما هو انفجاري عنيف. توجد البراكين غالبا عند حدود الصفائح وفوق النقاط الساخنة. لا يوجد بركان نشط في المغرب.'], u: 'اضغط «Étape suivante» ثم اختر نوع البركان.', w: [['volcan', 'بركان'], ['magma', 'صهارة'], ['lave', 'حمم'], ['cratère', 'فوهة']] } },
-      { label: 'Leçon 6 · ' + APPRO, short: 'Montagnes', title: 'La formation des chaînes de montagnes', intro: 'Avance étape par étape pour voir naître une chaîne.', build: montagnes,
+      { short: 'Roches', title: 'Les roches magmatiques', intro: 'Touche chaque onglet : comment naît une roche à partir du magma ?', build: rochesMagma,
+        retenir: ['Le <b>magma</b> qui refroidit donne une <b>roche magmatique</b>.', 'Refroidissement rapide en surface : petits cristaux (basalte). Refroidissement lent en profondeur : gros cristaux (granite).'],
+        ar: { e: ['الصهارة صخور منصهرة تتكوّن في العمق. وعندما تبرد تتصلب وتتكوّن البلورات فتنتج الصخور النارية (الصهارية). إذا خرجت الصهارة من بركان وبردت بسرعة فوق السطح فلا تجد البلورات وقتا لتنمو، فتكون صغيرة جدا وتسمى الصخرة بركانية، ومثالها البازلت الداكن. وإذا بردت ببطء في العمق نمت البلورات وصارت كبيرة تُرى بالعين المجردة وتسمى الصخرة جوفية، ومثالها الغرانيت. حجم البلورات يدل على سرعة التبريد.'], u: 'اضغط على كل علامة تبويب لتقارن.', w: [['magma', 'صهارة'], ['roche magmatique', 'صخرة نارية'], ['cristal', 'بلورة'], ['basalte', 'بازلت'], ['granite', 'غرانيت']] } },
+      { label: 'Leçon 7 · ' + APPRO, short: 'Montagnes', title: 'La formation des chaînes de montagnes', intro: 'Avance étape par étape pour voir naître une chaîne.', build: montagnes,
         retenir: ['Les chaînes de montagnes se forment à la <b>convergence</b> de plaques.', 'Les roches se plient (plis) et se cassent (failles).'],
         ar: { e: ['تتكون سلاسل الجبال عند تقارب صفيحتين قاريتين. تنضغط الصخور والرواسب بينهما فتنثني (طيّات) وتنكسر (صدوع)، ثم تتسمك القشرة وترتفع فتظهر سلسلة جبلية. من الأمثلة جبال الهيمالايا، وجبال الأطلس التي نتجت جزئيا عن تقارب إفريقيا وأوروبا.'], u: 'اضغط «Étape suivante» لتتبع تكوّن الجبال.', w: [['chaîne de montagnes', 'سلسلة جبلية'], ['pli', 'طية'], ['compression', 'انضغاط']] } }
     ]; },
     quiz: [
       { q: 'La partie rigide formée par la croûte et le haut du manteau est :', o: ['la lithosphère', 'le noyau', 'l’atmosphère'], a: 0, e: 'Elle est découpée en plaques.' },
       { q: 'Quand deux plaques s’écartent, la limite est :', o: ['divergente', 'convergente', 'transformante'], a: 0, e: 'De la nouvelle lithosphère se forme.' },
+      { q: 'Une roche à gros cristaux visibles, comme le granite, s’est formée :', o: ['par un refroidissement lent en profondeur', 'par un refroidissement rapide en surface', 'dans la mer'], a: 0, e: 'Les cristaux ont eu le temps de grandir.' },
+      { q: 'Le basalte est une roche :', o: ['volcanique à petits cristaux', 'plutonique à gros cristaux', 'sédimentaire'], a: 0, e: 'La lave a refroidi vite à la surface.' },
       { q: 'Le point en surface situé juste au-dessus du foyer d’un séisme est :', o: ['l’épicentre', 'le cratère', 'la dorsale'], a: 0, e: 'C’est là que la secousse est la plus forte.' }
     ] });
+
+  function rochesMagma(el) {
+    explorer(el, [
+      { id: 'ma', t: 'Magma', c: RED, d: 'Le <b>magma</b> est de la roche fondue qui se forme en profondeur. Il peut monter vers la surface ou rester dans la croûte. En refroidissant, il se solidifie en <b>cristaux</b> : c’est ainsi que naissent les <b>roches magmatiques</b>.' },
+      { id: 'vo', t: 'Roche volcanique', c: C, d: 'Quand le magma sort par un volcan, la lave refroidit <b>vite</b>. Les cristaux n’ont pas le temps de grandir : ils sont minuscules, souvent invisibles à l’œil nu. Exemple : le <b>basalte</b>, une roche sombre.' },
+      { id: 'pl', t: 'Roche plutonique', c: P, d: 'Quand le magma refroidit <b>lentement</b> en profondeur, les cristaux ont le temps de grandir : ils sont gros et visibles à l’œil nu. Exemple : le <b>granite</b>, une roche claire formée de cristaux de quartz, de feldspath et de mica.' },
+      { id: 'co', t: 'Comparer', c: L, d: 'Même origine (le magma), deux vitesses de refroidissement : <b>rapide en surface</b>, petits cristaux (basalte) ; <b>lent en profondeur</b>, gros cristaux (granite). La taille des cristaux renseigne sur la vitesse de refroidissement.' }
+    ]);
+  }
 
   /* ===================================================== 2e ANNÉE · 2. REPRODUCTION CHEZ LES ANIMAUX */
   function typesRepro(el) {
@@ -1069,13 +1083,27 @@
         ar: { e: ['تتكون الزهرة من السبلات التي تحمي البرعم، والبتلات الملونة التي تجذب الحشرات، والأسدية وهي العضو المذكر وتحمل الأسدية المتك الذي يحتوي حبوب اللقاح، والمدقّة وهي العضو المؤنث وتتكون من الميسم والقلم والمبيض الذي يحتوي البويضات.'], u: 'اضغط على كل جزء من الزهرة لتقرأ دوره.', w: [['étamine', 'سداة'], ['pistil', 'مدقة'], ['pollen', 'غبار الطلع'], ['ovule', 'بويضة'], ['stigmate', 'ميسم']] } },
       { short: 'Fécondation', title: 'De la pollinisation à la graine', intro: 'Avance étape par étape jusqu’à la germination.', build: pollin,
         retenir: ['<b>Pollinisation</b> : transport du pollen vers le stigmate.', 'Après la fécondation, l’ovule devient <b>graine</b> et l’ovaire devient <b>fruit</b>.', 'La germination demande de l’eau, de l’air et une température convenable.'],
-        ar: { e: ['التلقيح هو انتقال حبوب اللقاح من المتك إلى الميسم بواسطة الرياح أو الحشرات. تنبت حبة اللقاح فتكوّن أنبوبا يصل إلى البويضة فيحدث الإخصاب. بعد الإخصاب تتحول البويضة إلى بذرة ويتحول المبيض إلى ثمرة. وتحتاج البذرة للإنبات إلى الماء والهواء وحرارة مناسبة.'], u: 'اضغط «Étape suivante» لتتبع المراحل.', w: [['pollinisation', 'تلقيح'], ['graine', 'بذرة'], ['fruit', 'ثمرة'], ['germination', 'إنبات']] } }
+        ar: { e: ['التلقيح هو انتقال حبوب اللقاح من المتك إلى الميسم بواسطة الرياح أو الحشرات. تنبت حبة اللقاح فتكوّن أنبوبا يصل إلى البويضة فيحدث الإخصاب. بعد الإخصاب تتحول البويضة إلى بذرة ويتحول المبيض إلى ثمرة. وتحتاج البذرة للإنبات إلى الماء والهواء وحرارة مناسبة.'], u: 'اضغط «Étape suivante» لتتبع المراحل.', w: [['pollinisation', 'تلقيح'], ['graine', 'بذرة'], ['fruit', 'ثمرة'], ['germination', 'إنبات']] } },
+      { label: 'Leçon 3 · ' + APPRO, short: 'Multiplication', title: 'La multiplication végétative', intro: 'Touche chaque onglet : comment une plante peut se multiplier sans fleur.', build: vegetative,
+        retenir: ['La <b>multiplication végétative</b> donne des plantes identiques à la plante mère (clones), sans fécondation.', 'Exemples : bouture, stolon du fraisier, tubercule de la pomme de terre.'],
+        ar: { e: ['التكاثر الخضري لا يحتاج إلى زهرة ولا إلى إخصاب. يمكن لجزء من نبات أن يعطي نباتا جديدا مطابقا للنبات الأم، ويسمى نسخة مطابقة. من أمثلته العقلة وهي جزء من ساق يُغرس فتنمو له جذور، والمدادات عند الفراولة، والدرنة عند البطاطس إذ يمكن لكل «عين» أن تعطي نباتا جديدا.'], u: 'اضغط على كل علامة تبويب.', w: [['multiplication végétative', 'تكاثر خضري'], ['bouture', 'عقلة'], ['stolon', 'مدّاد'], ['tubercule', 'درنة']] } },
     ]; },
     quiz: [
+      { q: 'Une bouture donne :', o: ['une plante identique à la plante mère', 'une plante très différente', 'un animal'], a: 0, e: 'Il n’y a pas de fécondation : c’est un clone.' },
+      { q: 'Le fraisier se multiplie surtout grâce à :', o: ['ses stolons', 'ses plumes', 'ses écailles'], a: 0, e: 'Les stolons s’enracinent et forment de nouveaux plants.' },
       { q: 'Quel organe de la fleur contient le pollen ?', o: ['L’anthère', 'L’ovaire', 'Le stigmate'], a: 0, e: 'L’anthère fait partie de l’étamine.' },
       { q: 'Après la fécondation, l’ovaire devient :', o: ['un fruit', 'une racine', 'un pétale'], a: 0, e: 'Le fruit protège les graines.' },
       { q: 'La pollinisation est :', o: ['le transport du pollen vers le stigmate', 'la sortie de la plantule', 'la chute des pétales'], a: 0, e: 'Les insectes et le vent y participent.' }
     ] });
+
+  function vegetative(el) {
+    explorer(el, [
+      { id: 'pr', t: 'Principe', c: T, d: 'Sans fleur ni fécondation, un fragment de plante peut donner une nouvelle plante identique à la plante mère : un <b>clone</b>. C’est la <b>multiplication végétative</b> (reproduction asexuée).' },
+      { id: 'bo', t: 'Bouture', c: P, d: 'On coupe un morceau de tige et on le plante dans la terre humide : des racines se forment. Exemples : géranium, saule, vigne.' },
+      { id: 'st', t: 'Stolon', c: C, d: 'Le fraisier envoie de longues tiges rampantes, les <b>stolons</b>. Elles s’enracinent et donnent de nouveaux plants.' },
+      { id: 'tu', t: 'Tubercule', c: L, d: 'La pomme de terre est un <b>tubercule</b> : chaque « œil » peut donner une nouvelle plante.' }
+    ]);
+  }
 
   /* ===================================================== 2e ANNÉE · 4. REPRODUCTION CHEZ L’HOMME */
   function appareils(el) {
