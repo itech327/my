@@ -1409,9 +1409,40 @@ lessons:[
  ar:{e:['لكشف <b>ثنائي أوكسيد الكربون CO₂</b> نستعمل ماء الجير: يصبح عكراً (أبيض). ولكشف <b>الماء</b> نستعمل كبريتات النحاس اللامائية: تتحول من اللون الأبيض إلى الأزرق.',
   'في الاحتراق <b>التام</b> يتكوّن CO₂ (وH₂O إذا كان الوقود يحتوي على الهيدروجين). في الاحتراق <b>غير التام</b> (نقص ثنائي الأكسجين) يتكوّن غاز <b>أحادي أوكسيد الكربون CO</b> وهو غاز سام جداً وعديم الرائحة، ولذلك يجب تهوية الغرف التي توجد فيها المدافئ والسخانات.'],
   u:'اختر احتراقاً ثم اضغط «Faire les tests». شاهد ماء الجير يتعكر عند وجود CO₂، وكبريتات النحاس تصبح زرقاء عند وجود الماء.',
-  w:[['eau de chaux','ماء الجير'],['sulfate de cuivre anhydre','كبريتات النحاس اللامائية'],['dioxyde de carbone','ثنائي أوكسيد الكربون'],['monoxyde de carbone','أحادي أوكسيد الكربون'],['combustion incomplète','احتراق غير تام']]}}
+  w:[['eau de chaux','ماء الجير'],['sulfate de cuivre anhydre','كبريتات النحاس اللامائية'],['dioxyde de carbone','ثنائي أوكسيد الكربون'],['monoxyde de carbone','أحادي أوكسيد الكربون'],['combustion incomplète','احتراق غير تام']]}},
+{short:'Combustion du butane',title:'La combustion du butane',
+ intro:'Le butane C₄H₁₀ est le gaz des bouteilles de cuisine. Avance étape par étape pour équilibrer son équation.',
+ build:function(el){
+  var ST=[
+   {c:[1,1,1,1],t:'On écrit les formules. Compte les atomes : ce n’est pas équilibré.'},
+   {c:[1,1,4,1],t:'On équilibre le <b>carbone</b> : 4 atomes C à gauche, donc 4 CO₂.'},
+   {c:[1,1,4,5],t:'On équilibre l’<b>hydrogène</b> : 10 atomes H à gauche, donc 5 H₂O.'},
+   {c:[1,6.5,4,5],t:'On équilibre l’<b>oxygène</b> : 4 × 2 + 5 = 13 atomes O, donc 6,5 O₂. Un coefficient décimal n’est pas permis.'},
+   {c:[2,13,8,10],t:'On multiplie tout par 2 pour avoir des coefficients entiers. L’équation est équilibrée.'}
+  ],cur=0;
+  btnRow(el,ST.map(function(x,i){return [String(i),'Étape '+(i+1)]}),function(k){cur=+k;draw()},0);
+  var chips=ui.chips(el),tb=h('div',{'class':'scroll-x'}),inf=ui.info(el);el.appendChild(tb);
+  function f(x){return String(x).replace('.',',')}
+  function draw(){
+    var c=ST[cur].c,L=[4*c[0],10*c[0],2*c[1]],R=[c[2],2*c[3],2*c[2]+c[3]],nm=['C','H','O'],i,ok=true,td='style="padding:6px 16px;text-align:center;border:1px solid var(--line)"',rows='';
+    function q(n,x){return (n===1?'':f(n)+' ')+x}
+    for(i=0;i<3;i++){var same=L[i]===R[i];if(!same)ok=false;rows+='<tr><td '+td+'><b>'+nm[i]+'</b></td><td '+td+'>'+f(L[i])+'</td><td '+td+'>'+f(R[i])+'</td><td '+td+' style="color:var(--'+(same?'teal':'coral')+')">'+(same?'égal':'différent')+'</td></tr>'}
+    tb.innerHTML='<table style="border-collapse:collapse;margin:8px auto"><tr><td '+td+'>Atome</td><td '+td+'>Avant</td><td '+td+'>Après</td><td '+td+'></td></tr>'+rows+'</table>';
+    chips.set('<span class="chip plain">'+q(c[0],'C₄H₁₀')+' + '+q(c[1],'O₂')+' → '+q(c[2],'CO₂')+' + '+q(c[3],'H₂O')+'</span>');
+    inf.set('<p>'+ST[cur].t+'</p>'+(ok&&cur===4?'<p><b>Combustion complète du butane : 2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O.</b></p>':''));
+  }
+  draw();
+ },
+ retenir:['La combustion complète du butane donne du <b>dioxyde de carbone</b> et de l’<b>eau</b>.','Équation équilibrée : <b>2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O</b>.','Si le dioxygène manque, la combustion est incomplète et produit du <b>monoxyde de carbone</b>, gaz toxique. Il faut aérer la cuisine.'],
+ ar:{e:['غاز البوتان C₄H₁₀ هو الغاز الموجود في قنينات الطبخ. احتراقه التام ينتج <b>ثنائي أوكسيد الكربون</b> و<b>الماء</b>.',
+  'نوازن المعادلة ذرة بعد ذرة: نبدأ بالكربون ثم الهيدروجين ثم الأكسجين، وإذا ظهر معامل عشري نضرب كل المعاملات في 2. المعادلة الموزونة: '+'<b>2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O</b>.',
+  'إذا نقص ثنائي الأكسجين يكون الاحتراق غير تام ويتكوّن أحادي أوكسيد الكربون السام، لذلك يجب تهوية المطبخ.'],
+  u:'اضغط على الخطوات من 1 إلى 5 وراقب جدول الذرات: الأخضر يعني أن عدد الذرات متساوٍ.',
+  w:[['butane','بوتان'],['équilibrer','وازن'],['coefficient','معامل'],['atome','ذرة'],['combustion complète','احتراق تام']]}}
 ],
 quiz:[
+ {q:'Quels produits donne la combustion complète du butane ?',o:['CO₂ et H₂O','CO et H₂','seulement du CO₂'],a:0,e:'Le butane contient du carbone et de l’hydrogène : CO₂ et H₂O.'},
+ {q:'Dans 2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O, combien d’atomes d’oxygène y a-t-il après la flèche ?',o:['26','13','18'],a:0,e:'8 × 2 + 10 = 26, comme 13 × 2 à gauche.'},
  {q:'Pour qu’il y ait combustion, il faut :',o:['seulement un combustible','combustible, comburant et énergie','seulement de l’eau'],a:1,e:'Les trois éléments sont indispensables.'},
  {q:'Quel est le comburant dans l’air ?',o:['le diazote','le dioxygène','l’argon'],a:1,e:'Le dioxygène entretient la combustion.'},
  {q:'Le dioxyde de carbone trouble :',o:['l’eau de chaux','le sulfate de cuivre','l’eau salée'],a:0,e:'C’est le test d’identification du CO₂.'},
