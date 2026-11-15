@@ -95,6 +95,7 @@ a.chap{padding-inline-start:46px}
 a.chap .num{position:absolute;inset-inline-start:10px;top:12px;font:800 15px var(--mono);color:var(--pink);opacity:.9}
 h3.unit{scroll-margin-top:58px}
 #home{display:flex;flex-direction:column}
+#home[hidden]{display:none}
 #home>header{order:1}#home>section{order:2}#home>.home-intro{order:3;margin-top:18px}#home>.lab-riddle{order:4}
 #home>header h1.display{margin-bottom:6px}
 .lvl-txt strong .ar-t{display:block;font:600 15px var(--f-ar,inherit);color:var(--teal);margin-top:2px}
@@ -133,3 +134,33 @@ h3.unit{scroll-margin-top:58px}
 .esc-ar{margin-top:6px;color:var(--muted);font-size:15px}
 .esc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
 .esc-in{width:92px;padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:#04080c;color:var(--fg);font:600 16px var(--f-mono,monospace)}
+
+/* ===== Une leçon à la fois : barre des leçons collante, en-tête compact ===== */
+.paged .lesson[hidden]{display:none!important}
+.paged .back{margin-bottom:6px}
+.paged h2{font-size:clamp(26px,7vw,34px);margin-top:4px}
+.paged .ar-title{font-size:15px;margin:2px 0 0}
+.paged .fiche-row{margin:4px 0 0}
+.paged ul.toc.stepper{position:sticky;top:0;z-index:30;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:10px -4px 0;padding:8px 4px;background:rgba(7,12,17,.94);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.paged ul.toc.stepper::-webkit-scrollbar{display:none}
+.paged ul.toc.stepper li{flex:0 0 auto}
+.paged ul.toc.stepper a{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:6px 12px 6px 6px;font-size:13px}
+.paged ul.toc.stepper a b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--surface-2);font:700 12px var(--mono);color:var(--muted)}
+.paged ul.toc.stepper a.seen b{background:rgba(63,185,80,.25);color:#3fb950}
+.paged ul.toc.stepper a.on{background:var(--coral,#f27b60);border-color:var(--coral,#f27b60);color:#1a0b06;font-weight:700}
+.paged ul.toc.stepper a.on b{background:#1a0b06;color:var(--coral,#f27b60)}
+.paged .lesson{margin-top:0;padding-top:14px;border-top:0;scroll-margin-top:64px}
+.paged .lesson>.eyebrow{display:none}
+.paged .lesson h3{font-size:clamp(22px,6vw,28px);margin:2px 0 6px}
+.paged .lesson>p{margin-bottom:10px}
+.pager-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 6px;padding-top:14px;border-top:1px dashed var(--line)}
+.pager-cnt{font:600 12px var(--mono);color:var(--muted)}
+.pager-nav .btn:disabled{opacity:.35;cursor:default}
+.pager-nav .go{border-color:var(--coral,#f27b60)}
+.paged>.eyebrow{font-size:10px;letter-spacing:.1em;line-height:1.4}
+.paged h2{font-size:clamp(22px,6vw,28px)}
+.paged .ar-title{font-size:14px;margin:0;text-align:start}
+.paged .fiche-row{position:absolute;top:-4px;right:0;margin:0}
+.paged .fiche-btn{padding:5px 10px;font-size:12px}
+.paged{position:relative}
+.paged .lesson>p:first-of-type{font-size:15px}

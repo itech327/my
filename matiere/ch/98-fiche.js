@@ -56,8 +56,8 @@ function ficheInject() {
   });
 }
 (function () {
-  var q = false;
-  function go() { if (q) return; q = true; requestAnimationFrame(function () { q = false; ficheInject(); }); }
-  new MutationObserver(go).observe(document.body, { childList: true, subtree: true });
-  window.addEventListener('hashchange', go); window.addEventListener('load', go); go();
+  Array.prototype.forEach.call(document.querySelectorAll('section.chapter'), function (ch) {
+    new MutationObserver(function () { ficheInject(); }).observe(ch, { childList: true });
+  });
+  ficheInject();
 })();

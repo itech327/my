@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-wOuAOsHCMkV9RO2nMfZxeOFC++WQGuvWTO4qCYAFOTA=' 'sha256-PmSx21oVnETGDYmWZEG1jclPftGSDDWQLypmMtCGINo='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-wOuAOsHCMkV9RO2nMfZxeOFC++WQGuvWTO4qCYAFOTA=' 'sha256-VeLdiA56Zvgkh+owoWYXiLaQMzUiKerNO7tzsY2QmOc='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://ipwho.is https://ipapi.co https://api.ipify.org https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="Technologie, 2e et 3e années du collège : modélisation, fonctions techniques, circuits, énergies. Figures animées et résumés en arabe.">
 <link rel="canonical" href="https://technologie.taalim.men/">
@@ -341,6 +341,7 @@ a.chap{padding-inline-start:46px}
 a.chap .num{position:absolute;inset-inline-start:10px;top:12px;font:800 15px var(--mono);color:var(--pink);opacity:.9}
 h3.unit{scroll-margin-top:58px}
 #home{display:flex;flex-direction:column}
+#home[hidden]{display:none}
 #home>header{order:1}#home>section{order:2}#home>.home-intro{order:3;margin-top:18px}#home>.lab-riddle{order:4}
 #home>header h1.display{margin-bottom:6px}
 .lvl-txt strong .ar-t{display:block;font:600 15px var(--f-ar,inherit);color:var(--teal);margin-top:2px}
@@ -379,6 +380,36 @@ h3.unit{scroll-margin-top:58px}
 .esc-ar{margin-top:6px;color:var(--muted);font-size:15px}
 .esc-opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
 .esc-in{width:92px;padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:#04080c;color:var(--fg);font:600 16px var(--f-mono,monospace)}
+
+/* ===== Une leçon à la fois : barre des leçons collante, en-tête compact ===== */
+.paged .lesson[hidden]{display:none!important}
+.paged .back{margin-bottom:6px}
+.paged h2{font-size:clamp(26px,7vw,34px);margin-top:4px}
+.paged .ar-title{font-size:15px;margin:2px 0 0}
+.paged .fiche-row{margin:4px 0 0}
+.paged ul.toc.stepper{position:sticky;top:0;z-index:30;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin:10px -4px 0;padding:8px 4px;background:rgba(7,12,17,.94);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.paged ul.toc.stepper::-webkit-scrollbar{display:none}
+.paged ul.toc.stepper li{flex:0 0 auto}
+.paged ul.toc.stepper a{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:6px 12px 6px 6px;font-size:13px}
+.paged ul.toc.stepper a b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--surface-2);font:700 12px var(--mono);color:var(--muted)}
+.paged ul.toc.stepper a.seen b{background:rgba(63,185,80,.25);color:#3fb950}
+.paged ul.toc.stepper a.on{background:var(--coral,#f27b60);border-color:var(--coral,#f27b60);color:#1a0b06;font-weight:700}
+.paged ul.toc.stepper a.on b{background:#1a0b06;color:var(--coral,#f27b60)}
+.paged .lesson{margin-top:0;padding-top:14px;border-top:0;scroll-margin-top:64px}
+.paged .lesson>.eyebrow{display:none}
+.paged .lesson h3{font-size:clamp(22px,6vw,28px);margin:2px 0 6px}
+.paged .lesson>p{margin-bottom:10px}
+.pager-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 6px;padding-top:14px;border-top:1px dashed var(--line)}
+.pager-cnt{font:600 12px var(--mono);color:var(--muted)}
+.pager-nav .btn:disabled{opacity:.35;cursor:default}
+.pager-nav .go{border-color:var(--coral,#f27b60)}
+.paged>.eyebrow{font-size:10px;letter-spacing:.1em;line-height:1.4}
+.paged h2{font-size:clamp(22px,6vw,28px)}
+.paged .ar-title{font-size:14px;margin:0;text-align:start}
+.paged .fiche-row{position:absolute;top:-4px;right:0;margin:0}
+.paged .fiche-btn{padding:5px 10px;font-size:12px}
+.paged{position:relative}
+.paged .lesson>p:first-of-type{font-size:15px}
 </style>
 </head>
 <body>
@@ -6124,6 +6155,71 @@ PC.extra('t2-13', [{
   }]);
 });
 
+/* ===================================================== UNE LEÇON À LA FOIS
+   Dans un chapitre, une seule leçon est affichée : l'élève voit tout de suite l'animation, sans descendre la page.
+   La barre des leçons (collante) permet de sauter d'une leçon à l'autre, « Précédente / Suivante » est sous chaque leçon.
+   Les leçons masquées ne tournent pas (PC.anim s'arrête sur un élément caché) : l'écran est aussi plus fluide. */
+function pgGet(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
+function pgSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function pagerBuild(ch) {
+  var id = ch.id, toc = ch.querySelector('ul.toc');
+  var les = Array.prototype.filter.call(ch.children, function (x) { return x.tagName === 'SECTION' && x.classList.contains('lesson'); });
+  if (!toc || !les.length) return;
+  ch.setAttribute('data-pager', '1'); ch.classList.add('paged'); toc.classList.add('stepper'); toc.setAttribute('aria-label', 'Leçons du chapitre');
+  var seen = pgGet('tech_seen_' + id, []), chips = Array.prototype.slice.call(toc.querySelectorAll('a')), navs = [];
+  chips.forEach(function (a, i) {
+    var t = a.textContent, b = document.createElement('b'), sp = document.createElement('span');
+    b.textContent = String(i + 1); sp.textContent = t; a.textContent = ''; a.appendChild(b); a.appendChild(sp);
+    a.addEventListener('click', function (e) { e.preventDefault(); show(i, true); });
+  });
+  les.forEach(function (s, i) {
+    var nav = h('div', { 'class': 'pager-nav' });
+    var prev = h('button', { 'class': 'btn', type: 'button' }, '◀ Précédente'), next = h('button', { 'class': 'btn go', type: 'button' }, 'Leçon suivante ▶');
+    var cnt = h('span', { 'class': 'pager-cnt' }, (i + 1) + ' / ' + les.length);
+    prev.disabled = i === 0;
+    if (i === les.length - 1) { next.textContent = 'Fin du chapitre ✓'; next.addEventListener('click', function () { location.hash = '#home'; }); }
+    else next.addEventListener('click', function () { show(i + 1, true); });
+    prev.addEventListener('click', function () { show(i - 1, true); });
+    nav.appendChild(prev); nav.appendChild(cnt); nav.appendChild(next); s.appendChild(nav);
+  });
+  function show(i, scroll) {
+    if (i < 0 || i >= les.length) return;
+    les.forEach(function (s, k) { s.hidden = k !== i; });
+    if (seen.indexOf(i) < 0) { seen.push(i); pgSet('tech_seen_' + id, seen); }
+    chips.forEach(function (a, k) { a.classList.toggle('on', k === i); a.classList.toggle('seen', k !== i && seen.indexOf(k) > -1); if (k === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    var a = chips[i]; toc.scrollLeft = Math.max(0, a.offsetLeft - (toc.clientWidth - a.offsetWidth) / 2);
+    try { history.replaceState(null, '', '#' + id + '-l' + (i + 1)); } catch (e) {}
+    if (scroll) { var y = les[i].getBoundingClientRect().top + window.pageYOffset - toc.offsetHeight - 6; window.scrollTo(0, Math.max(0, y)); }
+  }
+  ch._pagerShow = show; ch._pagerCount = les.length;
+  var m = new RegExp('^#' + id + '-l(\\d+)$').exec(location.hash || ''), first = m ? Math.min(les.length, Math.max(1, +m[1])) - 1 : 0;
+  show(first, !!m);
+}
+function pagerInject() {
+  try { if (sessionStorage.getItem('tech_nopager')) return; } catch (e) {}   /* interrupteur des tests : toutes les leçons affichées */
+  Array.prototype.forEach.call(document.querySelectorAll('section.chapter'), function (ch) { if (!ch.hasAttribute('data-pager') && ch.querySelector('ul.toc')) pagerBuild(ch); });
+}
+(function () {
+  /* un observateur léger par chapitre (ses enfants seulement) : il se déclenche à la construction paresseuse du chapitre */
+  Array.prototype.forEach.call(document.querySelectorAll('section.chapter'), function (ch) {
+    new MutationObserver(function () { pagerInject(); }).observe(ch, { childList: true });
+  });
+  /* lien direct vers une leçon (#t3-5-l3) : le chapitre est construit à la première visite, on l'ouvre d'abord puis on affiche la leçon */
+  function deep() {
+    var m = /^#(t[23]-\d+)-l(\d+)$/.exec(location.hash || ''); if (!m) return;
+    var ch = document.getElementById(m[1]); if (!ch) return;
+    if (ch._pagerShow) { ch._pagerShow(Math.min(ch._pagerCount, Math.max(1, +m[2])) - 1, true); return; }
+    if (document.getElementById(m[1] + '-l' + m[2])) return;
+    try { history.replaceState(null, '', '#' + m[1]); } catch (e) {}
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    pagerInject();
+    if (ch._pagerShow) ch._pagerShow(Math.min(ch._pagerCount, Math.max(1, +m[2])) - 1, true);
+  }
+  window.addEventListener('hashchange', deep);
+  pagerInject();
+  deep();
+})();
+
 /* ===================================================== FICHE A4 IMPRIMABLE
    Un bouton « Fiche A4 » dans chaque chapitre : l'essentiel (À retenir), le résumé arabe, les termes FR/AR,
    une case « Je sais expliquer » par leçon et un cadre pour le schéma de l'élève. Le contenu est lu dans le chapitre ouvert. */
@@ -6182,10 +6278,10 @@ function ficheInject() {
   });
 }
 (function () {
-  var q = false;
-  function go() { if (q) return; q = true; requestAnimationFrame(function () { q = false; ficheInject(); }); }
-  new MutationObserver(go).observe(document.body, { childList: true, subtree: true });
-  window.addEventListener('hashchange', go); window.addEventListener('load', go); go();
+  Array.prototype.forEach.call(document.querySelectorAll('section.chapter'), function (ch) {
+    new MutationObserver(function () { ficheInject(); }).observe(ch, { childList: true });
+  });
+  ficheInject();
 })();
 
 /* ===================================================== SOMMAIRE */
