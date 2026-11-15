@@ -1600,6 +1600,32 @@ function sommeMemeDen(el){
   }
   draw();
 }
+M.encadrer=function(el,neg){
+  var n=neg?-7:7,d=3;
+  function f(x,k){return fmt(x,k).replace('-','−')}
+  ui.slider(el,{label:'Numérateur',min:neg?-40:1,max:40,step:1,value:n,color:P},function(v){n=v;draw()});
+  ui.slider(el,{label:'Dénominateur',min:2,max:12,step:1,value:d,color:T},function(v){d=v;draw()});
+  var svg=ui.stage(el,400,110,'Droite graduée : encadrement d’une fraction'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+  function draw(){
+    g.replaceChildren();
+    var q=n/d,u=Math.floor(q+1e-12),a1=Math.floor(q*10+1e-9)/10,i,x0=30,x1=370,ex=(Math.abs(n)*1000)%d===0,fr=(n<0?'−'+(-n):n)+'/'+d;
+    S('path',{d:'M'+x0+' 60H'+x1,style:'stroke:#fff;stroke-width:2.4;fill:none'},g);
+    for(i=0;i<=10;i++)S('path',{d:'M'+(x0+i*34)+' '+(i%10===0?50:55)+'V'+(i%10===0?70:65),style:'stroke:#fff;stroke-width:1.6;fill:none'},g);
+    S('text',{x:x0,y:90,'class':'pl',text:f(u,0)},g);S('text',{x:x1,y:90,'class':'pl',text:f(u+1,0)},g);
+    if(!ex)S('rect',{x:x0+(a1-u)*340,y:54,width:34,height:12,style:'fill:var(--teal);fill-opacity:.55'},g);
+    S('circle',{cx:x0+(q-u)*340,cy:60,r:6,style:'fill:var(--pink);stroke:#fff;stroke-width:2'},g);
+    S('text',{x:x0+(q-u)*340,y:34,'class':'pl',text:fr,style:'fill:var(--pink)'},g);
+    if(ex){
+      chips.set('<span class="chip plain">'+fr+' = <b>'+f(q,3).replace(/0+$/,'').replace(/,$/,'')+'</b></span>');
+      inf.set('<p>Cette fraction est égale à un nombre décimal : il n’y a rien à encadrer.</p>');
+    }else{
+      var a2=Math.floor(q*100+1e-9)/100;
+      chips.set('<span class="chip plain">'+fr+' ≈ <b>'+f(q,3)+'</b></span>');
+      inf.set('<p>À l’unité : <b>'+f(u,0)+' &lt; '+fr+' &lt; '+f(u+1,0)+'</b></p><p>Au dixième : <b>'+f(a1,1)+' &lt; '+fr+' &lt; '+f(a1+0.1,1)+'</b></p><p>Au centième : <b>'+f(a2,2)+' &lt; '+fr+' &lt; '+f(a2+0.01,2)+'</b></p>');
+    }
+  }
+  draw();
+};
 M.chapter({id:'c1-2',eyebrow:'1<sup>re</sup> année · Chapitre 2 · Numérique',title:'Les nombres fractionnaires',
   lessons:[
     {short:'Fractions équivalentes',title:'Fractions équivalentes',intro:'Change le numérateur, le dénominateur et le multiplicateur : la partie colorée garde la même taille.',build:equivalentes,
@@ -1607,9 +1633,31 @@ M.chapter({id:'c1-2',eyebrow:'1<sup>re</sup> année · Chapitre 2 · Numérique'
     {short:'Comparer des fractions',title:'Comparer deux fractions',intro:'On réduit au même dénominateur, puis on compare les numérateurs.',build:comparer,
       retenir:['Deux fractions de même dénominateur : la plus grande est celle qui a le plus grand numérateur.','Sinon, on les met d’abord au même dénominateur.']},
     {short:'Additionner',title:'Additionner des fractions de même dénominateur',intro:'Les parts ont la même taille : on additionne les numérateurs.',build:sommeMemeDen,
-      retenir:['<span class="math">a/c + b/c = (a + b)/c</span>','On garde le dénominateur et on additionne les numérateurs. Ensuite, on simplifie si possible.']}
+      retenir:['<span class="math">a/c + b/c = (a + b)/c</span>','On garde le dénominateur et on additionne les numérateurs. Ensuite, on simplifie si possible.']},
+    {short:'Dénominateurs différents',title:'Additionner avec des dénominateurs différents',intro:'Choisis une somme. On réduit d’abord les deux fractions au même dénominateur.',build:function(el){
+      var CS=[[1,2,1,3],[2,3,1,4],[1,2,3,5],[1,6,1,3]],cur=0;
+      ui.tabs(el,CS.map(function(c,i){return [String(i),c[0]+'/'+c[1]+' + '+c[2]+'/'+c[3]]}),function(k){cur=+k;draw()});
+      var svg=ui.stage(el,400,130,'Deux fractions réduites au même dénominateur'),g=S('g',{style:'fill:#fff'},svg),inf=ui.info(el);
+      function lcm(a,b){return a*b/gcd(a,b)}
+      function draw(){
+        g.replaceChildren();
+        var c=CS[cur],D=lcm(c[1],c[3]),na=c[0]*D/c[1],nc=c[2]*D/c[3],sm=na+nc,N=Math.max(D,sm),w=360/N,x0=20,i,gg=gcd(sm,D);
+        for(i=0;i<N;i++)S('rect',{x:x0+i*w,y:34,width:w,height:44,style:'fill:'+(i<na?P:(i<sm?T:'transparent'))+';fill-opacity:.75;stroke:#fff;stroke-width:1.5'},g);
+        S('path',{d:'M'+(x0+D*w)+' 24V88',style:'stroke:#fff;stroke-width:3;fill:none'},g);
+        S('text',{x:x0+D*w,y:16,'class':'pl',text:'1'},g);
+        S('text',{x:x0+na*w/2,y:102,'class':'pl',text:c[0]+'/'+c[1]+' = '+na+'/'+D,style:'fill:'+P},g);
+        S('text',{x:x0+na*w+nc*w/2,y:120,'class':'pl',text:c[2]+'/'+c[3]+' = '+nc+'/'+D,style:'fill:'+T},g);
+        inf.set('<p><b>1.</b> Dénominateur commun : <b>'+D+'</b>.</p><p><b>2.</b> '+c[0]+'/'+c[1]+' = '+na+'/'+D+' et '+c[2]+'/'+c[3]+' = '+nc+'/'+D+'.</p><p><b>3.</b> '+na+'/'+D+' + '+nc+'/'+D+' = <b>'+sm+'/'+D+'</b>'+(gg>1?' = <b>'+(sm/gg)+'/'+(D/gg)+'</b> après simplification':'')+'.</p>');
+      }
+      draw();
+    },
+      retenir:['Pour additionner deux fractions de dénominateurs différents, on les réduit d’abord au <b>même dénominateur</b>.','On additionne ensuite les numérateurs et on garde le dénominateur commun.','Exemple : <span class="math">1/2 + 1/3 = 3/6 + 2/6 = 5/6</span>.']},
+    {short:'Encadrer une fraction',title:'Encadrer une fraction par deux décimaux',intro:'Change le numérateur et le dénominateur. Lis l’encadrement à l’unité, au dixième et au centième.',build:function(el){M.encadrer(el,false)},
+      retenir:['Encadrer une fraction, c’est trouver deux nombres décimaux consécutifs entre lesquels elle se trouve.','Plus on cherche de chiffres après la virgule, plus l’encadrement est précis : unité, dixième, centième.','Exemple : <span class="math">2,3 &lt; 7/3 &lt; 2,4</span>.']}
   ],
   quiz:[
+    {q:'1/2 + 1/3 = ?',o:['5/6','2/5','2/6'],a:0,e:'1/2 = 3/6 et 1/3 = 2/6, donc 3/6 + 2/6 = 5/6.'},
+    {q:'Quel est l’encadrement de 7/3 au dixième ?',o:['2,3 < 7/3 < 2,4','2,2 < 7/3 < 2,3','2,4 < 7/3 < 2,5'],a:0,e:'7 ÷ 3 = 2,333…'},
     {q:'Quelle valeur manque : 2/3 = ?/12',o:['6','9','8','4'],a:2,e:'On multiplie 3 par 4 pour obtenir 12, donc 2 × 4 = 8.'},
     {q:'3/7 + 2/7 = ?',o:['5/14','6/7','1/7','5/7'],a:3,e:'On garde le dénominateur 7 et on additionne 3 + 2 = 5.'},
     {q:'Quelle est la fraction irréductible égale à 12/18 ?',o:['6/9','4/6','2/3','12/18'],a:2,e:'12/18 = 6/9 = 2/3, et 2/3 ne se simplifie plus.'}
@@ -1712,9 +1760,41 @@ M.chapter({id:'c1-4',eyebrow:'1<sup>re</sup> année · Chapitre 4 · Numérique'
     {short:'Multiplier : signes',title:'Multiplier : la règle des signes',intro:'Change les deux facteurs et regarde la case qui s’allume dans le tableau.',build:regleSignes,
       retenir:['Même signe : le produit est <b>positif</b>.','Signes différents : le produit est <b>négatif</b>.','Un produit est nul si l’un des facteurs est nul.']},
     {short:'Puissances de 10',title:'Les puissances de 10',intro:'Déplace l’exposant et regarde la virgule se décaler.',build:puissances10,
-      retenir:['10<sup>n</sup> = 1 suivi de n zéros (pour n positif).','10<sup>−n</sup> = 1 ÷ 10<sup>n</sup> : le chiffre 1 se trouve au n-ième rang après la virgule (10<sup>−2</sup> = 0,01).','Multiplier par 10<sup>n</sup> décale la virgule de n rangs vers la droite.']}
+      retenir:['10<sup>n</sup> = 1 suivi de n zéros (pour n positif).','10<sup>−n</sup> = 1 ÷ 10<sup>n</sup> : le chiffre 1 se trouve au n-ième rang après la virgule (10<sup>−2</sup> = 0,01).','Multiplier par 10<sup>n</sup> décale la virgule de n rangs vers la droite.']},
+    {short:'Soustraire et diviser',title:'Soustraire et diviser des relatifs',intro:'Choisis l’opération, puis change a et b.',build:function(el){
+      var mode='sub',a=-3,b=-5;
+      function sg(v){return v<0?'(−'+(-v)+')':String(v)}
+      function f(v){return String(Math.round(v*100)/100).replace('.',',').replace('-','−')}
+      ui.tabs(el,[['sub','Soustraire'],['div','Diviser']],function(k){mode=k;draw()});
+      var svg=ui.stage(el,400,100,'Droite graduée de −20 à 20'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+      ui.slider(el,{label:'a',min:-9,max:9,step:1,value:-3,color:P},function(v){a=v;draw()});
+      ui.slider(el,{label:'b',min:-9,max:9,step:1,value:-5,color:T},function(v){b=v;draw()});
+      function X(v){return 200+v*9}
+      function draw(){
+        g.replaceChildren();
+        S('path',{d:'M20 60H380',style:'stroke:#fff;stroke-width:2.2;fill:none'},g);
+        for(var i=-20;i<=20;i+=5){S('path',{d:'M'+X(i)+' 54V66',style:'stroke:#fff;stroke-width:1.6;fill:none'},g);S('text',{x:X(i),y:82,'class':'pl',text:String(i).replace('-','−')},g)}
+        if(mode==='sub'){
+          var r=a-b;
+          S('path',{d:'M'+X(a)+' 40L'+X(r)+' 40',style:'stroke:var(--coral);stroke-width:4;stroke-linecap:round;fill:none'},g);
+          S('circle',{cx:X(a),cy:60,r:6,style:'fill:var(--pink);stroke:#fff;stroke-width:2'},g);
+          S('circle',{cx:X(r),cy:60,r:6,style:'fill:var(--teal);stroke:#fff;stroke-width:2'},g);
+          chips.set('<span class="chip plain">'+sg(a)+' − '+sg(b)+' = '+sg(a)+' + '+sg(-b)+' = <b>'+f(r)+'</b></span>');
+          inf.set('<p>Soustraire '+sg(b)+', c’est ajouter son opposé '+sg(-b)+'.</p>');
+        }else{
+          if(b===0){chips.set('<span class="chip plain">Division par 0 impossible</span>');inf.set('<p>On ne peut jamais diviser par 0.</p>');return}
+          var q=a/b;
+          chips.set('<span class="chip plain">'+sg(a)+' ÷ '+sg(b)+' = <b>'+f(q)+'</b></span>');
+          inf.set('<p>'+((a<0)===(b<0)||a===0?'Même signe : le quotient est positif.':'Signes contraires : le quotient est négatif.')+'</p>');
+        }
+      }
+      draw();
+    },
+      retenir:['<b>Soustraire</b> un relatif, c’est <b>ajouter son opposé</b> : <span class="math">a − b = a + (−b)</span>.','Le quotient suit la même règle des signes que le produit : même signe, résultat positif ; signes contraires, résultat négatif.','On ne peut jamais diviser par 0.']}
   ],
   quiz:[
+    {q:'(−3) − (−5) = ?',o:['2','−8','8','−2'],a:0,e:'(−3) + 5 = 2.'},
+    {q:'(−12) ÷ 4 = ?',o:['−3','3','−8','8'],a:0,e:'Signes contraires : le quotient est négatif.'},
     {q:'(−3) + (−4) = ?',o:['−7','7','1','−1'],a:0,e:'Même signe : on additionne 3 + 4 et on garde le signe moins.'},
     {q:'(−6) × (−2) = ?',o:['−12','−8','12','8'],a:2,e:'Deux nombres négatifs ont un produit positif : 6 × 2 = 12.'},
     {q:'10<sup>−3</sup> = ?',o:['0,01','0,001','−1000','0,0001'],a:1,e:'10<sup>−3</sup> = 1 ÷ 1000 = 0,001.'}
@@ -1810,9 +1890,26 @@ M.chapter({id:'c1-6',eyebrow:'1<sup>re</sup> année · Chapitre 6 · Numérique'
   lessons:[
     {short:'La balance',title:'Résoudre une équation',intro:'Chaque plateau porte des boîtes x et des jetons de valeur 1. Cherche la valeur de x qui équilibre la balance.',
       build:function(el){M.balance(el,[{a:1,b:5,c:0,d:12},{a:3,b:0,c:0,d:12},{a:2,b:3,c:0,d:11},{a:5,b:2,c:0,d:17}])},
-      retenir:['Une équation est une égalité qui contient une inconnue, souvent notée x.','<b>Résoudre</b> l’équation, c’est trouver la valeur de x qui rend l’égalité vraie.','On peut ajouter, retrancher, multiplier ou diviser les <b>deux côtés par le même nombre</b> sans changer la solution.']}
+      retenir:['Une équation est une égalité qui contient une inconnue, souvent notée x.','<b>Résoudre</b> l’équation, c’est trouver la valeur de x qui rend l’égalité vraie.','On peut ajouter, retrancher, multiplier ou diviser les <b>deux côtés par le même nombre</b> sans changer la solution.']},
+    {short:'Mettre en équation',title:'Mettre un problème en équation',intro:'Choisis un problème, puis avance étape par étape.',build:function(el){
+      var PB=[['a','Les billes','Sami a x billes. Il en gagne 7 et en a maintenant 25. Combien en avait-il ?','x = nombre de billes au départ','x + 7 = 25','x = 25 − 7 = 18','18 + 7 = 25, c’est exact','Sami avait 18 billes.'],
+              ['b','Les cahiers','3 cahiers identiques coûtent 21 DH. Quel est le prix d’un cahier ?','x = prix d’un cahier en DH','3x = 21','x = 21 ÷ 3 = 7','3 × 7 = 21, c’est exact','Un cahier coûte 7 DH.'],
+              ['c','Le carré','Un carré a un périmètre de 36 cm. Quelle est la longueur de son côté ?','x = longueur du côté en cm','4x = 36','x = 36 ÷ 4 = 9','4 × 9 = 36, c’est exact','Le côté mesure 9 cm.']],cur=0,st=0;
+      var LAB=['Choisir l’inconnue','Écrire l’équation','Résoudre','Vérifier'];
+      ui.tabs(el,PB.map(function(q){return [q[0],q[1]]}),function(k){cur=PB.map(function(q){return q[0]}).indexOf(k);st=0;draw()});
+      var box=ui.info(el),ctl=ui.controls(el),nb=ui.btn(ctl,'Commencer',function(){if(st<4)st++;draw()});
+      function draw(){
+        var q=PB[cur],t='<p><b>'+q[2]+'</b></p>';
+        for(var i=0;i<st;i++)t+='<p><b>'+(i+1)+'. '+LAB[i]+' :</b> '+q[3+i]+'</p>';
+        if(st>=4)t+='<p><b>Réponse :</b> '+q[7]+'</p>';
+        box.set(t);nb.disabled=st>=4;nb.textContent=st===0?'Commencer':(st>=4?'Terminé':'Étape suivante');
+      }
+      draw();
+    },
+      retenir:['Pour <b>mettre un problème en équation</b> : choisir l’inconnue x, traduire l’énoncé par une égalité, résoudre, puis vérifier.','On termine toujours par une phrase réponse avec l’unité.']}
   ],
   quiz:[
+    {q:'4 livres coûtent 60 DH. Si x est le prix d’un livre, l’équation est :',o:['4x = 60','x + 4 = 60','x = 60 + 4'],a:0,e:'4 livres à x DH chacun coûtent 4 × x.'},
     {q:'Quelle est la solution de x + 5 = 12 ?',o:['x = 17','x = 5','x = 7','x = −7'],a:2,e:'On retire 5 de chaque côté : x = 12 − 5 = 7.'},
     {q:'3x = 12. Alors x = ?',o:['36','9','15','4'],a:3,e:'On divise par 3 de chaque côté : x = 4.'},
     {q:'Si 2x + 3 = 11, alors 2x = ?',o:['14','8','5,5','13'],a:1,e:'On retire 3 de chaque côté : 2x = 8.'}
@@ -2036,9 +2133,30 @@ M.chapter({id:'c1-13',eyebrow:'1<sup>re</sup> année · Chapitre 13 · Géométr
     {short:'Vocabulaire',title:'Le vocabulaire du cercle',intro:'Choisis un mot pour voir l’élément correspondant sur le cercle.',build:vocab,
       retenir:['Le cercle de centre O et de rayon r est l’ensemble des points situés à la distance r de O.','Le <b>diamètre</b> est le double du rayon : c’est la plus grande corde.']},
     {short:'Corde et médiatrice',title:'Corde et médiatrice',intro:'Déplace A et B sur le cercle. La médiatrice de la corde passe toujours par le centre.',build:corde,
-      retenir:['Si A et B sont deux points du cercle, alors OA = OB : O est sur la <b>médiatrice</b> de [AB].','Une corde est toujours plus courte (ou égale) au diamètre.']}
+      retenir:['Si A et B sont deux points du cercle, alors OA = OB : O est sur la <b>médiatrice</b> de [AB].','Une corde est toujours plus courte (ou égale) au diamètre.']},
+    {short:'La tangente',title:'La tangente à un cercle',intro:'Déplace le point M sur le cercle. La tangente touche le cercle seulement en M.',build:function(el){
+      var a=40;
+      ui.slider(el,{label:'Position de M',min:0,max:345,step:15,value:40,color:P,fmt:function(v){return v+'°'}},function(v){a=v;draw()});
+      var svg=ui.stage(el,400,250,'Cercle et sa tangente en un point M'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el);
+      function draw(){
+        g.replaceChildren();
+        var cx=200,cy=125,r=80,t=a*Math.PI/180,co=Math.cos(t),si=Math.sin(t),mx=cx+r*co,my=cy-r*si;
+        S('circle',{cx:cx,cy:cy,r:r,style:'fill:var(--lav);fill-opacity:.15;stroke:var(--lav);stroke-width:2.6'},g);
+        S('path',{d:'M'+(mx-110*si)+' '+(my-110*co)+'L'+(mx+110*si)+' '+(my+110*co),style:'stroke:var(--coral);stroke-width:3;fill:none'},g);
+        S('path',{d:'M'+cx+' '+cy+'L'+mx+' '+my,style:'stroke:var(--teal);stroke-width:3;fill:none'},g);
+        var u1=[-co,si],u2=[si,co],k=14;
+        S('path',{d:'M'+(mx+k*u1[0])+' '+(my+k*u1[1])+'L'+(mx+k*u1[0]+k*u2[0])+' '+(my+k*u1[1]+k*u2[1])+'L'+(mx+k*u2[0])+' '+(my+k*u2[1]),style:'stroke:#fff;stroke-width:1.6;fill:none'},g);
+        S('circle',{cx:cx,cy:cy,r:3.5,style:'fill:#fff'},g);
+        S('text',{x:cx-12,y:cy+14,'class':'pl',text:'O'},g);
+        S('text',{x:mx+16*co,y:my-16*si,'class':'pl',text:'M',style:'fill:var(--pink)'},g);
+        chips.set('<span class="chip plain">La tangente touche le cercle en un seul point : M</span><span class="chip plain">Tangente ⟂ rayon [OM]</span>');
+      }
+      draw();
+    },
+      retenir:['La <b>tangente</b> à un cercle en un point M est la droite qui touche le cercle seulement en M.','Elle est <b>perpendiculaire</b> au rayon [OM].']}
   ],
   quiz:[
+    {q:'La tangente à un cercle de centre O en un point M est perpendiculaire à :',o:['la droite (OM)','une corde quelconque','un diamètre quelconque'],a:0,e:'Elle est perpendiculaire au rayon [OM].'},
     {q:'Un cercle a un rayon de 4 cm. Son diamètre mesure…',o:['2 cm','4 cm','8 cm','16 cm'],a:2,e:'Diamètre = 2 × rayon = 8 cm.'},
     {q:'La médiatrice d’une corde passe par…',o:['le milieu de l’arc seulement','le centre du cercle','aucun point particulier','un point extérieur au cercle'],a:1,e:'Le centre est à égale distance des deux extrémités de la corde.'},
     {q:'Un segment qui joint deux points du cercle s’appelle…',o:['un rayon','un diamètre','une corde','un arc'],a:2,e:'C’est la définition d’une corde. Si elle passe par le centre, c’est un diamètre.'}
@@ -2287,9 +2405,43 @@ M.chapter({id:'c1-16',eyebrow:'1<sup>re</sup> année · Chapitre 16 · Statistiq
     {short:'Tableau et graphique',title:'Reconnaître une situation de proportionnalité',intro:'Change le prix d’un kilogramme. Le prix à payer se multiplie toujours par le même nombre.',build:function(el){M.propWidget(el)},
       retenir:['Deux grandeurs sont <b>proportionnelles</b> si l’on passe de l’une à l’autre en multipliant toujours par le même nombre : le <b>coefficient de proportionnalité</b>.','Dans un tableau de proportionnalité, tous les rapports y ÷ x sont égaux.','Le graphique est formé de points alignés avec l’origine.']},
     {short:'Pourcentages',title:'Calculer un pourcentage',intro:'Un pourcentage est une proportion sur 100.',build:function(el){M.percentWidget(el)},
-      retenir:['<b>p %</b> de T, c’est <span class="math">T × p ÷ 100</span>.','Exemple : 25 % de 80 = 80 × 25 ÷ 100 = 20.']}
+      retenir:['<b>p %</b> de T, c’est <span class="math">T × p ÷ 100</span>.','Exemple : 25 % de 80 = 80 × 25 ÷ 100 = 20.']},
+    {short:'Quatrième proportionnelle',title:'Calculer une quatrième proportionnelle',intro:'Règle les trois nombres. On cherche le prix x de c objets.',build:function(el){
+      var a=4,b=10,c=6;
+      function f(x){return String(Math.round(x*100)/100).replace('.',',')}
+      ui.slider(el,{label:'Nombre d’objets a',min:2,max:10,step:1,value:4,color:P},function(v){a=v;draw()});
+      ui.slider(el,{label:'Prix de a objets b',min:2,max:30,step:1,value:10,color:T,fmt:function(v){return v+' DH'}},function(v){b=v;draw()});
+      ui.slider(el,{label:'Nombre cherché c',min:2,max:20,step:1,value:6,color:C},function(v){c=v;draw()});
+      var tab=h('div',{'class':'scroll-x'}),chips=ui.chips(el);el.appendChild(tab);
+      function draw(){
+        var x=b*c/a,td='style="padding:6px 14px;border:1px solid var(--line);text-align:center"';
+        tab.innerHTML='<table style="border-collapse:collapse;margin:8px auto"><tr><td '+td+'>Nombre d’objets</td><td '+td+'>'+a+'</td><td '+td+'>'+c+'</td></tr><tr><td '+td+'>Prix (DH)</td><td '+td+'>'+b+'</td><td '+td+'><b>x = '+f(x)+'</b></td></tr></table>';
+        chips.set('<span class="chip plain">Coefficient : '+b+' ÷ '+a+' = '+f(b/a)+'</span><span class="chip plain">x = '+c+' × '+f(b/a)+' = <b>'+f(x)+' DH</b></span><span class="chip plain">Produit en croix : x = ('+b+' × '+c+') ÷ '+a+'</span>');
+      }
+      draw();
+    },
+      retenir:['Dans un tableau de proportionnalité, il manque parfois un nombre : c’est la <b>quatrième proportionnelle</b>.','On la calcule avec le <b>coefficient</b> de proportionnalité ou avec le <b>produit en croix</b>.','Exemple : 4 objets coûtent 10 DH, donc 6 objets coûtent 6 × 10 ÷ 4 = 15 DH.']},
+    {short:'Échelle',title:'L’échelle d’un plan ou d’une carte',intro:'Choisis une échelle et change la distance mesurée sur la carte.',build:function(el){
+      var sc=50000,d=4;
+      function f(x){return String(Math.round(x*100)/100).replace('.',',')}
+      ui.tabs(el,[['1000','1/1 000'],['50000','1/50 000'],['100000','1/100 000']],function(k){sc=+k;draw()});
+      var svg=ui.stage(el,400,90,'Distance mesurée sur la carte'),g=S('g',{style:'fill:#fff'},svg),chips=ui.chips(el),inf=ui.info(el);
+      ui.slider(el,{label:'Distance sur la carte',min:1,max:12,step:1,value:4,color:P,fmt:function(v){return v+' cm'}},function(v){d=v;draw()});
+      function draw(){
+        g.replaceChildren();
+        S('path',{d:'M30 40H'+(30+d*28),style:'stroke:var(--pink);stroke-width:6;stroke-linecap:round;fill:none'},g);
+        S('text',{x:30+d*14,y:68,'class':'pl',text:d+' cm sur la carte',style:'fill:var(--pink)'},g);
+        var cm=d*sc,real=cm>=100000?f(cm/100000)+' km':(cm>=100?f(cm/100)+' m':f(cm)+' cm');
+        chips.set('<span class="chip plain">'+d+' × '+String(sc).replace(/\B(?=(\d{3})+$)/g,' ')+' = '+String(cm).replace(/\B(?=(\d{3})+$)/g,' ')+' cm</span><span class="chip plain">Distance réelle : <b>'+real+'</b></span>');
+        inf.set('<p>À l’échelle 1/'+String(sc).replace(/\B(?=(\d{3})+$)/g,' ')+', 1 cm sur la carte représente '+String(sc).replace(/\B(?=(\d{3})+$)/g,' ')+' cm dans la réalité.</p>');
+      }
+      draw();
+    },
+      retenir:['L’<b>échelle</b> est le rapport entre une longueur sur le plan et la longueur réelle.','À l’échelle 1/50 000 : 1 cm sur la carte représente 50 000 cm, soit 500 m dans la réalité.','<b>Distance réelle = distance sur la carte × dénominateur de l’échelle.</b>']}
   ],
   quiz:[
+    {q:'4 stylos coûtent 10 DH. Combien coûtent 10 stylos ?',o:['25 DH','40 DH','14 DH'],a:0,e:'x = 10 × 10 ÷ 4 = 25 DH.'},
+    {q:'Sur une carte à l’échelle 1/100 000, 3 cm représentent :',o:['3 km','30 km','300 m'],a:0,e:'3 × 100 000 = 300 000 cm = 3 km.'},
     {q:'2 kg de pommes coûtent 14 DH. Combien coûtent 5 kg ?',o:['35 DH','28 DH','70 DH','19 DH'],a:0,e:'Prix de 1 kg : 14 ÷ 2 = 7 DH. Donc 5 × 7 = 35 DH.'},
     {q:'Quel est le coefficient de proportionnalité qui permet de passer de 4 à 10 ?',o:['6','2,5','40','0,4'],a:1,e:'10 ÷ 4 = 2,5.'},
     {q:'20 % de 150 = ?',o:['20','15','30','75'],a:2,e:'150 × 20 ÷ 100 = 30.'}
@@ -2575,9 +2727,34 @@ M.chapter({id:'c2-4',eyebrow:'2<sup>e</sup> année · Chapitre 8 · Numérique',
     {short:'Définition',title:'Puissance d’un nombre',intro:'Une puissance est un produit répété : <span class="math">aⁿ = a × a × … × a</span> (n facteurs).',build:puissanceDef,
       retenir:['<span class="math">aⁿ = a × a × … × a</span> avec n facteurs égaux à a.','<span class="math">a¹ = a</span> et <span class="math">a⁰ = 1</span> (pour a non nul).','Si a est négatif : aⁿ est positif quand n est pair, négatif quand n est impair.']},
     {short:'Règles de calcul',title:'Les règles de calcul sur les puissances',intro:'Choisis une règle, puis change les exposants. Les cases montrent les facteurs.',build:reglesPuiss,
-      retenir:['<span class="math">aᵐ × aⁿ = aᵐ⁺ⁿ</span>','<span class="math">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</span>','<span class="math">(aᵐ)ⁿ = aᵐ×ⁿ</span>','<span class="math">a⁻ⁿ = 1 ÷ aⁿ</span>']}
+      retenir:['<span class="math">aᵐ × aⁿ = aᵐ⁺ⁿ</span>','<span class="math">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</span>','<span class="math">(aᵐ)ⁿ = aᵐ×ⁿ</span>','<span class="math">a⁻ⁿ = 1 ÷ aⁿ</span>']},
+    {short:'Écriture scientifique',title:'Écriture scientifique et ordre de grandeur',intro:'Règle la mantisse et l’exposant, ou choisis un exemple.',build:function(el){
+      var a=1.5,n=8;
+      function grp(t){return t.replace(/\B(?=(\d{3})+$)/g,' ')}
+      var sa=ui.slider(el,{label:'Mantisse a',min:1,max:9.9,step:0.1,value:1.5,color:P,fmt:function(v){return fmt(v,1)}},function(v){a=v;draw()});
+      var sn=ui.slider(el,{label:'Exposant n',min:-6,max:9,step:1,value:8,color:T},function(v){n=v;draw()});
+      var ctl=ui.controls(el);
+      [['Terre-Soleil, en km',1.5,8],['Un cheveu, en m',7,-5],['Habitants du Maroc',3.7,7]].forEach(function(e){ui.btn(ctl,e[0],function(){a=e[1];n=e[2];sa.set(a);sn.set(n);draw()})});
+      var chips=ui.chips(el),inf=ui.info(el);
+      function dec(){
+        var D=String(Math.round(a*10)),k=n-1,r;
+        if(k>=0)return grp(D+new Array(k+1).join('0'));
+        while(D.length<=-k)D='0'+D;
+        r=D.slice(0,D.length+k)+','+D.slice(D.length+k);
+        return r.replace(/0+$/,'').replace(/,$/,'');
+      }
+      function draw(){
+        var o=a<5?n:n+1;
+        chips.set('<span class="chip plain">'+fmt(a,1)+' × 10<sup>'+String(n).replace('-','−')+'</sup></span><span class="chip plain">Ordre de grandeur : <b>10<sup>'+String(o).replace('-','−')+'</sup></b></span>');
+        inf.set('<p>Écriture décimale : <b>'+dec()+'</b></p><p>On compare a à 5 : si a &lt; 5, l’ordre de grandeur est 10<sup>n</sup>, sinon c’est 10<sup>n+1</sup>.</p>');
+      }
+      draw();
+    },
+      retenir:['L’<b>écriture scientifique</b> d’un nombre est <span class="math">a × 10<sup>n</sup></span> avec <span class="math">1 ≤ a &lt; 10</span> et n entier relatif.','Exemple : 45 000 = 4,5 × 10<sup>4</sup>.','L’<b>ordre de grandeur</b> est la puissance de 10 la plus proche : 10<sup>n</sup> si a &lt; 5, sinon 10<sup>n+1</sup>.']}
   ],
   quiz:[
+    {q:'L’écriture scientifique de 45 000 est :',o:['4,5 × 10⁴','45 × 10³','0,45 × 10⁵'],a:0,e:'Il faut 1 ≤ a < 10 : a = 4,5 et n = 4.'},
+    {q:'L’ordre de grandeur de 7,2 × 10³ est :',o:['10⁴','10³','10²'],a:0,e:'7,2 est plus proche de 10 que de 1 : 10 × 10³ = 10⁴.'},
     {q:'<span class="math">(−2)³</span> = ?',o:['8','−6','−8','6'],a:2,e:'(−2) × (−2) × (−2) = −8 : trois facteurs négatifs, donc le résultat est négatif.'},
     {q:'<span class="math">3² × 3⁴</span> = ?',o:['3⁶','3⁸','9⁶','3²'],a:0,e:'On additionne les exposants : 2 + 4 = 6.'},
     {q:'<span class="math">5⁻²</span> = ?',o:['−25','25','1/25','−10'],a:2,e:'5⁻² = 1 ÷ 5² = 1/25.'}
@@ -2692,9 +2869,12 @@ function ordre(el){
 M.chapter({id:'c2-7',eyebrow:'2<sup>e</sup> année · Chapitre 15 · Numérique',title:'Ordre des nombres rationnels et opérations',
   lessons:[
     {short:'Ordre, somme et produit',title:'Comparer après une opération',intro:'Déplace a et b, choisis une opération et un nombre k. Compare l’ordre avant et après.',build:ordre,
-      retenir:['Si <span class="math">a &lt; b</span> alors <span class="math">a + k &lt; b + k</span> : ajouter le même nombre ne change pas l’ordre.','Si <span class="math">a &lt; b</span> et <span class="math">k &gt; 0</span> alors <span class="math">a×k &lt; b×k</span> : l’ordre est conservé.','Si <span class="math">a &lt; b</span> et <span class="math">k &lt; 0</span> alors <span class="math">a×k &gt; b×k</span> : l’ordre est <b>inversé</b>.']}
+      retenir:['Si <span class="math">a &lt; b</span> alors <span class="math">a + k &lt; b + k</span> : ajouter le même nombre ne change pas l’ordre.','Si <span class="math">a &lt; b</span> et <span class="math">k &gt; 0</span> alors <span class="math">a×k &lt; b×k</span> : l’ordre est conservé.','Si <span class="math">a &lt; b</span> et <span class="math">k &lt; 0</span> alors <span class="math">a×k &gt; b×k</span> : l’ordre est <b>inversé</b>.']},
+    {short:'Valeur approchée',title:'Encadrer un nombre rationnel',intro:'Change le numérateur et le dénominateur. Lis l’encadrement et la valeur approchée.',build:function(el){M.encadrer(el,true)},
+      retenir:['Un nombre rationnel peut avoir une écriture décimale infinie : on l’<b>encadre</b> alors par deux décimaux consécutifs.','La calculatrice donne une valeur approchée : on arrondit selon la précision demandée.','Pour un nombre négatif, l’encadrement se lit dans l’autre sens : <span class="math">−2,4 &lt; −7/3 &lt; −2,3</span>.']}
   ],
   quiz:[
+    {q:'L’encadrement de −7/3 au dixième est :',o:['−2,4 < −7/3 < −2,3','−2,3 < −7/3 < −2,4','−3 < −7/3 < −2,4'],a:0,e:'−7/3 = −2,333… se trouve entre −2,4 et −2,3.'},
     {q:'On sait que a &lt; b. Alors a + 5 …',o:['&lt; b + 5','&gt; b + 5','= b + 5','On ne peut pas savoir'],a:0,e:'Ajouter le même nombre aux deux côtés conserve l’ordre.'},
     {q:'On sait que a &lt; b. Alors −3a …',o:['&lt; −3b','= −3b','&gt; −3b','On ne peut pas savoir'],a:2,e:'On multiplie par un nombre négatif : l’ordre est inversé.'},
     {q:'Si x &lt; 4, alors 2x …',o:['&lt; 8','&gt; 8','= 8','&lt; 4'],a:0,e:'2 est positif : l’ordre est conservé, donc 2x &lt; 8.'}
@@ -3102,14 +3282,73 @@ function moyennePond(el){
   }
   draw();
 }
+M.diagrams=function(el,cfg){
+  var eff=cfg.eff.slice(),kind=cfg.kinds[0][0],n=eff.length,COL=['var(--pink)','var(--teal)','var(--coral)','var(--lav)','#e7c46a','#7aa7ff'];
+  ui.tabs(el,cfg.kinds,function(k){kind=k;draw()});
+  var svg=ui.stage(el,400,240,cfg.title),g=S('g',{style:'fill:#fff'},svg),inf=ui.info(el);
+  ui.slider(el,{label:cfg.slider,min:0,max:cfg.max,step:1,value:eff[n-1],color:P},function(v){eff[n-1]=v;draw()});
+  function f1(x){return (Math.round(x*10)/10).toString().replace('.',',')}
+  function draw(){
+    g.replaceChildren();
+    var N=eff.reduce(function(a,b){return a+b},0)||1,mx=Math.max.apply(null,eff.concat([1])),i,x0=50,y0=190,gap=300/n,cum=[],c=0;
+    eff.forEach(function(v){c+=v;cum.push(c)});
+    var txt='';
+    if(kind==='bat'||kind==='hist'||kind==='cum'){
+      var arr=kind==='cum'?cum:eff,top=kind==='cum'?N:mx,bw=kind==='hist'?gap:gap*0.4;
+      S('path',{d:'M'+x0+' 30V'+y0+'H'+(x0+310),style:'stroke:#fff;stroke-opacity:.6;stroke-width:1.5;fill:none'},g);
+      for(i=0;i<n;i++){
+        var hh=arr[i]/top*150,bx=x0+i*gap+(gap-bw)/2;
+        S('rect',{x:bx,y:y0-hh,width:bw,height:hh,style:'fill:'+COL[i%6]+';fill-opacity:.75;stroke:#fff;stroke-width:'+(kind==='hist'?1.5:0)},g);
+        S('text',{x:x0+i*gap+gap/2,y:y0+16,'class':'pl',text:cfg.labels[i]},g);
+        S('text',{x:x0+i*gap+gap/2,y:y0-hh-8,'class':'pl',text:String(arr[i])},g);
+      }
+      txt=kind==='bat'?'La hauteur du bâton est proportionnelle à l’effectif. Effectif total : <b>'+N+'</b>.':(kind==='hist'?'Les classes ont la même amplitude : la hauteur du rectangle est proportionnelle à l’effectif.':'L’<b>effectif cumulé</b> s’obtient en ajoutant les effectifs : '+cum.join(' ; ')+'. La fréquence cumulée de la dernière valeur est 100 %.');
+    }else if(kind==='circ'){
+      var cx=200,cy=118,r=72,a0=-Math.PI/2,lines=[];
+      for(i=0;i<n;i++){
+        if(!eff[i])continue;
+        var da=eff[i]/N*2*Math.PI,a1=a0+da,mid=a0+da/2;
+        if(eff[i]===N)S('circle',{cx:cx,cy:cy,r:r,style:'fill:'+COL[i%6]+';fill-opacity:.75;stroke:#fff;stroke-width:2'},g);
+        else S('path',{d:'M'+cx+' '+cy+'L'+(cx+r*Math.cos(a0))+' '+(cy+r*Math.sin(a0))+'A'+r+' '+r+' 0 '+(da>Math.PI?1:0)+' 1 '+(cx+r*Math.cos(a1))+' '+(cy+r*Math.sin(a1))+'Z',style:'fill:'+COL[i%6]+';fill-opacity:.75;stroke:#fff;stroke-width:2'},g);
+        var big=da>0.9,rr=big?r*0.6:r*1.2;S('text',{x:cx+rr*Math.cos(mid),y:cy+rr*Math.sin(mid),'class':'pl',text:Math.round(eff[i]/N*360)+'°',style:'fill:#fff;font-size:'+(big?19:15)+'px'},g);
+        a0=a1;
+      }
+      for(i=0;i<n;i++){
+        S('rect',{x:20+i*(360/n),y:205,width:12,height:12,style:'fill:'+COL[i%6]+';fill-opacity:.75'},g);
+        S('text',{x:36+i*(360/n),y:211,'class':'pl',text:cfg.labels[i],style:'text-anchor:start'},g);
+      }
+      txt='Angle d’un secteur = effectif ÷ '+N+' × 360°. Par exemple : '+eff[n-1]+' ÷ '+N+' × 360 ≈ <b>'+Math.round(eff[n-1]/N*360)+'°</b>.';
+    }else{
+      var pts=[];
+      S('path',{d:'M'+x0+' 30V'+y0+'H'+(x0+310),style:'stroke:#fff;stroke-opacity:.6;stroke-width:1.5;fill:none'},g);
+      for(i=0;i<n;i++)pts.push((x0+i*gap+gap/2)+','+(y0-eff[i]/mx*150));
+      S('polyline',{points:pts.join(' '),style:'fill:none;stroke:var(--teal);stroke-width:3;stroke-linejoin:round'},g);
+      for(i=0;i<n;i++){
+        var yy=y0-eff[i]/mx*150;
+        S('circle',{cx:x0+i*gap+gap/2,cy:yy,r:5,style:'fill:var(--pink);stroke:#fff;stroke-width:2'},g);
+        S('text',{x:x0+i*gap+gap/2,y:yy-12,'class':'pl',text:String(eff[i])},g);
+        S('text',{x:x0+i*gap+gap/2,y:y0+16,'class':'pl',text:cfg.labels[i]},g);
+      }
+      txt='On relie les points : la ligne brisée montre l’évolution d’un mois à l’autre.';
+    }
+    inf.set('<p>'+txt+'</p>');
+  }
+  draw();
+};
 M.chapter({id:'c2-15',eyebrow:'2<sup>e</sup> année · Chapitre 17 · Statistiques et graphiques',title:'Statistique',
   lessons:[
     {short:'Effectifs, moyenne',title:'Effectifs, fréquences et moyenne',intro:'Change les effectifs : le tableau, les diagrammes, le mode et la moyenne se mettent à jour.',build:function(el){M.statsWidget(el,{moy:true})},
       retenir:['<b>Moyenne</b> = (somme de toutes les valeurs) ÷ (effectif total).','Avec un tableau d’effectifs : on multiplie chaque valeur par son effectif, on additionne, puis on divise par l’effectif total.','L’<b>étendue</b> est la différence entre la plus grande et la plus petite valeur.']},
     {short:'Moyenne pondérée',title:'La moyenne pondérée',intro:'Chaque note compte autant de fois que son coefficient. Change les notes et les coefficients.',build:moyennePond,
-      retenir:['<b>Moyenne pondérée</b> = (somme des notes × coefficients) ÷ (somme des coefficients).','Une note avec un grand coefficient pèse plus lourd dans la moyenne.']}
+      retenir:['<b>Moyenne pondérée</b> = (somme des notes × coefficients) ÷ (somme des coefficients).','Une note avec un grand coefficient pèse plus lourd dans la moyenne.']},
+    {short:'Diagrammes et cumuls',title:'Diagrammes, histogramme et effectifs cumulés',intro:'Les notes sur 20 d’une classe sont regroupées en classes. Change l’effectif de la dernière classe.',build:function(el){
+      M.diagrams(el,{title:'Diagramme des notes d’une classe',labels:['0-4','4-8','8-12','12-16','16-20'],eff:[1,3,8,6,2],max:10,slider:'Effectif de la classe 16-20',slider2:0,kinds:[['bat','Bâtons'],['circ','Circulaire'],['hist','Histogramme'],['cum','Cumuls']]});
+    },
+      retenir:['<b>Diagramme en bâtons</b> : la hauteur du bâton est proportionnelle à l’effectif.','<b>Diagramme circulaire</b> : angle d’un secteur = effectif ÷ total × 360°.','<b>Histogramme</b> : pour des valeurs regroupées en classes, la hauteur du rectangle est proportionnelle à l’effectif.','<b>Effectif cumulé</b> : somme des effectifs jusqu’à la valeur considérée.']}
   ],
   quiz:[
+    {q:'Un secteur d’un diagramme circulaire représente 5 élèves sur 20. Son angle est :',o:['90°','45°','180°'],a:0,e:'5 ÷ 20 × 360 = 90°.'},
+    {q:'Les effectifs sont 4 ; 7 ; 5 ; 3 ; 1. L’effectif cumulé de la 3e valeur est :',o:['16','5','12'],a:0,e:'4 + 7 + 5 = 16.'},
     {q:'La moyenne de 8, 10 et 12 est…',o:['9','11','10','30'],a:2,e:'(8 + 10 + 12) ÷ 3 = 10.'},
     {q:'Notes : 10 (coef. 1) et 16 (coef. 2). La moyenne pondérée est…',o:['13','14','12','26'],a:1,e:'(10 × 1 + 16 × 2) ÷ 3 = 42 ÷ 3 = 14.'},
     {q:'L’étendue de la série 3 ; 7 ; 12 ; 5 est…',o:['9','3','12','5'],a:0,e:'12 − 3 = 9.'}
@@ -4666,9 +4905,32 @@ M.chapter({id:'c3-13',eyebrow:'3<sup>e</sup> année · Chapitre 13 · Géométri
     {short:'Agrandir, réduire',title:'Agrandissement et réduction',intro:'On multiplie toutes les longueurs d’un solide par k. Que deviennent les aires et les volumes ?',build:agrandissement,
       retenir:['Si les longueurs sont multipliées par k, les <b>aires</b> sont multipliées par <span class="math">k²</span>.','Les <b>volumes</b> sont multipliés par <span class="math">k³</span>.','k &gt; 1 : agrandissement. 0 &lt; k &lt; 1 : réduction.']},
     {short:'Section parallèle',title:'Section par un plan parallèle à la base',intro:'On coupe une pyramide par un plan parallèle à sa base : on obtient une petite pyramide, réduction de la grande.',build:sectionPyramide,
-      retenir:['La section est une réduction de la base, de rapport <span class="math">k = SA′ ÷ SA</span>.','La petite pyramide est une réduction de la grande, de rapport k.','Volume de la petite pyramide = <span class="math">k³ × volume de la grande</span>.']}
+      retenir:['La section est une réduction de la base, de rapport <span class="math">k = SA′ ÷ SA</span>.','La petite pyramide est une réduction de la grande, de rapport k.','Volume de la petite pyramide = <span class="math">k³ × volume de la grande</span>.']},
+    {short:'Droite et plan',title:'Droite perpendiculaire à un plan',intro:'Avance de l’étape 1 à l’étape 3 pour voir pourquoi un mât vertical est perpendiculaire au sol.',build:function(el){
+      var st='1',TX={'1':'La droite d est perpendiculaire à une droite d₁ du plan. Cela ne suffit pas.','2':'La droite d est aussi perpendiculaire à une deuxième droite d₂ du plan, sécante avec d₁.','3':'Alors d est perpendiculaire à <b>toutes</b> les droites du plan passant par O : d est perpendiculaire au plan.'};
+      ui.tabs(el,[['1','1. Une droite'],['2','2. Deux droites'],['3','3. Le plan']],function(k){st=k;draw()});
+      var svg=ui.stage(el,400,230,'Une droite verticale et un plan horizontal'),g=S('g',{style:'fill:#fff'},svg),inf=ui.info(el);
+      function ln(x1,y1,x2,y2,c,w){S('path',{d:'M'+x1+' '+y1+'L'+x2+' '+y2,style:'stroke:'+c+';stroke-width:'+w+';fill:none;stroke-linecap:round'},g)}
+      function draw(){
+        g.replaceChildren();
+        S('polygon',{points:'60,200 300,200 360,150 120,150',style:'fill:var(--lav);fill-opacity:.35;stroke:var(--lav);stroke-width:2.4;stroke-linejoin:round'},g);
+        ln(210,165,210,30,'#fff',4);
+        ln(150,165,270,165,'var(--teal)',3);
+        S('path',{d:'M210 155H220V165',style:'stroke:#fff;stroke-width:1.5;fill:none'},g);
+        if(st!=='1'){ln(180,190,240,140,'var(--coral)',3);S('path',{d:'M205 160L212 155L217 160',style:'stroke:#fff;stroke-width:1.5;fill:none'},g)}
+        if(st==='3'){ln(150,150,270,180,'var(--pink)',3)}
+        S('circle',{cx:210,cy:165,r:4,style:'fill:#fff'},g);
+        S('text',{x:226,y:48,'class':'pl',text:'d'},g);S('text',{x:130,y:182,'class':'pl',text:'d₁',style:'fill:var(--teal)'},g);
+        if(st!=='1')S('text',{x:252,y:136,'class':'pl',text:'d₂',style:'fill:var(--coral)'},g);
+        S('text',{x:196,y:182,'class':'pl',text:'O'},g);S('text',{x:340,y:190,'class':'pl',text:'plan P'},g);
+        inf.set('<p>'+TX[st]+'</p>');
+      }
+      draw();
+    },
+      retenir:['Une droite est <b>perpendiculaire à un plan</b> si elle est perpendiculaire à <b>deux droites sécantes</b> de ce plan.','Elle est alors perpendiculaire à <b>toutes</b> les droites de ce plan.','Exemple : un mât vertical est perpendiculaire au sol.']}
   ],
   quiz:[
+    {q:'Pour qu’une droite soit perpendiculaire à un plan, il suffit qu’elle soit perpendiculaire à :',o:['deux droites sécantes du plan','une seule droite du plan','deux droites parallèles du plan'],a:0,e:'Deux droites sécantes du plan suffisent.'},
     {q:'Une pyramide a pour base un carré de 6 cm de côté et pour hauteur 5 cm. Son volume est…',o:['60 cm³','180 cm³','30 cm³','90 cm³'],a:0,e:'⅓ × 36 × 5 = 60.'},
     {q:'On agrandit un solide avec k = 2. Son volume est multiplié par…',o:['8','2','4','6'],a:0,e:'k³ = 2³ = 8.'},
     {q:'Une réduction de rapport 1/3 est appliquée à une figure d’aire 18 cm². La nouvelle aire est…',o:['2 cm²','6 cm²','54 cm²','9 cm²'],a:0,e:'18 × (1/3)² = 2.'}
@@ -4873,9 +5135,14 @@ M.chapter({id:'c3-15',eyebrow:'3<sup>e</sup> année · Chapitre 15 · Statistiqu
     {short:'Moyenne, médiane',title:'Moyenne, médiane et étendue',intro:'Fais glisser le haut des barres pour changer les notes. Ajoute une huitième note pour voir comment la médiane se calcule.',build:noteBars,
       retenir:['<b>Moyenne</b> : somme de toutes les valeurs ÷ effectif total. Avec des effectifs : <span class="math">(v₁·e₁ + v₂·e₂ + …) ÷ N</span>.','<b>Médiane</b> : valeur qui partage la série rangée en deux groupes de même effectif. Effectif impair : valeur du milieu. Effectif pair : moyenne des deux valeurs du milieu.','<b>Étendue</b> : plus grande valeur − plus petite valeur.']},
     {short:'Classes',title:'Série regroupée en classes',intro:'Quand les valeurs sont nombreuses, on les regroupe par classes de même amplitude.',build:classes,
-      retenir:['Une classe <span class="math">[a ; b[</span> contient les valeurs de a (inclus) à b (exclu).','Le <b>centre de la classe</b> est <span class="math">(a + b) ÷ 2</span>.','La <b>classe modale</b> est la classe de plus grand effectif.','Moyenne de la série : on remplace chaque valeur par le centre de sa classe.']}
+      retenir:['Une classe <span class="math">[a ; b[</span> contient les valeurs de a (inclus) à b (exclu).','Le <b>centre de la classe</b> est <span class="math">(a + b) ÷ 2</span>.','La <b>classe modale</b> est la classe de plus grand effectif.','Moyenne de la série : on remplace chaque valeur par le centre de sa classe.']},
+    {short:'Les diagrammes',title:'Barres, secteurs et ligne brisée',intro:'Livres empruntés à la bibliothèque, mois par mois. Change le dernier mois.',build:function(el){
+      M.diagrams(el,{title:'Livres empruntés par mois',labels:['Sept','Oct','Nov','Déc','Janv'],eff:[12,18,15,20,10],max:30,slider:'Livres empruntés en janvier',kinds:[['bat','Barres'],['circ','Secteurs'],['lig','Ligne brisée']]});
+    },
+      retenir:['Un <b>diagramme en barres</b> compare des effectifs. Un <b>diagramme en secteurs</b> montre la part de chaque valeur dans le total.','Une <b>ligne brisée</b> montre l’évolution d’une grandeur dans le temps.','Pour choisir : comparer, partager ou suivre une évolution.']}
   ],
   quiz:[
+    {q:'Pour montrer l’évolution du nombre d’emprunts au cours des mois, on choisit :',o:['une ligne brisée','un diagramme en secteurs','un tableau sans graphique'],a:0,e:'La ligne brisée relie les valeurs dans l’ordre du temps.'},
     {q:'La série 4 ; 6 ; 7 ; 9 ; 14 a pour médiane…',o:['7','8','6','9'],a:0,e:'Il y a 5 valeurs rangées : la 3e est 7.'},
     {q:'La moyenne de 10 ; 12 ; 14 ; 16 est…',o:['13','12','14','52'],a:0,e:'(10 + 12 + 14 + 16) ÷ 4 = 13.'},
     {q:'Dans la classe [10 ; 20[, le centre est…',o:['15','10','20','30'],a:0,e:'(10 + 20) ÷ 2 = 15.'}
@@ -8856,6 +9123,17 @@ var L={
   u:'غيّر البسطين. القطع لها نفس الحجم، لذلك يكفي أن تعدّ القطع الملوّنة.',
   w:[['somme','مجموع'],['simplifier','اختزل'],['part','جزء']]},
 
+'c1-2-l4':{
+  e:['لجمع كسرين مقاماهما مختلفان نوحّد المقام أولاً: نبحث عن مقام مشترك ثم نكتب كل كسر بهذا المقام. بعد ذلك نجمع البسطين ونحتفظ بالمقام المشترك.',
+     'مثال: '+m('1/2 + 1/3 = 3/6 + 2/6 = 5/6')+'. وإذا أمكن نختزل النتيجة.'],
+  u:'اختر مجموعاً من علامات التبويب وتتبّع الشريط: اللون الوردي للكسر الأول والأخضر للكسر الثاني.',
+  w:[['dénominateur commun','مقام مشترك'],['numérateur','بسط'],['dénominateur','مقام'],['simplifier','اختزل']]},
+'c1-2-l5':{
+  e:['تأطير كسر هو إيجاد عددين عشريين متتاليين يوجد الكسر بينهما. كلما زدنا الأرقام بعد الفاصلة صار التأطير أدق: إلى الوحدة، إلى 0,1، إلى 0,01.',
+     'مثال: '+m('2,3 < 7/3 < 2,4')+'.'],
+  u:'غيّر البسط والمقام وانظر إلى موقع الكسر على المستقيم المدرّج.',
+  w:[['encadrer','أطّر'],['encadrement','تأطير'],['dixième','جزء من عشرة'],['centième','جزء من مائة']]},
+
 'c1-3-l1':{
   e:['العدد النسبي له إشارة (+ أو −) ومسافة إلى الصفر. على المستقيم المدرّج، كلما كانت النقطة أبعد نحو اليسار كان أفصولها أصغر.',
      'كل عدد سالب أصغر من كل عدد موجب. ومثال على الترتيب: '+m('−7 < −3 < 0 < 2')+'.'],
@@ -8883,6 +9161,12 @@ var L={
   u:'حرّك الأس n، وانظر كيف تنتقل الفاصلة في العدد 4,7.',
   w:[['puissance','قوة'],['exposant','الأس'],['puissance de 10','قوة للعدد 10']]},
 
+'c1-4-l4':{
+  e:['طرح عدد نسبي معناه جمع نظيره: '+m('a − b = a + (−b)')+'. مثال: '+m('(−3) − (−5) = (−3) + 5 = 2')+'.',
+     'خارج القسمة له نفس قاعدة الإشارات التي للجداء: إشارتان متشابهتان تعطي ناتجاً موجباً، وإشارتان مختلفتان تعطي ناتجاً سالباً. ولا يمكن القسمة على 0 أبداً.'],
+  u:'اختر العملية ثم غيّر a وb ولاحظ المستقيم المدرّج والنتيجة.',
+  w:[['soustraire','طرح'],['opposé','نظير'],['quotient','خارج القسمة'],['même signe','نفس الإشارة'],['signes contraires','إشارتان مختلفتان']]},
+
 'c1-5-l1':{
   e:['النشر هو تحويل جداء إلى مجموع: '+m('k × (a + b) = k × a + k × b')+'. أي أننا نوزّع العامل k على كل حدّ داخل القوسين. مساحة المستطيل الكبير تساوي مجموع مساحتي المستطيلين الصغيرين.',
      'مثال: '+m('7 × 12 = 7 × (10 + 2) = 70 + 14 = 84')+'.'],
@@ -8900,6 +9184,12 @@ var L={
      'مثال: '+m('2x + 3 = 11')+': نطرح 3 من الطرفين فنحصل على '+m('2x = 8')+' ثم نقسم على 2 فنجد '+m('x = 4')+'.'],
   u:'اختر معادلة ثم حرّك قيمة x حتى يتوازن الميزان. يمكنك الضغط على «Voir la résolution» لتقرأ خطوات الحل.',
   w:[['équation','معادلة'],['inconnue','مجهول'],['solution','حل'],['résoudre','حلّ']]},
+
+'c1-6-l2':{
+  e:['لحل مسألة بالمعادلة: نختار المجهول x، ثم نترجم نص المسألة إلى مساواة، ثم نحل المعادلة، ثم نتحقق من النتيجة.',
+     'ننهي دائماً بجملة جواب مع الوحدة.'],
+  u:'اختر مسألة واضغط «Étape suivante» لتظهر الخطوات واحدة بعد الأخرى.',
+  w:[['inconnue','مجهول'],['mettre en équation','وضع في معادلة'],['vérifier','تحقق'],['réponse','جواب']]},
 
 'c1-7-l1':{
   e:['مستقيمان في المستوى إما <b>متقاطعان</b> أو <b>متوازيان</b>. المستقيمان المتوازيان لا يتقاطعان أبداً وبينهما دائماً نفس المسافة. وإذا تقاطعا بزاوية قائمة (90°) سُمّيا <b>متعامدين</b>.'],
@@ -8935,6 +9225,12 @@ var L={
      'وطول الوتر أصغر دائماً من القطر أو يساويه.'],
   u:'حرّك A وB على الدائرة، وراقب أن الخط المتقطع (الواسط) يمر دائماً من المركز O.',
   w:[['médiatrice','واسط قطعة'],['corde','وتر']]},
+
+'c1-13-l3':{
+  e:['مماس دائرة في نقطة M هو المستقيم الذي يلمس الدائرة في النقطة M فقط.',
+     'المماس <b>عمودي</b> على الشعاع [OM].'],
+  u:'حرّك النقطة M على الدائرة ولاحظ أن المماس يبقى عمودياً على الشعاع.',
+  w:[['tangente','مماس'],['rayon','شعاع'],['perpendiculaire','عمودي'],['cercle','دائرة']]},
 
 'c1-14-l1':{
   e:['المسافة بين نقطتين أفصولاهما a وb هي '+m('|b − a|')+'، وهي عدد موجب دائماً.',
@@ -8985,6 +9281,17 @@ var L={
   u:'غيّر المجموع T والنسبة p. الجزء الملوّن في الشريط يمثل p % من الشريط كله.',
   w:[['pourcentage','نسبة مئوية'],['réduction','تخفيض'],['prix','ثمن']]},
 
+'c1-16-l3':{
+  e:['في جدول التناسبية قد ينقص عدد: هو <b>الرابع المتناسب</b>. نحسبه إما بمعامل التناسب أو بالجداء المتقاطع.',
+     'مثال: 4 أشياء ثمنها 10 DH، إذن 6 أشياء ثمنها '+m('6 × 10 ÷ 4 = 15 DH')+'.'],
+  u:'غيّر الأعداد الثلاثة بالمنزلقات وتتبّع الجدول والحساب.',
+  w:[['quatrième proportionnelle','الرابع المتناسب'],['coefficient','معامل'],['produit en croix','الجداء المتقاطع'],['tableau','جدول']]},
+'c1-16-l4':{
+  e:['<b>السلّم</b> هو النسبة بين طول على الخريطة والطول الحقيقي. السلّم 1/50 000 يعني أن 1 سم على الخريطة يمثل 50 000 سم أي 500 م في الواقع.',
+     'المسافة الحقيقية = المسافة على الخريطة × مقام السلّم.'],
+  u:'اختر السلّم ثم غيّر المسافة على الخريطة وراقب المسافة الحقيقية.',
+  w:[['échelle','سلّم'],['carte','خريطة'],['distance réelle','المسافة الحقيقية'],['plan','تصميم']]},
+
 'c1-17-l1':{
   e:['<b>التكرار</b> (effectif) لقيمة هو عدد المرات التي تظهر فيها. <b>التردد</b> (fréquence) هو التكرار مقسوماً على التكرار الإجمالي، ونكتبه غالباً على شكل نسبة مئوية.',
      '<b>المنوال</b> (mode) هو القيمة ذات أكبر تكرار. وفي المخطط الدائري تكون زاوية القطاع متناسبة مع التكرار.'],
@@ -9033,6 +9340,12 @@ var L={
   u:'اختر قاعدة ثم غيّر الأسين. في الأسفل ترى المساواة محققة بالأعداد.',
   w:[['règle','قاعدة'],['exposant négatif','أس سالب']]},
 
+'c2-4-l3':{
+  e:['الكتابة العلمية لعدد هي '+m('a × 10ⁿ')+' حيث '+m('1 ≤ a < 10')+' وn عدد صحيح نسبي. مثال: '+m('45 000 = 4,5 × 10⁴')+'.',
+     '<b>رتبة القدر</b> هي أقرب قوة للعدد 10: نأخذ 10ⁿ إذا كان a أقل من 5، وإلا نأخذ 10ⁿ⁺¹.'],
+  u:'غيّر الجزء العشري والأس، أو اختر مثالاً جاهزاً، وانظر إلى الكتابة العشرية ورتبة القدر.',
+  w:[['écriture scientifique','كتابة علمية'],['exposant','أس'],['ordre de grandeur','رتبة القدر'],['puissance de 10','قوة 10']]},
+
 'c2-5-l1':{
   e:['لنشر جداء مجموعين نضرب كل حد من القوس الأول في كل حد من القوس الثاني: '+m('(a + b)(c + d) = ac + ad + bc + bd')+'.',
      'مساحة المستطيل الكبير تساوي مجموع مساحات المستطيلات الأربعة الصغيرة.'],
@@ -9063,6 +9376,12 @@ var L={
      'الضرب في عدد <b>موجب</b> يحافظ على الترتيب. أما الضرب في عدد <b>سالب</b> فيعكس الترتيب. مثال: '+m('2 < 5')+' لكن '+m('−3 × 2 > −3 × 5')+' أي '+m('−6 > −15')+'.'],
   u:'حرّك a وb، اختر الجمع أو الضرب وغيّر k ليصبح سالباً. انظر إلى ترتيب النقطتين في المستقيم السفلي.',
   w:[['ordre','ترتيب'],['inégalité','متفاوتة'],['conserve','يحافظ على'],['inverse l’ordre','يعكس الترتيب']]},
+
+'c2-7-l2':{
+  e:['قد تكون الكتابة العشرية لعدد جذري غير منتهية، لذلك نؤطّره بعددين عشريين متتاليين. الآلة الحاسبة تعطي قيمة مقربة نضبطها حسب الدقة المطلوبة.',
+     'في حالة عدد سالب يُقرأ التأطير في الاتجاه الآخر: '+m('−2,4 < −7/3 < −2,3')+'.'],
+  u:'غيّر البسط (يمكن أن يكون سالباً) والمقام وراقب التأطير.',
+  w:[['encadrement','تأطير'],['valeur approchée','قيمة مقربة'],['rationnel','عدد جذري'],['arrondi','تدوير']]},
 
 'c2-8-l1':{
   e:['النقطة M′ هي مماثلة M بالنسبة إلى مستقيم (d) إذا كان (d) <b>واسط</b> القطعة [MM′]، أي عمودياً عليها في منتصفها.',
@@ -9204,6 +9523,12 @@ var L={
      'مثال: 10 بمعامل 1 و16 بمعامل 2 يعطيان '+m('(10 × 1 + 16 × 2) ÷ 3 = 14')+'.'],
   u:'غيّر النقط والمعاملات وقارن المعدل المرجح بالمعدل العادي.',
   w:[['moyenne pondérée','معدل مرجّح'],['coefficient','معامل'],['note','نقطة']]},
+'c2-15-l3':{
+  e:['<b>المبيان بالأعمدة</b>: ارتفاع العمود يتناسب مع التكرار. <b>المبيان بالقطاعات</b>: زاوية القطاع = التكرار ÷ المجموع × 360°.',
+     '<b>المدرج التكراري</b> (histogramme) يُستعمل عندما تكون القيم مجمّعة في فئات. أما <b>التكرار المجمّع</b> فهو مجموع التكرارات إلى حدود القيمة المعتبرة.'],
+  u:'اختر نوع المبيان وغيّر تكرار آخر فئة.',
+  w:[['effectif','تكرار'],['effectif cumulé','تكرار مجمّع'],['histogramme','مدرج تكراري'],['diagramme circulaire','مبيان بالقطاعات'],['diagramme en bâtons','مبيان بالأعمدة']]},
+
 'c3-1-l1':{
   e:['الجذر المربع للعدد الموجب a هو العدد الموجب الذي مربعه يساوي a ونكتبه '+m('√a')+'. هندسياً: إذا كان مساحة مربع تساوي a فإن طول ضلعه هو '+m('√a')+'.',
      'إذا كان a مربعاً كاملاً (1، 4، 9، 16، 25…) فإن '+m('√a')+' عدد صحيح، مثل '+m('√49 = 7')+'. أما الأعداد السالبة فليس لها جذر مربع.'],
@@ -9419,6 +9744,12 @@ var L={
      'مساحة القاعدة الجديدة هي '+m('k²')+' من المساحة الأصلية، وحجم الهرم الصغير هو '+m('k³')+' من الحجم الأصلي.'],
   u:'غيّر النسبة k فيتحرك المستوى القاطع. اقرأ القيم الجديدة للمساحة والارتفاع والحجم.',
   w:[['section','مقطع'],['plan parallèle','مستوى موازٍ'],['base','قاعدة'],['hauteur','ارتفاع']]},
+'c3-13-l4':{
+  e:['تكون مستقيمة <b>عمودية على مستوى</b> إذا كانت عمودية على مستقيمين متقاطعين من هذا المستوى.',
+     'فتصبح عمودية على <b>جميع</b> مستقيمات المستوى. مثال: عمود الراية الشاقولي عمودي على الأرض.'],
+  u:'اضغط على المراحل الثلاث بالترتيب وتتبّع المستقيمات المرسومة.',
+  w:[['perpendiculaire','عمودي'],['plan','مستوى'],['sécantes','متقاطعان'],['droite','مستقيم']]},
+
 'c3-14-l1':{
   e:['الدالة الخطية هي '+m('f(x) = a × x')+'. تمثيلها المبياني مستقيم يمر من أصل المعلم.',
      'هي دالة التناسبية: إذا ضربنا x في عدد فإن f(x) تُضرب في نفس العدد. العدد a هو المعامل الموجه للمستقيم.'],
@@ -9448,7 +9779,13 @@ var L={
   e:['عندما تكون القيم كثيرة نجمعها في فئات متساوية السعة. الفئة '+m('[a ; b[')+' تضم القيم من a (مشمولة) إلى b (غير مشمولة).',
      'مركز الفئة هو '+m('(a + b) ÷ 2')+'، ونحسب المعدل بعد تعويض كل قيمة بمركز فئتها. الفئة المنوالية هي الفئة ذات أكبر تكرار.'],
   u:'اختر السلسلة وغيّر تكرار آخر فئة. المبيان بالأعمدة (histogramme) يتغير، وكذلك المعدل المقرّب.',
-  w:[['classe','فئة'],['centre de classe','مركز الفئة'],['histogramme','مبيان بالأعمدة'],['classe modale','فئة منوالية']]}
+  w:[['classe','فئة'],['centre de classe','مركز الفئة'],['histogramme','مبيان بالأعمدة'],['classe modale','فئة منوالية']]},
+'c3-15-l4':{
+  e:['<b>مبيان الأعمدة</b> يقارن التكرارات، و<b>مبيان القطاعات</b> يبيّن حصة كل قيمة من المجموع، و<b>المنحنى المنكسر</b> يبيّن تطور مقدار عبر الزمن.',
+     'نختار المبيان حسب الهدف: المقارنة أو توزيع المجموع أو تتبّع التطور.'],
+  u:'اختر نوع المبيان وغيّر عدد الكتب في آخر شهر.',
+  w:[['diagramme en barres','مبيان بالأعمدة'],['diagramme en secteurs','مبيان بالقطاعات'],['ligne brisée','منحنى منكسر'],['évolution','تطور']]},
+
 };
 
 var T={

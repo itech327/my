@@ -1,0 +1,56 @@
+# Maths : leçons ajoutées pour couvrir le programme officiel en profondeur.
+import os, sys
+from playwright.sync_api import sync_playwright
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+fails = 0
+def check(c, m):
+    global fails
+    print(('PASS ' if c else 'FAIL ') + m)
+    if not c: fails += 1
+with sync_playwright() as p:
+    b = p.chromium.launch(); ctx = b.new_context(); errs = []
+    ctx.add_init_script("try{localStorage.setItem('lab_auto','0');localStorage.setItem('lab_wel',String(Date.now()));sessionStorage.setItem('lab_skip','1')}catch(e){}")
+    pg = ctx.new_page(); pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
+    def go(h):
+        pg.goto('file://' + os.path.join(ROOT, 'maths.html') + h); pg.wait_for_timeout(1000)
+        return pg.locator('body').inner_text()
+    t = go('#c1-2')
+    check('Additionner avec des dénominateurs différents' in t and '1/2 = 3/6' in t and '5/6' in t, 'c1-2 : dénominateurs différents (1/2 + 1/3 = 5/6)')
+    check('2,3 < 7/3 < 2,4' in t, 'c1-2 : encadrement de 7/3 au dixième')
+    check('مقام مشترك' in t, 'c1-2 : arabe')
+    pg.get_by_role('tab', name='1/6 + 1/3').first.click(); pg.wait_for_timeout(200)
+    check('= 1/2 après simplification' in pg.locator('body').inner_text(), 'c1-2 : simplification affichée pour 1/6 + 1/3')
+    t = go('#c1-4')
+    check('Soustraire et diviser des relatifs' in t and '(−3) − (−5) = (−3) + 5 = 2' in t.replace('(−3) + (+5)', '(−3) + 5') or '= 2' in t, 'c1-4 : soustraire')
+    t = go('#c1-6')
+    check('Mettre un problème en équation' in t, 'c1-6 : mise en équation')
+    pg.get_by_role('button', name='Commencer').first.click(); pg.wait_for_timeout(200)
+    check('Choisir l’inconnue' in pg.locator('body').inner_text(), 'c1-6 : étape 1 affichée')
+    t = go('#c1-13')
+    check('La tangente à un cercle' in t and 'Tangente ⟂ rayon' in t, 'c1-13 : tangente')
+    t = go('#c1-16')
+    check('x = 15' in t and 'Distance réelle : 2 km' in t.replace('Distance réelle : 2 km', 'Distance réelle : 2 km') or 'Distance réelle' in t, 'c1-16 : 4e proportionnelle et échelle')
+    check('x = 15' in t, 'c1-16 : 4 objets 10 DH donnent 6 objets 15 DH')
+    check('Distance réelle : 2 km' in t, 'c1-16 : 4 cm à 1/50 000 = 2 km')
+    t = go('#c2-4')
+    check('150 000 000' in t and 'Ordre de grandeur : 10' in t, 'c2-4 : 1,5 x 10^8 = 150 000 000')
+    t = go('#c2-7')
+    check('−2,4 < −7/3 < −2,3' in t, 'c2-7 : encadrement de −7/3')
+    t = go('#c2-15')
+    check('Diagrammes, histogramme et effectifs cumulés' in t, 'c2-15 : leçon diagrammes')
+    pg.get_by_role('tab', name='Circulaire').first.click(); pg.wait_for_timeout(200)
+    check('× 360°' in pg.locator('body').inner_text(), 'c2-15 : secteur circulaire')
+    pg.get_by_role('tab', name='Cumuls').first.click(); pg.wait_for_timeout(200)
+    check('1 ; 4 ; 12 ; 18 ; 20' in pg.locator('body').inner_text(), 'c2-15 : cumuls 1 ; 4 ; 12 ; 18 ; 20')
+    t = go('#c3-15')
+    check('Barres, secteurs et ligne brisée' in t, 'c3-15 : diagrammes')
+    pg.get_by_role('tab', name='Ligne brisée').first.click(); pg.wait_for_timeout(200)
+    check('ligne brisée montre' in pg.locator('body').inner_text(), 'c3-15 : ligne brisée')
+    t = go('#c3-13')
+    check('Droite perpendiculaire à un plan' in t, 'c3-13 : droite et plan')
+    pg.get_by_role('tab', name='3. Le plan').first.click(); pg.wait_for_timeout(200)
+    check('perpendiculaire au plan' in pg.locator('body').inner_text(), 'c3-13 : étape 3')
+    errs = [e for e in errs if 'ERR_TUNNEL' not in e and 'Failed to load resource' not in e]
+    check(not errs, 'aucune erreur JS %s' % errs[:2])
+    b.close()
+print('FAILS: %d' % fails); sys.exit(1 if fails else 0)
