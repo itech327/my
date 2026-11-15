@@ -181,6 +181,7 @@
   T('c1-15', ['vol']);
   T('c1-16', ['prop', 'pct', 'ech']);
   T('c1-17', ['stat']);
+  T('c1-18', ['perim', 'aire', 'cercle']);
   T('c2-1', ['rel', 'fcomp']);
   T('c2-2', ['fadd']);
   T('c2-3', ['fmul']);

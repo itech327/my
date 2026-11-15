@@ -588,7 +588,8 @@ function makeHandles(svg,pts,b,onMove){
       ['Droite graduée et repère dans le plan',G],
       ['Prismes et cylindres droits',G],
       ['Proportionnalité',ST],
-      ['Statistiques',ST]
+      ['Statistiques',ST],
+      ['Périmètres et aires',G]
     ]),
     2:mk([
       ['Introduction des nombres rationnels',N,'#c2-1'],
@@ -2156,6 +2157,78 @@ function cylindre(el){
   }
   draw();
 }
+function aireRect(el){
+  var svg=ui.stage(el,400,250,'Rectangle quadrillé en carrés de 1 cm'),g=S('g',null,svg),chips=ui.chips(el),s={L:6,l:4},u=24;
+  var slL=ui.slider(el,{label:'Longueur',min:1,max:10,value:6,color:P,fmt:function(v){return v+' cm'}},function(v){s.L=v;draw()});
+  var sll=ui.slider(el,{label:'Largeur',min:1,max:8,value:4,color:T,fmt:function(v){return v+' cm'}},function(v){s.l=v;draw()});
+  var ctl=ui.controls(el);
+  ui.btn(ctl,'Carré : longueur = largeur',function(){s.L=s.l;slL.set(s.l);draw()});
+  function draw(){
+    g.replaceChildren();
+    var w=s.L*u,hh=s.l*u,x0=(400-w)/2,y0=(250-hh)/2,i;
+    S('rect',{x:x0,y:y0,width:w,height:hh,style:'fill:var(--teal);fill-opacity:.28'},g);
+    for(i=1;i<s.L;i++)S('path',{d:'M'+(x0+i*u)+' '+y0+'V'+(y0+hh),style:'stroke:#fff;stroke-opacity:.45;stroke-width:1'},g);
+    for(i=1;i<s.l;i++)S('path',{d:'M'+x0+' '+(y0+i*u)+'H'+(x0+w),style:'stroke:#fff;stroke-opacity:.45;stroke-width:1'},g);
+    S('rect',{x:x0,y:y0,width:w,height:hh,style:'fill:none;stroke:var(--pink);stroke-width:3'},g);
+    S('text',{x:x0+w/2,y:y0-8,'class':'pl',text:s.L+' cm',style:'fill:var(--pink)'},g);
+    S('text',{x:x0-8,y:y0+hh/2,'class':'pl',text:s.l+' cm',style:'fill:var(--teal);text-anchor:end'},g);
+    chips.set('<span class="chip plain">Périmètre = 2 × ('+s.L+' + '+s.l+') = <b>'+2*(s.L+s.l)+' cm</b></span>'
+      +'<span class="chip plain">Aire = '+s.L+' × '+s.l+' = <b>'+s.L*s.l+' cm²</b> (nombre de carrés)</span>'
+      +(s.L===s.l?'<span class="chip plain">Carré de côté c : P = 4 × c et A = c × c</span>':''));
+  }
+  draw();
+}
+function aireFig(el){
+  var svg=ui.stage(el,400,260,'Triangle ou parallélogramme avec sa hauteur'),g=S('g',null,svg),chips=ui.chips(el),s={m:'tri',b:6,h:4},sc=24,o=36;
+  ui.tabs(el,[['tri','Triangle'],['par','Parallélogramme']],function(m){s.m=m;draw()});
+  ui.slider(el,{label:'Base b',min:2,max:10,value:6,color:P,fmt:function(v){return v+' cm'}},function(v){s.b=v;draw()});
+  ui.slider(el,{label:'Hauteur h',min:1,max:8,value:4,color:T,fmt:function(v){return v+' cm'}},function(v){s.h=v;draw()});
+  function draw(){
+    g.replaceChildren();
+    var w=s.b*sc,hh=s.h*sc,x0=(400-w-(s.m==='par'?o:0))/2,yb=(260+hh)/2,xa=x0+o,pts;
+    pts=s.m==='tri'?[{x:x0,y:yb},{x:x0+w,y:yb},{x:xa,y:yb-hh}]:[{x:x0,y:yb},{x:x0+w,y:yb},{x:x0+w+o,y:yb-hh},{x:xa,y:yb-hh}];
+    S('polygon',{points:M.ptsStr(pts),style:'fill:var(--lav);fill-opacity:.5;stroke:var(--lav);stroke-width:2.5;stroke-linejoin:round'},g);
+    S('path',{d:'M'+xa+' '+(yb-hh)+'V'+yb,style:'stroke:var(--coral);stroke-width:2.5;stroke-dasharray:6 5'},g);
+    S('path',{d:'M'+xa+' '+(yb-10)+'H'+(xa+10)+'V'+yb,style:'fill:none;stroke:var(--coral);stroke-width:1.5'},g);
+    S('text',{x:x0+w/2,y:yb+18,'class':'pl',text:'b = '+s.b+' cm',style:'fill:var(--pink)'},g);
+    S('text',{x:xa-8,y:yb-hh/2,'class':'pl',text:'h = '+s.h+' cm',style:'fill:var(--coral);text-anchor:end'},g);
+    chips.set(s.m==='tri'
+      ?'<span class="chip plain">Aire = b × h ÷ 2 = '+s.b+' × '+s.h+' ÷ 2 = <b>'+fmtN(s.b*s.h/2)+' cm²</b></span><span class="chip plain">Un triangle est la moitié d’un parallélogramme de même base et de même hauteur.</span>'
+      :'<span class="chip plain">Aire = b × h = '+s.b+' × '+s.h+' = <b>'+s.b*s.h+' cm²</b></span><span class="chip plain">La hauteur est perpendiculaire à la base, elle n’est pas un côté penché.</span>');
+  }
+  draw();
+}
+function disqueAire(el){
+  var svg=ui.stage(el,400,260,'Disque de rayon r'),g=S('g',null,svg),chips=ui.chips(el),r=4;
+  ui.slider(el,{label:'Rayon r',min:1,max:6,value:4,color:P,fmt:function(v){return v+' cm'}},function(v){r=v;draw()});
+  function draw(){
+    g.replaceChildren();
+    var R=r*20,cx=200,cy=130;
+    S('circle',{cx:cx,cy:cy,r:R,style:'fill:var(--teal);fill-opacity:.3;stroke:var(--teal);stroke-width:3'},g);
+    S('path',{d:'M'+cx+' '+cy+'H'+(cx+R),style:'stroke:var(--pink);stroke-width:3'},g);
+    S('circle',{cx:cx,cy:cy,r:3.5,style:'fill:#fff'},g);
+    S('text',{x:cx+R/2,y:cy-8,'class':'pl',text:'r = '+r+' cm',style:'fill:var(--pink)'},g);
+    chips.set('<span class="chip plain">Périmètre = 2 × π × r ≈ 2 × 3,14 × '+r+' ≈ <b>'+fmt(2*3.14*r,2)+' cm</b></span>'
+      +'<span class="chip plain">Aire = π × r² ≈ 3,14 × '+r+'² ≈ <b>'+fmt(3.14*r*r,2)+' cm²</b></span>');
+  }
+  draw();
+}
+M.chapter({id:'c1-18',eyebrow:'1<sup>re</sup> année · Chapitre 18 · Géométrie · <span class="appro" title="Hors du programme adapté 2023-2024">Approfondissement · تعمّق</span>',title:'Périmètres et aires',
+  lessons:[
+    {short:'Rectangle et carré',title:'Périmètre et aire d’un rectangle',intro:'Change la longueur et la largeur. L’aire est le nombre de carrés de 1 cm de côté qui couvrent la figure.',build:aireRect,
+      retenir:['<b>Périmètre</b> d’un rectangle : <span class="math">P = 2 × (L + l)</span>. C’est la longueur du contour.','<b>Aire</b> d’un rectangle : <span class="math">A = L × l</span>. Elle s’exprime en cm².','Pour un carré de côté c : <span class="math">P = 4 × c</span> et <span class="math">A = c × c</span>.']},
+    {short:'Triangle et parallélogramme',title:'Aire d’un triangle et d’un parallélogramme',intro:'Choisis la figure, puis change la base et la hauteur. La hauteur est le segment en pointillés.',build:aireFig,
+      retenir:['<b>Parallélogramme</b> : <span class="math">A = b × h</span>.','<b>Triangle</b> : <span class="math">A = b × h ÷ 2</span>.','La hauteur est <b>perpendiculaire</b> à la base choisie.']},
+    {short:'Le disque',title:'Périmètre du cercle et aire du disque',intro:'Change le rayon et lis le périmètre et l’aire.',build:disqueAire,
+      retenir:['<b>Périmètre</b> du cercle : <span class="math">P = 2 × π × r</span>.','<b>Aire</b> du disque : <span class="math">A = π × r × r</span>.','On prend souvent π ≈ 3,14.']}
+  ],
+  quiz:[
+    {q:'Un rectangle mesure 7 cm sur 3 cm. Son périmètre est…',o:['10 cm','20 cm','21 cm','42 cm'],a:1,e:'P = 2 × (7 + 3) = 20 cm.'},
+    {q:'Un rectangle mesure 7 cm sur 3 cm. Son aire est…',o:['10 cm²','20 cm²','21 cm²','20 cm'],a:2,e:'A = 7 × 3 = 21 cm².'},
+    {q:'Aire d’un triangle de base 8 cm et de hauteur 5 cm.',o:['40 cm²','20 cm²','13 cm²','26 cm²'],a:1,e:'A = 8 × 5 ÷ 2 = 20 cm².'},
+    {q:'Un disque a un rayon de 2 cm. Son aire est environ…',o:['6,28 cm²','12,56 cm²','3,14 cm²','25,12 cm²'],a:1,e:'A = π × 2² ≈ 3,14 × 4 = 12,56 cm².'}
+  ]});
+
 M.chapter({id:'c1-15',eyebrow:'1<sup>re</sup> année · Chapitre 15 · Géométrie · <span class="appro" title="Hors du programme adapté 2023-2024">Approfondissement · تعمّق</span>',title:'Prismes et cylindres droits',
   lessons:[
     {short:'Le pavé droit',title:'Volume et aires d’un pavé droit',intro:'Change les dimensions. Les lignes fines montrent la hauteur découpée en couches de 1 cm.',build:pave,
@@ -8885,6 +8958,22 @@ var L={
   u:'غيّر r وh. الرسم الأول هو الأسطوانة والرسم الثاني هو تطويرها المسطّح، والقياسات المكتوبة تتحدث معك.',
   w:[['cylindre','أسطوانة'],['patron','تطوير'],['disque','قرص'],['périmètre','محيط']]},
 
+'c1-18-l1':{
+  e:['محيط المستطيل هو طول حدّه: '+m('P = 2 × (L + l)')+'. مساحة المستطيل: '+m('A = L × l')+'، وهي عدد المربعات التي طول ضلع كل منها 1 سم والتي تغطي الشكل. تُقاس المساحة بـ cm².',
+     'المربع الذي ضلعه c: '+m('P = 4 × c')+' و'+m('A = c × c')+'.'],
+  u:'غيّر الطول والعرض بالمنزلقين، وانظر كيف يتغير عدد المربعات والمحيط.',
+  w:[['périmètre','محيط'],['aire','مساحة'],['longueur','طول'],['largeur','عرض'],['carré','مربع']]},
+'c1-18-l2':{
+  e:['مساحة متوازي الأضلاع: '+m('A = b × h')+'. مساحة المثلث: '+m('A = b × h ÷ 2')+'، فهي نصف مساحة متوازي أضلاع له نفس القاعدة ونفس الارتفاع.',
+     'الارتفاع عمودي على القاعدة المختارة، وليس ضلعا مائلا.'],
+  u:'اختر الشكل ثم غيّر القاعدة والارتفاع. الارتفاع هو القطعة المتقطعة.',
+  w:[['base','قاعدة'],['hauteur','ارتفاع'],['triangle','مثلث'],['parallélogramme','متوازي الأضلاع'],['perpendiculaire','عمودي']]},
+'c1-18-l3':{
+  e:['محيط الدائرة: '+m('P = 2 × π × r')+'. مساحة القرص: '+m('A = π × r²')+'. نأخذ غالبا π ≈ 3,14.',
+     'مثال: r = 2 cm، إذن '+m('A ≈ 3,14 × 4 = 12,56 cm²')+'.'],
+  u:'غيّر الشعاع r وقارن المحيط والمساحة. لاحظ أن المساحة تتضاعف أربع مرات عندما يتضاعف الشعاع.',
+  w:[['disque','قرص'],['cercle','دائرة'],['rayon','شعاع'],['périmètre','محيط'],['aire','مساحة']]},
+
 'c1-16-l1':{
   e:['تكون مقداران متناسبين إذا انتقلنا من أحدهما إلى الآخر بالضرب دائماً في نفس العدد، وهو <b>معامل التناسب</b>. هنا المعامل هو ثمن الكيلوغرام الواحد.',
      'في جدول التناسب جميع النسب y ÷ x متساوية، والتمثيل المبياني عبارة عن نقط على استقامة واحدة تمر من أصل المعلم.'],
@@ -9379,6 +9468,7 @@ var T={
 'c1-15':'المنشورات والأسطوانات القائمة',
 'c1-16':'التناسبية',
 'c1-17':'الإحصاء',
+'c1-18':'المحيطات والمساحات',
 'c2-1':'الأعداد الجذرية: التقديم',
 'c2-2':'الأعداد الجذرية: الجمع والفرق',
 'c2-3':'الأعداد الجذرية: الجداء والخارج',
