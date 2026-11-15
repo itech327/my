@@ -10,134 +10,9 @@
   function fm(x, d) { var s = (+x).toFixed(d === undefined ? 1 : d); if (s.indexOf('.') > -1) s = s.replace(/0+$/, '').replace(/\.$/, ''); return s.replace('.', ','); }
   function num(q, a, u, e, h, tol) { return { t: 'num', q: q, a: a, u: u || '', e: e, h: h || '', tol: tol === undefined ? (Math.abs(a - Math.round(a)) < 1e-9 ? 0.5 : 0.006) : tol, sol: fm(a, 2) + (u ? ' ' + u : '') }; }
 
-  /* [niveau, question, options, bonne réponse (index), explication] */
-  var B = {
-    evo: [
-      [1, 'Un système où l’énergie et la commande sont humaines est :', ['primitif', 'mécanisé', 'automatisé'], 0, 'La force musculaire fournit l’énergie.'],
-      [1, 'Un tracteur conduit par un agriculteur est :', ['mécanisé', 'primitif', 'robotisé'], 0, 'Moteur pour l’énergie, commande humaine.'],
-      [2, 'Quel système n’a pas besoin d’intervention humaine pour sa commande ?', ['le système automatisé', 'le système primitif', 'le système mécanisé'], 0, 'Des capteurs et une unité de traitement commandent le système.'],
-      [2, 'Un robot se distingue d’un automate simple par :', ['sa programmabilité et sa polyvalence', 'son absence de moteur', 'sa commande humaine'], 0, 'Il s’adapte grâce à ses capteurs et à son programme.'],
-      [3, 'Pour changer le comportement d’un système à technologie programmée, il faut :', ['modifier le programme', 'refaire le câblage', 'changer l’alimentation'], 0, 'Le comportement dépend du programme.'],
-      [3, 'Quel critère distingue le système mécanisé du système automatisé ?', ['le type de commande', 'la couleur', 'le prix'], 0, 'Commande humaine pour le mécanisé, automatique pour l’automatisé.']
-    ],
-    acq: [
-      [1, 'Quel composant détecte la présence d’une personne ?', ['le détecteur de présence', 'la photorésistance', 'le moteur'], 0, 'Il détecte le rayonnement infrarouge d’une personne en mouvement.'],
-      [1, 'Un signal qui ne prend que les valeurs 0 ou 1 est :', ['logique', 'analogique', 'sonore'], 0, 'Il n’a que deux états.'],
-      [2, 'Un capteur de température fournit un signal :', ['analogique', 'logique uniquement', 'inexistant'], 0, 'Le signal varie de façon continue avec la température.'],
-      [2, 'Quel composant mesure l’éclairement ?', ['la photorésistance', 'le fin de course', 'le relais'], 0, 'Sa résistance dépend de la lumière reçue.'],
-      [3, 'La différence entre un capteur et un détecteur est que le détecteur :', ['donne un signal à deux états', 'mesure en continu', 'fournit de l’énergie'], 0, 'Il compare à un seuil et donne 0 ou 1.'],
-      [3, 'Pour mesurer la distance d’un obstacle, on utilise :', ['un capteur à ultrasons', 'un fin de course', 'un buzzer'], 0, 'Il mesure la durée de l’écho.']
-    ],
-    trait: [
-      [1, 'Quel symbole d’organigramme représente un test ?', ['le losange', 'l’ovale', 'le rectangle'], 0, 'Le losange pose une question : oui ou non.'],
-      [1, 'Un algorithme est :', ['une suite ordonnée d’opérations', 'un composant électronique', 'un type de moteur'], 0, 'Il décrit comment résoudre un problème.'],
-      [2, 'La structure « tant que … faire » est :', ['répétitive', 'linéaire', 'conditionnelle'], 0, 'Elle répète des actions.'],
-      [2, 'Une variable est :', ['une case mémoire nommée', 'un câble', 'une pile'], 0, 'Sa valeur peut changer.'],
-      [3, 'Téléverser un programme, c’est :', ['l’envoyer dans la carte', 'le supprimer', 'le dessiner'], 0, 'Il passe de l’ordinateur à la mémoire de la carte.'],
-      [3, 'Dans « si obstacle alors arrêter sinon avancer », la structure est :', ['conditionnelle', 'répétitive', 'linéaire'], 0, 'Le choix dépend d’une condition.'],
-      [1, 'Quelle fonction réalise le microcontrôleur de la carte Arduino ?', ['Traiter', 'Alimenter', 'Transmettre'], 0, 'Le microcontrôleur exécute le programme : il traite les informations.'],
-      [2, 'Quelle fonction est exécutée une seule fois au démarrage d’un programme Arduino ?', ['setup()', 'loop()', 'delay()'], 0, 'setup() s’exécute une fois, loop() se répète sans fin.'],
-      [2, 'Quelle instruction définit une broche comme sortie ?', ['pinMode(broche, OUTPUT)', 'digitalRead(broche)', 'delay(broche)'], 0, 'pinMode choisit le mode de la broche.'],
-      [3, 'Que fait l’instruction delay(500) ?', ['elle attend 500 millisecondes', 'elle attend 500 secondes', 'elle répète 500 fois'], 0, 'Le delay est exprimé en millisecondes.'],
-      [3, 'Avec digitalRead(btnPin) puis digitalWrite(ledPin, val), la LED :', ['recopie l’état du bouton', 'clignote toujours', 'reste éteinte'], 0, 'La valeur lue est recopiée sur la LED.']
-    ],
-    comm: [
-      [1, 'Un voyant lumineux est une communication :', ['visuelle', 'sonore', 'câblée'], 0, 'Il informe par la lumière.'],
-      [1, 'Un buzzer assure une communication :', ['sonore', 'visuelle', 'sans fil'], 0, 'Il émet un son.'],
-      [2, 'Le Bluetooth est une communication :', ['sans fil', 'câblée', 'sonore'], 0, 'L’information voyage par ondes.'],
-      [2, 'Un câble USB relève de la communication :', ['câblée', 'visuelle', 'sonore'], 0, 'L’information circule dans un câble.'],
-      [3, 'Quelles communications s’adressent à l’utilisateur ?', ['visuelle et sonore', 'câblée et sans fil', 'aucune'], 0, 'Voyants, écrans et sons informent l’être humain.'],
-      [3, 'Une télécommande infrarouge utilise une communication :', ['sans fil', 'câblée', 'sonore'], 0, 'Pas de câble entre les deux appareils.']
-    ],
-    ali: [
-      [1, 'Le côté long du symbole d’une pile est la borne :', ['+', '−', 'neutre'], 0, 'Le trait long représente la borne positive.'],
-      [1, 'La fonction « Alimenter » :', ['fournit l’énergie au système', 'mesure une grandeur', 'transmet un mouvement'], 0, 'Elle apporte l’énergie nécessaire au fonctionnement.'],
-      [2, 'Un circuit ouvert :', ['ne laisse pas passer le courant', 'laisse passer le courant', 'augmente la tension'], 0, 'Le courant ne circule que dans un circuit fermé.'],
-      [2, 'Une pile fournit un courant :', ['continu (CC)', 'alternatif uniquement', 'sonore'], 0, 'Les piles et batteries donnent du courant continu.'],
-      [3, 'Pour augmenter l’autonomie d’un système, on peut :', ['réduire sa consommation', 'diminuer la capacité de la batterie', 'ouvrir le circuit en permanence'], 0, 'Autonomie = capacité ÷ courant consommé.'],
-      [3, 'Les caractéristiques d’une source d’alimentation sont :', ['tension, courant, autonomie', 'forme, couleur, prix', 'vitesse, angle, température'], 0, 'Ce sont les trois grandeurs à connaître.']
-    ],
-    dis: [
-      [1, 'Quel composant est un pré-actionneur ?', ['le relais', 'le moteur', 'la photorésistance'], 0, 'Le moteur est un actionneur, la photorésistance un capteur.'],
-      [1, 'Un bouton poussoir ferme le circuit :', ['tant qu’on appuie', 'définitivement', 'jamais'], 0, 'Il s’ouvre dès qu’on le relâche.'],
-      [2, 'Le relais permet de :', ['commander un circuit de puissance avec un petit courant', 'mesurer une température', 'stocker de l’énergie'], 0, 'La bobine ferme un contact du circuit de puissance.'],
-      [2, 'Un transistor bloqué se comporte comme :', ['un interrupteur ouvert', 'un interrupteur fermé', 'une pile'], 0, 'Aucun courant ne passe.'],
-      [3, 'Un transistor devient saturé quand sa tension de commande :', ['dépasse son seuil (≈ 0,7 V)', 'est nulle', 'est négative'], 0, 'Il se comporte alors comme un interrupteur fermé.'],
-      [3, 'La fonction « Distribuer » :', ['envoie l’énergie vers les actionneurs', 'produit l’énergie', 'mesure une grandeur'], 0, 'Elle utilise des pré-actionneurs.']
-    ],
-    conv: [
-      [1, 'Une résistance chauffante convertit l’énergie électrique en :', ['chaleur', 'translation', 'lumière uniquement'], 0, 'L’énergie électrique devient de l’énergie thermique.'],
-      [1, 'Un moteur à courant continu produit :', ['une rotation', 'une translation', 'de la chaleur uniquement'], 0, 'Il convertit l’énergie électrique en mouvement de rotation.'],
-      [2, 'Quel actionneur utilise de l’air comprimé pour produire une translation ?', ['le vérin', 'le moteur CC', 'le servomoteur'], 0, 'La tige du vérin sort ou rentre.'],
-      [2, 'Pour inverser le sens d’un moteur CC, on :', ['inverse la polarité', 'coupe l’alimentation', 'ajoute une résistance'], 0, 'Le sens dépend du sens du courant.'],
-      [3, 'Un servomoteur se commande par :', ['un angle', 'une température', 'une pression'], 0, 'Il se positionne à l’angle demandé et le maintient.'],
-      [3, 'La fonction « Convertir » est assurée par :', ['les actionneurs', 'les capteurs', 'les pré-actionneurs'], 0, 'Un actionneur transforme l’énergie reçue.']
-    ],
-    trans: [
-      [1, 'Deux engrenages en contact tournent :', ['en sens inverses', 'dans le même sens', 'sans tourner'], 0, 'Les dents s’engrènent et inversent le sens.'],
-      [1, 'Une poulie et une courroie assurent :', ['la transmission d’un mouvement', 'la mesure d’une grandeur', 'la production d’énergie'], 0, 'La courroie relie deux poulies.'],
-      [2, 'Quelle solution transforme une rotation en translation ?', ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], 0, 'La crémaillère avance en ligne droite.'],
-      [2, 'La bielle-manivelle donne une translation :', ['alternative', 'continue dans un seul sens', 'nulle'], 0, 'Le coulisseau fait des allers-retours.'],
-      [3, 'Si la roue menée est plus petite que la roue menante, elle tourne :', ['plus vite', 'moins vite', 'à la même vitesse'], 0, 'r = D₁ ÷ D₂ est supérieur à 1.'],
-      [3, 'Quelle solution permet une très forte réduction de vitesse ?', ['la roue et la vis sans fin', 'les roues de friction', 'la poulie-courroie de même diamètre'], 0, 'Un tour de vis fait avancer la roue d’une dent.'],
-      [1, 'Quel système transforme une rotation en translation ?', ['le pignon-crémaillère', 'la poulie-courroie', 'les roues de friction'], 0, 'La crémaillère avance en ligne droite.'],
-      [2, 'Dans un système vis-écrou, un tour de vis fait avancer l’écrou :', ['d’un pas', 'de deux pas', 'de la moitié d’un pas'], 0, 'Le pas est la translation obtenue pour un tour.'],
-      [3, 'Un système bielle-manivelle transforme :', ['une rotation continue en translation alternative', 'une translation en rotation lente', 'une rotation en lumière'], 0, 'Le piston fait des allers-retours.'],
-      [3, 'Un système pignon-crémaillère est :', ['réversible', 'toujours irréversible', 'sans mouvement'], 0, 'On peut passer de la rotation à la translation et inversement.']
-    ],
-    agir: [
-      [1, 'Le foret d’une perceuse est :', ['l’effecteur', 'le capteur', 'le pré-actionneur'], 0, 'Il agit directement sur la pièce.'],
-      [1, 'La matière d’œuvre est :', ['ce sur quoi agit le système', 'la source d’énergie', 'le programme'], 0, 'C’est la matière, l’énergie ou l’information traitée.'],
-      [2, 'Dans un chauffe-eau, la valeur ajoutée est un changement de :', ['température', 'forme', 'position'], 0, 'L’eau froide devient de l’eau chaude.'],
-      [2, 'Dans un ascenseur, la valeur ajoutée est un changement de :', ['position', 'forme', 'température'], 0, 'Les personnes sont déplacées d’un étage à un autre.'],
-      [3, 'Quelle chaîne contient la fonction « Traiter » ?', ['la chaîne d’information', 'la chaîne d’énergie', 'aucune'], 0, 'Acquérir, Traiter, Communiquer : chaîne d’information.'],
-      [3, 'Quelle fonction termine la chaîne d’énergie ?', ['Agir', 'Alimenter', 'Acquérir'], 0, 'L’effecteur agit sur la matière d’œuvre.']
-    ],
-    des: [
-      [1, 'Quel trait représente les contours visibles ?', ['continu fort', 'interrompu fin', 'mixte fin'], 0, 'Les arêtes visibles sont en trait continu fort.'],
-      [1, 'Le trait mixte fin sert à dessiner :', ['les axes', 'les contours cachés', 'les cotes'], 0, 'Axes de symétrie, de trous et de cylindres.'],
-      [2, 'Quel trait représente les contours cachés ?', ['interrompu fin', 'continu fort', 'mixte fin'], 0, 'Les arêtes cachées se dessinent en traits interrompus fins.'],
-      [2, 'Un schéma montre :', ['le fonctionnement avec des symboles', 'toutes les cotes d’une pièce', 'un assemblage éclaté'], 0, 'Il ne montre pas la forme réelle.'],
-      [3, 'En perspective cavalière, la profondeur est :', ['tracée à 45° et réduite de moitié', 'en vraie grandeur', 'supprimée'], 0, 'Seule la face avant est en vraie grandeur.'],
-      [3, 'Quel dessin définit une seule pièce de façon complète ?', ['le dessin de définition', 'le schéma', 'le croquis'], 0, 'Il contient les vues, les cotes et la matière.']
-    ],
-    ener: [
-      [1, 'Quelle énergie est non renouvelable ?', ['le pétrole', 'le vent', 'le Soleil'], 0, 'Le pétrole est une énergie fossile.'],
-      [1, 'La biomasse est une énergie :', ['renouvelable', 'fossile', 'qui ne se renouvelle pas'], 0, 'Les plantes repoussent.'],
-      [2, 'Quelle source émet le moins de CO₂ en fonctionnement ?', ['l’éolien', 'le charbon', 'le gaz'], 0, 'L’éolien ne brûle aucun combustible.'],
-      [2, 'Les énergies fossiles sont :', ['le pétrole, le charbon et le gaz', 'le vent et l’eau', 'le Soleil et la biomasse'], 0, 'Elles se sont formées sur des millions d’années.'],
-      [3, 'Quel est un inconvénient possible d’un barrage ?', ['il modifie le milieu naturel', 'il émet beaucoup de CO₂ en fonctionnement', 'il ne produit jamais d’électricité'], 0, 'Un barrage change le paysage et les écosystèmes.'],
-      [3, 'Les trois énergies renouvelables les plus utilisées à grande échelle sont :', ['hydroélectricité, éolien, solaire', 'pétrole, gaz, charbon', 'bois, tourbe, charbon'], 0, 'Ce sont les trois du programme.']
-    ],
-    hyd: [
-      [1, 'Dans une centrale hydroélectrique, la turbine entraîne :', ['la génératrice', 'le barrage', 'la conduite forcée'], 0, 'La génératrice produit l’électricité.'],
-      [1, 'Quel composant d’une éolienne porte la nacelle ?', ['le mât', 'la pale', 'l’anémomètre'], 0, 'Il la place en hauteur.'],
-      [2, 'Où l’énergie hydraulique est-elle stockée ?', ['dans des bassins', 'dans des piles', 'dans des câbles'], 0, 'L’eau en altitude est une réserve d’énergie.'],
-      [2, 'Quel composant contient la génératrice d’une éolienne ?', ['la nacelle', 'le mât', 'la pale'], 0, 'La nacelle abrite aussi le multiplicateur de vitesse.'],
-      [3, 'Quand le vent dépasse environ 25 m/s, l’éolienne :', ['s’arrête par sécurité', 'produit encore plus', 'accélère'], 0, 'Les pales sont mises en drapeau.'],
-      [3, 'Pour une petite éolienne, on stocke l’énergie dans :', ['des batteries', 'un grand bassin', 'un barrage'], 0, 'Les batteries conviennent aux petites installations.']
-    ],
-    sol: [
-      [1, 'Le solaire thermique produit surtout :', ['de la chaleur', 'du vent', 'du son'], 0, 'Un capteur plan chauffe de l’eau.'],
-      [1, 'Un panneau photovoltaïque produit :', ['de l’électricité', 'de la chaleur uniquement', 'du vent'], 0, 'Il transforme la lumière en électricité.'],
-      [2, 'Quel appareil transforme le courant continu en courant alternatif ?', ['l’onduleur', 'le régulateur', 'le panneau'], 0, 'L’onduleur alimente les appareils en courant alternatif.'],
-      [2, 'Dans une centrale à tour, les héliostats :', ['renvoient les rayons vers le récepteur', 'produisent la vapeur', 'stockent l’eau'], 0, 'Ils suivent le Soleil et visent le récepteur.'],
-      [3, 'Le régulateur d’une installation photovoltaïque sert à :', ['protéger la batterie', 'produire de l’électricité', 'orienter les panneaux'], 0, 'Il évite les surcharges et les décharges profondes.'],
-      [3, 'L’absorbeur d’un capteur solaire plan est de couleur noire pour :', ['absorber un maximum de rayonnement', 'refléter le Soleil', 'stocker l’électricité'], 0, 'Une surface noire absorbe mieux la lumière.']
-    ],
-    eff: [
-      [1, 'Quelle classe de l’étiquette énergie est la plus économe ?', ['A', 'D', 'G'], 0, 'La classe A consomme le moins.'],
-      [1, 'L’étiquette énergie sert à :', ['comparer la consommation des appareils', 'mesurer la température', 'régler la vitesse'], 0, 'Elle classe les appareils de A à G.'],
-      [2, 'Deux appareils rendent le même service. Le moins gourmand a :', ['la meilleure efficacité énergétique', 'la moins bonne efficacité', 'aucune efficacité'], 0, 'Il consomme moins pour le même service.'],
-      [2, 'Quelle classe est la plus gourmande ?', ['G', 'A', 'C'], 0, 'G est en bas de l’échelle.'],
-      [3, 'Le diagramme des exigences décrit :', ['les fonctions et les contraintes', 'les composants électroniques', 'les utilisateurs uniquement'], 0, 'Il précise ce que le système doit faire.'],
-      [3, 'Dans le projet « maisonnette solaire », l’éclairage est commandé par :', ['un interrupteur crépusculaire', 'une éolienne', 'un chauffe-eau'], 0, 'Une photorésistance détecte la tombée de la nuit.'],
-      [1, 'Dans le diagramme des exigences du robot auto-tampon, quel bloc satisfait « Se propulser » ?', ['les moteurs', 'le pare-chocs', 'l’interrupteur'], 0, 'Les moteurs propulsent le robot sur le sol.'],
-      [2, 'Une exigence de raffinement :', ['précise une exigence unitaire', 'représente un bloc', 'remplace l’utilisateur'], 0, 'Elle apporte des informations qualitatives ou quantitatives.'],
-      [2, 'La liaison de contenance relie :', ['deux exigences', 'un bloc et un utilisateur', 'deux blocs seulement'], 0, 'Une exigence est contenue dans une autre.'],
-      [3, 'Dans un diagramme de cas d’utilisation, la relation entre « utilisateur » et « homme » est :', ['une généralisation', 'une satisfaction', 'un raffinement'], 0, 'Homme et femme sont des cas particuliers d’utilisateur.']
-    ]
-  };
+  /* Banques : matiere/banks/*.js, au format [niveau, question, options, bonne réponse (index), explication] */
+  var B = {};
+  /*__BANKS__*/
   function fromBank(key, d) {
     var q = B[key]; if (!q) return null;
     var pool = q.filter(function (x) { return d === 1 ? x[0] <= 2 : (d === 2 ? true : x[0] >= 2); });
@@ -231,43 +106,158 @@
       return num('n vaut ' + a0 + '. Tant que n < ' + lim + ', on fait « n ← n + ' + st + ' ». Quelle est la valeur finale de n ?', a0 + st * Math.ceil((lim - a0) / st), '', 'Il faut ' + Math.ceil((lim - a0) / st) + ' répétitions : n = ' + a0 + ' + ' + st + ' × ' + Math.ceil((lim - a0) / st) + ' = ' + (a0 + st * Math.ceil((lim - a0) / st)) + '.', 'Répète tant que n est inférieur à ' + lim + '.');
     }
   };
+
+  function tl(a) { return Math.max(0.01, Math.abs(a) * 0.012); }
+  G.echo = function (d) {
+    var t = ri(2, 12), k = ri(2, 12), t1 = ri(2, 8), t2 = t1 + ri(2, 6), t3 = ri(3, 20);
+    var tail = ' (vitesse du son : 340 m/s)';
+    if (d === 1) return num('Un capteur à ultrasons mesure un aller-retour de ' + t + ' ms' + tail + '. Quelle est la distance de l’obstacle, en cm ?', 17 * t, 'cm', 'd = v × t ÷ 2 = 34 cm/ms × ' + t + ' ÷ 2 = ' + (17 * t) + ' cm.', '1 ms de trajet aller-retour correspond à 17 cm de distance.');
+    if (d === 2) return num('Un obstacle est à ' + (17 * k) + ' cm' + tail + '. Quelle durée aller-retour mesure le capteur, en ms ?', k, 'ms', 't = 2d ÷ v = ' + (17 * k) + ' ÷ 17 = ' + k + ' ms.', 'Chaque ms correspond à 17 cm.');
+    if (d === 3) return num('Un capteur à ultrasons mesure ' + t3 + ' ms aller-retour' + tail + '. Quelle distance, en m ?', 0.17 * t3, 'm', 'd = 0,17 × ' + t3 + ' = ' + fm(0.17 * t3, 2) + ' m.', 'd = 340 × t ÷ 2, avec t en secondes.', 0.02);
+    return num('Un capteur mesure d’abord ' + t1 + ' ms puis ' + t2 + ' ms' + tail + '. De combien l’obstacle s’est-il éloigné, en cm ?', 17 * (t2 - t1), 'cm', '17 × (' + t2 + ' − ' + t1 + ') = ' + (17 * (t2 - t1)) + ' cm.', 'Calcule chaque distance puis soustrais.');
+  };
+  G.pwm = function (d) {
+    var dc = pick([20, 40, 50, 60, 80]), v = pick([1, 2, 2.5, 3, 4]), w = pick([51, 102, 153, 204]);
+    if (d === 1) return num('Un signal PWM de 5 V a un rapport cyclique de ' + dc + ' %. Quelle est sa tension moyenne, en V ?', 5 * dc / 100, 'V', '5 × ' + dc + ' ÷ 100 = ' + fm(5 * dc / 100, 2) + ' V.', 'Tension moyenne = 5 V × rapport cyclique.', 0.02);
+    if (d === 2) return num('On veut une tension moyenne de ' + fm(v, 1) + ' V avec un signal PWM de 5 V. Quel rapport cyclique, en % ?', v / 5 * 100, '%', fm(v, 1) + ' ÷ 5 = ' + fm(v / 5 * 100, 0) + ' %.', 'Rapport cyclique = tension moyenne ÷ 5 V.');
+    if (d === 3) return num('Avec analogWrite(' + w + '), quel est le rapport cyclique, en % ? (255 correspond à 100 %)', w / 255 * 100, '%', w + ' ÷ 255 = ' + fm(w / 255 * 100, 0) + ' %.', 'Divise par 255.', 0.6);
+    return num('Une broche en PWM 5 V reçoit analogWrite(' + w + '). Quelle est la tension moyenne, en V ?', 5 * w / 255, 'V', '5 × ' + w + ' ÷ 255 = ' + fm(5 * w / 255, 2) + ' V.', 'Rapport cyclique, puis tension moyenne.', 0.03);
+  };
+  G.rend = function (d) {
+    var Pa = pick([20, 40, 50, 80, 100]), eta = pick([50, 60, 70, 80]), Pu = Pa * eta / 100, Pu2 = pick([30, 45, 60]), e2 = pick([50, 60, 75]);
+    if (d === 1) return num('Un moteur absorbe ' + Pa + ' W et fournit ' + fm(Pu, 1) + ' W de puissance utile. Quel est son rendement, en % ?', eta, '%', 'η = ' + fm(Pu, 1) + ' ÷ ' + Pa + ' = ' + eta + ' %.', 'η = puissance utile ÷ puissance absorbée.');
+    if (d === 2) return num('Un moteur absorbe ' + Pa + ' W avec un rendement de ' + eta + ' %. Quelle puissance utile fournit-il, en W ?', Pu, 'W', Pa + ' × ' + eta + ' ÷ 100 = ' + fm(Pu, 1) + ' W.', 'Puissance utile = rendement × puissance absorbée.', 0.1);
+    if (d === 3) return num('Un moteur absorbe ' + Pa + ' W avec un rendement de ' + eta + ' %. Quelles sont les pertes, en W ?', Pa - Pu, 'W', Pa + ' − ' + fm(Pu, 1) + ' = ' + fm(Pa - Pu, 1) + ' W.', 'Pertes = absorbée − utile.', 0.1);
+    return num('On veut ' + Pu2 + ' W de puissance utile avec un moteur de rendement ' + e2 + ' %. Quelle puissance faut-il lui fournir, en W ?', Pu2 * 100 / e2, 'W', Pu2 + ' ÷ ' + fm(e2 / 100, 2) + ' = ' + fm(Pu2 * 100 / e2, 1) + ' W.', 'Puissance absorbée = utile ÷ rendement.', 0.1);
+  };
+  G.hydro = function (d) {
+    var Q = pick([10, 20, 40, 50]), H = pick([50, 100, 200]), P0 = 9.81 * Q * H / 1000, P1 = P0 * 0.9, Pm = pick([20, 40, 60, 80]), h = ri(2, 10);
+    if (d === 1) return num('Une chute d’eau : débit ' + Q + ' m³/s, hauteur ' + H + ' m. Quelle puissance maximale (rendement 100 %), en MW ? (g = 9,81 m/s²)', P0, 'MW', 'P = 9,81 × ' + Q + ' × ' + H + ' ÷ 1000 = ' + fm(P0, 1) + ' MW.', 'P = ρ × g × Q × H avec ρ = 1000 kg/m³.', tl(P0));
+    if (d === 2) return num('Une centrale a un débit de ' + Q + ' m³/s, une chute de ' + H + ' m et un rendement de 90 %. Quelle puissance électrique, en MW ?', P1, 'MW', 'P = ' + fm(P0, 1) + ' × 0,9 = ' + fm(P1, 1) + ' MW.', 'Multiplie par le rendement.', tl(P1));
+    if (d === 3) return num('Une centrale de ' + Q + ' m³/s, de rendement 90 %, voit sa hauteur de chute passer de ' + H + ' m à ' + (2 * H) + ' m. Quelle est la nouvelle puissance, en MW ?', 2 * P1, 'MW', 'La puissance double : 2 × ' + fm(P1, 1) + ' = ' + fm(2 * P1, 1) + ' MW.', 'P est proportionnelle à H.', tl(2 * P1));
+    return num('Une centrale de ' + Pm + ' MW fonctionne ' + h + ' h. Quelle énergie produit-elle, en MWh ?', Pm * h, 'MWh', Pm + ' × ' + h + ' = ' + (Pm * h) + ' MWh.', 'Énergie = puissance × durée.');
+  };
+  G.parc = function (d) {
+    var n = ri(5, 40), p = pick([2, 2.5, 3]), n2 = ri(5, 30), P = pick([10, 20, 50, 100]), fc = pick([30, 35, 40]), tot = n2 * p;
+    if (d === 1) return num('Un parc compte ' + n + ' éoliennes de 2 MW. Quelle puissance totale, en MW ?', 2 * n, 'MW', n + ' × 2 = ' + (2 * n) + ' MW.', 'Nombre × puissance d’une éolienne.');
+    if (d === 2) return num('Un parc compte ' + n2 + ' éoliennes de ' + fm(p, 1) + ' MW. Quelle puissance totale, en MW ?', tot, 'MW', n2 + ' × ' + fm(p, 1) + ' = ' + fm(tot, 1) + ' MW.', 'Nombre × puissance d’une éolienne.', 0.06);
+    if (d === 3) return num('On veut un parc de ' + fm(tot, 1) + ' MW avec des éoliennes de ' + fm(p, 1) + ' MW. Combien d’éoliennes faut-il ?', n2, '', fm(tot, 1) + ' ÷ ' + fm(p, 1) + ' = ' + n2 + '.', 'Puissance du parc ÷ puissance d’une éolienne.');
+    return num('Un parc de ' + P + ' MW a un facteur de charge de ' + fc + ' % (il produit en moyenne ' + fc + ' % de sa puissance maximale). Quelle énergie par an, en GWh ? (1 an ≈ 8 760 h)', P * 8.76 * fc / 100, 'GWh', P + ' × 8,76 × ' + fm(fc / 100, 2) + ' = ' + fm(P * 8.76 * fc / 100, 0) + ' GWh.', 'Puissance × 8 760 h × facteur de charge, puis ÷ 1 000.', tl(P * 8.76 * fc / 100));
+  };
+  G.verin = function (d) {
+    var P = pick([2, 4, 6, 8]), S = pick([500, 1000, 2000]), dm = pick([20, 40, 50, 80]), Sd = Math.PI * dm * dm / 4, Fd = 0.1 * P * Sd;
+    if (d === 1) return num('Un vérin a un piston de ' + S + ' mm² et fonctionne à ' + P + ' bar. Quelle force, en N ? (1 bar = 0,1 N/mm²)', 0.1 * P * S, 'N', 'F = ' + P + ' × 0,1 × ' + S + ' = ' + fm(0.1 * P * S, 0) + ' N.', 'F = P × S avec 1 bar = 0,1 N/mm².');
+    if (d === 2) return num('Un piston a un diamètre de ' + dm + ' mm. Quelle est sa surface, en mm² ?', Sd, 'mm²', 'S = π × ' + dm + '² ÷ 4 ≈ ' + fm(Sd, 0) + ' mm².', 'S = π × d² ÷ 4.', tl(Sd));
+    if (d === 3) return num('Un vérin à piston de ' + dm + ' mm de diamètre fonctionne à ' + P + ' bar. Quelle force, en N ?', Fd, 'N', 'S ≈ ' + fm(Sd, 0) + ' mm² ; F = ' + P + ' × 0,1 × ' + fm(Sd, 0) + ' ≈ ' + fm(Fd, 0) + ' N.', 'Calcule S, puis F = P × 0,1 × S.', tl(Fd));
+    return num('Un vérin de ' + dm + ' mm de diamètre à ' + P + ' bar soulève une masse. Quelle masse maximale, en kg ? (poids = 10 N par kg)', Fd / 10, 'kg', 'F ≈ ' + fm(Fd, 0) + ' N, donc m ≈ ' + fm(Fd / 10, 0) + ' kg.', 'Masse = force ÷ 10.', tl(Fd / 10));
+  };
+  G.lamp = function (d) {
+    var P = pick([10, 20, 60, 100]), t = pick([2, 5, 10]), h = ri(2, 10), px = pick([1, 1.2, 1.5]);
+    if (d === 1) return num('Une lampe de ' + P + ' W reste allumée ' + t + ' h. Quelle énergie, en Wh ?', P * t, 'Wh', P + ' × ' + t + ' = ' + (P * t) + ' Wh.', 'E = P × t.');
+    if (d === 2) return num('Une lampe de ' + P + ' W est allumée ' + h + ' h par jour pendant 30 jours. Quelle énergie, en kWh ?', P * h * 30 / 1000, 'kWh', P + ' × ' + h + ' × 30 ÷ 1000 = ' + fm(P * h * 30 / 1000, 2) + ' kWh.', 'Wh puis ÷ 1000.', tl(P * h * 30 / 1000));
+    if (d === 3) return num('Une lampe de ' + P + ' W est allumée ' + h + ' h par jour pendant 30 jours. Le kWh coûte ' + fm(px, 1) + ' DH. Quel est le coût du mois, en DH ?', P * h * 30 / 1000 * px, 'DH', fm(P * h * 30 / 1000, 2) + ' × ' + fm(px, 1) + ' = ' + fm(P * h * 30 / 1000 * px, 2) + ' DH.', 'Énergie en kWh × prix du kWh.', tl(P * h * 30 / 1000 * px));
+    return num('On remplace une lampe de 60 W par une LED de 9 W, allumée ' + h + ' h par jour pendant 30 jours. Le kWh coûte ' + fm(px, 1) + ' DH. Quelle économie par mois, en DH ?', 51 * h * 30 / 1000 * px, 'DH', '(60 − 9) × ' + h + ' × 30 ÷ 1000 × ' + fm(px, 1) + ' = ' + fm(51 * h * 30 / 1000 * px, 2) + ' DH.', 'Écart de puissance × durée × prix.', tl(51 * h * 30 / 1000 * px));
+  };
+  G.tilt = function (d) {
+    var h = pick([30, 40, 45, 50, 60, 70]), h2 = ri(20, 75), tl2 = ri(15, 60), dc = pick([-23, 0, 23]);
+    if (d === 1) return num('Le Soleil est à ' + h + '° au-dessus de l’horizon. Quelle inclinaison idéale pour un panneau, en degrés ?', 90 - h, '°', '90 − ' + h + ' = ' + (90 - h) + '°.', 'Inclinaison idéale = 90° − hauteur du Soleil.');
+    if (d === 2) return num('Le Soleil est à ' + h2 + '° de hauteur. Quelle inclinaison idéale, en degrés ?', 90 - h2, '°', '90 − ' + h2 + ' = ' + (90 - h2) + '°.', 'Inclinaison idéale = 90° − hauteur du Soleil.');
+    if (d === 3) return num('Un panneau est incliné à ' + tl2 + '° et capte au mieux. Quelle est la hauteur du Soleil, en degrés ?', 90 - tl2, '°', '90 − ' + tl2 + ' = ' + (90 - tl2) + '°.', 'Hauteur = 90° − inclinaison.');
+    return num('Au Maroc (latitude 31°), l’inclinaison idéale à midi vaut latitude − déclinaison du Soleil. Quelle inclinaison quand la déclinaison est ' + dc + '° ?', 31 - dc, '°', '31 − (' + dc + ') = ' + (31 - dc) + '°.', 'Soustrais la déclinaison de la latitude.');
+  };
+
+  G.base = function (d) {
+    var b = pick([50, 100, 200]), I = pick([100, 200, 300, 400, 600]), ib = pick([2, 5, 10]);
+    if (d === 1) return num('Un transistor de gain ' + b + ' commande un moteur de ' + I + ' mA. Quel courant de base faut-il, en mA ?', I / b, 'mA', 'I base = ' + I + ' ÷ ' + b + ' = ' + fm(I / b, 2) + ' mA.', 'Courant de base = courant commandé ÷ gain.', 0.02);
+    if (d === 2) return num('Un transistor de gain ' + b + ' reçoit ' + ib + ' mA sur sa base. Quel courant maximal commande-t-il, en mA ?', ib * b, 'mA', ib + ' × ' + b + ' = ' + (ib * b) + ' mA.', 'Courant commandé = gain × courant de base.');
+    if (d === 3) return num('Une broche supporte 20 mA. Un moteur de ' + I + ' mA est branché directement dessus. Il demande combien de fois la limite ?', I / 20, 'fois', I + ' ÷ 20 = ' + fm(I / 20, 1) + '.', 'Divise par 20 mA.', 0.06);
+    return num('La broche d’une carte fournit au plus 20 mA à la base d’un transistor de gain ' + b + '. Quel courant maximal de moteur peut-on commander, en mA ?', 20 * b, 'mA', '20 × ' + b + ' = ' + (20 * b) + ' mA.', 'Gain × courant de base.');
+  };
+  G.co2 = function (d) {
+    var kwh = pick([100, 150, 200, 300, 400]), S = [['au charbon', 820], ['au gaz', 490], ['au solaire photovoltaïque', 45], ['à l’hydraulique', 24], ['à l’éolien', 11]], s = pick(S), s2 = pick(S.slice(0, 2));
+    if (d === 1) return num('Un foyer consomme ' + kwh + ' kWh produits ' + s2[0] + ' (' + s2[1] + ' g de CO₂ par kWh). Combien de kg de CO₂ cela représente-t-il ?', kwh * s2[1] / 1000, 'kg', kwh + ' × ' + s2[1] + ' ÷ 1000 = ' + fm(kwh * s2[1] / 1000, 1) + ' kg.', 'kg = kWh × g/kWh ÷ 1000.', tl(kwh * s2[1] / 1000));
+    if (d === 2) return num('Pour ' + kwh + ' kWh produits ' + s[0] + ' (' + s[1] + ' g de CO₂ par kWh), combien de kg de CO₂ ?', kwh * s[1] / 1000, 'kg', kwh + ' × ' + s[1] + ' ÷ 1000 = ' + fm(kwh * s[1] / 1000, 2) + ' kg.', 'kg = kWh × g/kWh ÷ 1000.', tl(kwh * s[1] / 1000));
+    if (d === 3) return num('Pour ' + kwh + ' kWh, de combien de kg de CO₂ réduit-on les émissions en passant du charbon (820 g/kWh) à l’éolien (11 g/kWh) ?', kwh * 809 / 1000, 'kg', kwh + ' × (820 − 11) ÷ 1000 = ' + fm(kwh * 809 / 1000, 1) + ' kg.', 'Écart par kWh × nombre de kWh.', tl(kwh * 809 / 1000));
+    return num('Un foyer consomme ' + kwh + ' kWh : la moitié produite au charbon (820 g/kWh), l’autre moitié par l’éolien (11 g/kWh). Combien de kg de CO₂ ?', kwh / 2 * (820 + 11) / 1000, 'kg', fm(kwh / 2, 0) + ' × (820 + 11) ÷ 1000 = ' + fm(kwh / 2 * 831 / 1000, 1) + ' kg.', 'Calcule chaque moitié puis additionne.', tl(kwh / 2 * 831 / 1000));
+  };
+  G.octet = function (d) {
+    var W = [128, 64, 32, 16, 8, 4, 2, 1], i, bits, v;
+    function mk(n) { var b = [0, 0, 0, 0, 0, 0, 0, 0], c = 0; while (c < n) { var j = ri(0, 7); if (!b[j]) { b[j] = 1; c++; } } return b; }
+    function val(b) { var s = 0; for (i = 0; i < 8; i++) s += b[i] * W[i]; return s; }
+    if (d === 1) { bits = [0, 0, 0, 0, ri(0, 1), ri(0, 1), ri(0, 1), ri(0, 1)]; return num('Quelle est la valeur décimale de l’octet ' + bits.join('') + ' ?', val(bits), '', 'On additionne les poids des bits à 1 : ' + val(bits) + '.', 'Poids : 128, 64, 32, 16, 8, 4, 2, 1.'); }
+    if (d === 2) { bits = mk(2); return num('Quelle est la valeur décimale de l’octet ' + bits.join('') + ' ?', val(bits), '', 'Poids des bits à 1 : ' + val(bits) + '.', 'Poids : 128, 64, 32, 16, 8, 4, 2, 1.'); }
+    if (d === 3) { bits = mk(3); return num('Quelle est la valeur décimale de l’octet ' + bits.join('') + ' ?', val(bits), '', 'Poids des bits à 1 : ' + val(bits) + '.', 'Poids : 128, 64, 32, 16, 8, 4, 2, 1.'); }
+    bits = mk(ri(3, 5)); return num('Quelle est la valeur décimale de l’octet ' + bits.join('') + ' ?', val(bits), '', 'Un octet : 256 valeurs (0 à 255). Ici : ' + val(bits) + '.', 'Additionne les poids des bits à 1.');
+  };
+
+  G.rc = function (d) {
+    var R = pick([10, 20, 50, 100]), C = pick([10, 22, 47, 100]), tau = R * C / 1000, ta = pick([1, 2, 4.7, 10]), Cc = pick([10, 47, 100]);
+    if (d === 1) return num('Une temporisation a R = ' + R + ' kΩ et C = ' + C + ' µF. Quelle est la constante de temps τ = R × C, en s ?', tau, 's', 'τ = ' + R + ' × ' + C + ' ÷ 1000 = ' + fm(tau, 2) + ' s.', 'kΩ × µF donne des millisecondes.', tl(tau));
+    if (d === 2) return num('R = ' + R + ' kΩ et C = ' + C + ' µF. Quel est le délai, environ 0,69 × τ, en s ?', 0.69 * tau, 's', '0,69 × ' + fm(tau, 2) + ' = ' + fm(0.69 * tau, 2) + ' s.', 'Calcule τ puis multiplie par 0,69.', tl(0.69 * tau));
+    if (d === 3) return num('On veut τ = ' + fm(ta * Cc / 100, 2) + ' s avec C = ' + Cc + ' µF. Quelle résistance, en kΩ ?', ta * 10, 'kΩ', 'R = τ ÷ C = ' + fm(ta * Cc / 100, 2) + ' ÷ ' + Cc + ' µF = ' + fm(ta * 10, 1) + ' kΩ.', 'R = τ ÷ C ; avec C en µF, R en kΩ vaut τ(ms) ÷ C.', tl(ta * 10));
+    return num('R = ' + R + ' kΩ. On veut τ = ' + fm(tau, 2) + ' s. Quelle capacité C, en µF ?', C, 'µF', 'C = τ ÷ R = ' + fm(tau, 2) + ' ÷ ' + R + ' kΩ = ' + C + ' µF.', 'C = τ ÷ R.', tl(C));
+  };
+  G.revient = function (d) {
+    var m = pick([10, 15, 20, 30]), mo = pick([5, 8, 10, 12]), ch = pick([2, 3, 5]), cout = m + mo + ch, marge = pick([5, 8, 10]), n = pick([10, 20, 30, 50]), fixe = pick([100, 200, 300]), mu = pick([5, 10, 20]);
+    if (d === 1) return num('Un article coûte ' + m + ' DH de matières, ' + mo + ' DH de main-d’œuvre et ' + ch + ' DH de charges. Quel est son coût de revient, en DH ?', cout, 'DH', m + ' + ' + mo + ' + ' + ch + ' = ' + cout + ' DH.', 'Additionne les trois postes.');
+    if (d === 2) return num('Le coût de revient d’un article est ' + cout + ' DH et la marge ' + marge + ' DH. Quel est le prix de vente, en DH ?', cout + marge, 'DH', cout + ' + ' + marge + ' = ' + (cout + marge) + ' DH.', 'Prix = coût + marge.');
+    if (d === 3) return num('Un article de coût ' + cout + ' DH est vendu avec une marge de ' + marge + ' DH. On en vend ' + n + '. Quel bénéfice, en DH ?', marge * n, 'DH', marge + ' × ' + n + ' = ' + (marge * n) + ' DH.', 'Marge × nombre d’articles.');
+    return num('Une mini-entreprise a ' + fixe + ' DH de charges fixes et gagne ' + mu + ' DH par article vendu. Combien d’articles faut-il vendre pour couvrir les charges fixes ?', fixe / mu, '', fixe + ' ÷ ' + mu + ' = ' + fm(fixe / mu, 0) + ' articles.', 'Charges fixes ÷ gain par article.');
+  };
   var M = {};
   M['t3-1'] = { topics: ['b:evo'] };
-  M['t3-2'] = { topics: ['b:acq', 'b:acq', 'g:volt'] };
+  M['t3-2'] = { topics: ['b:acq', 'b:acq', 'g:volt', 'g:echo'] };
   M['t3-3'] = { topics: ['b:trait', 'b:trait', 'g:algo'] };
-  M['t3-4'] = { topics: ['b:comm'] };
+  M['t3-4'] = { topics: ['b:comm', 'b:comm', 'g:octet'] };
   M['t3-5'] = { topics: ['b:ali', 'b:ali', 'g:auto', 'g:led'] };
-  M['t3-6'] = { topics: ['b:dis'] };
-  M['t3-7'] = { topics: ['b:conv'] };
+  M['t3-6'] = { topics: ['b:dis', 'b:dis', 'g:base'] };
+  M['t3-7'] = { topics: ['b:conv', 'b:conv', 'g:pwm', 'g:rend'] };
   M['t3-8'] = { topics: ['b:trans', 'b:trans', 'g:ratio', 'g:mvt'] };
-  M['t3-9'] = { topics: ['b:agir'] };
+  M['t3-9'] = { topics: ['b:agir', 'b:agir', 'g:verin'] };
   M['t3-10'] = { topics: ['b:des', 'b:des', 'g:ech'] };
-  M['t3-11'] = { topics: ['b:ener'] };
-  M['t3-12'] = { topics: ['b:hyd'] };
-  M['t3-13'] = { topics: ['b:sol', 'b:sol', 'g:puiss', 'g:pv'] };
-  M['t3-14'] = { topics: ['b:eff', 'b:eff', 'g:cout'] };
+  M['t2-1'] = { topics: ['b:ing1'] };
+  M['t2-2'] = { topics: ['b:ing2'] };
+  M['t2-3'] = { topics: ['b:sch'] };
+  M['t2-4'] = { topics: ['b:ali2', 'b:ali2', 'g:auto'] };
+  M['t2-6'] = { topics: ['b:com'] };
+  M['t2-7'] = { topics: ['b:det', 'b:det', 'g:volt'] };
+  M['t2-8'] = { topics: ['b:tmp', 'b:tmp', 'g:rc'] };
+  M['t2-9'] = { topics: ['b:mvt2', 'b:mvt2', 'g:ratio'] };
+  M['t2-10'] = { topics: ['b:pcb'] };
+  M['t2-11'] = { topics: ['b:ent1'] };
+  M['t2-12'] = { topics: ['b:ent2'] };
+  M['t2-13'] = { topics: ['b:ent3', 'b:ent3', 'g:revient'] };
+  M['t2-5'] = { topics: ['b:sig', 'b:sig', 'g:led'] };
+  M['t3-11'] = { topics: ['b:ener', 'b:ener', 'g:co2'] };
+  M['t3-12'] = { topics: ['b:hyd', 'b:hyd', 'g:hydro', 'g:parc'] };
+  M['t3-13'] = { topics: ['b:sol', 'b:sol', 'g:tilt', 'g:puiss', 'g:pv'] };
+  M['t3-14'] = { topics: ['b:eff', 'b:eff', 'g:lamp', 'g:cout'] };
 
   window.LAB_CONFIG = {
     riddles: [
-      { q: "Quel composant mesure une grandeur physique ?", qa: "أي مكوّن يقيس مقدارا فيزيائيا؟", o: ["le capteur", "l’actionneur", "le relais"], a: 0, e: "Un capteur transforme une grandeur physique en signal.", ea: "اللاقط يحوّل مقدارا فيزيائيا إلى إشارة." },
-      { q: "Quel composant transforme l’énergie électrique en mouvement ?", qa: "أي مكوّن يحوّل الطاقة الكهربائية إلى حركة؟", o: ["le moteur", "la photorésistance", "la pile"], a: 0, e: "Le moteur est un actionneur.", ea: "المحرك مُنفِّذ." },
-      { q: "Un organigramme commence par :", qa: "يبدأ المنظّم الانسيابي بـ:", o: ["Début", "Fin", "une boucle"], a: 0, e: "Il se lit de Début à Fin.", ea: "يُقرأ من البداية إلى النهاية." },
-      { q: "Quelle structure répète des actions ?", qa: "أي بنية تكرر الأفعال؟", o: ["la boucle répétitive", "la séquence", "le test unique"], a: 0, e: "La boucle répète tant que la condition est vraie.", ea: "الحلقة تكرر ما دام الشرط صحيحا." },
-      { q: "Quelle énergie est renouvelable ?", qa: "أي طاقة متجددة؟", o: ["l’éolien", "le charbon", "le gaz"], a: 0, e: "Le vent se renouvelle sans cesse.", ea: "الرياح تتجدد باستمرار." },
-      { q: "Quel dispositif stocke l’énergie électrique d’un panneau solaire ?", qa: "أي جهاز يخزّن الطاقة الكهربائية للوح شمسي؟", o: ["la batterie", "l’onduleur", "le régulateur"], a: 0, e: "La batterie stocke l’énergie.", ea: "البطارية تخزّن الطاقة." },
-      { q: "Le composant qui commande un fort courant avec un faible courant est :", qa: "المكوّن الذي يتحكم في تيار قوي بتيار ضعيف هو:", o: ["le transistor", "la résistance", "le fil"], a: 0, e: "Le transistor sert de pré-actionneur.", ea: "الترانزستور يعمل كمُنفِّذ مسبق." },
-      { q: "Une vue de face, de dessus et de gauche forment :", qa: "منظر أمامي وعلوي وأيسر يشكّلون:", o: ["les trois vues", "la perspective", "l’échelle"], a: 0, e: "Elles décrivent la pièce en dessin technique.", ea: "تصف القطعة في الرسم التقني." },
-      { q: "Un trait interrompu court représente :", qa: "الخط المتقطع القصير يمثل:", o: ["les contours cachés", "les contours visibles", "les axes"], a: 0, e: "Ce sont les arêtes cachées.", ea: "هي الحواف المخفية." },
-      { q: "Une échelle 1:2 signifie que le dessin est :", qa: "المقياس 1:2 يعني أن الرسم:", o: ["deux fois plus petit", "deux fois plus grand", "de même taille"], a: 0, e: "1 cm sur le dessin = 2 cm réel.", ea: "1 سم على الرسم = 2 سم حقيقي." },
-      { q: "Quel appareil transforme le courant continu en alternatif ?", qa: "أي جهاز يحوّل التيار المستمر إلى متناوب؟", o: ["l’onduleur", "la pile", "le capteur"], a: 0, e: "C’est le rôle de l’onduleur.", ea: "هذا دور المحوِّل." },
-      { q: "Dans une éolienne, la génératrice se trouve dans :", qa: "في المروحة الريحية يوجد المولّد في:", o: ["la nacelle", "le mât", "la pale"], a: 0, e: "La nacelle abrite la génératrice.", ea: "الغرفة تحتوي المولّد." },
-      { q: "Quelle classe énergie consomme le moins ?", qa: "أي فئة طاقية تستهلك أقل؟", o: ["A", "D", "G"], a: 0, e: "A est la plus économe.", ea: "A الأكثر اقتصادا." },
-      { q: "Une photorésistance détecte :", qa: "المقاومة الضوئية تكشف:", o: ["la lumière", "la température", "le son"], a: 0, e: "Sa résistance change avec la lumière.", ea: "تتغير مقاومتها مع الضوء." },
-      { q: "Un système qui commence par un capteur, puis traite, puis agit suit la chaîne :", qa: "نظام يبدأ بلاقط ثم معالجة ثم فعل يتبع سلسلة:", o: ["d’information puis d’énergie", "du dessin", "de la perspective"], a: 0, e: "Acquérir, traiter, communiquer, alimenter, distribuer, convertir, transmettre, agir.", ea: "اكتساب ومعالجة وتواصل وتغذية وتوزيع وتحويل ونقل وفعل." },
-      { q: "Un système vis-écrou transforme :", qa: "نظام لولب-صامولة يحوّل:", o: ["une rotation en translation", "la chaleur en lumière", "la chaleur en son"], a: 0, e: "La rotation de la vis déplace l’écrou.", ea: "دوران اللولب يحرّك الصامولة." },
-      { q: "Un héliostat est un miroir qui :", qa: "الهيليوستات مرآة:", o: ["suit le Soleil", "stocke l’eau", "mesure le vent"], a: 0, e: "Il renvoie les rayons vers le récepteur.", ea: "تعكس الأشعة نحو المستقبِل." },
-      { q: "Le Bluetooth est un moyen de communication :", qa: "البلوتوث وسيلة تواصل:", o: ["sans fil", "filaire", "mécanique"], a: 0, e: "Il utilise des ondes radio.", ea: "يستعمل موجات راديو." },
-      { q: "Pour doubler la puissance d’un panneau à rendement fixe, on double :", qa: "لمضاعفة قدرة لوح بمردود ثابت نضاعف:", o: ["la surface", "le nom", "la couleur du fil"], a: 0, e: "P = surface × ensoleillement × rendement.", ea: "القدرة = المساحة × الإشعاع × المردود." }
+      { q: "Un portail s’ouvre quand un capteur détecte la voiture. Quel élément « décide » ?", qa: "بوابة تُفتح عندما يكتشف لاقط السيارة. أي عنصر «يقرّر»؟", o: ["le moteur", "l’unité de traitement", "la photorésistance"], a: 1, e: "Le capteur informe, le traitement décide, l’actionneur agit.", ea: "اللاقط يخبر، والمعالجة تقرّر، والمنفّذ يعمل." },
+      { q: "Un sonar de recul mesure 0,01 s entre l’émission et l’écho. À 340 m/s, la distance est :", qa: "مقياس مسافة للرجوع يقيس 0٫01 ث بين الإرسال والصدى. بسرعة 340 م/ث تكون المسافة:", o: ["3,4 m", "1,7 m", "0,85 m"], a: 1, e: "d = 340 × 0,01 ÷ 2 = 1,7 m : l’onde fait l’aller-retour.", ea: "d = 340 × 0٫01 ÷ 2 = 1٫7 م: الموجة تقطع الذهاب والإياب." },
+      { q: "Combien de valeurs différentes peut coder un octet (8 bits) ?", qa: "كم قيمة مختلفة يمكن أن يرمّزها البايت (8 بتات)؟", o: ["8", "256", "64"], a: 1, e: "2⁸ = 256 valeurs, de 0 à 255.", ea: "2⁸ = 256 قيمة، من 0 إلى 255." },
+      { q: "Dans une perceuse sur batterie, quel élément est le pré-actionneur ?", qa: "في مثقاب يعمل بالبطارية، أي عنصر هو المنفّذ المسبق؟", o: ["le mandrin", "le moteur", "l’interrupteur à gâchette"], a: 2, e: "Il distribue l’énergie électrique au moteur, qui est l’actionneur.", ea: "يوزّع الطاقة الكهربائية على المحرك الذي هو المنفّذ." },
+      { q: "Deux piles de 1,5 V en série alimentent un moteur. La tension est :", qa: "بطاريتان 1٫5 فولت على التسلسل تغذّيان محركا. التوتر هو:", o: ["1,5 V", "3 V", "0 V"], a: 1, e: "En série, les tensions s’additionnent.", ea: "على التسلسل تُجمع التوترات." },
+      { q: "Un signal PWM à rapport cyclique de 25 % sur 12 V donne en moyenne :", qa: "إشارة PWM بنسبة دورية 25٪ على 12 فولت تعطي في المتوسط:", o: ["3 V", "6 V", "9 V"], a: 0, e: "12 × 0,25 = 3 V : le moteur tourne lentement.", ea: "12 × 0٫25 = 3 فولت: يدور المحرك ببطء." },
+      { q: "Un engrenage de 10 dents entraîne un engrenage de 30 dents. La vitesse est :", qa: "ترس بـ 10 أسنان يدير ترسا بـ 30 سنا. السرعة:", o: ["divisée par 3", "multipliée par 3", "inchangée"], a: 0, e: "Le grand engrenage tourne trois fois moins vite.", ea: "العجلة الكبيرة تدور أبطأ بثلاث مرات." },
+      { q: "Quel système transforme une rotation en translation ?", qa: "أي نظام يحوّل الدوران إلى انتقال؟", o: ["le train d’engrenages", "la courroie", "le système vis-écrou"], a: 2, e: "La rotation de la vis déplace l’écrou en ligne droite.", ea: "دوران اللولب يحرّك الصامولة في خط مستقيم." },
+      { q: "Quelle ligne représente les arêtes cachées d’une pièce ?", qa: "أي خط يمثل الحواف المخفية لقطعة؟", o: ["trait fort continu", "trait interrompu fin", "trait mixte fin"], a: 1, e: "Les contours cachés sont en traits interrompus fins.", ea: "الحواف المخفية تُرسم بخط متقطع رفيع." },
+      { q: "Une pièce de 80 mm est dessinée à l’échelle 1:2. Sur le dessin elle mesure :", qa: "قطعة طولها 80 ملم رُسمت بمقياس 1:2. طولها على الرسم:", o: ["160 mm", "40 mm", "80 mm"], a: 1, e: "80 ÷ 2 = 40 mm.", ea: "80 ÷ 2 = 40 ملم." },
+      { q: "Quel format de papier est obtenu en pliant un A3 en deux ?", qa: "أي حجم ورق نحصل عليه بطيّ A3 إلى نصفين؟", o: ["A2", "A5", "A4"], a: 2, e: "Chaque pliage divise la surface par deux : A3 donne A4.", ea: "كل طيّ يقسم المساحة إلى النصف: A3 يعطي A4." },
+      { q: "Quelle source est renouvelable ?", qa: "أي مصدر متجدد؟", o: ["le gaz naturel", "le vent", "le charbon"], a: 1, e: "Le vent se renouvelle sans cesse, contrairement aux énergies fossiles.", ea: "الرياح تتجدد باستمرار، بخلاف الطاقات الأحفورية." },
+      { q: "Quelle centrale marocaine concentre le soleil avec un champ de miroirs et une tour ?", qa: "أي محطة مغربية تركّز الشمس بحقل مرايا وبرج؟", o: ["Tarfaya", "Noor Ouarzazate III", "Abdelmoumen"], a: 1, e: "Noor III est une centrale à tour de 150 MW.", ea: "نور 3 محطة ببرج قدرتها 150 ميغاواط." },
+      { q: "À quoi sert une STEP, comme Abdelmoumen ?", qa: "فيمَ تفيد محطة التخزين بالضخ مثل عبد المومن؟", o: ["produire de l’hydrogène", "stocker l’énergie en pompant l’eau", "capter la lumière"], a: 1, e: "Elle pompe l’eau vers le haut quand l’électricité est abondante, puis turbine.", ea: "تضخّ الماء إلى الأعلى عند وفرة الكهرباء ثم تولّد عند الحاجة." },
+      { q: "Quel est le meilleur choix pour un panneau PV fixe au Maroc ?", qa: "ما أفضل وضع للوح كهروضوئي ثابت في المغرب؟", o: ["face au nord", "face au sud, incliné", "à plat, à l’ombre"], a: 1, e: "Au Maroc, le Soleil est au sud : on oriente le panneau vers le sud.", ea: "في المغرب الشمس جنوبا: نوجّه اللوح نحو الجنوب." },
+      { q: "Quelle étiquette énergie indique l’appareil le plus économe ?", qa: "أي بطاقة طاقية تدل على الجهاز الأكثر اقتصادا؟", o: ["A", "D", "G"], a: 0, e: "A est la classe la plus économe, G la moins.", ea: "A الأكثر اقتصادا وG الأقل." },
+      { q: "Le courant d’une LED est trop fort. Que faire ?", qa: "تيار الصمام الضوئي (LED) قوي جدا. ماذا نفعل؟", o: ["augmenter la résistance en série", "retirer la résistance", "brancher à l’envers"], a: 0, e: "Une résistance plus grande limite davantage le courant.", ea: "مقاومة أكبر تحدّ من التيار أكثر." },
+      { q: "Jaune, violet, rouge : quelle valeur ?", qa: "أصفر، بنفسجي، أحمر: ما القيمة؟", o: ["470 Ω", "4 700 Ω", "47 Ω"], a: 1, e: "4, 7, puis deux zéros : 4 700 Ω.", ea: "4 ثم 7 ثم صفران: 4700 أوم." },
+      { q: "Quel composant commande une lampe du secteur avec un signal de 5 V ?", qa: "أي مكوّن يتحكم في مصباح الكهرباء العامة بإشارة 5 فولت؟", o: ["le relais", "la LED", "le condensateur"], a: 0, e: "Le relais sépare commande et puissance.", ea: "المرحّل يفصل بين الأمر والقدرة." },
+      { q: "La résistance d’une photorésistance, la nuit, est :", qa: "مقاومة المقاومة الضوئية ليلا:", o: ["faible", "élevée", "nulle"], a: 1, e: "Moins de lumière, plus de résistance.", ea: "ضوء أقل، مقاومة أكبر." },
+      { q: "R = 10 kΩ, C = 100 µF. La constante de temps vaut :", qa: "R = 10 كيلو أوم وC = 100 µF. ثابت الزمن:", o: ["1 s", "10 s", "0,1 s"], a: 0, e: "τ = R × C = 10 000 × 0,0001 = 1 s.", ea: "τ = R × C = 10000 × 0٫0001 = 1 ث." },
+      { q: "Après la gravure d’un circuit imprimé, il faut :", qa: "بعد حفر الدارة المطبوعة يجب:", o: ["l’insoler", "le percer", "le dessiner"], a: 1, e: "Ordre : typon, insolation, révélation, gravure, perçage, soudure.", ea: "الترتيب: الطبع، التعريض، التحميض، الحفر، الثقب، اللحام." },
+      { q: "Un coût de revient de 35 DH et une marge de 10 DH donnent un prix de vente de :", qa: "تكلفة 35 درهما وهامش 10 دراهم يعطيان ثمن بيع:", o: ["25 DH", "45 DH", "350 DH"], a: 1, e: "35 + 10 = 45 DH.", ea: "35 + 10 = 45 درهما." }
     ],
     app: SUBJECT.key, appName: SUBJECT.name + ' en mouvement', map: M,
     gen: function (key, d) {

@@ -68,22 +68,34 @@ for k, v in (('__NAME__', C['name']), ('__LEAD__', C['lead']), ('__LEAD_AR__', C
 i = framework.index('PC.route=route;')
 j = framework.index('</script>', i) + len('</script>')
 ver = hashlib.sha256(NOTIFY.encode()).hexdigest()[:8]
-block = ('\n<script src="lab/notify-config.js?v=' + ver + '"></script>\n<script>\n' + subj(rd('lab-config.js', SRC)) +
+BANKS = ''.join('\n/* ' + f + ' */\n' + rd('banks/' + f, SRC) for f in sorted(os.listdir(os.path.join(SRC, 'banks'))) if f.endswith('.js')) if os.path.isdir(os.path.join(SRC, 'banks')) else ''
+block = ('\n<script src="lab/notify-config.js?v=' + ver + '"></script>\n<script>\n' + subj(rd('lab-config.js', SRC)).replace('/*__BANKS__*/', BANKS) +
          '\n' + LAB + '\nLab.install(window.PC);\n</script>\n')
 fw = framework[:j] + block + framework[j:]
 
 # Contenu : tous les fichiers matiere/ch/*.js dans une seule fonction
 chs = sorted(f for f in os.listdir(os.path.join(SRC, 'ch')) if f.endswith('.js'))
+# Garde-fou : deux fichiers ne doivent pas déclarer le même nom de haut niveau (le dernier écraserait le premier en silence)
+import re as _re, collections as _co
+_seen = _co.defaultdict(list)
+for _f in chs:
+    for _m in _re.finditer(r"^(?:function\s+(\w+)|var\s+(\w+)\s*=)", rd('ch/' + _f, SRC), _re.M):
+        _seen[_m.group(1) or _m.group(2)].append(_f)
+_dup = {k: v for k, v in _seen.items() if len(set(v)) > 1}
+if _dup:
+    raise SystemExit('Noms dupliqués entre fichiers ch/ : ' + '; '.join('%s %s' % (k, sorted(set(v))) for k, v in _dup.items()))
 content = "(function () {\n'use strict';\nvar SUBJECT = " + SUBJ + ";\n" + '\n'.join(rd('ch/' + f, SRC) for f in chs) + "\n})();"
 page = fw + '\n<script>\n' + content + '\n</script>\n'
 head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
 acc = C['color']
 theme = '<style>:root{--grad:' + C['gradient'] + '}a.chap{border-color:' + acc + '}input[type=range]{accent-color:' + acc + '}</style>\n'
+_tc = os.path.join(SRC, 'theme.css')
+if os.path.exists(_tc): theme += '<style>' + rd('theme.css', SRC) + '</style>\n'
 html = head + head_css.lstrip() + '\n' + theme + '</head>\n<body>' + body + page + '\n</body>\n</html>\n'
 
 # --- durcissement (même logique que build.py)
 DESC = {
-  'index.html': (APP_NAME + ' : cours de la 3e année du collège', C['desc']),
+  'index.html': (APP_NAME + ' : cours de la 2e et de la 3e année du collège', C['desc']),
   'confidentialite.html': ('Confidentialité · ' + APP_NAME, 'Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.'),
 }
 FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%230d0b14'/%3E%3Cpath d='M5 33Q24 -1 43 33' fill='none' stroke='%237066 96' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='24' r='5' fill='%23e371cb'/%3E%3Ccircle cx='24' cy='15' r='5' fill='%239b92dc'/%3E%3Ccircle cx='37' cy='24' r='5' fill='%236ccdb6'/%3E%3C/svg%3E"

@@ -1,0 +1,86 @@
+/* Banques 3AC · modules 4 et 5 */
+B.des = [
+  [1, 'Le dessin technique est :', ['un langage normalisé pour représenter un objet', 'un tableau de peinture', 'un jeu vidéo'], 0, 'Tout le monde le lit de la même façon.'],
+  [1, 'Les contours visibles se tracent en :', ['trait fort continu', 'trait interrompu fin', 'trait mixte fin'], 0, 'Fort et continu.'],
+  [1, 'Les contours cachés se tracent en :', ['trait interrompu fin', 'trait fort continu', 'trait mixte'], 0, 'Tirets fins.'],
+  [1, 'Les axes de symétrie se tracent en :', ['trait mixte fin (tiret – point)', 'trait fort continu', 'trait interrompu'], 0, 'Tiret – point.'],
+  [1, 'Un format A4 mesure :', ['210 × 297 mm', '297 × 420 mm', '100 × 150 mm'], 0, 'C’est le format de base.'],
+  [2, 'Une échelle 1:2 signifie que le dessin est :', ['deux fois plus petit', 'deux fois plus grand', 'de même taille'], 0, 'Dessin = réel × 1/2.'],
+  [2, 'Échelle 2:1 : une pièce de 30 mm mesure sur le dessin :', ['60 mm', '15 mm', '30 mm'], 0, '30 × 2.'],
+  [2, 'En perspective cavalière, les fuyantes sont tracées à :', ['45°', '90°', '10°'], 0, 'Avec un coefficient de 1/2 en général.'],
+  [2, 'Les vues d’un objet doivent être :', ['alignées', 'tracées au hasard', 'à des échelles différentes'], 0, 'Des lignes fines relient les vues.'],
+  [2, 'Le dessin de définition représente :', ['une seule pièce avec toutes ses cotes', 'toutes les pièces assemblées', 'un circuit électrique'], 0, 'Il sert à fabriquer la pièce.'],
+  [3, 'Un format A3 vaut :', ['2 × A4', '4 × A4', '1/2 A4'], 0, 'Chaque format double le suivant.'],
+  [3, 'À l’échelle 1:5, une longueur de 12 mm sur le dessin représente en réalité :', ['60 mm', '2,4 mm', '17 mm'], 0, '12 × 5 = 60 mm.'],
+  [3, 'Sur un dessin à l’échelle 2:1, la cote écrite est :', ['la dimension réelle', 'la dimension doublée', 'la dimension divisée par 2'], 0, 'La cote ne dépend jamais de l’échelle.'],
+  [3, 'La perspective éclatée :', ['écarte les pièces le long de leur axe de montage', 'montre une seule face', 'supprime les cotes'], 0, 'Elle montre l’ordre d’assemblage.'],
+  [3, 'Le cartouche d’un dessin contient :', ['le titre, l’échelle, la date…', 'la liste des courses', 'seulement un logo'], 0, 'Il identifie le dessin.']
+];
+B.ener = [
+  [1, 'Le pétrole est une énergie :', ['fossile, non renouvelable', 'renouvelable', 'inépuisable'], 0, 'Il se forme en millions d’années.'],
+  [1, 'Le vent est une énergie :', ['renouvelable', 'fossile', 'nucléaire'], 0, 'Il se renouvelle sans cesse.'],
+  [1, 'Le Soleil est une source d’énergie :', ['renouvelable', 'fossile', 'épuisée'], 0, 'Inépuisable à notre échelle.'],
+  [1, 'Quelles énergies sont fossiles ?', ['le charbon, le pétrole, le gaz', 'le vent, le Soleil, l’eau', 'la biomasse et la géothermie'], 0, 'Elles s’épuisent.'],
+  [1, 'Une énergie renouvelable est une énergie qui :', ['se reconstitue rapidement à notre échelle', 'ne coûte rien', 'ne pollue jamais'], 0, 'Soleil, vent, eau, biomasse, géothermie.'],
+  [2, 'Fin 2025, la première source renouvelable installée au Maroc est :', ['l’éolien', 'le solaire', 'la biomasse'], 0, 'Environ 2 450 MW d’éolien.'],
+  [2, 'Le Maroc vise, en 2030, une part renouvelable dans la puissance installée de :', ['52 %', '5 %', '100 %'], 0, 'C’est l’objectif national annoncé.'],
+  [2, 'Le charbon émet environ, par kWh, du CO₂ :', ['800 g', '11 g', '0 g'], 0, 'Valeur médiane du GIEC : environ 820 g/kWh.'],
+  [2, 'L’éolien émet environ, par kWh, du CO₂ :', ['11 g', '800 g', '490 g'], 0, 'Cycle de vie complet : environ 11 g/kWh.'],
+  [2, 'L’intermittence d’une source signifie que :', ['sa production dépend de la météo et de l’heure', 'elle ne produit jamais', 'elle produit toujours au maximum'], 0, 'Le soleil se couche, le vent tombe.'],
+  [3, 'Le stockage de l’énergie sert à :', ['décaler l’énergie dans le temps', 'produire du vent', 'refroidir les panneaux'], 0, 'On produit le jour, on utilise le soir.'],
+  [3, 'Avec des panneaux et une batterie, le soir on :', ['utilise l’énergie stockée plutôt que d’acheter au réseau', 'ne peut rien allumer', 'produit autant que le jour'], 0, 'La batterie décale la production.'],
+  [3, 'Pour le même kWh, le charbon émet environ combien de fois plus de CO₂ que l’éolien ?', ['70 fois', '2 fois', '5 fois'], 0, '820 ÷ 11 ≈ 75.'],
+  [3, 'L’uranium est classé parmi les énergies :', ['non renouvelables', 'renouvelables', 'fossiles seulement'], 0, 'Sa quantité est limitée.'],
+  [3, 'Un avantage des renouvelables pour la santé :', ['moins de polluants dans l’air', 'plus de bruit', 'plus de fumée'], 0, 'Pas de combustion.']
+];
+B.hyd = [
+  [1, 'Dans une centrale hydroélectrique, la turbine est entraînée par :', ['l’eau qui tombe', 'le vent', 'la chaleur du Soleil'], 0, 'La chute d’eau fait tourner la turbine.'],
+  [1, 'L’alternateur d’une centrale :', ['convertit la rotation en électricité', 'pompe l’eau', 'mesure le vent'], 0, 'Énergie mécanique vers énergie électrique.'],
+  [1, 'STEP signifie :', ['station de transfert d’énergie par pompage', 'source totale d’énergie permanente', 'système de turbine et pompe'], 0, 'Elle stocke l’énergie sous forme d’eau en hauteur.'],
+  [1, 'Dans une éolienne, les pales :', ['captent l’énergie du vent', 'stockent l’électricité', 'mesurent la vitesse'], 0, 'Elles tournent sous la poussée du vent.'],
+  [1, 'La nacelle d’une éolienne abrite :', ['le multiplicateur et le générateur', 'la batterie du réseau', 'le barrage'], 0, 'La chaîne mécanique et électrique.'],
+  [2, 'La puissance d’une centrale hydroélectrique augmente avec :', ['la hauteur de chute et le débit', 'la couleur de l’eau', 'la largeur de la route'], 0, 'P = ρ × g × Q × H × η.'],
+  [2, 'Q = 50 m³/s, H = 100 m, η = 0,9 : la puissance vaut environ :', ['44 MW', '4,4 MW', '440 MW'], 0, '1000 × 9,81 × 50 × 100 × 0,9 ≈ 44 MW.'],
+  [2, 'Une STEP pompe l’eau vers le bassin haut quand :', ['l’électricité est abondante', 'la consommation est au maximum', 'il pleut'], 0, 'Souvent la nuit.'],
+  [2, 'Le multiplicateur d’une éolienne :', ['augmente la vitesse de rotation', 'baisse la tension', 'mesure le vent'], 0, 'Il adapte la vitesse au générateur.'],
+  [2, 'L’anémomètre mesure :', ['la vitesse du vent', 'la hauteur d’eau', 'la température'], 0, 'Il commande démarrage et arrêt de sécurité.'],
+  [3, 'Une éolienne démarre à partir d’un vent d’environ :', ['3 m/s', '25 m/s', '60 m/s'], 0, 'En dessous, la production est nulle.'],
+  [3, 'À 30 m/s de vent, une éolienne :', ['s’arrête par sécurité', 'produit au maximum', 'démarre'], 0, 'L’arrêt se fait vers 25 m/s.'],
+  [3, 'On double la hauteur de chute H, le débit restant le même. La puissance :', ['double', 'est divisée par 2', 'reste identique'], 0, 'P est proportionnelle à H.'],
+  [3, 'Le rendement du cycle d’une STEP (pompage puis turbinage) dépasse :', ['80 %', '20 %', '100 %'], 0, 'Il reste inférieur à 100 %.'],
+  [3, 'Un parc de 131 éoliennes de 2,3 MW fournit environ :', ['301 MW', '30 MW', '3 000 MW'], 0, '131 × 2,3 ≈ 301 MW (Tarfaya).']
+];
+B.sol = [
+  [1, 'Un panneau photovoltaïque convertit :', ['la lumière en électricité', 'la chaleur en lumière', 'le vent en chaleur'], 0, 'Effet photovoltaïque.'],
+  [1, 'Un capteur solaire thermique sert à :', ['chauffer de l’eau', 'produire du son', 'mesurer le vent'], 0, 'Il transforme le rayonnement en chaleur.'],
+  [1, 'L’onduleur :', ['convertit le continu en alternatif', 'stocke l’énergie', 'mesure le courant'], 0, 'Pour alimenter les appareils en 220 V.'],
+  [1, 'Le régulateur de charge :', ['protège la batterie', 'produit l’électricité', 'chauffe l’eau'], 0, 'Il évite surcharge et décharge profonde.'],
+  [1, 'Un héliostat est un miroir qui :', ['suit le Soleil', 'stocke l’eau', 'mesure le vent'], 0, 'Il renvoie les rayons vers un récepteur.'],
+  [2, 'Le Soleil est à 60° de hauteur. L’inclinaison idéale d’un panneau est :', ['30°', '60°', '90°'], 0, '90° − 60°.'],
+  [2, 'Les centrales Noor Ouarzazate sont des centrales :', ['solaires à concentration et photovoltaïques', 'hydroélectriques', 'éoliennes'], 0, 'Noor I et II cylindro-paraboliques, Noor III à tour.'],
+  [2, 'Les sels fondus servent à :', ['stocker la chaleur', 'refroidir les panneaux', 'mesurer le vent'], 0, 'Ils permettent de produire après le coucher du Soleil.'],
+  [2, 'Dans un capteur plan, la plaque est noire car elle :', ['absorbe mieux le rayonnement', 'brille davantage', 'coûte moins cher'], 0, 'Le noir absorbe la chaleur.'],
+  [2, 'Dans une centrale à tour, les héliostats :', ['renvoient la lumière vers le sommet de la tour', 'produisent du vent', 'pompent l’eau'], 0, 'Un récepteur au sommet chauffe fortement.'],
+  [3, 'Un capteur plan de 2 m² reçoit 800 W/m² avec un rendement de 60 %. L’eau d’un réservoir de 100 L gagne environ :', ['8 °C par heure', '80 °C par heure', '0,8 °C par heure'], 0, '800 × 2 × 0,6 × 3600 ÷ (100 × 4186) ≈ 8 °C.'],
+  [3, 'Pour doubler la puissance d’un panneau à rendement fixe, on double :', ['la surface éclairée', 'le nom du fabricant', 'la couleur du cadre'], 0, 'P = éclairement × surface × rendement.'],
+  [3, 'Un panneau de 1 m² reçoit 1000 W/m² avec un rendement de 18 %. Il produit :', ['180 W', '18 W', '1800 W'], 0, '1000 × 1 × 0,18.'],
+  [3, 'Un panneau mal orienté capte moins car :', ['les rayons ne sont plus perpendiculaires', 'il fait plus chaud', 'le vent souffle'], 0, 'La captation suit le cosinus de l’écart d’angle.'],
+  [3, 'Dans une centrale cylindro-parabolique, les miroirs concentrent la lumière sur :', ['un tube où circule un fluide', 'une tour', 'un barrage'], 0, 'Le fluide chaud produit de la vapeur.']
+];
+B.eff = [
+  [1, 'L’efficacité énergétique, c’est :', ['consommer moins pour le même service', 'consommer plus pour aller plus vite', 'produire du pétrole'], 0, 'On évite le gaspillage.'],
+  [1, 'Sur une étiquette énergie, la meilleure classe est :', ['A', 'D', 'G'], 0, 'A consomme le moins.'],
+  [1, 'Éteindre une lampe inutile est :', ['un geste économe', 'un gaspillage', 'sans effet'], 0, 'Aucun kWh perdu.'],
+  [1, 'Une LED, par rapport à une lampe à incandescence :', ['consomme beaucoup moins', 'consomme davantage', 'consomme autant'], 0, '9 W contre 60 W pour la même lumière.'],
+  [1, 'L’énergie électrique se mesure en :', ['kWh', 'kg', 'mètre'], 0, 'Kilowattheure.'],
+  [2, 'Une lampe de 10 W allumée 5 h consomme :', ['0,05 kWh', '0,5 kWh', '5 kWh'], 0, '0,010 kW × 5 h.'],
+  [2, 'Un appareil consomme 100 kWh par an. Le kWh coûte 1,2 DH. Le coût annuel est :', ['120 DH', '12 DH', '1 200 DH'], 0, '100 × 1,2.'],
+  [2, 'Un appareil de classe G, comparé à un appareil de classe A :', ['consomme beaucoup plus', 'consomme moins', 'consomme pareil'], 0, 'G est le plus gourmand.'],
+  [2, 'Un chargeur laissé branché à vide :', ['consomme encore un peu', 'ne consomme rien', 'produit de l’énergie'], 0, 'Les petites pertes s’additionnent.'],
+  [2, 'Combien de diagrammes composent le cahier des charges d’un projet ?', ['quatre', 'deux', 'sept'], 0, 'Cas d’utilisation, contexte, exigences et définition des blocs.'],
+  [3, 'Une lampe de 60 W fonctionne 5 h par jour pendant 30 jours. Elle consomme :', ['9 kWh', '90 kWh', '0,9 kWh'], 0, '0,060 × 5 × 30.'],
+  [3, 'Pour la même lumière, une LED de 9 W consomme environ combien de fois moins qu’une lampe de 60 W ?', ['6,7 fois', '2 fois', '20 fois'], 0, '60 ÷ 9 ≈ 6,7.'],
+  [3, 'Le diagramme des exigences décrit :', ['les conditions que le système doit respecter', 'les couleurs du produit', 'le prix de vente'], 0, 'Fonctionnalités et contraintes.'],
+  [3, 'Un appareil A (100 kWh/an) remplace un appareil G (430 kWh/an). À 1,2 DH/kWh, l’économie annuelle est :', ['396 DH', '120 DH', '516 DH'], 0, '(430 − 100) × 1,2.'],
+  [3, 'Dans la maisonnette solaire, l’interrupteur crépusculaire sert à :', ['allumer la lampe à la tombée de la nuit', 'chauffer l’eau', 'mesurer le vent'], 0, 'Il compare la lumière à un seuil.']
+];
