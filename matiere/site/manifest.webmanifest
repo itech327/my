@@ -1,7 +1,7 @@
 {
   "name": "Technologie en mouvement",
   "short_name": "Technologie",
-  "description": "Technologie, 3e année du collège : systèmes techniques, chaînes d’information et d’énergie, dessin technique, énergies renouvelables. Figures animées et résumés en arabe.",
+  "description": "Technologie, 2e et 3e années du collège : modélisation, fonctions techniques, circuits, énergies. Figures animées et résumés en arabe.",
   "lang": "fr",
   "dir": "auto",
   "start_url": "./",

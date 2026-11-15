@@ -202,6 +202,27 @@ with sync_playwright() as p:
             for slot, tok in enumerate(sorted(range(5), key=lambda k: ks[k])): press(cid, ttl, tok); press(cid, ttl, 5 + slot)
             ch2.locator('button:has-text("Vérifier")').click()
             check('Ordre exact' in ch2.locator('.info').inner_text(), '%s : le bon ordre est accepté' % ttl)
+    # le mot de bienvenue se ferme d'un toucher n'importe où
+    ctxw = b.new_context(viewport={'width': 420, 'height': 800}); pgw = ctxw.new_page(); pgw.route('**/*', lambda r: r.abort() if r.request.url.startswith('http') else r.continue_()); pgw.goto('file://' + os.path.join(SITE, 'index.html')); pgw.wait_for_timeout(800)
+    check(pgw.locator('.lab-welcome').count() == 1, 'bienvenue : visible à la première ouverture')
+    pgw.locator('.lab-welcome-card p').first.click(); pgw.wait_for_timeout(600)
+    check(pgw.locator('.lab-welcome').count() == 0, 'bienvenue : un toucher sur le texte la ferme')
+    ctxw.close()
+    # aperçu isolé (iframe sandbox, sans stockage) : pas de fenêtre « Ma session » avant le choix du niveau, et le chapitre s'ouvre
+    import json as _json
+    src = open(os.path.join(SITE, 'index.html'), encoding='utf-8').read()
+    pg2 = ctx.new_page(); pg2.route('**/*', lambda r: r.abort() if r.request.url.startswith('http') else r.continue_())
+    pg2.set_content('<body style="margin:0"><iframe id="f" sandbox="allow-scripts allow-popups allow-forms allow-modals" style="width:420px;height:800px;border:0"></iframe></body>')
+    pg2.evaluate("(h)=>{document.getElementById('f').srcdoc=h}", src.replace('<head>', '<head><base href="file://' + SITE + '/">', 1)); pg2.wait_for_timeout(1500)
+    fr2 = pg2.frames[1] if len(pg2.frames) > 1 else None
+    check(fr2 is not None and fr2.evaluate("document.querySelectorAll('.lab-modal').length") == 0, 'iframe sans stockage : pas de fenêtre « Ma session » avant le choix du niveau')
+    if fr2 is not None:
+        fr2.evaluate("(function(){var w=document.querySelector('.lab-welcome');if(w)w.remove()})()")
+        fr2.evaluate("document.querySelector('.lvl-card[data-lvl=\"3\"]').click()"); pg2.wait_for_timeout(400)
+        fr2.evaluate("(function(){var b=document.getElementById('lab-skip');if(b)b.click()})()"); pg2.wait_for_timeout(200)
+        fr2.evaluate("document.querySelectorAll('#lv-3 a.chap')[4].click()"); pg2.wait_for_timeout(600)
+        check(fr2.evaluate("(function(){var c=document.querySelector('#t3-5');return !!c&&c.getBoundingClientRect().height>100})()"), 'iframe sans stockage : un chapitre s’ouvre')
+    pg2.close()
     # défis + session sur le premier chapitre
     pg.evaluate("location.hash='#%s'" % links[0]); pg.wait_for_timeout(300)
     pg.evaluate("Lab.openStart && Lab.openStart()") if pg.evaluate("!!(window.Lab&&Lab.openStart)") else None

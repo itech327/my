@@ -62,6 +62,14 @@ noteHash(); window.addEventListener('hashchange', noteHash);
 /* première visite sur l'accueil : la fenêtre « Ma session » attend que le niveau soit choisi */
 var FIRST_PICK = !stGet(LVK) && !location.hash;   // vrai seulement pour le tout premier choix de niveau de cette visite
 if (FIRST_PICK) { try { sessionStorage.setItem('lab_skip', '1'); } catch (e) {} }
+/* sans stockage (aperçu isolé, navigation privée) lab_skip ne tient pas : la fenêtre « Ma session » s'ouvrirait avant le choix du niveau et bloquerait la page. On la ferme ; elle revient après le choix. */
+if (FIRST_PICK) window.addEventListener('load', function () { setTimeout(function () { var b = document.getElementById('lab-skip'); if (FIRST_PICK && b) b.click(); }, 60); });
+/* un toucher n'importe où sur le mot de bienvenue le ferme (sinon il paraît bloquer la page jusqu'à ses 6 secondes) */
+var WEL_BUSY = false;
+document.addEventListener('click', function (e) {
+  if (WEL_BUSY || !e.isTrusted) return; var w = document.querySelector('.lab-welcome:not(.out)'); if (!w) return;
+  e.preventDefault(); e.stopPropagation(); var b = w.querySelector('.btn'); if (b) { WEL_BUSY = true; try { b.click(); } finally { WEL_BUSY = false; } }
+}, true);
 function pickLevel(id) {
   stSet(LVK, id);
   var wasFirst = FIRST_PICK && !(window.Lab && Lab.Session && Lab.Session.cur()); FIRST_PICK = false;
