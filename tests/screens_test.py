@@ -16,7 +16,7 @@ with sync_playwright() as p:
     except Exception: b = p.chromium.launch(channel='chrome')
     for name, w, h, dpr, touch in SCREENS:
         ctx = b.new_context(viewport={'width': w, 'height': h}, device_scale_factor=1, has_touch=touch, is_mobile=touch)
-        ctx.add_init_script("try{sessionStorage.setItem('lab_skip','1')}catch(e){}")
+        ctx.add_init_script("try{sessionStorage.setItem('lab_skip','1');localStorage.setItem('lab_wel',String(Date.now()))}catch(e){}")
         for f, hash_ in PAGES:
             pg = ctx.new_page(); errs = []
             pg.on('pageerror', lambda e: errs.append(str(e)))
@@ -35,7 +35,7 @@ with sync_playwright() as p:
             pg.close()
         ctx.close()
     # glisser un sommet avec l'échelle active
-    ctx = b.new_context(viewport={'width': 1920, 'height': 1080}); ctx.add_init_script("try{sessionStorage.setItem('lab_skip','1')}catch(e){}")
+    ctx = b.new_context(viewport={'width': 1920, 'height': 1080}); ctx.add_init_script("try{sessionStorage.setItem('lab_skip','1');localStorage.setItem('lab_wel',String(Date.now()))}catch(e){}")
     pg = ctx.new_page(); pg.route('**/*', lambda r: r.abort() if r.request.url.startswith('http') else r.continue_())
     pg.goto('file://' + os.path.join(ROOT, 'maths.html#c2-9-l4')); pg.wait_for_timeout(700)
     hd = pg.locator('#c2-9-l4 svg .hd').first; hd.scroll_into_view_if_needed(); pg.wait_for_timeout(200)

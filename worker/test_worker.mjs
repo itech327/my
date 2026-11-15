@@ -16,6 +16,18 @@ ok(sent[3].body.text.includes('Thalès') && sent[3].body.text.includes('2 min 5 
 r = await worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { Origin: 'https://evil.example' }, body: '{"type":"open"}' }), env);
 ok(r.status === 403, 'origine refusée');
 r = await worker.fetch(req('pas du json'), env); ok(r.status === 400, 'JSON invalide refusé');
+const envMulti = Object.assign({}, env, { ALLOWED_ORIGIN: 'https://taalim.men, https://technologie.taalim.men' });
+for (const o of ['https://taalim.men', 'https://technologie.taalim.men']) {
+  r = await worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { Origin: o }, body: '{"type":"open"}' }), envMulti);
+  ok(r.status === 200 && r.headers.get('Access-Control-Allow-Origin') === o, 'plusieurs origines : ' + o + ' acceptée');
+}
+r = await worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { Origin: 'https://evil.example' }, body: '{"type":"open"}' }), envMulti);
+ok(r.status === 403, 'plusieurs origines : autre origine refusée');
+r = await worker.fetch(new Request('https://w.example/', { method: 'OPTIONS', headers: { Origin: 'https://technologie.taalim.men' } }), envMulti);
+ok(r.status === 204 && r.headers.get('Access-Control-Allow-Origin') === 'https://technologie.taalim.men', 'plusieurs origines : préflight renvoie l’origine');
+r = await worker.fetch(new Request('https://w.example/api/teacher/events', { headers: { Origin: 'https://technologie.taalim.men' } }), Object.assign({}, envMulti, { TEACHER_KEY: 'x'.repeat(14) }));
+ok(r.status === 403, 'API enseignant : première origine seulement');
+
 r = await worker.fetch(req({ type: 'zzz' }), env); ok(r.status === 400, 'type inconnu refusé');
 r = await worker.fetch(req('x'.repeat(5000)), env); ok(r.status === 413, 'corps trop gros refusé');
 r = await worker.fetch(req({}, { method: 'OPTIONS' }), env); ok(r.status === 204 && r.headers.get('Access-Control-Allow-Origin') === env.ALLOWED_ORIGIN, 'préflight CORS');

@@ -1,6 +1,7 @@
 /* Relais Telegram pour « Cours en mouvement » (Cloudflare Worker).
    Secrets (jamais dans le dépôt) : BOT_TOKEN, CHAT_ID.
-   Variable : ALLOWED_ORIGIN, par exemple https://itech327.github.io */
+   Variable : ALLOWED_ORIGIN, par exemple https://itech327.github.io
+   Plusieurs origines possibles, séparées par des virgules. L'API enseignant n'accepte que la première. */
 
 const MAX_BODY = 4000;
 const LIMIT_IP = 40;       // messages par minute et par IP
@@ -8,6 +9,7 @@ const LIMIT_SESSION = 60;  // messages par heure et par session
 const RETENTION_DAYS = 180;  // durée de conservation des événements dans D1
 const hits = new Map();
 
+function origins(env) { return String(env.ALLOWED_ORIGIN || '').split(',').map(function (x) { return clean(x.trim(), 200); }).filter(Boolean); }
 function clean(v, n) {
   return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, n || 80);
 }
@@ -63,7 +65,7 @@ async function teacher(request, env, url, cors) {
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
   const withCors = (r) => { Object.keys(cors).forEach((k) => r.headers.set(k, cors[k])); return r; };
   const origin = request.headers.get('Origin') || '';
-  if (origin && origin !== clean(env.ALLOWED_ORIGIN, 200)) return withCors(J({ error: 'origin' }, 403));
+  if (origin && origin !== (origins(env)[0] || '')) return withCors(J({ error: 'origin' }, 403));
   const key = String(env.TEACHER_KEY || '');
   if (key.length < 12) return withCors(J({ error: 'config' }, 503));
   const ip = request.headers.get('CF-Connecting-IP') || '', now = Date.now(), fk = 'authfail:' + ip;
@@ -130,14 +132,14 @@ export function format(p, cf, ip) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const allowed0 = clean(env.ALLOWED_ORIGIN, 200);
+    const list = origins(env), allowed0 = list[0] || '';
     if (url.pathname.indexOf('/api/teacher/') === 0) return teacher(request, env, url, { 'Access-Control-Allow-Origin': allowed0 || 'null', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Vary': 'Origin' });
     const origin = request.headers.get('Origin') || '';
-    const allowed = clean(env.ALLOWED_ORIGIN, 200);
+    const allowed = (origin && list.indexOf(origin) >= 0) ? origin : allowed0;
     const cors = { 'Access-Control-Allow-Origin': allowed || 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (request.method !== 'POST') return new Response('method', { status: 405, headers: cors });
-    if (!allowed || (origin && origin !== allowed)) return new Response('origin', { status: 403, headers: cors });
+    if (!allowed || (origin && list.indexOf(origin) < 0)) return new Response('origin', { status: 403, headers: cors });
     if (!env.BOT_TOKEN || !env.CHAT_ID) return new Response('config', { status: 500, headers: cors });
     const raw = await request.text();
     if (raw.length > MAX_BODY) return new Response('size', { status: 413, headers: cors });
