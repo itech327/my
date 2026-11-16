@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-parallelogrammes': {'sliders': [80, 90], 'guide': [('opt', 'un rectangle'), ('num', '5'), ('opt', 'un carré')], 'seul': ['ont le même milieu', 'un losange', '7', '24']},
+    'maths/2ac-symetrie': {'sliders': [180], 'guide': [('opt', 'la médiatrice'), ('num', '4'), ('num', '90')], 'seul': ['lui-même', '5', '35', '4']},
+    'maths/3ac-vecteurs': {'sliders': [6, 3], 'guide': [('opt', 'DC'), ('opt', 'AC'), ('opt', 'C')], 'seul': ['direction', 'MP', '6', '5']},
+    'pc/1ac-electricite': {'buttons': ['Couper', 'télévision', 'lampe de poche', 'ventilateur'], 'guide': [('opt', 'une source'), ('opt', 'un récepteur'), ('opt', 'après avoir')], 'seul': ['une source', 'chaleur', '220 V', '4,5']},
+    'pc/2ac-couleurs': {'buttons': ['Lumière blanche', 'Lumière rouge', 'Lumière verte', 'Lumière bleue'], 'guide': [('opt', 'surtout la lumière verte'), ('opt', 'verte'), ('opt', 'noire')], 'seul': ['le prisme', 'rouge', 'noir', '7']},
+    'pc/3ac-equilibre-forces': {'sliders': [12, 0], 'guide': [('opt', 'le poids et'), ('opt', 'vers le haut'), ('num', '6')], 'seul': ['un dynamomètre', 'opposés', '4', '3,5']},
+    'svt/3ac-micro-organismes': {'sliders': [37], 'guide': [('opt', 'un virus'), ('opt', 'non'), ('opt', 'se laver')], 'seul': ['pathogène', 'le pain', 'les bactéries', '8']},
     'maths/1ac-droites': {'sliders': [10], 'guide': [('opt', 'P2'), ('opt', '(d) ⊥ (d₂)'), ('num', '90')], 'seul': ['parallèles', '(a) // (b)', '(a) // (b)', '8']},
     'maths/2ac-equations': {'sliders': [5], 'guide': [('opt', '5x − 4 = 11'), ('num', '15'), ('num', '3')], 'seul': ['5', '5', '7', '12']},
     'maths/3ac-thales': {'sliders': [50], 'guide': [('opt', 'AM/AB = MN/BC'), ('opt', '4 × 15 ÷ 10'), ('num', '6')], 'seul': ['parallèles', '9', 'parallèles', '15']},

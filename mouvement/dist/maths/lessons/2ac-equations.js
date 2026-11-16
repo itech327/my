@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-equations","level":"2","order":6,"theme":"Numérique","title":"Équations du premier degré","ar":"المعادلات من الدرجة الأولى","lead":"Deux tarifs de taxi : 10 DH + 4 DH par km, ou 25 DH + 1 DH par km. Pour quelle distance coûtent-ils pareil ? Une équation répond."} */
+/* @meta {"id":"2ac-equations","level":"2","order":13,"theme":"Numérique","title":"Équations du premier degré","ar":"المعادلات من الدرجة الأولى","lead":"Deux tarifs de taxi : 10 DH + 4 DH par km, ou 25 DH + 1 DH par km. Pour quelle distance coûtent-ils pareil ? Une équation répond."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;

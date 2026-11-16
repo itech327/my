@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-multiplication-rationnels","level":"2","order":3,"theme":"Nombres et calcul","title":"Multiplier et diviser des rationnels","ar":"ضرب وقسمة الأعداد الجذرية","lead":"Les 2/3 des 3/4 d'un terrain sont plantés d'oliviers : un rectangle quadrillé montre que c'est la moitié."} */
+/* @meta {"id":"2ac-multiplication-rationnels","level":"2","order":4,"theme":"Nombres et calcul","title":"Multiplier et diviser des rationnels","ar":"ضرب وقسمة الأعداد الجذرية","lead":"Les 2/3 des 3/4 d'un terrain sont plantés d'oliviers : un rectangle quadrillé montre que c'est la moitié."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;

@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-calcul-litteral","level":"2","order":5,"theme":"Numérique","title":"Calcul littéral","ar":"الحساب الحرفي","lead":"Un jardin carré de côté x est agrandi de 3 m d'un côté et de 2 m de l'autre. Quatre rectangles donnent son aire : (x + 3)(x + 2)."} */
+/* @meta {"id":"2ac-calcul-litteral","level":"2","order":9,"theme":"Numérique","title":"Calcul littéral","ar":"الحساب الحرفي","lead":"Un jardin carré de côté x est agrandi de 3 m d'un côté et de 2 m de l'autre. Quatre rectangles donnent son aire : (x + 3)(x + 2)."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;

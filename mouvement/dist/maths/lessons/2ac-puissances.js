@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-puissances","level":"2","order":4,"theme":"Nombres et calcul","title":"Les puissances","ar":"القوى","lead":"Une bactérie se divise en deux toutes les 20 minutes : après 3 heures, combien sont-elles ? Les puissances comptent les doublements."} */
+/* @meta {"id":"2ac-puissances","level":"2","order":8,"theme":"Nombres et calcul","title":"Les puissances","ar":"القوى","lead":"Une bactérie se divise en deux toutes les 20 minutes : après 3 heures, combien sont-elles ? Les puissances comptent les doublements."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;

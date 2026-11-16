@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-pythagore","level":"2","order":17,"theme":"Géométrie","title":"Le théorème de Pythagore","ar":"مبرهنة فيتاغورس","lead":"Les carrés construits sur les côtés d'un triangle rectangle se déplacent et remplissent le carré de l'hypoténuse."} */
+/* @meta {"id":"2ac-pythagore","level":"2","order":11,"theme":"Géométrie","title":"Le théorème de Pythagore","ar":"مبرهنة فيتاغورس","lead":"Les carrés construits sur les côtés d'un triangle rectangle se déplacent et remplissent le carré de l'hypoténuse."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;
