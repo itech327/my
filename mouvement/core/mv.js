@@ -41,7 +41,7 @@
     var dots = nav.querySelector('.dots'), prev = nav.querySelector('[data-prev]'), next = nav.querySelector('[data-next]');
     dots.innerHTML = def.steps.map(function () { return '<i></i>'; }).join('');
     var els = def.draw(svg, MV) || {};
-    var named = Object.keys(els).filter(function (n) { return els[n] && els[n].nodeType === 1; });
+    var named = Object.keys(els).filter(function (n) { return els[n] && els[n].nodeType === 1 && !els[n].hasAttribute('data-keep'); });
     named.forEach(function (n) { els[n].classList.add('fade'); });
     var k = 0, timers = [];
     function caption(s) {

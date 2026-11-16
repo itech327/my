@@ -21,6 +21,36 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-priorites': {
+        'clicks': ['[aria-label="Opération × numéro 2"]', '[aria-label="Opération ÷ numéro 3"]', '[aria-label="Opération + numéro 1"]', '[aria-label="Opération − numéro 1"]'],
+        'guide': [('opt', '4 + 2'), ('num', '12'), ('num', '6')],
+        'seul': ['24', '15', '20', '29'],
+    },
+    'maths/3ac-racines-carrees': {
+        'sliders': [64],
+        'guide': [('opt', '50 = 25 × 2'), ('opt', '√25 × √2'), ('num', '5')],
+        'seul': ['9', '0,4', '7', '2'],
+    },
+    'pc/1ac-eau-nature': {
+        'buttons': ['salée', 'douce gelée', 'douce liquide'],
+        'guide': [('tap', 'mer'), ('opt', 'fines gouttelettes'), ('opt', 'solide')],
+        'seul': ['de l\'état liquide à l\'état gazeux', 'le Soleil', 'évaporation, condensation, précipitations', '97'],
+    },
+    'pc/2ac-air': {
+        'sliders': [20],
+        'guide': [('opt', 'reste le même'), ('opt', 'la distance entre'), ('num', '21')],
+        'seul': ['le diazote', 'diminue', '42', 'beaucoup d\'espace vide'],
+    },
+    'svt/1ac-milieu-naturel': {
+        'sliders': [20],
+        'guide': [('opt', 'du biotope'), ('opt', 'de la biocénose'), ('opt', 'un hygromètre')],
+        'seul': ['la température', 'du biotope et de la biocénose', 'à 200 lux', 'plus éclairé et plus sec'],
+    },
+    'svt/2ac-tectonique': {
+        'sliders': [20],
+        'guide': [('num', '200'), ('num', '2'), ('opt', 'le rapprochement de deux plaques')],
+        'seul': ['de plaques qui bougent', 'la formation de montagnes', '20', 'Des roches formées'],
+    },
     'maths/2ac-pythagore': {
         'sliders': [6, 8],
         'guide': [('tap', 'DF'), ('opt', 'DF² = DE² + EF²'), ('num', '169'), ('num', '13')],
@@ -85,14 +115,14 @@ async def lesson(pg, base, key, plan):
     await pg.goto(base)
     if await pg.locator(f'a[data-lesson="{lid}"]').count() != 1:
         fail(f'{key}: lien absent de l\'accueil')
-    await shot(pg, f'{s}-home')
+    await shot(pg, f'{lid}-home')
     await pg.click(f'a[data-lesson="{lid}"]')
     await pg.wait_for_selector('section.on .cap')
     # 1. ouverture : toutes les étapes
     n = await pg.locator('section.on .dots i').count()
-    await shot(pg, f'{s}-1-ouverture-a')
+    await shot(pg, f'{lid}-1-ouverture-a')
     await nexts(pg, n - 1)
-    await shot(pg, f'{s}-1-ouverture-b')
+    await shot(pg, f'{lid}-1-ouverture-b')
     await nexts(pg, 1)
     # 2. je me prépare : on répond « Vrai » partout, le bouton suivant doit apparaître
     for i in range(await pg.locator('section.on .tf').count()):
@@ -104,7 +134,7 @@ async def lesson(pg, base, key, plan):
     n = await pg.locator('section.on .dots i').count()
     for k in range(n):
         if k in (1, n // 2, n - 1):
-            await shot(pg, f'{s}-3-regarde-{k}')
+            await shot(pg, f'{lid}-3-regarde-{k}')
         if k < n - 1:
             await nexts(pg, 1)
     await nexts(pg, 1)
@@ -112,12 +142,17 @@ async def lesson(pg, base, key, plan):
     sec = pg.locator('section.on')
     for i, v in enumerate(plan.get('sliders', [])):
         await sec.locator('input[type=range]').nth(i).fill(str(v))
+    for sel in plan.get('clicks', []):
+        await sec.locator(sel).dispatch_event('click')
+        await pg.wait_for_timeout(150)
+    for txt in plan.get('buttons', []):
+        await sec.locator('button', has_text=txt).first.click()
     if 'cut' in plan:
         for i in range(plan['cut']):
             await sec.locator(f'[aria-label="Couper le lien {i + 1}"]').dispatch_event('click')
         await sec.get_by_text('Faire passer', exact=True).click()
         await pg.wait_for_timeout(900)
-    await shot(pg, f'{s}-4-faisons-a')
+    await shot(pg, f'{lid}-4-faisons-a')
     for kind, val in plan['guide']:
         await pg.wait_for_timeout(450)
         if kind == 'tap':
@@ -132,7 +167,7 @@ async def lesson(pg, base, key, plan):
     oks = await sec.locator('.fb.ok').count()
     if oks < len(plan['guide']):
         fail(f'{key}: guide incomplet ({oks}/{len(plan["guide"])})')
-    await shot(pg, f'{s}-4-faisons-b')
+    await shot(pg, f'{lid}-4-faisons-b')
     btn = sec.get_by_text('Je fais seul ▶')
     if not await btn.is_visible():
         fail(f'{key}: bouton « Je fais seul » absent')
@@ -140,20 +175,22 @@ async def lesson(pg, base, key, plan):
     await btn.click()
     # 5. je fais seul
     sec = pg.locator('section.on')
-    for val in plan['seul']:
-        if await sec.locator('input.num:not([disabled])').count():
-            box = sec.locator('input.num:not([disabled])').first
+    items = sec.locator('.card > div:not(.eyebrow):not(.row)')
+    for i, val in enumerate(plan['seul']):
+        it = items.nth(i)
+        if await it.locator('input.num').count():
+            box = it.locator('input.num')
             await box.fill(val)
             await box.press('Enter')
         else:
-            await sec.locator('.opt:not([disabled])', has_text=val).first.click()
+            await it.locator('.opt', has_text=val).first.click()
     if await sec.locator('.fb.ok').count() != len(plan['seul']):
         fail(f'{key}: « Je fais seul » incomplet')
     await sec.get_by_text('Bilan ▶').click()
     # 6. bilan
     n = await pg.locator('section.on .dots i').count()
     await nexts(pg, n - 1)
-    await shot(pg, f'{s}-6-bilan')
+    await shot(pg, f'{lid}-6-bilan')
     if await pg.locator('section.on .retenir').count() < 2:
         fail(f'{key}: « À retenir » incomplet')
     # retour à l'accueil : la leçon est cochée

@@ -45,6 +45,7 @@ MV.lesson({
 
 Une scène : `{ vb, hud: [[clé, titre]], draw: function (svg, MV) { return { nom: élément } }, steps: [{ cap, ar, hud, on: [noms], hot: [noms], run }] }`.
 Dans `cap`, `**mot**` met le mot clé en gras. Dans `ar`, `[[formule]]` garde une formule en sens gauche-droite.
+Un élément marqué `data-keep` reste toujours visible : le moteur ne le gère pas.
 Une valeur du HUD donnée entre crochets, `['25']`, s'affiche dans la couleur d'accent.
 
 ## Mise en ligne (une fois)
