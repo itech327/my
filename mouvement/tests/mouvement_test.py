@@ -21,6 +21,50 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-fractions': {
+        'guide': [('opt', '6'), ('num', '2'), ('num', '3')],
+        'seul': ['4', '7/9', '2/3 < 5/6', 'Amine'],
+    },
+    'maths/2ac-rationnels': {
+        'sliders': [-5, 2],
+        'guide': [('opt', 'négatif'), ('num', '−3'), ('opt', '−1 et 0')],
+        'seul': ['-3', 'négatif', '−3/4 < −1/2', '-2,25'],
+    },
+    'maths/3ac-identites': {
+        'sliders': [7, 2],
+        'guide': [('opt', '(a + b)² = a² + 2ab + b²'), ('opt', '4x²'), ('num', '20'), ('num', '25')],
+        'seul': ['441', '25', '9999', '(x − 7)(x + 7)'],
+    },
+    'pc/1ac-etats-matiere': {
+        'sliders': [25],
+        'guide': [('opt', 'solide'), ('opt', 'liquide'), ('num', '250')],
+        'seul': ['ni forme propre', 'plane et horizontale', '1500', 'un solide en petits grains'],
+    },
+    'pc/2ac-molecules': {
+        'buttons': ['+ H', '+ H', '+ O', 'Vider', '+ O', '+ O'],
+        'guide': [('num', '3'), ('opt', 'un corps composé'), ('num', '6')],
+        'seul': ['5', 'un corps simple', 'H₂O', '10'],
+    },
+    'pc/3ac-materiaux': {
+        'buttons': ['canette de sardines', 'Test aimant', 'Test courant', 'canette de soda', 'Test aimant', 'Test courant', 'bocal', 'Test aimant', 'Test courant'],
+        'guide': [('opt', 'un métal'), ('opt', 'du fer'), ('opt', "de l'aluminium")],
+        'seul': ['le fer', 'verre ou plastique', 'Le cuivre conduit', 'verre'],
+    },
+    'svt/1ac-respiration': {
+        'buttons': ['Homme', 'poisson', 'criquet', 'grenouille'],
+        'guide': [('opt', 'du dioxyde de carbone'), ('opt', 'de la respiration de la souris'), ('opt', 'rejette du dioxyde')],
+        'seul': ['du dioxyde de carbone', 'les branchies', 'La plante respire', 'branchies puis poumons'],
+    },
+    'svt/2ac-reproduction-animaux': {
+        'sliders': [12],
+        'guide': [('opt', 'externe'), ('opt', 'interne'), ('opt', 'direct')],
+        'seul': ['les spermatozoïdes', "l'union", 'ovipare', 'une métamorphose'],
+    },
+    'svt/3ac-respiration-homme': {
+        'sliders': [3],
+        'guide': [('num', '5'), ('opt', 'dans les alvéoles'), ('opt', 'dioxyde de carbone')],
+        'seul': ['descend', 'au niveau des alvéoles', '150', 'Pour faciliter'],
+    },
     'maths/1ac-priorites': {
         'clicks': ['[aria-label="Opération × numéro 2"]', '[aria-label="Opération ÷ numéro 3"]', '[aria-label="Opération + numéro 1"]', '[aria-label="Opération − numéro 1"]'],
         'guide': [('opt', '4 + 2'), ('num', '12'), ('num', '6')],

@@ -27,7 +27,7 @@
   function show(el, on) { el.style.opacity = on ? 1 : 0; el.style.pointerEvents = on ? '' : 'none'; }
   // [[...]] dans un texte arabe : passage en sens gauche-droite (formules, lettres)
   function ar(s) { return (s || '').replace(/\[\[(.+?)\]\]/g, '<bdi dir="ltr">$1</bdi>'); }
-  function parseNum(v) { return parseFloat(String(v).replace(/\s/g, '').replace(',', '.')); }
+  function parseNum(v) { return parseFloat(String(v).replace(/\s/g, '').replace(/[\u2212\u2013]/g, '-').replace(',', '.')); }
   function fmt(n, d) { if (Number.isInteger(n)) return String(n); return n.toFixed(d == null ? 2 : d).replace('.', ','); }
 
   /* ---------- scène : légende mot par mot, éléments nommés, HUD ---------- */

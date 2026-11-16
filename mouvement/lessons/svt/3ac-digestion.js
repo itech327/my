@@ -70,7 +70,7 @@
         // encart des molécules
         e.encart = S('g', {}, svg);
         S('rect', { x: 196, y: 24, width: 156, height: 276, rx: 12, fill: '#17181a', stroke: '#2c2f34' }, e.encart);
-        e.nom = T(e.encart, 274, 48, 'amidon', 'lbl');
+        e.nom = T(e.encart, 274, 48, 'amidon', 'lbl'); e.nom.setAttribute('data-keep', 1);
         e.chaine = S('g', {}, svg);
         var beads = [], links = [];
         for (var i = 0; i < 5; i++) links.push(S('line', { x1: 220 + i * 26, y1: 90, x2: 246 + i * 26, y2: 90, stroke: '#cfd3d8', 'stroke-width': 3 }, e.chaine));

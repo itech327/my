@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://maths.taalim.men/</loc></url>
   <url><loc>https://maths.taalim.men/1ac-priorites/</loc></url>
+  <url><loc>https://maths.taalim.men/1ac-fractions/</loc></url>
+  <url><loc>https://maths.taalim.men/2ac-rationnels/</loc></url>
   <url><loc>https://maths.taalim.men/2ac-pythagore/</loc></url>
   <url><loc>https://maths.taalim.men/3ac-racines-carrees/</loc></url>
+  <url><loc>https://maths.taalim.men/3ac-identites/</loc></url>
 </urlset>
