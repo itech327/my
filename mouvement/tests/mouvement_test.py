@@ -21,6 +21,51 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-relatifs': {
+        'sliders': [5],
+        'guide': [('opt', '−7'), ('opt', '−1'), ('opt', '−7 < −1 < 0 < 3')],
+        'seul': ['8', '−4 > −9', '12', 'Azrou'],
+    },
+    'maths/2ac-addition-rationnels': {
+        'sliders': [2, -3],
+        'guide': [('opt', '10'), ('num', '6'), ('num', '−1')],
+        'seul': ['5', '-3', '-1', '3'],
+    },
+    'maths/3ac-ordre': {
+        'sliders': [-1, 3, -2],
+        'guide': [('opt', '6 ≤ 3x ≤ 15'), ('num', '5'), ('num', '14')],
+        'seul': ['<', '>', '11', '-4'],
+    },
+    'pc/1ac-masse-volumique': {
+        'buttons': ['eau', 'huile', 'fer'],
+        'guide': [('num', '24'), ('num', '2,5'), ('opt', 'coule')],
+        'seul': ['250', '7,9', '2000', 'flotte'],
+    },
+    'pc/2ac-combustions': {
+        'sliders': [2],
+        'guide': [('opt', 'soufre et dioxygène'), ('opt', 'le dioxyde de soufre'), ('opt', 'soufre + dioxygène → dioxyde')],
+        'seul': ['du dioxyde de carbone', 'carbone et dioxygène', 'une combustion incomplète', 'aérer'],
+    },
+    'pc/3ac-materiaux-electricite': {
+        'buttons': ['cuivre', 'aluminium', 'plastique', 'verre'],
+        'guide': [('opt', 'un conducteur'), ('opt', 'isoler'), ('opt', 'des électrons libres')],
+        'seul': ['le verre', 'conducteur', "d'électrons libres", 'parce que le plastique'],
+    },
+    'svt/1ac-regimes-alimentaires': {
+        'buttons': ['chèvre', 'renard', 'Homme'],
+        'guide': [('opt', 'attraper'), ('opt', 'carnivore'), ('opt', 'un chacal')],
+        'seul': ['herbivore', 'omnivore', 'herbivore', 'change avec'],
+    },
+    'svt/2ac-reproduction-plantes': {
+        'sliders': [3],
+        'guide': [('opt', 'les insectes'), ('opt', 'fécondation'), ('opt', 'la pollinisation puis')],
+        'seul': ["l'étamine", 'la pollinisation', 'le fruit', 'Les abeilles assurent'],
+    },
+    'svt/3ac-sang': {
+        'buttons': ['Centrifuger', 'plasma', 'globules rouges', 'globules blancs', 'plaquettes'],
+        'guide': [('opt', 'le dioxygène'), ('opt', 'moins de dioxygène'), ('opt', 'vite fatiguée')],
+        'seul': ['les globules blancs', 'le plasma', '5,5', 'des capillaires'],
+    },
     'maths/1ac-fractions': {
         'guide': [('opt', '6'), ('num', '2'), ('num', '3')],
         'seul': ['4', '7/9', '2/3 < 5/6', 'Amine'],
