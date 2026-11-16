@@ -22,6 +22,14 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-equations': {'sliders': [5], 'guide': [('opt', 'ajoute 4'), ('num', '13'), ('num', '7')], 'seul': ['oui', '18', '7', '15']},
+    'maths/2ac-calcul-litteral': {'sliders': [10], 'guide': [('opt', 'x², −x, 5x, −5'), ('num', '4'), ('opt', 'x² + 4x − 5')], 'seul': ['4', 'x² + 5x + 4', '5(2y − 3)', '30']},
+    'maths/3ac-trigonometrie': {'sliders': [45], 'guide': [('opt', 'le sinus'), ('opt', 'AC × sin 30°'), ('num', '5')], 'seul': ['adjacent ÷ hypoténuse', '1', '0,8', '4']},
+    'pc/1ac-separation': {'sliders': [38], 'guide': [('num', '72'), ('opt', 'saturée'), ('num', '8')], 'seul': ['le soluté', 'évaporation', 'saturée', '140']},
+    'pc/2ac-pollution-air': {'sliders': [2], 'buttons': ['Filtre sur'], 'guide': [('num', '1200'), ('num', '4800'), ('num', '3600')], 'seul': ['le monoxyde', 'SO₂', 'prendre le bus', '2700']},
+    'pc/3ac-metaux-acides': {'buttons': ['fer', 'zinc', 'aluminium', 'cuivre', 'Soude', 'fer', 'zinc', 'aluminium'], 'guide': [('opt', 'des bulles'), ('opt', 'le dihydrogène'), ('opt', 'Zn²⁺')], 'seul': ['le cuivre', 'zinc et aluminium', 'H₂', '2']},
+    'svt/1ac-sedimentation': {'sliders': [5], 'guide': [('opt', 'couche A'), ('opt', 'couche C'), ('opt', 'dans l')], 'seul': ['érosion', 'la sédimentation', 'la plus récente', '300']},
+    'svt/3ac-systeme-nerveux': {'sliders': [5], 'guide': [('opt', 'la moelle'), ('num', '0,03'), ('num', '30')], 'seul': ['sensitif', 'le muscle', 'le cerveau', '5']},
     'maths/1ac-developpement': {'sliders': [3, 5, 2], 'guide': [('num', '10'), ('num', '15'), ('opt', '6(y + 3)')], 'seul': ['20', '918', '7(a + b)', '1300']},
     'maths/2ac-puissances': {'sliders': [9], 'guide': [('num', '2'), ('num', '1'), ('num', '3')], 'seul': ['125', '7', '-8', '-4']},
     'maths/3ac-systemes': {'sliders': [10, 12], 'guide': [('opt', '2x = 14'), ('num', '7'), ('num', '3')], 'seul': ['oui', '3', '7', '18']},
