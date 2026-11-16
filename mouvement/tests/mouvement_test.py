@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-cercle': {'sliders': [5], 'guide': [('num', '7'), ('opt', 'extérieur'), ('opt', 'non')], 'seul': ['12', '4,5', 'intérieur', '16']},
+    'maths/2ac-quatre-operations': {'sliders': [2], 'guide': [('opt', '1/2 × 5/6'), ('opt', '5/12'), ('opt', '1/3')], 'seul': ['1', '−2/3', '1,5', '0,375']},
+    'maths/2ac-droites-remarquables': {'buttons': ['médiatrices', 'hauteurs', 'médianes', 'bissectrices'], 'guide': [('opt', 'médianes'), ('num', '6'), ('num', '3')], 'seul': ['circonscrit', 'orthocentre', 'le milieu', '8']},
+    'maths/3ac-equation-droite': {'sliders': [2, 1], 'guide': [('num', '3'), ('num', '-5'), ('opt', 'y = 3x − 5')], 'seul': ['-4', '-3', '3', '2']},
+    'pc/1ac-courant-continu': {'buttons': ['Diode', 'Retourner'], 'guide': [('opt', 'bloquant'), ('opt', 'retourne'), ('opt', 'de + vers −')], 'seul': ['de + vers −', 'la diode', 'sens inverse', '0']},
+    'pc/2ac-lentilles': {'sliders': [60], 'guide': [('num', '0,1'), ('num', '10'), ('opt', 'convergente')], 'seul': ['convergente', 'le foyer image', '2', '20']},
+    'pc/3ac-loi-ohm': {'sliders': [12], 'buttons': ['R = 200'], 'guide': [('opt', 'U = R × I'), ('num', '11'), ('num', '0,1')], 'seul': ['ohm', '10', '0,03', '300']},
     'maths/1ac-angles': {'sliders': [90], 'guide': [('num', '70'), ('num', '70'), ('num', '110')], 'seul': ['égaux', '55', '55', 'non']},
     'maths/2ac-droite-milieux': {'sliders': [50], 'guide': [('opt', 'elles sont parallèles'), ('num', '6'), ('num', '15')], 'seul': ['parallèle au troisième', '5', '7', '12']},
     'maths/3ac-repere': {'sliders': [5], 'guide': [('num', '1'), ('num', '-1'), ('num', '10')], 'seul': ['7', '4', '5', '13']},
