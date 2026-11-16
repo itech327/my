@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-angles': {'sliders': [90], 'guide': [('num', '70'), ('num', '70'), ('num', '110')], 'seul': ['égaux', '55', '55', 'non']},
+    'maths/2ac-droite-milieux': {'sliders': [50], 'guide': [('opt', 'elles sont parallèles'), ('num', '6'), ('num', '15')], 'seul': ['parallèle au troisième', '5', '7', '12']},
+    'maths/3ac-repere': {'sliders': [5], 'guide': [('num', '1'), ('num', '-1'), ('num', '10')], 'seul': ['7', '4', '5', '13']},
+    'pc/1ac-circuit-simple': {'buttons': ['Ouvrir', 'clou en fer', 'règle en plastique', 'pièce de monnaie', 'gomme'], 'guide': [('opt', 'complète'), ('opt', 'un isolant'), ('opt', 'un court-circuit')], 'seul': ['fermé', 'un conducteur', 'un isolant', '2']},
+    'pc/2ac-propagation': {'sliders': [70], 'guide': [('opt', 'en ligne droite'), ('num', '8'), ('opt', 'de la Lune')], 'seul': ['en ligne droite', 'son ombre propre', 'diminue', '600000']},
+    'pc/3ac-masse-poids': {'sliders': [100], 'buttons': ['Sur la Lune'], 'guide': [('num', '50'), ('num', '5'), ('num', '8')], 'seul': ['le newton', 'reste la même', '19,6', '15']},
+    'svt/3ac-reponses-immunitaires': {'buttons': ['Vaccin', 'Sérum'], 'guide': [('opt', 'le vaccin'), ('opt', 'le sérum'), ('opt', 'aux cellules mémoire')], 'seul': ['les lymphocytes B', 'plus rapide', 'curative', '14']},
     'maths/1ac-parallelogrammes': {'sliders': [80, 90], 'guide': [('opt', 'un rectangle'), ('num', '5'), ('opt', 'un carré')], 'seul': ['ont le même milieu', 'un losange', '7', '24']},
     'maths/2ac-symetrie': {'sliders': [180], 'guide': [('opt', 'la médiatrice'), ('num', '4'), ('num', '90')], 'seul': ['lui-même', '5', '35', '4']},
     'maths/3ac-vecteurs': {'sliders': [6, 3], 'guide': [('opt', 'DC'), ('opt', 'AC'), ('opt', 'C')], 'seul': ['direction', 'MP', '6', '5']},
