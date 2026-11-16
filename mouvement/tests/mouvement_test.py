@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-repere': {'sliders': [-3, 2], 'guide': [('num', '7'), ('num', '1,5'), ('opt', 'axe des ordonnées')], 'seul': ['5', '7', 'sous', '-2']},
+    'maths/2ac-triangle-rectangle-cercle': {'sliders': [90], 'guide': [('opt', 'I, milieu'), ('num', '5'), ('num', '5')], 'seul': ['hypoténuse', '6,5', '90', '9']},
+    'maths/2ac-cosinus': {'sliders': [60], 'guide': [('opt', 'EG'), ('opt', 'EG = EF × cos'), ('num', '5')], 'seul': ['adjacent ÷', '0,8', '3', 'cosinus 0,2']},
+    'maths/3ac-agrandissement': {'sliders': [4], 'guide': [('opt', 'agrandissement'), ('num', '1000000'), ('num', '500000')], 'seul': ['12', '45', '56', '5']},
+    'pc/1ac-intensite': {'buttons': ['après la lampe', 'près de la pile', 'Calibre 200 mA'], 'guide': [('num', '350'), ('opt', '2 A'), ('opt', 'toujours')], 'seul': ['en série', '0,25', '0,2 A', '1200']},
+    'pc/2ac-loupe-oeil': {'buttons': ['myope + lunettes', 'hypermétrope + lunettes'], 'guide': [('opt', 'hypermétrope'), ('opt', 'convergentes'), ('opt', 'minces')], 'seul': ['la rétine', 'divergente', 'entre la loupe', '12,5']},
+    'pc/3ac-energie-electrique': {'sliders': [10], 'buttons': ['téléviseur'], 'guide': [('num', '400'), ('num', '12'), ('num', '12')], 'seul': ['le watt', '24', '1,5', '1000']},
     'maths/1ac-cercle': {'sliders': [5], 'guide': [('num', '7'), ('opt', 'extérieur'), ('opt', 'non')], 'seul': ['12', '4,5', 'intérieur', '16']},
     'maths/2ac-quatre-operations': {'sliders': [2], 'guide': [('opt', '1/2 × 5/6'), ('opt', '5/12'), ('opt', '1/3')], 'seul': ['1', '−2/3', '1,5', '0,375']},
     'maths/2ac-droites-remarquables': {'buttons': ['médiatrices', 'hauteurs', 'médianes', 'bissectrices'], 'guide': [('opt', 'médianes'), ('num', '6'), ('num', '3')], 'seul': ['circonscrit', 'orthocentre', 'le milieu', '8']},
