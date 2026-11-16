@@ -21,6 +21,52 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-operations-relatifs': {
+        'sliders': [-2, 6],
+        'guide': [('opt', 'ajouter +3'), ('opt', 'contraires'), ('num', '−4')],
+        'seul': ['-9', '-3', '3', '-5'],
+    },
+    'maths/2ac-multiplication-rationnels': {
+        'sliders': [2, 5, 1, 2],
+        'guide': [('opt', '3/10'), ('opt', 'négatif'), ('num', '4')],
+        'seul': ['6', 'positif', '2', '180'],
+    },
+    'maths/3ac-equations': {
+        'sliders': [4],
+        'guide': [('opt', '3x − 7 = 8'), ('num', '15'), ('num', '5')],
+        'seul': ['7', '7', 'x < −4', '8'],
+    },
+    'pc/1ac-pression': {
+        'sliders': [400],
+        'guide': [('opt', 'augmente'), ('num', '2200'), ('opt', 'le baromètre')],
+        'seul': ['un manomètre', '1 013 hPa', 'diminue', '273'],
+    },
+    'pc/2ac-lois-reaction': {
+        'sliders': [2, 1, 2],
+        'guide': [('opt', 'du dioxyde de carbone'), ('num', '44'), ('opt', 'oui')],
+        'seul': ['se conserve', '4', '2', '22'],
+    },
+    'pc/3ac-reactions-air': {
+        'sliders': [30],
+        'buttons': ['eau', 'peinture'],
+        'guide': [('opt', 'dioxygène et eau'), ('opt', 'empêche'), ('opt', 'couche de zinc')],
+        'seul': ['dioxygène et eau', 'Sa couche', '6', '2'],
+    },
+    'svt/1ac-chaines-alimentaires': {
+        'clicks': ['[aria-label="herbe"]', '[aria-label="criquet"]', '[aria-label="lézard"]', '[aria-label="faucon"]'],
+        'guide': [('opt', 'des souris'), ('opt', 'augmente'), ('opt', 'est plus consommée')],
+        'seul': ['un producteur', 'est mangée par', '3', 'diminuer'],
+    },
+    'svt/2ac-reproduction-homme': {
+        'sliders': [9],
+        'guide': [('opt', "l'ovulation"), ('opt', 'dans la trompe'), ('opt', "dans l'utérus")],
+        'seul': ['les testicules', 'la fécondation', '9', 'par le placenta'],
+    },
+    'svt/3ac-immunite': {
+        'sliders': [3],
+        'guide': [('opt', 'fabriquer une mémoire'), ('opt', 'vite et en grande'), ('opt', 'non, la réponse')],
+        'seul': ['la peau', 'des globules blancs', 'les lymphocytes', 'pour entretenir'],
+    },
     'maths/1ac-relatifs': {
         'sliders': [5],
         'guide': [('opt', '−7'), ('opt', '−1'), ('opt', '−7 < −1 < 0 < 3')],
