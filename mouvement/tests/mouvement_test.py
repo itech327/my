@@ -9,6 +9,7 @@ import asyncio
 import functools
 import http.server
 import re
+import os
 import sys
 import threading
 from pathlib import Path
@@ -21,6 +22,15 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-developpement': {'sliders': [3, 5, 2], 'guide': [('num', '10'), ('num', '15'), ('opt', '6(y + 3)')], 'seul': ['20', '918', '7(a + b)', '1300']},
+    'maths/2ac-puissances': {'sliders': [9], 'guide': [('num', '2'), ('num', '1'), ('num', '3')], 'seul': ['125', '7', '-8', '-4']},
+    'maths/3ac-systemes': {'sliders': [10, 12], 'guide': [('opt', '2x = 14'), ('num', '7'), ('num', '3')], 'seul': ['oui', '3', '7', '18']},
+    'pc/1ac-melanges': {'buttons': ['Décanter', 'Filtrer'], 'guide': [('opt', 'décantation'), ('opt', 'un filtre'), ('opt', 'distillation')], 'seul': ['hétérogène', 'homogène', 'limpide mais', '10']},
+    'pc/2ac-matieres': {'sliders': [8], 'guide': [('opt', 'naturelle'), ('opt', 'synthétique'), ('opt', 'du pétrole')], 'seul': ['naturelle', 'synthétique', 'minérale', '25']},
+    'pc/3ac-acides-bases': {'sliders': [4], 'buttons': ['Acide pH 2'], 'guide': [('opt', 'acide'), ('opt', 'augmente vers 7'), ('opt', 'non')], 'seul': ['basique', 'pH 2', '5', '3']},
+    'svt/1ac-classification': {'sliders': [5], 'guide': [('opt', 'vertébré'), ('opt', 'poils'), ('opt', 'mammifère')], 'seul': ['oiseau', 'amphibien', 'mammifère', '5']},
+    'svt/2ac-heredite': {'buttons': ['Spermatozoïde X', 'Spermatozoïde Y'], 'guide': [('num', '46'), ('num', '23'), ('opt', 'du père')], 'seul': ['les chromosomes', '23', 'un garçon', '50']},
+    'svt/3ac-nutrition': {'buttons': ['Pain', 'Orange', 'Lait', 'Œuf', 'Huile'], 'guide': [('num', '760'), ('num', '595'), ('opt', 'presque pas')], 'seul': ['des protéines', 'des caries', 'pain, lait', '380']},
     'maths/1ac-operations-relatifs': {
         'sliders': [-2, 6],
         'guide': [('opt', 'ajouter +3'), ('opt', 'contraires'), ('num', '−4')],
@@ -337,7 +347,10 @@ async def lesson(pg, base, key, plan):
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
+        only = [k for k in os.environ.get('MV_ONLY', '').split(',') if k]
         for port, key in enumerate(PLAN, 8811):
+            if only and key not in only:
+                continue
             s = key.split('/')[0]
             srv = serve(DIST / s, port)
             pg = await b.new_page(viewport={'width': 420, 'height': 860}, device_scale_factor=2)
