@@ -22,6 +22,14 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-droites': {'sliders': [10], 'guide': [('opt', 'P2'), ('opt', '(d) ⊥ (d₂)'), ('num', '90')], 'seul': ['parallèles', '(a) // (b)', '(a) // (b)', '8']},
+    'maths/2ac-equations': {'sliders': [5], 'guide': [('opt', '5x − 4 = 11'), ('num', '15'), ('num', '3')], 'seul': ['5', '5', '7', '12']},
+    'maths/3ac-thales': {'sliders': [50], 'guide': [('opt', 'AM/AB = MN/BC'), ('opt', '4 × 15 ÷ 10'), ('num', '6')], 'seul': ['parallèles', '9', 'parallèles', '15']},
+    'pc/1ac-traitement-eaux': {'sliders': [4], 'guide': [('opt', 'le dégrillage'), ('opt', 'la filtration'), ('opt', 'la désinfection')], 'seul': ['sans danger', 'tuer', 'station', '840']},
+    'pc/2ac-lumiere': {'buttons': ['verre', 'papier calque', 'carton'], 'guide': [('opt', 'une source primaire'), ('opt', 'un objet diffusant'), ('opt', 'opaque')], 'seul': ['une source primaire', 'translucide', 'entre dans', '1']},
+    'pc/3ac-tests-ions': {'buttons': ['Ajouter soude', 'Fe³⁺', 'Ajouter soude', 'Zn²⁺', 'Ajouter soude'], 'guide': [('opt', 'Fe³⁺'), ('opt', 'Cl⁻'), ('opt', 'chlorure de fer')], 'seul': ['Cu²⁺', 'Fe²⁺', 'nitrate', '3']},
+    'svt/1ac-ressources-eau': {'sliders': [8, 8], 'guide': [('opt', 'de surface'), ('opt', 'souterraines'), ('opt', 'fermer')], 'seul': ['évaporation', 's\'infiltre', 'souterraine', '120']},
+    'svt/3ac-systeme-musculaire': {'sliders': [50], 'guide': [('opt', 'le biceps'), ('opt', 'de dioxygène'), ('opt', 's\'échauffer')], 'seul': ['raccourcit', 'le triceps', 'antagonistes', '240']},
     'maths/1ac-equations': {'sliders': [5], 'guide': [('opt', 'ajoute 4'), ('num', '13'), ('num', '7')], 'seul': ['oui', '18', '7', '15']},
     'maths/2ac-calcul-litteral': {'sliders': [10], 'guide': [('opt', 'x², −x, 5x, −5'), ('num', '4'), ('opt', 'x² + 4x − 5')], 'seul': ['4', 'x² + 5x + 4', '5(2y − 3)', '30']},
     'maths/3ac-trigonometrie': {'sliders': [45], 'guide': [('opt', 'le sinus'), ('opt', 'AC × sin 30°'), ('num', '5')], 'seul': ['adjacent ÷ hypoténuse', '1', '0,8', '4']},
