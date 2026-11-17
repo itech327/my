@@ -40,7 +40,7 @@
         T(dyn, 190, 140, r === 'avant' ? 'sens horaire' : 'sens inverse', 'tag');
       } else if (r === 'court-circuit') {
         var w = T(dyn, 190, 140, 'COURT-CIRCUIT !', 'lbl');
-        w.setAttribute('fill', '#e5484d');
+        w.style.fill = '#e5484d';
         S('animate', { attributeName: 'opacity', values: '1;.2;1', dur: '.6s', repeatCount: 'indefinite' }, w);
       }
     }

@@ -129,11 +129,11 @@ async def main():
         await page.wait_for_timeout(300)
         if not await page.evaluate('!!document.fullscreenElement'):
             fail('plein écran non activé')
-        if 'Quitter' not in await page.locator('.fsbtn').inner_text():
+        if 'Quitter' not in await page.locator('.fsbtn:not(.thbtn)').inner_text():
             fail('bouton plein écran non mis à jour')
         if SHOTS:
             await page.screenshot(path=str(SHOTS / 'maths-plein-ecran.png'))
-        await page.locator('.fsbtn').click()
+        await page.locator('.fsbtn:not(.thbtn)').click()
         await page.wait_for_timeout(300)
         if await page.evaluate('!!document.fullscreenElement'):
             fail('sortie du plein écran impossible')

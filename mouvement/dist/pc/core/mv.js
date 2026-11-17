@@ -32,6 +32,7 @@
 
   /* ---------- scène : légende mot par mot, éléments nommés, HUD ---------- */
   function scene(card, def, onEnd) {
+    card.classList.add('scn');
     var cap = H('div', 'cap', '', card);
     var stage = H('div', 'stage', '', card);
     var svg = S('svg', { viewBox: def.vb || '0 0 360 300', role: 'img', 'aria-label': def.label || 'Animation' }, stage);
@@ -150,9 +151,22 @@
   // Je me prépare compte pour un tiers, Je fais seul pour deux tiers.
   function noteSur20(p, P, s, N) { return Math.round(20 * ((P ? p / P : 0) + 2 * (N ? s / N : 0)) / ((P ? 1 : 0) + (N ? 2 : 0)) * 2) / 2; }
   function mention(n) { return n >= 16 ? 'Très bien · حسن جدا' : n >= 14 ? 'Bien · حسن' : n >= 12 ? 'Assez bien · مستحسن' : n >= 10 ? 'Passable · مقبول' : 'À revoir · يحتاج إلى مراجعة'; }
+  // thème clair ou sombre, mémorisé ; la scène animée reste sombre comme un tableau
+  function theme() { var t = store.get('mv_theme'); return t || (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); }
+  function applyTheme(t) { document.documentElement.classList.toggle('light', t === 'light'); var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', t === 'light' ? '#f4f5f7' : '#141517'); }
+  applyTheme(theme());
+  function themeBtn(parent, before) {
+    if (!parent) return;
+    var b = H('button', 'fsbtn thbtn', '', null); parent.insertBefore(b, before || null);
+    function upd() { var l = theme() === 'light'; b.innerHTML = l ? '☾<span class="t"> Sombre</span>' : '☀<span class="t"> Clair</span>'; b.setAttribute('aria-label', l ? 'Passer en thème sombre' : 'Passer en thème clair'); }
+    b.onclick = function () { var t = theme() === 'light' ? 'dark' : 'light'; store.set('mv_theme', t); applyTheme(t); upd(); };
+    upd();
+  }
   function fullscreenBtn() {
     var de = document.documentElement, req = de.requestFullscreen || de.webkitRequestFullscreen;
-    var top = document.querySelector('.top'); if (!top || !req) return;
+    var top = document.querySelector('.top'); if (!top) return;
+    themeBtn(top, top.querySelector('.brand'));
+    if (!req) return;
     var b = H('button', 'fsbtn', '⛶<span class="t"> Plein écran</span>', null); top.insertBefore(b, top.querySelector('.brand'));
     b.setAttribute('aria-label', 'Plein écran');
     function isFs() { return document.fullscreenElement || document.webkitFullscreenElement; }
@@ -185,10 +199,10 @@
     function nextBtn(parent, label, to) { var b = H('button', 'btn pri', label, parent); b.style.marginTop = '12px'; b.onclick = function () { go(to); }; return b; }
 
     // 1. Ouverture
+    H('div', 'card obj', '<div class="eyebrow">Objectif de la séance</div><div>' + def.objectif.fr + '</div><div class="ar">' + ar(def.objectif.ar) + '</div>', secs[0]);
     var c0 = H('div', 'card', '', secs[0]);
     def.ouverture.end = def.ouverture.end || 'Je me prépare ▶';
     scenes[0] = scene(c0, def.ouverture, function () { go(1); });
-    H('div', 'card', '<div class="q" style="margin-top:0">Objectif de la séance</div>' + def.objectif.fr + '<div class="ar">' + ar(def.objectif.ar) + '</div>', secs[0]);
 
     // 2. Je me prépare
     var c1 = H('div', 'card', '<div class="eyebrow">Je me prépare · vrai ou faux ?</div>', secs[1]), left = def.prepare.length;
@@ -261,5 +275,5 @@
   }
 
   var MV = window.MV = { S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };
-  if (document.body && document.body.hasAttribute('data-home')) home();
+  if (document.body && document.body.hasAttribute('data-home')) { home(); var hero = document.querySelector('.hero'); if (hero) themeBtn(hero, hero.firstChild); }
 })();

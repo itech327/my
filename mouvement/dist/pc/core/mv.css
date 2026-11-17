@@ -136,3 +136,69 @@ body.fs .stage svg{max-height:68vh}
 .fsbtn{white-space:nowrap}
 @media (max-width:480px){.fsbtn .t{display:none}.fsbtn{padding:6px 11px}}
 html[data-s="tech"]{--acc:#f27b60;--acc-bg:#2d1c18;--glow:#2a1915}
+/* boutons de l'en-tête */
+.thbtn~.fsbtn{margin-left:0}
+.hero .thbtn{float:right;margin-top:4px}
+.obj{font-size:15px}
+.obj .ar{margin-top:4px}
+.stage svg{max-height:70vh}
+
+/* ordinateur : la scène à gauche, le texte, le tableau et les boutons à droite, tout dans l'écran */
+@media (min-width:980px){
+  main,.wrap{max-width:1180px}
+  main{padding-top:8px}
+  h1{font-size:24px;margin:2px 0}
+  .top{padding:2px 0 4px}
+  .stepper{padding:8px 0;margin:4px 0 6px}
+  .mv-sec>.card:not(.scn):not(:has(> .stage)),.obj,#ex>.card,#ex>.btn,#ex>p,#ex>.exhead,#ex>.bar{max-width:760px;margin-left:auto;margin-right:auto}
+  .obj{padding:10px 14px}
+  .scn{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(280px,1fr);grid-template-rows:auto auto auto auto 1fr;
+       grid-template-areas:"stage cap" "stage hud" "stage ar" "stage nav" "stage .";column-gap:20px;align-items:start}
+  .scn>.cap{grid-area:cap;text-align:left;min-height:0;margin:4px 0 10px;font-size:21px}
+  .scn>.stage{grid-area:stage;align-self:center}
+  .scn>.hud{grid-area:hud;flex-direction:column;margin-top:0}
+  .scn>.hud div{border-right:0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .scn>.hud div:last-child{border-bottom:0}
+  .scn>.hud small{flex:none}
+  .scn>.hud span{text-align:right;font-size:18px}
+  .scn>.ar{grid-area:ar}
+  .scn>.nav{grid-area:nav;margin-top:12px}
+  .stage svg{max-height:calc(100vh - 250px)}
+  .obj+.scn .stage svg{max-height:calc(100vh - 340px)}
+  /* cartes d'activité qui contiennent une figure : même disposition */
+  .card:has(> .stage){display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);grid-template-rows:repeat(11,auto) 1fr;column-gap:20px;align-items:start}
+  .card:has(> .stage)>*{grid-column:2}
+  .card:has(> .stage)>.stage{grid-column:1;grid-row:1 / span 12;align-self:start}
+  .card:has(> .stage)>.hud{flex-wrap:wrap}
+  .card:has(> .stage)>.hud div{flex:1 1 45%}
+}
+body.fs main{max-width:1400px}
+body.fs .stage svg{max-height:calc(100vh - 170px)}
+
+/* thème clair : page claire, scène animée sombre comme un tableau */
+html.light{--bg:#f4f5f7;--panel:#ffffff;--line:#d9dce2;--ink:#17191c;--mute:#555b65;--dim:#7c828c}
+html.light[data-s="maths"]{--acc:#e8661c;--acc-bg:#fff0e6}
+html.light[data-s="pc"]{--acc:#1689d1;--acc-bg:#e6f4fd}
+html.light[data-s="svt"]{--acc:#23a052;--acc-bg:#e7f7ec}
+html.light[data-s="tech"]{--acc:#dd5f42;--acc-bg:#fdece7}
+html.light .stage{--line:#2c2f34;--acc-bg:#2a1e17;--bg:#141517;--panel:#1d1f22;--ink:#e9e9ea;--mute:#8b8f96}
+html.light[data-s="pc"] .stage{--acc:#38b6ff;--acc-bg:#132433}
+html.light[data-s="svt"] .stage{--acc:#56d07f;--acc-bg:#15281c}
+html.light[data-s="maths"] .stage{--acc:#ff7a2f;--acc-bg:#2a1e17}
+html.light[data-s="tech"] .stage{--acc:#f27b60;--acc-bg:#2d1c18}
+html.light .ar{color:#2f343b}
+html.light .cap{color:var(--mute)}
+html.light .cap b{color:var(--ink)}
+html.light .stepper button.on{color:var(--ink)}
+html.light .hud{background:#fff}
+html.light .hud span{color:#2a2e34}
+html.light .hud .hot span{color:var(--acc)}
+html.light .btn{background:#eef0f3;color:var(--ink);border-color:#cfd3d9}
+html.light .btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+html.light .btn.ok{color:#1d8a4f;border-color:#1d8a4f}
+html.light .btn.ko{color:#c93c3c;border-color:#c93c3c}
+html.light .fb.ok{color:#1d8a4f}
+html.light .fb.ko{color:#c93c3c}
+html.light input.num{background:#fff;color:var(--ink);border-color:#c5c9d0}
+html.light .lesson .badge{color:#1d8a4f}
+html.light .diff.pri .ar,html.light .diff.pri .small{color:#fff}

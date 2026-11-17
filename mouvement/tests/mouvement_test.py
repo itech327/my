@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'tech/3ac-transmettre': {'sliders': [36], 'guide': [('num', '500'), ('opt', 'dans le même sens'), ('num', '30')], 'seul': ['en sens inverse', '200', 'une rotation en', '160']},
+    'tech/3ac-agir': {'buttons': ['Sortir la tige', 'Rentrer la tige'], 'guide': [('opt', 'air comprimé'), ('num', '100'), ('opt', 'transmettre puis agir')], 'seul': ['translation', 'un ressort', 'agir', '300']},
+    'tech/3ac-dessin': {'buttons': ['Vue de face', 'Vue de dessus', 'Vue de gauche'], 'guide': [('num', '40'), ('num', '30'), ('opt', 'interrompu fin')], 'seul': ['sous la vue', 'continu fort', '50', '70']},
+    'tech/3ac-sources': {'buttons': ['Soleil', 'Vent', 'Eau des barrages'], 'guide': [('num', '3538'), ('num', '51'), ('opt', 'non renouvelable')], 'seul': ['renouvelable', 'le charbon', '2392', '10400']},
+    'tech/3ac-hydro-eolien': {'sliders': [12], 'guide': [('num', '301'), ('num', '20'), ('opt', 'se met en sécurité')], 'seul': ['une turbine', 'augmente la vitesse', '12', '75']},
+    'tech/3ac-solaire': {'sliders': [30], 'guide': [('num', '3000'), ('opt', 'un onduleur'), ('num', '510')], 'seul': ['électrique', 'le continu en alternatif', 'au stockage', '1500']},
+    'tech/3ac-efficacite': {'sliders': [5], 'guide': [('num', '1,5'), ('num', '11,25'), ('num', '9,75')], 'seul': ['classe A', 'éteint', '1,5', '1248']},
     'tech/3ac-systemes': {'sliders': [3], 'guide': [('opt', 'système primitif'), ('opt', 'système mécanisé'), ('opt', 'système automatisé')], 'seul': ['un moteur', 'automatisée', 'programmée', '18']},
     'tech/3ac-acquerir': {'sliders': [20], 'guide': [('num', '136'), ('num', '68'), ('opt', 'analogique')], 'seul': ['logique (0', 'un capteur de', 'aimant', '10']},
     'tech/3ac-traiter': {'buttons': ['Basculer A', 'Basculer B'], 'guide': [('opt', 'la porte OU'), ('num', '1'), ('num', '0')], 'seul': ['0', 'une suite ordonnée', '1', '8']},
