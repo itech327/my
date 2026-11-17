@@ -42,6 +42,7 @@ AUDIT = """() => {
   if (matchMedia('(pointer: coarse)').matches) {
     for (const b of document.querySelectorAll('main button, main input')) {
       const r = b.getBoundingClientRect(); if (!r.width) continue;
+      if (b.type === 'checkbox') { const l = b.closest('label'); if (l && l.getBoundingClientRect().height >= 34) continue; }
       if (b.type === 'range') { if (r.height < 20) out.push('curseur trop petit ' + Math.round(r.height)); continue; }
       if (r.height < 34) { out.push('bouton trop petit (' + Math.round(r.height) + ' px) : ' + (b.textContent || b.className).trim().slice(0, 30)); break; }
     }

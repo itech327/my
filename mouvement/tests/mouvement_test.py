@@ -22,6 +22,19 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'tech/2ac-besoin': {'buttons': ['À qui rend-il', 'Sur quoi agit-il', 'Dans quel but'], 'guide': [('opt', 'à l’élève'), ('opt', 'sur les stylos'), ('opt', 'un objet technique')], 'seul': ['répondre à un besoin', 'la matière d’œuvre', 'un système technique', '8']},
+    'tech/2ac-sysml': {'buttons': ['Cas d’utilisation', 'Contexte', 'Exigences'], 'guide': [('opt', 'un acteur'), ('opt', 'de contexte'), ('num', '3')], 'seul': ['un service rendu', 'des exigences', 'une exigence', '12']},
+    'tech/2ac-schema': {'sliders': [8], 'guide': [('num', '220'), ('num', '1000'), ('opt', 'deux flèches qui sortent')], 'seul': ['une lampe', 'représenter le circuit', '4700', '330']},
+    'tech/2ac-alimentation': {'sliders': [200], 'guide': [('num', '4,5'), ('num', '5'), ('opt', 'rechargeable')], 'seul': ['abaisser', '6', '12', '300']},
+    'tech/2ac-signalisation': {'sliders': [7], 'guide': [('num', '3'), ('num', '150'), ('opt', 'risque de griller')], 'seul': ['dans le bon sens', 'sonore', '20', '500']},
+    'tech/2ac-commutation': {'buttons': ['Basculer en bas', 'Basculer en haut'], 'guide': [('opt', 'tant qu’on appuie'), ('opt', 'interrupteur commandé'), ('opt', 'un circuit puissant')], 'seul': ['laisse passer', 'deux inverseurs', 'est arrêté', '1']},
+    'tech/2ac-detection': {'sliders': [20], 'guide': [('opt', 'diminue'), ('opt', 'une thermistance'), ('opt', 'un ILS')], 'seul': ['la lumière', 'la chaleur', 'diminue', '40']},
+    'tech/2ac-temporisation': {'sliders': [3], 'guide': [('num', '4,7'), ('num', '22'), ('opt', 'augmente R ou C')], 'seul': ['stocke', '63 %', '4,7', '100']},
+    'tech/2ac-mouvement': {'sliders': [80], 'guide': [('num', '300'), ('opt', 'dans le même sens'), ('opt', 'en sens inverse')], 'seul': ['moins vite', '300', 'dans le même sens', '48']},
+    'tech/2ac-circuit-imprime': {'buttons': ['Étape suivante'] * 7, 'guide': [('opt', 'le cuivre non protégé'), ('opt', 'gants et lunettes'), ('num', '80')], 'seul': ['le dessin des pistes', 'perce les trous', 'bidon', '32']},
+    'tech/2ac-marche': {'sliders': [50], 'guide': [('opt', 'un service'), ('opt', 'diminue'), ('num', '70')], 'seul': ['un bien', 'le parent', 'baisser', '40']},
+    'tech/2ac-entreprise': {'buttons': ['Pêche à Agadir', 'Usine automobile', 'Banque', 'Extraction des phosphates'], 'guide': [('opt', 'secondaire'), ('opt', 'la fonction commerciale'), ('opt', 'les ressources humaines')], 'seul': ['primaire', 'tertiaire', 'financière', '4']},
+    'tech/2ac-mini-entreprise': {'sliders': [20], 'guide': [('num', '15'), ('num', '5'), ('num', '300')], 'seul': ['trouver une idée', 'connaître les clients', '240', '120']},
     'tech/3ac-transmettre': {'sliders': [36], 'guide': [('num', '500'), ('opt', 'dans le même sens'), ('num', '30')], 'seul': ['en sens inverse', '200', 'une rotation en', '160']},
     'tech/3ac-agir': {'buttons': ['Sortir la tige', 'Rentrer la tige'], 'guide': [('opt', 'air comprimé'), ('num', '100'), ('opt', 'transmettre puis agir')], 'seul': ['translation', 'un ressort', 'agir', '300']},
     'tech/3ac-dessin': {'buttons': ['Vue de face', 'Vue de dessus', 'Vue de gauche'], 'guide': [('num', '40'), ('num', '30'), ('opt', 'interrompu fin')], 'seul': ['sous la vue', 'continu fort', '50', '70']},

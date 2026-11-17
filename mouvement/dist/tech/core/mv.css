@@ -206,5 +206,5 @@ html.light .diff.pri .ar,html.light .diff.pri .small{color:#fff}
 .eleve .row{flex-wrap:wrap}
 input.txt{flex:1 1 160px;width:auto;text-align:left;font-family:inherit;font-size:15px}
 input.txt.cls{flex:0 1 150px}
-.chk{display:flex;gap:8px;align-items:flex-start;margin:10px 0 4px;cursor:pointer}
-.chk input{width:20px;height:20px;flex:none;margin:0}
+.chk{display:flex;gap:10px;align-items:center;min-height:44px;margin:6px 0 4px;cursor:pointer}
+.chk input{width:24px;height:24px;flex:none;margin:0}
