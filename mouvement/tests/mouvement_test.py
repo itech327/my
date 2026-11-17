@@ -22,6 +22,16 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/2ac-ordre': {'sliders': [-2], 'guide': [('opt', '8'), ('opt', '<'), ('opt', '>')], 'seul': ['−4', '<', '>', '1']},
+    'maths/2ac-proportionnalite': {'sliders': [14], 'guide': [('num', '1,5'), ('num', '24'), ('num', '48')], 'seul': ['3', '2', '75', '30']},
+    'maths/2ac-statistique': {'sliders': [16], 'guide': [('num', '10'), ('num', '13,7'), ('num', '14')], 'seul': ['9', '12', '5', '10']},
+    'maths/2ac-pyramides-cones': {'sliders': [3], 'guide': [('num', '36'), ('num', '360'), ('num', '120')], 'seul': ['50', '30', '37,68', '6']},
+    'maths/3ac-statistiques': {'sliders': [23000], 'guide': [('opt', '7, 9, 10'), ('num', '10,5'), ('num', '10,7')], 'seul': ['5', '7', '9,5', 'la médiane']},
+    'pc/1ac-protection': {'buttons': ['+ radiateur', '+ fer', '+ bouilloire'], 'guide': [('num', '9'), ('opt', 'ne fond pas'), ('opt', 'fond')], 'seul': ['le disjoncteur', 'un court-circuit', 'les personnes', '2']},
+    'pc/1ac-temperature-chaleur': {'sliders': [400], 'guide': [('opt', 'de l\'air vers'), ('opt', 'se réchauffe'), ('num', '25')], 'seul': ['le thermomètre', 'du chaud vers', '40', '17']},
+    'pc/1ac-conservation-masse': {'buttons': ['Congeler', 'Faire fondre'], 'guide': [('num', '265'), ('opt', 'toujours présent'), ('opt', 'exactement')], 'seul': ['se conserve', 'augmente', '325', '2,18']},
+    'pc/1ac-resistance': {'sliders': [100], 'guide': [('opt', '47 Ω'), ('opt', '220 Ω'), ('opt', 'ne change pas')], 'seul': ['ohm', 'diminue', 'un conducteur', '3']},
+    'pc/2ac-installation-domestique': {'buttons': ['Tester la borne rouge', 'Tester la borne bleue'], 'guide': [('opt', 'en dérivation'), ('opt', 'la phase'), ('opt', 'coupe')], 'seul': ['la phase', 'vert et jaune', 'en dérivation', '150']},
     'maths/1ac-proportionnalite': {'sliders': [6], 'guide': [('num', '4'), ('num', '32'), ('num', '8')], 'seul': ['5', '112', '24', 'non']},
     'maths/1ac-statistiques': {'sliders': [12], 'buttons': ['Circulaire'], 'guide': [('num', '0,4'), ('num', '40'), ('num', '144')], 'seul': ['3', '12', '25', '90']},
     'maths/2ac-translation': {'sliders': [7, 3], 'guide': [('opt', 'DC'), ('opt', 'C'), ('num', '5')], 'seul': ['glisser', 'la même longueur', '7', '5']},
