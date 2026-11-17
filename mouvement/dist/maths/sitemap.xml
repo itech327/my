@@ -12,6 +12,8 @@
   <url><loc>https://maths.taalim.men/1ac-angles/</loc></url>
   <url><loc>https://maths.taalim.men/1ac-cercle/</loc></url>
   <url><loc>https://maths.taalim.men/1ac-repere/</loc></url>
+  <url><loc>https://maths.taalim.men/1ac-proportionnalite/</loc></url>
+  <url><loc>https://maths.taalim.men/1ac-statistiques/</loc></url>
   <url><loc>https://maths.taalim.men/2ac-rationnels/</loc></url>
   <url><loc>https://maths.taalim.men/2ac-addition-rationnels/</loc></url>
   <url><loc>https://maths.taalim.men/2ac-symetrie/</loc></url>
@@ -25,6 +27,7 @@
   <url><loc>https://maths.taalim.men/2ac-pythagore/</loc></url>
   <url><loc>https://maths.taalim.men/2ac-cosinus/</loc></url>
   <url><loc>https://maths.taalim.men/2ac-equations/</loc></url>
+  <url><loc>https://maths.taalim.men/2ac-translation/</loc></url>
   <url><loc>https://maths.taalim.men/3ac-racines-carrees/</loc></url>
   <url><loc>https://maths.taalim.men/3ac-identites/</loc></url>
   <url><loc>https://maths.taalim.men/3ac-ordre/</loc></url>
@@ -36,4 +39,5 @@
   <url><loc>https://maths.taalim.men/3ac-repere/</loc></url>
   <url><loc>https://maths.taalim.men/3ac-equation-droite/</loc></url>
   <url><loc>https://maths.taalim.men/3ac-agrandissement/</loc></url>
+  <url><loc>https://maths.taalim.men/3ac-fonctions/</loc></url>
 </urlset>

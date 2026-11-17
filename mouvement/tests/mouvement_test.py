@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'maths/1ac-proportionnalite': {'sliders': [6], 'guide': [('num', '4'), ('num', '32'), ('num', '8')], 'seul': ['5', '112', '24', 'non']},
+    'maths/1ac-statistiques': {'sliders': [12], 'buttons': ['Circulaire'], 'guide': [('num', '0,4'), ('num', '40'), ('num', '144')], 'seul': ['3', '12', '25', '90']},
+    'maths/2ac-translation': {'sliders': [7, 3], 'guide': [('opt', 'DC'), ('opt', 'C'), ('num', '5')], 'seul': ['glisser', 'la même longueur', '7', '5']},
+    'maths/3ac-fonctions': {'sliders': [11], 'guide': [('num', '3'), ('num', '7'), ('opt', 'affine, non linéaire')], 'seul': ['15', '7', '4', '7']},
+    'pc/1ac-lois-circuits': {'sliders': [4, 4], 'guide': [('opt', 'additivité'), ('num', '2,5'), ('opt', 'les deux')], 'seul': ['en dérivation', '0,65', '5', '0,7']},
+    'pc/2ac-courant-alternatif': {'sliders': [100], 'guide': [('num', '10'), ('num', '100'), ('num', '10')], 'seul': ['50 Hz', '20', '40', '10']},
+    'pc/3ac-mouvement': {'buttons': ['Trajectoire circulaire', 'Vitesse : uniforme'], 'guide': [('opt', 'rectiligne'), ('opt', 'ralenti'), ('opt', 'immobile')], 'seul': ['rectiligne', 'circulaire', 'uniforme', '30']},
     'maths/1ac-repere': {'sliders': [-3, 2], 'guide': [('num', '7'), ('num', '1,5'), ('opt', 'axe des ordonnées')], 'seul': ['5', '7', 'sous', '-2']},
     'maths/2ac-triangle-rectangle-cercle': {'sliders': [90], 'guide': [('opt', 'I, milieu'), ('num', '5'), ('num', '5')], 'seul': ['hypoténuse', '6,5', '90', '9']},
     'maths/2ac-cosinus': {'sliders': [60], 'guide': [('opt', 'EG'), ('opt', 'EG = EF × cos'), ('num', '5')], 'seul': ['adjacent ÷', '0,8', '3', 'cosinus 0,2']},
