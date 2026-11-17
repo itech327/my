@@ -22,6 +22,13 @@ FAILS = []
 
 # réponses : (type, valeur) dans l'ordre des questions de « Nous faisons », puis réponses de « Je fais seul »
 PLAN = {
+    'tech/3ac-systemes': {'sliders': [3], 'guide': [('opt', 'système primitif'), ('opt', 'système mécanisé'), ('opt', 'système automatisé')], 'seul': ['un moteur', 'automatisée', 'programmée', '18']},
+    'tech/3ac-acquerir': {'sliders': [20], 'guide': [('num', '136'), ('num', '68'), ('opt', 'analogique')], 'seul': ['logique (0', 'un capteur de', 'aimant', '10']},
+    'tech/3ac-traiter': {'buttons': ['Basculer A', 'Basculer B'], 'guide': [('opt', 'la porte OU'), ('num', '1'), ('num', '0')], 'seul': ['0', 'une suite ordonnée', '1', '8']},
+    'tech/3ac-communiquer': {'sliders': [10], 'guide': [('num', '4'), ('num', '13'), ('opt', 'les ondes radio')], 'seul': ['sonore', 'infrarouge', '6', '256']},
+    'tech/3ac-alimenter': {'sliders': [4], 'guide': [('num', '4,5'), ('num', '1,5'), ('opt', 'alternatif en continu')], 'seul': ['alimenter', '6', 'abaisse', '5']},
+    'tech/3ac-distribuer': {'buttons': ['Fermer K1 et K4', 'Fermer K2 et K3'], 'guide': [('opt', 'un grand courant'), ('opt', 'le sens du courant'), ('opt', 'un distributeur')], 'seul': ['la commande et', 'un relais', 'un court-circuit', '200']},
+    'tech/3ac-convertir': {'sliders': [50], 'guide': [('num', '1000'), ('num', '80'), ('opt', 'de la chaleur')], 'seul': ['mécanique', 'lumineuse', '150', '60']},
     'maths/2ac-ordre': {'sliders': [-2], 'guide': [('opt', '8'), ('opt', '<'), ('opt', '>')], 'seul': ['−4', '<', '>', '1']},
     'maths/2ac-proportionnalite': {'sliders': [14], 'guide': [('num', '1,5'), ('num', '24'), ('num', '48')], 'seul': ['3', '2', '75', '30']},
     'maths/2ac-statistique': {'sliders': [16], 'guide': [('num', '10'), ('num', '13,7'), ('num', '14')], 'seul': ['9', '12', '5', '10']},

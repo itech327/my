@@ -78,7 +78,7 @@ async def main():
         SHOTS.mkdir(parents=True, exist_ok=True)
     async with async_playwright() as pw:
         br = await pw.chromium.launch()
-        for port, s in enumerate(['maths', 'pc', 'svt'], 8861):
+        for port, s in enumerate(['maths', 'pc', 'svt', 'tech'], 8861):
             srv = serve(DIST / s, port)
             base = 'http://127.0.0.1:%d/' % port
             ctx = await br.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
@@ -87,7 +87,7 @@ async def main():
             page.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
             page.on('pageerror', lambda e: errs.append(str(e)))
             await page.goto(base + 'examen/')
-            for lvl in '123':
+            for lvl in [t[0] for t in await page.locator('.seg').first.locator('button').all_inner_texts()]:
                 await page.get_by_role('button', name=lvl + 'AC', exact=True).click()
                 for d, dn in enumerate(['Niveau 1', 'Niveau 2', 'Niveau 3'], 1):
                     await page.locator('.diff').filter(has_text=dn).click()
@@ -104,7 +104,7 @@ async def main():
                         fail(label + ' : sans réponse mais note non nulle')
                     await page.get_by_role('button', name='Changer de niveau').click()
             # thème seul
-            await page.get_by_role('button', name='1AC', exact=True).click()
+            await page.locator('.seg').first.locator('button').first.click()
             await page.locator('.wrapseg .btn').nth(1).click()
             await take(page, s + ' thème', True)
             await page.get_by_role('button', name='Changer de niveau').click()
@@ -120,8 +120,8 @@ async def main():
             srv.shutdown()
 
         # note d'une leçon, badge sur l'accueil, plein écran
-        srv = serve(DIST / 'maths', 8870)
-        base = 'http://127.0.0.1:8870/'
+        srv = serve(DIST / 'maths', 8880)
+        base = 'http://127.0.0.1:8880/'
         ctx = await br.new_context(viewport={'width': 1366, 'height': 768})
         page = await ctx.new_page()
         await page.goto(base + '1ac-cercle/')

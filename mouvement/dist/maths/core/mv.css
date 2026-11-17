@@ -135,3 +135,4 @@ body.fs .stage svg{max-height:68vh}
 .top .brand{white-space:nowrap}
 .fsbtn{white-space:nowrap}
 @media (max-width:480px){.fsbtn .t{display:none}.fsbtn{padding:6px 11px}}
+html[data-s="tech"]{--acc:#f27b60;--acc-bg:#2d1c18;--glow:#2a1915}

@@ -18,7 +18,7 @@ from playwright.async_api import async_playwright
 
 DIST = Path(__file__).resolve().parents[1] / 'dist'
 SHOTS = Path(sys.argv[sys.argv.index('--shots') + 1]) if '--shots' in sys.argv else None
-SUBJ = sys.argv[sys.argv.index('--subj') + 1].split(',') if '--subj' in sys.argv else ['maths', 'pc', 'svt']
+SUBJ = sys.argv[sys.argv.index('--subj') + 1].split(',') if '--subj' in sys.argv else ['maths', 'pc', 'svt', 'tech']
 ONLY = sys.argv[sys.argv.index('--only') + 1].split(',') if '--only' in sys.argv else None
 VIEWS = {
     'tel-360': dict(viewport={'width': 360, 'height': 740}, is_mobile=True, has_touch=True, device_scale_factor=2),
@@ -103,7 +103,7 @@ async def main():
     async with async_playwright() as pw:
         br = await pw.chromium.launch()
         for s in SUBJ:
-            port = 8851 + ['maths', 'pc', 'svt'].index(s)
+            port = 8851 + ['maths', 'pc', 'svt', 'tech'].index(s)
             d = DIST / s
             srv = serve(d, port)
             base = 'http://127.0.0.1:%d/' % port

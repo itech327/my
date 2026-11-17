@@ -21,6 +21,9 @@ SUBJECTS = {
     'maths': {'name': 'Maths', 'full': 'Mathématiques', 'ar': 'الرياضيات', 'glyph': 'π', 'url': 'https://maths.taalim.men/'},
     'pc': {'name': 'Physique-chimie', 'full': 'Physique-chimie', 'ar': 'الفيزياء والكيمياء', 'glyph': '⚛', 'url': 'https://pc.taalim.men/'},
     'svt': {'name': 'SVT', 'full': 'Sciences de la vie et de la Terre', 'ar': 'علوم الحياة والأرض', 'glyph': '✿', 'url': 'https://svt.taalim.men/'},
+    # live=False : le site n'est pas encore relié à son domaine, donc absent des pieds de page des autres matières
+    'tech': {'name': 'Technologie', 'full': 'Technologie', 'ar': 'التكنولوجيا', 'glyph': '⚙', 'url': 'https://tech.taalim.men/',
+             'levels': ['2', '3'], 'live': False},
 }
 LEVELS = [('1', '1<sup>re</sup> année', 'السنة الأولى'), ('2', '2<sup>e</sup> année', 'السنة الثانية'), ('3', '3<sup>e</sup> année', 'السنة الثالثة')]
 LEAD = 'Des leçons courtes qui expliquent par le mouvement : une scène animée, des exercices guidés puis autonomes, et un résumé en arabe.'
@@ -83,9 +86,12 @@ def head(s, cfg, title, desc, url, depth):
 
 
 def footer(s):
-    others = ' '.join(f'<a href="{c["url"]}">{c["glyph"]} {c["name"]}</a>' for k, c in SUBJECTS.items() if k != s)
+    others = ' '.join(f'<a href="{c["url"]}">{c["glyph"]} {c["name"]}</a>' for k, c in SUBJECTS.items()
+                      if k != s and (c.get('live', True) or k == 'tech' and s == 'tech'))
+    labo = ('<a href="https://technologie.taalim.men/">⚙ Labo et jeux de technologie</a>' if s == 'tech' or SUBJECTS['tech'].get('live', True)
+            else '<a href="https://technologie.taalim.men/">⚙ Technologie</a>')
     return (f'<nav class="others" aria-label="Autres matières">{others}'
-            '<a href="https://technologie.taalim.men/">⚙ Technologie</a><a href="https://taalim.men/">Tous les cours</a></nav>'
+            f'{labo}<a href="https://taalim.men/">Tous les cours</a></nav>'
             '<p class="note">Cours en mouvement · collège, option française · taalim.men</p>')
 
 
@@ -107,10 +113,12 @@ def home_page(s, cfg, lessons):
            '<script defer src="core/mv.js"></script>\n</head>\n<body data-home>\n<main>\n',
            f'<div class="hero"><div class="glyph">{cfg["glyph"]}</div><h1>{E(cfg["name"])} en mouvement</h1>',
            f'<div class="ar">{E(cfg["ar"])}: {E(LEAD_AR)}</div><p class="small">{E(LEAD)}</p></div>\n',
-           '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS) + '</nav>\n',
+           '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS if k in cfg.get('levels', '123')) + '</nav>\n',
            '<a class="lesson exam" href="examen/"><span class="n">20</span><span><span class="eyebrow">Évaluation</span><b>Examens par niveau</b>'
            '<span class="ar">امتحانات: ثلاثة مستويات للصعوبة، النقطة على 20 والتصحيح</span></span></a>\n']
     for k, fr, ar in LEVELS:
+        if k not in cfg.get('levels', '123'):
+            continue
         mine = [m for m in lessons if m['level'] == k]
         out.append(f'<h2 id="n{k}">{fr} <span class="small">· {ar}</span></h2>\n')
         if not mine:

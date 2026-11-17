@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tech.taalim.men/sitemap.xml

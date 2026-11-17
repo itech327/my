@@ -11,7 +11,9 @@
     { k: 2, fr: 'Niveau 2 · Application', ar: 'المستوى 2: التطبيق', d: 'Exercices de niveaux 2 et 3.', lv: [2, 3] },
     { k: 3, fr: 'Niveau 3 · Approfondissement', ar: 'المستوى 3: التعمق', d: 'Exercices de niveaux 3 et 4, les plus exigeants.', lv: [3, 4] }
   ];
-  var cfg = { level: (location.hash.match(/n([123])/) || [])[1] || '1', diff: 1, theme: '', n: 10 };
+  var LEVELS = ['1', '2', '3'].filter(function (k) { return DATA.some(function (l) { return l.level === k; }); });
+  var cfg = { level: (location.hash.match(/n([123])/) || [])[1] || LEVELS[0] || '1', diff: 1, theme: '', n: 10 };
+  if (LEVELS.indexOf(cfg.level) < 0) cfg.level = LEVELS[0];
   var box = H('div', '', '', main);
 
   function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
@@ -45,7 +47,7 @@
   function setup() {
     box.innerHTML = '';
     var c = H('div', 'card', '<div class="eyebrow">1. Niveau scolaire</div>', box), lv = H('div', 'seg', '', c);
-    ['1', '2', '3'].forEach(function (k) {
+    LEVELS.forEach(function (k) {
       var b = H('button', 'btn' + (cfg.level === k ? ' pri' : ''), k + 'AC', lv);
       b.onclick = function () { cfg.level = k; cfg.theme = ''; setup(); };
     });
