@@ -23,7 +23,7 @@ SUBJECTS = {
     'svt': {'name': 'SVT', 'full': 'Sciences de la vie et de la Terre', 'ar': 'علوم الحياة والأرض', 'glyph': '✿', 'url': 'https://svt.taalim.men/'},
     # live=False : le site n'est pas encore relié à son domaine, donc absent des pieds de page des autres matières
     'tech': {'name': 'Technologie', 'full': 'Technologie', 'ar': 'التكنولوجيا', 'glyph': '⚙', 'url': 'https://tech.taalim.men/',
-             'levels': ['2', '3'], 'live': False},
+             'levels': ['2', '3']},
 }
 LEVELS = [('1', '1<sup>re</sup> année', 'السنة الأولى'), ('2', '2<sup>e</sup> année', 'السنة الثانية'), ('3', '3<sup>e</sup> année', 'السنة الثالثة')]
 LEAD = 'Des leçons courtes qui expliquent par le mouvement : une scène animée, des exercices guidés puis autonomes, et un résumé en arabe.'
