@@ -84,26 +84,27 @@
     var d = H('div', '', '<div class="q">' + o.q + '</div><div class="row"><input class="num" inputmode="decimal" aria-label="Réponse">' +
       (o.unit ? '<span class="small">' + o.unit + '</span>' : '') + '<button class="btn" data-v>Vérifier</button>' +
       (o.hint ? '<button class="btn" data-h>Indice</button>' : '') + '</div><div class="fb" aria-live="polite"></div>', parent);
-    var inp = d.querySelector('input'), fb = d.querySelector('.fb'), bv = d.querySelector('[data-v]'), bh = d.querySelector('[data-h]');
+    var inp = d.querySelector('input'), fb = d.querySelector('.fb'), bv = d.querySelector('[data-v]'), bh = d.querySelector('[data-h]'), miss = false;
     function check() {
+      if (inp.value.trim() === '') { feedback(fb, false, 'Écris d\'abord ta réponse.'); return; }
       var v = parseNum(inp.value);
       if (!isNaN(v) && Math.abs(v - o.a) <= (o.tol || 1e-9)) {
-        feedback(fb, true, 'Juste. ' + (o.ok || '')); inp.disabled = bv.disabled = true; if (bh) bh.disabled = true; if (done) done();
-      } else feedback(fb, false, o.ko || 'Pas encore. Vérifie ton calcul' + (o.hint ? ' ou demande l\'indice.' : '.'));
+        feedback(fb, true, 'Juste. ' + (o.ok || '')); inp.disabled = bv.disabled = true; if (bh) bh.disabled = true; if (done) done(!miss);
+      } else { miss = true; feedback(fb, false, o.ko || 'Pas encore. Vérifie ton calcul' + (o.hint ? ' ou demande l\'indice.' : '.')); }
     }
     bv.onclick = check; inp.onkeydown = function (e) { if (e.key === 'Enter') check(); };
-    if (bh) bh.onclick = function () { fb.className = 'fb'; fb.textContent = o.hint; };
+    if (bh) bh.onclick = function () { miss = true; fb.className = 'fb'; fb.textContent = o.hint; };
     return d;
   }
   // choix multiple : {q, o:[...], a, e, ko}
   function optQ(parent, o, done) {
     var d = H('div', '', '<div class="q">' + o.q + '</div><div class="opts"></div><div class="fb" aria-live="polite"></div>', parent);
-    var box = d.querySelector('.opts'), fb = d.querySelector('.fb');
+    var box = d.querySelector('.opts'), fb = d.querySelector('.fb'), miss = false;
     o.o.forEach(function (t, i) {
       var b = H('button', 'btn opt', t, box);
       b.onclick = function () {
-        if (i === o.a) { b.classList.add('ok'); [].forEach.call(box.children, function (x) { x.disabled = true; }); feedback(fb, true, 'Juste. ' + (o.e || '')); if (done) done(); }
-        else { b.classList.add('ko'); feedback(fb, false, o.ko || 'Relis la question et essaie encore.'); }
+        if (i === o.a) { b.classList.add('ok'); [].forEach.call(box.children, function (x) { x.disabled = true; }); feedback(fb, true, 'Juste. ' + (o.e || '')); if (done) done(!miss); }
+        else { miss = true; b.classList.add('ko'); b.disabled = true; feedback(fb, false, o.ko || 'Relis la question et essaie encore.'); }
       };
     });
     return d;
@@ -145,13 +146,32 @@
     return function (k, v) { var d = hud.querySelector('[data-k="' + k + '"] span'); if (d) fit(d, v); };
   }
 
+  /* ---------- évaluation et plein écran ---------- */
+  // Je me prépare compte pour un tiers, Je fais seul pour deux tiers.
+  function noteSur20(p, P, s, N) { return Math.round(20 * ((P ? p / P : 0) + 2 * (N ? s / N : 0)) / ((P ? 1 : 0) + (N ? 2 : 0)) * 2) / 2; }
+  function mention(n) { return n >= 16 ? 'Très bien · حسن جدا' : n >= 14 ? 'Bien · حسن' : n >= 12 ? 'Assez bien · مستحسن' : n >= 10 ? 'Passable · مقبول' : 'À revoir · يحتاج إلى مراجعة'; }
+  function fullscreenBtn() {
+    var de = document.documentElement, req = de.requestFullscreen || de.webkitRequestFullscreen;
+    var top = document.querySelector('.top'); if (!top || !req) return;
+    var b = H('button', 'fsbtn', '⛶<span class="t"> Plein écran</span>', null); top.insertBefore(b, top.querySelector('.brand'));
+    b.setAttribute('aria-label', 'Plein écran');
+    function isFs() { return document.fullscreenElement || document.webkitFullscreenElement; }
+    function upd() { b.setAttribute('aria-label', isFs() ? 'Quitter le plein écran' : 'Plein écran'); b.innerHTML = isFs() ? '✕<span class="t"> Quitter</span>' : '⛶<span class="t"> Plein écran</span>'; document.body.classList.toggle('fs', !!isFs()); }
+    b.onclick = function () {
+      if (isFs()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else { var r = req.call(de); if (r && r.catch) r.catch(function () {}); }
+    };
+    document.addEventListener('fullscreenchange', upd); document.addEventListener('webkitfullscreenchange', upd);
+  }
+
   /* ---------- la séance ---------- */
   var NAMES = ['Ouverture', 'Je me prépare', 'Je regarde', 'Nous faisons', 'Je fais seul', 'Bilan'];
   function lesson(def) {
     var main = document.getElementById('mv'); if (!main) return;
     var stepper = H('nav', 'stepper', '', main); stepper.setAttribute('aria-label', 'Étapes de la séance');
     var secs = NAMES.map(function (n) { var s = H('section', 'mv-sec', '', main); s.dataset.t = n; return s; });
-    var cur = 0, scenes = [];
+    var cur = 0, scenes = [], score = { prep: 0, seul: 0, done: 0 };
+    fullscreenBtn();
     NAMES.forEach(function (n, i) { var b = H('button', '', (i + 1) + '. ' + n, stepper); b.onclick = function () { go(i); }; });
     function go(i) {
       cur = i;
@@ -160,7 +180,7 @@
       var b = stepper.children[i]; if (b.scrollIntoView) b.scrollIntoView({ inline: 'center', block: 'nearest' });
       window.scrollTo(0, 0);
       if (scenes[i]) scenes[i].go(0);
-      if (i === 5) store.set('mv_done_' + def.id, '1');
+      if (i === 5) { store.set('mv_done_' + def.id, '1'); showScore(); }
     }
     function nextBtn(parent, label, to) { var b = H('button', 'btn pri', label, parent); b.style.marginTop = '12px'; b.onclick = function () { go(to); }; return b; }
 
@@ -178,7 +198,7 @@
       c1.insertBefore(d, go2);
       var bs = d.querySelectorAll('button'), fb = d.querySelector('.fb');
       function ans(x) {
-        var ok = x === p[1]; feedback(fb, ok, (ok ? 'Juste. ' : 'Pas tout à fait. ') + p[2]);
+        var ok = x === p[1]; if (ok) score.prep++; feedback(fb, ok, (ok ? 'Juste. ' : 'Pas tout à fait. ') + p[2]);
         bs[0].disabled = bs[1].disabled = true; bs[x ? 0 : 1].classList.add(ok ? 'ok' : 'ko');
         if (--left === 0) go2.style.display = '';
       }
@@ -203,12 +223,24 @@
     def.seul.forEach(function (x) {
       var w = H('div', '', '<div class="eyebrow" style="margin-top:16px">' + x.lvl + '</div>');
       c4.insertBefore(w, fin);
-      (x.o ? optQ : numQ)(w, x, function () { if (--rest === 0) { bb.classList.add('pri'); bb.textContent = 'Bilan ▶'; } });
+      (x.o ? optQ : numQ)(w, x, function (first) { score.done++; if (first) score.seul++; if (--rest === 0) { bb.classList.add('pri'); bb.textContent = 'Bilan ▶'; } });
     });
     var bb = H('button', 'btn', 'Passer au bilan', fin); bb.style.marginTop = '12px'; bb.onclick = function () { go(5); };
 
     // 6. Bilan
-    var c5 = H('div', 'card', '', secs[5]);
+    var c5 = H('div', 'card', '', secs[5]), ev = H('div', 'card eval', '', secs[5]);
+    function showScore() {
+      var P = def.prepare.length, N = def.seul.length, note = noteSur20(score.prep, P, score.seul, N);
+      var key = 'mv_score_' + def.id, best = +(store.get(key) || -1);
+      if (score.done === N && note > best) { store.set(key, String(note)); best = note; }
+      ev.innerHTML = '<div class="eyebrow">Mon évaluation</div>' +
+        (score.done < N ? '<p class="small">Termine les ' + N + ' exercices de « Je fais seul » pour obtenir ta note. Exercices réussis : ' + score.done + ' sur ' + N + '.</p>' :
+        '<div class="note20"><b>' + fmt(note, 1) + '</b><span>/ 20</span></div><div class="mention">' + mention(note) + '</div>') +
+        '<table class="voc"><tr><td>Je me prépare : bonnes réponses</td><td class="mono">' + score.prep + ' / ' + P + '</td></tr>' +
+        '<tr><td>Je fais seul : réussis du premier coup</td><td class="mono">' + score.seul + ' / ' + N + '</td></tr>' +
+        (best >= 0 ? '<tr><td>Ma meilleure note</td><td class="mono">' + fmt(best, 1) + ' / 20</td></tr>' : '') + '</table>' +
+        '<p class="small">Une réponse juste après une erreur ou après l\'indice ne compte pas dans la note.</p>';
+    }
     def.bilan.end = def.bilan.end || 'Recommencer ▶';
     scenes[5] = scene(c5, def.bilan, function () { go(0); });
     H('div', 'card', '<div class="eyebrow">À retenir</div>' + def.retenir.map(function (r) { return '<div class="retenir">' + r + '</div>'; }).join('') +
@@ -222,10 +254,12 @@
   // accueil : coche les leçons terminées
   function home() {
     [].forEach.call(document.querySelectorAll('[data-lesson]'), function (a) {
-      if (store.get('mv_done_' + a.getAttribute('data-lesson'))) { var n = a.querySelector('.n'); if (n) n.textContent = '✓'; }
+      var id = a.getAttribute('data-lesson'), sc = store.get('mv_score_' + id);
+      if (store.get('mv_done_' + id)) { var n = a.querySelector('.n'); if (n) n.textContent = '✓'; }
+      if (sc) { var t = H('span', 'badge', fmt(+sc, 1) + '/20', null); a.appendChild(t); }
     });
   }
 
-  var MV = window.MV = { S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };
+  var MV = window.MV = { S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };
   if (document.body && document.body.hasAttribute('data-home')) home();
 })();

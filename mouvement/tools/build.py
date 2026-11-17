@@ -10,6 +10,7 @@ import html
 import json
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -106,7 +107,9 @@ def home_page(s, cfg, lessons):
            '<script defer src="core/mv.js"></script>\n</head>\n<body data-home>\n<main>\n',
            f'<div class="hero"><div class="glyph">{cfg["glyph"]}</div><h1>{E(cfg["name"])} en mouvement</h1>',
            f'<div class="ar">{E(cfg["ar"])}: {E(LEAD_AR)}</div><p class="small">{E(LEAD)}</p></div>\n',
-           '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS) + '</nav>\n']
+           '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS) + '</nav>\n',
+           '<a class="lesson exam" href="examen/"><span class="n">20</span><span><span class="eyebrow">Évaluation</span><b>Examens par niveau</b>'
+           '<span class="ar">امتحانات: ثلاثة مستويات للصعوبة، النقطة على 20 والتصحيح</span></span></a>\n']
     for k, fr, ar in LEVELS:
         mine = [m for m in lessons if m['level'] == k]
         out.append(f'<h2 id="n{k}">{fr} <span class="small">· {ar}</span></h2>\n')
@@ -119,6 +122,23 @@ def home_page(s, cfg, lessons):
     return ''.join(out)
 
 
+def exam_page(s, cfg):
+    url = f'{cfg["url"]}examen/'
+    return (head(s, cfg, f'Examens · {cfg["name"]} en mouvement', f'Examens de {cfg["full"]} au collège par niveau et par difficulté, note sur 20 et correction.', url, 1) +
+            '<script defer src="../core/mv.js"></script>\n<script defer src="questions.js"></script>\n<script defer src="../core/exam.js"></script>\n</head>\n<body>\n<main id="ex">\n'
+            f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
+            f'<div class="eyebrow">{E(cfg["name"])} · Examens</div>\n<h1>Examens</h1>\n<div class="ar">امتحانات حسب المستوى ودرجة الصعوبة، مع النقطة على 20 والتصحيح</div>\n'
+            '<noscript><p class="card">Les examens ont besoin de JavaScript.</p></noscript>\n'
+            f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
+
+
+def exam_data(lessons):
+    q = json.loads(subprocess.run(['node', str(MV / 'tools' / 'questions.js')] + [str(m['file']) for m in lessons],
+                                  check=True, capture_output=True, text=True).stdout)
+    data = [{'id': m['id'], 'level': m['level'], 'theme': m['theme'], 'title': m['title'], **q[m['id']]} for m in lessons]
+    return '/* Généré par build.py à partir des leçons. */\nwindow.MVQ = ' + json.dumps(data, ensure_ascii=False) + ';\n'
+
+
 def build():
     for s, cfg in SUBJECTS.items():
         d = DIST / s
@@ -126,7 +146,7 @@ def build():
             shutil.rmtree(d)
         (d / 'core').mkdir(parents=True)
         (d / 'lessons').mkdir()
-        for f in ('mv.css', 'mv.js'):
+        for f in ('mv.css', 'mv.js', 'exam.js'):
             shutil.copy(MV / 'core' / f, d / 'core' / f)
         shutil.copytree(ROOT / 'fonts', d / 'fonts')
         shutil.copytree(ROOT / 'icons', d / 'icons')
@@ -138,6 +158,10 @@ def build():
             (d / m['id'] / 'index.html').write_text(lesson_page(s, cfg, m), encoding='utf-8')
             urls.append(f'{cfg["url"]}{m["id"]}/')
         (d / 'index.html').write_text(home_page(s, cfg, lessons), encoding='utf-8')
+        (d / 'examen').mkdir()
+        (d / 'examen' / 'index.html').write_text(exam_page(s, cfg), encoding='utf-8')
+        (d / 'examen' / 'questions.js').write_text(exam_data(lessons), encoding='utf-8')
+        urls.append(f'{cfg["url"]}examen/')
         (d / '404.html').write_text(head(s, cfg, 'Page introuvable', 'Page introuvable', cfg['url'], 0) +
                                     '</head>\n<body>\n<main><h1>Page introuvable</h1><p><a href="/">Retour aux leçons</a></p></main>\n</body>\n</html>\n', encoding='utf-8')
         (d / '_headers').write_text(HEADERS, encoding='utf-8')
