@@ -429,6 +429,7 @@ async def main():
             s = key.split('/')[0]
             srv = serve(DIST / s, port)
             pg = await b.new_page(viewport={'width': 420, 'height': 860}, device_scale_factor=2)
+            await pg.route('https://taalim-relay.abderrahim-habz.workers.dev/**', lambda r: r.fulfill(status=200, body='ok'))  # relais Telegram simulé
             errs = []
             pg.on('pageerror', lambda e: errs.append(str(e)))
             pg.on('console', lambda m: m.type == 'error' and errs.append(m.text))

@@ -30,7 +30,7 @@ LEAD = 'Des leçons courtes qui expliquent par le mouvement : une scène animée
 LEAD_AR = 'دروس قصيرة تشرح بالحركة: مشهد متحرك، ثم تمارين موجهة، ثم تمارين فردية، وملخص بالعربية.'
 
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; "
-       "connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; "
+       "connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; "
        "upgrade-insecure-requests; frame-ancestors 'none'")
 HEADERS = f"""# Généré par mouvement/tools/build.py : ne pas modifier à la main.
 /*
@@ -99,7 +99,7 @@ def lesson_page(s, cfg, m):
     lvl = f'{m["level"]}AC'
     url = f'{cfg["url"]}{m["id"]}/'
     return (head(s, cfg, f'{m["title"]} · {cfg["name"]} {lvl}', m['lead'], url, 1) +
-            f'<script defer src="../core/mv.js"></script>\n<script defer src="../lessons/{m["id"]}.js"></script>\n</head>\n<body>\n<main id="mv">\n'
+            f'<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n<script defer src="../lessons/{m["id"]}.js"></script>\n</head>\n<body>\n<main id="mv">\n'
             f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
             f'<div class="eyebrow">{E(cfg["name"])} · {lvl} · {E(m["theme"])}</div>\n'
             f'<h1>{E(m["title"])}</h1>\n<div class="ar">{E(m["ar"])}</div>\n'
@@ -110,7 +110,7 @@ def lesson_page(s, cfg, m):
 def home_page(s, cfg, lessons):
     desc = f'{cfg["full"]} au collège, leçons en mouvement : animations, exercices guidés et résumé en arabe.'
     out = [head(s, cfg, f'{cfg["name"]} en mouvement · collège', desc, cfg['url'], 0),
-           '<script defer src="core/mv.js"></script>\n</head>\n<body data-home>\n<main>\n',
+           '<script defer src="core/notify-config.js"></script>\n<script defer src="core/mv.js"></script>\n</head>\n<body data-home>\n<main>\n',
            f'<div class="hero"><div class="glyph">{cfg["glyph"]}</div><h1>{E(cfg["name"])} en mouvement</h1>',
            f'<div class="ar">{E(cfg["ar"])}: {E(LEAD_AR)}</div><p class="small">{E(LEAD)}</p></div>\n',
            '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS if k in cfg.get('levels', '123')) + '</nav>\n',
@@ -133,7 +133,7 @@ def home_page(s, cfg, lessons):
 def exam_page(s, cfg):
     url = f'{cfg["url"]}examen/'
     return (head(s, cfg, f'Examens · {cfg["name"]} en mouvement', f'Examens de {cfg["full"]} au collège par niveau et par difficulté, note sur 20 et correction.', url, 1) +
-            '<script defer src="../core/mv.js"></script>\n<script defer src="questions.js"></script>\n<script defer src="../core/exam.js"></script>\n</head>\n<body>\n<main id="ex">\n'
+            '<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n<script defer src="questions.js"></script>\n<script defer src="../core/exam.js"></script>\n</head>\n<body>\n<main id="ex">\n'
             f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
             f'<div class="eyebrow">{E(cfg["name"])} · Examens</div>\n<h1>Examens</h1>\n<div class="ar">امتحانات حسب المستوى ودرجة الصعوبة، مع النقطة على 20 والتصحيح</div>\n'
             '<noscript><p class="card">Les examens ont besoin de JavaScript.</p></noscript>\n'
@@ -154,6 +154,7 @@ def build():
             shutil.rmtree(d)
         (d / 'core').mkdir(parents=True)
         (d / 'lessons').mkdir()
+        shutil.copy(ROOT / 'lab' / 'notify-config.js', d / 'core' / 'notify-config.js')  # adresse du relais Telegram, partagée avec le site principal
         for f in ('mv.css', 'mv.js', 'exam.js'):
             shutil.copy(MV / 'core' / f, d / 'core' / f)
         shutil.copytree(ROOT / 'fonts', d / 'fonts')

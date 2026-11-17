@@ -32,6 +32,13 @@ SOLVE = """() => {
 }"""
 
 
+def catcher(lst):  # relais Telegram simulé : garde le corps de chaque envoi
+    async def h(route):
+        lst.append(route.request.post_data or '')
+        await route.fulfill(status=200, body='ok')
+    return h
+
+
 def fail(m):
     FAILS.append(m)
     print('FAIL', m, flush=True)
@@ -83,6 +90,12 @@ async def main():
             base = 'http://127.0.0.1:%d/' % port
             ctx = await br.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
             page = await ctx.new_page()
+            sent = []
+            await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', catcher(sent))
+            await page.goto(base + 'examen/')
+            await page.locator('.eleve input.txt').first.fill('Élève Test')
+            await page.locator('.eleve input[type=checkbox]').check()
+            await page.get_by_role('button', name='Enregistrer').click()
             errs = []
             page.on('console', lambda m: errs.append(m.text) if m.type == 'error' else None)
             page.on('pageerror', lambda e: errs.append(str(e)))
@@ -112,6 +125,13 @@ async def main():
                 await page.screenshot(path=str(SHOTS / ('%s-examen-choix.png' % s)), full_page=True)
             for e in errs:
                 fail('%s examen console : %s' % (s, e[:150]))
+            import json as _j
+            types = [_j.loads(x).get('type') for x in sent if x]
+            series = [_j.loads(x) for x in sent if x and _j.loads(x).get('type') == 'series']
+            if 'open' not in types or len(series) < 10 or any(x.get('name') != 'Élève Test' or x.get('max') != 20 for x in series):
+                fail('%s : alertes enseignant incorrectes %s' % (s, types[:6]))
+            else:
+                print(s, ': alertes', len(series), 'notes envoyées, exemple', series[0]['title'], series[0]['pts'], '/ 20')
             # accueil : lien vers les examens
             await page.goto(base)
             if await page.locator('a.exam').count() != 1:
@@ -124,6 +144,10 @@ async def main():
         base = 'http://127.0.0.1:8880/'
         ctx = await br.new_context(viewport={'width': 1366, 'height': 768})
         page = await ctx.new_page()
+        lsent = []
+        await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', catcher(lsent))
+        await page.goto(base)
+        await page.evaluate("() => localStorage.setItem('mv_eleve', JSON.stringify({name: 'Élève Test', cls: 'TEST', consent: true}))")
         await page.goto(base + '1ac-cercle/')
         await page.get_by_role('button', name='Plein écran').click()
         await page.wait_for_timeout(300)
@@ -157,6 +181,11 @@ async def main():
             fail('évaluation de leçon incorrecte : ' + txt.replace('\n', ' | '))
         else:
             print('leçon :', ' | '.join(t for t in txt.split('\n') if t.strip())[:200])
+        ls = [x for x in lsent if '"series"' in x]
+        if len(ls) != 1 or 'Leçon' not in ls[0]:
+            fail('leçon : alerte enseignant absente ou en double (%d)' % len(ls))
+        else:
+            print('alerte leçon :', ls[0][:160])
         if SHOTS:
             await page.locator('.eval').screenshot(path=str(SHOTS / 'maths-evaluation-lecon.png'))
         await page.goto(base)

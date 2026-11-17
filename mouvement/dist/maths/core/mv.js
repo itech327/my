@@ -147,6 +147,68 @@
     return function (k, v) { var d = hud.querySelector('[data-k="' + k + '"] span'); if (d) fit(d, v); };
   }
 
+  /* ---------- alertes vers l'enseignant : Telegram par le relais du site principal ---------- */
+  // Visite : anonyme, une fois par session. Notes : seulement si l'élève a donné son nom et son accord.
+  var SITE = { maths: 'Maths en mouvement', pc: 'PC en mouvement', svt: 'SVT en mouvement', tech: 'Technologie en mouvement' }[document.documentElement.getAttribute('data-s')] || 'Cours en mouvement';
+  function sid() {
+    var v; try { v = sessionStorage.getItem('mv_sid'); if (!v) { v = 'mv' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem('mv_sid', v); } } catch (_) { v = ''; }
+    return v;
+  }
+  function eleve() { try { return JSON.parse(store.get('mv_eleve') || 'null'); } catch (_) { return null; } }
+  function send(p) {
+    var u = window.LAB_NOTIFY_URL; if (!u) return;
+    p.v = 1; p.page = SITE; p.t = Date.now();
+    try { fetch(u, { method: 'POST', body: JSON.stringify(p), keepalive: true, headers: { 'Content-Type': 'text/plain;charset=UTF-8' } }).catch(function () {}); } catch (_) {}
+  }
+  function notifyOpen() {
+    try { if (sessionStorage.getItem('mv_open')) return; sessionStorage.setItem('mv_open', '1'); } catch (_) { return; }
+    var e = eleve(); send(e && e.consent ? { type: 'open', name: e.name, sid: sid() } : { type: 'open' });
+  }
+  function notifyResult(o) {
+    var e = eleve(); if (!e || !e.consent || !e.name) return false;
+    send(Object.assign({ type: 'series', sid: sid(), name: e.name, cls: e.cls || '' }, o)); return true;
+  }
+  (function () { // code de classe dans le lien : ?c=CODE
+    var m = location.search.match(/[?&]c=([A-Za-z0-9]{3,12})/), e = eleve();
+    if (m && e) { e.cls = m[1].toUpperCase(); store.set('mv_eleve', JSON.stringify(e)); } else if (m) store.set('mv_cls', m[1].toUpperCase());
+  })();
+  // carte « Envoyer mes résultats à mon enseignant » ; onSave est appelé après l'enregistrement
+  function eleveCard(parent, onSave) {
+    var c = H('div', 'card eleve', '', parent);
+    function vue() {
+      var e = eleve();
+      if (e && e.consent) {
+        c.innerHTML = '<div class="eyebrow">Mon enseignant</div><p class="small">Mes notes sont envoyées à mon enseignant au nom de <b></b>' + (e.cls ? ', classe <b class="mono"></b>' : '') + '.</p>' +
+          '<div class="ar">تُرسل نقطي إلى أستاذي.</div>';
+        var b = c.querySelectorAll('b'); b[0].textContent = e.name; if (b[1]) b[1].textContent = e.cls;
+        var row = H('div', 'row', '', c);
+        H('button', 'btn', 'Modifier', row).onclick = form;
+        H('button', 'btn', 'Ne plus envoyer', row).onclick = function () { store.set('mv_eleve', JSON.stringify({ name: e.name, cls: e.cls, consent: false })); vue(); };
+      } else form();
+    }
+    function form() {
+      var e = eleve() || {};
+      c.innerHTML = '<div class="eyebrow">Envoyer mes notes à mon enseignant</div>' +
+        '<div class="ar">إرسال نقطي إلى أستاذي (اختياري)</div>' +
+        '<div class="row"><input class="num txt" maxlength="40" aria-label="Prénom et nom" placeholder="Prénom et nom"><input class="num txt cls" maxlength="12" aria-label="Code de classe" placeholder="Classe (facultatif)"></div>' +
+        '<label class="small chk"><input type="checkbox"> J’accepte d’envoyer mon nom et mes notes à mon enseignant.</label>' +
+        '<div class="fb"></div>';
+      var ins = c.querySelectorAll('input'), fb = c.querySelector('.fb');
+      ins[0].value = e.name || ''; ins[1].value = e.cls || store.get('mv_cls') || '';
+      var row = H('div', 'row', '', c);
+      H('button', 'btn pri', 'Enregistrer', row).onclick = function () {
+        var n = ins[0].value.trim().replace(/\s+/g, ' '), k = ins[1].value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+        if (n.length < 2) { fb.className = 'fb ko'; fb.textContent = 'Écris ton prénom et ton nom.'; return; }
+        if (!ins[2].checked) { fb.className = 'fb ko'; fb.textContent = 'Coche la case pour accepter l’envoi.'; return; }
+        store.set('mv_eleve', JSON.stringify({ name: n, cls: k, consent: true }));
+        send({ type: 'open', name: n, sid: sid() });
+        vue(); if (onSave) onSave();
+      };
+    }
+    vue();
+    return c;
+  }
+
   /* ---------- évaluation et plein écran ---------- */
   // Je me prépare compte pour un tiers, Je fais seul pour deux tiers.
   function noteSur20(p, P, s, N) { return Math.round(20 * ((P ? p / P : 0) + 2 * (N ? s / N : 0)) / ((P ? 1 : 0) + (N ? 2 : 0)) * 2) / 2; }
@@ -242,11 +304,16 @@
     var bb = H('button', 'btn', 'Passer au bilan', fin); bb.style.marginTop = '12px'; bb.onclick = function () { go(5); };
 
     // 6. Bilan
-    var c5 = H('div', 'card', '', secs[5]), ev = H('div', 'card eval', '', secs[5]);
+    var c5 = H('div', 'card', '', secs[5]), ev = H('div', 'card eval', '', secs[5]), sent = false;
+    eleveCard(secs[5], function () { if (score.done === def.seul.length) showScore(); });
     function showScore() {
       var P = def.prepare.length, N = def.seul.length, note = noteSur20(score.prep, P, score.seul, N);
       var key = 'mv_score_' + def.id, best = +(store.get(key) || -1);
       if (score.done === N && note > best) { store.set(key, String(note)); best = note; }
+      if (score.done === N && !sent) {
+        var h1 = document.querySelector('h1');
+        sent = notifyResult({ title: 'Leçon : ' + (h1 ? h1.textContent : def.id), d: 0, good: score.prep + score.seul, asked: P + N, pct: Math.round(100 * (score.prep + score.seul) / (P + N)), pts: note, max: 20 });
+      }
       ev.innerHTML = '<div class="eyebrow">Mon évaluation</div>' +
         (score.done < N ? '<p class="small">Termine les ' + N + ' exercices de « Je fais seul » pour obtenir ta note. Exercices réussis : ' + score.done + ' sur ' + N + '.</p>' :
         '<div class="note20"><b>' + fmt(note, 1) + '</b><span>/ 20</span></div><div class="mention">' + mention(note) + '</div>') +
@@ -274,6 +341,7 @@
     });
   }
 
-  var MV = window.MV = { S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };
+  var MV = window.MV = { notifyResult: notifyResult, eleveCard: eleveCard, S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };
+  notifyOpen();
   if (document.body && document.body.hasAttribute('data-home')) { home(); var hero = document.querySelector('.hero'); if (hero) themeBtn(hero, hero.firstChild); }
 })();

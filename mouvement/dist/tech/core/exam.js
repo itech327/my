@@ -75,6 +75,7 @@
       var b = H('button', 'btn' + (cfg.n === n ? ' pri' : ''), n + ' questions', sn);
       b.onclick = function () { cfg.n = n; setup(); };
     });
+    MV.eleveCard(box);
     var go = H('button', 'btn pri big', 'Commencer l\'examen ▶', box);
     go.onclick = function () { run(draw()); };
     H('p', 'small', 'Une seule réponse par question. La correction et la note sur 20 s\'affichent à la fin.', box);
@@ -123,6 +124,7 @@
     var ok = qs.filter(function (q, k) { return right(q, ans[k]); }).length;
     var note = Math.round(40 * ok / qs.length) / 2, key = bestKey(), best = +(store.get(key) || -1);
     if (note > best) { store.set(key, String(note)); best = note; }
+    var envoye = MV.notifyResult({ title: 'Examen ' + cfg.level + 'AC' + (cfg.theme ? ' · ' + cfg.theme : '') + ' · ' + qs.length + ' questions', d: cfg.diff, good: ok, asked: qs.length, pct: Math.round(100 * ok / qs.length), pts: note, max: 20 });
     var weak = {};
     qs.forEach(function (q, k) { if (!right(q, ans[k])) weak[q.L.id] = q.L; });
     box.innerHTML = '';
@@ -130,7 +132,8 @@
       '<div class="note20"><b>' + num(note) + '</b><span>/ 20</span></div><div class="mention">' + MV.mention(note) + '</div>' +
       '<table class="voc"><tr><td>Bonnes réponses</td><td class="mono">' + ok + ' / ' + qs.length + '</td></tr>' +
       '<tr><td>Durée</td><td class="mono">' + Math.floor(sec / 60) + ' min ' + ('0' + sec % 60).slice(-2) + ' s</td></tr>' +
-      '<tr><td>Meilleure note à cet examen</td><td class="mono">' + num(best) + ' / 20</td></tr></table>', box);
+      '<tr><td>Meilleure note à cet examen</td><td class="mono">' + num(best) + ' / 20</td></tr></table>' +
+      (envoye ? '<p class="small">Note envoyée à ton enseignant.</p>' : ''), box);
     var ids = Object.keys(weak);
     if (ids.length) H('div', '', '<div class="q">Leçons à revoir</div>' + ids.map(function (id) { return '<a class="relink" href="../' + id + '/">' + weak[id].title + ' ▶</a>'; }).join(''), c);
     var row = H('div', 'row', '', c);

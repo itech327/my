@@ -202,3 +202,9 @@ html.light .fb.ko{color:#c93c3c}
 html.light input.num{background:#fff;color:var(--ink);border-color:#c5c9d0}
 html.light .lesson .badge{color:#1d8a4f}
 html.light .diff.pri .ar,html.light .diff.pri .small{color:#fff}
+/* carte élève : envoi des notes à l'enseignant */
+.eleve .row{flex-wrap:wrap}
+input.txt{flex:1 1 160px;width:auto;text-align:left;font-family:inherit;font-size:15px}
+input.txt.cls{flex:0 1 150px}
+.chk{display:flex;gap:8px;align-items:flex-start;margin:10px 0 4px;cursor:pointer}
+.chk input{width:20px;height:20px;flex:none;margin:0}

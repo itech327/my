@@ -112,6 +112,7 @@ async def main():
                 ids = [i for i in ids if s + '/' + i in ONLY]
             for vname, vopt in VIEWS.items():
                 ctx = await br.new_context(**vopt)
+                await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', lambda r: r.fulfill(status=200, body='ok'))  # relais Telegram simulé
                 await check_page(ctx, base, '%s/accueil [%s]' % (s, vname), False, '%s-accueil-%s' % (s, vname))
                 await check_page(ctx, base + 'examen/', '%s/examen [%s]' % (s, vname), False, '%s-examen-%s' % (s, vname))
                 for i in ids:
