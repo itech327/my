@@ -113,9 +113,13 @@ def inline_hashes(html):
         hs.append("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode('utf8')).digest()).decode() + "'")
     return hs
 
-def csp_for(html, header=False):
+CFWA_SCRIPT = 'https://static.cloudflareinsights.com'   # balise de Cloudflare Web Analytics, injectée par Cloudflare (Real User Measurements)
+CFWA_CONNECT = 'https://cloudflareinsights.com'
+
+def csp_for(html, header=False, measure=True):
     conn = ["'self'", 'https://ipwho.is', 'https://ipapi.co', 'https://api.ipify.org'] + ([notify_origin()] if notify_origin() else [])
-    parts = ["default-src 'none'", "script-src 'self' " + ' '.join(inline_hashes(html)), "style-src 'self' 'unsafe-inline'",
+    if measure: conn.append(CFWA_CONNECT)
+    parts = ["default-src 'none'", "script-src 'self' " + ((CFWA_SCRIPT + ' ') if measure else '') + ' '.join(inline_hashes(html)), "style-src 'self' 'unsafe-inline'",
              "img-src 'self' data:", "font-src 'self'", 'connect-src ' + ' '.join(conn), "base-uri 'none'", "form-action 'none'", "object-src 'none'",
              "manifest-src 'self'", 'upgrade-insecure-requests']
     if header: parts.append("frame-ancestors 'none'")
@@ -126,7 +130,7 @@ def harden(name, html):
     html = re.sub(r'<!--gen:head-->.*?<!--/gen:head-->\n?', '', html, flags=re.S)
     title, desc = DESC[name]
     url = SITE + ('' if name == 'index.html' else name)
-    block = ('<!--gen:head-->\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(html) + '">\n'
+    block = ('<!--gen:head-->\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(html, measure=(name != 'teacher.html')) + '">\n'
              '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
              '<meta name="description" content="' + desc + '">\n<link rel="canonical" href="' + url + '">\n'
              '<meta name="theme-color" content="#0d0b14">\n<link rel="icon" href="' + FAVICON + '">\n'
@@ -155,7 +159,7 @@ today = datetime.date.today().isoformat()
 urls = []
 for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html', 'teacher.html']:
     h = harden(name, rd(name)); wr(name, h)
-    c = csp_for(h, True)
+    c = csp_for(h, True, name != 'teacher.html')
     paths = ['/', '/index.html'] if name == 'index.html' else ['/' + name, '/' + name[:-5]]
     for pth in paths: hdr += [pth, '  Content-Security-Policy: ' + c]
     if name == 'teacher.html':
