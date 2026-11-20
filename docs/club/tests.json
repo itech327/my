@@ -1,0 +1,1662 @@
+{
+ "maths": [
+  [
+   {
+    "id": "M1",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient de deux négatifs",
+    "stem": "Calcule : (−48)/(−6) =",
+    "unit": "",
+    "key": "8",
+    "keyv": "8",
+    "errs": [
+     {
+      "value": "−8",
+      "code": "SIGNE",
+      "label": "résultat négatif alors que les signes sont identiques"
+     },
+     {
+      "value": "42",
+      "code": "OPERATION",
+      "label": "soustraction au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M2",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient de signes contraires",
+    "stem": "Calcule : −45/5 =",
+    "unit": "",
+    "key": "−9",
+    "keyv": "-9",
+    "errs": [
+     {
+      "value": "9",
+      "code": "SIGNE",
+      "label": "résultat positif alors que les signes sont contraires"
+     },
+     {
+      "value": "−50",
+      "code": "OPERATION",
+      "label": "addition au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M3",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient décimal",
+    "stem": "Écris −7/4 sous forme décimale (avec une virgule) :",
+    "unit": "",
+    "key": "−1,75",
+    "keyv": "-7/4",
+    "errs": [
+     {
+      "value": "1,75",
+      "code": "SIGNE",
+      "label": "résultat positif"
+     },
+     {
+      "value": "environ −0,57",
+      "code": "INVERSION",
+      "label": "dénominateur divisé par le numérateur"
+     }
+    ]
+   },
+   {
+    "id": "M4a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "signe sans calcul",
+    "stem": "Sans calculer, le quotient (−17)/(−23) est-il positif ou négatif ?",
+    "key": "A",
+    "key_text": "positif",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "positif",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "négatif",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "C",
+      "text": "nul",
+      "code": "ZERO"
+     },
+     {
+      "letter": "D",
+      "text": "on ne peut pas savoir",
+      "code": "SAVOIR"
+     }
+    ]
+   },
+   {
+    "id": "M4b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "signe sans calcul",
+    "stem": "Sans calculer, le quotient 19/(−31) est-il positif ou négatif ?",
+    "key": "C",
+    "key_text": "négatif",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "positif",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "nul",
+      "code": "ZERO"
+     },
+     {
+      "letter": "C",
+      "text": "négatif",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "on ne peut pas savoir",
+      "code": "SAVOIR"
+     }
+    ]
+   },
+   {
+    "id": "M5",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "écriture équivalente",
+    "stem": "Quelle écriture est égale à 5/(−8) ?",
+    "key": "A",
+    "key_text": "−5/8",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "−5/8",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "5/8",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "C",
+      "text": "−8/5",
+      "code": "INVERSION"
+     },
+     {
+      "letter": "D",
+      "text": "8/5",
+      "code": "INVERSION"
+     }
+    ]
+   },
+   {
+    "id": "M6",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "position sur la droite graduée",
+    "stem": "Le nombre −7/2 se trouve entre deux entiers consécutifs. Lesquels ?",
+    "key": "C",
+    "key_text": "−4 et −3",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "3 et 4",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "−3 et −2",
+      "code": "DECALAGE"
+     },
+     {
+      "letter": "C",
+      "text": "−4 et −3",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "−7 et −6",
+      "code": "NUMERATEUR"
+     }
+    ]
+   },
+   {
+    "id": "M7a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "comparer deux négatifs",
+    "stem": "Recopie avec le bon signe (< ou >) : −5/4 ○ −7/4",
+    "key": "B",
+    "key_text": ">",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "<",
+      "code": "COMPARAISON"
+     },
+     {
+      "letter": "B",
+      "text": ">",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "=",
+      "code": "EGAL"
+     }
+    ]
+   },
+   {
+    "id": "M7b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "ranger des négatifs",
+    "stem": "Quel est le plus petit de ces nombres ?",
+    "key": "A",
+    "key_text": "−3/2",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "−3/2",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "−1/2",
+      "code": "COMPARAISON"
+     },
+     {
+      "letter": "C",
+      "text": "−1",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "M8",
+    "kind": "num",
+    "pts": 3,
+    "skill": "situation : variation par unité",
+    "stem": "La température baisse de 15 °C en 6 heures. Quelle est la variation de température par heure ?",
+    "unit": "°C par heure",
+    "key": "−2,5",
+    "keyv": "-5/2",
+    "errs": [
+     {
+      "value": "2,5",
+      "code": "SIGNE",
+      "label": "variation positive pour une baisse"
+     },
+     {
+      "value": "environ −0,40",
+      "code": "INVERSION",
+      "label": "durée divisée par la variation"
+     },
+     {
+      "value": "−9",
+      "code": "OPERATION",
+      "label": "soustraction au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M9",
+    "kind": "num",
+    "pts": 3,
+    "skill": "quotient inconnu",
+    "stem": "Complète : (−30)/…… = 6",
+    "unit": "",
+    "key": "−5",
+    "keyv": "-5",
+    "errs": [
+     {
+      "value": "5",
+      "code": "SIGNE",
+      "label": "diviseur positif"
+     },
+     {
+      "value": "−180",
+      "code": "PRODUIT",
+      "label": "produit au lieu de quotient"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "id": "M1",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient de deux négatifs",
+    "stem": "Calcule : (−54)/(−9) =",
+    "unit": "",
+    "key": "6",
+    "keyv": "6",
+    "errs": [
+     {
+      "value": "−6",
+      "code": "SIGNE",
+      "label": "résultat négatif alors que les signes sont identiques"
+     },
+     {
+      "value": "45",
+      "code": "OPERATION",
+      "label": "soustraction au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M2",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient de signes contraires",
+    "stem": "Calcule : −56/7 =",
+    "unit": "",
+    "key": "−8",
+    "keyv": "-8",
+    "errs": [
+     {
+      "value": "8",
+      "code": "SIGNE",
+      "label": "résultat positif alors que les signes sont contraires"
+     },
+     {
+      "value": "−63",
+      "code": "OPERATION",
+      "label": "addition au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M3",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient décimal",
+    "stem": "Écris −11/4 sous forme décimale (avec une virgule) :",
+    "unit": "",
+    "key": "−2,75",
+    "keyv": "-11/4",
+    "errs": [
+     {
+      "value": "2,75",
+      "code": "SIGNE",
+      "label": "résultat positif"
+     },
+     {
+      "value": "environ −0,36",
+      "code": "INVERSION",
+      "label": "dénominateur divisé par le numérateur"
+     }
+    ]
+   },
+   {
+    "id": "M4a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "signe sans calcul",
+    "stem": "Sans calculer, le quotient (−13)/(−29) est-il positif ou négatif ?",
+    "key": "B",
+    "key_text": "positif",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "négatif",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "positif",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "nul",
+      "code": "ZERO"
+     },
+     {
+      "letter": "D",
+      "text": "on ne peut pas savoir",
+      "code": "SAVOIR"
+     }
+    ]
+   },
+   {
+    "id": "M4b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "signe sans calcul",
+    "stem": "Sans calculer, le quotient 23/(−17) est-il positif ou négatif ?",
+    "key": "D",
+    "key_text": "négatif",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "positif",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "nul",
+      "code": "ZERO"
+     },
+     {
+      "letter": "C",
+      "text": "on ne peut pas savoir",
+      "code": "SAVOIR"
+     },
+     {
+      "letter": "D",
+      "text": "négatif",
+      "code": "OK"
+     }
+    ]
+   },
+   {
+    "id": "M5",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "écriture équivalente",
+    "stem": "Quelle écriture est égale à 7/(−3) ?",
+    "key": "B",
+    "key_text": "−7/3",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "7/3",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "−7/3",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "−3/7",
+      "code": "INVERSION"
+     },
+     {
+      "letter": "D",
+      "text": "3/7",
+      "code": "INVERSION"
+     }
+    ]
+   },
+   {
+    "id": "M6",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "position sur la droite graduée",
+    "stem": "Le nombre −9/2 se trouve entre deux entiers consécutifs. Lesquels ?",
+    "key": "D",
+    "key_text": "−5 et −4",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "4 et 5",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "−4 et −3",
+      "code": "DECALAGE"
+     },
+     {
+      "letter": "C",
+      "text": "−9 et −8",
+      "code": "NUMERATEUR"
+     },
+     {
+      "letter": "D",
+      "text": "−5 et −4",
+      "code": "OK"
+     }
+    ]
+   },
+   {
+    "id": "M7a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "comparer deux négatifs",
+    "stem": "Recopie avec le bon signe (< ou >) : −8/5 ○ −6/5",
+    "key": "A",
+    "key_text": "<",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "<",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": ">",
+      "code": "COMPARAISON"
+     },
+     {
+      "letter": "C",
+      "text": "=",
+      "code": "EGAL"
+     }
+    ]
+   },
+   {
+    "id": "M7b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "ranger des négatifs",
+    "stem": "Quel est le plus petit de ces nombres ?",
+    "key": "B",
+    "key_text": "−5/4",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "−1/4",
+      "code": "COMPARAISON"
+     },
+     {
+      "letter": "B",
+      "text": "−5/4",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "−1",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "M8",
+    "kind": "num",
+    "pts": 3,
+    "skill": "situation : variation par unité",
+    "stem": "Le niveau d'eau d'un réservoir baisse de 21 cm en 6 jours. Quelle est la variation du niveau par jour ?",
+    "unit": "cm par jour",
+    "key": "−3,5",
+    "keyv": "-7/2",
+    "errs": [
+     {
+      "value": "3,5",
+      "code": "SIGNE",
+      "label": "variation positive pour une baisse"
+     },
+     {
+      "value": "environ −0,29",
+      "code": "INVERSION",
+      "label": "durée divisée par la variation"
+     },
+     {
+      "value": "−15",
+      "code": "OPERATION",
+      "label": "soustraction au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M9",
+    "kind": "num",
+    "pts": 3,
+    "skill": "quotient inconnu",
+    "stem": "Complète : (−20)/…… = 5",
+    "unit": "",
+    "key": "−4",
+    "keyv": "-4",
+    "errs": [
+     {
+      "value": "4",
+      "code": "SIGNE",
+      "label": "diviseur positif"
+     },
+     {
+      "value": "−100",
+      "code": "PRODUIT",
+      "label": "produit au lieu de quotient"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "id": "M1",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient de deux négatifs",
+    "stem": "Calcule : (−63)/(−7) =",
+    "unit": "",
+    "key": "9",
+    "keyv": "9",
+    "errs": [
+     {
+      "value": "−9",
+      "code": "SIGNE",
+      "label": "résultat négatif alors que les signes sont identiques"
+     },
+     {
+      "value": "56",
+      "code": "OPERATION",
+      "label": "soustraction au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M2",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient de signes contraires",
+    "stem": "Calcule : −42/6 =",
+    "unit": "",
+    "key": "−7",
+    "keyv": "-7",
+    "errs": [
+     {
+      "value": "7",
+      "code": "SIGNE",
+      "label": "résultat positif alors que les signes sont contraires"
+     },
+     {
+      "value": "−48",
+      "code": "OPERATION",
+      "label": "addition au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M3",
+    "kind": "num",
+    "pts": 2,
+    "skill": "quotient décimal",
+    "stem": "Écris −13/4 sous forme décimale (avec une virgule) :",
+    "unit": "",
+    "key": "−3,25",
+    "keyv": "-13/4",
+    "errs": [
+     {
+      "value": "3,25",
+      "code": "SIGNE",
+      "label": "résultat positif"
+     },
+     {
+      "value": "environ −0,31",
+      "code": "INVERSION",
+      "label": "dénominateur divisé par le numérateur"
+     }
+    ]
+   },
+   {
+    "id": "M4a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "signe sans calcul",
+    "stem": "Sans calculer, le quotient (−19)/(−37) est-il positif ou négatif ?",
+    "key": "C",
+    "key_text": "positif",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "négatif",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "nul",
+      "code": "ZERO"
+     },
+     {
+      "letter": "C",
+      "text": "positif",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "on ne peut pas savoir",
+      "code": "SAVOIR"
+     }
+    ]
+   },
+   {
+    "id": "M4b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "signe sans calcul",
+    "stem": "Sans calculer, le quotient 29/(−13) est-il positif ou négatif ?",
+    "key": "A",
+    "key_text": "négatif",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "négatif",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "positif",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "C",
+      "text": "nul",
+      "code": "ZERO"
+     },
+     {
+      "letter": "D",
+      "text": "on ne peut pas savoir",
+      "code": "SAVOIR"
+     }
+    ]
+   },
+   {
+    "id": "M5",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "écriture équivalente",
+    "stem": "Quelle écriture est égale à 4/(−9) ?",
+    "key": "C",
+    "key_text": "−4/9",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "4/9",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "B",
+      "text": "−9/4",
+      "code": "INVERSION"
+     },
+     {
+      "letter": "C",
+      "text": "−4/9",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "9/4",
+      "code": "INVERSION"
+     }
+    ]
+   },
+   {
+    "id": "M6",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "position sur la droite graduée",
+    "stem": "Le nombre −5/2 se trouve entre deux entiers consécutifs. Lesquels ?",
+    "key": "A",
+    "key_text": "−3 et −2",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "−3 et −2",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "2 et 3",
+      "code": "SIGNE"
+     },
+     {
+      "letter": "C",
+      "text": "−2 et −1",
+      "code": "DECALAGE"
+     },
+     {
+      "letter": "D",
+      "text": "−5 et −4",
+      "code": "NUMERATEUR"
+     }
+    ]
+   },
+   {
+    "id": "M7a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "comparer deux négatifs",
+    "stem": "Recopie avec le bon signe (< ou >) : −4/3 ○ −5/3",
+    "key": "B",
+    "key_text": ">",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "<",
+      "code": "COMPARAISON"
+     },
+     {
+      "letter": "B",
+      "text": ">",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "=",
+      "code": "EGAL"
+     }
+    ]
+   },
+   {
+    "id": "M7b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "ranger des négatifs",
+    "stem": "Quel est le plus petit de ces nombres ?",
+    "key": "C",
+    "key_text": "−5/3",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "−2/3",
+      "code": "COMPARAISON"
+     },
+     {
+      "letter": "B",
+      "text": "−1",
+      "code": "AUTRE"
+     },
+     {
+      "letter": "C",
+      "text": "−5/3",
+      "code": "OK"
+     }
+    ]
+   },
+   {
+    "id": "M8",
+    "kind": "num",
+    "pts": 3,
+    "skill": "situation : variation par unité",
+    "stem": "Un sous-marin descend de 9 m en 6 secondes. Quelle est la variation d'altitude par seconde ?",
+    "unit": "m par seconde",
+    "key": "−1,5",
+    "keyv": "-3/2",
+    "errs": [
+     {
+      "value": "1,5",
+      "code": "SIGNE",
+      "label": "variation positive pour une baisse"
+     },
+     {
+      "value": "environ −0,67",
+      "code": "INVERSION",
+      "label": "durée divisée par la variation"
+     },
+     {
+      "value": "−3",
+      "code": "OPERATION",
+      "label": "soustraction au lieu de division"
+     }
+    ]
+   },
+   {
+    "id": "M9",
+    "kind": "num",
+    "pts": 3,
+    "skill": "quotient inconnu",
+    "stem": "Complète : (−18)/…… = 3",
+    "unit": "",
+    "key": "−6",
+    "keyv": "-6",
+    "errs": [
+     {
+      "value": "6",
+      "code": "SIGNE",
+      "label": "diviseur positif"
+     },
+     {
+      "value": "−54",
+      "code": "PRODUIT",
+      "label": "produit au lieu de quotient"
+     }
+    ]
+   }
+  ]
+ ],
+ "pc": [
+  [
+   {
+    "id": "P1a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "composition de l'air",
+    "stem": "Dans l'air, le gaz le plus abondant est :",
+    "key": "A",
+    "key_text": "le diazote",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "le diazote",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "le dioxygène",
+      "code": "O2"
+     },
+     {
+      "letter": "C",
+      "text": "le dioxyde de carbone",
+      "code": "CO2"
+     },
+     {
+      "letter": "D",
+      "text": "le dihydrogène",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "P1b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "composition de l'air",
+    "stem": "Le gaz que nous utilisons pour respirer est :",
+    "key": "C",
+    "key_text": "le dioxygène",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "le diazote",
+      "code": "N2"
+     },
+     {
+      "letter": "B",
+      "text": "le dioxyde de carbone",
+      "code": "CO2"
+     },
+     {
+      "letter": "C",
+      "text": "le dioxygène",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "le dihydrogène",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "P2",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume à partir d'un pourcentage",
+    "stem": "L'air contient 78 % de diazote. Quel est le volume de diazote dans 300 L d'air ?",
+    "unit": "L",
+    "key": "234",
+    "keyv": "234",
+    "errs": [
+     {
+      "value": "23400",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     },
+     {
+      "value": "2,34",
+      "code": "DECIMAL",
+      "label": "division par 100 en trop"
+     },
+     {
+      "value": "222",
+      "code": "SOUSTRAIT",
+      "label": "soustraction du pourcentage"
+     },
+     {
+      "value": "378",
+      "code": "ADDITION",
+      "label": "addition du pourcentage"
+     }
+    ]
+   },
+   {
+    "id": "P3",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume à partir d'un pourcentage",
+    "stem": "L'air contient 21 % de dioxygène. Quel est le volume de dioxygène dans 400 L d'air ?",
+    "unit": "L",
+    "key": "84",
+    "keyv": "84",
+    "errs": [
+     {
+      "value": "8400",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     },
+     {
+      "value": "0,84",
+      "code": "DECIMAL",
+      "label": "division par 100 en trop"
+     },
+     {
+      "value": "379",
+      "code": "SOUSTRAIT",
+      "label": "soustraction du pourcentage"
+     },
+     {
+      "value": "421",
+      "code": "ADDITION",
+      "label": "addition du pourcentage"
+     }
+    ]
+   },
+   {
+    "id": "P4",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume d'air à partir du gaz",
+    "stem": "Dans un local, on trouve 78 L de diazote. L'air contient 78 % de diazote. Quel est le volume d'air du local ?",
+    "unit": "L",
+    "key": "100",
+    "keyv": "100",
+    "errs": [
+     {
+      "value": "60,84",
+      "code": "MULTIPLIE",
+      "label": "pourcentage appliqué au volume de gaz"
+     },
+     {
+      "value": "6084",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     }
+    ]
+   },
+   {
+    "id": "P5",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "compression et pression",
+    "stem": "Une pompe à vélo a sa sortie bouchée. On enfonce la poignée : le volume de l'air passe de 60 mL à 25 mL. La pression de l'air enfermé…",
+    "key": "C",
+    "key_text": "augmente",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "diminue",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "B",
+      "text": "ne change pas",
+      "code": "NOCHANGE"
+     },
+     {
+      "letter": "C",
+      "text": "augmente",
+      "code": "OK"
+     }
+    ]
+   },
+   {
+    "id": "P6",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "expansion et pression",
+    "stem": "Une seringue est fermée au bout. On tire le piston : le volume de l'air passe de 10 mL à 25 mL. La pression de l'air enfermé…",
+    "key": "B",
+    "key_text": "diminue",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "augmente",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "B",
+      "text": "diminue",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "ne change pas",
+      "code": "NOCHANGE"
+     }
+    ]
+   },
+   {
+    "id": "P7",
+    "kind": "mcq",
+    "pts": 3,
+    "skill": "particules et compression",
+    "stem": "On enfonce le piston d'une seringue fermée au bout. Que se passe-t-il pour les particules de l'air enfermé ?",
+    "key": "A",
+    "key_text": "Leur nombre ne change pas : elles se rapprochent.",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "Leur nombre ne change pas : elles se rapprochent.",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "Elles rétrécissent.",
+      "code": "RETRECISSENT"
+     },
+     {
+      "letter": "C",
+      "text": "Une partie de l'air disparaît.",
+      "code": "DISPARAIT"
+     },
+     {
+      "letter": "D",
+      "text": "Leur nombre augmente.",
+      "code": "NOMBRE"
+     }
+    ]
+   },
+   {
+    "id": "P8",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "l'air a une masse",
+    "stem": "On gonfle avec de l'air un ballon de basket qui était dégonflé. La masse du ballon de basket…",
+    "key": "C",
+    "key_text": "augmente",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "diminue",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "B",
+      "text": "ne change pas",
+      "code": "AIRSANSMASSE"
+     },
+     {
+      "letter": "C",
+      "text": "augmente",
+      "code": "OK"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "id": "P1a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "composition de l'air",
+    "stem": "Dans l'air, le diazote représente environ :",
+    "key": "B",
+    "key_text": "78 %",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "21 %",
+      "code": "O2"
+     },
+     {
+      "letter": "B",
+      "text": "78 %",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "1 %",
+      "code": "AUTRE"
+     },
+     {
+      "letter": "D",
+      "text": "50 %",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "P1b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "composition de l'air",
+    "stem": "Dans l'air, le dioxygène représente environ :",
+    "key": "D",
+    "key_text": "21 %",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "78 %",
+      "code": "N2"
+     },
+     {
+      "letter": "B",
+      "text": "1 %",
+      "code": "AUTRE"
+     },
+     {
+      "letter": "C",
+      "text": "50 %",
+      "code": "AUTRE"
+     },
+     {
+      "letter": "D",
+      "text": "21 %",
+      "code": "OK"
+     }
+    ]
+   },
+   {
+    "id": "P2",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume à partir d'un pourcentage",
+    "stem": "L'air contient 78 % de diazote. Quel est le volume de diazote dans 400 L d'air ?",
+    "unit": "L",
+    "key": "312",
+    "keyv": "312",
+    "errs": [
+     {
+      "value": "31200",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     },
+     {
+      "value": "3,12",
+      "code": "DECIMAL",
+      "label": "division par 100 en trop"
+     },
+     {
+      "value": "322",
+      "code": "SOUSTRAIT",
+      "label": "soustraction du pourcentage"
+     },
+     {
+      "value": "478",
+      "code": "ADDITION",
+      "label": "addition du pourcentage"
+     }
+    ]
+   },
+   {
+    "id": "P3",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume à partir d'un pourcentage",
+    "stem": "L'air contient 21 % de dioxygène. Quel est le volume de dioxygène dans 600 L d'air ?",
+    "unit": "L",
+    "key": "126",
+    "keyv": "126",
+    "errs": [
+     {
+      "value": "12600",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     },
+     {
+      "value": "1,26",
+      "code": "DECIMAL",
+      "label": "division par 100 en trop"
+     },
+     {
+      "value": "579",
+      "code": "SOUSTRAIT",
+      "label": "soustraction du pourcentage"
+     },
+     {
+      "value": "621",
+      "code": "ADDITION",
+      "label": "addition du pourcentage"
+     }
+    ]
+   },
+   {
+    "id": "P4",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume d'air à partir du gaz",
+    "stem": "Dans un local, on trouve 117 L de diazote. L'air contient 78 % de diazote. Quel est le volume d'air du local ?",
+    "unit": "L",
+    "key": "150",
+    "keyv": "150",
+    "errs": [
+     {
+      "value": "91,26",
+      "code": "MULTIPLIE",
+      "label": "pourcentage appliqué au volume de gaz"
+     },
+     {
+      "value": "9126",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     }
+    ]
+   },
+   {
+    "id": "P5",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "compression et pression",
+    "stem": "On serre dans la main un ballon de baudruche fermé : le volume de l'air passe de 1,0 L à 0,6 L. La pression de l'air dans le ballon…",
+    "key": "A",
+    "key_text": "augmente",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "augmente",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "diminue",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "C",
+      "text": "ne change pas",
+      "code": "NOCHANGE"
+     }
+    ]
+   },
+   {
+    "id": "P6",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "expansion et pression",
+    "stem": "Un soufflet fermé (comme un accordéon) contient de l'air. On l'étire : le volume de l'air passe de 1,0 L à 2,0 L. La pression de l'air enfermé…",
+    "key": "C",
+    "key_text": "diminue",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "augmente",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "B",
+      "text": "ne change pas",
+      "code": "NOCHANGE"
+     },
+     {
+      "letter": "C",
+      "text": "diminue",
+      "code": "OK"
+     }
+    ]
+   },
+   {
+    "id": "P7",
+    "kind": "mcq",
+    "pts": 3,
+    "skill": "particules et compression",
+    "stem": "On écrase une bouteille en plastique bien bouchée. Que se passe-t-il pour les particules de l'air qu'elle contient ?",
+    "key": "B",
+    "key_text": "Leur nombre ne change pas : elles se rapprochent.",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "Elles rétrécissent.",
+      "code": "RETRECISSENT"
+     },
+     {
+      "letter": "B",
+      "text": "Leur nombre ne change pas : elles se rapprochent.",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "Une partie de l'air disparaît.",
+      "code": "DISPARAIT"
+     },
+     {
+      "letter": "D",
+      "text": "Leur nombre augmente.",
+      "code": "NOMBRE"
+     }
+    ]
+   },
+   {
+    "id": "P8",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "l'air a une masse",
+    "stem": "On gonfle avec de l'air un pneu de vélo qui était dégonflé. La masse du pneu de vélo…",
+    "key": "A",
+    "key_text": "augmente",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "augmente",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "diminue",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "C",
+      "text": "ne change pas",
+      "code": "AIRSANSMASSE"
+     }
+    ]
+   }
+  ],
+  [
+   {
+    "id": "P1a",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "composition de l'air",
+    "stem": "Quel gaz représente environ 78 % de l'air ?",
+    "key": "C",
+    "key_text": "le diazote",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "le dioxygène",
+      "code": "O2"
+     },
+     {
+      "letter": "B",
+      "text": "le dioxyde de carbone",
+      "code": "CO2"
+     },
+     {
+      "letter": "C",
+      "text": "le diazote",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "le dihydrogène",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "P1b",
+    "kind": "mcq",
+    "pts": 1,
+    "skill": "composition de l'air",
+    "stem": "Quel gaz représente environ 21 % de l'air ?",
+    "key": "A",
+    "key_text": "le dioxygène",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "le dioxygène",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "le diazote",
+      "code": "N2"
+     },
+     {
+      "letter": "C",
+      "text": "le dioxyde de carbone",
+      "code": "CO2"
+     },
+     {
+      "letter": "D",
+      "text": "le dihydrogène",
+      "code": "AUTRE"
+     }
+    ]
+   },
+   {
+    "id": "P2",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume à partir d'un pourcentage",
+    "stem": "L'air contient 78 % de diazote. Quel est le volume de diazote dans 600 L d'air ?",
+    "unit": "L",
+    "key": "468",
+    "keyv": "468",
+    "errs": [
+     {
+      "value": "46800",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     },
+     {
+      "value": "4,68",
+      "code": "DECIMAL",
+      "label": "division par 100 en trop"
+     },
+     {
+      "value": "522",
+      "code": "SOUSTRAIT",
+      "label": "soustraction du pourcentage"
+     },
+     {
+      "value": "678",
+      "code": "ADDITION",
+      "label": "addition du pourcentage"
+     }
+    ]
+   },
+   {
+    "id": "P3",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume à partir d'un pourcentage",
+    "stem": "L'air contient 21 % de dioxygène. Quel est le volume de dioxygène dans 300 L d'air ?",
+    "unit": "L",
+    "key": "63",
+    "keyv": "63",
+    "errs": [
+     {
+      "value": "6300",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     },
+     {
+      "value": "0,63",
+      "code": "DECIMAL",
+      "label": "division par 100 en trop"
+     },
+     {
+      "value": "279",
+      "code": "SOUSTRAIT",
+      "label": "soustraction du pourcentage"
+     },
+     {
+      "value": "321",
+      "code": "ADDITION",
+      "label": "addition du pourcentage"
+     }
+    ]
+   },
+   {
+    "id": "P4",
+    "kind": "num",
+    "pts": 3,
+    "skill": "volume d'air à partir du gaz",
+    "stem": "Dans un local, on trouve 195 L de diazote. L'air contient 78 % de diazote. Quel est le volume d'air du local ?",
+    "unit": "L",
+    "key": "250",
+    "keyv": "250",
+    "errs": [
+     {
+      "value": "152,1",
+      "code": "MULTIPLIE",
+      "label": "pourcentage appliqué au volume de gaz"
+     },
+     {
+      "value": "15210",
+      "code": "POURCENT",
+      "label": "oubli de la division par 100"
+     }
+    ]
+   },
+   {
+    "id": "P5",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "compression et pression",
+    "stem": "Une seringue est fermée au bout. On enfonce le piston : le volume de l'air passe de 30 mL à 12 mL. La pression de l'air enfermé…",
+    "key": "B",
+    "key_text": "augmente",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "diminue",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "B",
+      "text": "augmente",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "ne change pas",
+      "code": "NOCHANGE"
+     }
+    ]
+   },
+   {
+    "id": "P6",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "expansion et pression",
+    "stem": "Une pompe à vélo a sa sortie bouchée. On tire la poignée : le volume de l'air passe de 40 mL à 70 mL. La pression de l'air enfermé…",
+    "key": "A",
+    "key_text": "diminue",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "diminue",
+      "code": "OK"
+     },
+     {
+      "letter": "B",
+      "text": "augmente",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "C",
+      "text": "ne change pas",
+      "code": "NOCHANGE"
+     }
+    ]
+   },
+   {
+    "id": "P7",
+    "kind": "mcq",
+    "pts": 3,
+    "skill": "particules et compression",
+    "stem": "On enfonce la poignée d'une pompe à vélo dont la sortie est bouchée. Que se passe-t-il pour les particules de l'air enfermé ?",
+    "key": "C",
+    "key_text": "Leur nombre ne change pas : elles se rapprochent.",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "Elles rétrécissent.",
+      "code": "RETRECISSENT"
+     },
+     {
+      "letter": "B",
+      "text": "Une partie de l'air disparaît.",
+      "code": "DISPARAIT"
+     },
+     {
+      "letter": "C",
+      "text": "Leur nombre ne change pas : elles se rapprochent.",
+      "code": "OK"
+     },
+     {
+      "letter": "D",
+      "text": "Leur nombre augmente.",
+      "code": "NOMBRE"
+     }
+    ]
+   },
+   {
+    "id": "P8",
+    "kind": "mcq",
+    "pts": 2,
+    "skill": "l'air a une masse",
+    "stem": "On gonfle avec de l'air un ballon de football qui était dégonflé. La masse du ballon de football…",
+    "key": "B",
+    "key_text": "augmente",
+    "opts": [
+     {
+      "letter": "A",
+      "text": "diminue",
+      "code": "INVERSE"
+     },
+     {
+      "letter": "B",
+      "text": "augmente",
+      "code": "OK"
+     },
+     {
+      "letter": "C",
+      "text": "ne change pas",
+      "code": "AIRSANSMASSE"
+     }
+    ]
+   }
+  ]
+ ]
+}
