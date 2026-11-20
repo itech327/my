@@ -34,12 +34,18 @@ LEAD_AR = 'دروس قصيرة تشرح بالحركة: مشهد متحرك، ث
 SEO = ('maths', 'pc', 'svt')
 LEVEL_AR = {'1': 'الأولى', '2': 'الثانية', '3': 'الثالثة'}
 PARENT = {'name': 'Taalim MEN', 'url': 'https://taalim.men/'}
-# Mesure d'audience, désactivée par défaut. Une seule des deux, choisie à la construction :
+# Mesure d'audience : Cloudflare Web Analytics par défaut. Une seule des deux, choisie à la construction :
 #   CFWA_TOKEN_MATHS, CFWA_TOKEN_PC, CFWA_TOKEN_SVT = <32 caractères hexadécimaux>   Cloudflare Web Analytics, sans cookie
 #   (un site par sous-domaine ; CFWA_TOKEN sert de valeur commune si les trois ne sont pas fournis)
 #   GA4_ID=G-XXXXXXXXXX                       Google Analytics 4
 # La CSP n'autorise alors que les sources nécessaires, et le script d'initialisation reste un fichier (aucun script en ligne).
-CFWA = {s: (os.environ.get(f'CFWA_TOKEN_{s.upper()}') or os.environ.get('CFWA_TOKEN') or '').strip() for s in SEO}
+# Jetons publics (visibles dans le code source de chaque page), un site Web Analytics par sous-domaine.
+# Les variables d'environnement les remplacent ; CFWA_TOKEN_<MATIERE>= (vide) désactive la mesure de la matière.
+CFWA_DEFAULT = {'maths': '7e6fe31aacb644e0a8f28ed8440e473d', 'pc': 'ca2091a162164b0eac8d0bd88ceef1ea', 'svt': '9f9cfbac24a94fdf8c823677ad077041'}
+CFWA = {}
+for _s in SEO:
+    _v = os.environ.get(f'CFWA_TOKEN_{_s.upper()}', os.environ.get('CFWA_TOKEN', CFWA_DEFAULT[_s]))
+    CFWA[_s] = _v.strip()
 GA4 = os.environ.get('GA4_ID', '').strip()
 for _s, _t in CFWA.items():
     if _t and not re.fullmatch(r'[0-9a-f]{32}', _t):
