@@ -35,23 +35,25 @@ SEO = ('maths', 'pc', 'svt')
 LEVEL_AR = {'1': 'الأولى', '2': 'الثانية', '3': 'الثالثة'}
 PARENT = {'name': 'Taalim MEN', 'url': 'https://taalim.men/'}
 # Mesure d'audience, désactivée par défaut. Une seule des deux, choisie à la construction :
-#   CFWA_TOKEN=<32 caractères hexadécimaux>   Cloudflare Web Analytics, sans cookie
+#   CFWA_TOKEN_MATHS, CFWA_TOKEN_PC, CFWA_TOKEN_SVT = <32 caractères hexadécimaux>   Cloudflare Web Analytics, sans cookie
+#   (un site par sous-domaine ; CFWA_TOKEN sert de valeur commune si les trois ne sont pas fournis)
 #   GA4_ID=G-XXXXXXXXXX                       Google Analytics 4
 # La CSP n'autorise alors que les sources nécessaires, et le script d'initialisation reste un fichier (aucun script en ligne).
-CFWA = os.environ.get('CFWA_TOKEN', '').strip()
+CFWA = {s: (os.environ.get(f'CFWA_TOKEN_{s.upper()}') or os.environ.get('CFWA_TOKEN') or '').strip() for s in SEO}
 GA4 = os.environ.get('GA4_ID', '').strip()
-if CFWA and not re.fullmatch(r'[0-9a-f]{32}', CFWA):
-    raise SystemExit('CFWA_TOKEN invalide : 32 caractères hexadécimaux attendus')
+for _s, _t in CFWA.items():
+    if _t and not re.fullmatch(r'[0-9a-f]{32}', _t):
+        raise SystemExit(f'Jeton Cloudflare invalide pour {_s} : 32 caractères hexadécimaux attendus')
 if GA4 and not re.fullmatch(r'G-[A-Z0-9]{6,}', GA4):
     raise SystemExit('GA4_ID invalide : format G-XXXXXXXXXX attendu')
-if CFWA and GA4:
-    raise SystemExit('Choisir CFWA_TOKEN ou GA4_ID, pas les deux')
+if any(CFWA.values()) and GA4:
+    raise SystemExit('Choisir Cloudflare ou GA4, pas les deux')
 RELAY = 'https://taalim-relay.abderrahim-habz.workers.dev'
 
 
 def csp(s):
     script, conn, img = ["'self'"], ["'self'", RELAY], ["'self'", 'data:']
-    if s in SEO and CFWA:
+    if CFWA.get(s):
         script.append('https://static.cloudflareinsights.com')
         conn.append('https://cloudflareinsights.com')
     if s in SEO and GA4:
@@ -100,8 +102,8 @@ def seo_extra(s, cfg, depth, ld=None):
            '<meta name="twitter:card" content="summary">\n')
     if ld:
         out += ld_json(ld)
-    if CFWA:
-        out += f'<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{CFWA}"}}\'></script>\n'
+    if CFWA.get(s):
+        out += f'<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{CFWA[s]}"}}\'></script>\n'
     if GA4:
         out += (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA4}"></script>\n'
                 f'<script defer src="{up}core/ga.js"></script>\n')
