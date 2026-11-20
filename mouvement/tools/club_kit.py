@@ -47,7 +47,7 @@ START = """<!doctype html>
 <p class="small">Deux leçons animées. Fais d'abord la leçon en entier, puis le test sur papier avec ton professeur.</p></div>
 <a class="lesson" href="maths/2ac-rationnels-modele/index.html"><span class="n">π</span><span><span class="eyebrow">Mathématiques</span><b>%(m_title)s</b>
 <span class="ar">%(m_ar)s</span></span></a>
-<a class="lesson" href="pc/2ac-air-modele/index.html"><span class="n">⚛</span><span><span class="eyebrow">Physique-chimie</span><b>%(p_title)s</b>
+<a class="lesson" href="pc/2ac-air-modele/index.html"><span class="n">Φ</span><span><span class="eyebrow">Physique-chimie</span><b>%(p_title)s</b>
 <span class="ar">%(p_ar)s</span></span></a>
 <p class="small">Cette trousse fonctionne sans internet, avec Chrome ou Edge. Rien n'est envoyé : tes résultats restent sur cet ordinateur.</p>
 </main></body></html>
@@ -63,6 +63,7 @@ def main():
     for subject, mid in KIT_LESSONS:
         src = ROOT / 'mouvement' / 'modeles' / subject / f'{mid}.js'
         meta = metas[subject] = meta_of(src)
+        meta['title'] = meta['title'].replace(' (modèle pilote)', '')          # les élèves ne voient pas le mot « pilote »
         site = out / subject
         for d in ('core', 'fonts', 'icons'):
             shutil.copytree(DIST / subject / d, site / d)
