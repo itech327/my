@@ -91,21 +91,29 @@
       var v = parseNum(inp.value);
       if (!isNaN(v) && Math.abs(v - o.a) <= (o.tol || 1e-9)) {
         feedback(fb, true, 'Juste. ' + (o.ok || '')); inp.disabled = bv.disabled = true; if (bh) bh.disabled = true; if (done) done(!miss);
-      } else { miss = true; feedback(fb, false, o.ko || 'Pas encore. Vérifie ton calcul' + (o.hint ? ' ou demande l\'indice.' : '.')); }
+      } else {
+        miss = true;
+        // diagnostic : o.diag = [{v, tol, msg}] nomme l'erreur courante qui a produit cette valeur
+        var dg = (o.diag || []).filter(function (g) { return !isNaN(v) && Math.abs(v - g.v) <= (g.tol || 1e-9); })[0];
+        feedback(fb, false, dg ? dg.msg : (o.ko || 'Pas encore. Vérifie ton calcul' + (o.hint ? ' ou demande l\'indice.' : '.')));
+      }
     }
     bv.onclick = check; inp.onkeydown = function (e) { if (e.key === 'Enter') check(); };
     if (bh) bh.onclick = function () { miss = true; fb.className = 'fb'; fb.textContent = o.hint; };
     return d;
   }
-  // choix multiple : {q, o:[...], a, e, ko}
+  // choix multiple : {q, o:[...], a, e, ko, why:[...], shuffle}
+  // shuffle : l'ordre d'affichage est mélangé (la bonne réponse n'est pas toujours la première) ; why[i] explique l'erreur de l'option i
   function optQ(parent, o, done) {
     var d = H('div', '', '<div class="q">' + o.q + '</div><div class="opts"></div><div class="fb" aria-live="polite"></div>', parent);
     var box = d.querySelector('.opts'), fb = d.querySelector('.fb'), miss = false;
-    o.o.forEach(function (t, i) {
-      var b = H('button', 'btn opt', t, box);
+    var order = o.o.map(function (_, i) { return i; });
+    if (o.shuffle) for (var j = order.length - 1; j > 0; j--) { var r = Math.floor(Math.random() * (j + 1)), t = order[j]; order[j] = order[r]; order[r] = t; }
+    order.forEach(function (i) {
+      var b = H('button', 'btn opt', o.o[i], box);
       b.onclick = function () {
         if (i === o.a) { b.classList.add('ok'); [].forEach.call(box.children, function (x) { x.disabled = true; }); feedback(fb, true, 'Juste. ' + (o.e || '')); if (done) done(!miss); }
-        else { miss = true; b.classList.add('ko'); b.disabled = true; feedback(fb, false, o.ko || 'Relis la question et essaie encore.'); }
+        else { miss = true; b.classList.add('ko'); b.disabled = true; feedback(fb, false, (o.why && o.why[i]) || o.ko || 'Relis la question et essaie encore.'); }
       };
     });
     return d;
@@ -324,6 +332,24 @@
     }
     def.bilan.end = def.bilan.end || 'Recommencer ▶';
     scenes[5] = scene(c5, def.bilan, function () { go(0); });
+    if (def.defi) {
+      var cd = H('div', 'card defi', '<div class="eyebrow">Défi facultatif · sans chronomètre</div><p class="small">Ce défi ne compte pas dans ta note. Tu te compares seulement à toi-même.</p>', secs[5]);
+      var dkey = 'mv_defi_' + def.id, dn = def.defi.length, dgood = 0, dleft = dn, dres = H('div', 'fb', '', cd);
+      dres.setAttribute('aria-live', 'polite');
+      def.defi.forEach(function (x, i) {
+        var w = H('div', '', '<div class="eyebrow" style="margin-top:12px">Défi ' + (i + 1) + ' sur ' + dn + '</div>');
+        cd.insertBefore(w, dres);
+        (x.o ? optQ : numQ)(w, x, function (first) {
+          if (first) dgood++;
+          if (--dleft === 0) {
+            var prevBest = +(store.get(dkey) || -1);
+            if (dgood > prevBest) store.set(dkey, String(dgood));
+            dres.className = 'fb ok';
+            dres.textContent = 'Défi terminé : ' + dgood + ' du premier coup sur ' + dn + '. ' + (prevBest < 0 ? 'C\'est ton point de départ.' : dgood > prevBest ? 'Mieux que ta dernière meilleure série (' + prevBest + ').' : 'Ta meilleure série reste ' + Math.max(prevBest, dgood) + '. Rien n\'est perdu : refais-le quand tu veux.');
+          }
+        });
+      });
+    }
     H('div', 'card', '<div class="eyebrow">À retenir</div>' + def.retenir.map(function (r) { return '<div class="retenir">' + r + '</div>'; }).join('') +
       '<div class="ar">' + ar(def.retenirAr) + '</div><table class="voc" style="margin-top:10px">' +
       def.voc.map(function (v) { return '<tr><td>' + v[0] + '</td><td>' + v[1] + '</td></tr>'; }).join('') + '</table>', secs[5]);
