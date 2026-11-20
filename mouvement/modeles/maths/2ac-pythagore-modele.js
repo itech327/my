@@ -20,9 +20,11 @@
     S('line', { x1: foot, y1: gy + 16, x2: gx, y2: gy + 16, stroke: '#cfd3d8', 'stroke-width': 1.5 }, e.pied);
     T(e.pied, (foot + gx) / 2, gy + 32, '3 m');
     e.coin = S('path', { d: 'M' + (gx - 14) + ' ' + gy + 'v-14h14', fill: 'none', stroke: '#cfd3d8', 'stroke-width': 1.5 }, svg);
-    e.haut = S('g', {}, svg);
-    S('line', { x1: gx - 16, y1: gy, x2: gx - 16, y2: top, stroke: '#fff', 'stroke-width': 2.5, 'stroke-dasharray': '6 5' }, e.haut);
-    T(e.haut, gx - 24, (gy + top) / 2 + 6, fin ? '4 m' : '? m', 'lbl big', 'end');
+    e.haut = S('g', {}, svg);                                            // cote de la hauteur, à droite du mur
+    S('line', { x1: gx + 16, y1: top, x2: gx + 40, y2: top, stroke: '#cfd3d8', 'stroke-width': 1.2 }, e.haut);
+    S('line', { x1: gx + 16, y1: gy, x2: gx + 40, y2: gy, stroke: '#cfd3d8', 'stroke-width': 1.2 }, e.haut);
+    S('line', { x1: gx + 34, y1: gy, x2: gx + 34, y2: top, stroke: '#fff', 'stroke-width': 2.5, 'stroke-dasharray': '6 5' }, e.haut);
+    T(e.haut, gx + 44, (gy + top) / 2 + 6, fin ? '4 m' : '? m', 'lbl big', 'start');
     return e;
   }
   var ECH = [['e', 'échelle'], ['p', 'pied'], ['h', 'hauteur']];
