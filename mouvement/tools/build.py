@@ -8,6 +8,7 @@ Sorties : mouvement/dist/<matière>/ (dossier publié par Cloudflare Pages, sans
 """
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -29,12 +30,43 @@ LEVELS = [('1', '1<sup>re</sup> année', 'السنة الأولى'), ('2', '2<su
 LEAD = 'Des leçons courtes qui expliquent par le mouvement : une scène animée, des exercices guidés puis autonomes, et un résumé en arabe.'
 LEAD_AR = 'دروس قصيرة تشرح بالحركة: مشهد متحرك، ثم تمارين موجهة، ثم تمارين فردية، وملخص بالعربية.'
 
-CSP = ("default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; "
-       "connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; "
-       "upgrade-insecure-requests; frame-ancestors 'none'")
-HEADERS = f"""# Généré par mouvement/tools/build.py : ne pas modifier à la main.
+# SEO bilingue (arabe + français) et mesure d'audience : maths, pc, svt seulement. La technologie reste identique.
+SEO = ('maths', 'pc', 'svt')
+LEVEL_AR = {'1': 'الأولى', '2': 'الثانية', '3': 'الثالثة'}
+PARENT = {'name': 'Taalim MEN', 'url': 'https://taalim.men/'}
+# Mesure d'audience, désactivée par défaut. Une seule des deux, choisie à la construction :
+#   CFWA_TOKEN=<32 caractères hexadécimaux>   Cloudflare Web Analytics, sans cookie
+#   GA4_ID=G-XXXXXXXXXX                       Google Analytics 4
+# La CSP n'autorise alors que les sources nécessaires, et le script d'initialisation reste un fichier (aucun script en ligne).
+CFWA = os.environ.get('CFWA_TOKEN', '').strip()
+GA4 = os.environ.get('GA4_ID', '').strip()
+if CFWA and not re.fullmatch(r'[0-9a-f]{32}', CFWA):
+    raise SystemExit('CFWA_TOKEN invalide : 32 caractères hexadécimaux attendus')
+if GA4 and not re.fullmatch(r'G-[A-Z0-9]{6,}', GA4):
+    raise SystemExit('GA4_ID invalide : format G-XXXXXXXXXX attendu')
+if CFWA and GA4:
+    raise SystemExit('Choisir CFWA_TOKEN ou GA4_ID, pas les deux')
+RELAY = 'https://taalim-relay.abderrahim-habz.workers.dev'
+
+
+def csp(s):
+    script, conn, img = ["'self'"], ["'self'", RELAY], ["'self'", 'data:']
+    if s in SEO and CFWA:
+        script.append('https://static.cloudflareinsights.com')
+        conn.append('https://cloudflareinsights.com')
+    if s in SEO and GA4:
+        script.append('https://www.googletagmanager.com')
+        conn += ['https://www.google-analytics.com', 'https://region1.google-analytics.com', 'https://*.analytics.google.com']
+        img.append('https://www.google-analytics.com')
+    return (f"default-src 'none'; script-src {' '.join(script)}; style-src 'self' 'unsafe-inline'; img-src {' '.join(img)}; font-src 'self'; "
+            f"connect-src {' '.join(conn)}; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; "
+            "upgrade-insecure-requests; frame-ancestors 'none'")
+
+
+def headers(s):
+    return f"""# Généré par mouvement/tools/build.py : ne pas modifier à la main.
 /*
-  Content-Security-Policy: {CSP}
+  Content-Security-Policy: {csp(s)}
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
@@ -48,7 +80,40 @@ HEADERS = f"""# Généré par mouvement/tools/build.py : ne pas modifier à la m
 /icons/*
   Cache-Control: public, max-age=604800
 """
+
+
 E = html.escape
+
+
+def ld_json(data):
+    """Bloc JSON-LD. Une donnée, pas un script exécuté : la CSP ne le bloque pas."""
+    return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c') + '</script>\n'
+
+
+def seo_extra(s, cfg, depth, ld=None):
+    """Balises ajoutées dans <head> pour maths, pc, svt : Open Graph complet, JSON-LD, mesure d'audience."""
+    if s not in SEO:
+        return ''
+    up = '../' * depth
+    out = ('<meta property="og:type" content="website"><meta property="og:locale" content="ar_MA">'
+           '<meta property="og:locale:alternate" content="fr_MA"><meta property="og:site_name" content="Taalim MEN · تعليم من">\n'
+           '<meta name="twitter:card" content="summary">\n')
+    if ld:
+        out += ld_json(ld)
+    if CFWA:
+        out += f'<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{CFWA}"}}\'></script>\n'
+    if GA4:
+        out += (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA4}"></script>\n'
+                f'<script defer src="{up}core/ga.js"></script>\n')
+    return out
+
+
+def crumbs(cfg, name=None, url=None):
+    items = [(PARENT['name'], PARENT['url']), (f'{cfg["ar"]} | {cfg["name"]}', cfg['url'])]
+    if name:
+        items.append((name, url))
+    return {'@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': i, 'name': n, 'item': u} for i, (n, u) in enumerate(items, 1)]}
 
 
 def lessons_of(subject):
@@ -66,7 +131,7 @@ def lessons_of(subject):
     return out
 
 
-def head(s, cfg, title, desc, url, depth):
+def head(s, cfg, title, desc, url, depth, extra=''):
     up = '../' * depth
     return f"""<!DOCTYPE html>
 <html lang="fr" data-s="{s}">
@@ -80,7 +145,7 @@ def head(s, cfg, title, desc, url, depth):
 <link rel="icon" href="{up}icons/icon-192.png">
 <link rel="apple-touch-icon" href="{up}icons/apple-touch-icon.png">
 <meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{url}">
-<link rel="stylesheet" href="{up}fonts/fonts.css">
+{extra}<link rel="stylesheet" href="{up}fonts/fonts.css">
 <link rel="stylesheet" href="{up}core/mv.css">
 """
 
@@ -98,7 +163,19 @@ def footer(s):
 def lesson_page(s, cfg, m):
     lvl = f'{m["level"]}AC'
     url = f'{cfg["url"]}{m["id"]}/'
-    return (head(s, cfg, f'{m["title"]} · {cfg["name"]} {lvl}', m['lead'], url, 1) +
+    title, desc, ld = f'{m["title"]} · {cfg["name"]} {lvl}', m['lead'], None
+    if s in SEO:
+        title = f'{m["ar"]} | {title}'
+        desc = (f'درس {cfg["ar"]} «{m["ar"]}» للسنة {LEVEL_AR[m["level"]]} إعدادي ({lvl}): '
+                'مشهد متحرك وتمارين موجهة وملخص بالعربية. مجاني. Leçon animée, exercices guidés et résumé en arabe.')
+        ld = {'@context': 'https://schema.org', '@graph': [
+            {'@type': 'LearningResource', 'name': f'{m["ar"]} | {m["title"]}', 'url': url, 'description': desc,
+             'inLanguage': ['ar', 'fr'], 'learningResourceType': 'Lesson', 'educationalLevel': f'{lvl}',
+             'teaches': m['theme'], 'isAccessibleForFree': True,
+             'isPartOf': {'@type': 'WebSite', 'name': f'{cfg["name"]} en mouvement', 'url': cfg['url']},
+             'provider': {'@type': 'Organization', 'name': PARENT['name'], 'url': PARENT['url']}},
+            crumbs(cfg, f'{m["ar"]} | {m["title"]}', url)]}
+    return (head(s, cfg, title, desc, url, 1, seo_extra(s, cfg, 1, ld)) +
             f'<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n<script defer src="../lessons/{m["id"]}.js"></script>\n</head>\n<body>\n<main id="mv">\n'
             f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
             f'<div class="eyebrow">{E(cfg["name"])} · {lvl} · {E(m["theme"])}</div>\n'
@@ -109,7 +186,15 @@ def lesson_page(s, cfg, m):
 
 def home_page(s, cfg, lessons):
     desc = f'{cfg["full"]} au collège, leçons en mouvement : animations, exercices guidés et résumé en arabe.'
-    out = [head(s, cfg, f'{cfg["name"]} en mouvement · collège', desc, cfg['url'], 0),
+    title, ld = f'{cfg["name"]} en mouvement · collège', None
+    if s in SEO:
+        title = f'{cfg["ar"]} بالحركة | {title}'
+        desc = f'دروس {cfg["ar"]} للسلك الإعدادي بالحركة: مشاهد متحركة وتمارين وملخصات بالعربية. مجانية. {desc}'
+        ld = {'@context': 'https://schema.org', '@graph': [
+            {'@type': 'WebSite', 'name': f'{cfg["name"]} en mouvement', 'url': cfg['url'], 'inLanguage': ['ar', 'fr'], 'description': desc,
+             'publisher': {'@type': 'Organization', 'name': PARENT['name'], 'url': PARENT['url']}},
+            crumbs(cfg)]}
+    out = [head(s, cfg, title, desc, cfg['url'], 0, seo_extra(s, cfg, 0, ld)),
            '<script defer src="core/notify-config.js"></script>\n<script defer src="core/mv.js"></script>\n</head>\n<body data-home>\n<main>\n',
            f'<div class="hero"><div class="glyph">{cfg["glyph"]}</div><h1>{E(cfg["name"])} en mouvement</h1>',
            f'<div class="ar">{E(cfg["ar"])}: {E(LEAD_AR)}</div><p class="small">{E(LEAD)}</p></div>\n',
@@ -132,7 +217,12 @@ def home_page(s, cfg, lessons):
 
 def exam_page(s, cfg):
     url = f'{cfg["url"]}examen/'
-    return (head(s, cfg, f'Examens · {cfg["name"]} en mouvement', f'Examens de {cfg["full"]} au collège par niveau et par difficulté, note sur 20 et correction.', url, 1) +
+    title, desc, ld = f'Examens · {cfg["name"]} en mouvement', f'Examens de {cfg["full"]} au collège par niveau et par difficulté, note sur 20 et correction.', None
+    if s in SEO:
+        title = f'امتحانات {cfg["ar"]} | {title}'
+        desc = f'امتحانات {cfg["ar"]} للسلك الإعدادي بثلاثة مستويات لكل سنة، مع النقطة على 20 والتصحيح. مجانية. {desc}'
+        ld = {'@context': 'https://schema.org', '@graph': [crumbs(cfg, f'امتحانات | Examens', url)]}
+    return (head(s, cfg, title, desc, url, 1, seo_extra(s, cfg, 1, ld)) +
             '<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n<script defer src="questions.js"></script>\n<script defer src="../core/exam.js"></script>\n</head>\n<body>\n<main id="ex">\n'
             f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
             f'<div class="eyebrow">{E(cfg["name"])} · Examens</div>\n<h1>Examens</h1>\n<div class="ar">امتحانات حسب المستوى ودرجة الصعوبة، مع النقطة على 20 والتصحيح</div>\n'
@@ -173,7 +263,10 @@ def build():
         urls.append(f'{cfg["url"]}examen/')
         (d / '404.html').write_text(head(s, cfg, 'Page introuvable', 'Page introuvable', cfg['url'], 0) +
                                     '</head>\n<body>\n<main><h1>Page introuvable</h1><p><a href="/">Retour aux leçons</a></p></main>\n</body>\n</html>\n', encoding='utf-8')
-        (d / '_headers').write_text(HEADERS, encoding='utf-8')
+        (d / '_headers').write_text(headers(s), encoding='utf-8')
+        if s in SEO and GA4:
+            (d / 'core' / 'ga.js').write_text("window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}"
+                                              f"gtag('js',new Date());gtag('config','{GA4}',{{anonymize_ip:true}});\n", encoding='utf-8')
         (d / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {cfg["url"]}sitemap.xml\n', encoding='utf-8')
         (d / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
                                        ''.join(f'  <url><loc>{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
