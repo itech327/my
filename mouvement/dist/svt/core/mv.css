@@ -176,7 +176,7 @@ body.fs main{max-width:1400px}
 body.fs .stage svg{max-height:calc(100vh - 170px)}
 
 /* thème clair : page claire, scène animée sombre comme un tableau */
-html.light{--bg:#f4f5f7;--panel:#ffffff;--line:#d9dce2;--ink:#17191c;--mute:#555b65;--dim:#666c76}
+html.light{--bg:#f4f5f7;--panel:#ffffff;--line:#d9dce2;--ink:#17191c;--mute:#555b65;--dim:#666c76;--ok:#17703f;--bad:#b53030}
 html.light[data-s="maths"]{--acc:#e8661c;--acc-bg:#fff0e6}
 html.light[data-s="pc"]{--acc:#1689d1;--acc-bg:#e6f4fd}
 html.light[data-s="svt"]{--acc:#23a052;--acc-bg:#e7f7ec}
@@ -186,7 +186,7 @@ html.light[data-s="pc"]{--acc-t:#0a68a6}
 html.light[data-s="svt"]{--acc-t:#177a3d}
 html.light[data-s="tech"]{--acc-t:#b8432a}
 html.light .stage{--acc-t:var(--acc)}
-html.light .stage{--line:#2c2f34;--acc-bg:#2a1e17;--bg:#141517;--panel:#1d1f22;--ink:#e9e9ea;--mute:#8b8f96}
+html.light .stage{--ok:#4cc38a;--bad:#ff5c5c;--line:#2c2f34;--acc-bg:#2a1e17;--bg:#141517;--panel:#1d1f22;--ink:#e9e9ea;--mute:#8b8f96}
 html.light[data-s="pc"] .stage{--acc:#38b6ff;--acc-bg:#132433}
 html.light[data-s="svt"] .stage{--acc:#56d07f;--acc-bg:#15281c}
 html.light[data-s="maths"] .stage{--acc:#ff7a2f;--acc-bg:#2a1e17}
@@ -200,12 +200,12 @@ html.light .hud span{color:#2a2e34}
 html.light .hud .hot span{color:var(--acc-t)}
 html.light .btn{background:#eef0f3;color:var(--ink);border-color:#cfd3d9}
 html.light .btn.pri{background:var(--acc-t);border-color:var(--acc-t);color:#fff}
-html.light .btn.ok{color:#1d8a4f;border-color:#1d8a4f}
-html.light .btn.ko{color:#c93c3c;border-color:#c93c3c}
-html.light .fb.ok{color:#1d8a4f}
-html.light .fb.ko{color:#c93c3c}
+html.light .btn.ok{color:#17703f;border-color:#17703f}
+html.light .btn.ko{color:#b53030;border-color:#b53030}
+html.light .fb.ok{color:#17703f}
+html.light .fb.ko{color:#b53030}
 html.light input.num{background:#fff;color:var(--ink);border-color:#c5c9d0}
-html.light .lesson .badge{color:#1d8a4f}
+html.light .lesson .badge{color:#17703f}
 html.light .diff.pri .ar,html.light .diff.pri .small{color:#fff}
 /* carte élève : envoi des notes à l'enseignant */
 .eleve .row{flex-wrap:wrap}
