@@ -92,6 +92,8 @@ async def main():
             page = await ctx.new_page()
             sent = []
             await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', catcher(sent))
+            for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
+                await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
             await page.goto(base + 'examen/')
             await page.locator('.eleve input.txt').first.fill('Élève Test')
             await page.locator('.eleve input[type=checkbox]').check()
@@ -146,6 +148,8 @@ async def main():
         page = await ctx.new_page()
         lsent = []
         await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', catcher(lsent))
+        for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
+            await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
         await page.goto(base)
         await page.evaluate("() => localStorage.setItem('mv_eleve', JSON.stringify({name: 'Élève Test', cls: 'TEST', consent: true}))")
         await page.goto(base + '1ac-cercle/')
