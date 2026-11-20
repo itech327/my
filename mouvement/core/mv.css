@@ -1,6 +1,6 @@
 /* Moteur « Mouvement » : style commun aux sites maths, pc et svt.
    Une seule couleur d'accent par site, réservée à ce dont on parle maintenant. */
-:root{--acc-t:var(--acc);--bg:#141517;--panel:#1d1f22;--line:#2c2f34;--ink:#e9e9ea;--mute:#8b8f96;--dim:#5b6068;--acc:#ff7a2f;--acc-bg:#2a1e17;--ok:#4cc38a;--bad:#ff5c5c;--glow:#2b2119}
+:root{--acc-t:var(--acc);--bg:#141517;--panel:#1d1f22;--line:#2c2f34;--ink:#e9e9ea;--mute:#92969d;--dim:#868b93;--acc:#ff7a2f;--acc-bg:#2a1e17;--ok:#4cc38a;--bad:#ff5c5c;--glow:#2b2119}
 html[data-s="pc"]{--acc:#38b6ff;--acc-bg:#132433;--glow:#14232f}
 html[data-s="svt"]{--acc:#56d07f;--acc-bg:#15281c;--glow:#16261b}
 *{box-sizing:border-box}
@@ -176,7 +176,7 @@ body.fs main{max-width:1400px}
 body.fs .stage svg{max-height:calc(100vh - 170px)}
 
 /* thème clair : page claire, scène animée sombre comme un tableau */
-html.light{--bg:#f4f5f7;--panel:#ffffff;--line:#d9dce2;--ink:#17191c;--mute:#555b65;--dim:#7c828c}
+html.light{--bg:#f4f5f7;--panel:#ffffff;--line:#d9dce2;--ink:#17191c;--mute:#555b65;--dim:#666c76}
 html.light[data-s="maths"]{--acc:#e8661c;--acc-bg:#fff0e6}
 html.light[data-s="pc"]{--acc:#1689d1;--acc-bg:#e6f4fd}
 html.light[data-s="svt"]{--acc:#23a052;--acc-bg:#e7f7ec}
@@ -197,9 +197,9 @@ html.light .cap b{color:var(--ink)}
 html.light .stepper button.on{color:var(--ink)}
 html.light .hud{background:#fff}
 html.light .hud span{color:#2a2e34}
-html.light .hud .hot span{color:var(--acc)}
+html.light .hud .hot span{color:var(--acc-t)}
 html.light .btn{background:#eef0f3;color:var(--ink);border-color:#cfd3d9}
-html.light .btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+html.light .btn.pri{background:var(--acc-t);border-color:var(--acc-t);color:#fff}
 html.light .btn.ok{color:#1d8a4f;border-color:#1d8a4f}
 html.light .btn.ko{color:#c93c3c;border-color:#c93c3c}
 html.light .fb.ok{color:#1d8a4f}
