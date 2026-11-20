@@ -1,0 +1,5 @@
+*.pdf
+books/*/pages/
+content/*/*/.tts/
+content/*/*/*.timings.json
+__pycache__/
