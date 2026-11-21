@@ -290,7 +290,7 @@ TESTS = [
     ('خاصني 3 كلمات', 'خاصني تلاتة كلمات'),
     ('مشيت إلى الدار', 'مشيت الى الدار'),
     ('أصلا ما عرفتش', 'اصلا ما عرفتش'),
-    ('ara chi bttikha nakloha m3a ssbah', 'ارا شي بطيخة ناكلوها مع الصباح'),
+    ('ara chi bttikha nakloha m3a ssbah', 'ارا شي بطّيخة ناكلوها مع الصباح'),
     ('ddar dyalna', 'الدار ديالنا'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
     ('chouf had video f youtube', 'شوف هاد فيديو ف يوتيوب'),
