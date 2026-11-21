@@ -112,6 +112,10 @@ def main():
             pause_scale = 1.0
             if pace == 'story':
                 speed, pause_scale = min(speed, 0.85), 1.7
+            try:
+                pause_scale = min(3.0, max(0.3, float(req.get('pause_scale', pause_scale))))
+            except (TypeError, ValueError):
+                pass
             if spk not in refs or not clean or len(clean) > 2000:
                 return self._send(400, b'{"error":"unknown speaker, empty or too long"}')
             ref_audio, ref_text = refs[spk]

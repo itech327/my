@@ -5,7 +5,8 @@ import { useMemo, useRef, useState } from 'react';
 import { CircleAlert, Lock, Sparkles } from 'lucide-react';
 import { DIALECTS, GROUP_LABELS, dialectByCode, type DialectCode, type DialectGroup } from '@/lib/dialects';
 import type { Balance, Generation, Voice } from '@/lib/types';
-import { STYLE_LABELS, USE_CASE_LABELS, type VoiceStyle } from '@/lib/types';
+import { USE_CASE_LABELS } from '@/lib/types';
+import { DELIVERIES, PACES, TEMPLATES, deliveryById, type DeliveryId, type PaceId } from '@/lib/delivery';
 import { EMOTION_TAGS, MAX_CHARS_PER_REQUEST, countChars, estimateSeconds, formatBalance } from '@/lib/text';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -25,7 +26,10 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const options = useMemo(() => voices.filter((v) => v.dialect === dialect), [voices, dialect]);
   const [voiceId, setVoiceId] = useState(start?.id ?? options.find((v) => !v.isPremium || paid)?.id ?? '');
   const [text, setText] = useState('');
-  const [style, setStyle] = useState<VoiceStyle>('calm');
+  const [delivery, setDelivery] = useState<DeliveryId>('conversational');
+  const [pace, setPace] = useState<PaceId>('medium');
+  const pickDelivery = (d: DeliveryId) => { setDelivery(d); setPace(deliveryById(d)!.defaultPace); };
+  const tone = deliveryById(delivery)!.tone;
   const [balance, setBalance] = useState(initialBalance);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,7 +67,8 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const generate = async () => {
     setBusy(true); setError(null);
     try {
-      const r = await fetch('/api/generations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ voiceId, dialect, text, style: voice?.styles?.includes(style) ? style : undefined }) });
+      const r = await fetch('/api/generations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ voiceId, dialect, text, delivery, pace,
+        style: voice?.styles?.includes(tone) ? tone : undefined }) });
       const j = await r.json();
       if (!r.ok) { setError(j.error ?? 'حدث خطأ، حاول مرة أخرى'); return; }
       setResult(j.generation); setBalance(j.balance);
@@ -90,6 +95,12 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
 
       <div className="grid gap-24 lg:grid-cols-[1fr_var(--layout-card-min-width)]">
         <section aria-label="المحرر" className="grid content-start gap-16">
+          <div className="flex flex-wrap items-center gap-8" role="group" aria-label="نماذج جاهزة">
+            <span className="text-sm font-semibold">نماذج جاهزة:</span>
+            {TEMPLATES.map((t) => (
+              <Button key={t.id} type="button" variant="ghost" size="sm" onClick={() => { setText(t.text); pickDelivery(t.delivery); }}>{t.label}</Button>
+            ))}
+          </div>
           <div className="rounded-lg border border-border-input bg-surface focus-within:outline focus-within:outline-2 focus-within:outline-focus">
             <div role="toolbar" aria-label="المشاعر والسرعة" className="flex flex-wrap gap-4 border-b border-border p-8">
               {EMOTION_TAGS.map((t) => (
@@ -160,17 +171,19 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
             })}
             {options.length === 0 && <p className="text-sm text-text-muted">لا أصوات لهذه اللهجة بعد.</p>}
           </fieldset>
-          {voice?.styles && voice.styles.length > 1 && (
-            <fieldset className="grid gap-4">
-              <legend className="mb-4 text-sm font-semibold">النبرة</legend>
-              <div className="flex gap-8">
-                {voice.styles.map((st) => (
-                  <ChipToggle key={st} pressed={style === st} onClick={() => setStyle(st)}>{STYLE_LABELS[st]}</ChipToggle>
-                ))}
-              </div>
-              <p className="text-xs text-text-muted">{style === 'lively' ? 'إحساس وحركة أكثر، للإعلانات والقصص.' : 'إيقاع متزن، للسرد والدروس.'}</p>
-            </fieldset>
-          )}
+          <fieldset className="grid gap-4">
+            <legend className="mb-4 text-sm font-semibold">أسلوب الإلقاء</legend>
+            <div className="flex flex-wrap gap-8">
+              {DELIVERIES.map((d) => <ChipToggle key={d.id} pressed={delivery === d.id} onClick={() => pickDelivery(d.id)}>{d.label}</ChipToggle>)}
+            </div>
+            <p className="text-xs text-text-muted">{deliveryById(delivery)!.hint}</p>
+          </fieldset>
+          <fieldset className="grid gap-4">
+            <legend className="mb-4 text-sm font-semibold">السرعة</legend>
+            <div className="flex flex-wrap gap-8">
+              {PACES.map((p) => <ChipToggle key={p.id} pressed={pace === p.id} onClick={() => setPace(p.id)}>{p.label}</ChipToggle>)}
+            </div>
+          </fieldset>
           {voice && <AudioPlayer key={voice.id} src={`/api/demo/${voice.id}`} label={`عيّنة ${voice.name}`} />}
           {voice?.slow && <p className="rounded-md bg-surface-sunken p-8 text-xs text-text-muted">صوت بجودة استوديو. الإنشاء أبطأ: قد يأخذ دقيقة أو أكثر للفقرة.</p>}
           {!paid && <ButtonLink href="/app/billing" variant="secondary" size="sm">افتح الأصوات المميّزة</ButtonLink>}

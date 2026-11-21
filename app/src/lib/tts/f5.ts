@@ -10,7 +10,8 @@ export function f5Provider(baseUrl: string, speaker: string): TtsProvider {
       const r = await fetch(`${baseUrl}/synthesize`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ text, speaker: req.style === 'lively' ? `${speaker}-lively` : speaker }),
+        body: JSON.stringify({ text, speaker: req.style === 'lively' ? `${speaker}-lively` : speaker,
+          ...(req.speed ? { speed: req.speed } : {}), ...(req.pauseScale ? { pause_scale: req.pauseScale } : {}) }),
         signal: AbortSignal.timeout(600_000),
       });
       if (!r.ok) throw new Error(`speaker voice service ${r.status}`);

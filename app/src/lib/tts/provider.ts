@@ -5,6 +5,9 @@ export interface SynthesisRequest {
   dialect: DialectCode;
   text: string; // with our own emotion-tag markup
   style?: 'calm' | 'lively';
+  styleText?: string;            // delivery description for engines steered by words (Gemini)
+  speed?: number;                // for engines with a speed control (F5)
+  pauseScale?: number;           // longer or shorter pauses between sentences
 }
 
 export interface SynthesisResult {

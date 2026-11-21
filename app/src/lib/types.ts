@@ -50,6 +50,8 @@ export interface Generation {
   error: string | null;
   regeneratedFrom: string | null;
   style: VoiceStyle | null;
+  delivery: string | null;
+  pace: string | null;
   isFreeRegen: boolean;
   expiresAt: string;
   createdAt: string;
