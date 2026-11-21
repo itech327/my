@@ -142,7 +142,7 @@ def harden(name, html):
     html = re.sub(r'<title>.*?</title>', lambda m: '<title>' + E(title) + '</title>', html, count=1, flags=re.S)
     assert html.count('<title>') == 1, name
     img = SITE + 'og/og-' + ogk + '.png'
-    url = SITE + ('' if name == 'index.html' else name)
+    url = SITE + ('' if name == 'index.html' else name[:-5])  # Pages redirige /x.html vers /x : l'adresse canonique n'a pas .html
     block = ('<!--gen:head-->\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(html, measure=(name != 'teacher.html')) + '">\n'
              '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
              '<meta name="description" content="' + E(desc) + '">\n<link rel="canonical" href="' + url + '">\n'
@@ -180,7 +180,7 @@ for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'co
         hdr += ['  Cache-Control: no-store', '  X-Robots-Tag: noindex, nofollow, noarchive']
     hdr.append('')
     if name != 'teacher.html':
-        urls.append(SITE if name == 'index.html' else SITE + name)
+        urls.append(SITE if name == 'index.html' else SITE + name[:-5])
 hdr += ['/404.html', '  X-Robots-Tag: noindex', '  Cache-Control: no-cache', '']
 wr('_headers', '\n'.join(hdr))
 
@@ -195,7 +195,7 @@ main{max-width:560px;margin:0 auto;padding:12vh 24px;text-align:center}h1{font-s
 .ar{font-family:'Cairo',sans-serif;direction:rtl}ul{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:10px}
 a{display:block;padding:12px 16px;border:1px solid #3a3454;border-radius:12px;color:#f2eefc;text-decoration:none}a:hover,a:focus{border-color:#9b92dc}</style></head>
 <body><main><h1>404</h1><p>Cette page n’existe pas ou a changé d’adresse.</p><p class="ar" lang="ar">هذه الصفحة غير موجودة أو تغيّر عنوانها.</p>
-<ul><li><a href="/">Accueil · الرئيسية</a></li><li><a href="/maths.html">Maths · الرياضيات</a></li><li><a href="/physique-chimie.html">Physique-Chimie · الفيزياء والكيمياء</a></li><li><a href="/svt.html">SVT · علوم الحياة والأرض</a></li></ul></main></body></html>
+<ul><li><a href="/">Accueil · الرئيسية</a></li><li><a href="/maths">Maths · الرياضيات</a></li><li><a href="/physique-chimie">Physique-Chimie · الفيزياء والكيمياء</a></li><li><a href="/svt">SVT · علوم الحياة والأرض</a></li></ul></main></body></html>
 """.replace('__FAVICON__', FAVICON)
 wr('404.html', P404)
 

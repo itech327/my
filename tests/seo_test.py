@@ -18,7 +18,7 @@ for f in PAGES:
     img = re.search(r'<meta property="og:image" content="([^"]+)"', h)
     check(bool(AR.search(t)) and len(t) <= 90, f + ' : titre arabe + français (%d car.)' % len(t))
     check(bool(AR.search(d)) and 'Cours' in d + 'Cours' and len(d) <= 400, f + ' : description arabe + française')
-    check(canon == 'https://taalim.men/' + ('' if f == 'index.html' else f), f + ' : canonical ' + canon)
+    check(canon == 'https://taalim.men/' + ('' if f == 'index.html' else f[:-5]), f + ' : canonical ' + canon)
     check(bool(img) and img.group(1).startswith('https://taalim.men/og/') and os.path.exists(os.path.join(ROOT, img.group(1).replace('https://taalim.men/', ''))), f + ' : og:image présente et fichier existant')
     check(h.count('<title>') == 1 and h.count('rel="canonical"') == 1 and h.count('property="og:image"') == 1, f + ' : une seule balise title, canonical, og:image')
     check('og:image:width" content="1200"' in h and 'summary_large_image' in h and 'twitter:image' in h, f + ' : carte large')
@@ -29,6 +29,7 @@ h = rd('404.html')
 check(os.path.exists(os.path.join(ROOT, '404.html')) and '<script' not in h and 'noindex' in h, '404.html : présente, sans script, noindex')
 check('/404.html' in rd('_headers'), '_headers : règle pour /404.html')
 sm = rd('sitemap.xml')
+check('.html<' not in sm and 'https://taalim.men/maths<' in sm, 'sitemap : adresses sans .html (Pages redirige /x.html)')
 check('404' not in sm and 'teacher' not in sm, 'sitemap : ni 404 ni espace enseignant')
 with sync_playwright() as p:
     b = p.chromium.launch(); pg = b.new_page(viewport={'width': 390, 'height': 800}); msgs = []
