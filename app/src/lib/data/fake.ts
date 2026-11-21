@@ -28,6 +28,12 @@ const USES: UseCase[] = ['ads', 'stories', 'documentary', 'education', 'podcast'
 
 function seedVoices(): Voice[] {
   const out: Voice[] = [];
+  // Google Gemini TTS voices (official API): the main Moroccan engine, chosen by a native
+  // listener over our open voices and AudioDarija. Only when that engine is switched on.
+  if (process.env.TTS_GEMINI === '1') {
+    out.push({ id: 'v-ar-MA-g1', name: 'نور', dialect: 'ar-MA', gender: 'female', useCase: 'ads', isPremium: false, ownerId: null });
+    out.push({ id: 'v-ar-MA-g2', name: 'يونس', dialect: 'ar-MA', gender: 'male', useCase: 'documentary', isPremium: false, ownerId: null });
+  }
   // Moroccan Darija has one real open voice (Piper darija_m1, male, measured
   // median pitch 141 Hz). List exactly that, so the picker does not promise
   // voices that would all sound the same.
@@ -35,11 +41,6 @@ function seedVoices(): Voice[] {
   out.push({ id: 'v-ar-MA-0', name: 'إدريس', dialect: 'ar-MA', gender: 'male', useCase: 'dialogue', isPremium: false, ownerId: null, slow: true, styles: ['calm', 'lively'] });
   // DODa speaker F1 (female), via F5-TTS. Higher quality, slower. Premium.
   out.push({ id: 'v-ar-MA-f1', name: 'هند', dialect: 'ar-MA', gender: 'female', useCase: 'stories', isPremium: true, ownerId: null, slow: true, styles: ['calm', 'lively'] });
-  // Google Gemini TTS voices (official API), only when that engine is switched on.
-  if (process.env.TTS_GEMINI === '1') {
-    out.push({ id: 'v-ar-MA-g1', name: 'نور', dialect: 'ar-MA', gender: 'female', useCase: 'ads', isPremium: true, ownerId: null });
-    out.push({ id: 'v-ar-MA-g2', name: 'يونس', dialect: 'ar-MA', gender: 'male', useCase: 'documentary', isPremium: true, ownerId: null });
-  }
   DIALECTS.forEach((d, di) => {
     if (d.code === 'ar-MA') return;
     for (let i = 0; i < 4; i++) {

@@ -241,3 +241,25 @@ Findings this round:
 Same seed, three spellings: مرحبا, **مرحبة (chosen)**, مرحْبا. The recognizer
 cannot hear the difference; the native listener chose مرحبة. Added to
 `data/respell.tsv`.
+
+## Gemini TTS vs هند vs AudioDarija (2026-11-21)
+
+Google Gemini TTS through the official Interactions API (`gemini-3.8-flash-tts`,
+the user's key as a network secret), style text asking for Casablanca Darija.
+
+| sentence | voice | CER | pause | time |
+| --- | --- | --- | --- | --- |
+| faabor | Gemini Kore | 0.07 | 0.24 s, natural | about 3 s |
+| faabor | Gemini Charon | 0.07 | 0.48 s, natural | about 3 s |
+| faabor | هند + inserted pauses | 0.00 | 0.46 + 0.30 s | about 2 min |
+| welcome | Gemini Kore / Charon | 0.05 | 2 natural pauses | about 4 s |
+| welcome | هند | 0.02 | 3 | about 2 min |
+
+The recognizer still scores هند clearest, but **the native listener ranked:
+1. Gemini, 2. AudioDarija.ma, 3. our open voices.** Natural prosody and
+real pauses come from the engine, which is what cutting and pasting could not
+fix. Decision: Gemini voices (نور = Kore, يونس = Charon) are the main Moroccan
+voices in the app; إدريس and هند stay as the free open fallback.
+
+Lesson: clarity scores and native preference can disagree. The ear decides
+naturalness; the recognizer only guards against swallowed words.

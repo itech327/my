@@ -115,6 +115,13 @@ cdn-lfs-us-1.hf.co, cas-bridge.xethub.hf.co, us.aws.cdn.hf.co.
 endpoint. On the same sentence the native listener preferred هند over their
 Moroccan voice (CER 0.07 vs 0.29). Decision: stay on open models.
 
+**Main engine decided (2026-11-21): Google Gemini TTS** (official API, user's
+key as a network secret for generativelanguage.googleapis.com, header
+x-goog-api-key). The native listener ranked Gemini first, AudioDarija.ma
+second, our open voices third. Run the app with `TTS_GEMINI=1` and
+`NODE_USE_ENV_PROXY=1` in the cloud session. Moroccan Darija is not in
+Google's official language list, so keep checking quality by ear.
+
 ## Open decisions (blocking)
 
 1. **Speech engine for the other 16 dialects.** Moroccan is solved with an open voice. Candidates for the rest: ElevenLabs, Azure AI Speech, Google Cloud
