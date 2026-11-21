@@ -107,6 +107,11 @@ def main():
             except (TypeError, ValueError):
                 speed = a.speed
             speed = min(1.5, max(0.6, speed))
+            # "story" pace: slower, with longer pauses between sentences (calm storytelling)
+            pace = str(req.get('pace', 'normal'))
+            pause_scale = 1.0
+            if pace == 'story':
+                speed, pause_scale = min(speed, 0.85), 1.7
             if spk not in refs or not clean or len(clean) > 2000:
                 return self._send(400, b'{"error":"unknown speaker, empty or too long"}')
             ref_audio, ref_text = refs[spk]
@@ -131,7 +136,7 @@ def main():
                         if cer <= a.good_cer:
                             break
                     takes_used.append(take + 1)
-                    pieces += [best_wav, np.zeros(int(sr * pause), dtype=np.float32)]
+                    pieces += [best_wav, np.zeros(int(sr * pause * pause_scale), dtype=np.float32)]
             audio = np.concatenate(pieces) if pieces else np.zeros(1, dtype=np.float32)
             buf = io.BytesIO()
             sf.write(buf, audio, sr, format='WAV', subtype='PCM_16')

@@ -170,6 +170,17 @@ Ear-tested rules from this skill's sessions:
 - `insert_pauses.py` puts real pauses at " - ", snapped to sound onsets; a
   pause between run-together words can still sound like a stutter
 
+## Storytelling (حكاية)
+
+`f5_server.py` accepts `"pace": "story"`: speed 0.85 and 1.7 times longer pauses
+between sentences. Use it with the calm tone (the user's preferred tone for
+stories). Write the story with `references/darija-style.md` (opening كان حتى
+كان, short sentences, simple images) and check it with `style_check.py`.
+
+Commercial audiobooks and albums of Darija stories are a guide to the style
+only. Never download, train on or clone their narrators' voices: the
+recordings are copyrighted and the narrators did not consent.
+
 ## Training: the only way past the ceiling
 
 Tuning settings stopped helping (results run 3). A model learns new

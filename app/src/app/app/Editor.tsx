@@ -25,7 +25,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const options = useMemo(() => voices.filter((v) => v.dialect === dialect), [voices, dialect]);
   const [voiceId, setVoiceId] = useState(start?.id ?? options.find((v) => !v.isPremium || paid)?.id ?? '');
   const [text, setText] = useState('');
-  const [style, setStyle] = useState<VoiceStyle>('lively');
+  const [style, setStyle] = useState<VoiceStyle>('calm');
   const [balance, setBalance] = useState(initialBalance);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
