@@ -101,6 +101,11 @@ LEXICON = {
     'sift': 'صيفط', 'sifet': 'صيفط', 'lia': 'ليا', 'liya': 'ليا', 'lik': 'ليك', 'lih': 'ليه', 'liha': 'ليها',
     'mwajed': 'موجد', 'wajed': 'واجد', 'lmatch': 'الماتش', 'match': 'ماتش', 'khdma': 'خدمة', 'lkhdma': 'الخدمة',
     'bghiti': 'بغيتي', 'tchri': 'تشري', 'nchri': 'نشري', 'jib': 'جيب', 'jibi': 'جيبي', 'kayn': 'كاين', 'kayna': 'كاينة',
+    'n3tik': 'نعطيك', 'n3tikom': 'نعطيكم', '3tini': 'عطيني', '3tih': 'عطيه', 'wasfa': 'وصفة', 'lwasfa': 'الوصفة',
+    'khodra': 'خضرة', 'lkhodra': 'الخضرة', 'l7em': 'اللحم', 'l7am': 'اللحم', 'lham': 'اللحم', 'gram': 'ڭرام',
+    'bssa7tkom': 'بصحتكم', 'bsa7tkom': 'بصحتكم', 'bssa7tek': 'بصحتك', 'bsa7tek': 'بصحتك', 'smiti': 'سميتي',
+    'tajine': 'طاجين', 'tajin': 'طاجين', 'khassek': 'خاصك', 'khassni': 'خاصني', 'khass': 'خاص', 'zitoun': 'زيتون',
+    'zzitoun': 'الزيتون', '3likom': 'عليكم', '3lik': 'عليك', 'wa7d': 'واحد', 'wahed': 'واحد', 'tomatich': 'ماطيشة',
     'makaynch': 'ماكاينش', 'ma3ndich': 'ماعنديش', '3ndi': 'عندي', '3andi': 'عندي', 'm3a': 'مع', 'ta7aja': 'تاحاجة',
 }
 # French words as Moroccans say them, written for an Arabic voice
@@ -213,6 +218,7 @@ TESTS = [
     ('merci bzaf', 'ميرسي بزاف'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
     ('chouf had video f youtube', 'شوف هاد فيديو ف يوتيوب'),
+    ('khassek 2 kilo d l7em, bssa7tkom', 'خاصك جوج كيلو د اللحم، بصحتكم'),
     ('ڭالها', 'قالها'),
     ('زوييييين 😍😍', 'زويين'),
     ('شنو هادا؟؟؟', 'شنو هادا؟'),
