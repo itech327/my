@@ -286,3 +286,9 @@ naturalness; the recognizer only guards against swallowed words.
 - Ear test: the first Fusha female voice changed MSA words into Darija, very natural. User: keep it as the Darija female voice.
 - New Fusha female voice designed as a news anchor reading word for word. Fusha style text now says: do not change any word into Darija.
 - Voice creation still worked after the daily TTS quota was used up.
+
+## Idriss story part 2 (2026-11-21)
+
+- v1 default: CER 0.068. v2 best-of-3 with recognizer self-check plus respellings (تمّاك, بالإحداثيات): CER 0.070, 12m48s. No gain.
+- Respelling بالإحداثيات fixed that word. تمّاك still wrong ("تم اكن").
+- Pattern: words before a comma get an extra sound: والوراقل, النسخل, المهمن, اكن. Same family as مرحبن. Next test: drop commas inside a chunk, keep only sentence ends.
