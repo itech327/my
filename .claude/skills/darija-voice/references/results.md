@@ -201,3 +201,11 @@ Also: the model's training data is YouTube audio from 51 channels. Whatever its
 quality, it fails the consent rule for use in a product.
 
 **Decision: Habibi F5-TTS stays the engine for both voices.**
+
+## Ear test: بطيخة (2026-11-21)
+
+Same sentence, same seed, three spellings, judged by a native listener:
+بطيخة (plain), **بطّيخة (shadda only, chosen)**, بْطِّيخَة (full diacritics).
+The shadda version sounds most Moroccan. Added to `data/respell.tsv`.
+The model's alphabet has the marks, but only 33 of 12,105 training sentences
+carry them, so test each new diacritic by ear before adding it.

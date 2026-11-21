@@ -1,2 +1,4 @@
 # Measured pronunciation fixes. word<TAB>spelling the voice says right.
 # Add an entry only if evaluate.py shows a lower CER with it.
+بطيخة	بطّيخة
+البطيخة	البطّيخة
