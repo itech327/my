@@ -136,6 +136,10 @@ stutter. `f5_server.py` serves the chosen clips (`data/refs/SPEAKER.wav` +
 The comparison treats a final ا, ى and ه as one sound (دابا = دابه), so
 spelling habits of the recognizer are not counted as voice errors.
 
+`f5_server.py --asr ASR_DIR --best-of 3` makes the voice check itself: each
+sentence gets up to 3 takes, the recognizer scores each one, the clearest is
+kept. Measured: CER 0.080 to 0.040 on a 4-sentence paragraph, 2.5 times slower.
+
 ## Training: the only way past the ceiling
 
 Tuning settings stopped helping (results run 3). A model learns new

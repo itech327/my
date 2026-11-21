@@ -116,3 +116,20 @@ Differences are within chance. Speed is not the lever; the reference clip is.
 
 The female voice is the most intelligible Darija voice measured so far. It
 is in the app as a premium "studio" voice with a slower-generation note.
+
+## Run 5: best-of-N with self-checking (2026-11-21)
+
+F5-TTS is random: the same sentence can come out clean once and with a
+swallowed word the next time. The weather paragraph scored CER 0.080 on one
+take ("والشمس طالعة" heard as "وشم طلعة").
+
+`f5_server.py --asr ASR_DIR --best-of 3`: up to 3 takes per sentence, each
+transcribed by the Darija recognizer, the clearest kept, stopping early when
+a take reaches CER 0.03.
+
+| version | CER | takes per sentence | time |
+| --- | --- | --- | --- |
+| single take | 0.080 | 1, 1, 1 | 80 s |
+| **best of 3, self-checked** | **0.040** | 3, 3, 1 | 204 s |
+
+Half the errors, at about 2.5 times the time. Use it for studio voiceovers.

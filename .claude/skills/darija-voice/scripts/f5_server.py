@@ -8,6 +8,8 @@ GET  /health                                      -> {"ok": true, "speakers": [.
 
 data/refs holds SPEAKER.wav and SPEAKER.txt (exact transcript). 127.0.0.1 only.
 Long text is split into sentences so each generation stays short and steady.
+With --asr and --best-of N, each sentence gets up to N takes; a Darija
+recognizer checks each take and the clearest one is kept (stops early).
 """
 import argparse
 import glob
@@ -16,11 +18,13 @@ import json
 import os
 import re
 import sys
+import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from normalize import normalize  # noqa: E402
+from evaluate import Asr, rates  # noqa: E402
 
 import numpy as np  # noqa: E402
 import soundfile as sf  # noqa: E402
@@ -61,6 +65,9 @@ def main():
     ap.add_argument('--port', type=int, default=5007)
     ap.add_argument('--nfe', type=int, default=16)
     ap.add_argument('--speed', type=float, default=0.9, help='below 1 gives each word more time: fewer skipped words')
+    ap.add_argument('--asr', help='Darija recognizer dir: enables self-checking of each take')
+    ap.add_argument('--best-of', type=int, default=1, help='takes per sentence, the clearest is kept (needs --asr)')
+    ap.add_argument('--good-cer', type=float, default=0.03, help='stop early when a take is at least this clear')
     a = ap.parse_args()
     torch.set_num_threads(os.cpu_count() or 4)
     model = load_model(DiT, CFG, a.ckpt, vocab_file=a.vocab)
@@ -69,6 +76,7 @@ def main():
     for wav in glob.glob(os.path.join(a.refs, '*.wav')):
         spk = os.path.splitext(os.path.basename(wav))[0]
         refs[spk] = preprocess_ref_audio_text(wav, open(wav[:-4] + '.txt', encoding='utf-8').read().strip())
+    asr = Asr(a.asr) if a.asr and a.best_of > 1 else None
     lock = threading.Lock()
 
     class H(BaseHTTPRequestHandler):
@@ -103,21 +111,38 @@ def main():
                 return self._send(400, b'{"error":"unknown speaker, empty or too long"}')
             ref_audio, ref_text = refs[spk]
             pieces, sr = [], 24000
+            takes_used = []
             with lock:
                 for part, pause in sentences(clean):
-                    wav, sr, _ = infer_process(ref_audio, ref_text, part, model, vocoder, nfe_step=a.nfe, speed=speed,
-                                               sway_sampling_coef=-1.0, show_info=lambda *x: None)
-                    pieces += [wav, np.zeros(int(sr * pause), dtype=np.float32)]
+                    best_wav, best_cer = None, 9.0
+                    for take in range(a.best_of):
+                        torch.manual_seed(1234 + 7919 * take)
+                        wav, sr, _ = infer_process(ref_audio, ref_text, part, model, vocoder, nfe_step=a.nfe, speed=speed,
+                                                   sway_sampling_coef=-1.0, show_info=lambda *x: None)
+                        if asr is None:
+                            best_wav = wav
+                            break
+                        # self-check: transcribe this take and keep the clearest one
+                        with tempfile.NamedTemporaryFile(suffix='.wav') as tmp:
+                            sf.write(tmp.name, wav, sr, subtype='PCM_16')
+                            cer = rates(part, asr(tmp.name))[0]
+                        if cer < best_cer:
+                            best_wav, best_cer = wav, cer
+                        if cer <= a.good_cer:
+                            break
+                    takes_used.append(take + 1)
+                    pieces += [best_wav, np.zeros(int(sr * pause), dtype=np.float32)]
             audio = np.concatenate(pieces) if pieces else np.zeros(1, dtype=np.float32)
             buf = io.BytesIO()
             sf.write(buf, audio, sr, format='WAV', subtype='PCM_16')
-            self._send(200, buf.getvalue(), 'audio/wav', {'X-Audio-Seconds': f'{len(audio) / sr:.3f}'})
+            self._send(200, buf.getvalue(), 'audio/wav', {'X-Audio-Seconds': f'{len(audio) / sr:.3f}',
+                                                          'X-Takes': ','.join(map(str, takes_used))})
 
         def log_message(self, fmt, *args):
             sys.stderr.write('f5 %s\n' % (fmt % args))
 
     srv = ThreadingHTTPServer(('127.0.0.1', a.port), H)
-    print(f'speaker voices on http://127.0.0.1:{a.port}  speakers={sorted(refs)} nfe={a.nfe}', flush=True)
+    print(f'speaker voices on http://127.0.0.1:{a.port}  speakers={sorted(refs)} nfe={a.nfe} best_of={a.best_of} self_check={asr is not None}', flush=True)
     srv.serve_forever()
 
 
