@@ -5,7 +5,7 @@ Block a second free minute for a reused email,onboarding,should,yes,yes,terms 12
 Text editor with Arabic RTL input,generate,must,yes,yes,clone: dir=auto textarea
 Dialect picker for 16 dialects plus Fusha,generate,must,yes,yes,17 options on the site. clone: grouped select
 Voice picker with preview,generate,must,yes,yes,clone: radio list plus sample player
-Generate speech from text,generate,must,yes,partial,needs our own TTS engine. clone: placeholder engine makes tones of the right length. Real engine not chosen
+Generate speech from text,generate,must,yes,partial,"needs our own TTS engine. clone: REAL for Moroccan Darija (open Piper voice, CER 0.12 by round-trip test). Other dialects still placeholder"
 Correct pronunciation with diacritics (tashkeel),generate,must,yes,no,home FAQ claim. clone: depends on the engine. Diacritics already not charged
 Play and download generated audio,generate,must,yes,yes,clone: WAV. Tested in browser
 Emotion and pace tags on selected words,generate,should,yes,partial,laugh whisper sad angry fast slow. clone: tags inserted on whole words and not charged. Placeholder engine ignores them

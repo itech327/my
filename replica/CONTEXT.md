@@ -69,7 +69,7 @@ What is fake:
 
 | part | now | real one goes in |
 | --- | --- | --- |
-| speech | `lib/tts/fake.ts` makes tones of the right length | a new `TtsProvider` in `lib/tts/` |
+| speech | **Moroccan: real open voice** (Piper, CER 0.12). Other dialects: `lib/tts/fake.ts` tones | a `TtsProvider` per dialect in `lib/tts/` |
 | data | `lib/data/fake.ts`, in memory, resets on restart | a Supabase `DataLayer` in `lib/data/` |
 | payments | billing grants minutes with no charge | checkout plus a signed webhook |
 | cloning, SFX, API, transcription | coming-soon screens | after the engine |
@@ -98,9 +98,22 @@ cd app && npm install && npm run build && npm start
   `replica/design/tokens.json`. Regenerate with `npm run tokens` in `app/`.
 - **Font:** IBM Plex Sans Arabic. **Accent:** neutral grey until the rebrand.
 
+## Moroccan voice
+
+Skill: `.claude/skills/darija-voice/` (`/darija-voice`). Open model
+`maromoya/piper-darija` (CC BY 4.0, DODa data by AtlasIA). Runs on a CPU, about
+25 times faster than real time. Text front end handles numbers, Arabizi and
+French loanwords (24 tests). Scored by round trip through a Darija
+recognizer: CER 0.444 with defaults, 0.120 tuned. Run with
+`scripts/setup.sh DIR`, then `server.py`, then start the app with
+`TTS_DARIJA_URL=http://127.0.0.1:5005`.
+
+Hosts added for this: huggingface.co, cdn-lfs.huggingface.co,
+cdn-lfs-us-1.hf.co, cas-bridge.xethub.hf.co, us.aws.cdn.hf.co.
+
 ## Open decisions (blocking)
 
-1. **Speech engine.** Candidates: ElevenLabs, Azure AI Speech, Google Cloud
+1. **Speech engine for the other 16 dialects.** Moroccan is solved with an open voice. Candidates for the rest: ElevenLabs, Azure AI Speech, Google Cloud
    TTS, Arabic specialist vendors, or ArabyVoice's official API as a test
    only. Not yet verified: dialect coverage, price, licence. Test: the same
    5 sentences per dialect, including Moroccan Darija and undiacritised MSA.

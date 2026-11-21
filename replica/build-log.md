@@ -45,9 +45,22 @@ Browser run against a production build (`next build && next start`):
 
 Screenshots: `replica/clone-screens/` (S01 to S16, desktop and mobile).
 
+## Moroccan voice (2026-11-21)
+
+- Moroccan Darija now speaks with a real open voice: `maromoya/piper-darija`
+  (CC BY 4.0), run by `.claude/skills/darija-voice/scripts/server.py` and
+  routed by `app/src/lib/tts/index.ts` when `TTS_DARIJA_URL` is set.
+- Measured with a Darija recognizer: CER 0.444 with Piper defaults, 0.120
+  after turning the MSA diacritizer off and speaking French loanwords in
+  Darija form. Details: `.claude/skills/darija-voice/references/results.md`.
+- The voice is male (median pitch 141 Hz), so the Moroccan voice list now
+  shows one male voice instead of four names that would sound the same.
+- Browser flow re-run with the real voice: charged the real audio length,
+  WAV download valid, no console errors.
+
 ## Not done, and why
 
-- **Real speech.** `lib/tts/fake.ts` makes tone patterns with the length a real
+- **Real speech for 16 dialects.** Moroccan is real. The rest use `lib/tts/fake.ts`, which makes tone patterns with the length a real
   voice would take, so charging, storing, playing and downloading all work.
   Swap in a real `TtsProvider` once the engine is chosen.
 - **Payments.** Billing grants minutes in test mode. Needs the payment

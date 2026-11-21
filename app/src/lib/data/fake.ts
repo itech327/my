@@ -28,7 +28,12 @@ const USES: UseCase[] = ['ads', 'stories', 'documentary', 'education', 'podcast'
 
 function seedVoices(): Voice[] {
   const out: Voice[] = [];
+  // Moroccan Darija has one real open voice (Piper darija_m1, male, measured
+  // median pitch 141 Hz). List exactly that, so the picker does not promise
+  // voices that would all sound the same.
+  out.push({ id: 'v-ar-MA-0', name: 'إدريس', dialect: 'ar-MA', gender: 'male', useCase: 'dialogue', isPremium: false, ownerId: null });
   DIALECTS.forEach((d, di) => {
+    if (d.code === 'ar-MA') return;
     for (let i = 0; i < 4; i++) {
       const female = i % 2 === 0;
       const pool = female ? FEMALE : MALE;
