@@ -87,3 +87,32 @@ MSA. Remaining errors are the model's limits, not its settings.
 
 Next real gain needs **training**, not tuning: fine-tune on more licensed
 speech (Darija and Moroccan-read MSA) on a GPU. See SKILL.md, "Training".
+
+## Run 4: female voice, measured fixes (2026-11-21)
+
+Habibi F5-TTS, DODa speaker F1, 16 quality steps, on a 4-core CPU.
+
+1. **Reference clip** (`select_ref.py`, 7 clips x 4 sentences): the 4.16 s
+   clip `doda_000286` scored CER 0.014. The 2.7 s clip scored 0.031. Longer,
+   clean reference: half the errors.
+2. **Short pieces**: the service split at every comma, and 2-word pieces
+   like "أنا هند" were dropped. Pieces under 5 words now merge with their
+   neighbour.
+3. **Speed** (8 sentences, Darija and MSA):
+
+| speed | CER |
+| --- | --- |
+| 1.0 | 0.041 |
+| **0.9 (default)** | **0.026** |
+| 0.8 | 0.045 |
+| 0.75 | 0.028 |
+
+Differences are within chance. Speed is not the lever; the reference clip is.
+
+| voice | CER on its test | speed on CPU |
+| --- | --- | --- |
+| Piper male (fast) | 0.16 (30 sentences) | about 25 times faster than real time |
+| **F5 female F1** | **about 0.03** (8 sentences) | about 5 to 10 times slower than real time |
+
+The female voice is the most intelligible Darija voice measured so far. It
+is in the app as a premium "studio" voice with a slower-generation note.
