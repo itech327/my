@@ -87,7 +87,7 @@ def headers(s):
 
 /icons/*
   Cache-Control: public, max-age=604800
-"""
+""" + ('\n/og.png\n  Cache-Control: public, max-age=604800\n' if s in SEO else '')
 
 
 E = html.escape
@@ -105,7 +105,9 @@ def seo_extra(s, cfg, depth, ld=None):
     up = '../' * depth
     out = ('<meta property="og:type" content="website"><meta property="og:locale" content="ar_MA">'
            '<meta property="og:locale:alternate" content="fr_MA"><meta property="og:site_name" content="Taalim MEN · تعليم من">\n'
-           '<meta name="twitter:card" content="summary">\n')
+           f'<meta property="og:image" content="{cfg["url"]}og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+           f'<meta property="og:image:alt" content="{E(cfg["name"])} en mouvement · {E(cfg["ar"])}">\n'
+           f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{cfg["url"]}og.png">\n')
     if ld:
         out += ld_json(ld)
     if CFWA.get(s):
@@ -257,6 +259,8 @@ def build():
             shutil.copy(MV / 'core' / f, d / 'core' / f)
         shutil.copytree(ROOT / 'fonts', d / 'fonts')
         shutil.copytree(ROOT / 'icons', d / 'icons')
+        if s in SEO:
+            shutil.copy(MV / 'og' / f'og-{s}.png', d / 'og.png')                     # image de partage 1200x630
         lessons = lessons_of(s)
         urls = [cfg['url']]
         for m in lessons:
