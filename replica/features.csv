@@ -1,0 +1,29 @@
+feature,area,priority,original,clone,notes
+Sign up with email,onboarding,must,yes,no,Google sign-in is a guess
+One free minute on sign up without a card,onboarding,must,yes,no,home FAQ and pricing meta
+Block a second free minute for a reused email,onboarding,should,yes,no,terms 12
+Text editor with Arabic RTL input,generate,must,yes,no,
+Dialect picker for 16 dialects plus Fusha,generate,must,yes,no,17 options on the site
+Voice picker with preview,generate,must,yes,no,
+Generate speech from text,generate,must,yes,no,needs our own TTS engine
+Correct pronunciation with diacritics (tashkeel),generate,must,yes,no,home FAQ claim
+Play and download generated audio,generate,must,yes,no,
+Emotion and pace tags on selected words,generate,should,yes,no,laugh whisper sad angry fast slow
+Minutes balance shown and charged per generation,billing,must,yes,no,
+Buy prepaid minute packs,billing,must,yes,no,read 2026-11-21: $10/30 min $20/120 min $99/900 min
+Pay in local currency (MAD SAR EGP),billing,should,yes,no,pricing meta description
+Credits expire after the pack period,billing,could,yes,no,terms 6. Consider not copying: users dislike expiry
+Generation history,history,must,yes,no,
+Audio and text auto-deleted after 7 days,history,should,yes,no,terms 10
+Free regenerate once under 500 words,history,could,yes,no,terms 13
+Voice library browse by dialect and use case,voices,should,yes,no,
+Voice cloning from an uploaded sample,cloning,should,yes,no,consent required. terms 8
+Private or public cloned voice,cloning,could,yes,no,terms 8
+Sound effects from a text prompt,sfx,could,yes,no,
+API keys and TTS API,api,should,yes,no,terms 7. No public docs found
+Account deletion,account,must,yes,no,terms 12. Also legally needed
+SEO landing page per dialect,marketing,could,yes,no,17 pages
+Blog,marketing,could,yes,no,
+3000+ voice library,voices,could,yes,skip,the provider's stock voices. We get what our engine licenses
+Named voices and demo clips,voices,could,yes,skip,owned or licensed by them
+Their speech engine quality,generate,must,yes,skip,a third-party model. We pick and license our own
