@@ -78,6 +78,34 @@ def align_words(letters, words: list[str]) -> list[float | None]:
     return starts
 
 
+def snap_to_onset(x: np.ndarray, sr: int, t: float, max_back: float = 0.2) -> int:
+    """The recognizer marks a letter 20-60 ms late. Walk back from its time to where the
+    sound really starts, so a pause never splits a consonant (measured: a cut inside the
+    hiss of ف left half of it before the pause, which sounds like a stutter).
+    - starting on a loud voiced frame (vowel, و): go back to the silence before it
+    - starting on a hiss or a quiet frame (ف, س, ش): go back to where the voiced sound before it ends"""
+    f = int(sr * 0.01)
+    frames = [(np.sqrt((x[i:i + f] ** 2).mean()), np.mean(np.abs(np.diff(np.sign(x[i:i + f])))) / 2)
+              for i in range(0, len(x) - f, f)]
+    peak = max(e for e, _ in frames) or 1.0
+    voiced = lambda k: frames[k][0] > 0.1 * peak and frames[k][1] < 0.08
+    quiet = lambda k: frames[k][0] < 0.03 * peak
+    k = min(len(frames) - 1, int(t / 0.01))
+    stop = max(0, k - int(max_back / 0.01))
+    if voiced(k):
+        k0, near = k, max(0, k - 8)  # look for silence within 80 ms only
+        while k > near and not quiet(k - 1):
+            k -= 1
+        if not quiet(max(0, k - 1)):
+            # words run together (no silence, e.g. "تقراو و"): cut at the energy dip instead
+            lo, hi = max(0, k0 - 8), min(len(frames), k0 + 2)
+            k = min(range(lo, hi), key=lambda j: frames[j][0])
+    else:
+        while k > stop and not voiced(k - 1):
+            k -= 1
+    return k * f
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--asr', required=True)
@@ -104,11 +132,8 @@ def main():
             sys.exit(f'could not place the pause before "{words[k]}": the recognizer did not hear it')
         times.append(aligned[k])
     fade = int(sr * 0.005)
-    cuts = []
-    for t in times:
-        i0, i1 = max(0, int((t - 0.04) * sr)), int(t * sr)
-        env = np.convolve(np.abs(x[i0:i1]), np.ones(48) / 48, 'same')
-        cuts.append(i0 + int(np.argmin(env)) if len(env) else i1)
+    cuts = [snap_to_onset(x, sr, t) for t in times]
+    print('cut points after snapping to sound onsets:', ', '.join(f'{c / sr:.2f}s' for c in cuts))
     pieces, last = [], 0
     for c in cuts:
         seg = x[last:c].copy()
