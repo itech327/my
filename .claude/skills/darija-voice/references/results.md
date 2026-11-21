@@ -263,3 +263,11 @@ voices in the app; إدريس and هند stay as the free open fallback.
 
 Lesson: clarity scores and native preference can disagree. The ear decides
 naturalness; the recognizer only guards against swallowed words.
+
+## Gemini accent test (2026-11-21)
+
+- Accent text in `speech_metadata.style` (north) on voice Kore: listener heard no northern accent.
+- Google docs: accent is a permanent trait. Put it in Voice design (`POST /v1beta/voices`, `type: prompted`), not in `style`.
+- Designed voice accepted with `language_code: ar-MA`. Prompt: young woman from Tetouan, Jebli accent.
+- Samples: `replica/examples/gemini/north-design.wav`, `north-design-preview.wav`. Awaiting ear verdict.
+- Limits: 200 stored voices per project, 1-year TTL. One 429 on synthesis, retry worked.
