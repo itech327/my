@@ -10,7 +10,10 @@ Correct pronunciation with diacritics (tashkeel),generate,must,yes,no,home FAQ c
 Play and download generated audio,generate,must,yes,no,
 Emotion and pace tags on selected words,generate,should,yes,no,laugh whisper sad angry fast slow
 Minutes balance shown and charged per generation,billing,must,yes,no,
-Buy prepaid minute packs,billing,must,yes,no,read 2026-11-21: $10/30 min $20/120 min $99/900 min
+Buy minute plans (1 3 or 6 months),billing,must,yes,no,rendered 2026-11-21: 6$/mo 30 min; 15$/mo 2 h; 49$/3 mo 7 h; 69$/6 mo 15 h
+Roll over unused minutes on early renewal,billing,should,yes,no,pricing page validity note
+Speech-to-text transcription,transcription,could,yes,no,listed on every plan. Not in the earlier recon
+HD audio download,generate,should,yes,no,paid plans only
 Pay in local currency (MAD SAR EGP),billing,should,yes,no,pricing meta description
 Credits expire after the pack period,billing,could,yes,no,terms 6. Consider not copying: users dislike expiry
 Generation history,history,must,yes,no,

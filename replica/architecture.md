@@ -32,8 +32,9 @@ The clone must pick and license its own. Requirements from the recon:
 4. Voice cloning with consent, and text-to-SFX, for the later milestones.
 5. A commercial licence that lets your users own and sell the audio.
 6. A cost per audio minute well under what you charge. The original's
-   cheapest pack is $10 for 30 minutes, about $0.33 a minute. Its biggest is
-   $99 for 900, about $0.11 a minute.
+   plans run from $6 for 30 minutes, about $0.20 a minute, down to $69 for
+   15 hours, about $0.077 a minute. The engine must cost well below
+   $0.077 a minute for the big plan to make money.
 
 Candidates to evaluate: Azure AI Speech, ElevenLabs, Google Cloud
 Text-to-Speech, and any Arabic-specialist vendor. I have not checked their

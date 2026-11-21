@@ -15,7 +15,7 @@ user's own account would confirm them.
 | # | source | URL | notes |
 | --- | --- | --- | --- |
 | 1 | marketing home | https://arabyvoice.com/ | voices, dialects, cloning, SFX, emotion tags, FAQ. Read 2026-11-21 |
-| 2 | pricing | https://arabyvoice.com/pricing | page body renders client-side. Prices from its schema.org offers block. Read 2026-11-21 |
+| 2 | pricing | https://arabyvoice.com/pricing | rendered in a browser 2026-11-21: Free 60 s; 6 $/month for 30 min; 15 $/month for 2 h; 49 $/3 months for 7 h; 69 $/6 months for 15 h. Unused minutes roll over when you renew before expiry. The page's schema.org block says 10/20/99 $ and is out of date |
 | 3 | terms | https://arabyvoice.com/terms | API, cloning, credits, retention, deletion, free regenerate. Last updated 2026-09-25 |
 | 4 | dialect landing | https://arabyvoice.com/Egypt | one of 17 SEO pages, same template per dialect |
 | 4b | dialect landing | https://arabyvoice.com/Morocco | same template as /Egypt. Only the dialect name, 6 voice cards and FAQ wording change. Read 2026-11-21 |
@@ -33,7 +33,7 @@ anything private into their app while doing recon.
 ## Core loop
 
 Type Arabic text, pick a dialect and a voice, generate realistic speech,
-download the audio. Usage is paid in prepaid minutes.
+download the audio. Usage is paid in minutes, bought as plans of 1, 3 or 6 months. Unused minutes roll over on renewal.
 
 ## Screens
 
@@ -41,7 +41,7 @@ download the audio. Usage is paid in prepaid minutes.
 | --- | --- | --- | --- | --- | --- |
 | S01 | home | / | pitch, voice samples, dialects, cloning and SFX demos, FAQ | top nav, hero CTA, voice sample cards with player, dialect chips, before/after clone players, SFX cards, emotion tag demo, FAQ accordion, footer | filled |
 | S02 | dialect landing x17 | /Egypt, /Morocco, /Saudi-Arabia, /Fusha ... | SEO page per dialect, same template, dialect-specific voices | same as S01, dialect word swapped in title, meta, headline, voices heading and first FAQ. 6 voice cards per dialect with use-case tags. Morocco uses "الدارجة المغربية", not "اللهجة". Clone and SFX demos are shared across all pages | filled |
-| S03 | pricing | /pricing | plans and local-currency pay | plan cards (inferred), currency picker (inferred) | client-rendered, not seen |
+| S03 | pricing | /pricing | plans and local-currency pay | 4 paid plan cards with a name tab, price, minutes, feature checks, validity note, savings pill, subscribe button. Free card centred below | loading (full-page spinner), filled. Screenshot in screens/S03-desktop.png |
 | S04 | blog index | /blog | SEO content | post list | not read |
 | S05 | contact | /contact | support form | form | not read |
 | S06 | about | /about | founder story | text, founder card | filled |
@@ -81,8 +81,9 @@ F04 Clone own voice
     edge: no consent, poor audio, private voice still held by the provider
 
 F05 Buy minutes
-    S03 or S15 -> pick pack -> pay in local currency -> balance updates
-    edge: payment fails, credits expire after the pack's period
+    S03 or S15 -> pick plan -> pay in local currency -> balance updates
+    edge: payment fails, minutes expire at the end of the period,
+          renewing early adds leftover minutes to the new balance and extends expiry
 
 F06 Make a sound effect
     S13 describe the scene -> generate -> play -> download
@@ -157,7 +158,7 @@ User 1-n Voice (cloned), Voice 1-n Generation, User 1-n ApiKey.
 
 ## Feature matrix
 
-See `features.csv`. Must: 12, should: 7, could: 6, skip: 3.
+See `features.csv`. Must: 12, should: 9, could: 7, skip: 3.
 
 ## Out of scope (cannot or should not be cloned)
 
