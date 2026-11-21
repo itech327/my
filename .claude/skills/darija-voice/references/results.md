@@ -133,3 +133,18 @@ a take reaches CER 0.03.
 | **best of 3, self-checked** | **0.040** | 3, 3, 1 | 204 s |
 
 Half the errors, at about 2.5 times the time. Use it for studio voiceovers.
+
+## Run 6: إدريس moved to F5-TTS with DODa M1 (2026-11-21)
+
+`select_ref.py` on 6 M1 clips: best `doda_004235` (3.95 s), CER 0.014.
+Then the user's 110-word well-permit story, best of 3 takes per piece,
+transcribed in 20 s windows:
+
+| voice | engine | CER | WER | time for 46-62 s of audio |
+| --- | --- | --- | --- | --- |
+| إدريس before | Piper (M1) | 0.228 | 0.691 | 2 s |
+| **إدريس now** | **F5-TTS + M1 reference, self-checked** | **0.094** | 0.473 | 937 s |
+| هند | F5-TTS + F1 reference, self-checked | 0.101 | 0.455 | 930 s |
+
+Same speaker, 2.4 times fewer character errors. The cost is time: about 20
+times slower than real time on 4 CPU cores. A GPU would make it near real time.

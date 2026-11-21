@@ -31,7 +31,8 @@ function seedVoices(): Voice[] {
   // Moroccan Darija has one real open voice (Piper darija_m1, male, measured
   // median pitch 141 Hz). List exactly that, so the picker does not promise
   // voices that would all sound the same.
-  out.push({ id: 'v-ar-MA-0', name: 'إدريس', dialect: 'ar-MA', gender: 'male', useCase: 'dialogue', isPremium: false, ownerId: null });
+  // DODa speaker M1 (male). Studio engine (F5-TTS) when available, else the fast Piper voice of the same speaker.
+  out.push({ id: 'v-ar-MA-0', name: 'إدريس', dialect: 'ar-MA', gender: 'male', useCase: 'dialogue', isPremium: false, ownerId: null, slow: true });
   // DODa speaker F1 (female), via F5-TTS. Higher quality, slower. Premium.
   out.push({ id: 'v-ar-MA-f1', name: 'هند', dialect: 'ar-MA', gender: 'female', useCase: 'stories', isPremium: true, ownerId: null, slow: true });
   DIALECTS.forEach((d, di) => {

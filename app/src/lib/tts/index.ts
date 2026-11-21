@@ -11,7 +11,11 @@ import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider'
 const darijaUrl = process.env.TTS_DARIJA_URL;
 const speakerUrl = process.env.TTS_SPEAKERS_URL;
 
-const byVoice: Record<string, TtsProvider> = speakerUrl ? { 'v-ar-MA-f1': f5Provider(speakerUrl, 'F1') } : {};
+// Both Moroccan voices use the studio engine when it is available. Without it,
+// إدريس falls back to the fast Piper voice (same speaker, M1).
+const byVoice: Record<string, TtsProvider> = speakerUrl
+  ? { 'v-ar-MA-f1': f5Provider(speakerUrl, 'F1'), 'v-ar-MA-0': f5Provider(speakerUrl, 'M1') }
+  : {};
 const byDialect: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};
 
 export function providerFor(req: Pick<SynthesisRequest, 'voiceId' | 'dialect'>): TtsProvider {

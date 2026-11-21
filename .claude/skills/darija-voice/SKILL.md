@@ -114,6 +114,10 @@ provider that calls it. The settings chosen in step 4 go in the service.
 
 ## Other voices: female and other speakers
 
+Both app voices now run on F5-TTS: إدريس = DODa M1 (`data/refs/M1.*`), هند = DODa F1
+(`data/refs/F1.*`), each reference chosen by `select_ref.py` (CER 0.014).
+The Piper voice stays as the fast fallback.
+
 `scripts/speak_f5.py` speaks in any of the 7 DODa speakers' voices (F1-F4,
 M1-M3) with the Habibi F5-TTS model (Apache-2.0, 674 MB). Give it a clean
 3-6 s reference clip and its exact transcript (`data/refs/`).
