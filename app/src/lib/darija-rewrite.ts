@@ -1,21 +1,25 @@
 import 'server-only';
-import { accentById, type AccentId } from './delivery';
+import type { RegisterId } from './delivery';
 
-// "حوّل إلى الدارجة": rewrite any text into natural Moroccan Darija with a Gemini text
+// "حوّل إلى الدارجة" or "حوّل إلى الفصحى": rewrite any text into general Moroccan
+// Darija or simple Standard Arabic with a Gemini text
 // model (official generateContent API, the same key as Gemini TTS, injected by the
 // network proxy). Tested 2026-11-21 with gemini-3.8-flash; it can answer 503 under
 // load, so we retry and fall back to other models.
 
 const MODELS = ['gemini-3.8-flash', 'gemini-flash-latest', 'gemini-2.5-flash'];
 
-function system(accent?: AccentId | null): string {
-  const city = accentById(accent)?.city || 'الدار البيضاء';
-  return `أنت كاتب مغربي. أعد كتابة النص بالدارجة المغربية الطبيعية كما يتكلمها أهل ${city}، بالحروف العربية. `
-    + 'حافظ على المعنى كاملاً. اكتب الأرقام بالحروف بالدارجة. اكتب الكلمات الفرنسية كما تُنطق بحروف عربية. '
-    + 'لا تضف تشكيلاً. جمل قصيرة. أعد النص المعاد كتابته فقط، بلا شرح ولا علامات تنصيص.';
+function system(register?: RegisterId | null): string {
+  const common = 'حافظ على المعنى كاملاً. لا تضف تشكيلاً. جمل قصيرة وواضحة. أعد النص المعاد كتابته فقط، بلا شرح ولا علامات تنصيص.';
+  if (register === 'fusha') {
+    return 'أنت محرر مغربي متمكن من العربية الفصحى. أعد كتابة النص بعربية فصحى سليمة وبسيطة، كما يكتبها مقدم في الإذاعة المغربية. '
+      + 'صحح الأخطاء النحوية والإملائية. اكتب الأرقام بالحروف. ' + common;
+  }
+  return 'أنت كاتب مغربي. أعد كتابة النص بالدارجة المغربية العامة التي يفهمها كل المغاربة، بالحروف العربية. '
+    + 'اكتب الأرقام بالحروف بالدارجة. اكتب الكلمات الفرنسية كما تُنطق بحروف عربية. ' + common;
 }
 
-export async function rewriteToDarija(text: string, accent?: AccentId | null): Promise<string> {
+export async function rewriteText(text: string, register?: RegisterId | null): Promise<string> {
   let last = 'no model answered';
   for (const model of MODELS) {
     for (let attempt = 0; attempt < 2; attempt++) {
@@ -23,7 +27,7 @@ export async function rewriteToDarija(text: string, accent?: AccentId | null): P
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY ?? 'proxy-injected' },
         body: JSON.stringify({
-          systemInstruction: { parts: [{ text: system(accent) }] },
+          systemInstruction: { parts: [{ text: system(register) }] },
           contents: [{ role: 'user', parts: [{ text }] }],
           generationConfig: { temperature: 0.4 },
         }),

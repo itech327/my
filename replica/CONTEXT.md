@@ -121,9 +121,12 @@ x-goog-api-key). The native listener ranked Gemini first, AudioDarija.ma
 second, our open voices third. Run the app with `TTS_GEMINI=1` and
 `NODE_USE_ENV_PROXY=1` in the cloud session. Moroccan Darija is not in
 Google's official language list, so keep checking quality by ear.
-Regional accents use one designed voice per region and gender (Voice design
-API, ids in `app/src/lib/tts/designed-voices.json`, tied to the key's Google
-project). A new key needs `gemini_design_voices.py` run again.
+Two speaking modes, chosen by the user: general Darija for explaining and
+talking, and Standard Arabic read with a Moroccan voice. Each mode has one
+designed voice per gender (Voice design API, ids in
+`app/src/lib/tts/designed-voices.json`, tied to the key's Google project). A new
+key needs `gemini_design_voices.py` run again. **The current key is Free Tier:
+10 TTS requests per day.** A paid tier is needed before real users.
 
 ## Open decisions (blocking)
 

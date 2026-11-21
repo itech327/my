@@ -26,7 +26,7 @@ export interface DataLayer {
 
   // generations
   createGeneration(input: {
-    userId: string; voiceId: string; dialect: DialectCode; text: string; regeneratedFrom?: string; style?: VoiceStyle; delivery?: string; pace?: string; accent?: string;
+    userId: string; voiceId: string; dialect: DialectCode; text: string; regeneratedFrom?: string; style?: VoiceStyle; delivery?: string; pace?: string; register?: string;
   }): Promise<Result<Generation>>;
   getGeneration(id: string, userId: string): Promise<Generation | null>;
   listGenerations(userId: string, limit?: number): Promise<Generation[]>;

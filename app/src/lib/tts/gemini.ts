@@ -12,8 +12,9 @@ import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider'
 
 import designed from './designed-voices.json';
 
-// Regional accents are permanent voice traits, so each region has its own
-// designed voice (Voice design API; ids made by darija-voice/scripts/gemini_design_voices.py).
+// Accent and language are permanent voice traits, so each speaking mode (Darija,
+// Moroccan-style Fusha) has its own designed voice per gender (Voice design API;
+// ids made by darija-voice/scripts/gemini_design_voices.py).
 // The ids live in the Google project of the key that created them.
 const DESIGNED = designed as Record<string, string>;
 
@@ -41,7 +42,7 @@ export function geminiProvider(voice: string, gender?: 'female' | 'male'): TtsPr
   return {
     id: `gemini-${voice}`,
     async synthesize(req: SynthesisRequest): Promise<SynthesisResult> {
-      const chosen = (gender && DESIGNED[`${req.accent ?? 'casa'}-${gender}`]) || voice;
+      const chosen = (gender && DESIGNED[`${req.register ?? 'darija'}-${gender}`]) || voice;
       const text = req.text.replace(/\[\/?[^\]\s]{1,8}\]/g, '').trim();
       const r = await fetch(URL, {
         method: 'POST',
@@ -69,4 +70,4 @@ export function geminiProvider(voice: string, gender?: 'female' | 'male'): TtsPr
 }
 
 export const DEFAULT_STYLE =
-  'Speak in natural Moroccan Darija with a Casablanca accent, like a native speaker from Morocco. Warm, natural pace, short breathing pauses.';
+  'Speak in natural Moroccan Darija with a Casablanca register, like a native speaker from Morocco. Warm, natural pace, short breathing pauses.';

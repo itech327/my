@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Design one Gemini voice per Moroccan region and gender (Voice design API).
+"""Design one Gemini voice per speaking mode and gender (Voice design API).
 
     gemini_design_voices.py OUT.json [--samples DIR]
 
@@ -20,13 +20,13 @@ import urllib.request
 URL = 'https://generativelanguage.googleapis.com/v1beta/voices'
 MODEL = 'gemini-3.8-flash-tts'
 
+# Two speaking modes (the user's priority): general Darija for explaining and
+# talking, and Standard Arabic read the way Moroccans read it. Regional accents
+# were tested too (they work) but are not needed: general Darija is enough.
 REGIONS = {
-    'casa': 'from Casablanca, speaking modern, fast-flowing Casablanca Darija',
-    'rabat': 'from Rabat, speaking smooth, clear and polished Rabati Darija',
-    'north': 'from Tetouan in northern Morocco, speaking Darija with a clear Jebli northern accent and its soft, sing-song intonation',
-    'marrakech': 'from Marrakech, speaking cheerful Marrakchi Darija with its warm, playful Bahja intonation',
-    'fes': 'from Fes, speaking traditional Fassi Darija with very clear, refined articulation',
-    'simple': 'speaking simple, neutral Moroccan Darija that every Moroccan understands',
+    'darija': 'speaking simple, general Moroccan Darija that every Moroccan understands',
+    'fusha': ('reading Modern Standard Arabic (Fusha) correctly, with a natural Moroccan voice, intonation and rhythm,'
+              ' like an educated Moroccan presenter on Moroccan national radio, never Egyptian or Gulf'),
 }
 PERSON = {'female': 'A warm young woman in her late 20s', 'male': 'A warm, friendly man in his early 30s'}
 

@@ -158,7 +158,7 @@ export const fakeData: DataLayer = {
   },
   async getVoice(id) { return db.voices.find((v) => v.id === id) ?? null; },
 
-  async createGeneration({ userId, voiceId, dialect, text, regeneratedFrom, style, delivery, pace, accent }) {
+  async createGeneration({ userId, voiceId, dialect, text, regeneratedFrom, style, delivery, pace, register }) {
     const voice = db.voices.find((v) => v.id === voiceId && (v.ownerId === null || v.ownerId === userId));
     if (!voice) return fail('not_found', 'الصوت غير موجود');
     if (voice.dialect !== dialect) return fail('invalid', 'الصوت لا يطابق اللهجة المختارة');
@@ -172,7 +172,7 @@ export const fakeData: DataLayer = {
     if (regeneratedFrom) {
       const orig = db.generations.get(regeneratedFrom);
       if (!orig || orig.userId !== userId) return fail('not_found', 'الإنشاء الأصلي غير موجود');
-      const same = orig.inputText === text && orig.voiceId === voiceId && orig.dialect === dialect && (orig.style ?? null) === (style ?? null) && (orig.delivery ?? null) === (delivery ?? null) && (orig.pace ?? null) === (pace ?? null) && (orig.accent ?? null) === (accent ?? null);
+      const same = orig.inputText === text && orig.voiceId === voiceId && orig.dialect === dialect && (orig.style ?? null) === (style ?? null) && (orig.delivery ?? null) === (delivery ?? null) && (orig.pace ?? null) === (pace ?? null) && (orig.register ?? null) === (register ?? null);
       const used = [...db.generations.values()].some((x) => x.regeneratedFrom === regeneratedFrom && x.isFreeRegen);
       const subscriber = db.lots.some((l) => l.userId === userId && l.source === 'purchase' && live(l));
       isFreeRegen = same && !used && subscriber && countWords(text) <= FREE_REGEN_MAX_WORDS;
@@ -182,7 +182,7 @@ export const fakeData: DataLayer = {
     const gen: Generation = {
       id: randomUUID(), userId, kind: 'tts', voiceId, dialect, inputText: text, charCount: chars, wordCount: countWords(text),
       status: 'queued', secondsReserved: 0, secondsCharged: null, error: null, regeneratedFrom: regeneratedFrom ?? null,
-      isFreeRegen, style: style && voice.styles?.includes(style) ? style : null, delivery: delivery ?? null, pace: pace ?? null, accent: voice.steerable ? accent ?? null : null,
+      isFreeRegen, style: style && voice.styles?.includes(style) ? style : null, delivery: delivery ?? null, pace: pace ?? null, register: voice.steerable ? register ?? null : null,
       expiresAt: new Date(now.getTime() + 7 * 864e5).toISOString(), createdAt: now.toISOString(),
     };
     const need = isFreeRegen ? 0 : estimateSeconds(text);

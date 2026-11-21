@@ -18,18 +18,17 @@ export interface Delivery {
 
 const DARIJA = 'Speak in natural Moroccan Darija, like a native speaker from Morocco.';
 
-// Regional accents. Gemini follows them through a designed voice per region
-// (tts/designed-voices.json); the style text only reinforces it.
-export type AccentId = 'casa' | 'rabat' | 'north' | 'marrakech' | 'fes' | 'simple';
-export const ACCENTS: { id: AccentId; label: string; hint: string; style: string; city: string }[] = [
-  { id: 'casa', label: 'كازاوية', hint: 'عصرية، مفهومة فالمغرب كامل', style: 'with a modern Casablanca accent', city: 'الدار البيضاء' },
-  { id: 'rabat', label: 'رباطية', hint: 'نقية وسلسة', style: 'with a smooth, clear Rabat accent', city: 'الرباط' },
-  { id: 'north', label: 'شمالية', hint: 'طنجة وتطوان', style: 'with a northern Moroccan accent from Tangier and Tetouan', city: 'طنجة وتطوان' },
-  { id: 'marrakech', label: 'مراكشية', hint: 'بهجاوية مرحة', style: 'with a cheerful Marrakech accent', city: 'مراكش' },
-  { id: 'fes', label: 'فاسية', hint: 'أصيلة، مخارج واضحة', style: 'with a traditional Fes accent and very clear articulation', city: 'فاس' },
-  { id: 'simple', label: 'بيضاء', hint: 'مبسطة للجميع', style: 'in simple, neutral Darija that every Moroccan understands', city: '' },
+// Speaking mode: general Darija for explaining and talking, or Standard Arabic
+// read with a Moroccan voice. Gemini follows it through a designed voice per mode
+// and gender (tts/designed-voices.json); the style text reinforces it.
+export type RegisterId = 'darija' | 'fusha';
+export const REGISTERS: { id: RegisterId; label: string; hint: string; style: string }[] = [
+  { id: 'darija', label: 'دارجة', hint: 'دارجة عامة، للشرح والتوضيح والتواصل.',
+    style: 'Speak in natural, general Moroccan Darija that every Moroccan understands, like a native speaker from Morocco.' },
+  { id: 'fusha', label: 'فصحى بنفَس مغربي', hint: 'عربية فصحى سليمة، بنطق ونبرة مغربية.',
+    style: 'Read in correct Modern Standard Arabic (Fusha) with a natural Moroccan voice and intonation, like an educated Moroccan presenter on Moroccan radio. Never Egyptian or Gulf.' },
 ];
-export const accentById = (id?: string | null) => ACCENTS.find((x) => x.id === id);
+export const registerById = (id?: string | null) => REGISTERS.find((x) => x.id === id);
 
 export const DELIVERIES: Delivery[] = [
   { id: 'conversational', label: 'حواري', hint: 'بحال إلا كتهضر مع صاحبك، بلا تكلف.', tone: 'calm', defaultPace: 'medium',
@@ -53,11 +52,11 @@ export const PACES: { id: PaceId; label: string; speed: number; pauseScale: numb
 export const deliveryById = (id?: string | null) => DELIVERIES.find((d) => d.id === id);
 export const paceById = (id?: string | null) => PACES.find((p) => p.id === id);
 
-export function geminiStyle(delivery?: DeliveryId | null, pace?: PaceId | null, accent?: AccentId | null): string {
+export function geminiStyle(delivery?: DeliveryId | null, pace?: PaceId | null, register?: RegisterId | null): string {
   const d = deliveryById(delivery) ?? DELIVERIES[0];
   const p = paceById(pace ?? d.defaultPace);
-  const a = accentById(accent) ?? ACCENTS[0];
-  return [d.style.replace('like a native speaker from Morocco.', `${a.style}, like a native speaker from Morocco.`), p?.style].filter(Boolean).join(' ');
+  const r = registerById(register) ?? REGISTERS[0];
+  return [d.style.replace(DARIJA, r.style), p?.style].filter(Boolean).join(' ');
 }
 
 // Ready-made Darija scripts, written for this product.

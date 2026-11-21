@@ -274,3 +274,12 @@ naturalness; the recognizer only guards against swallowed words.
 - Ear verdict: northern accent heard with the designed voice. Accent via Voice design works; via style text does not.
 - Built 12 designed voices, 6 regions x 2 genders: `scripts/gemini_design_voices.py`, ids in `app/src/lib/tts/designed-voices.json`.
 - App: accent chip picks the designed voice for نور or يونس. Test: نور north 4.9 s, يونس Marrakech 3.8 s, no console errors.
+
+## Speaking modes replace accents (2026-11-21)
+
+- User priority: Standard Arabic with a Moroccan feel, and general Darija. Regional accents not needed.
+- App: "لغة الإلقاء" chooser with two modes, دارجة and فصحى بنفَس مغربي. Each picks a designed voice per gender.
+- Rewrite button follows the mode: "حوّل إلى الدارجة" or "حوّل إلى الفصحى". Darija to Fusha rewrite tested, correct.
+- Samples: `app-nour-fusha.wav` 5.4 s, `app-younes-darija.wav` 5.0 s, previews in `examples/gemini/modes/`.
+- Blocker: the key is on Google's Free Tier, 10 TTS requests per day for gemini-3.8-flash-tts. Hit today. Production needs a paid tier.
+- 9 regional voices from the accent test stay stored in the Google project, unused.

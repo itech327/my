@@ -6,7 +6,7 @@ import { CircleAlert, Lock, Sparkles } from 'lucide-react';
 import { DIALECTS, GROUP_LABELS, dialectByCode, type DialectCode, type DialectGroup } from '@/lib/dialects';
 import type { Balance, Generation, Voice } from '@/lib/types';
 import { USE_CASE_LABELS } from '@/lib/types';
-import { ACCENTS, DELIVERIES, PACES, TEMPLATES, accentById, deliveryById, type AccentId, type DeliveryId, type PaceId } from '@/lib/delivery';
+import { REGISTERS, DELIVERIES, PACES, TEMPLATES, registerById, deliveryById, type RegisterId, type DeliveryId, type PaceId } from '@/lib/delivery';
 import { EMOTION_TAGS, MAX_CHARS_PER_REQUEST, countChars, estimateSeconds, formatBalance } from '@/lib/text';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -28,7 +28,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const [text, setText] = useState('');
   const [delivery, setDelivery] = useState<DeliveryId>('conversational');
   const [pace, setPace] = useState<PaceId>('medium');
-  const [accent, setAccent] = useState<AccentId>('casa');
+  const [register, setRegister] = useState<RegisterId>('darija');
   const [rewriting, setRewriting] = useState(false);
   const [beforeRewrite, setBeforeRewrite] = useState<string | null>(null);
   const pickDelivery = (d: DeliveryId) => { setDelivery(d); setPace(deliveryById(d)!.defaultPace); };
@@ -70,7 +70,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const generate = async () => {
     setBusy(true); setError(null);
     try {
-      const r = await fetch('/api/generations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ voiceId, dialect, text, delivery, pace, accent: voice?.steerable ? accent : undefined,
+      const r = await fetch('/api/generations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ voiceId, dialect, text, delivery, pace, register: voice?.steerable ? register : undefined,
         style: voice?.styles?.includes(tone) ? tone : undefined }) });
       const j = await r.json();
       if (!r.ok) { setError(j.error ?? 'حدث خطأ، حاول مرة أخرى'); return; }
@@ -84,7 +84,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const rewrite = async () => {
     setRewriting(true); setError(null);
     try {
-      const r = await fetch('/api/rewrite', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, accent }) });
+      const r = await fetch('/api/rewrite', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, register }) });
       const j = await r.json();
       if (!r.ok) { setError(j.error ?? 'تعذّر التحويل'); return; }
       setBeforeRewrite(text); setText(j.text);
@@ -116,12 +116,21 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
             ))}
           </div>
           {voice?.steerable && (
+            <fieldset className="grid gap-4">
+              <legend className="mb-4 text-sm font-semibold">لغة الإلقاء</legend>
+              <div className="flex flex-wrap gap-8">
+                {REGISTERS.map((x) => <ChipToggle key={x.id} pressed={register === x.id} onClick={() => setRegister(x.id)}>{x.label}</ChipToggle>)}
+              </div>
+              <p className="text-xs text-text-muted">{registerById(register)?.hint}</p>
+            </fieldset>
+          )}
+          {voice?.steerable && (
             <div className="flex flex-wrap items-center gap-8">
-              <Button type="button" variant="secondary" size="sm" loading={rewriting} disabled={!text.trim() || rewriting} onClick={rewrite}>حوّل إلى الدارجة</Button>
+              <Button type="button" variant="secondary" size="sm" loading={rewriting} disabled={!text.trim() || rewriting} onClick={rewrite}>{register === 'fusha' ? 'حوّل إلى الفصحى' : 'حوّل إلى الدارجة'}</Button>
               {beforeRewrite !== null && (
                 <Button type="button" variant="ghost" size="sm" onClick={() => { setText(beforeRewrite); setBeforeRewrite(null); }}>رجّع النص الأصلي</Button>
               )}
-              <span className="text-xs text-text-muted">يعاود كتابة النص بالدارجة {accentById(accent)?.label}، راجعه قبل الإنشاء.</span>
+              <span className="text-xs text-text-muted">يعاود كتابة النص {register === 'fusha' ? 'بفصحى سليمة' : 'بالدارجة العامة'}، راجعه قبل الإنشاء.</span>
             </div>
           )}
           <div className="rounded-lg border border-border-input bg-surface focus-within:outline focus-within:outline-2 focus-within:outline-focus">
@@ -207,15 +216,6 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
               {PACES.map((p) => <ChipToggle key={p.id} pressed={pace === p.id} onClick={() => setPace(p.id)}>{p.label}</ChipToggle>)}
             </div>
           </fieldset>
-          {voice?.steerable && (
-            <fieldset className="grid gap-4">
-              <legend className="mb-4 text-sm font-semibold">اللهجة الجهوية</legend>
-              <div className="flex flex-wrap gap-8">
-                {ACCENTS.map((x) => <ChipToggle key={x.id} pressed={accent === x.id} onClick={() => setAccent(x.id)}>{x.label}</ChipToggle>)}
-              </div>
-              <p className="text-xs text-text-muted">{accentById(accent)?.hint}</p>
-            </fieldset>
-          )}
           {voice && <AudioPlayer key={voice.id} src={`/api/demo/${voice.id}`} label={`عيّنة ${voice.name}`} />}
           {voice?.slow && <p className="rounded-md bg-surface-sunken p-8 text-xs text-text-muted">صوت بجودة استوديو. الإنشاء أبطأ: قد يأخذ دقيقة أو أكثر للفقرة.</p>}
           {!paid && <ButtonLink href="/app/billing" variant="secondary" size="sm">افتح الأصوات المميّزة</ButtonLink>}
