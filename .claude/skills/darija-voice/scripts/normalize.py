@@ -186,6 +186,38 @@ def load_respell(path: str = RESPELL_PATH) -> dict[str, str]:
 
 RESPELL = load_respell()
 
+VOCAB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'doda_vocab.tsv')
+
+
+def load_vocab(path: str = VOCAB_PATH) -> dict[str, int]:
+    """Word frequencies from the DODa transcripts: the spelling the voices learned."""
+    out = {}
+    if os.path.exists(path):
+        for line in open(path, encoding='utf-8'):
+            if line.startswith('#') or '\t' not in line:
+                continue
+            w, n = line.rstrip('\n').split('\t')
+            out[w] = int(n)
+    return out
+
+
+VOCAB = load_vocab()
+
+
+def doda_spelling(word: str) -> str:
+    """Prefer the spelling the voice was trained on, when a hamza or ya/alef variant of the
+    word is in the corpus and the word itself is not: إلى -> الى, أصلا -> اصلا."""
+    if not VOCAB or word in VOCAB:
+        return word
+    variants = {
+        re.sub('[أإآ]', 'ا', word),
+        re.sub('[أإآ]', 'ا', word).replace('ئ', 'ي').replace('ؤ', 'و'),
+        word.replace('ى', 'ا'), word.replace('ى', 'ي'),
+        re.sub('[أإآ]', 'ا', word).replace('ى', 'ي'),
+    } - {word}
+    known = [(VOCAB[v], v) for v in variants if v in VOCAB]
+    return max(known)[1] if known else word
+
 
 def normalize(text: str) -> str:
     t = unicodedata.normalize('NFKC', text).translate(ARABIC_DIGITS).replace(TATWEEL, '')
@@ -218,6 +250,7 @@ def normalize(text: str) -> str:
     if not re.search(r'[A-Za-z]', t):  # fully Arabic now: use Arabic punctuation
         t = t.replace(',', '،').replace('?', '؟').replace(';', '؛')
     t = re.sub(r'\s+', ' ', t).strip()
+    t = re.sub(r'[\u0621-\u064A]+', lambda m: doda_spelling(m.group(0)), t)
     if RESPELL:
         t = re.sub(r'[\u0621-\u064A]+', lambda m: RESPELL.get(m.group(0), m.group(0)), t)
     return t
@@ -244,6 +277,8 @@ TESTS = [
     ('واحد 2 كلم باش تلقاه', 'واحد جوج كيلومتر باش تلقاه'),
     ('5 كغ و 20 km', 'خمسة كيلو و عشرين كيلومتر'),
     ('خاصني 3 كلمات', 'خاصني تلاتة كلمات'),
+    ('مشيت إلى الدار', 'مشيت الى الدار'),
+    ('أصلا ما عرفتش', 'اصلا ما عرفتش'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
     ('chouf had video f youtube', 'شوف هاد فيديو ف يوتيوب'),
     ('khassek 2 kilo d l7em, bssa7tkom', 'خاصك جوج كيلو د اللحم، بصحتكم'),

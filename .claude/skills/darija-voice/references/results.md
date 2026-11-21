@@ -148,3 +148,26 @@ transcribed in 20 s windows:
 
 Same speaker, 2.4 times fewer character errors. The cost is time: about 20
 times slower than real time on 4 CPU cores. A GPU would make it near real time.
+
+## Run 7: F5 settings for إدريس (M1), same seeds per sentence (2026-11-21)
+
+`tune_f5.py`, 6 sentences, the same random seed for each sentence in every config.
+
+| reference | NFE | CFG | CER | per sentence |
+| --- | --- | --- | --- | --- |
+| M1 (3.95 s) | 16 | 2.0 | 0.041 | 0, .08, .10, .02, 0, .05 |
+| M1 | 16 | 3.0 | 0.041 | identical |
+| M1 | 32 | 2.0 | 0.041 | identical |
+| M1 | 32 | 3.0 | 0.041 | identical |
+| M1x2 (9.1 s, two clips) | 16 | 2.0 | 0.047 | .04, .08, .10, .02, 0, .05 |
+
+Finding: **the F5 settings are exhausted.** Quality steps, text adherence and a
+longer reference change nothing measurable; NFE 32 only doubles the time.
+The remaining errors sit on the same words every time: systematic, not luck.
+
+Text side: a DODa spelling rule (prefer the corpus spelling: إلى -> الى,
+أصلا -> اصلا) is in `normalize.py` with `data/doda_vocab.tsv`. It did not touch
+these 6 sentences, so no measurable change here. The corpus itself mixes
+spellings (الثمن 13 times, التمن 0), so ث/ذ/ظ have no safe rule.
+
+Next lever: a different or better-trained model, not settings.
