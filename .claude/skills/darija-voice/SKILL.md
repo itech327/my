@@ -99,6 +99,24 @@ The app expects a `TtsProvider` (`app/src/lib/tts/provider.ts`). Run the
 voice as a small HTTP service next to the app (`server.py`), and write a
 provider that calls it. The settings chosen in step 4 go in the service.
 
+## Other voices: female and other speakers
+
+`scripts/speak_f5.py` speaks in any of the 7 DODa speakers' voices (F1-F4,
+M1-M3) with the Habibi F5-TTS model (Apache-2.0, 674 MB). Give it a clean
+3-6 s reference clip and its exact transcript (`data/refs/`).
+
+```bash
+./venv/bin/pip install f5-tts vocos
+curl -L -o model_ema.safetensors https://huggingface.co/Jip7e/habibi-tts-doda-darija/resolve/main/model_ema.safetensors
+curl -L -o vocab.txt https://huggingface.co/Jip7e/habibi-tts-doda-darija/resolve/main/vocab.txt
+HF_HUB_DISABLE_XET=1 ./venv/bin/python scripts/speak_f5.py --ckpt model_ema.safetensors --vocab vocab.txt \
+  --ref data/refs/F1.wav --ref-text "هوما مخبيين شي حاجة انا متيقن" --out f1.wav "سلام عليكم"
+```
+
+`HF_HUB_DISABLE_XET=1` makes the vocoder download use plain HTTP when the
+Xet transfer host is not allowed. Measured: female pitch 202 Hz, CER 0.06,
+but about 10 times slower than real time on a CPU. Use a GPU in production.
+
 ## Going further
 
 - **Better voice:** fine-tune the Piper voice longer, or on more speakers,

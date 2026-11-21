@@ -51,3 +51,19 @@ Best: **tashkeel off, speed 1.0, model's default noise.** CER went from 0.444
 
 Next: more test sentences, then compare against the Apache-2.0 F5-TTS and
 OuteTTS Darija models on a GPU.
+
+## Female voice: Habibi F5-TTS with DODa speaker F1 (2026-11-21)
+
+`Jip7e/habibi-tts-doda-darija` (Apache-2.0), reference `data/refs/F1.wav`.
+Sentence: the tajine recipe in Arabizi with numbers.
+
+| measure | value |
+| --- | --- |
+| pitch, F1 reference | 214 Hz |
+| pitch, generated | 202 Hz (female range) |
+| CER / WER | **0.06** / 0.31 |
+| speed on 4 CPU cores | 9.1 s of audio in 87 s (about 10 times slower than real time) |
+
+More natural and more intelligible than the Piper voice on this sentence,
+but too slow on a CPU for the app. Needs a GPU in production, or a Piper
+voice trained on F1 for fast CPU use.
