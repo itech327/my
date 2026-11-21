@@ -1,5 +1,5 @@
 import type { DialectCode } from '../dialects';
-import type { Balance, Generation, Result, User, Voice } from '../types';
+import type { Balance, Generation, Result, User, Voice, VoiceStyle } from '../types';
 
 // The one interface every screen and route uses. The fake implementation keeps
 // data in memory. /replica-backend writes a Supabase one with the same shape.
@@ -26,7 +26,7 @@ export interface DataLayer {
 
   // generations
   createGeneration(input: {
-    userId: string; voiceId: string; dialect: DialectCode; text: string; regeneratedFrom?: string;
+    userId: string; voiceId: string; dialect: DialectCode; text: string; regeneratedFrom?: string; style?: VoiceStyle;
   }): Promise<Result<Generation>>;
   getGeneration(id: string, userId: string): Promise<Generation | null>;
   listGenerations(userId: string, limit?: number): Promise<Generation[]>;

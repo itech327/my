@@ -157,6 +157,19 @@ spelling habits of the recognizer are not counted as voice errors.
 sentence gets up to 3 takes, the recognizer scores each one, the clearest is
 kept. Measured: CER 0.080 to 0.040 on a 4-sentence paragraph, 2.5 times slower.
 
+## Tone: calm and lively
+
+F5-TTS copies the melody and energy of its reference clip, so a tone is a
+reference clip. `rank_expressive.py` ranks a speaker's corpus clips by pitch
+movement and loudness spread; check the top ones with `select_ref.py`, then
+save them as `data/refs/SPEAKER-lively.*`. Measured for هند: lively 5.7
+semitones of pitch movement, calm 3.1, both clear (CER 0 and 0.03).
+
+Ear-tested rules from this skill's sessions:
+- a shadda helps (بطّيخة), full tashkeel confuses the model (آجِي -> "اجدي")
+- `insert_pauses.py` puts real pauses at " - ", snapped to sound onsets; a
+  pause between run-together words can still sound like a stutter
+
 ## Training: the only way past the ceiling
 
 Tuning settings stopped helping (results run 3). A model learns new

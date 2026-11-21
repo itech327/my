@@ -32,9 +32,9 @@ function seedVoices(): Voice[] {
   // median pitch 141 Hz). List exactly that, so the picker does not promise
   // voices that would all sound the same.
   // DODa speaker M1 (male). Studio engine (F5-TTS) when available, else the fast Piper voice of the same speaker.
-  out.push({ id: 'v-ar-MA-0', name: 'إدريس', dialect: 'ar-MA', gender: 'male', useCase: 'dialogue', isPremium: false, ownerId: null, slow: true });
+  out.push({ id: 'v-ar-MA-0', name: 'إدريس', dialect: 'ar-MA', gender: 'male', useCase: 'dialogue', isPremium: false, ownerId: null, slow: true, styles: ['calm', 'lively'] });
   // DODa speaker F1 (female), via F5-TTS. Higher quality, slower. Premium.
-  out.push({ id: 'v-ar-MA-f1', name: 'هند', dialect: 'ar-MA', gender: 'female', useCase: 'stories', isPremium: true, ownerId: null, slow: true });
+  out.push({ id: 'v-ar-MA-f1', name: 'هند', dialect: 'ar-MA', gender: 'female', useCase: 'stories', isPremium: true, ownerId: null, slow: true, styles: ['calm', 'lively'] });
   DIALECTS.forEach((d, di) => {
     if (d.code === 'ar-MA') return;
     for (let i = 0; i < 4; i++) {
@@ -152,7 +152,7 @@ export const fakeData: DataLayer = {
   },
   async getVoice(id) { return db.voices.find((v) => v.id === id) ?? null; },
 
-  async createGeneration({ userId, voiceId, dialect, text, regeneratedFrom }) {
+  async createGeneration({ userId, voiceId, dialect, text, regeneratedFrom, style }) {
     const voice = db.voices.find((v) => v.id === voiceId && (v.ownerId === null || v.ownerId === userId));
     if (!voice) return fail('not_found', 'الصوت غير موجود');
     if (voice.dialect !== dialect) return fail('invalid', 'الصوت لا يطابق اللهجة المختارة');
@@ -166,7 +166,7 @@ export const fakeData: DataLayer = {
     if (regeneratedFrom) {
       const orig = db.generations.get(regeneratedFrom);
       if (!orig || orig.userId !== userId) return fail('not_found', 'الإنشاء الأصلي غير موجود');
-      const same = orig.inputText === text && orig.voiceId === voiceId && orig.dialect === dialect;
+      const same = orig.inputText === text && orig.voiceId === voiceId && orig.dialect === dialect && (orig.style ?? null) === (style ?? null);
       const used = [...db.generations.values()].some((x) => x.regeneratedFrom === regeneratedFrom && x.isFreeRegen);
       const subscriber = db.lots.some((l) => l.userId === userId && l.source === 'purchase' && live(l));
       isFreeRegen = same && !used && subscriber && countWords(text) <= FREE_REGEN_MAX_WORDS;
@@ -176,7 +176,8 @@ export const fakeData: DataLayer = {
     const gen: Generation = {
       id: randomUUID(), userId, kind: 'tts', voiceId, dialect, inputText: text, charCount: chars, wordCount: countWords(text),
       status: 'queued', secondsReserved: 0, secondsCharged: null, error: null, regeneratedFrom: regeneratedFrom ?? null,
-      isFreeRegen, expiresAt: new Date(now.getTime() + 7 * 864e5).toISOString(), createdAt: now.toISOString(),
+      isFreeRegen, style: style && voice.styles?.includes(style) ? style : null,
+      expiresAt: new Date(now.getTime() + 7 * 864e5).toISOString(), createdAt: now.toISOString(),
     };
     const need = isFreeRegen ? 0 : estimateSeconds(text);
     if (need > 0 && !reserve(userId, gen.id, need)) return fail('insufficient_credits', 'رصيدك لا يكفي لهذا النص');

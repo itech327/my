@@ -27,7 +27,11 @@ export interface Voice {
   isPremium: boolean;
   ownerId: string | null;
   slow?: boolean; // studio-quality engine that takes about a minute per short paragraph on CPU
+  styles?: VoiceStyle[]; // tones this voice offers, from its reference clips
 }
+
+export type VoiceStyle = 'calm' | 'lively';
+export const STYLE_LABELS: Record<VoiceStyle, string> = { calm: 'هادئة', lively: 'حيّة' };
 
 export type GenerationStatus = 'queued' | 'running' | 'done' | 'failed' | 'expired';
 
@@ -45,6 +49,7 @@ export interface Generation {
   secondsCharged: number | null;
   error: string | null;
   regeneratedFrom: string | null;
+  style: VoiceStyle | null;
   isFreeRegen: boolean;
   expiresAt: string;
   createdAt: string;

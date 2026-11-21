@@ -4,6 +4,7 @@ export interface SynthesisRequest {
   voiceId: string;
   dialect: DialectCode;
   text: string; // with our own emotion-tag markup
+  style?: 'calm' | 'lively';
 }
 
 export interface SynthesisResult {

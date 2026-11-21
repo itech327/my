@@ -5,10 +5,11 @@ import { useMemo, useRef, useState } from 'react';
 import { CircleAlert, Lock, Sparkles } from 'lucide-react';
 import { DIALECTS, GROUP_LABELS, dialectByCode, type DialectCode, type DialectGroup } from '@/lib/dialects';
 import type { Balance, Generation, Voice } from '@/lib/types';
-import { USE_CASE_LABELS } from '@/lib/types';
+import { STYLE_LABELS, USE_CASE_LABELS, type VoiceStyle } from '@/lib/types';
 import { EMOTION_TAGS, MAX_CHARS_PER_REQUEST, countChars, estimateSeconds, formatBalance } from '@/lib/text';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { ChipToggle } from '@/components/ui/Chip';
 import { AudioPlayer } from '@/components/ui/AudioPlayer';
 import { BalanceMeter } from '@/components/BalanceMeter';
 import { VoiceAvatar } from '@/components/VoiceAvatar';
@@ -24,6 +25,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const options = useMemo(() => voices.filter((v) => v.dialect === dialect), [voices, dialect]);
   const [voiceId, setVoiceId] = useState(start?.id ?? options.find((v) => !v.isPremium || paid)?.id ?? '');
   const [text, setText] = useState('');
+  const [style, setStyle] = useState<VoiceStyle>('lively');
   const [balance, setBalance] = useState(initialBalance);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +63,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
   const generate = async () => {
     setBusy(true); setError(null);
     try {
-      const r = await fetch('/api/generations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ voiceId, dialect, text }) });
+      const r = await fetch('/api/generations', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ voiceId, dialect, text, style: voice?.styles?.includes(style) ? style : undefined }) });
       const j = await r.json();
       if (!r.ok) { setError(j.error ?? 'حدث خطأ، حاول مرة أخرى'); return; }
       setResult(j.generation); setBalance(j.balance);
@@ -158,6 +160,17 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
             })}
             {options.length === 0 && <p className="text-sm text-text-muted">لا أصوات لهذه اللهجة بعد.</p>}
           </fieldset>
+          {voice?.styles && voice.styles.length > 1 && (
+            <fieldset className="grid gap-4">
+              <legend className="mb-4 text-sm font-semibold">النبرة</legend>
+              <div className="flex gap-8">
+                {voice.styles.map((st) => (
+                  <ChipToggle key={st} pressed={style === st} onClick={() => setStyle(st)}>{STYLE_LABELS[st]}</ChipToggle>
+                ))}
+              </div>
+              <p className="text-xs text-text-muted">{style === 'lively' ? 'إحساس وحركة أكثر، للإعلانات والقصص.' : 'إيقاع متزن، للسرد والدروس.'}</p>
+            </fieldset>
+          )}
           {voice && <AudioPlayer key={voice.id} src={`/api/demo/${voice.id}`} label={`عيّنة ${voice.name}`} />}
           {voice?.slow && <p className="rounded-md bg-surface-sunken p-8 text-xs text-text-muted">صوت بجودة استوديو. الإنشاء أبطأ: قد يأخذ دقيقة أو أكثر للفقرة.</p>}
           {!paid && <ButtonLink href="/app/billing" variant="secondary" size="sm">افتح الأصوات المميّزة</ButtonLink>}
