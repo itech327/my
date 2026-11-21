@@ -1,21 +1,23 @@
 import type { DialectCode } from '../dialects';
 import { fakeProvider } from './fake';
 import { piperProvider } from './piper';
+import { f5Provider } from './f5';
 import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider';
 
-// Routes each dialect to the engine that can speak it. Moroccan Darija uses the
-// open Piper voice when TTS_DARIJA_URL is set. Every other dialect stays on the
-// placeholder until it has an engine of its own.
+// Routing, most specific first:
+//   1. a voice with its own engine (the DODa female speaker, via F5-TTS)
+//   2. a dialect engine (Moroccan Darija, via the fast Piper voice)
+//   3. the placeholder, for dialects that have no engine yet
 const darijaUrl = process.env.TTS_DARIJA_URL;
-const routes: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};
+const speakerUrl = process.env.TTS_SPEAKERS_URL;
 
-export function providerFor(dialect: DialectCode): TtsProvider {
-  return routes[dialect] ?? fakeProvider;
+const byVoice: Record<string, TtsProvider> = speakerUrl ? { 'v-ar-MA-f1': f5Provider(speakerUrl, 'F1') } : {};
+const byDialect: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};
+
+export function providerFor(req: Pick<SynthesisRequest, 'voiceId' | 'dialect'>): TtsProvider {
+  return byVoice[req.voiceId] ?? byDialect[req.dialect] ?? fakeProvider;
 }
 
 export function getProvider(): TtsProvider {
-  return {
-    id: 'router',
-    synthesize: (req: SynthesisRequest): Promise<SynthesisResult> => providerFor(req.dialect).synthesize(req),
-  };
+  return { id: 'router', synthesize: (req: SynthesisRequest): Promise<SynthesisResult> => providerFor(req).synthesize(req) };
 }

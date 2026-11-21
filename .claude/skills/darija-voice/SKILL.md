@@ -117,6 +117,25 @@ HF_HUB_DISABLE_XET=1 ./venv/bin/python scripts/speak_f5.py --ckpt model_ema.safe
 Xet transfer host is not allowed. Measured: female pitch 202 Hz, CER 0.06,
 but about 10 times slower than real time on a CPU. Use a GPU in production.
 
+## The learning loop (no GPU needed)
+
+The skill improves between sessions only through files. Each round:
+
+1. `evaluate.py ... --json results.json` measures the voice.
+2. `mine_errors.py results.json` lists the words heard wrong most often.
+3. Fix each one where it belongs: a missing word in `LEXICON` (Arabizi), a
+   number form, or a respelling in `data/respell.tsv` (word, tab, a spelling
+   the voice says right).
+4. Run `evaluate.py` again. Keep the change only if CER drops. Add a test.
+
+`select_ref.py` does the same for F5 voices: it ranks candidate reference
+clips by measured CER, because the reference clip decides most of the
+stutter. `f5_server.py` serves the chosen clips (`data/refs/SPEAKER.wav` +
+`.txt`) to the app, sentence by sentence with pauses.
+
+The comparison treats a final ا, ى and ه as one sound (دابا = دابه), so
+spelling habits of the recognizer are not counted as voice errors.
+
 ## Training: the only way past the ceiling
 
 Tuning settings stopped helping (results run 3). A model learns new

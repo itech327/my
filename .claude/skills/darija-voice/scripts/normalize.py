@@ -13,6 +13,7 @@ What it does, in order:
   4. Moroccan letters the voice model does not know: ڭ/گ -> ق, ڤ -> ف, پ -> ب.
   5. Punctuation kept as pause cues. Latin quotes and brackets removed.
 """
+import os
 import re
 import sys
 import unicodedata
@@ -169,6 +170,23 @@ ARABIC_DIGITS = str.maketrans('٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹', '01234
 TATWEEL = 'ـ'
 
 
+RESPELL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'respell.tsv')
+
+
+def load_respell(path: str = RESPELL_PATH) -> dict[str, str]:
+    """Measured pronunciation fixes: word<TAB>spelling the voice says right."""
+    out = {}
+    if os.path.exists(path):
+        for line in open(path, encoding='utf-8'):
+            if line.strip() and not line.startswith('#') and '\t' in line:
+                w, r = line.rstrip('\n').split('\t', 1)
+                out[w.strip()] = r.strip()
+    return out
+
+
+RESPELL = load_respell()
+
+
 def normalize(text: str) -> str:
     t = unicodedata.normalize('NFKC', text).translate(ARABIC_DIGITS).replace(TATWEEL, '')
     t = EMOJI.sub(' ', t)
@@ -195,7 +213,10 @@ def normalize(text: str) -> str:
     t = re.sub(r'["«»“”()\[\]{}*_#]', ' ', t)
     if not re.search(r'[A-Za-z]', t):  # fully Arabic now: use Arabic punctuation
         t = t.replace(',', '،').replace('?', '؟').replace(';', '؛')
-    return re.sub(r'\s+', ' ', t).strip()
+    t = re.sub(r'\s+', ' ', t).strip()
+    if RESPELL:
+        t = re.sub(r'[\u0621-\u064A]+', lambda m: RESPELL.get(m.group(0), m.group(0)), t)
+    return t
 
 
 TESTS = [

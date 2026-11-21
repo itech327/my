@@ -106,7 +106,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
                 {tooLong && ` · الحد ${MAX_CHARS_PER_REQUEST} حرف`}
                 {!tooLong && short && chars > 0 && <> · رصيدك لا يكفي. <Link href="/app/billing" className="underline">اشترِ دقائق</Link></>}
               </p>
-              <Button onClick={generate} disabled={!canGenerate} loading={busy}>{busy ? 'جارٍ الإنشاء' : 'إنشاء الصوت'}</Button>
+              <Button onClick={generate} disabled={!canGenerate} loading={busy}>{busy ? (voice?.slow ? 'جارٍ الإنشاء… قد يأخذ دقيقة' : 'جارٍ الإنشاء') : 'إنشاء الصوت'}</Button>
             </div>
           </div>
 
@@ -159,6 +159,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
             {options.length === 0 && <p className="text-sm text-text-muted">لا أصوات لهذه اللهجة بعد.</p>}
           </fieldset>
           {voice && <AudioPlayer key={voice.id} src={`/api/demo/${voice.id}`} label={`عيّنة ${voice.name}`} />}
+          {voice?.slow && <p className="rounded-md bg-surface-sunken p-8 text-xs text-text-muted">صوت بجودة استوديو. الإنشاء أبطأ: قد يأخذ دقيقة أو أكثر للفقرة.</p>}
           {!paid && <ButtonLink href="/app/billing" variant="secondary" size="sm">افتح الأصوات المميّزة</ButtonLink>}
           <div className="hidden md:block"><BalanceMeter balance={balance} /></div>
         </aside>

@@ -33,8 +33,10 @@ DIAC = re.compile(r'[ؐ-ًؚ-ٰٟۖ-ۭـ]')
 def canon(t: str) -> str:
     """Compare texts fairly: no diacritics or punctuation, one spelling per letter."""
     t = DIAC.sub('', t)
-    t = re.sub(r'[إأآٱ]', 'ا', t).replace('ى', 'ي').replace('ة', 'ه').replace('ؤ', 'و').replace('ئ', 'ي')
+    t = re.sub(r'[إأآٱ]', 'ا', t).replace('ة', 'ه').replace('ؤ', 'و').replace('ئ', 'ي')
     t = re.sub(r'[^ء-ي\s]', ' ', t)
+    # a final long "a" is written ا, ى or ه (ة) for the same sound: دابا/دابه, على/علا
+    t = re.sub(r'[اىه](?=\s|$)', 'ا', t).replace('ى', 'ي')
     return re.sub(r'\s+', ' ', t).strip()
 
 

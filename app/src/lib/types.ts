@@ -26,6 +26,7 @@ export interface Voice {
   useCase: UseCase;
   isPremium: boolean;
   ownerId: string | null;
+  slow?: boolean; // studio-quality engine that takes about a minute per short paragraph on CPU
 }
 
 export type GenerationStatus = 'queued' | 'running' | 'done' | 'failed' | 'expired';
