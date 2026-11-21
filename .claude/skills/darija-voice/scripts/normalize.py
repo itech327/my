@@ -194,6 +194,10 @@ def normalize(text: str) -> str:
     t = re.sub(r'([!?؟.])\1+', r'\1', t)
     t = re.sub(r'(\d+)\s*%', r'\1 فالمية', t)
     t = re.sub(r'(\d+)\s*(dh|DH|MAD|درهم)\b', r'\1 درهم', t)
+    # units after a number: "2 كلم" would be read as the verb كلّم
+    for pat, word in ((r'كلم|كم|km|KM', 'كيلومتر'), (r'كغ|kg|KG', 'كيلو'), (r'سم|cm', 'سونتيمتر'),
+                      (r'مم|mm', 'ميليمتر'), (r'لتر|l\b', 'لتر'), (r'م|m\b', 'متر'), (r'h|س', 'ساعة'), (r'min|د', 'دقيقة')):
+        t = re.sub(rf'(\d+)\s*(?:{pat})(?![\u0621-\u064Aa-zA-Z])', rf'\1 {word}', t)
 
     latin = [w for w in re.findall(r"[A-Za-z0-9']+", t) if re.search(r'[A-Za-z]', w)]
     mostly_arabizi = bool(latin) and sum(looks_arabizi(w) for w in latin) / len(latin) >= 0.4
@@ -237,6 +241,9 @@ TESTS = [
     ('7na hna', 'حنا حنا'),
     ('bghit nchri lkhobz', 'بغيت نشري الخبز'),
     ('merci bzaf', 'ميرسي بزاف'),
+    ('واحد 2 كلم باش تلقاه', 'واحد جوج كيلومتر باش تلقاه'),
+    ('5 كغ و 20 km', 'خمسة كيلو و عشرين كيلومتر'),
+    ('خاصني 3 كلمات', 'خاصني تلاتة كلمات'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
     ('chouf had video f youtube', 'شوف هاد فيديو ف يوتيوب'),
     ('khassek 2 kilo d l7em, bssa7tkom', 'خاصك جوج كيلو د اللحم، بصحتكم'),
