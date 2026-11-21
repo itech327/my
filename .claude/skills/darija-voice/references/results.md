@@ -234,3 +234,10 @@ Findings this round:
   to sound onsets. A pause between run-together words can still sound like a
   stutter: the listener still heard one after "- و -". Lasting fix: training
   on expressive speech.
+
+## Ear test: مرحبا (2026-11-21)
+
+هند said "مرحبن" (MSA tanwin, as in مرحباً) for the Darija "مرحبا بيك".
+Same seed, three spellings: مرحبا, **مرحبة (chosen)**, مرحْبا. The recognizer
+cannot hear the difference; the native listener chose مرحبة. Added to
+`data/respell.tsv`.
