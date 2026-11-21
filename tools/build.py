@@ -89,18 +89,20 @@ print('ok', len(m), len(p), len(sv))
 import hashlib, base64, datetime
 SITE = os.environ.get('SITE_URL', 'https://itech327.github.io/my/').rstrip('/') + '/'
 DESC = {
- 'index.html': ('Cours du collège en mouvement : maths, physique-chimie et SVT',
-                'Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux.'),
- 'maths.html': ('Maths en mouvement : cours de mathématiques du collège',
-                'Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.'),
- 'physique-chimie.html': ('Physique-Chimie en mouvement : cours du collège',
-                'Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.'),
- 'svt.html': ('SVT en mouvement : cours de la 3e année du collège',
-                'Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.'),
- 'confidentialite.html': ('Confidentialité · Cours en mouvement',
+ 'index.html': ('تعليم من | دروس الإعدادي المغربي بالحركة',
+                'دروس تفاعلية متحركة للسلك الإعدادي المغربي: رياضيات وفيزياء وكيمياء وعلوم الحياة والأرض. ملخصات بالعربية وتمارين بأربعة مستويات.'),
+ 'maths.html': ('رياضيات الإعدادي بالحركة | تعليم من',
+                'دروس الرياضيات للأولى والثانية والثالثة إعدادي. رسوم متحركة وملخصات بالعربية وتمارين بمستويات متدرجة.'),
+ 'physique-chimie.html': ('الفيزياء والكيمياء للإعدادي بالحركة | تعليم من',
+                'دروس الفيزياء والكيمياء للأولى والثانية والثالثة إعدادي. محاكاة متحركة وملخصات بالعربية وتمارين بمستويات.'),
+ 'svt.html': ('علوم الحياة والأرض للإعدادي بالحركة | تعليم من',
+                'دروس علوم الحياة والأرض للأولى والثانية والثالثة إعدادي. رسوم متحركة وملخصات بالعربية وتمارين.'),
+ 'confidentialite.html': ('Confidentialité · Taalim MEN',
                 'Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.'),
- 'teacher.html': ('Espace enseignant · Cours en mouvement', 'Espace réservé à l’enseignant.'),
+ 'teacher.html': ('Espace enseignant · Taalim MEN', 'Espace réservé à l’enseignant.'),
 }
+OG_IMAGE = 'icons/og-image.png'
+OG_ALT = 'تعليم من، دروس الإعدادي المغربي بالحركة'
 FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%230d0b14'/%3E%3Cpath d='M5 33Q24 -1 43 33' fill='none' stroke='%237066 96' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='24' r='5' fill='%23e371cb'/%3E%3Ccircle cx='24' cy='15' r='5' fill='%239b92dc'/%3E%3Ccircle cx='37' cy='24' r='5' fill='%236ccdb6'/%3E%3C/svg%3E"
 
 def notify_origin():
@@ -125,11 +127,16 @@ def csp_for(html, header=False, measure=True):
     if header: parts.append("frame-ancestors 'none'")
     return '; '.join(parts)
 
+def page_url(name):
+    """URL publique : Cloudflare Pages sert /maths et redirige /maths.html vers /maths."""
+    return SITE if name == 'index.html' else SITE + name[:-5]
+
 def harden(name, html):
     html = re.sub(r'<link href="https://fonts\.googleapis\.com[^>]*>', '<link rel="stylesheet" href="fonts/fonts.css">', html)
     html = re.sub(r'<!--gen:head-->.*?<!--/gen:head-->\n?', '', html, flags=re.S)
     title, desc = DESC[name]
-    url = SITE + ('' if name == 'index.html' else name)
+    url = page_url(name)
+    html = re.sub(r'<title>.*?</title>', '<title>' + title + '</title>', html, count=1, flags=re.S)
     block = ('<!--gen:head-->\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(html, measure=(name != 'teacher.html')) + '">\n'
              '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
              '<meta name="description" content="' + desc + '">\n<link rel="canonical" href="' + url + '">\n'
@@ -137,9 +144,10 @@ def harden(name, html):
              '<link rel="manifest" href="manifest.webmanifest">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
              '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">'
              '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">\n'
-             '<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">\n'
+             '<meta property="og:type" content="website"><meta property="og:locale" content="ar_MA"><meta property="og:locale:alternate" content="fr_MA"><meta property="og:site_name" content="تعليم من">\n'
              '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '"><meta property="og:url" content="' + url + '">\n'
-             '<meta name="twitter:card" content="summary">\n<!--/gen:head-->\n')
+             '<meta property="og:image" content="' + SITE + OG_IMAGE + '"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="' + OG_ALT + '">\n'
+             '<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="' + SITE + OG_IMAGE + '">\n<!--/gen:head-->\n')
     if name == 'teacher.html':
         block = block.replace('<meta name="twitter:card"', '<meta name="robots" content="noindex,nofollow,noarchive"><meta name="twitter:card"')
     html = html.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + block, 1)
@@ -166,7 +174,33 @@ for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'co
         hdr += ['  Cache-Control: no-store', '  X-Robots-Tag: noindex, nofollow, noarchive']
     hdr.append('')
     if name != 'teacher.html':
-        urls.append(SITE if name == 'index.html' else SITE + name)
+        urls.append(page_url(name))
+# Page 404 : Cloudflare Pages la renvoie avec le statut 404 pour toute adresse inconnue.
+# Sans ce fichier, Pages sert index.html avec le statut 200 (mode application monopage).
+NOT_FOUND = """<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الصفحة غير موجودة | تعليم من</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0b14">
+<link rel="icon" href="__FAVICON__">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>html,body{margin:0;height:100%}body{display:flex;align-items:center;justify-content:center;background:#0d0b14;color:#f2eefc;font-family:Cairo,Figtree,system-ui,sans-serif;text-align:center;padding:24px;box-sizing:border-box}main{max-width:480px}h1{font-size:64px;margin:0;background:linear-gradient(90deg,#e371cb,#9b92dc,#6ccdb6);-webkit-background-clip:text;background-clip:text;color:transparent}p{font-size:18px;line-height:1.7;margin:8px 0}a{display:inline-block;margin:10px 6px 0;padding:10px 20px;border:1px solid #9b92dc;border-radius:999px;color:#f2eefc;text-decoration:none}a:hover{background:#9b92dc;color:#0d0b14}</style>
+</head>
+<body>
+<main>
+<h1>404</h1>
+<p>الصفحة التي تبحث عنها غير موجودة.</p>
+<p lang="fr" dir="ltr">Cette page n’existe pas.</p>
+<a href="/">تعليم من · Accueil</a><a href="/maths">رياضيات</a><a href="/physique-chimie">فيزياء وكيمياء</a><a href="/svt">علوم الحياة والأرض</a>
+</main>
+</body>
+</html>
+""".replace('__FAVICON__', FAVICON)
+NOT_FOUND = NOT_FOUND.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(NOT_FOUND, measure=False) + '">\n', 1)
+wr('404.html', NOT_FOUND)
 wr('_headers', '\n'.join(hdr))
 
 import json
