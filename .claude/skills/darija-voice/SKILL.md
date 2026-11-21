@@ -9,7 +9,8 @@ description: >-
   with a Darija speech recognizer (CER and WER), then picks the best settings.
   Use when the user says "Moroccan voice", "Darija TTS", "صوت مغربي",
   "الدارجة", "make it speak Darija", "which Darija model", "test the Moroccan
-  voice", or wants a Darija engine for the TTS clone.
+  voice", "write it in Darija", "اكتب بالدارجة", "Moroccan style", or wants a
+  Darija engine or Darija copy for the TTS clone.
 ---
 
 # darija-voice
@@ -38,6 +39,18 @@ how good it is. Three parts:
   they ship.
 - **Say what is a guess.** The recognizer has its own errors. Report its
   limits next to the numbers.
+
+## Writing in Darija
+
+Before writing any text for the voice (ads, stories, lessons, customer
+replies, Moroccan-style MSA), read `references/darija-style.md`: grammar,
+core vocabulary, numbers, French loanwords, regions, Moroccan MSA, and rules
+for text the voice reads well. Then check it:
+
+```bash
+python3 scripts/style_check.py "النص"     # other-dialect words, digits, Latin, sentence length
+python3 scripts/style_check.py --test
+```
 
 ## Step 1: find candidates
 
