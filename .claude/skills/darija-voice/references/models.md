@@ -6,8 +6,8 @@ Read from the Hugging Face API on 2026-11-21. Licence is the model card's
 | model | licence | base | runtime | size | commercial? | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | maromoya/piper-darija | CC BY 4.0 | Piper ar_JO "Kareem" | Piper (ONNX, CPU) | 63 MB per voice | yes, with attribution | trained on DODa M1 voice (CC BY 4.0, AtlasIA). 206 epochs. **Chosen first: runs on any CPU** |
-| KandirResearch/DarijaTTS-v0.1-500M | Apache-2.0 | OuteTTS 0.2 500M | transformers | 2.5 GB | yes | data: KandirResearch/DarijaTTS-clean. LLM-style, slower on CPU |
-| Jip7e/habibi-tts-doda-darija | Apache-2.0 | Habibi-TTS (F5-TTS) | f5-tts | 6 GB | yes, check base and data | DODa audio. Likely the most natural. Needs a GPU |
+| KandirResearch/DarijaTTS-v0.1-500M | Apache-2.0 | OuteTTS 0.2 500M | transformers | 2.5 GB | yes | **measured CER 0.468**: repeats and invents words. Rejected |
+| Jip7e/habibi-tts-doda-darija | Apache-2.0 | Habibi-TTS (F5-TTS) | f5-tts | 674 MB (EMA weights) | yes, check base and data | **measured CER 0.03-0.04 (best)**. Both app voices use it. Slow on CPU |
 | Tilas/neutts-air-darija-v1 | Apache-2.0 | NeuTTS Air | custom | 3 GB | check base | |
 | medmac01/xtt2_darija_v0.1 | not stated | Coqui XTTS-v2 | coqui | 5.6 GB | **no**: XTTS-v2 base is non-commercial (CPML) | |
 | Oussamamaat/golha-darija-tts | CC BY-NC 4.0 | Chatterbox | peft | 384 MB | **no** | |

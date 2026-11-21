@@ -171,3 +171,16 @@ these 6 sentences, so no measurable change here. The corpus itself mixes
 spellings (الثمن 13 times, التمن 0), so ث/ذ/ظ have no safe rule.
 
 Next lever: a different or better-trained model, not settings.
+
+## Run 8: another open model, KandirResearch/DarijaTTS-v0.1-500M (2026-11-21)
+
+Apache-2.0, OuteTTS 0.2 base, run through `outetts==0.3.3` (transformers, CPU),
+temperature 0.3, the same 6 sentences as run 7.
+
+| model | CER | speed on 4 CPU cores |
+| --- | --- | --- |
+| **Habibi F5-TTS + M1 reference** | **0.041** | about 8 times slower than real time |
+| DarijaTTS 500M | 0.468 | about 6 times slower than real time |
+
+DarijaTTS repeats and invents words ("السلام ليكم ليكم"). Not a candidate.
+Habibi F5-TTS stays the engine. Not yet tested: Tilas/neutts-air-darija-v1 (Apache-2.0).
