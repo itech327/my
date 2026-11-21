@@ -292,6 +292,7 @@ TESTS = [
     ('أصلا ما عرفتش', 'اصلا ما عرفتش'),
     ('ara chi bttikha nakloha m3a ssbah', 'ارا شي بطّيخة ناكلوها مع الصباح'),
     ('ddar dyalna', 'الدار ديالنا'),
+    ('aji t9ra o faaboor', 'اجي تقرا و فابور'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
     ('chouf had video f youtube', 'شوف هاد فيديو ف يوتيوب'),
     ('khassek 2 kilo d l7em, bssa7tkom', 'خاصك جوج كيلو د اللحم، بصحتكم'),
