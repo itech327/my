@@ -28,6 +28,7 @@ export interface Voice {
   ownerId: string | null;
   slow?: boolean; // studio-quality engine that takes about a minute per short paragraph on CPU
   styles?: VoiceStyle[]; // tones this voice offers, from its reference clips
+  steerable?: boolean;    // engine follows written style and accent (Gemini)
 }
 
 export type VoiceStyle = 'calm' | 'lively';
@@ -52,6 +53,7 @@ export interface Generation {
   style: VoiceStyle | null;
   delivery: string | null;
   pace: string | null;
+  accent: string | null;
   isFreeRegen: boolean;
   expiresAt: string;
   createdAt: string;

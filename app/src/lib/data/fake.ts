@@ -31,8 +31,8 @@ function seedVoices(): Voice[] {
   // Google Gemini TTS voices (official API): the main Moroccan engine, chosen by a native
   // listener over our open voices and AudioDarija. Only when that engine is switched on.
   if (process.env.TTS_GEMINI === '1') {
-    out.push({ id: 'v-ar-MA-g1', name: 'نور', dialect: 'ar-MA', gender: 'female', useCase: 'ads', isPremium: false, ownerId: null });
-    out.push({ id: 'v-ar-MA-g2', name: 'يونس', dialect: 'ar-MA', gender: 'male', useCase: 'documentary', isPremium: false, ownerId: null });
+    out.push({ id: 'v-ar-MA-g1', name: 'نور', dialect: 'ar-MA', gender: 'female', useCase: 'ads', isPremium: false, ownerId: null, steerable: true });
+    out.push({ id: 'v-ar-MA-g2', name: 'يونس', dialect: 'ar-MA', gender: 'male', useCase: 'documentary', isPremium: false, ownerId: null, steerable: true });
   }
   // Moroccan Darija has one real open voice (Piper darija_m1, male, measured
   // median pitch 141 Hz). List exactly that, so the picker does not promise
@@ -158,7 +158,7 @@ export const fakeData: DataLayer = {
   },
   async getVoice(id) { return db.voices.find((v) => v.id === id) ?? null; },
 
-  async createGeneration({ userId, voiceId, dialect, text, regeneratedFrom, style, delivery, pace }) {
+  async createGeneration({ userId, voiceId, dialect, text, regeneratedFrom, style, delivery, pace, accent }) {
     const voice = db.voices.find((v) => v.id === voiceId && (v.ownerId === null || v.ownerId === userId));
     if (!voice) return fail('not_found', 'الصوت غير موجود');
     if (voice.dialect !== dialect) return fail('invalid', 'الصوت لا يطابق اللهجة المختارة');
@@ -172,7 +172,7 @@ export const fakeData: DataLayer = {
     if (regeneratedFrom) {
       const orig = db.generations.get(regeneratedFrom);
       if (!orig || orig.userId !== userId) return fail('not_found', 'الإنشاء الأصلي غير موجود');
-      const same = orig.inputText === text && orig.voiceId === voiceId && orig.dialect === dialect && (orig.style ?? null) === (style ?? null) && (orig.delivery ?? null) === (delivery ?? null) && (orig.pace ?? null) === (pace ?? null);
+      const same = orig.inputText === text && orig.voiceId === voiceId && orig.dialect === dialect && (orig.style ?? null) === (style ?? null) && (orig.delivery ?? null) === (delivery ?? null) && (orig.pace ?? null) === (pace ?? null) && (orig.accent ?? null) === (accent ?? null);
       const used = [...db.generations.values()].some((x) => x.regeneratedFrom === regeneratedFrom && x.isFreeRegen);
       const subscriber = db.lots.some((l) => l.userId === userId && l.source === 'purchase' && live(l));
       isFreeRegen = same && !used && subscriber && countWords(text) <= FREE_REGEN_MAX_WORDS;
@@ -182,7 +182,7 @@ export const fakeData: DataLayer = {
     const gen: Generation = {
       id: randomUUID(), userId, kind: 'tts', voiceId, dialect, inputText: text, charCount: chars, wordCount: countWords(text),
       status: 'queued', secondsReserved: 0, secondsCharged: null, error: null, regeneratedFrom: regeneratedFrom ?? null,
-      isFreeRegen, style: style && voice.styles?.includes(style) ? style : null, delivery: delivery ?? null, pace: pace ?? null,
+      isFreeRegen, style: style && voice.styles?.includes(style) ? style : null, delivery: delivery ?? null, pace: pace ?? null, accent: voice.steerable ? accent ?? null : null,
       expiresAt: new Date(now.getTime() + 7 * 864e5).toISOString(), createdAt: now.toISOString(),
     };
     const need = isFreeRegen ? 0 : estimateSeconds(text);
