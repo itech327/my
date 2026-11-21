@@ -13,6 +13,7 @@
   "enabledPlugins": {
     "claude-mem@thedotmack": true,
     "agent-skills@addy-agent-skills": true,
-    "claude-code-setup@claude-plugins-official": true
+    "claude-code-setup@claude-plugins-official": true,
+    "mattpocock-skills@claude-plugins-official": true
   }
 }
