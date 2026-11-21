@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التركيب الضوئي عند النبات الأخضر</title>
+<link rel="stylesheet" href="../lib/engine.css">
+<link rel="expect" href="#bar" blocking="render">
+</head>
+<body>
+<script src="../lib/engine.js"></script>
+<script src="../lib/plant.js"></script>
+<script src="audio/ar/timings.js"></script>
+<script>
+'use strict';
+const CHAPTER = { number: 1, title: 'التركيب الضوئي عند النبات الأخضر', minutes: 6, language: 'ar' };
+
+/* ---------- chapter helpers ---------- */
+const GROUND = 760;
+
+// the two seedlings of the opening problem; done: draw them already after 8 days
+function seedlings(p, done = false) {
+  path(p, `M180,${GROUND} L1420,${GROUND}`, { stroke: COL.faint, 'stroke-width': 3 });
+  const sun = pmSun(p, 1290, 190, 48);
+  const A = pmPlant(p, { x: 1080, y: GROUND, s: 1.15 });
+  arT(p, 'A', { x: 1080, y: GROUND + 50, size: 34, fill: PM.O2, weight: 800 });
+  arT(p, 'ضوء', { x: 1290, y: 300, size: 28, fill: PM.SUN });
+  const B = pmPlant(p, { x: 550, y: GROUND, s: 1.15 });
+  const box = mk('rect', { x: 370, y: 380, width: 360, height: GROUND - 380, rx: 10, fill: '#0b0912', 'fill-opacity': .72, stroke: '#4a4160', 'stroke-width': 4 }, p);
+  arT(p, 'B', { x: 550, y: GROUND + 50, size: 34, fill: PM.SUGAR, weight: 800 });
+  arT(p, 'صندوق مُعتم', { x: 550, y: 360, size: 28, fill: PM.SUGAR });
+  if (done) {
+    put(A.up, { s: 1.35 });
+    put(B.up, { s: .82, r: 14 });
+    pmFade(B, true, 0, .01);
+  }
+  return { sun, A, B, box };
+}
+
+// a big close-up leaf used by the light, gases and q1 beats
+const BIGLEAF = { x: 420, y: 520, s: 3.1, r: -10 };
+const STOMATA = [[70, 22], [130, 34], [185, 22]];   // on the leaf's lower half, leaf coordinates
+
+/* ---------- beats: [id, title, run(m, D), extra] ---------- */
+const BEATS = [
+  ['intro', 'التركيب الضوئي', (m, D) => {
+    const g = G(scene, { o: 0, y: 24 });
+    arT(g, 'الأولى إعدادي · علوم الحياة والأرض · الدرس 1', { x: 800, y: 300, size: 28, fill: COL.dim, weight: 500 });
+    arT(g, 'التركيب الضوئي عند النبات الأخضر', { x: 800, y: 410, size: 76, weight: 800 });
+    pmF(g, 'La photosynthèse', { x: 800, y: 480, size: 34, fill: PM.SUGAR, weight: 600 });
+    tw(g, { o: 1, y: 0 }, .2, 1.1, out);
+    const sprout = pmPlant(scene, { x: 800, y: 830, s: .65, ground: true });
+    put(sprout.up, { s: 0 });
+    tw(sprout.up, { s: 1 }, .6, 1.6, out);
+    const r = arT(scene, 'كيف تصنع النبتة غذاءها بنفسها من الضوء والماء والهواء؟', { x: 800, y: 560, size: 34, fill: PM.O2, o: 0 });
+    show(r, m('sub'));
+    tw(g, { o: 0, y: -24 }, D - .9, .8); hide(r, D - .9, .8); hide(sprout, D - .9, .8);
+  }],
+
+  ['problem', 'الوضعية المشكلة', (m, D) => {
+    const p = panel(0);
+    const { sun, A, B, box } = seedlings(p);
+    [A, B].forEach(pl => put(pl, { o: 0 })); put(sun, { o: 0 }); put(box, { o: 0 });
+    show(A, .3); show(B, .3);
+    show(sun, m('a')); tw(sun.rays, { r: 40 }, m('a'), D - m('a'), lin);
+    pulse(A, m('a', .3), 1.08);
+    show(box, m('b'), .8);
+    const day = arT(p, 'اليوم 0', { x: 800, y: 130, size: 44, fill: COL.chalk, weight: 800, o: 0 });
+    show(day, m('days', -.2));
+    prog(q => { day.textContent = 'اليوم ' + Math.round(q * 8); }, m('days'), 3, lin);
+    tw(A.up, { s: 1.35 }, m('grow'), 1.8, out);
+    tw(B.up, { s: .82, r: 14 }, m('pale'), 1.8, io);
+    pmFade(B, true, m('pale'), 1.8);
+    hide(day, m('ask', -.3), .4);
+    const qm = G(p, { x: 550, y: 235, s: 0, o: 0 });
+    arT(qm, '؟', { y: 30, size: 120, fill: PM.SUGAR, weight: 900 });
+    pop(qm, m('ask'));
+    const ask = arT(p, 'ما الذي ينقص الشتلة B؟', { x: 800, y: 130, size: 46, weight: 800, o: 0 });
+    show(ask, m('ask', .2));
+  }],
+
+  ['factory', 'مصنع الورقة', (m, D) => {
+    const p = panel(0);
+    const cam = camera(p, D);
+    const w = cam.world;
+    mk('rect', { x: -400, y: 640, width: 2400, height: 600, fill: PM.SOIL }, w);
+    path(w, 'M-400,640 L2000,640', { stroke: '#4a3a30', 'stroke-width': 4 });
+    const pl = pmPlant(w, { x: 800, y: 660, s: 1.75, ground: true });
+    const [lx, ly] = pl.leafAt(1);
+    const tag = G(p, { o: 0 });
+    arT(tag, 'الورقة الخضراء = المصنع', { x: 1330, y: 170, size: 40, fill: PM.O2, weight: 800 });
+    show(tag, m('leaf')); pmPointer(tag, 1220, 190, lx + 40, ly - 20, PM.O2, m('leaf', .1));
+    pl.leaves.forEach((l, i) => pulse(l, m('leaf', .2 + i * .15), 1.08));
+    const tag2 = G(p, { o: 0 });
+    arT(tag2, 'الساق', { x: 1080, y: 470, size: 34, fill: PM.ROOT });
+    arT(tag2, 'الجذور', { x: 1080, y: 770, size: 34, fill: PM.ROOT });
+    arT(tag2, 'شبكة نقل', { x: 520, y: 620, size: 30, fill: COL.dim, weight: 500 });
+    show(tag2, m('stem'));
+    pmPointer(tag2, 1030, 460, 812, 480, PM.ROOT, m('stem', .1));
+    pmPointer(tag2, 1030, 760, 880, 760, PM.ROOT, m('stem', .3));
+    hide(tag, m('zoom', -.2), .4); hide(tag2, m('zoom', -.2), .4);
+    cam.to({ x: lx, y: ly, z: 2.6 }, m('zoom'), 1.8);
+  }, { lead: false }],
+
+  ['light', 'الضوء واليخضور', (m, D) => {
+    const p = panel(0);
+    const leaf = pmLeaf(p, BIGLEAF);
+    const sun = pmSun(p, 190, 150, 64);
+    tw(sun.rays, { r: 36 }, 0, D, lin);
+    const targets = [[620, 420], [800, 470], [990, 400]];
+    targets.forEach(([x, y], i) => {
+      const a = Math.atan2(y - 190, x - 230) * 180 / Math.PI;
+      pmArrow(p, `M230,190 L${x},${y}`, x, y, a, PM.SUN, 4).run(.6 + i * .2, .9);
+    });
+    const dots = pmChloro(leaf, 16);
+    dots.forEach((d, i) => pop(d, m('chl', i * .06)));
+    const l1 = arT(p, 'اليخضور (chlorophylle)', { x: 1300, y: 170, size: 40, fill: PM.O2, weight: 800, o: 0 });
+    show(l1, m('chl'));
+    const inset = G(p, { x: 1310, y: 610, s: 0, o: 0 });
+    mk('circle', { r: 150, fill: '#141020', stroke: PM.O2, 'stroke-width': 3 }, inset);
+    mk('rect', { x: -110, y: -70, width: 220, height: 140, rx: 30, fill: '#1e3a30', stroke: PM.LEAFE, 'stroke-width': 2.5 }, inset);
+    [[-60, -30], [0, -38], [58, -26], [-48, 26], [10, 30], [64, 22]].forEach(([x, y]) =>
+      mk('ellipse', { cx: x, cy: y, rx: 22, ry: 13, fill: PM.CHL }, inset));
+    pop(inset, m('cp'));
+    pmPointer(p, 1170, 560, 860, 470, PM.O2, m('cp', .2));
+    const l2 = arT(p, 'داخل الصانعات الخضراء', { x: 1310, y: 810, size: 32, fill: COL.dim, o: 0 });
+    show(l2, m('cp', .3));
+    dots.forEach((d, i) => pulse(d, m('catch', .3 + i * .05), 1.6));
+    const spark = pmArrow(p, 'M260,210 Q520,260 760,460', 760, 460, 40, PM.SUN, 3);
+    put(spark.line, { o: 0 });
+    const glow = arT(p, 'طاقة ضوئية', { x: 470, y: 330, size: 32, fill: PM.SUN, o: 0 });
+    show(glow, m('catch'));
+    pmStream(spark.line, () => { const e = G(p, {}); mk('circle', { r: 9, fill: PM.SUN }, e); return e; },
+      { t0: m('catch'), n: 6, period: 1.8 });
+  }],
+
+  ['gases', 'تبادل الغازات', (m, D) => {
+    const p = panel(0);
+    const leaf = pmLeaf(p, BIGLEAF);
+    const st0 = STOMATA.map(([lx, ly]) => pmAt(BIGLEAF, lx, ly));
+    st0.forEach(([x, y], i) => {
+      const s = G(p, { x, y, s: 0, o: 0, r: BIGLEAF.r });
+      mk('ellipse', { rx: 16, ry: 10, fill: '#183028', stroke: PM.CHL, 'stroke-width': 2.5 }, s);
+      path(s, 'M-9,0 L9,0', { stroke: '#0b0912', 'stroke-width': 3, 'stroke-linecap': 'round' });
+      pop(s, .5 + i * .15);
+    });
+    const lbl = arT(p, 'الثغور (stomates)', { x: 800, y: 790, size: 36, fill: PM.CHL, weight: 800, o: 0 });
+    show(lbl, .8);
+    st0.forEach(([x, y], i) => pmPointer(p, 800 + (i - 1) * 60, 750, x, y + 14, PM.CHL, 1 + i * .12));
+    // CO2 in: from the lower left into the middle stoma
+    const [sx, sy] = st0[1];
+    const inPath = path(p, `M110,780 Q300,760 ${sx},${sy}`, { fill: 'none', stroke: PM.CO2, 'stroke-width': 3, 'stroke-dasharray': '10 10' }, { o: 0 });
+    show(inPath, m('co2'), .4);
+    const co2 = pmChip(p, 'CO₂', PM.CO2, 34); put(co2, { x: 150, y: 700, o: 0 });
+    show(co2, m('co2'));
+    const inL = arT(p, 'يدخل عبر الثغور', { x: 380, y: 650, size: 30, fill: PM.CO2, o: 0 });
+    show(inL, m('co2', .3));
+    pmStream(inPath, () => pmChip(p, 'CO₂', PM.CO2, 22), { t0: m('co2', .4), n: 4, period: 3 });
+    // O2 out: from the first stoma up to the right
+    const [ox, oy] = st0[2];
+    const outPath = path(p, `M${ox},${oy} Q1300,520 1480,160`, { fill: 'none', stroke: PM.O2, 'stroke-width': 3, 'stroke-dasharray': '10 10' }, { o: 0 });
+    show(outPath, m('o2'), .4);
+    const o2 = pmChip(p, 'O₂', PM.O2, 34); put(o2, { x: 1440, y: 110, o: 0 });
+    show(o2, m('o2'));
+    const outL = arT(p, 'يُطرح في الهواء', { x: 1300, y: 250, size: 30, fill: PM.O2, o: 0 });
+    show(outL, m('o2', .3));
+    pmStream(outPath, () => pmChip(p, 'O₂', PM.O2, 22), { t0: m('o2', .4), n: 4, period: 3 });
+    pulse(co2, m('swap'), 1.2); pulse(o2, m('swap', .3), 1.2);
+  }],
+
+  ['sap', 'العصارة الخام والعصارة الناقصة', (m, D) => {
+    const p = panel(0);
+    mk('rect', { x: 0, y: 610, width: 1600, height: 290, fill: PM.SOIL }, p);
+    const pl = pmPlant(p, { x: 800, y: 610, s: 2.1, ground: true });
+    [[560, 700], [660, 820], [960, 720], [1060, 830], [720, 760]].forEach(([x, y], i) => {
+      const d = G(p, { x, y, s: 0, o: 0 });
+      path(d, 'M0,-14 Q10,0 0,10 Q-10,0 0,-14 Z', { fill: PM.WATER });
+      pop(d, .4 + i * .12);
+    });
+    const soilL = arT(p, 'ماء + أملاح معدنية', { x: 330, y: 790, size: 32, fill: PM.WATER, o: 0 });
+    show(soilL, .8);
+    const top = pl.top[1];
+    const up = pmArrow(p, `M776,840 L776,${top + 60}`, 776, top + 60, -90, PM.CO2, 6);
+    up.run(m('up'), 1.4);
+    pmStream(up.line, () => { const e = G(p, {}); mk('circle', { r: 8, fill: PM.WATER }, e); return e; }, { t0: m('up', 1), n: 5, period: 2.6 });
+    const upL = arT(p, 'العصارة الخام: ماء + أملاح ↑', { x: 420, y: 545, size: 34, fill: PM.CO2, weight: 800, o: 0 });
+    show(upL, m('up', .4));
+    pl.blades.forEach(b => { tw(b, { c_fill: '#5a2a52' }, m('make'), .8); tw(b, { c_fill: PM.LEAF }, m('make', 2.2), .8); });
+    const sug = pmChip(p, 'سكريات', PM.SUGAR, 30); put(sug, { x: pl.leafAt(1)[0] + 40, y: pl.leafAt(1)[1] - 90, s: 0, o: 0 });
+    pop(sug, m('make', .2));
+    const dn = pmArrow(p, `M824,${top + 60} L824,840`, 824, 840, 90, PM.SUGAR, 6);
+    dn.run(m('down'), 1.4);
+    pmStream(dn.line, () => { const e = G(p, {}); mk('circle', { r: 8, fill: PM.SUGAR }, e); return e; }, { t0: m('down', 1), n: 5, period: 2.6 });
+    const dnL = arT(p, 'العصارة الناقصة: سكريات ↓', { x: 1190, y: 545, size: 34, fill: PM.SUGAR, weight: 800, o: 0 });
+    show(dnL, m('down', .4));
+  }],
+
+  ['q1', 'سؤال سريع', () => {
+    const p = panel(0);
+    const leaf = pmLeaf(p, { x: 470, y: 340, s: 2.6, r: -6 });
+    pmChloro(leaf, 16).forEach((d, i) => pop(d, .3 + i * .04));
+    pmSun(p, 230, 140, 44);
+    arT(p, '؟', { x: 1200, y: 400, size: 150, fill: PM.O2, weight: 900 });
+  }, { ask: done => quiz(BAND, [{
+    id: 'c-pigment', prompt: ['ما اسم الصبغة الخضراء التي تلتقط طاقة الضوء داخل الورقة؟'],
+    build: choice([['الهيموغلوبين'], ['اليخضور (chlorophylle)'], ['الكيراتين']], 1,
+      'صحيح! اليخضور داخل الصانعات الخضراء يعطي الورقة لونها الأخضر ويلتقط الضوء.',
+      ['الهيموغلوبين صبغة الدم الحمراء عند الإنسان. ابحث عن صبغة النبات الخضراء.', null,
+       'الكيراتين مادة الشعر والأظافر. ابحث عن صبغة النبات الخضراء.']),
+  }], done) }],
+
+  ['equation', 'المعادلة', (m, D) => {
+    const p = panel(0);
+    const Y = 430;
+    const items = [
+      [pmF(p, 'CO₂', { x: 230, y: Y, size: 70, fill: PM.CO2, o: 0 }), arT(p, 'من الهواء', { x: 230, y: Y + 70, size: 28, fill: COL.dim, o: 0 })],
+      [pmF(p, '+', { x: 360, y: Y, size: 64, o: 0 })],
+      [pmF(p, 'H₂O', { x: 490, y: Y, size: 70, fill: PM.WATER, o: 0 }), arT(p, 'من التربة', { x: 490, y: Y + 70, size: 28, fill: COL.dim, o: 0 })],
+    ];
+    items.flat().forEach((e, i) => show(e, m('in', i * .15)));
+    const ar = pmArrow(p, 'M610,410 L940,410', 940, 410, 0, PM.SUN, 7);
+    ar.run(m('arrow'), .9);
+    const cond = arT(p, 'ضوء + يخضور', { x: 785, y: 370, size: 34, fill: PM.SUN, weight: 800, o: 0 });
+    show(cond, m('arrow', .3));
+    const sunI = pmSun(p, 785, 270, 30, 0); show(sunI, m('arrow', .3));
+    const outs = [
+      [arT(p, 'مادة عضوية', { x: 1120, y: Y, size: 52, fill: PM.SUGAR, weight: 800, o: 0 }), arT(p, 'سكريات ثم نشا', { x: 1120, y: Y + 70, size: 28, fill: COL.dim, o: 0 })],
+      [pmF(p, '+', { x: 1305, y: Y, size: 64, o: 0 })],
+      [pmF(p, 'O₂', { x: 1420, y: Y, size: 70, fill: PM.O2, o: 0 }), arT(p, 'يُطرح', { x: 1420, y: Y + 70, size: 28, fill: COL.dim, o: 0 })],
+    ];
+    outs.flat().forEach((e, i) => show(e, m('out', i * .15)));
+    const name = G(p, { x: 800, y: 660, s: 0, o: 0 });
+    mk('rect', { x: -300, y: -62, width: 600, height: 96, rx: 22, fill: '#1f1830', stroke: PM.SUGAR, 'stroke-width': 3 }, name);
+    arT(name, 'التركيب الضوئي', { y: 6, size: 56, fill: PM.SUGAR, weight: 900 });
+    pop(name, m('name'));
+  }],
+
+  ['iodine', 'الكشف عن النشا', (m, D) => {
+    const p = panel(0);
+    const dish = (x, label, col) => {
+      const g = G(p, { x, y: 560 });
+      mk('ellipse', { cx: 0, cy: 40, rx: 200, ry: 46, fill: '#241b3a', stroke: '#4a4160', 'stroke-width': 3 }, g);
+      mk('rect', { x: -120, y: -10, width: 240, height: 70, rx: 18, fill: col }, g);
+      arT(g, label, { y: 140, size: 32, fill: COL.dim });
+      return g;
+    };
+    dish(1050, 'خبز (فيه نشا)', '#e8d2a0');
+    dish(550, 'ورق (لا نشا)', '#ece8dc');
+    const drop = (x, t0, col, t1) => {
+      const d = G(p, { x, y: 200, o: 0 });
+      path(d, 'M0,-16 Q12,0 0,12 Q-12,0 0,-16 Z', { fill: '#8a5a20' });
+      show(d, t0, .2); tw(d, { y: 565 }, t0 + .2, .7, lin); hide(d, t0 + .9, .1);
+      const spot = G(p, { x, y: 585, s: 0, o: 0 });
+      mk('ellipse', { rx: 70, ry: 22, fill: '#8a5a20' }, spot);
+      tw(spot, { s: 1, o: 1 }, t0 + .9, .4, out);
+      if (col) tw(spot.firstChild, { c_fill: col }, t0 + 1.4, 1.2);
+      return spot;
+    };
+    const bottle = G(p, { x: 800, y: 130 });
+    mk('rect', { x: -40, y: -50, width: 80, height: 90, rx: 10, fill: '#5a3a18', stroke: '#c8963c', 'stroke-width': 3 }, bottle);
+    arT(bottle, 'ماء اليود', { y: 90, size: 28, fill: PM.BROWN });
+    drop(1050, m('blue', -1.2), PM.BLUE);
+    const b1 = arT(p, 'أزرق أسود ← نشا ✓', { x: 1050, y: 760, size: 36, fill: '#8fa0ff', weight: 800, o: 0 });
+    show(b1, m('blue', .6));
+    drop(550, m('brown', -1), null);
+    const b2 = arT(p, 'أصفر بني ← لا نشا', { x: 550, y: 760, size: 36, fill: PM.BROWN, weight: 800, o: 0 });
+    show(b2, m('brown', .6));
+  }],
+
+  ['foil', 'تجربة الورقة المغطاة', (m, D) => {
+    const p = panel(0);
+    const LF = { x: 410, y: 470, s: 3.25, r: 0 };
+    const leaf = pmLeaf(p, { ...LF, split: true });
+    const [half, tip] = leaf.blades;
+    const foil = G(p, { x: 0, y: -520 });
+    mk('rect', { x: 800, y: 290, width: 400, height: 360, rx: 14, fill: PM.FOIL, stroke: '#eef0f6', 'stroke-width': 3 }, foil);
+    path(foil, 'M830,320 L1170,620 M900,300 L1190,560', { stroke: '#ffffff', 'stroke-width': 6, 'stroke-opacity': .35 });
+    arT(foil, 'ألمنيوم', { x: 1000, y: 480, size: 36, fill: '#3a3a48', weight: 800 });
+    tw(foil, { y: 0 }, m('cover'), 1, out);
+    const sun = pmSun(p, 200, 150, 50, 0); show(sun, m('cover', .8));
+    const clock = arT(p, '٦ ساعات تحت الضوء', { x: 200, y: 290, size: 32, fill: PM.SUN, o: 0 });
+    show(clock, m('cover', 1));
+    tw(foil, { y: -760 }, m('test', -.4), .9, io);
+    const wash = G(p, { o: 0 });
+    arT(wash, 'ماء اليود', { x: 800, y: 160, size: 36, fill: PM.BROWN, weight: 800 });
+    show(wash, m('test')); hide(wash, m('result', -.2), .4);
+    tw(half, { c_fill: PM.BLUE }, m('result'), 1.2);
+    tw(tip, { c_fill: PM.BROWN }, m('result', .4), 1.2);
+    const r1 = arT(p, 'مكشوف: أزرق أسود (نشا)', { x: 600, y: 740, size: 32, fill: '#8fa0ff', weight: 800, o: 0 });
+    const r2 = arT(p, 'مغطى: أصفر بني (لا نشا)', { x: 1000, y: 740, size: 32, fill: PM.BROWN, weight: 800, o: 0 });
+    show(r1, m('result', .3)); show(r2, m('result', .7));
+    const c = G(p, { x: 800, y: 120, s: 0, o: 0 });
+    mk('rect', { x: -380, y: -48, width: 760, height: 80, rx: 20, fill: '#1f1830', stroke: PM.SUN, 'stroke-width': 3 }, c);
+    arT(c, 'الضوء ضروري لصنع المادة العضوية ✓', { y: 6, size: 38, fill: PM.SUN, weight: 900 });
+    pop(c, m('conc'));
+  }],
+
+  ['q2', 'سؤال سريع', () => {
+    const p = panel(0);
+    pmPlant(p, { x: 800, y: 560, s: 1.15, ground: true });
+    pmSun(p, 1260, 150, 46);
+    const c = pmChip(p, 'CO₂ ?', PM.CO2, 32); put(c, { x: 380, y: 260 });
+    const w = pmChip(p, 'H₂O ?', PM.WATER, 32); put(w, { x: 520, y: 470 });
+  }, { ask: done => quiz(BAND, [{
+    id: 'c-inputs', prompt: ['أي لائحة تسمي المواد الأولية للتركيب الضوئي كاملة؟'],
+    build: choice([['سكريات + O₂'], ['ماء + أملاح + CO₂ + ضوء'], ['ماء + O₂ فقط']], 1,
+      'ممتاز! ماء وأملاح من التربة، وCO₂ من الهواء، وطاقة من الضوء.',
+      ['السكريات والأوكسجين هي النواتج، لا المواد الأولية.', null,
+       'الأوكسجين يخرج من الورقة. ما الغاز الذي يدخل؟']),
+  }], done) }],
+
+  ['why', 'أهمية التركيب الضوئي', (m, D) => {
+    const p = panel(0);
+    const card = (x, mark, title, draw) => {
+      const g = G(p, { x, y: 400, s: .9, o: 0 });
+      mk('rect', { x: -200, y: -190, width: 400, height: 330, rx: 26, fill: '#1f1830', stroke: '#2b2440', 'stroke-width': 3 }, g);
+      draw(g);
+      arT(g, title, { y: 100, size: 32, weight: 800 });
+      tw(g, { s: 1, o: 1 }, m(mark), .6, back);
+      return g;
+    };
+    card(1250, 'resp', 'الأوكسجين لتنفسنا', g => {
+      mk('circle', { cx: 50, cy: -90, r: 34, fill: '#b9b2cf' }, g);
+      path(g, 'M0,30 Q50,-50 100,30 Z', { fill: '#b9b2cf' });
+      const c = pmChip(g, 'O₂', PM.O2, 30); put(c, { x: -80, y: -70 });
+    });
+    card(800, 'absorb', 'يمتص CO₂', g => {
+      const c = pmChip(g, 'CO₂', PM.CO2, 34); put(c, { x: 0, y: -110 });
+      pmLeaf(g, { x: -90, y: -10, s: .75, r: 0 });
+    });
+    card(350, 'food', 'بداية السلاسل الغذائية', g => {
+      arT(g, 'نبات ← أرنب ← ثعلب', { y: -50, size: 34, fill: PM.O2, weight: 800 });
+      pmLeaf(g, { x: 50, y: -120, s: .45, r: -30 });
+    });
+    const earth = G(p, { x: 800, y: 760, s: 0, o: 0 });
+    mk('rect', { x: -420, y: -46, width: 840, height: 80, rx: 22, fill: '#1e3a30', stroke: PM.O2, 'stroke-width': 3 }, earth);
+    arT(earth, 'حماية النباتات الخضراء = حماية الحياة', { y: 8, size: 36, fill: PM.O2, weight: 900 });
+    pop(earth, m('protect'));
+  }],
+
+  ['answer', 'جواب الوضعية', (m, D) => {
+    const p = panel(0);
+    seedlings(p, true);
+    const no = G(p, { x: 550, y: 290, s: 0, o: 0 });
+    mk('rect', { x: -170, y: -44, width: 340, height: 74, rx: 18, fill: '#2a1020', stroke: PM.SUGAR, 'stroke-width': 3 }, no);
+    arT(no, 'لا ضوء ✗', { y: 8, size: 38, fill: PM.SUGAR, weight: 900 });
+    pop(no, m('noLight'));
+    const chain = arT(p, 'لا تركيب ضوئي ← لا مادة عضوية', { x: 800, y: 130, size: 40, fill: PM.SUGAR, weight: 800, o: 0 });
+    show(chain, m('noFood'));
+    const yes = G(p, { x: 1020, y: 230, s: 0, o: 0 });
+    mk('rect', { x: -200, y: -44, width: 400, height: 74, rx: 18, fill: '#10302a', stroke: PM.O2, 'stroke-width': 3 }, yes);
+    arT(yes, 'ضوء ✓ ماء ✓ CO₂ ✓', { y: 8, size: 34, fill: PM.O2, weight: 900 });
+    hide(chain, m('ok', -.3), .3);
+    pop(yes, m('ok'));
+  }],
+
+  ['wrap', 'الخلاصة', (m) => {
+    const p = panel(0);
+    [['الورقة الخضراء مصنع الغذاء، واليخضور يلتقط الضوء.', 'w1', PM.O2],
+     ['CO₂ + H₂O ← مادة عضوية + O₂ (بوجود الضوء واليخضور)', 'w2', PM.SUGAR],
+     ['العصارة الخام تصعد، والعصارة الناقصة تنزل.', 'w3', PM.CO2],
+     ['ماء اليود يكشف النشا بلون أزرق أسود.', 'w4', PM.SUN]].forEach(([str, mark, col], i) => {
+      const g = G(p, { x: 16, y: 230 + i * 140, o: 0 });
+      mk('circle', { cx: 1380, cy: -12, r: 28, fill: col }, g);
+      T(g, String(i + 1), { x: 1380, y: -1, size: 30, fill: COL.board, weight: 800, anchor: 'middle' });
+      arT(g, str, { x: 1330, size: 36, align: 'right' });
+      tw(g, { o: 1, x: 0 }, m(mark), .6);
+    });
+  }],
+
+  ['final1', 'تمارين الدرس', () => { panel(0); }, { ask: done => quiz(SCREEN, [
+    { id: 'p-o2rate', prompt: ['ورقة سليمة تُطلق 9 mL من O₂ كل ساعة تحت ضوء جيد. كم mL تطلق في 8 ساعات؟'],
+      build: blanks([{ parts: ['9 × 8 = ', { box: '72' }, ' mL'], why: 'صحيح: 9 × 8 = 72 mL من الأوكسجين.', hint: 'اضرب الكمية في عدد الساعات.' }]) },
+    { id: 'p-water', prompt: ['لتكوين 1 g من المادة الجافة تستهلك النبتة نحو 500 g من الماء. شتلتنا أنتجت 3 g. كم غراماً من الماء استهلكت؟'],
+      build: blanks([{ parts: ['500 × 3 = ', { box: '1500' }, ' g'], why: 'بطل! 500 × 3 = 1500 g: لتر ونصف من الماء لثلاثة غرامات فقط.', hint: 'عملية واحدة: 500 × 3.' }]) },
+    { id: 'p-gas', prompt: ['ما الغاز الذي تُطلقه النبتة الخضراء أثناء التركيب الضوئي؟'],
+      build: choice([['ثنائي أوكسيد الكربون'], ['الأوكسجين'], ['الآزوت']], 1, 'صحيح: الأوكسجين يُطرح في الهواء عبر الثغور.',
+        ['ثنائي أوكسيد الكربون يدخل الورقة، لا يخرج منها.', null, 'الآزوت لا يُنتج في التركيب الضوئي.']) },
+    { id: 'p-where', prompt: ['أين تُصنع المادة العضوية في النبتة أساساً؟'],
+      build: choice([['الجذر'], ['الورقة'], ['الزهرة']], 1, 'صحيح: الورقة الخضراء هي المصنع.',
+        ['الجذر يمتص الماء والأملاح، ولا يصنع المادة العضوية.', null, 'الزهرة للتكاثر. أين يوجد اليخضور؟']) },
+    { id: 'p-iodine', prompt: ['ماء اليود الذي يصبح أزرق أسود يكشف عن وجود…'],
+      build: choice([['البروتين'], ['الماء'], ['النشا']], 2, 'صحيح: اللون الأزرق الأسود يدل على النشا.',
+        ['ماء اليود لا يكشف البروتين.', 'ماء اليود لا يكشف الماء.', null]) },
+    { id: 'p-sap', prompt: ['ما الذي يصعد من التربة إلى الورقة في العصارة الخام؟'],
+      build: choice([['ماء + أملاح معدنية'], ['سكريات + O₂'], ['CO₂ فقط']], 0, 'صحيح: العصارة الخام ماء وأملاح معدنية.',
+        [null, 'السكريات تنزل في العصارة الناقصة.', 'CO₂ يدخل من الهواء عبر الثغور.']) },
+    { id: 'p-dark', prompt: ['نبتة تُترك في ظلام تام. ماذا يحدث؟'],
+      build: choice([['يتسارع التركيب الضوئي'], ['لا يحدث تركيب ضوئي'], ['يزداد إنتاج O₂']], 1, 'صحيح: بدون ضوء لا تركيب ضوئي، كالشتلة B.',
+        ['الضوء ضروري: بدونه يتوقف التركيب الضوئي.', null, 'بدون ضوء لا يُنتج الأوكسجين.']) },
+  ], done, 'تمارين الدرس') }],
+
+  ['finish', 'انتهى', () => { panel(0); }, { ask: finishCard }],
+].map(([id, title, run, extra]) => ({ id, title, run, ...extra }));
+
+boot();
+</script>
+</body>
+</html>

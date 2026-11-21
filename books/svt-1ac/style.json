@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "tier": 2,
+  "book": { "title": "علوم الحياة والأرض · الأولى إعدادي", "slug": "svt-1ac", "language": "ar", "second_language": "fr (after the pilot is approved)", "readers": "Moroccan collège, 1re année (1AC), SVT; Arabic with French scientific terms", "pilot": "ch01", "use": "the teacher's own class (taalim.men); source is the teacher's own lesson page, not a third-party textbook" },
+  "words": [
+    "Source: the user's own taalim.men Pro demo lesson 'التركيب الضوئي عند النبات الأخضر · La photosynthèse', bilingual AR/FR.",
+    "Chosen: remake it as a narrated animated lesson; illustrated scenes; Arabic + French narration (Arabic first).",
+    "Voice: none for now (option 3). Pilot runs on silent placeholder clips with captions; a real voice replaces them later without page changes."
+  ],
+  "look": {
+    "palette": { "page": "#0d0b14", "board": "#171225", "panel": "#1f1830", "edge": "#2b2440", "ink": "#f2eff7", "dim": "#b9b2cf", "accent": ["#9b92dc", "#e371cb", "#6ccdb6", "#f0c060"] },
+    "meaning": { "light / energy": "#f0c060 (sun yellow)", "CO2 and raw inputs": "#9b92dc (violet)", "O2 and chlorophyll / leaf": "#6ccdb6 (teal)", "organic matter, sugars, starch": "#e371cb (pink)", "raw sap": "violet, rising", "elaborated sap": "pink, descending" },
+    "fonts": { "text": "Noto Sans Arabic / system UI", "math": "engine default serif; chemical formulas written CO₂, H₂O, O₂ left to right" },
+    "notation": "Arabic text, French term in brackets the first time (اليخضور · chlorophylle); equation left to right in French as on the source page"
+  },
+  "voice": { "engine": "none (silent placeholders)", "planned": "ar-MA-MounaNeural via Edge on the user's machine, or ElevenLabs via OpenRouter", "placeholder_pace": "1.8 Arabic words per second" },
+  "pacing": { "minutes": [8, 12], "checks": "two quick checks inside the lesson, chapter practice at the end (the source page's exercises A–D and the 60-second challenge)" },
+  "engine": { "source": "DozenTwelve/Papermorph", "ref": "engine-v2.12" },
+  "models": { "all": "the conversation's model, run in one agent (no subagent team for this pilot)" },
+  "scenes": {
+    "art": "drawn in code, flat shapes on the dark violet board of the source page; the plant is the actor; no human cast",
+    "cast": [],
+    "storyboard": "the user reviews a still-frame sheet before motion is polished"
+  },
+  "components": [
+    { "name": "plant", "file": "site/svt-1ac/lib/plant.js", "what": "bean plant with leaf, stem, roots and pot; green or yellowed; leaf has chloroplast dots and stomata" },
+    { "name": "flowArrow", "file": "site/svt-1ac/lib/plant.js", "what": "dashed arrow drawn on with a moving particle, colour by meaning" }
+  ],
+  "images": { "sources": ["drawn in code only"] },
+  "approved": []
+}
