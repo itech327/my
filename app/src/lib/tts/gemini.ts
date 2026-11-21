@@ -10,6 +10,13 @@ import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider'
 // The key is never in code or env: the session's network proxy injects it for
 // generativelanguage.googleapis.com. We send a placeholder header it overwrites.
 
+import designed from './designed-voices.json';
+
+// Regional accents are permanent voice traits, so each region has its own
+// designed voice (Voice design API; ids made by darija-voice/scripts/gemini_design_voices.py).
+// The ids live in the Google project of the key that created them.
+const DESIGNED = designed as Record<string, string>;
+
 const URL = 'https://generativelanguage.googleapis.com/v1beta/interactions';
 const MODEL = process.env.GEMINI_TTS_MODEL ?? 'gemini-3.8-flash-tts';
 
@@ -30,10 +37,11 @@ function wavSeconds(buf: Uint8Array): number {
   return buf.length / (24000 * 2);
 }
 
-export function geminiProvider(voice: string): TtsProvider {
+export function geminiProvider(voice: string, gender?: 'female' | 'male'): TtsProvider {
   return {
     id: `gemini-${voice}`,
     async synthesize(req: SynthesisRequest): Promise<SynthesisResult> {
+      const chosen = (gender && DESIGNED[`${req.accent ?? 'casa'}-${gender}`]) || voice;
       const text = req.text.replace(/\[\/?[^\]\s]{1,8}\]/g, '').trim();
       const r = await fetch(URL, {
         method: 'POST',
@@ -45,7 +53,7 @@ export function geminiProvider(voice: string): TtsProvider {
             content: [{ type: 'text', text, annotations: [{ type: 'speech_metadata', style: req.styleText ?? DEFAULT_STYLE }] }],
           }],
           response_format: { type: 'audio' },
-          generation_config: { speech_config: [{ voice }] },
+          generation_config: { speech_config: [{ voice: chosen }] },
         }),
         signal: AbortSignal.timeout(120_000),
       });

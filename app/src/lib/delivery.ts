@@ -18,7 +18,8 @@ export interface Delivery {
 
 const DARIJA = 'Speak in natural Moroccan Darija, like a native speaker from Morocco.';
 
-// Regional accents. Only engines steered by words (Gemini) can follow them.
+// Regional accents. Gemini follows them through a designed voice per region
+// (tts/designed-voices.json); the style text only reinforces it.
 export type AccentId = 'casa' | 'rabat' | 'north' | 'marrakech' | 'fes' | 'simple';
 export const ACCENTS: { id: AccentId; label: string; hint: string; style: string; city: string }[] = [
   { id: 'casa', label: 'كازاوية', hint: 'عصرية، مفهومة فالمغرب كامل', style: 'with a modern Casablanca accent', city: 'الدار البيضاء' },

@@ -17,7 +17,7 @@ export async function runGeneration(input: {
     const out = await getProvider().synthesize({
       voiceId: gen.voiceId!, dialect: gen.dialect!, text: gen.inputText, style: gen.style ?? undefined,
       styleText: geminiStyle(gen.delivery as DeliveryId | null, gen.pace as PaceId | null, gen.accent as AccentId | null),
-      speed: paceById(gen.pace)?.speed, pauseScale: paceById(gen.pace)?.pauseScale,
+      speed: paceById(gen.pace)?.speed, pauseScale: paceById(gen.pace)?.pauseScale, accent: gen.accent ?? undefined,
     });
     await data.completeGeneration(gen.id, out.audio, out.mime, out.seconds);
   } catch (e) {

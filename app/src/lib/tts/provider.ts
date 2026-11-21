@@ -8,6 +8,7 @@ export interface SynthesisRequest {
   styleText?: string;            // delivery description for engines steered by words (Gemini)
   speed?: number;                // for engines with a speed control (F5)
   pauseScale?: number;           // longer or shorter pauses between sentences
+  accent?: string;               // regional accent id: picks a designed voice (Gemini)
 }
 
 export interface SynthesisResult {

@@ -17,7 +17,7 @@ const speakerUrl = process.env.TTS_SPEAKERS_URL;
 const byVoice: Record<string, TtsProvider> = {
   ...(speakerUrl ? { 'v-ar-MA-f1': f5Provider(speakerUrl, 'F1'), 'v-ar-MA-0': f5Provider(speakerUrl, 'M1') } : {}),
   // Gemini TTS (official API, key injected by the network proxy). Darija is not officially supported: measure it.
-  ...(process.env.TTS_GEMINI === '1' ? { 'v-ar-MA-g1': geminiProvider('Kore'), 'v-ar-MA-g2': geminiProvider('Charon') } : {}),
+  ...(process.env.TTS_GEMINI === '1' ? { 'v-ar-MA-g1': geminiProvider('Kore', 'female'), 'v-ar-MA-g2': geminiProvider('Charon', 'male') } : {}),
 };
 const byDialect: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};
 

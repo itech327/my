@@ -271,3 +271,6 @@ naturalness; the recognizer only guards against swallowed words.
 - Designed voice accepted with `language_code: ar-MA`. Prompt: young woman from Tetouan, Jebli accent.
 - Samples: `replica/examples/gemini/north-design.wav`, `north-design-preview.wav`. Awaiting ear verdict.
 - Limits: 200 stored voices per project, 1-year TTL. One 429 on synthesis, retry worked.
+- Ear verdict: northern accent heard with the designed voice. Accent via Voice design works; via style text does not.
+- Built 12 designed voices, 6 regions x 2 genders: `scripts/gemini_design_voices.py`, ids in `app/src/lib/tts/designed-voices.json`.
+- App: accent chip picks the designed voice for نور or يونس. Test: نور north 4.9 s, يونس Marrakech 3.8 s, no console errors.
