@@ -107,6 +107,11 @@ LEXICON = {
     'bssa7tkom': 'بصحتكم', 'bsa7tkom': 'بصحتكم', 'bssa7tek': 'بصحتك', 'bsa7tek': 'بصحتك', 'smiti': 'سميتي',
     'tajine': 'طاجين', 'tajin': 'طاجين', 'khassek': 'خاصك', 'khassni': 'خاصني', 'khass': 'خاص', 'zitoun': 'زيتون',
     'zzitoun': 'الزيتون', '3likom': 'عليكم', '3lik': 'عليك', 'wa7d': 'واحد', 'wahed': 'واحد', 'tomatich': 'ماطيشة',
+    'ara': 'أرا', 'aji': 'أجي', 'bttikha': 'بطيخة', 'btikha': 'بطيخة', 'dlla7': 'الدلاح', 'nakloha': 'ناكلوها',
+    'naklo': 'ناكلو', 'kol': 'كول', 'sbah': 'صباح', 'ssbah': 'الصباح', 'sba7': 'صباح', 'ssba7': 'الصباح',
+    'l3cha': 'العشا', 'lftour': 'الفطور', 'atay': 'أتاي', 'lkhobz': 'الخبز', 'khobz': 'خبز',
+    'dyali': 'ديالي', 'dyalek': 'ديالك', 'dyalo': 'ديالو', 'dyalha': 'ديالها', 'dyalna': 'ديالنا',
+    'dyalkom': 'ديالكم', 'dyalhom': 'ديالهم', 'dialna': 'ديالنا', 'dyali': 'ديالي',
     'makaynch': 'ماكاينش', 'ma3ndich': 'ماعنديش', '3ndi': 'عندي', '3andi': 'عندي', 'm3a': 'مع', 'ta7aja': 'تاحاجة',
 }
 # French words as Moroccans say them, written for an Arabic voice
@@ -137,8 +142,14 @@ def arabizi_word(w: str) -> str:
         return LEXICON[lw]
     # l- / el- article glued to the word: "lmghrib" -> "المغريب"
     prefix = ''
+    # assimilated article: a doubled sun letter at the start is "ال" ("ddar" -> الدار)
+    m2 = re.match(r'^(tt|dd|rr|zz|ss|nn|ll)(?=[a-z0-9])', lw)
+    if m2 and len(lw) > 3:
+        prefix, lw = 'ال', lw[1:]
+    if prefix and lw in LEXICON:  # known word after the article: "ddar" -> ال + دار
+        return prefix + LEXICON[lw].removeprefix('ال')
     m = re.match(r'^(e?l)(?=[^aeiou])', lw)
-    if m and len(lw) > 3:
+    if m and len(lw) > 3 and not re.match(r'^(tt|dd|rr|zz|ss|nn|ll)', lw):
         prefix, lw = 'ال', lw[m.end():]
     out, i = [], 0
     while i < len(lw):
@@ -279,6 +290,8 @@ TESTS = [
     ('خاصني 3 كلمات', 'خاصني تلاتة كلمات'),
     ('مشيت إلى الدار', 'مشيت الى الدار'),
     ('أصلا ما عرفتش', 'اصلا ما عرفتش'),
+    ('ara chi bttikha nakloha m3a ssbah', 'ارا شي بطيخة ناكلوها مع الصباح'),
+    ('ddar dyalna', 'الدار ديالنا'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
     ('chouf had video f youtube', 'شوف هاد فيديو ف يوتيوب'),
     ('khassek 2 kilo d l7em, bssa7tkom', 'خاصك جوج كيلو د اللحم، بصحتكم'),
