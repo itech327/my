@@ -9,7 +9,6 @@ GET  /health                                      -> {"ok": true, ...}
 Binds to 127.0.0.1 only. Put it behind the app, never on the open internet.
 """
 import argparse
-import io
 import json
 import os
 import sys
@@ -19,8 +18,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from normalize import normalize  # noqa: E402
-from speak import load  # noqa: E402
-from piper.config import SynthesisConfig  # noqa: E402
+from speak import load, speak  # noqa: E402
 
 MAX_CHARS = 5000
 
@@ -56,14 +54,11 @@ def make_handler(voice, defaults):
             clean = normalize(text)
             if not clean or len(clean) > MAX_CHARS or not 0.5 <= speed <= 2.0:
                 return self._send(400, b'{"error":"empty, too long, or bad speed"}')
-            buf = io.BytesIO()
-            cfg = SynthesisConfig(length_scale=1.0 / speed, noise_scale=defaults['noise'])
-            with lock, wave.open(buf, 'wb') as wf:
-                voice.synthesize_wav(clean, wf, syn_config=cfg)
-            buf.seek(0)
-            with wave.open(buf) as wf:
-                seconds = wf.getnframes() / wf.getframerate()
-            self._send(200, buf.getvalue(), 'audio/wav', {'X-Audio-Seconds': f'{seconds:.3f}'})
+            import tempfile
+            with lock, tempfile.NamedTemporaryFile(suffix='.wav') as tmp:
+                seconds = speak(voice, clean, tmp.name, speed=speed, noise=defaults['noise'], noise_w=0.5, raw=True)
+                body = open(tmp.name, 'rb').read()
+            self._send(200, body, 'audio/wav', {'X-Audio-Seconds': f'{seconds:.3f}'})
 
         def log_message(self, fmt, *args):
             sys.stderr.write('tts %s\n' % (fmt % args))

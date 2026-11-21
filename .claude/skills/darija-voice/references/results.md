@@ -67,3 +67,23 @@ Sentence: the tajine recipe in Arabizi with numbers.
 More natural and more intelligible than the Piper voice on this sentence,
 but too slow on a CPU for the app. Needs a GPU in production, or a Piper
 voice trained on F1 for fast CPU use.
+
+## Run 3: stutter and pauses, 30 sentences incl. Standard Arabic (2026-11-21)
+
+Grid over duration noise (noise_w 0.3, 0.5, 0.8), speed (0.9, 1.0) and
+phrase pauses (on, off), tashkeel off.
+
+| setting | CER | WER |
+| --- | --- | --- |
+| **speed 1.0, noise_w 0.5, pauses on** | **0.160** | 0.506 |
+| speed 1.0, noise_w 0.3, pauses off | 0.171 | 0.527 |
+| speed 0.9, noise_w 0.8, pauses off | 0.237 | 0.560 |
+
+Finding: **settings have reached their ceiling.** Most differences are
+within the run-to-run noise (about 0.03). The larger test set scores worse
+than run 2 because it adds Standard Arabic: the voice was trained on Darija
+only, and the recognizer is a Darija recognizer, so both sides are weak on
+MSA. Remaining errors are the model's limits, not its settings.
+
+Next real gain needs **training**, not tuning: fine-tune on more licensed
+speech (Darija and Moroccan-read MSA) on a GPU. See SKILL.md, "Training".

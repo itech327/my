@@ -117,6 +117,38 @@ HF_HUB_DISABLE_XET=1 ./venv/bin/python scripts/speak_f5.py --ckpt model_ema.safe
 Xet transfer host is not allowed. Measured: female pitch 202 Hz, CER 0.06,
 but about 10 times slower than real time on a CPU. Use a GPU in production.
 
+## Training: the only way past the ceiling
+
+Tuning settings stopped helping (results run 3). A model learns new
+pronunciation only by being trained on more speech. It does not learn from
+being used, and Claude does not keep learning between sessions: whatever is
+learned must be written into data, tests, the lexicon or model weights.
+
+What to train, in order of value:
+
+1. **Female Piper voice from DODa F1** (2,000 clips, CC BY 4.0). Same recipe
+   as the existing voice: start from the Arabic Piper checkpoint `ar_JO`
+   Kareem, fine-tune on F1. The male voice took 206 epochs, about 20 hours on
+   a free Kaggle T4. Result: a female voice that runs fast on any CPU.
+2. **Multi-speaker voice** from all 7 DODa speakers (12,105 clips).
+3. **Moroccan-read Standard Arabic**: add licensed MSA speech read by
+   Moroccan speakers, so news and lessons improve too.
+
+Data rules:
+
+- Only speech whose licence allows training, and whose speakers agreed to
+  publication. Open datasets list this on their card.
+- **Not** voices from social media posts, YouTube, TV or podcasts. Being
+  public does not make them licensed, and it would clone real people
+  without their consent.
+- Text is different from voices: open Darija text corpora can grow the
+  lexicon and the test set without cloning anyone.
+
+Compute: this container has 4 CPU cores and no GPU. Training needs a GPU
+(Kaggle or Colab free tier, or a rented cloud GPU). Prepare the data and the
+config here, run the training there, bring the `.onnx` back, and measure it
+with `evaluate.py` against the current voice before switching.
+
 ## Going further
 
 - **Better voice:** fine-tune the Piper voice longer, or on more speakers,

@@ -92,7 +92,7 @@ def main():
     ap.add_argument('--model', required=True)
     ap.add_argument('--asr', required=True)
     ap.add_argument('--sentences', required=True)
-    ap.add_argument('--grid', action='store_true')
+    ap.add_argument('--grid', nargs='?', const='full', default=None, help="'full' or 'stutter'")
     ap.add_argument('--json')
     a = ap.parse_args()
     sentences = [l.strip() for l in open(a.sentences, encoding='utf-8') if l.strip() and not l.startswith('#')]
@@ -100,20 +100,26 @@ def main():
 
     # sanity check of the yardstick itself: a recognizer that cannot read our
     # canon form would make every voice look bad
-    grid = [dict(tashkeel=t, speed=s, noise=n) for t, s, n in itertools.product(
-        [True, False], [0.9, 1.0, 1.1], [0.5, 0.667])] if a.grid else [dict(tashkeel=True, speed=1.0, noise=None)]
+    if a.grid == 'stutter':  # tashkeel already measured worse: tune duration noise and pauses
+        grid = [dict(tashkeel=False, speed=s, noise=0.667, noise_w=w, pauses=p) for s, w, p in itertools.product(
+            [0.9, 1.0], [0.3, 0.5, 0.8], [True, False])]
+    elif a.grid:
+        grid = [dict(tashkeel=t, speed=s, noise=n, noise_w=None, pauses=False) for t, s, n in itertools.product(
+            [True, False], [0.9, 1.0, 1.1], [0.5, 0.667])]
+    else:
+        grid = [dict(tashkeel=False, speed=1.0, noise=None, noise_w=None, pauses=True)]
     results, voices = [], {}
     with tempfile.TemporaryDirectory() as tmp:
         for g in grid:
             v = voices.setdefault(g['tashkeel'], load(a.model, g['tashkeel']))
             t0 = time.time()
-            rows = run(v, asr, sentences, tmp, speed=g['speed'], noise=g['noise'])
+            rows = run(v, asr, sentences, tmp, speed=g['speed'], noise=g['noise'], noise_w=g['noise_w'], pauses=g['pauses'])
             cer = sum(r['cer'] for r in rows) / len(rows)
             wer = sum(r['wer'] for r in rows) / len(rows)
             results.append({**g, 'cer': round(cer, 3), 'wer': round(wer, 3), 'rows': rows})
-            print(f"tashkeel={g['tashkeel']!s:5} speed={g['speed']:.1f} noise={g['noise']}  CER {cer:.3f}  WER {wer:.3f}  ({time.time() - t0:.1f}s)")
+            print(f"tashkeel={g['tashkeel']!s:5} speed={g['speed']:.1f} noise={g['noise']} noise_w={g['noise_w']} pauses={g['pauses']!s:5}  CER {cer:.3f}  WER {wer:.3f}  ({time.time() - t0:.1f}s)")
     best = min(results, key=lambda r: (r['cer'], r['wer']))
-    print(f"\nbest: tashkeel={best['tashkeel']} speed={best['speed']} noise={best['noise']}  CER {best['cer']}  WER {best['wer']}")
+    print(f"\nbest: {dict((k, best[k]) for k in ('tashkeel', 'speed', 'noise', 'noise_w', 'pauses'))}  CER {best['cer']}  WER {best['wer']}")
     print('worst sentences at best settings:')
     for r in sorted(best['rows'], key=lambda r: -r['cer'])[:5]:
         print(f"  CER {r['cer']:.2f}  said: {r['text']}\n            heard: {r['heard']}")
