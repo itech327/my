@@ -10,11 +10,13 @@
     "tokens": "python3 ../replica/design/build_tokens.py && cp ../replica/design/tokens.css src/styles/tokens.css && cp ../replica/design/tailwind.tokens.js tailwind.tokens.js"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
     "lucide-react": "1.77.0",
     "next": "15.5.29",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "server-only": "0.0.1"
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

@@ -128,6 +128,16 @@ designed voice per gender (Voice design API, ids in
 key needs `gemini_design_voices.py` run again. **The current key is Free Tier:
 10 TTS requests per day.** A paid tier is needed before real users.
 
+## Claude connector
+
+`app/src/app/api/mcp/route.ts`: remote MCP endpoint (official SDK 1.32.2,
+Streamable HTTP, stateless). Tools: `speak_moroccan` (text, voice, darija or
+fusha, delivery, pace; returns a WAV link valid 7 days) and `rewrite_moroccan`.
+Owner-only through header `x-sada-key` = `MCP_ACCESS_KEY`. Tested with the SDK
+client: wrong key 401, tools listed, rewrite works, quota error is clear. Needs
+public HTTPS hosting on port 443 before Claude can reach it. Audio links live in
+memory until the backend adds object storage.
+
 ## Open decisions (blocking)
 
 1. **Speech engine for the other 16 dialects.** Moroccan is solved with an open voice. Candidates for the rest: ElevenLabs, Azure AI Speech, Google Cloud
