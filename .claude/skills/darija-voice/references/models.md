@@ -8,7 +8,7 @@ Read from the Hugging Face API on 2026-11-21. Licence is the model card's
 | maromoya/piper-darija | CC BY 4.0 | Piper ar_JO "Kareem" | Piper (ONNX, CPU) | 63 MB per voice | yes, with attribution | trained on DODa M1 voice (CC BY 4.0, AtlasIA). 206 epochs. **Chosen first: runs on any CPU** |
 | KandirResearch/DarijaTTS-v0.1-500M | Apache-2.0 | OuteTTS 0.2 500M | transformers | 2.5 GB | yes | **measured CER 0.468**: repeats and invents words. Rejected |
 | Jip7e/habibi-tts-doda-darija | Apache-2.0 | Habibi-TTS (F5-TTS) | f5-tts | 674 MB (EMA weights) | yes, check base and data | **measured CER 0.03-0.04 (best)**. Both app voices use it. Slow on CPU |
-| Tilas/neutts-air-darija-v1 | Apache-2.0 | NeuTTS Air | custom | 3 GB | check base | |
+| Tilas/neutts-air-darija-v1 | Apache-2.0 | NeuTTS Air | neutts + espeak-ng | 3 GB | **not usable here** | **Not measured: needs the `neuphonic/neucodec` codec, which is gated (Hugging Face account and accepted terms required).** Training data: `atlasia/MoulSot-Full`, audio from 51 YouTube channels: the speakers did not consent, so it fails this skill's consent rule for a product anyway |
 | medmac01/xtt2_darija_v0.1 | not stated | Coqui XTTS-v2 | coqui | 5.6 GB | **no**: XTTS-v2 base is non-commercial (CPML) | |
 | Oussamamaat/golha-darija-tts | CC BY-NC 4.0 | Chatterbox | peft | 384 MB | **no** | |
 | ai-ssam/darija-omnivoice-kore-v1 | CC BY-NC 4.0 | OmniVoice | omnivoice | 2.5 GB | **no** | |

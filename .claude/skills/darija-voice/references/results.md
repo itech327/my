@@ -184,3 +184,20 @@ temperature 0.3, the same 6 sentences as run 7.
 
 DarijaTTS repeats and invents words ("السلام ليكم ليكم"). Not a candidate.
 Habibi F5-TTS stays the engine. Not yet tested: Tilas/neutts-air-darija-v1 (Apache-2.0).
+
+## Run 9: Tilas/neutts-air-darija-v1, attempted (2026-11-21)
+
+Set up: `neutts==1.4.1`, `torchao==0.15.0` (newer versions drop `nf4tensor`,
+which `torchtune` imports), `espeak-ng` 1.51, and the Darija phonemizer the
+card describes (espeak-ng `ar`, Arabic punctuation mapped to Latin, harakat
+stripped).
+
+Stopped: every NeuCodec variant (`neucodec`, `distill-neucodec`, both ONNX
+decoders) is gated on Hugging Face, and the model cannot produce audio without
+one. Not measured. Gates were not bypassed: they need an account and the
+owner's own acceptance of the terms.
+
+Also: the model's training data is YouTube audio from 51 channels. Whatever its
+quality, it fails the consent rule for use in a product.
+
+**Decision: Habibi F5-TTS stays the engine for both voices.**
