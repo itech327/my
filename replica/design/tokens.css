@@ -72,6 +72,21 @@
   --layout-header-height: 64px;
   --layout-nav-pill-height: 44px;
   --layout-card-min-width: 280px;
+  --size-hairline: 1px;
+  --size-icon-sm: 14px;
+  --size-icon: 16px;
+  --size-icon-lg: 18px;
+  --size-badge: 20px;
+  --size-thumb: 12px;
+  --size-control-sm: 32px;
+  --size-chip: 36px;
+  --size-control-md: 40px;
+  --size-field: 44px;
+  --size-avatar: 48px;
+  --size-control-lg: 52px;
+  --size-editor-min: 240px;
+  --size-card-min: 280px;
+  --size-sidebar: 240px;
 }
 
 html { direction: rtl; }

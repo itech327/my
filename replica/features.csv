@@ -1,32 +1,32 @@
 feature,area,priority,original,clone,notes
-Sign up with email,onboarding,must,yes,no,Google sign-in is a guess
-One free minute on sign up without a card,onboarding,must,yes,no,home FAQ and pricing meta
-Block a second free minute for a reused email,onboarding,should,yes,no,terms 12
-Text editor with Arabic RTL input,generate,must,yes,no,
-Dialect picker for 16 dialects plus Fusha,generate,must,yes,no,17 options on the site
-Voice picker with preview,generate,must,yes,no,
-Generate speech from text,generate,must,yes,no,needs our own TTS engine
-Correct pronunciation with diacritics (tashkeel),generate,must,yes,no,home FAQ claim
-Play and download generated audio,generate,must,yes,no,
-Emotion and pace tags on selected words,generate,should,yes,no,laugh whisper sad angry fast slow
-Minutes balance shown and charged per generation,billing,must,yes,no,
-Buy minute plans (1 3 or 6 months),billing,must,yes,no,rendered 2026-11-21: 6$/mo 30 min; 15$/mo 2 h; 49$/3 mo 7 h; 69$/6 mo 15 h
-Roll over unused minutes on early renewal,billing,should,yes,no,pricing page validity note
+Sign up with email,onboarding,must,yes,yes,Google sign-in is a guess. clone: fake auth in memory until /replica-backend
+One free minute on sign up without a card,onboarding,must,yes,yes,home FAQ and pricing meta
+Block a second free minute for a reused email,onboarding,should,yes,yes,terms 12. clone: hashed email kept after deletion. Tested
+Text editor with Arabic RTL input,generate,must,yes,yes,clone: dir=auto textarea
+Dialect picker for 16 dialects plus Fusha,generate,must,yes,yes,17 options on the site. clone: grouped select
+Voice picker with preview,generate,must,yes,yes,clone: radio list plus sample player
+Generate speech from text,generate,must,yes,partial,needs our own TTS engine. clone: placeholder engine makes tones of the right length. Real engine not chosen
+Correct pronunciation with diacritics (tashkeel),generate,must,yes,no,home FAQ claim. clone: depends on the engine. Diacritics already not charged
+Play and download generated audio,generate,must,yes,yes,clone: WAV. Tested in browser
+Emotion and pace tags on selected words,generate,should,yes,partial,laugh whisper sad angry fast slow. clone: tags inserted on whole words and not charged. Placeholder engine ignores them
+Minutes balance shown and charged per generation,billing,must,yes,yes,clone: reserve then release the unused part
+Buy minute plans (1 3 or 6 months),billing,must,yes,partial,rendered 2026-11-21: 6$/mo 30 min; 15$/mo 2 h; 49$/3 mo 7 h; 69$/6 mo 15 h. clone: test mode grants minutes with no payment
+Roll over unused minutes on early renewal,billing,should,yes,partial,pricing page validity note. clone: old minutes stay with their own expiry. Not extended on renewal yet
 Speech-to-text transcription,transcription,could,yes,no,listed on every plan. Not in the earlier recon
-HD audio download,generate,should,yes,no,paid plans only
-Pay in local currency (MAD SAR EGP),billing,should,yes,no,pricing meta description
-Credits expire after the pack period,billing,could,yes,no,terms 6. Consider not copying: users dislike expiry
-Generation history,history,must,yes,no,
-Audio and text auto-deleted after 7 days,history,should,yes,no,terms 10
-Free regenerate once under 500 words,history,could,yes,no,terms 13
-Voice library browse by dialect and use case,voices,should,yes,no,
-Voice cloning from an uploaded sample,cloning,should,yes,no,consent required. terms 8
+HD audio download,generate,should,yes,no,"paid plans only. clone: WAV only, no format choice"
+Pay in local currency (MAD SAR EGP),billing,should,yes,no,pricing meta description. clone: needs the payment provider
+Credits expire after the pack period,billing,could,yes,yes,terms 6. Consider not copying: users dislike expiry. clone: per-lot expiry
+Generation history,history,must,yes,yes,
+Audio and text auto-deleted after 7 days,history,should,yes,partial,terms 10. clone: expired audio is hidden and refused. No purge job yet
+Free regenerate once under 500 words,history,could,yes,yes,"terms 13. clone: subscribers only, once per original. Tested"
+Voice library browse by dialect and use case,voices,should,yes,yes,clone: plus gender and name search
+Voice cloning from an uploaded sample,cloning,should,yes,no,consent required. terms 8. clone: coming-soon page only
 Private or public cloned voice,cloning,could,yes,no,terms 8
-Sound effects from a text prompt,sfx,could,yes,no,
-API keys and TTS API,api,should,yes,no,terms 7. No public docs found
-Account deletion,account,must,yes,no,terms 12. Also legally needed
-SEO landing page per dialect,marketing,could,yes,no,17 pages
-Blog,marketing,could,yes,no,
+Sound effects from a text prompt,sfx,could,yes,no,clone: coming-soon page only
+API keys and TTS API,api,should,yes,no,terms 7. No public docs found. clone: settings shows a coming-soon section
+Account deletion,account,must,yes,yes,terms 12. Also legally needed. clone: typed confirmation. Tested
+SEO landing page per dialect,marketing,could,yes,yes,17 pages. clone: 17 static pages from one template
+Blog,marketing,could,yes,partial,clone: empty state only
 3000+ voice library,voices,could,yes,skip,the provider's stock voices. We get what our engine licenses
 Named voices and demo clips,voices,could,yes,skip,owned or licensed by them
 Their speech engine quality,generate,must,yes,skip,a third-party model. We pick and license our own

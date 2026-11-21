@@ -91,7 +91,22 @@ module.exports = {
     "32": "32px",
     "40": "40px",
     "64": "64px",
-    "80": "80px"
+    "80": "80px",
+    "hairline": "var(--size-hairline)",
+    "icon-sm": "var(--size-icon-sm)",
+    "icon": "var(--size-icon)",
+    "icon-lg": "var(--size-icon-lg)",
+    "badge": "var(--size-badge)",
+    "thumb": "var(--size-thumb)",
+    "control-sm": "var(--size-control-sm)",
+    "chip": "var(--size-chip)",
+    "control-md": "var(--size-control-md)",
+    "field": "var(--size-field)",
+    "avatar": "var(--size-avatar)",
+    "control-lg": "var(--size-control-lg)",
+    "editor-min": "var(--size-editor-min)",
+    "card-min": "var(--size-card-min)",
+    "sidebar": "var(--size-sidebar)"
   },
   "borderRadius": {
     "sm": "var(--radius-sm)",
