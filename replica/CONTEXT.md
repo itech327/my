@@ -111,6 +111,10 @@ recognizer: CER 0.444 with defaults, 0.120 tuned. Run with
 Hosts added for this: huggingface.co, cdn-lfs.huggingface.co,
 cdn-lfs-us-1.hf.co, cas-bridge.xethub.hf.co, us.aws.cdn.hf.co.
 
+**ArabyVoice API compared (2026-11-21):** the user's key works on the official
+endpoint. On the same sentence the native listener preferred هند over their
+Moroccan voice (CER 0.07 vs 0.29). Decision: stay on open models.
+
 ## Open decisions (blocking)
 
 1. **Speech engine for the other 16 dialects.** Moroccan is solved with an open voice. Candidates for the rest: ElevenLabs, Azure AI Speech, Google Cloud

@@ -209,3 +209,28 @@ Same sentence, same seed, three spellings, judged by a native listener:
 The shadda version sounds most Moroccan. Added to `data/respell.tsv`.
 The model's alphabet has the marks, but only 33 of 12,105 training sentences
 carry them, so test each new diacritic by ear before adding it.
+
+## Ear test: هند vs the ArabyVoice API (2026-11-21)
+
+Same sentence "اجي تقراو و فابور". ArabyVoice clip from the official API
+(`api.arabyvoice.com/api/generate`, the user's own key, a Moroccan voice).
+
+| clip | CER | pitch movement | pauses |
+| --- | --- | --- | --- |
+| ArabyVoice | 0.29 ("ايت تقراب فابور") | 6.8 st | none |
+| هند, expressive reference | 0.07 | 8.2 st | none |
+| هند + inserted pauses | 0.00 | 7.2 st | 0.46 s, 0.30 s |
+
+**Native listener's choice: هند.** Decision: no paid ArabyVoice engine; keep
+the open Habibi F5-TTS voices. The key stays saved on the environment
+(network secret for api.arabyvoice.com) for future comparisons.
+
+Findings this round:
+- Expression comes from the reference clip. Hind's calm reference ranked
+  228 of 253 for pitch movement; expressive F1 clips doubled it (2.4 to 5+ st).
+- Diacritics: a shadda helps (بطّيخة chosen), full tashkeel confuses the model
+  (آجِي came out "اجدي").
+- `insert_pauses.py` places real pauses at aligned word starts and snaps cuts
+  to sound onsets. A pause between run-together words can still sound like a
+  stutter: the listener still heard one after "- و -". Lasting fix: training
+  on expressive speech.
