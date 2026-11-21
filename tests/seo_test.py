@@ -30,6 +30,11 @@ check(os.path.exists(os.path.join(ROOT, '404.html')) and '<script' not in h and 
 check('/404.html' in rd('_headers'), '_headers : règle pour /404.html')
 sm = rd('sitemap.xml')
 check('.html<' not in sm and 'https://taalim.men/maths<' in sm, 'sitemap : adresses sans .html (Pages redirige /x.html)')
+import json
+_L = json.load(open(os.path.join(ROOT, 'source/lecons.json'), encoding='utf8'))
+for _f, _s in (('maths.html', 'maths'), ('physique-chimie.html', 'pc'), ('svt.html', 'svt')):
+    _h = rd(_f)
+    check(all('https://' + _s + '.taalim.men/' + i['slug'] + '/' in _h for i in _L[_s]) and len(_L[_s]) > 15, _f + ' : liens vers les ' + str(len(_L[_s])) + ' leçons de ' + _s + '.taalim.men')
 check('404' not in sm and 'teacher' not in sm, 'sitemap : ni 404 ni espace enseignant')
 with sync_playwright() as p:
     b = p.chromium.launch(); pg = b.new_page(viewport={'width': 390, 'height': 800}); msgs = []

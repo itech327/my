@@ -86,7 +86,7 @@ print('ok', len(m), len(p), len(sv))
 # Durcissement : polices locales, CSP (hachages des scripts en ligne), SEO,
 # fichiers _headers, robots.txt, sitemap.xml
 # ---------------------------------------------------------------------------
-import hashlib, base64, datetime
+import hashlib, base64, datetime, json
 SITE = os.environ.get('SITE_URL', 'https://taalim.men/').rstrip('/') + '/'
 DESC = {
  'index.html': ('دروس متحركة للسلك الإعدادي | Cours du collège en mouvement',
@@ -135,6 +135,31 @@ def csp_for(html, header=False, measure=True):
 import html as _h
 E = lambda t: _h.escape(t, quote=True)
 
+# Liens indexables vers les leçons pas à pas des sous-domaines (source/lecons.json, produit par tools/sync_lecons.py).
+SUBJ = {'maths.html': ('maths', 'الرياضيات', 'Mathématiques'), 'physique-chimie.html': ('pc', 'الفيزياء والكيمياء', 'Physique-Chimie'), 'svt.html': ('svt', 'علوم الحياة والأرض', 'SVT')}
+LEVELS = {'1ac': ('السنة الأولى إعدادي', '1re année'), '2ac': ('السنة الثانية إعدادي', '2e année'), '3ac': ('السنة الثالثة إعدادي', '3e année')}
+
+def lecons_block(name):
+    if name not in SUBJ or not os.path.exists('source/lecons.json'): return ''
+    sub, ar, fr = SUBJ[name]
+    items = json.load(open('source/lecons.json', encoding='utf8'))[sub]
+    host = 'https://' + sub + '.taalim.men/'
+    o = ['<section id="lecons-pas-a-pas" aria-labelledby="lpp-t" style="max-width:980px;margin:48px auto 0;padding:28px 18px 56px;border-top:1px solid var(--line);color:var(--fg)">',
+         '<h2 id="lpp-t" style="margin:0 0 6px;font-size:1.35rem">' + E(fr) + ' pas à pas : ' + str(len(items)) + ' leçons animées</h2>',
+         '<p dir="rtl" lang="ar" style="margin:0 0 6px;font-size:1.1rem">' + E(ar) + ' خطوة بخطوة: ' + str(len(items)) + ' درسًا متحركًا</p>',
+         '<p style="margin:0 0 18px;color:var(--muted)">Une page par leçon : scène animée, exercices guidés et résumé en arabe. Gratuit. <a href="' + host + '" style="color:inherit;font-weight:700">Voir toutes les leçons · كل الدروس</a></p>']
+    for lv in ('1ac', '2ac', '3ac'):
+        L = [i for i in items if i['niveau'] == lv]
+        if not L: continue
+        o.append('<h3 style="margin:18px 0 8px;font-size:1.05rem">' + E(LEVELS[lv][1]) + ' · ' + E(LEVELS[lv][0]) + ' (' + lv.upper() + ')</h3>')
+        o.append('<ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px">')
+        for i in L:
+            o.append('<li><a href="' + host + i['slug'] + '/" style="display:block;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);text-decoration:none;line-height:1.45">'
+                     '<strong style="display:block">' + E(i['fr']) + '</strong><span dir="rtl" lang="ar" style="display:block;color:var(--muted);font-size:.95em">' + E(i['ar']) + '</span></a></li>')
+        o.append('</ul>')
+    o.append('</section>\n')
+    return '\n'.join(o)
+
 def harden(name, html):
     html = re.sub(r'<link href="https://fonts\.googleapis\.com[^>]*>', '<link rel="stylesheet" href="fonts/fonts.css">', html)
     html = re.sub(r'<!--gen:head-->.*?<!--/gen:head-->\n?', '', html, flags=re.S)
@@ -158,6 +183,9 @@ def harden(name, html):
         block = block.replace('<meta name="twitter:card"', '<meta name="robots" content="noindex,nofollow,noarchive"><meta name="twitter:card"',1)
     html = html.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + block, 1)
     assert '<!--gen:head-->' in html, name
+    lb = lecons_block(name)
+    if lb:
+        k = html.rindex('</body>'); html = html[:k] + lb + html[k:]
     return html
 
 hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',

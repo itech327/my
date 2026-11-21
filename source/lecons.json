@@ -1,0 +1,644 @@
+{
+ "maths": [
+  {
+   "slug": "1ac-angles",
+   "niveau": "1ac",
+   "ar": "الزوايا والمستقيمات المتوازية",
+   "fr": "Angles et parallèles"
+  },
+  {
+   "slug": "1ac-cercle",
+   "niveau": "1ac",
+   "ar": "الدائرة",
+   "fr": "Le cercle"
+  },
+  {
+   "slug": "1ac-developpement",
+   "niveau": "1ac",
+   "ar": "النشر والتعميل",
+   "fr": "Développer et factoriser"
+  },
+  {
+   "slug": "1ac-droites",
+   "niveau": "1ac",
+   "ar": "المستقيمات المتوازية والمتعامدة",
+   "fr": "Droites parallèles et perpendiculaires"
+  },
+  {
+   "slug": "1ac-equations",
+   "niveau": "1ac",
+   "ar": "المعادلات",
+   "fr": "Les équations"
+  },
+  {
+   "slug": "1ac-fractions",
+   "niveau": "1ac",
+   "ar": "الكسور: التساوي والمقارنة",
+   "fr": "Les fractions : égalité et comparaison"
+  },
+  {
+   "slug": "1ac-operations-relatifs",
+   "niveau": "1ac",
+   "ar": "جمع وطرح الأعداد النسبية",
+   "fr": "Additionner et soustraire des relatifs"
+  },
+  {
+   "slug": "1ac-parallelogrammes",
+   "niveau": "1ac",
+   "ar": "متوازي الأضلاع والرباعيات الخاصة",
+   "fr": "Parallélogrammes et quadrilatères particuliers"
+  },
+  {
+   "slug": "1ac-priorites",
+   "niveau": "1ac",
+   "ar": "أسبقية العمليات",
+   "fr": "Les priorités opératoires"
+  },
+  {
+   "slug": "1ac-proportionnalite",
+   "niveau": "1ac",
+   "ar": "التناسبية",
+   "fr": "La proportionnalité"
+  },
+  {
+   "slug": "1ac-relatifs",
+   "niveau": "1ac",
+   "ar": "الأعداد النسبية",
+   "fr": "Les nombres relatifs"
+  },
+  {
+   "slug": "1ac-repere",
+   "niveau": "1ac",
+   "ar": "المستقيم المدرج والمعلم في المستوى",
+   "fr": "Droite graduée et repère dans le plan"
+  },
+  {
+   "slug": "1ac-statistiques",
+   "niveau": "1ac",
+   "ar": "الإحصاء",
+   "fr": "Statistiques"
+  },
+  {
+   "slug": "2ac-addition-rationnels",
+   "niveau": "2ac",
+   "ar": "جمع وطرح الأعداد الجذرية",
+   "fr": "Additionner et soustraire des rationnels"
+  },
+  {
+   "slug": "2ac-calcul-litteral",
+   "niveau": "2ac",
+   "ar": "الحساب الحرفي",
+   "fr": "Calcul littéral"
+  },
+  {
+   "slug": "2ac-cosinus",
+   "niveau": "2ac",
+   "ar": "جيب تمام زاوية حادة",
+   "fr": "Cosinus d'un angle aigu"
+  },
+  {
+   "slug": "2ac-droite-milieux",
+   "niveau": "2ac",
+   "ar": "المثلث والمستقيمات المتوازية: مستقيم المنتصفين",
+   "fr": "Triangle et parallèles : la droite des milieux"
+  },
+  {
+   "slug": "2ac-droites-remarquables",
+   "niveau": "2ac",
+   "ar": "المستقيمات الهامة في مثلث",
+   "fr": "Droites remarquables dans un triangle"
+  },
+  {
+   "slug": "2ac-equations",
+   "niveau": "2ac",
+   "ar": "المعادلات من الدرجة الأولى",
+   "fr": "Équations du premier degré"
+  },
+  {
+   "slug": "2ac-multiplication-rationnels",
+   "niveau": "2ac",
+   "ar": "ضرب وقسمة الأعداد الجذرية",
+   "fr": "Multiplier et diviser des rationnels"
+  },
+  {
+   "slug": "2ac-ordre",
+   "niveau": "2ac",
+   "ar": "الترتيب والعمليات على الأعداد الجذرية",
+   "fr": "Ordre des nombres rationnels et opérations"
+  },
+  {
+   "slug": "2ac-proportionnalite",
+   "niveau": "2ac",
+   "ar": "التناسبية: السلم والسرعة",
+   "fr": "Proportionnalité : échelles et vitesse"
+  },
+  {
+   "slug": "2ac-puissances",
+   "niveau": "2ac",
+   "ar": "القوى",
+   "fr": "Les puissances"
+  },
+  {
+   "slug": "2ac-pyramides-cones",
+   "niveau": "2ac",
+   "ar": "الهرم ومخروط الدوران",
+   "fr": "Pyramides et cônes de révolution"
+  },
+  {
+   "slug": "2ac-pythagore",
+   "niveau": "2ac",
+   "ar": "مبرهنة فيتاغورس",
+   "fr": "Le théorème de Pythagore"
+  },
+  {
+   "slug": "2ac-quatre-operations",
+   "niveau": "2ac",
+   "ar": "العمليات الأربع على الأعداد الجذرية",
+   "fr": "Les quatre opérations sur les nombres rationnels"
+  },
+  {
+   "slug": "2ac-rationnels",
+   "niveau": "2ac",
+   "ar": "الأعداد الجذرية",
+   "fr": "Les nombres rationnels"
+  },
+  {
+   "slug": "2ac-statistique",
+   "niveau": "2ac",
+   "ar": "الإحصاء: المعدل والحصيصات المتراكمة",
+   "fr": "Statistique : moyenne et effectifs cumulés"
+  },
+  {
+   "slug": "2ac-symetrie",
+   "niveau": "2ac",
+   "ar": "التماثل المحوري",
+   "fr": "La symétrie axiale"
+  },
+  {
+   "slug": "2ac-translation",
+   "niveau": "2ac",
+   "ar": "المتجهات والإزاحات",
+   "fr": "Vecteurs et translations"
+  },
+  {
+   "slug": "2ac-triangle-rectangle-cercle",
+   "niveau": "2ac",
+   "ar": "المثلث القائم الزاوية والدائرة",
+   "fr": "Triangle rectangle et cercle"
+  },
+  {
+   "slug": "3ac-agrandissement",
+   "niveau": "3ac",
+   "ar": "الحجوم والتكبير والتصغير",
+   "fr": "Volumes, agrandissement et réduction"
+  },
+  {
+   "slug": "3ac-equation-droite",
+   "niveau": "3ac",
+   "ar": "معادلة مستقيم",
+   "fr": "Équation d'une droite"
+  },
+  {
+   "slug": "3ac-equations",
+   "niveau": "3ac",
+   "ar": "المعادلات والمتراجحات",
+   "fr": "Équations et inéquations"
+  },
+  {
+   "slug": "3ac-fonctions",
+   "niveau": "3ac",
+   "ar": "الدوال الخطية والدوال التآلفية",
+   "fr": "Fonctions linéaires et fonctions affines"
+  },
+  {
+   "slug": "3ac-identites",
+   "niveau": "3ac",
+   "ar": "المتطابقات الهامة",
+   "fr": "Les identités remarquables"
+  },
+  {
+   "slug": "3ac-ordre",
+   "niveau": "3ac",
+   "ar": "الترتيب والعمليات",
+   "fr": "Ordre et opérations"
+  },
+  {
+   "slug": "3ac-racines-carrees",
+   "niveau": "3ac",
+   "ar": "الجذر المربع",
+   "fr": "La racine carrée"
+  },
+  {
+   "slug": "3ac-repere",
+   "niveau": "3ac",
+   "ar": "المعلم في المستوى",
+   "fr": "Repère dans le plan"
+  },
+  {
+   "slug": "3ac-statistiques",
+   "niveau": "3ac",
+   "ar": "الإحصاء: المعدل والقيمة الوسطية",
+   "fr": "Statistiques : moyenne et médiane"
+  },
+  {
+   "slug": "3ac-systemes",
+   "niveau": "3ac",
+   "ar": "نظمات معادلتين",
+   "fr": "Systèmes de deux équations"
+  },
+  {
+   "slug": "3ac-thales",
+   "niveau": "3ac",
+   "ar": "مبرهنة طاليس",
+   "fr": "Le théorème de Thalès"
+  },
+  {
+   "slug": "3ac-trigonometrie",
+   "niveau": "3ac",
+   "ar": "حساب المثلثات في المثلث القائم",
+   "fr": "Trigonométrie dans le triangle rectangle"
+  },
+  {
+   "slug": "3ac-vecteurs",
+   "niveau": "3ac",
+   "ar": "المتجهات والإزاحة",
+   "fr": "Vecteurs et translation"
+  }
+ ],
+ "pc": [
+  {
+   "slug": "1ac-circuit-simple",
+   "niveau": "1ac",
+   "ar": "الدارة الكهربائية البسيطة",
+   "fr": "Le circuit électrique simple"
+  },
+  {
+   "slug": "1ac-conservation-masse",
+   "niveau": "1ac",
+   "ar": "انحفاظ الكتلة خلال التحولات الفيزيائية",
+   "fr": "Conservation de la masse lors des transformations physiques"
+  },
+  {
+   "slug": "1ac-courant-continu",
+   "niveau": "1ac",
+   "ar": "التيار الكهربائي المستمر",
+   "fr": "Le courant électrique continu"
+  },
+  {
+   "slug": "1ac-eau-nature",
+   "niveau": "1ac",
+   "ar": "الماء في الطبيعة",
+   "fr": "L'eau dans la nature"
+  },
+  {
+   "slug": "1ac-electricite",
+   "niveau": "1ac",
+   "ar": "الكهرباء من حولنا",
+   "fr": "L'électricité autour de nous"
+  },
+  {
+   "slug": "1ac-etats-matiere",
+   "niveau": "1ac",
+   "ar": "حالات المادة الثلاث",
+   "fr": "Les trois états de la matière"
+  },
+  {
+   "slug": "1ac-intensite",
+   "niveau": "1ac",
+   "ar": "قياس شدة التيار الكهربائي",
+   "fr": "Mesure de l'intensité du courant"
+  },
+  {
+   "slug": "1ac-lois-circuits",
+   "niveau": "1ac",
+   "ar": "قانون العقد وقانون إضافية التوترات",
+   "fr": "Loi des nœuds et additivité des tensions"
+  },
+  {
+   "slug": "1ac-masse-volumique",
+   "niveau": "1ac",
+   "ar": "الحجم والكتلة والكتلة الحجمية",
+   "fr": "Volume, masse et masse volumique"
+  },
+  {
+   "slug": "1ac-melanges",
+   "niveau": "1ac",
+   "ar": "الخلائط",
+   "fr": "Les mélanges"
+  },
+  {
+   "slug": "1ac-pression",
+   "niveau": "1ac",
+   "ar": "الضغط والضغط الجوي",
+   "fr": "Pression et pression atmosphérique"
+  },
+  {
+   "slug": "1ac-protection",
+   "niveau": "1ac",
+   "ar": "الوقاية من أخطار التيار الكهربائي",
+   "fr": "Protection contre les dangers du courant"
+  },
+  {
+   "slug": "1ac-resistance",
+   "niveau": "1ac",
+   "ar": "تأثير المقاومة على شدة التيار",
+   "fr": "Influence de la résistance sur l'intensité"
+  },
+  {
+   "slug": "1ac-separation",
+   "niveau": "1ac",
+   "ar": "فصل مكونات خليط",
+   "fr": "Dissoudre et récupérer : séparer un mélange"
+  },
+  {
+   "slug": "1ac-temperature-chaleur",
+   "niveau": "1ac",
+   "ar": "درجة الحرارة والحرارة",
+   "fr": "Température et chaleur"
+  },
+  {
+   "slug": "1ac-traitement-eaux",
+   "niveau": "1ac",
+   "ar": "معالجة المياه",
+   "fr": "Le traitement des eaux"
+  },
+  {
+   "slug": "2ac-air",
+   "niveau": "2ac",
+   "ar": "الهواء من حولنا",
+   "fr": "L'air qui nous entoure"
+  },
+  {
+   "slug": "2ac-combustions",
+   "niveau": "2ac",
+   "ar": "الاحتراقات",
+   "fr": "Les combustions"
+  },
+  {
+   "slug": "2ac-couleurs",
+   "niveau": "2ac",
+   "ar": "الضوء والألوان",
+   "fr": "Lumière et couleurs"
+  },
+  {
+   "slug": "2ac-courant-alternatif",
+   "niveau": "2ac",
+   "ar": "التيار الكهربائي المتناوب الجيبي",
+   "fr": "Le courant alternatif sinusoïdal"
+  },
+  {
+   "slug": "2ac-installation-domestique",
+   "niveau": "2ac",
+   "ar": "التركيب الكهربائي المنزلي",
+   "fr": "L'installation électrique domestique"
+  },
+  {
+   "slug": "2ac-lentilles",
+   "niveau": "2ac",
+   "ar": "العدسات الرقيقة",
+   "fr": "Les lentilles minces"
+  },
+  {
+   "slug": "2ac-lois-reaction",
+   "niveau": "2ac",
+   "ar": "التفاعل الكيميائي وقوانينه",
+   "fr": "La réaction chimique et ses lois"
+  },
+  {
+   "slug": "2ac-loupe-oeil",
+   "niveau": "2ac",
+   "ar": "المكبرة والعين",
+   "fr": "La loupe et l'œil"
+  },
+  {
+   "slug": "2ac-lumiere",
+   "niveau": "2ac",
+   "ar": "الضوء من حولنا",
+   "fr": "La lumière autour de nous"
+  },
+  {
+   "slug": "2ac-matieres",
+   "niveau": "2ac",
+   "ar": "المواد الطبيعية والمواد المصنعة",
+   "fr": "Matières naturelles et synthétiques"
+  },
+  {
+   "slug": "2ac-molecules",
+   "niveau": "2ac",
+   "ar": "الجزيئات والذرات",
+   "fr": "Les molécules et les atomes"
+  },
+  {
+   "slug": "2ac-pollution-air",
+   "niveau": "2ac",
+   "ar": "تلوث الهواء",
+   "fr": "La pollution de l'air"
+  },
+  {
+   "slug": "2ac-propagation",
+   "niveau": "2ac",
+   "ar": "انتشار الضوء",
+   "fr": "Propagation de la lumière"
+  },
+  {
+   "slug": "3ac-acides-bases",
+   "niveau": "3ac",
+   "ar": "المحاليل الحمضية والقاعدية",
+   "fr": "Solutions acides et basiques"
+  },
+  {
+   "slug": "3ac-energie-electrique",
+   "niveau": "3ac",
+   "ar": "القدرة والطاقة الكهربائيتان",
+   "fr": "Puissance et énergie électriques"
+  },
+  {
+   "slug": "3ac-equilibre-forces",
+   "niveau": "3ac",
+   "ar": "توازن جسم صلب خاضع لقوتين",
+   "fr": "Équilibre d'un solide soumis à deux forces"
+  },
+  {
+   "slug": "3ac-loi-ohm",
+   "niveau": "3ac",
+   "ar": "المقاومة الكهربائية وقانون أوم",
+   "fr": "Résistance électrique et loi d'Ohm"
+  },
+  {
+   "slug": "3ac-masse-poids",
+   "niveau": "3ac",
+   "ar": "الكتلة والوزن",
+   "fr": "Masse et poids"
+  },
+  {
+   "slug": "3ac-materiaux",
+   "niveau": "3ac",
+   "ar": "المواد في حياتنا اليومية",
+   "fr": "Les matériaux de la vie quotidienne"
+  },
+  {
+   "slug": "3ac-materiaux-electricite",
+   "niveau": "3ac",
+   "ar": "المواد والكهرباء",
+   "fr": "Matériaux et électricité"
+  },
+  {
+   "slug": "3ac-metaux-acides",
+   "niveau": "3ac",
+   "ar": "الفلزات والمحاليل الحمضية والقاعدية",
+   "fr": "Métaux, acides et bases"
+  },
+  {
+   "slug": "3ac-mouvement",
+   "niveau": "3ac",
+   "ar": "المسار وأنواع الحركة",
+   "fr": "Trajectoire et types de mouvement"
+  },
+  {
+   "slug": "3ac-reactions-air",
+   "niveau": "3ac",
+   "ar": "تفاعل بعض المواد مع الهواء",
+   "fr": "Réactions de quelques matériaux avec l'air"
+  },
+  {
+   "slug": "3ac-tests-ions",
+   "niveau": "3ac",
+   "ar": "الكشف عن بعض الأيونات",
+   "fr": "Tests d'identification de quelques ions"
+  },
+  {
+   "slug": "3ac-vitesse-moyenne",
+   "niveau": "3ac",
+   "ar": "السرعة المتوسطة",
+   "fr": "La vitesse moyenne"
+  }
+ ],
+ "svt": [
+  {
+   "slug": "1ac-chaines-alimentaires",
+   "niveau": "1ac",
+   "ar": "السلاسل والشبكات الغذائية",
+   "fr": "Chaînes et réseaux alimentaires"
+  },
+  {
+   "slug": "1ac-classification",
+   "niveau": "1ac",
+   "ar": "تصنيف الكائنات الحية",
+   "fr": "Classer les êtres vivants"
+  },
+  {
+   "slug": "1ac-milieu-naturel",
+   "niveau": "1ac",
+   "ar": "الوسط الطبيعي وعوامله",
+   "fr": "Le milieu naturel et ses facteurs"
+  },
+  {
+   "slug": "1ac-regimes-alimentaires",
+   "niveau": "1ac",
+   "ar": "الأنظمة الغذائية عند الحيوانات",
+   "fr": "Les régimes alimentaires des animaux"
+  },
+  {
+   "slug": "1ac-respiration",
+   "niveau": "1ac",
+   "ar": "التنفس عند الكائنات الحية",
+   "fr": "La respiration chez les êtres vivants"
+  },
+  {
+   "slug": "1ac-ressources-eau",
+   "niveau": "1ac",
+   "ar": "الموارد المائية",
+   "fr": "Les ressources en eau"
+  },
+  {
+   "slug": "1ac-sedimentation",
+   "niveau": "1ac",
+   "ar": "الدورة الرسوبية والأحافير",
+   "fr": "Le cycle sédimentaire et les fossiles"
+  },
+  {
+   "slug": "2ac-heredite",
+   "niveau": "2ac",
+   "ar": "الوراثة عند الإنسان",
+   "fr": "L'hérédité chez l'Homme"
+  },
+  {
+   "slug": "2ac-reproduction-animaux",
+   "niveau": "2ac",
+   "ar": "التوالد عند الحيوانات",
+   "fr": "La reproduction chez les animaux"
+  },
+  {
+   "slug": "2ac-reproduction-homme",
+   "niveau": "2ac",
+   "ar": "التوالد عند الإنسان",
+   "fr": "La reproduction chez l'Homme"
+  },
+  {
+   "slug": "2ac-reproduction-plantes",
+   "niveau": "2ac",
+   "ar": "التوالد عند النباتات الزهرية",
+   "fr": "La reproduction des plantes à fleurs"
+  },
+  {
+   "slug": "2ac-tectonique",
+   "niveau": "2ac",
+   "ar": "الصفائح تتحرك",
+   "fr": "Les plaques bougent"
+  },
+  {
+   "slug": "3ac-digestion",
+   "niveau": "3ac",
+   "ar": "الهضم والامتصاص",
+   "fr": "La digestion et l'absorption"
+  },
+  {
+   "slug": "3ac-immunite",
+   "niveau": "3ac",
+   "ar": "المناعة",
+   "fr": "L'immunité"
+  },
+  {
+   "slug": "3ac-micro-organismes",
+   "niveau": "3ac",
+   "ar": "الجراثيم",
+   "fr": "Les micro-organismes"
+  },
+  {
+   "slug": "3ac-nutrition",
+   "niveau": "3ac",
+   "ar": "التربية الغذائية",
+   "fr": "L'éducation nutritionnelle"
+  },
+  {
+   "slug": "3ac-reponses-immunitaires",
+   "niveau": "3ac",
+   "ar": "الاستجابات المناعية",
+   "fr": "Les réponses immunitaires"
+  },
+  {
+   "slug": "3ac-respiration-homme",
+   "niveau": "3ac",
+   "ar": "التنفس عند الإنسان",
+   "fr": "La respiration chez l'Homme"
+  },
+  {
+   "slug": "3ac-sang",
+   "niveau": "3ac",
+   "ar": "الدم والدورة الدموية",
+   "fr": "Le sang et la circulation"
+  },
+  {
+   "slug": "3ac-systeme-musculaire",
+   "niveau": "3ac",
+   "ar": "الجهاز العضلي",
+   "fr": "Le système musculaire"
+  },
+  {
+   "slug": "3ac-systeme-nerveux",
+   "niveau": "3ac",
+   "ar": "الجهاز العصبي",
+   "fr": "Le système nerveux"
+  }
+ ]
+}
