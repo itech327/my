@@ -283,3 +283,6 @@ naturalness; the recognizer only guards against swallowed words.
 - Samples: `app-nour-fusha.wav` 5.4 s, `app-younes-darija.wav` 5.0 s, previews in `examples/gemini/modes/`.
 - Blocker: the key is on Google's Free Tier, 10 TTS requests per day for gemini-3.8-flash-tts. Hit today. Production needs a paid tier.
 - 9 regional voices from the accent test stay stored in the Google project, unused.
+- Ear test: the first Fusha female voice changed MSA words into Darija, very natural. User: keep it as the Darija female voice.
+- New Fusha female voice designed as a news anchor reading word for word. Fusha style text now says: do not change any word into Darija.
+- Voice creation still worked after the daily TTS quota was used up.

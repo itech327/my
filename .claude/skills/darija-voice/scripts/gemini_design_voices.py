@@ -25,8 +25,10 @@ MODEL = 'gemini-3.8-flash-tts'
 # were tested too (they work) but are not needed: general Darija is enough.
 REGIONS = {
     'darija': 'speaking simple, general Moroccan Darija that every Moroccan understands',
-    'fusha': ('reading Modern Standard Arabic (Fusha) correctly, with a natural Moroccan voice, intonation and rhythm,'
-              ' like an educated Moroccan presenter on Moroccan national radio, never Egyptian or Gulf'),
+    # first fusha prompt drifted into Darija words (ear test): now the voice became
+    # the Darija female voice, and the prompt insists on reading word for word
+    'fusha': ('a Moroccan news anchor on national television who reads Modern Standard Arabic (Fusha) word for word'
+              ' exactly as written, never switching to Darija, with a Moroccan voice and intonation'),
 }
 PERSON = {'female': 'A warm young woman in her late 20s', 'male': 'A warm, friendly man in his early 30s'}
 

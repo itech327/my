@@ -26,7 +26,7 @@ export const REGISTERS: { id: RegisterId; label: string; hint: string; style: st
   { id: 'darija', label: 'دارجة', hint: 'دارجة عامة، للشرح والتوضيح والتواصل.',
     style: 'Speak in natural, general Moroccan Darija that every Moroccan understands, like a native speaker from Morocco.' },
   { id: 'fusha', label: 'فصحى بنفَس مغربي', hint: 'عربية فصحى سليمة، بنطق ونبرة مغربية.',
-    style: 'Read in correct Modern Standard Arabic (Fusha) with a natural Moroccan voice and intonation, like an educated Moroccan presenter on Moroccan radio. Never Egyptian or Gulf.' },
+    style: 'Read the text word for word exactly as written, in correct Modern Standard Arabic (Fusha). Do not change any word into Darija. Moroccan voice and intonation, like a Moroccan news anchor.' },
 ];
 export const registerById = (id?: string | null) => REGISTERS.find((x) => x.id === id);
 
