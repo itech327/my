@@ -87,20 +87,27 @@ print('ok', len(m), len(p), len(sv))
 # fichiers _headers, robots.txt, sitemap.xml
 # ---------------------------------------------------------------------------
 import hashlib, base64, datetime
-SITE = os.environ.get('SITE_URL', 'https://itech327.github.io/my/').rstrip('/') + '/'
+SITE = os.environ.get('SITE_URL', 'https://taalim.men/').rstrip('/') + '/'
 DESC = {
- 'index.html': ('Cours du collège en mouvement : maths, physique-chimie et SVT',
-                'Cours interactifs du collège marocain : mathématiques, physique-chimie et SVT. Figures animées, explications en arabe, exercices à quatre niveaux.'),
- 'maths.html': ('Maths en mouvement : cours de mathématiques du collège',
-                'Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.'),
- 'physique-chimie.html': ('Physique-Chimie en mouvement : cours du collège',
-                'Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.'),
- 'svt.html': ('SVT en mouvement : cours de la 3e année du collège',
-                'Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.'),
- 'confidentialite.html': ('Confidentialité · Cours en mouvement',
-                'Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.'),
- 'teacher.html': ('Espace enseignant · Cours en mouvement', 'Espace réservé à l’enseignant.'),
+ 'index.html': ('دروس متحركة للسلك الإعدادي | Cours du collège en mouvement',
+                'دروس تفاعلية للسلك الإعدادي المغربي: الرياضيات والفيزياء والكيمياء وعلوم الحياة والأرض، برسوم متحركة وشرح بالعربية وتمارين من أربعة مستويات. Cours interactifs du collège marocain : maths, physique-chimie et SVT, figures animées, explications en arabe.',
+                'default'),
+ 'maths.html': ('الرياضيات للسلك الإعدادي | Maths en mouvement',
+                'دروس الرياضيات للسنوات الأولى والثانية والثالثة إعدادي برسوم متحركة وملخصات بالعربية وتمارين حسب المستوى. Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.',
+                'maths'),
+ 'physique-chimie.html': ('الفيزياء والكيمياء للسلك الإعدادي | Physique-Chimie en mouvement',
+                'دروس الفيزياء والكيمياء للسنوات الأولى والثانية والثالثة إعدادي بمحاكاة متحركة وملخصات بالعربية وتمارين حسب المستوى. Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.',
+                'pc'),
+ 'svt.html': ('علوم الحياة والأرض للسنة الثالثة إعدادي | SVT en mouvement',
+                'دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والصحة، برسوم متحركة وملخصات بالعربية. Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.',
+                'svt'),
+ 'confidentialite.html': ('بياناتك | Confidentialité · Cours en mouvement',
+                'ما البيانات التي تُسجَّل وأين تبقى وما الذي لا يُفعل أبداً. Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.',
+                'default'),
+ 'teacher.html': ('فضاء الأستاذ | Espace enseignant · Cours en mouvement', 'فضاء مخصص للأستاذ. Espace réservé à l’enseignant.', 'default'),
 }
+OG_ALT = {'default': 'Cours en mouvement · دروس متحركة للسلك الإعدادي', 'maths': 'Maths en mouvement · الرياضيات للسلك الإعدادي',
+          'pc': 'Physique-Chimie en mouvement · الفيزياء والكيمياء للسلك الإعدادي', 'svt': 'SVT en mouvement · علوم الحياة والأرض'}
 FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%230d0b14'/%3E%3Cpath d='M5 33Q24 -1 43 33' fill='none' stroke='%237066 96' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='24' r='5' fill='%23e371cb'/%3E%3Ccircle cx='24' cy='15' r='5' fill='%239b92dc'/%3E%3Ccircle cx='37' cy='24' r='5' fill='%236ccdb6'/%3E%3C/svg%3E"
 
 def notify_origin():
@@ -125,23 +132,30 @@ def csp_for(html, header=False, measure=True):
     if header: parts.append("frame-ancestors 'none'")
     return '; '.join(parts)
 
+import html as _h
+E = lambda t: _h.escape(t, quote=True)
+
 def harden(name, html):
     html = re.sub(r'<link href="https://fonts\.googleapis\.com[^>]*>', '<link rel="stylesheet" href="fonts/fonts.css">', html)
     html = re.sub(r'<!--gen:head-->.*?<!--/gen:head-->\n?', '', html, flags=re.S)
-    title, desc = DESC[name]
+    title, desc, ogk = DESC[name]
+    html = re.sub(r'<title>.*?</title>', lambda m: '<title>' + E(title) + '</title>', html, count=1, flags=re.S)
+    assert html.count('<title>') == 1, name
+    img = SITE + 'og/og-' + ogk + '.png'
     url = SITE + ('' if name == 'index.html' else name)
     block = ('<!--gen:head-->\n<meta http-equiv="Content-Security-Policy" content="' + csp_for(html, measure=(name != 'teacher.html')) + '">\n'
              '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
-             '<meta name="description" content="' + desc + '">\n<link rel="canonical" href="' + url + '">\n'
+             '<meta name="description" content="' + E(desc) + '">\n<link rel="canonical" href="' + url + '">\n'
              '<meta name="theme-color" content="#0d0b14">\n<link rel="icon" href="' + FAVICON + '">\n'
              '<link rel="manifest" href="manifest.webmanifest">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
              '<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">'
              '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Cours">\n'
-             '<meta property="og:type" content="website"><meta property="og:locale" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement">\n'
-             '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '"><meta property="og:url" content="' + url + '">\n'
-             '<meta name="twitter:card" content="summary">\n<!--/gen:head-->\n')
+             '<meta property="og:type" content="website"><meta property="og:locale" content="ar_MA"><meta property="og:locale:alternate" content="fr_MA"><meta property="og:site_name" content="Cours en mouvement · دروس متحركة">\n'
+             '<meta property="og:title" content="' + E(title) + '"><meta property="og:description" content="' + E(desc) + '"><meta property="og:url" content="' + url + '">\n'
+             '<meta property="og:image" content="' + img + '"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="' + E(OG_ALT[ogk]) + '">\n'
+             '<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="' + E(title) + '"><meta name="twitter:description" content="' + E(desc) + '"><meta name="twitter:image" content="' + img + '">\n<!--/gen:head-->\n')
     if name == 'teacher.html':
-        block = block.replace('<meta name="twitter:card"', '<meta name="robots" content="noindex,nofollow,noarchive"><meta name="twitter:card"')
+        block = block.replace('<meta name="twitter:card"', '<meta name="robots" content="noindex,nofollow,noarchive"><meta name="twitter:card"',1)
     html = html.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + block, 1)
     assert '<!--gen:head-->' in html, name
     return html
@@ -167,7 +181,23 @@ for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'co
     hdr.append('')
     if name != 'teacher.html':
         urls.append(SITE if name == 'index.html' else SITE + name)
+hdr += ['/404.html', '  X-Robots-Tag: noindex', '  Cache-Control: no-cache', '']
 wr('_headers', '\n'.join(hdr))
+
+# 404 réelle : sans fichier 404.html, Cloudflare Pages renvoie l'accueil avec le code 200 (soft 404) pour toute adresse inconnue.
+P404 = """<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="robots" content="noindex,nofollow"><title>404 · الصفحة غير موجودة | Page introuvable</title>
+<link rel="icon" href="__FAVICON__"><link rel="stylesheet" href="/fonts/fonts.css">
+<style>html,body{margin:0;min-height:100%;background:#0d0b14;color:#f2eefc;font-family:'Figtree','Cairo',system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:12vh 24px;text-align:center}h1{font-size:64px;margin:0;color:#9b92dc}p{color:#c9c3e0;line-height:1.7}
+.ar{font-family:'Cairo',sans-serif;direction:rtl}ul{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:10px}
+a{display:block;padding:12px 16px;border:1px solid #3a3454;border-radius:12px;color:#f2eefc;text-decoration:none}a:hover,a:focus{border-color:#9b92dc}</style></head>
+<body><main><h1>404</h1><p>Cette page n’existe pas ou a changé d’adresse.</p><p class="ar" lang="ar">هذه الصفحة غير موجودة أو تغيّر عنوانها.</p>
+<ul><li><a href="/">Accueil · الرئيسية</a></li><li><a href="/maths.html">Maths · الرياضيات</a></li><li><a href="/physique-chimie.html">Physique-Chimie · الفيزياء والكيمياء</a></li><li><a href="/svt.html">SVT · علوم الحياة والأرض</a></li></ul></main></body></html>
+""".replace('__FAVICON__', FAVICON)
+wr('404.html', P404)
 
 import json
 pages = ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']
