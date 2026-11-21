@@ -18,6 +18,7 @@ user's own account would confirm them.
 | 2 | pricing | https://arabyvoice.com/pricing | page body renders client-side. Prices from its schema.org offers block. Read 2026-11-21 |
 | 3 | terms | https://arabyvoice.com/terms | API, cloning, credits, retention, deletion, free regenerate. Last updated 2026-09-25 |
 | 4 | dialect landing | https://arabyvoice.com/Egypt | one of 17 SEO pages, same template per dialect |
+| 4b | dialect landing | https://arabyvoice.com/Morocco | same template as /Egypt. Only the dialect name, 6 voice cards and FAQ wording change. Read 2026-11-21 |
 | 5 | about | https://arabyvoice.com/about | solo founder, Morocco |
 | 6 | help center | none found | no docs link on the site |
 | 7 | public API docs | none found | terms mention an API, no public docs linked |
@@ -39,7 +40,7 @@ download the audio. Usage is paid in prepaid minutes.
 | ID | screen | route / how to reach | purpose | key components | states seen |
 | --- | --- | --- | --- | --- | --- |
 | S01 | home | / | pitch, voice samples, dialects, cloning and SFX demos, FAQ | top nav, hero CTA, voice sample cards with player, dialect chips, before/after clone players, SFX cards, emotion tag demo, FAQ accordion, footer | filled |
-| S02 | dialect landing x17 | /Egypt, /Saudi-Arabia, /Fusha ... | SEO page per dialect, same template, dialect-specific voices | same as S01, dialect word swapped in headline and FAQ | filled |
+| S02 | dialect landing x17 | /Egypt, /Morocco, /Saudi-Arabia, /Fusha ... | SEO page per dialect, same template, dialect-specific voices | same as S01, dialect word swapped in title, meta, headline, voices heading and first FAQ. 6 voice cards per dialect with use-case tags. Morocco uses "الدارجة المغربية", not "اللهجة". Clone and SFX demos are shared across all pages | filled |
 | S03 | pricing | /pricing | plans and local-currency pay | plan cards (inferred), currency picker (inferred) | client-rendered, not seen |
 | S04 | blog index | /blog | SEO content | post list | not read |
 | S05 | contact | /contact | support form | form | not read |
