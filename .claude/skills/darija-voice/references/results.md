@@ -292,3 +292,4 @@ naturalness; the recognizer only guards against swallowed words.
 - v1 default: CER 0.068. v2 best-of-3 with recognizer self-check plus respellings (تمّاك, بالإحداثيات): CER 0.070, 12m48s. No gain.
 - Respelling بالإحداثيات fixed that word. تمّاك still wrong ("تم اكن").
 - Pattern: words before a comma get an extra sound: والوراقل, النسخل, المهمن, اكن. Same family as مرحبن. Next test: drop commas inside a chunk, keep only sentence ends.
+- Ear test: فلاح was read as falāḥ (success). Native listener: فلّاح (farmer). Added فلاح, الفلاح, والفلاح, فلاحة, الفلاحة, والفلاحة, فلاحين, الفلاحين to respell.tsv. Sample: `bir/idriss-fallah.wav`.
