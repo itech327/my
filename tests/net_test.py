@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simule le service IP : le rapport doit afficher IP et ville ; vérifie aussi le repli et le portail."""
+"""Aucune requête vers un service d'adresse IP ; la ville vient du fuseau horaire ; le rapport n'affiche pas d'IP. Vérifie aussi le portail."""
 import os, sys, json
 from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,12 +11,13 @@ with sync_playwright() as p:
     try: b = p.chromium.launch()
     except Exception: b = p.chromium.launch(channel='chrome')
     # 1) service disponible
-    ctx = b.new_context(viewport={'width': 420, 'height': 900})
+    ctx = b.new_context(viewport={'width': 420, 'height': 900}, timezone_id='Africa/Casablanca')
     ctx.add_init_script("Object.defineProperty(window,'LAB_NOTIFY_URL',{get:()=>'',set:()=>{}})")
     pg = ctx.new_page()
+    ipcalls = []
     def route(r):
         u = r.request.url
-        if 'ipwho.is' in u: r.fulfill(status=200, content_type='application/json', body=json.dumps({'success': True, 'ip': '203.0.113.7', 'city': 'Rabat', 'region': 'Rabat-Salé-Kénitra', 'country': 'Morocco', 'connection': {'isp': 'TestNet'}}))
+        if any(h in u for h in ('ipwho.is', 'ipapi.co', 'ipify.org')): ipcalls.append(u); r.abort()
         elif u.startswith('http'): r.abort()
         else: r.continue_()
     pg.route('**/*', route)
@@ -27,7 +28,7 @@ with sync_playwright() as p:
     pg.fill('#lab-name', 'Youssef'); pg.check('#lab-cons'); pg.click('#lab-go'); pg.wait_for_timeout(800)
     pg.click('#go-report'); pg.wait_for_timeout(300)
     t = pg.locator('#lab-report').inner_text()
-    check('203.0.113.7' in t and 'Rabat' in t and 'TestNet' in t, 'rapport : IP, ville et fournisseur affichés')
+    check('203.0.113.7' not in t and 'عنوان IP\n' not in t and 'Casablanca' in t and not ipcalls, 'rapport : ville du fuseau horaire, pas d\'IP, aucune requête vers un service IP')
     # sans consentement
     pg.evaluate("Lab.Session.end()"); pg.reload(); pg.wait_for_timeout(400)
     pg.click('#go-start'); pg.wait_for_timeout(200)

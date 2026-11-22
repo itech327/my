@@ -105,12 +105,11 @@ export function format(p, cf, ip) {
   const place = (c) => [clean(c.city, 40), clean(c.region, 40), clean(c.country, 40)].filter(Boolean).join('، ');
   if (type === 'open') return '👀 فتح صفحة\n' + page + (name ? '\nالاسم: ' + name : '\n(زائر مجهول)') + (cf && cf.country ? '\nالبلد: ' + clean(cf.country, 10) : '');
   const who = () => {
-    const seen = [clean(p.ip, 45) && 'IP: ' + clean(p.ip, 45), place(p) && 'المدينة: ' + place(p) + (p.cityApprox ? ' (تقريبية)' : ''), clean(p.isp, 60) && 'المزوّد: ' + clean(p.isp, 60)].filter(Boolean);
+    const seen = [place(p) && 'المدينة: ' + place(p) + (p.cityApprox ? ' (تقريبية)' : '')].filter(Boolean);
     return ['الاسم: ' + name, 'الجهاز: ' + clean(p.device, 120)].concat(seen);
   };
   if (type === 'login') {
     const obs = [];
-    if (p.consent && ip) obs.push('IP (من الخادم): ' + clean(ip, 45));
     if (p.consent && cf && cf.city) obs.push('المدينة (من الخادم): ' + clean(cf.city, 40) + (cf.country ? '، ' + clean(cf.country, 10) : ''));
     return ['🔐 دخول جلسة', page].concat(who(), obs).join('\n');
   }

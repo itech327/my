@@ -104,6 +104,9 @@ DESC = {
  'confidentialite.html': ('بياناتك | Confidentialité · Cours en mouvement',
                 'ما البيانات التي تُسجَّل وأين تبقى وما الذي لا يُفعل أبداً. Quelles données sont enregistrées, où elles restent et ce qui n’est jamais fait.',
                 'default'),
+ 'a-propos.html': ('من نحن | À propos · Cours en mouvement',
+                'من يقف وراء المنصة وما صفتها: مبادرة تربوية مستقلة. Qui est derrière la plateforme : une initiative éducative indépendante.',
+                'default'),
  'teacher.html': ('فضاء الأستاذ | Espace enseignant · Cours en mouvement', 'فضاء مخصص للأستاذ. Espace réservé à l’enseignant.', 'default'),
 }
 OG_ALT = {'default': 'Cours en mouvement · دروس متحركة للسلك الإعدادي', 'maths': 'Maths en mouvement · الرياضيات للسلك الإعدادي',
@@ -124,7 +127,7 @@ CFWA_SCRIPT = 'https://static.cloudflareinsights.com'   # balise de Cloudflare W
 CFWA_CONNECT = 'https://cloudflareinsights.com'
 
 def csp_for(html, header=False, measure=True):
-    conn = ["'self'", 'https://ipwho.is', 'https://ipapi.co', 'https://api.ipify.org'] + ([notify_origin()] if notify_origin() else [])
+    conn = ["'self'"] + ([notify_origin()] if notify_origin() else [])
     if measure: conn.append(CFWA_CONNECT)
     parts = ["default-src 'none'", "script-src 'self' " + ((CFWA_SCRIPT + ' ') if measure else '') + ' '.join(inline_hashes(html)), "style-src 'self' 'unsafe-inline'",
              "img-src 'self' data:", "font-src 'self'", 'connect-src ' + ' '.join(conn), "base-uri 'none'", "form-action 'none'", "object-src 'none'",
@@ -199,7 +202,18 @@ hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',
        '/icons/*', '  Cache-Control: public, max-age=604800', '']
 today = datetime.date.today().isoformat()
 urls = []
-for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html', 'teacher.html']:
+# contact : à renseigner. Sans adresse, la section n'est pas affichée (on n'invente pas de contact).
+ABOUT_CONTACT = os.environ.get('ABOUT_CONTACT', '')   # ex. contact@taalim.men
+ABOUT_NAME = os.environ.get('ABOUT_NAME', '')         # nom du responsable du site
+_ap = rd('a-propos.html')
+_blk = ''
+if ABOUT_CONTACT:
+    _blk = ('<div class="box">\n    <p><b>Contact et responsable</b></p>\n    <p>' + (('Responsable du site : ' + ABOUT_NAME + '. ') if ABOUT_NAME else '') +
+            'Pour une question, une erreur ou une demande sur les données d’un élève (accès, correction, suppression) : <a href="mailto:' + ABOUT_CONTACT + '">' + ABOUT_CONTACT + '</a>.</p>\n'
+            '    <p class="ar" lang="ar" dir="rtl">لأي سؤال أو خطأ أو طلب يخص بيانات تلميذ (الاطلاع أو التصحيح أو الحذف): ' + ABOUT_CONTACT + '</p>\n  </div>')
+_ap = re.sub(r'<!--about:contact-->(?:.*?<!--/about:contact-->)?', '<!--about:contact-->' + _blk + '<!--/about:contact-->', _ap, flags=re.S)
+wr('a-propos.html', _ap)
+for name in ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html', 'a-propos.html', 'teacher.html']:
     h = harden(name, rd(name)); wr(name, h)
     c = csp_for(h, True, name != 'teacher.html')
     paths = ['/', '/index.html'] if name == 'index.html' else ['/' + name, '/' + name[:-5]]
@@ -228,7 +242,7 @@ a{display:block;padding:12px 16px;border:1px solid #3a3454;border-radius:12px;co
 wr('404.html', P404)
 
 import json
-pages = ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html']
+pages = ['index.html', 'maths.html', 'physique-chimie.html', 'svt.html', 'confidentialite.html', 'a-propos.html']
 wr('manifest.webmanifest', json.dumps({
     'name': 'Cours en mouvement', 'short_name': 'Cours', 'description': 'Maths, physique-chimie et SVT du collège',
     'lang': 'fr', 'dir': 'auto', 'start_url': './', 'scope': './', 'id': './', 'display': 'standalone',
