@@ -111,10 +111,10 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Still open
 
-2. **Paid tier:** switch the Gemini key to paid.
-3. **Full app:** a database and storage, so it can go live: Cloudflare D1 and KV or R2, or Supabase.
-4. **Payments:** a real payment provider.
-5. **Free voices:**
+1. **Paid tier:** switch the Gemini key to paid.
+2. **Full app:** a database and storage, so it can go live: Cloudflare D1 and KV or R2, or Supabase.
+3. **Payments:** a real payment provider.
+4. **Free voices:**
    - Words before a comma get an extra sound ("المهمن"). Next test: drop commas inside sentences.
    - Add every word the owner corrects to `.claude/skills/darija-voice/data/respell.tsv`. Example: فلاح → فلّاح.
 
