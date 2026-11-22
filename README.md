@@ -13,3 +13,6 @@ python3 make_voiced.py links.txt [out.mp4]                                     #
 - `voice-script.json`: نص التعليق. قاعدة القراءة: (a+b)² تُقرأ «آ زائد بي الكلّ أس اثنان».
 - `links.txt`: ثمانية أسطر، رابط `voice.taalim.men/audio/<id>` (صالح 7 أيام) أو مسار ملف wav محلي.
 - لا تُرفع هنا ملفات mp4 ولا wav (انظر `.gitignore`).
+
+## نقل الصوت دون وصول للشبكة
+أداة الموصل `fetch_audio` تعيد WAV كنص base64 على شرائح. ثم: `python3 unpack_audio.py out.wav slice1.txt slice2.txt ...` (ملفات نتائج الأداة المحفوظة بالترتيب). تفاصيل في `HANDOFF-taalim-men.md`، القسم 5.
