@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>التركيب الضوئي عند النبات الأخضر · La photosynthèse | taalim.men Pro</title>
+<style>
+:root{
+  --bg:#0d0b14; --card:#171225; --card2:#1f1830; --line:#2b2440;
+  --violet:#9b92dc; --pink:#e371cb; --teal:#6ccdb6; --txt:#f2eff7; --dim:#b9b2cf;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-padding-block-end:calc(5.5rem + env(safe-area-inset-bottom,0px))}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+:root{--target-size:24px}@media (pointer:coarse){:root{--target-size:44px}}
+:where(button,input,label.opt){min-block-size:var(--target-size);min-inline-size:var(--target-size)}
+:where(a:any-link,button,input,[tabindex]):focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}body{overflow-wrap:break-word}
+.visually-hidden:where(:not(:focus-within,:active)){position:absolute!important;clip-path:inset(50%)!important;overflow:hidden!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;border:0!important;white-space:nowrap!important}
+body{background:radial-gradient(1200px 700px at 80% -10%,#241b3a 0%,var(--bg) 55%);
+  color:var(--txt);font-family:'Noto Sans Arabic','Geeza Pro','Segoe UI',system-ui,sans-serif;
+  min-height:100vh;padding-bottom:88px;line-height:1.8}
+header{position:sticky;top:0;z-index:9;background:rgba(13,11,20,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:10px 16px}
+.hrow{max-width:860px;margin:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-weight:900;letter-spacing:.2px}
+.logo b{color:var(--teal)} .logo i{color:var(--pink);font-style:normal}
+.badge{background:linear-gradient(90deg,var(--violet),var(--pink));color:#120e1c;font-weight:900;
+  border-radius:999px;padding:2px 12px;font-size:13px}
+.sub{color:var(--dim);font-size:13px}
+.lang{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--dim);font-family:inherit;font-weight:800;
+  padding:4px 14px;cursor:pointer;font-size:14px}
+.lang button.on{background:linear-gradient(90deg,var(--violet),var(--pink));color:#151021}
+progress.pbar{flex:1;min-inline-size:120px;block-size:8px;appearance:none;border:0 solid;overflow:clip;--progress-bar-radius:999px;border-radius:var(--progress-bar-radius);background:var(--card2)}
+progress.pbar::-webkit-progress-bar{background:transparent}
+progress.pbar::-webkit-progress-value{background:linear-gradient(90deg,var(--teal),var(--violet));border-radius:var(--progress-bar-radius);transition:inline-size .4s}
+progress.pbar::-moz-progress-bar{background:linear-gradient(90deg,var(--teal),var(--violet));border-radius:var(--progress-bar-radius)}
+main{max-width:860px;margin:auto;padding:18px 16px}
+section.scene{display:none}
+section.scene.on{display:block}
+@media (prefers-reduced-motion:no-preference){section.scene.on{animation:fade .45s ease both}}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){.rise{animation:fade .6s ease both}}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;margin:14px 0;
+  box-shadow:0 10px 40px rgba(0,0,0,.35)}
+h1{font-size:clamp(26px,5vw,38px);line-height:1.5}
+h2{font-size:clamp(20px,4vw,27px);margin-bottom:10px}
+h2 .n{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:14px;
+  background:var(--card2);color:var(--teal);border:1px solid var(--violet);margin-inline-start:10px;font-size:19px;direction:ltr}
+.hl{color:var(--teal)} .hp{color:var(--pink)} .hv{color:var(--violet)}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.chip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:14px;color:var(--dim)}
+ul.goals{list-style:none;margin:8px 0}
+ul.goals li{padding:8px 0;border-bottom:1px dashed var(--line)}
+ul.goals li::before{content:"✦ ";color:var(--pink)}
+.btn{display:inline-block;border:0;border-radius:16px;padding:13px 30px;font-family:inherit;font-size:17px;
+  font-weight:800;cursor:pointer;transition:.2s;background:linear-gradient(90deg,var(--violet),var(--pink));color:#151021}
+.btn:hover{transform:translateY(-2px)}
+.btn.alt{background:var(--card2);color:var(--teal);border:1px solid var(--violet)}
+.btn.gh{background:transparent;color:var(--dim);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.center{text-align:center}
+.formula{font-size:clamp(18px,4vw,24px);text-align:center;font-weight:900;padding:16px;
+  background:var(--card2);border-radius:18px;border:1px solid var(--violet);margin:14px 0;direction:ltr;unicode-bidi:plaintext}
+.note{background:rgba(108,205,182,.09);border:1px solid rgba(108,205,182,.4);border-radius:16px;padding:12px 16px;margin:12px 0;color:var(--teal)}
+.tip{background:rgba(227,113,203,.08);border:1px dashed var(--pink);border-radius:16px;padding:12px 16px;margin:12px 0;color:var(--dim)}
+#figwrap{background:var(--card2);border-radius:20px;border:1px solid var(--line);padding:10px;margin:12px 0}
+#fig{width:100%;height:auto;display:block}
+.stp{opacity:0}.stp.vis{opacity:1}
+@media (prefers-reduced-motion:no-preference){.stp{transition:opacity .7s ease,transform .7s ease;transform:scale(.96)}.stp.vis{transform:none}}
+#stepTxt{min-height:58px;font-size:17px;color:var(--txt)}
+.stepnav{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px}
+.dots{display:flex;gap:6px}.dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dot.on{background:var(--teal)}
+.ex{border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;background:var(--card2)}
+.ex h3{margin-bottom:8px}.ex .lvl{font-size:13px;font-weight:900;border-radius:8px;padding:2px 10px;margin-inline-start:8px}
+.lvlA{background:#2a2040;color:var(--teal)} .lvlB{background:#20303a;color:var(--violet)}
+.lvlC{background:#33203a;color:var(--pink)} .lvlD{background:#3a2030;color:#f0a6d8}
+.opts{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+fieldset.q{border:0;margin:0;padding:0}fieldset.q legend{padding:0;margin-block-end:4px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 18px;cursor:pointer;font-family:inherit;color:var(--txt);font-size:16px}
+.opt.sel,label.opt:has(:checked){border-color:var(--teal);background:#223040}
+label.opt{display:inline-flex;align-items:center;gap:8px}label.opt input{accent-color:var(--teal);margin:0}
+.num{width:110px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--card);
+  color:var(--txt);font-family:inherit;font-size:18px;text-align:center;direction:ltr}
+.fb{margin-top:10px;font-weight:700;border-radius:14px}
+.fb.ok{padding:10px 14px;background:rgba(108,205,182,.12);border:1px solid var(--teal);color:var(--teal)}
+.fb.no{padding:10px 14px;background:rgba(227,113,203,.1);border:1px solid var(--pink);color:var(--pink)}
+.chtop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.clock{font-size:26px;font-weight:900;color:var(--pink);direction:ltr}
+.qtxt{font-size:19px;font-weight:800;margin:8px 0}
+nav.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,11,20,.92);backdrop-filter:blur(8px);
+  border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:9}
+.navrow{max-width:860px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.scnt{color:var(--dim);font-size:14px}
+.navrow .btn{white-space:nowrap;padding-inline:clamp(14px,4vw,30px)}.scnt{text-align:center}
+footer{max-width:860px;margin:26px auto 0;padding:0 16px;color:var(--dim);font-size:13px;text-align:center}
+table.rep{width:100%;border-collapse:collapse;margin:12px 0}
+table.rep td,table.rep th{border:1px solid var(--line);padding:9px 12px;text-align:start;font-size:15px}
+table.rep th{background:var(--card2);color:var(--teal)}
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  header,nav.nav,footer,.btn,.no-print{display:none!important}
+  .card,.ex{border:1px solid #999;box-shadow:none;background:#fff;color:#000}
+  section.scene{display:none}section.scene.on{display:block}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <span class="logo"><b>taalim</b>.<i>men</i></span>
+    <span class="badge" data-ar="Pro · نسخة نموذجية" data-fr="Pro · version de démonstration">Pro · نسخة نموذجية</span>
+    <span class="sub" data-ar="الأولى إعدادي · علوم الحياة والأرض" data-fr="1re année du collège · SVT">الأولى إعدادي · علوم الحياة والأرض</span>
+    <div class="lang no-print" role="group" aria-label="اللغة · Langue">
+      <button type="button" id="btnAr" class="on" aria-pressed="true" lang="ar">عربي</button>
+      <button type="button" id="btnFr" aria-pressed="false" lang="fr">Français</button>
+    </div>
+    <progress class="pbar" id="pfill" max="7" value="1" aria-label="التقدم في الدرس"></progress>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══ 1) الغلاف ═══ -->
+<section class="scene" id="sc1">
+  <div class="card rise">
+    <h1 tabindex="-1" data-ar='التركيب <span class="hp">الضوئي</span> عند النبات الأخضر' data-fr='La <span class="hp">photosynthèse</span> chez la plante verte'>التركيب <span class="hp">الضوئي</span> عند النبات الأخضر</h1>
+    <p class="sub" style="font-size:16px" data-ar="كيف تصنع النبتةُ غذاءَها بنفسها من الضوء والماء والهواء — شرح متحرك خطوةً بخطوة."
+       data-fr="Comment la plante fabrique sa propre nourriture à partir de la lumière, de l&#39;eau et de l&#39;air — explication animée, étape par étape.">كيف تصنع النبتةُ غذاءَها بنفسها من الضوء والماء والهواء — شرح متحرك خطوةً بخطوة.</p>
+    <div class="meta">
+      <span class="chip" data-ar="🎓 المستوى: الأولى إعدادي" data-fr="🎓 Niveau : 1re année du collège">🎓 المستوى: الأولى إعدادي</span>
+      <span class="chip" data-ar="⏱️ المدة: نحو 12 دقيقة" data-fr="⏱️ Durée : environ 12 min">⏱️ المدة: نحو 12 دقيقة</span>
+      <span class="chip" data-ar="📶 يعمل دون إنترنت" data-fr="📶 Hors ligne">📶 يعمل دون إنترنت</span>
+    </div>
+    <h3 style="color:var(--teal);margin-top:14px" data-ar="أهداف الدرس" data-fr="Objectifs de la leçon">أهداف الدرس</h3>
+    <ul class="goals">
+      <li data-ar="أن تُحدّد أعضاء التركيب الضوئي ومكانه في النبتة الخضراء."
+          data-fr="Identifier les organes et le lieu de la photosynthèse chez la plante verte.">أن تُحدّد أعضاء التركيب الضوئي ومكانه في النبتة الخضراء.</li>
+      <li data-ar="أن تُسمّي المواد الأولية والنواتج: ماء، أملاح، CO₂ ← مادة عضوية + O₂."
+          data-fr="Nommer les matières premières et les produits : eau, sels minéraux, CO₂ → matière organique + O₂.">أن تُسمّي المواد الأولية والنواتج: ماء، أملاح، CO₂ ← مادة عضوية + O₂.</li>
+      <li data-ar="أن تُبيّن دور الضوء واليخضور، وأن تكشف النشا بماء اليود."
+          data-fr="Montrer le rôle de la lumière et de la chlorophylle, et détecter l&#39;amidon avec l&#39;eau iodée.">أن تُبيّن دور الضوء واليخضور، وأن تكشف النشا بماء اليود.</li>
+      <li data-ar="أن توظّف ذلك في وضعيةٍ مشكلة (شتلتان: ضوء مقابل ظلام)."
+          data-fr="Appliquer tout cela à un problème concret (deux semis : lumière contre obscurité).">أن توظّف ذلك في وضعيةٍ مشكلة (شتلتان: ضوء مقابل ظلام).</li>
+    </ul>
+    <div class="note" data-ar="👀 ستحرّك الرسومَ بنفسك بالأزرار، كما في المنصة الكاملة."
+           data-fr="👀 Tu animes les figures toi-même avec les boutons, comme sur la plateforme.">👀 ستحرّك الرسومَ بنفسك بالأزرار، كما في المنصة الكاملة.</div>
+    <div class="center"><button type="button" class="btn" data-goto="2" data-ar="ابدأ الدرس ←" data-fr="Commencer la leçon →">ابدأ الدرس ←</button></div>
+  </div>
+</section>
+
+<!-- ═══ 2) الوضعية المشكلة ═══ -->
+<section class="scene" id="sc2">
+  <div class="card">
+    <h2 tabindex="-1" data-ar='<span class="n">؟</span> الوضعيةُ المشكلة' data-fr='<span class="n">?</span> Problème d&#39;ouverture'><span class="n">؟</span> الوضعيةُ المشكلة</h2>
+    <p data-ar="وضعت أستاذةُ العلوم شتلتَي فاصولياء في أصيصين متطابقين، وسَقتهما الكمّيةَ نفسها من الماء كلَّ يوم لمدّة 8 أيام: الشتلة <b class='hl'>A</b> تحت الضوء، والشتلة <b class='hp'>B</b> في صندوقٍ معتِم تماماً."
+       data-fr="Le prof de SVT place deux semis de haricot dans des pots identiques, avec la même quantité d&#39;eau chaque jour pendant 8 jours : le semis <b class='hl'>A</b> à la lumière, le semis <b class='hp'>B</b> dans une boîte totalement obscure.">وضعت أستاذةُ العلوم شتلتَي فاصولياء في أصيصين متطابقين، وسَقتهما الكمّيةَ نفسها من الماء كلَّ يوم لمدّة 8 أيام: الشتلة <b class="hl">A</b> تحت الضوء، والشتلة <b class="hp">B</b> في صندوقٍ معتِم تماماً.</p>
+    <p style="font-size:19px;font-weight:800;margin-top:8px" data-ar="بعد 8 أيام: A طويلةٌ خضراء داكنة، وB صفراءُ ذابلةٌ ملتوية — فما الذي ينقص الشتلةَ B؟"
+       data-fr="Après 8 jours : A est haute et vert foncé, B est jaune, fanée et tordue — que manque-t-il au semis B ?">بعد 8 أيام: A طويلةٌ خضراء داكنة، وB صفراءُ ذابلةٌ ملتوية — فما الذي ينقص الشتلةَ B؟</p>
+    <svg aria-hidden="true" viewBox="0 0 340 175" width="100%" style="max-width:400px;display:block;margin:14px auto">
+      <circle cx="62" cy="34" r="15" fill="#f0c060"/>
+      <g stroke="#f0c060" stroke-width="2"><line x1="62" y1="12" x2="62" y2="6"/><line x1="84" y1="34" x2="90" y2="34"/><line x1="40" y1="34" x2="34" y2="34"/><line x1="78" y1="18" x2="82" y2="14"/><line x1="46" y1="18" x2="42" y2="14"/><line x1="78" y1="50" x2="82" y2="54"/></g>
+      <line x1="10" y1="160" x2="330" y2="160" stroke="#4a4160" stroke-width="2"/>
+      <path d="M100,128 L150,128 L143,158 L107,158 Z" fill="#c96a4a"/>
+      <line x1="125" y1="128" x2="125" y2="92" stroke="#6ccdb6" stroke-width="3"/>
+      <ellipse cx="115" cy="98" rx="10" ry="6" fill="#6ccdb6"/>
+      <ellipse cx="136" cy="88" rx="10" ry="6" fill="#6ccdb6"/>
+      <ellipse cx="122" cy="78" rx="9" ry="6" fill="#8fe0cb"/>
+      <text x="125" y="172" font-size="13" fill="#b9b2cf" text-anchor="middle">A</text>
+      <rect x="200" y="86" width="80" height="74" rx="6" fill="#241b3a" stroke="#4a4160" stroke-width="2"/>
+      <path d="M225,128 L275,128 L268,158 L232,158 Z" fill="#c96a4a"/>
+      <line x1="250" y1="128" x2="250" y2="104" stroke="#d8c46a" stroke-width="3"/>
+      <ellipse cx="242" cy="110" rx="8" ry="5" fill="#d8c46a"/>
+      <ellipse cx="259" cy="102" rx="8" ry="5" fill="#d8c46a"/>
+      <text x="240" y="172" font-size="13" fill="#b9b2cf" text-anchor="middle">B</text>
+      <text x="240" y="66" font-size="13" fill="#e371cb" text-anchor="middle" data-ar="صندوق مُعتم" data-fr="boîte obscure">صندوق مُعتم</text>
+      <text x="125" y="52" font-size="13" fill="#f0c060" text-anchor="middle" data-ar="ضوء" data-fr="lumière">ضوء</text>
+      <text x="178" y="118" font-size="17" fill="#f2eff7" font-weight="800" text-anchor="middle">؟</text>
+    </svg>
+    <div class="tip" data-ar="سنحسمُ الجواب في نهاية الدرس — حين نفتحَ «مصنعَ الورقة»! 🌿"
+           data-fr="Nous trancherons à la fin de la leçon — quand nous ouvrirons l&#39;« usine de la feuille » ! 🌿">سنحسمُ الجواب في نهاية الدرس — حين نفتحَ «مصنعَ الورقة»! 🌿</div>
+  </div>
+</section>
+
+<!-- ═══ 3) الاكتشاف: مصنع الورقة ═══ -->
+<section class="scene" id="sc3">
+  <div class="card">
+    <h2 tabindex="-1" data-ar='<span class="n">1</span> اكتشافٌ بمصنع الورقة: ماذا يدخل وماذا يخرج؟' data-fr='<span class="n">1</span> L&#39;usine-feuille : qu&#39;entre-t-il, que sort-il ?'><span class="n">1</span> اكتشافٌ بمصنع الورقة: ماذا يدخل وماذا يخرج؟</h2>
+    <div id="figwrap">
+      <svg id="fig" viewBox="0 0 560 375" role="img" aria-label="مصنع الورقة" aria-describedby="stepTxt">
+        <defs>
+          <marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#6ccdb6"/></marker>
+          <marker id="arrV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#9b92dc"/></marker>
+          <marker id="arrP" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#e371cb"/></marker>
+          <marker id="arrY" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#f0c060"/></marker>
+        </defs>
+        <!-- s1: النبتة والورقة -->
+        <g class="stp" id="s1">
+          <path d="M160,115 Q280,38 400,115 Q280,192 160,115 Z" fill="#20302a" stroke="#6ccdb6" stroke-width="2.5"/>
+          <line x1="160" y1="115" x2="400" y2="115" stroke="#6ccdb6" stroke-width="1.8"/>
+          <g stroke="#6ccdb6" stroke-width="1.2" opacity=".65">
+            <line x1="215" y1="115" x2="245" y2="82"/><line x1="215" y1="115" x2="245" y2="148"/>
+            <line x1="280" y1="115" x2="280" y2="72"/><line x1="280" y1="115" x2="280" y2="158"/>
+            <line x1="345" y1="115" x2="315" y2="82"/><line x1="345" y1="115" x2="315" y2="148"/>
+          </g>
+          <line x1="280" y1="188" x2="280" y2="256" stroke="#c9a06a" stroke-width="5" stroke-linecap="round"/>
+          <line x1="280" y1="256" x2="240" y2="296" stroke="#c9a06a" stroke-width="2.5"/>
+          <line x1="280" y1="256" x2="280" y2="300" stroke="#c9a06a" stroke-width="2.5"/>
+          <line x1="280" y1="256" x2="320" y2="296" stroke="#c9a06a" stroke-width="2.5"/>
+          <line x1="185" y1="300" x2="375" y2="300" stroke="#4a4160" stroke-width="3"/>
+          <text x="280" y="224" font-size="11.5" fill="#b9b2cf" text-anchor="middle" data-ar="الساق" data-fr="tige">الساق</text>
+        </g>
+        <!-- s2: الضوء واليخضور -->
+        <g class="stp" id="s2">
+          <circle cx="78" cy="55" r="22" fill="#f0c060"/>
+          <g stroke="#f0c060" stroke-width="2.5"><line x1="78" y1="24" x2="78" y2="14"/><line x1="109" y1="55" x2="119" y2="55"/><line x1="103" y1="31" x2="110" y2="24"/><line x1="103" y1="79" x2="110" y2="86"/><line x1="53" y1="31" x2="46" y2="24"/></g>
+          <line x1="104" y1="72" x2="198" y2="100" stroke="#f0c060" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#arrY)"/>
+          <g fill="#6ccdb6">
+            <circle cx="215" cy="105" r="5.5"/><circle cx="245" cy="98" r="5.5"/><circle cx="275" cy="108" r="5.5"/>
+            <circle cx="305" cy="97" r="5.5"/><circle cx="335" cy="105" r="5.5"/><circle cx="362" cy="110" r="5.5"/>
+          </g>
+          <text x="288" y="152" font-size="12" fill="#6ccdb6" text-anchor="middle" data-ar="يخضور (<span lang=fr>chlorophylle</span>) داخل الصانعات الخضراء" data-fr="chlorophylle dans les chloroplastes">يخضور (<span lang=fr>chlorophylle</span>) داخل الصانعات الخضراء</text>
+        </g>
+        <!-- s3: تبادل الغازات -->
+        <g class="stp" id="s3">
+          <text x="62" y="176" font-size="17" font-weight="900" fill="#9b92dc" text-anchor="middle" direction="ltr">CO₂</text>
+          <line x1="86" y1="170" x2="176" y2="132" stroke="#9b92dc" stroke-width="2.5" marker-end="url(#arrV)"/>
+          <line x1="382" y1="92" x2="462" y2="58" stroke="#6ccdb6" stroke-width="2.5" marker-end="url(#arrT)"/>
+          <text x="487" y="52" font-size="17" font-weight="900" fill="#6ccdb6" text-anchor="middle" direction="ltr">O₂</text>
+          <text x="132" y="200" font-size="12.5" fill="#9b92dc" text-anchor="middle" data-ar="يدخل عبر الثغور" data-fr="entre par les stomates">يدخل عبر الثغور</text>
+          <text x="447" y="80" font-size="12.5" fill="#6ccdb6" text-anchor="middle" data-ar="يُطرح في الهواء" data-fr="rejeté dans l&#39;air">يُطرح في الهواء</text>
+        </g>
+        <!-- s4: العصارة الخام -->
+        <g class="stp" id="s4">
+          <line x1="252" y1="252" x2="252" y2="196" stroke="#9b92dc" stroke-width="3" marker-end="url(#arrV)"/>
+          <text x="198" y="278" font-size="12.5" fill="#b9b2cf" text-anchor="middle" data-ar="عصارة خام: ماء + أملاح" data-fr="sève brute : eau + sels">عصارة خام: ماء + أملاح</text>
+        </g>
+        <!-- s5: العصارة الناقصة + المعادلة -->
+        <g class="stp" id="s5">
+          <line x1="308" y1="196" x2="308" y2="252" stroke="#e371cb" stroke-width="3" marker-end="url(#arrP)"/>
+          <text x="382" y="278" font-size="12.5" fill="#b9b2cf" text-anchor="middle" data-ar="عصارة ناقصة: سكريات" data-fr="sève élaborée : sucres">عصارة ناقصة: سكريات</text>
+          <rect x="100" y="318" width="360" height="46" rx="12" fill="#1f1830" stroke="#9b92dc" stroke-width="2"/>
+          <text x="280" y="337" font-size="15" font-weight="900" fill="#f2eff7" text-anchor="middle" direction="ltr">CO₂ + H₂O → matière organique + O₂</text>
+          <text x="280" y="357" font-size="12" fill="#6ccdb6" text-anchor="middle" data-ar="بشرط: ضوء + يخضور" data-fr="conditions : lumière + chlorophylle">بشرط: ضوء + يخضور</text>
+        </g>
+      </svg>
+    </div>
+    <p id="stepTxt" aria-live="polite"></p>
+    <div class="stepnav">
+      <button class="btn alt" id="prevS" type="button" data-ar="السابق" data-fr="Précédent">السابق</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn" id="nextS" type="button" data-ar="التالي ←" data-fr="Suivant →">التالي ←</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4) القاعدة ═══ -->
+<section class="scene" id="sc4">
+  <div class="card">
+    <h2 tabindex="-1" data-ar='<span class="n">2</span> معادلةُ التركيب الضوئي وشروطُها' data-fr='<span class="n">2</span> Le bilan de la photosynthèse et ses conditions'><span class="n">2</span> معادلةُ التركيب الضوئي وشروطُها</h2>
+    <p style="font-size:19px" data-ar="التركيبُ الضوئي ظاهرةٌ حيوية تحدث في <b class='hl'>الورقة الخضراء</b>: تلتقط الصبغةُ الخضراء <b class='hv'>اليخضور</b> (<span lang=fr>chlorophylle</span>) طاقةَ الضوء، فتُحوّل <b class='hv'>الماء والأملاح المعدنية</b> الممتصَّةَ من التربة و<b class='hv'>غاز ثاني أوكسيد الكربون</b> الممتصَّ من الهواء إلى <b class='hp'>مادة عضوية</b> (سكريات ثم نشا)، مطروحةً <b class='hl'>غاز الأوكسجين</b>."
+       data-fr="La photosynthèse se déroule dans la <b class='hl'>feuille verte</b> : la <b class='hv'>chlorophylle</b> capte l&#39;énergie lumineuse et transforme l&#39;<b class='hv'>eau</b> et les <b class='hv'>sels minéraux</b> du sol ainsi que le <b class='hv'>CO₂</b> de l&#39;air en <b class='hp'>matière organique</b> (sucres puis amidon), en rejetant du <b class='hl'>dioxygène</b>.">التركيبُ الضوئي ظاهرةٌ حيوية تحدث في <b class="hl">الورقة الخضراء</b>: تلتقط الصبغةُ الخضراء <b class="hv">اليخضور</b> (<span lang=fr>chlorophylle</span>) طاقةَ الضوء، فتُحوّل <b class="hv">الماء والأملاح المعدنية</b> الممتصَّةَ من التربة و<b class="hv">غاز ثاني أوكسيد الكربون</b> الممتصَّ من الهواء إلى <b class="hp">مادة عضوية</b> (سكريات ثم نشا)، مطروحةً <b class="hl">غاز الأوكسجين</b>.</p>
+    <div class="formula">CO₂ + H₂O —(lumière + chlorophylle)→ matière organique + O₂</div>
+    <div class="tip" data-ar="🧪 الكشفُ عن النشا: نقطُ ماءِ يودٍ على قطعتين من خبزٍ أو على ورقة — اللونُ <b>الأزرق-الأسود</b> يدلّ على النشا، وبقيَ اللونُ أصفرَ بنيّاً في غيابه."
+           data-fr="🧪 Détection de l&#39;amidon : une goutte d&#39;eau iodée — une coloration <b>bleu-noir</b> prouve la présence d&#39;amidon ; sans amidon, la couleur reste jaune brun.">🧪 الكشفُ عن النشا: نقطُ ماءِ يودٍ على قطعتين من خبزٍ أو على ورقة — اللونُ <b>الأزرق-الأسود</b> يدلّ على النشا، وبقيَ اللونُ أصفرَ بنيّاً في غيابه.</div>
+    <h3 style="color:var(--teal);margin-top:18px" data-ar="تجربةٌ مُطبَّقة — ورقةٌ نصفُها مغطّى" data-fr="Expérience résolue — une feuille à demi masquée">تجربةٌ مُطبَّقة — ورقةٌ نصفُها مغطّى</h3>
+    <p data-ar="غطّينا جزءاً من ورقةٍ بقصاصةٍ من الألمنيوم، وتركنا النبتةَ في الضوء 6 ساعات، ثم كشفنا الورقةَ بماء اليود."
+       data-fr="Nous masquons une partie d&#39;une feuille avec de l&#39;aluminium, laissons la plante 6 h à la lumière, puis testons la feuille à l&#39;eau iodée.">غطّينا جزءاً من ورقةٍ بقصاصةٍ من الألمنيوم، وتركنا النبتةَ في الضوء 6 ساعات، ثم كشفنا الورقةَ بماء اليود.</p>
+    <div style="background:var(--card2);border-radius:16px;padding:14px 18px;margin:10px 0;font-size:18px">
+      <div class="rise" data-ar='<span class="hv">1)</span> الجزءُ المكشوفُ تعرّض للضوء فقط، والجزءُ المغطّى حُرِم منه.'
+           data-fr='<span class="hv">1)</span> La partie découverte reçoit la lumière ; la partie masquée en est privée.'><span class="hv">1)</span> الجزءُ المكشوفُ تعرّض للضوء فقط، والجزءُ المغطّى حُرِم منه.</div>
+      <div class="rise d1" data-ar='<span class="hv">2)</span> بماءِ اليود: الجزءُ المكشوفُ ← <b class="hl">أزرق-أسود</b> (نشا)؛ الجزءُ المغطّى ← <b class="hp">أصفر-بني</b> (لا نشا).'
+           data-fr='<span class="hv">2)</span> Eau iodée : partie découverte → <b>bleu-noir</b> (amidon) ; partie masquée → jaune brun (pas d&#39;amidon).'><span class="hv">2)</span> بماءِ اليود: الجزءُ المكشوفُ ← <b class="hl">أزرق-أسود</b> (نشا)؛ الجزءُ المغطّى ← <b class="hp">أصفر-بني</b> (لا نشا).</div>
+      <div class="rise d2" data-ar='<span class="hv">3)</span> الاستنتاج: <b class="hl">الضوء ضروري</b> لصناعة المادة العضوية (النشا) — أي للتركيب الضوئي ✓'
+           data-fr='<span class="hv">3)</span> Conclusion : la <b>lumière est indispensable</b> à la fabrication de la matière organique → à la photosynthèse ✓'><span class="hv">3)</span> الاستنتاج: <b class="hl">الضوء ضروري</b> لصناعة المادة العضوية (النشا) — أي للتركيب الضوئي ✓</div>
+    </div>
+    <div class="note" data-ar="🌍 أهميةٌ قصوى: التركيبُ الضوئي يُطلق O₂ لكل التنفس، ويمتص CO₂، ويضع المادةَ العضوية في بداية السلاسل الغذائية — لهذا كانت حمايةُ النباتات الخضراء حمايةً للحياة كلها."
+           data-fr="🌍 Enjeu majeur : la photosynthèse libère le O₂ de la respiration, absorbe le CO₂ et se trouve à l&#39;origine des chaînes alimentaires — protéger les végétaux verts, c&#39;est protéger la vie.">🌍 أهميةٌ قصوى: التركيبُ الضوئي يُطلق O₂ لكل التنفس، ويمتص CO₂، ويضع المادةَ العضوية في بداية السلاسل الغذائية — لهذا كانت حمايةُ النباتات الخضراء حمايةً للحياة كلها.</div>
+  </div>
+</section>
+
+<!-- ═══ 5) تمارين بأربعة مستويات ═══ -->
+<section class="scene" id="sc5">
+  <div class="card">
+    <h2 tabindex="-1" data-ar='<span class="n">3</span> تدرُّبٌ بأربعة مستويات' data-fr='<span class="n">3</span> Entraînement à quatre niveaux'><span class="n">3</span> تدرُّبٌ بأربعة مستويات</h2>
+    <p class="sub" data-ar="صحيحٌ أم خطأ؟ لا تقلق — التصحيح فوري ومعلَّل." data-fr="Juste ou faux ? Pas d&#39;inquiétude — correction immédiate et expliquée.">صحيحٌ أم خطأ؟ لا تقلق — التصحيح فوري ومعلَّل.</p>
+
+    <div class="ex">
+      <h3 data-ar='المستوى A — الأساسيات <span class="lvl lvlA">سهل</span>' data-fr='Niveau A — Bases <span class="lvl lvlA">facile</span>'>المستوى A — الأساسيات <span class="lvl lvlA">سهل</span></h3>
+      <fieldset class="q"><legend data-ar="ما اسمُ الصبغة الخضراء التي تلتقط طاقة الضوء داخل الورقة؟" data-fr="Quel pigment vert capte l&#39;énergie lumineuse dans la feuille ?">ما اسمُ الصبغة الخضراء التي تلتقط طاقة الضوء داخل الورقة؟</legend>
+      <div class="opts" id="optA">
+        <label class="opt"><input type="radio" name="qa" value="0"> <span data-ar='الهيموغلوبين' data-fr="L&#39;hémoglobine">الهيموغلوبين</span></label>
+        <label class="opt"><input type="radio" name="qa" value="1"> <span data-ar='اليخضور (<span lang=fr>chlorophylle</span>)' data-fr='La chlorophylle'>اليخضور (<span lang=fr>chlorophylle</span>)</span></label>
+        <label class="opt"><input type="radio" name="qa" value="2"> <span data-ar='الكيراتين' data-fr='La kératine'>الكيراتين</span></label>
+      </div></fieldset>
+      <div class="fb" id="fbA" role="status"></div>
+    </div>
+
+    <div class="ex">
+      <h3 data-ar='المستوى B — قراءةٌ كمية <span class="lvl lvlB">متوسط</span>' data-fr='Niveau B — Lecture quantitative <span class="lvl lvlB">moyen</span>'>المستوى B — قراءةٌ كمية <span class="lvl lvlB">متوسط</span></h3>
+      <p id="qB" data-ar="في تجربةٍ بقياس الغازات، ورقةٌ سليمة تُطلق <b>9 mL من O₂ كلَّ ساعة</b> تحت ضوءٍ جيد. كم mL تُطلق في <b>8 ساعات</b>؟" data-fr="Lors d&#39;une mesure de gaz, une feuille saine libère <b>9 mL d&#39;O₂ par heure</b> sous bonne lumière. Combien en <b>8 heures</b> ?">في تجربةٍ بقياس الغازات، ورقةٌ سليمة تُطلق <b>9 mL من O₂ كلَّ ساعة</b> تحت ضوءٍ جيد. كم mL تُطلق في <b>8 ساعات</b>؟</p>
+      <p style="margin:8px 0"><input class="num" id="inB" name="inB" type="number" inputmode="numeric" placeholder="?" aria-labelledby="qB" aria-describedby="fbB" enterkeyhint="done"> <span class="sub">mL</span></p>
+      <div class="fb" id="fbB" role="status"></div>
+    </div>
+
+    <div class="ex">
+      <h3 data-ar='المستوى C — الموادُ الأولية <span class="lvl lvlC">صعب</span>' data-fr='Niveau C — Les matières premières <span class="lvl lvlC">difficile</span>'>المستوى C — الموادُ الأولية <span class="lvl lvlC">صعب</span></h3>
+      <fieldset class="q"><legend data-ar="أيُّ لائحةٍ تُسمّي الموادَ الأولية للتركيب الضوئي كاملةً؟" data-fr="Quelle liste donne complètement les matières premières de la photosynthèse ?">أيُّ لائحةٍ تُسمّي الموادَ الأولية للتركيب الضوئي كاملةً؟</legend>
+      <div class="opts" id="optC">
+        <label class="opt"><input type="radio" name="qc" value="0"> <span data-ar='سكر + أوكسجين' data-fr='Sucres + O₂'>سكر + أوكسجين</span></label>
+        <label class="opt"><input type="radio" name="qc" value="1"> <span data-ar='ماء + أملاح معدنية + CO₂ (+ ضوء)' data-fr='Eau + sels minéraux + CO₂ (+ lumière)'>ماء + أملاح معدنية + CO₂ (+ ضوء)</span></label>
+        <label class="opt"><input type="radio" name="qc" value="2"> <span data-ar='ماء + أوكسجين فقط' data-fr='Eau + O₂ seulement'>ماء + أوكسجين فقط</span></label>
+      </div></fieldset>
+      <div class="fb" id="fbC" role="status"></div>
+    </div>
+
+    <div class="ex">
+      <h3 data-ar='المستوى D — مهمّةٌ واقعية <span class="lvl lvlD">تحدي</span>' data-fr='Niveau D — Mission réelle <span class="lvl lvlD">défi</span>'>المستوى D — مهمّةٌ واقعية <span class="lvl lvlD">تحدي</span></h3>
+      <p id="qD" data-ar="لتكوّن غراماً واحداً من المادة الجافة، تستهلك النبتةُ نحو <b>500 g من الماء</b>. شتلتُنا أنتجت <b>3 g</b> من المادة الجافة — كم غراماً من الماء استهلكت تقريباً؟" data-fr="Pour produire 1 g de matière sèche, la plante consomme environ <b>500 g d&#39;eau</b>. Notre semis a produit <b>3 g</b> de matière sèche — combien de grammes d&#39;eau consommés ?">لتكوّن غراماً واحداً من المادة الجافة، تستهلك النبتةُ نحو <b>500 g من الماء</b>. شتلتُنا أنتجت <b>3 g</b> من المادة الجافة — كم غراماً من الماء استهلكت تقريباً؟</p>
+      <p style="margin:8px 0"><input class="num" id="inD" name="inD" type="number" inputmode="numeric" placeholder="?" aria-labelledby="qD" aria-describedby="fbD" enterkeyhint="done"> <span class="sub">g</span></p>
+      <div class="fb" id="fbD" role="status"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 6) التحدي بالمؤقّت ═══ -->
+<section class="scene" id="sc6">
+  <div class="card">
+    <h2 tabindex="-1" data-ar='<span class="n">4</span> تحدي الستّين ثانية' data-fr='<span class="n">4</span> Le défi des 60 secondes'><span class="n">4</span> تحدي الستّين ثانية</h2>
+    <p class="sub" data-ar="خمسُ أسئلةٍ سريعة. الجواب الخاطئ لا يُعيد السؤال — سرعتُك مع دقّتك!" data-fr="Cinq questions rapides. Une erreur ne se rejoue pas — vitesse et précision !">خمسُ أسئلةٍ سريعة. الجواب الخاطئ لا يُعيد السؤال — سرعتُك مع دقّتك!</p>
+    <div id="chIntro" class="center" style="padding:30px 0">
+      <button type="button" class="btn" id="btnStart" data-ar="🚀 ابدأ التحدي" data-fr="🚀 Lancer le défi">🚀 ابدأ التحدي</button>
+    </div>
+    <div id="chBody" style="display:none">
+      <div class="chtop">
+        <span class="sub" id="chIdx">السؤال 1 من 5</span>
+        <span class="clock" id="chClock" role="timer" aria-label="الوقت المتبقي">60</span>
+        <span class="sub" id="chScore">النقاط: 0</span>
+      </div>
+      <progress class="pbar" id="chBar" max="5" value="0" aria-label="تقدم التحدي"></progress>
+      <p class="qtxt" id="chQ" tabindex="-1"></p>
+      <div class="opts" id="chOpts"></div>
+      <p class="center"><button type="button" class="btn gh" id="btnNoTimer" data-ar="⏸ أكمل بدون مؤقت" data-fr="⏸ Continuer sans minuteur">⏸ أكمل بدون مؤقت</button></p>
+      <p id="chLive" class="visually-hidden" aria-live="polite"></p>
+    </div>
+    <div id="chEnd" style="display:none" class="center">
+      <h3 id="chResult" style="margin:14px 0"></h3>
+      <div class="note" id="chMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7) الخلاصة والتقرير ═══ -->
+<section class="scene" id="sc7">
+  <div class="card">
+    <h2 tabindex="-1" data-ar='<span class="n">5</span> الخلاصة' data-fr='<span class="n">5</span> Bilan'><span class="n">5</span> الخلاصة</h2>
+    <ul class="goals">
+      <li data-ar="الورقةُ الخضراء مصنعُ الغذاء: اليخضور داخل الصانعات الخضراء يلتقط طاقة الضوء."
+          data-fr="La feuille verte est l&#39;usine : la chlorophylle des chloroplastes capte l&#39;énergie lumineuse.">الورقةُ الخضراء مصنعُ الغذاء: اليخضور داخل الصانعات الخضراء يلتقط طاقة الضوء.</li>
+      <li data-ar="المعادلة: <span style='direction:ltr;unicode-bidi:plaintext;display:inline-block'>CO₂ + H₂O → matière organique + O₂</span> — بشروطها: ضوء + يخضور."
+          data-fr="Bilan : CO₂ + H₂O → matière organique + O₂ — avec la lumière et la chlorophylle.">المعادلة: <span style="direction:ltr;unicode-bidi:plaintext;display:inline-block">CO₂ + H₂O → matière organique + O₂</span> — بشروطها: ضوء + يخضور.</li>
+      <li data-ar="العصارةُ الخام (ماء + أملاح) تصعد من الجذور، والناقصةُ (سكريات) تنزل إلى كامل النبتة."
+          data-fr="La sève brute (eau + sels) monte des racines ; la sève élaborée (sucres) descend dans toute la plante.">العصارةُ الخام (ماء + أملاح) تصعد من الجذور، والناقصةُ (سكريات) تنزل إلى كامل النبتة.</li>
+      <li data-ar="الكشفُ عن النشا بماء اليود: لونٌ أزرق-أسود ← هناك نشا، أي حدث تركيبٌ ضوئي."
+          data-fr="Test à l&#39;eau iodée : bleu-noir → amidon présent → photosynthèse réalisée.">الكشفُ عن النشا بماء اليود: لونٌ أزرق-أسود ← هناك نشا، أي حدث تركيبٌ ضوئي.</li>
+    </ul>
+    <div class="note" data-ar='🌿 وإجابةُ الوضعية المشكلة: الشتلةُ <b>B</b> حُرمت من <b>الضوء</b> — فاستحال التركيبُ الضوئي ولم تُصنع مادةٌ عضوية، ذبلت واصفرّت؛ أما <b>A</b> فامتَلَكت كلَّ الشروط فنمت. الضوءُ إذن مصدرُ طاقة الحياة الخضراء!'
+           data-fr="🌿 Réponse du problème : le semis <b>B</b> a été privé de <b>lumière</b> — sans photosynthèse, pas de matière organique, il jaunit et fane ; A réunissait toutes les conditions et a grandi. La lumière est bien la source d&#39;énergie de la vie verte !">🌿 وإجابةُ الوضعية المشكلة: الشتلةُ <b>B</b> حُرمت من <b>الضوء</b> — فاستحال التركيبُ الضوئي ولم تُصنع مادةٌ عضوية، ذبلت واصفرّت؛ أما <b>A</b> فامتَلَكت كلَّ الشروط فنمت. الضوءُ إذن مصدرُ طاقة الحياة الخضراء!</div>
+
+    <h3 style="color:var(--teal);margin:18px 0 6px" data-ar="📄 تقرير حصّتك" data-fr="📄 Bulletin de ta séance">📄 تقرير حصّتك</h3>
+    <table class="rep">
+      <tr><th data-ar="الركن" data-fr="Épreuve">الركن</th><th data-ar="النتيجة" data-fr="Résultat">النتيجة</th></tr>
+      <tr><td data-ar="تمرين A — الصبغة الخضراء" data-fr="Exercice A — le pigment vert">تمرين A — الصبغة الخضراء</td><td id="rA">—</td></tr>
+      <tr><td data-ar="تمرين B — قياس إنتاج O₂" data-fr="Exercice B — mesure du O₂">تمرين B — قياس إنتاج O₂</td><td id="rB">—</td></tr>
+      <tr><td data-ar="تمرين C — المواد الأولية" data-fr="Exercice C — matières premières">تمرين C — المواد الأولية</td><td id="rC">—</td></tr>
+      <tr><td data-ar="تمرين D — استهلاك الماء" data-fr="Exercice D — consommation d&#39;eau">تمرين D — استهلاك الماء</td><td id="rD">—</td></tr>
+      <tr><td data-ar="تحدي الستّين ثانية" data-fr="Défi des 60 secondes">تحدي الستّين ثانية</td><td id="rCh">—</td></tr>
+    </table>
+    <div class="center no-print" style="margin-top:10px">
+      <button type="button" class="btn alt" id="btnPrint" data-ar="🖨️ اطبع التقرير" data-fr="🖨️ Imprimer le bulletin">🖨️ اطبع التقرير</button>
+      <button type="button" class="btn gh" data-goto="1" data-ar="← مراجعة الدرس" data-fr="→ Revoir la leçon">← مراجعة الدرس</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer data-ar="نموذجُ درسٍ من «تعليم Pro» — دروسٌ تفاعلية متحرّكة تعمل دون إنترنت · ثنائي اللغة AR/FR · taalim.men"
+        data-fr="Modèle de leçon « Taalim Pro » — cours interactifs animés, fonctionnent hors ligne · bilingue AR/FR · taalim.men">نموذجُ درسٍ من «تعليم Pro» — دروسٌ تفاعلية متحرّكة تعمل دون إنترنت · ثنائي اللغة AR/FR · taalim.men</footer>
+
+<nav class="nav no-print">
+  <div class="navrow">
+    <button class="btn gh" id="btnPrev" type="button" data-ar="السابق ←" data-fr="← Précédent">السابق ←</button>
+    <span class="scnt" id="scnt"></span>
+    <button class="btn" id="btnNext" type="button" data-ar="→ التالي" data-fr="Suivant →">→ التالي</button>
+  </div>
+</nav>
+
+<script>
+/* ═════ اللغات ═════ */
+let LANG='ar';
+function T(ar,fr){return LANG==='fr'?fr:ar}
+function setLang(l){
+  LANG=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=(l==='fr'?'ltr':'rtl');
+  document.querySelectorAll('[data-ar][data-fr]').forEach(e=>{
+    e.innerHTML=(l==='fr'?e.dataset.fr:e.dataset.ar);
+  });
+  ['btnAr','btnFr'].forEach(id=>{const on=(id==='btnFr')===(l==='fr');const b=document.getElementById(id);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
+  document.title=T('التركيب الضوئي عند النبات الأخضر · La photosynthèse | taalim.men Pro','La photosynthèse chez la plante verte | taalim.men Pro');
+  document.getElementById('pfill').setAttribute('aria-label',T('التقدم في الدرس','Progression dans la leçon'));
+  document.getElementById('chBar').setAttribute('aria-label',T('تقدم التحدي','Progression du défi'));
+  document.getElementById('chClock').setAttribute('aria-label',T('الوقت المتبقي','Temps restant'));
+  document.getElementById('fig').setAttribute('aria-label',T('مصنع الورقة','L’usine-feuille'));
+  paint(); updateNav();
+  if(fbState.A!==undefined)showA(fbState.A);
+  if(fbState.C!==undefined)showC(fbState.C);
+  if(chActive)renderQ();
+  if(finished)showEnd(lastTimeout);
+  ['B','D'].forEach(k=>{if(fbState[k]!==undefined)showNum(k,fbState[k])});
+}
+
+/* ═════ المشاهد ═════ */
+const SCENES=7; let cur=1;
+function updateNav(){
+  document.getElementById('pfill').value=cur;
+  document.getElementById('scnt').textContent=T('مشهد '+cur+' من '+SCENES,'Scène '+cur+' sur '+SCENES);
+  document.getElementById('btnPrev').disabled=cur===1;
+  document.getElementById('btnNext').disabled=cur===SCENES;
+}
+function goto(n,focus=true){
+  cur=Math.min(Math.max(n,1),SCENES);
+  document.querySelectorAll('.scene').forEach((s,i)=>s.classList.toggle('on',i===cur-1));
+  updateNav();
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  if(focus)document.querySelector('#sc'+cur+' :is(h1,h2)')?.focus({preventScroll:true});
+  history.replaceState(null,'','#'+cur);
+  if(cur===3&&K===0)showStep(1);
+}
+function move(d){goto(cur+d)}
+addEventListener('keydown',e=>{
+  if(e.target.closest('input,textarea,select,[role=radiogroup]'))return; // arrows belong to the control
+  const fwd=LANG==='fr'?'ArrowRight':'ArrowLeft', back=LANG==='fr'?'ArrowLeft':'ArrowRight';
+  if(e.key===fwd)move(1);if(e.key===back)move(-1);
+});
+document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>goto(+b.dataset.goto)));
+document.getElementById('btnPrev').addEventListener('click',()=>move(-1));
+document.getElementById('btnNext').addEventListener('click',()=>move(1));
+document.getElementById('btnAr').addEventListener('click',()=>setLang('ar'));
+document.getElementById('btnFr').addEventListener('click',()=>setLang('fr'));
+document.getElementById('btnPrint').addEventListener('click',()=>window.print());
+
+/* ═════ خطوات الاكتشاف ═════ */
+const STEPS={
+ 1:{g:['s1'],ar:'ننطلق من <b class="hv">ورقة نبتةٍ خضراء</b>: هي مصنعُ الغذاء، والساقُ والجذورُ شبكةُ نقلٍ تصلها بالتربة.',
+      fr:'Partons de la <b class="hv">feuille d&#39;une plante verte</b> : c&#39;est l&#39;usine, reliée au sol par la tige et les racines.'},
+ 2:{g:['s2'],ar:'الضوءُ يسقط على الورقة، والصبغةُ الخضراء <b class="hl">اليخضور</b> (<span lang=fr>chlorophylle</span>) داخل الصانعات الخضراء تلتقط طاقته.',
+      fr:'La lumière tombe sur la feuille ; la <b class="hl">chlorophylle</b>, dans les chloroplastes, en capte l&#39;énergie.'},
+ 3:{g:['s3'],ar:'من الهواء تدخل <b class="hv">CO₂</b> عبر الثغور، ويخرج <b class="hl">O₂</b> — تبادلٌ غازيٌّ مستمرّ.',
+      fr:'De l&#39;air entre le <b class="hv">CO₂</b> par les stomates ; le <b class="hl">O₂</b> sort — échange gazeux permanent.'},
+ 4:{g:['s4'],ar:'من التربة تصعد <b class="hv">العصارة الخام</b>: ماء + أملاح معدنية عبر الساق إلى كل ورقة.',
+      fr:'Du sol monte la <b class="hv">sève brute</b> : eau + sels minéraux, vers chaque feuille.'},
+ 5:{g:['s5'],ar:'بفضل الضوء تصنع الورقةُ <b class="hp">مادةً عضوية</b> (سكريات ثم نشا) توزّعها العصارةُ الناقصة، وتُطلق O₂ — إنّه التركيبُ الضوئي!',
+      fr:'Grâce à la lumière, la feuille fabrique de la <b class="hp">matière organique</b> (sucres puis amidon) répartie par la sève élaborée, et libère O₂ : c&#39;est la photosynthèse !'}
+};
+const ACC={}; let K=0;
+Object.values(STEPS).forEach((s,i)=>s.g.forEach(e=>ACC[e]=i+1));
+(function(){const d=document.getElementById('dots');
+  for(let i=1;i<=5;i++){const x=document.createElement('span');x.className='dot';x.id='dot'+i;d.appendChild(x);}})();
+function paint(){
+  Object.keys(ACC).forEach(id=>document.getElementById(id).classList.toggle('vis',ACC[id]<=K));
+  for(let i=1;i<=5;i++)document.getElementById('dot'+i).classList.toggle('on',i===K);
+  document.getElementById('stepTxt').innerHTML=K?('<b class="hp">'+T('الخطوة '+K+' من 5','Étape '+K+' sur 5')+':</b> '+(LANG==='fr'?STEPS[K].fr:STEPS[K].ar)):'';
+  document.getElementById('prevS').disabled=K<=1;
+  document.getElementById('nextS').textContent=K===5?T('فهمت ✓','Compris ✓'):T('التالي ←','Suivant →');
+}
+function showStep(n){K=Math.min(Math.max(n,1),5);paint();}
+function step(d){ if(K===5&&d>0){goto(4);return;} showStep(K+d); }
+document.getElementById('prevS').addEventListener('click',()=>step(-1));
+document.getElementById('nextS').addEventListener('click',()=>step(1));
+paint();
+
+/* ═════ التمارين ═════ */
+const fbState={};
+function fb(id,ok,msgHTML){fbState[id]=ok;const e=document.getElementById('fb'+id);
+  e.className='fb '+(ok?'ok':'no');e.innerHTML=msgHTML;
+  document.getElementById('r'+id).textContent=ok?T('أحسنت ✓','Bravo ✓'):'—';}
+const MSG={
+ A:{ok:{ar:'<b>إجابة صحيحة!</b> اليخضورُ داخل الصانعات الخضراء هو الذي يمنح الورقةَ لونَها الأخضر ويلتقط الضوء.',fr:'<b>Bonne réponse !</b> La chlorophylle des chloroplastes donne la couleur verte et capte la lumière.'},
+    no:{ar:'ليس كذلك. <b>حاول مجدداً:</b> ابحث عن الصبغة التي تعطي النبتةَ لونها الأخضر.',fr:'Non. <b>Réessaie :</b> cherche le pigment qui donne sa couleur verte à la plante.'}},
+ B:{ok:{ar:'صحيح! <span style="direction:ltr;unicode-bidi:plaintext">9 × 8 = 72 mL من O₂</span>.',fr:'Juste ! 9 × 8 = 72 mL de O₂.'},
+    no:{ar:'اضرب الكميةَ في عدد الساعات — <b>حاول مرة أخرى</b>.',fr:'Multiplie le débit par le nombre d&#39;heures — <b>réessaie</b>.'}},
+ C:{ok:{ar:'<b>ممتاز!</b> ماءٌ وأملاحٌ من التربة + CO₂ من الهواء + طاقةٌ ضوئية: هذه الموادُ الأولية كاملة.',fr:'<b>Excellent !</b> Eau + sels du sol + CO₂ de l&#39;air + énergie lumineuse : c&#39;est la liste complète.'},
+    no:{ar:'تذكّر الوضعية: النبتةُ تحتاج ماءً وأملاحاً من التربة وCO₂ من الهواء وطاقةً من الضوء — <b>حاول مجدداً</b>.',fr:'Rappelle le problème : eau et sels du sol, CO₂ de l&#39;air et lumière — <b>réessaie</b>.'}},
+ D:{ok:{ar:'بطل! 🔥 <span style="direction:ltr;unicode-bidi:plaintext">500 × 3 = 1500 g</span> — أي لترٌ ونصف من الماء لثلاثة غراماتٍ فقط؛ وهذا يفسّر عطشَ النبتة المستمر.',fr:'Champion ! 🔥 500 × 3 = 1500 g — un litre et demi d&#39;eau pour 3 g à peine ; la plante a vraiment soif.'},
+    no:{ar:'العمليةُ واحدة: <span style="direction:ltr;unicode-bidi:plaintext">500 × 3</span> — <b>حاول مجدداً</b>.',fr:'Une seule opération : 500 × 3 — <b>réessaie</b>.'}}
+};
+function showA(ok){fb('A',ok, ok?MSG.A.ok[LANG]:MSG.A.no[LANG]);}
+function showC(ok){fb('C',ok, ok?MSG.C.ok[LANG]:MSG.C.no[LANG]);}
+function showNum(k,ok){fb(k,ok, ok?MSG[k].ok[LANG]:MSG[k].no[LANG]);}
+document.getElementById('optA').addEventListener('change',e=>showA(e.target.value==='1'));
+document.getElementById('optC').addEventListener('change',e=>showC(e.target.value==='1'));
+const VAL={B:72,D:1500};
+['B','D'].forEach(k=>document.getElementById('in'+k).addEventListener('change',()=>{
+  const v=parseFloat(document.getElementById('in'+k).value);
+  if(!isNaN(v))showNum(k,Math.abs(v-VAL[k])<1e-9);
+}));
+
+/* ═════ التحدي ═════ */
+const QS=[
+ {ar:'ما الغازُ الذي تُطلقه النبتةُ الخضراء أثناء التركيب الضوئي؟',fr:'Quel gaz la plante verte libère-t-elle lors de la photosynthèse ?',
+  o:{ar:['ثاني أوكسيد الكربون','الأوكسجين','الآزوت'],fr:['Dioxyde de carbone','Dioxygène','Azote']},a:1},
+ {ar:'أين تُصنع المادةُ العضوية في النبتة أساساً؟',fr:'Où la matière organique est-elle fabriquée dans la plante ?',
+  o:{ar:['الجذر','الورقة','الزهرة'],fr:['La racine','La feuille','La fleur']},a:1},
+ {ar:'ماءُ اليود — الذي يصبح أزرقَ أسود — يكشفُ عن وجود…',fr:"L'eau iodée, qui devient bleu-noir, révèle la présence de…",
+  o:{ar:['البروتين','الماء','النشا'],fr:['Protéines','Eau','Amidon']},a:2},
+ {ar:'ما الذي يصعد من التربة إلى الورقة على شكل عصارةٍ خام؟',fr:'Que monte du sol jusqu&#39;à la feuille dans la sève brute ?',
+  o:{ar:['ماء + أملاح معدنية','سكريات + O₂','CO₂ فقط'],fr:['Eau + sels minéraux','Sucres + O₂','CO₂ seulement']},a:0},
+ {ar:'نبتةٌ تُترك في ظلامٍ تام — ماذا يحدث؟',fr:'Une plante reste dans l&#39;obscurité totale — que se passe-t-il ?',
+  o:{ar:['يتسارع التركيبُ الضوئي','لا يحدث تركيبٌ ضوئي','يزداد إنتاج O₂'],fr:['La photosynthèse s&#39;accélère','Pas de photosynthèse','Le O₂ augmente']},a:1}
+];
+let qi=0,score=0,tLeft=60,tick=null,chActive=false,finished=false,lastTimeout=false,timed=true;
+const say=msg=>{const r=document.getElementById('chLive');r.textContent='';setTimeout(()=>{r.textContent=msg;},50);};
+document.getElementById('btnStart').addEventListener('click',()=>startChallenge());
+document.getElementById('btnNoTimer').addEventListener('click',()=>{
+  timed=false;clearInterval(tick);
+  document.getElementById('chClock').textContent='∞';
+  document.getElementById('btnNoTimer').hidden=true;
+  say(T('أُوقف المؤقت. خذ وقتك.','Minuteur arrêté. Prends ton temps.'));
+});
+function startChallenge(){
+  chActive=true; finished=false; qi=0; score=0; timed=true; document.getElementById('btnNoTimer').hidden=false;
+  document.getElementById('chIntro').style.display='none';
+  document.getElementById('chEnd').style.display='none';
+  document.getElementById('chBody').style.display='block';
+  tLeft=60; document.getElementById('chClock').textContent=tLeft; renderQ();
+  tick=setInterval(()=>{tLeft--;document.getElementById('chClock').textContent=tLeft;
+    if(tLeft===10)say(T('بقيت 10 ثوانٍ','Plus que 10 secondes'));
+    if(tLeft<=0)endChallenge(true);},1000);
+  document.getElementById('chQ').focus();
+}
+function renderQ(){
+  const Q=QS[qi];
+  document.getElementById('chIdx').textContent=T('السؤال '+(qi+1)+' من 5','Question '+(qi+1)+' sur 5');
+  document.getElementById('chBar').value=qi;
+  document.getElementById('chQ').innerHTML=(LANG==='fr'?Q.fr:Q.ar);
+  document.getElementById('chScore').textContent=T('النقاط: '+score,'Score : '+score);
+  const box=document.getElementById('chOpts'); box.innerHTML='';
+  (LANG==='fr'?Q.o.fr:Q.o.ar).forEach((txt,i)=>{const b=document.createElement('button');b.type='button';b.className='opt';
+    b.dir='auto';b.textContent=txt;
+    b.addEventListener('click',()=>answer(i));box.appendChild(b);});
+}
+function answer(i){
+  const ok=i===QS[qi].a; if(ok){score++;document.getElementById('chScore').textContent=T('النقاط: '+score,'Score : '+score);}
+  const btns=document.querySelectorAll('#chOpts .opt'); btns.forEach(b=>b.disabled=true);
+  btns[QS[qi].a].classList.add('sel'); btns[QS[qi].a].textContent+=' ✓';
+  say(ok?T('صحيح','Juste'):T('خطأ. الجواب الصحيح: ','Faux. Bonne réponse : ')+(ok?'':btns[QS[qi].a].textContent.replace(' ✓','')));
+  setTimeout(()=>{qi++; if(qi>=5)endChallenge(false); else {renderQ();document.getElementById('chQ').focus();}},ok?600:1400);
+}
+function showEnd(timeout){
+  document.getElementById('chBody').style.display='none';
+  document.getElementById('chEnd').style.display='block';
+  const r=T(score+' من 5','Score : '+score+' sur 5')+(timeout?T(' (انتهى الوقت!)',' (temps écoulé!)'):'');
+  document.getElementById('chResult').textContent=r;
+  document.getElementById('chMsg').innerHTML=score>=4?T('⚡ سرعةٌ ودقّة — أنت جاهز للفرض المحروس!','⚡ Vitesse et précision — prêt pour le contrôle !'):
+    score>=2?T('👍 أساسٌ جيّد — أعد المشهد الثالث ثم جرّب من جديد.','👍 Bon début — revois l&#39;étape 3 puis retente.'):
+    T('💪 لا بأس، التكرارُ يصنع الفارق. راجع الدرس وعد!','💪 Ce n&#39;est pas grave — revois la leçon et retente !');
+  document.getElementById('chBar').value=5; say(r);
+  document.getElementById('rCh').textContent=r;
+}
+function endChallenge(timeout){clearInterval(tick);chActive=false;finished=true;lastTimeout=timeout;showEnd(timeout);}
+
+/* ═════ الإقلاع ═════ */
+const h0=parseInt((location.hash||'#1').slice(1));
+goto(isNaN(h0)?1:h0,false);
+</script>
+</body>
+</html>
