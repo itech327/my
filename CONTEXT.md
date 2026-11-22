@@ -112,7 +112,11 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 ## Still open
 
 1. **Paid tier:** switch the Gemini key to paid.
-2. **Full app:** a database and storage, so it can go live: Cloudflare D1 and KV or R2, or Supabase.
+2. **Full app on Cloudflare:**
+   - Database layer done and tested: `app/src/lib/data/d1.ts`, schema `app/migrations/0001_init.sql`, `npm run test:d1` with 28 checks on a local D1 and KV.
+   - Covers accounts, hashed sessions, the trial once per email, credit lots, atomic reserve and release, free regeneration once, and no overdraft under concurrent requests.
+   - Not yet wired: going live needs the Workers Paid plan. The free plan allows 10 ms of CPU per request, too little for server-rendered pages. The owner chose to wait.
+   - KV on the free plan allows 1,000 writes a day, one per audio file.
 3. **Payments:** a real payment provider.
 4. **Free voices:**
    - Words before a comma get an extra sound ("المهمن"). Next test: drop commas inside sentences.
