@@ -54,7 +54,7 @@ if GA4 and not re.fullmatch(r'G-[A-Z0-9]{6,}', GA4):
     raise SystemExit('GA4_ID invalide : format G-XXXXXXXXXX attendu')
 if any(CFWA.values()) and GA4:
     raise SystemExit('Choisir Cloudflare ou GA4, pas les deux')
-RELAY = 'https://taalim-relay.abderrahim-habz.workers.dev'
+RELAY = re.search(r'LAB_NOTIFY_URL\s*=\s*"(https://[^"/]+)', (ROOT / 'lab' / 'notify-config.js').read_text(encoding='utf-8')).group(1)  # une seule source : lab/notify-config.js
 
 
 def csp(s):
