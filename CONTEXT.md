@@ -82,7 +82,8 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
   - Token protection on `f5_server.py`, tested: 401 without or with a wrong token.
   - Connector fallback (`FREE_VOICE_URL`, `FREE_VOICE_TOKEN`). نور falls back to هند, يونس to إدريس.
   - The app passes `TTS_SPEAKERS_TOKEN`.
-- **Not done:** choosing a GPU host and deploying the image. That needs the owner's account. Prefer a host that scales to zero.
+- **Postponed by the owner on 2026-11-22.** The owner has no GPU provider account. Cloudflare Containers have no GPU (max 4 vCPU, 12 GiB). When resuming: a GPU host that runs Docker and scales to zero (for example Hugging Face, RunPod or Modal; compare current prices first), or the owner's own computer through a Cloudflare Tunnel.
+- Recommended first: switch the Gemini key to Google's paid tier, which removes the 10-requests-a-day limit that makes the backup necessary.
 - A cold start can exceed Claude's 60 s limit. On a CPU, a short sentence takes about 35 s.
 
 ## Connector tools
