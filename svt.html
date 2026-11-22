@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-kbkghnGMtXNmDSx49J4SQGe+6dCaDeV27YAxVT8RZyE=' 'sha256-Jz8ZZmIh7UqugOGnnf7nQJLwzA5/fRq6gkkVhEmsmk8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-JKxVcHO5+8wC4UFYQ702udZKGXaguQUekviwf48pfZ4=' 'sha256-Jz8ZZmIh7UqugOGnnf7nQJLwzA5/fRq6gkkVhEmsmk8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والصحة، برسوم متحركة وملخصات بالعربية. Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.">
 <link rel="canonical" href="https://taalim.men/svt">
@@ -1938,7 +1938,7 @@ document.addEventListener('click',function(e){
   function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.welcomeDue = welcomeDue;
   function welcome() {
-    if (CFG.app === 'portal') return; /* l'accueil porte déjà le mot d'équilibre en pied de page */
+    return; /* plus de fenêtre d'accueil : le mot d'équilibre figure en pied de la page d'accueil seulement */
     if (!document.body || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
     var n = h('div', { 'class': 'lab-welcome lab-noprint', 'role': 'status', 'aria-live': 'polite' }), done = false, tm = 0;
     var c = h('div', { 'class': 'lab-welcome-card' });
@@ -1957,6 +1957,7 @@ document.addEventListener('click',function(e){
     store.set('lab_wel', Date.now());
   }
   function footNote() {
+    if (CFG.app !== 'portal') return; /* le mot d'équilibre en pied de page : accueil seulement */
     if (document.querySelector('.lab-balance.foot')) return;
     var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
     if (f && f.parentNode) f.parentNode.insertBefore(n, f);
