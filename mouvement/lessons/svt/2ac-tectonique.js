@@ -52,6 +52,11 @@
       ar: 'معرفة أن سطح الأرض مكون من صفائح تتحرك، وربط حركتها بتكون الجبال وحدوث الزلازل.'
     },
 
+    prerequis: {
+      fr: 'Structure interne du globe terrestre ; séismes et volcans, notions de base.',
+      ar: 'البنية الداخلية للكرة الأرضية والزلازل والبراكين.'
+    },
+
     ouverture: {
       vb: '0 0 360 300', label: 'Une ammonite dans l\'Atlas',
       hud: [['f', 'fossile'], ['v', 'il vivait'], ['t', 'trouvé']],

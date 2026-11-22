@@ -284,7 +284,11 @@
     function nextBtn(parent, label, to) { var b = H('button', 'btn pri', label, parent); b.style.marginTop = '12px'; b.onclick = function () { go(to); }; return b; }
 
     // 1. Ouverture
-    H('div', 'card obj', '<div class="eyebrow">Objectif de la séance</div><div>' + def.objectif.fr + '</div><div class="ar">' + ar(def.objectif.ar) + '</div>', secs[0]);
+    // durée estimée : étapes à regarder, cartes de préparation, exercices seuls ; arrondie à 5 min
+    var nSteps = (def.ouverture && def.ouverture.steps ? def.ouverture.steps.length : 0) + (def.regarde && def.regarde.steps ? def.regarde.steps.length : 0);
+    var mins = Math.max(5, Math.round((1 + nSteps * 0.3 + def.prepare.length * 0.4 + def.seul.length * 1.5) / 5) * 5);
+    H('div', 'card obj', '<div class="eyebrow">Objectif de la séance · environ ' + mins + ' min</div><div>' + def.objectif.fr + '</div><div class="ar">' + ar(def.objectif.ar) + '</div>' +
+      (def.prerequis ? '<div class="eyebrow" style="margin-top:12px">Avant de commencer · قبل أن تبدأ</div><div class="small">' + def.prerequis.fr + '</div><div class="ar small">' + ar(def.prerequis.ar) + '</div>' : ''), secs[0]);
     var c0 = H('div', 'card', '', secs[0]);
     var cp = null;
     if (def.predire) {

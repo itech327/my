@@ -29,6 +29,11 @@
       ar: 'استعمال التناسبية في السلم (المسافة على التصميم / المسافة الحقيقية) وفي السرعة المتوسطة [[v = d ÷ t]].'
     },
 
+    prerequis: {
+      fr: 'Quotient de deux nombres ; tableau de proportionnalité vu en 1AC.',
+      ar: 'خارج عددين وجدول التناسبية المدروس في السنة الأولى.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'De Meknès à Fès',
       hud: [['c', 'sur la carte'], ['e', 'échelle'], ['q', 'distance réelle ?']],

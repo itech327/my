@@ -47,6 +47,11 @@
       ar: 'معرفة واسطات المثلث وارتفاعاته ومتوسطاته ومنصفات زواياه ونقط تلاقيها.'
     },
 
+    prerequis: {
+      fr: 'Médiatrice d\'un segment, bissectrice d\'un angle, hauteur ; usage de l\'équerre et du compas.',
+      ar: 'واسط قطعة ومنصف زاوية والارتفاع واستعمال الكوس والبركار.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'Trois villages et un puits',
       hud: [['v', 'villages'], ['c', 'condition'], ['q', 'où ?']],

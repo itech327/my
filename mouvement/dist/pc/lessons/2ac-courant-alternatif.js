@@ -29,6 +29,11 @@
       ar: 'التمييز بين التوتر المستمر والمتناوب، وقراءة الدور والتوتر القصوي على راسم التذبذب، وحساب التردد [[f = 1/T]] والتوتر الفعال.'
     },
 
+    prerequis: {
+      fr: 'Circuit électrique simple ; tension et intensité vues en 1AC.',
+      ar: 'الدارة الكهربائية البسيطة والتوتر وشدة التيار.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: '220 V ~ 50 Hz',
       hud: [['p', 'pile'], ['s', 'prise'], ['q', 'que signifie « ~ » ?']],

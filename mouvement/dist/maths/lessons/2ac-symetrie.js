@@ -31,6 +31,11 @@
       ar: 'إنشاء مماثل نقطة وشكل بالنسبة لمستقيم، واستعمال حفاظ التماثل المحوري على المسافات والزوايا والاستقامية.'
     },
 
+    prerequis: {
+      fr: 'Droite, médiatrice et perpendiculaire ; usage de l\'équerre.',
+      ar: 'المستقيم والواسط والعمود واستعمال الكوس.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'Une tache d\'encre pliée',
       hud: [['a', 'avant'], ['p', 'après pliage'], ['q', 'où va chaque point ?']],

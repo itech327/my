@@ -29,6 +29,11 @@
       ar: 'تعرف أهم ملوثات الهواء ومصادرها، وآثارها على الصحة والبيئة، ووسائل الحد منها.'
     },
 
+    prerequis: {
+      fr: 'Composition de l\'air ; combustion et ses produits.',
+      ar: 'تركيب الهواء والاحتراق ونواتجه.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'Un voile sur la ville',
       hud: [['h', 'heure'], ['c', 'ciel'], ['q', 'origine ?']],

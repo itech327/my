@@ -29,6 +29,11 @@
       ar: 'حل معادلة من الدرجة الأولى بمجهول واحد من نوع [[ax + b = cx + d]]، وترييض مسألة.'
     },
 
+    prerequis: {
+      fr: 'Calcul littéral simple ; opérations sur les nombres relatifs.',
+      ar: 'الحساب الحرفي البسيط والعمليات على الأعداد النسبية.'
+    },
+
     ouverture: {
       vb: '0 0 360 190', label: 'Deux tarifs de taxi',
       hud: [['a', 'tarif A'], ['b', 'tarif B'], ['q', 'égaux pour ?']],

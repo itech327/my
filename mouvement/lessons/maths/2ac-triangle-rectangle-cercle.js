@@ -30,6 +30,11 @@
       ar: 'معرفة أن المثلث القائم الزاوية محاط بالدائرة التي قطرها وتره، واستعمال المتوسط المتعلق بالوتر والخاصية العكسية.'
     },
 
+    prerequis: {
+      fr: 'Cercle, diamètre et rayon ; triangle rectangle et angle droit.',
+      ar: 'الدائرة والقطر والشعاع والمثلث القائم الزاوية.'
+    },
+
     ouverture: {
       vb: '0 0 360 190', label: 'L\'équerre et les deux clous',
       hud: [['c', 'clous'], ['e', 'coin de l\'équerre'], ['q', 'quelle courbe ?']],

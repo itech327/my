@@ -33,6 +33,11 @@
       ar: 'تصنيف المواد حسب أصلها (طبيعية أو مصنعة) وفهم أهمية إعادة التدوير.'
     },
 
+    prerequis: {
+      fr: 'Corps purs et mélanges ; états de la matière.',
+      ar: 'الأجسام الخالصة والخلائط وحالات المادة.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'Un maillot et des bouteilles',
       hud: [['o', 'objet'], ['m', 'matière'], ['q', 'origine ?']],

@@ -29,6 +29,11 @@
       ar: 'تعريف جيب تمام زاوية حادة في مثلث قائم الزاوية واستعماله لحساب طول أو زاوية.'
     },
 
+    prerequis: {
+      fr: 'Triangle rectangle, hypoténuse et côté adjacent ; calcul d\'un quotient.',
+      ar: 'المثلث القائم الزاوية والوتر والضلع المجاور وحساب خارج القسمة.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Une rampe d\'accès',
       hud: [['l', 'longueur'], ['a', 'angle'], ['q', 'place au sol ?']],

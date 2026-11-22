@@ -32,6 +32,11 @@
       ar: 'إنشاء صورة شكل بإزاحة، والتعرف على المتجهات المتساوية، واستعمال علاقتها بمتوازي الأضلاع.'
     },
 
+    prerequis: {
+      fr: 'Repérage dans le plan ; parallélogramme et ses côtés parallèles.',
+      ar: 'التعيين في المستوى ومتوازي الأضلاع.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Le personnage du jeu',
       hud: [['d', 'droite'], ['h', 'haut'], ['q', 'comment le décrire ?']],

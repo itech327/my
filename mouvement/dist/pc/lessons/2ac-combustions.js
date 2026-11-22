@@ -22,6 +22,11 @@
       ar: 'تحديد المتفاعلات والنواتج في احتراق، ومعرفة خطر الاحتراق غير الكامل.'
     },
 
+    prerequis: {
+      fr: 'L\'air et ses constituants ; notion de corps pur et de mélange.',
+      ar: 'الهواء ومكوناته ومفهوم الجسم الخالص والخليط.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'Un chauffe-eau dans une salle de bain',
       hud: [['l', 'lieu'], ['a', 'air'], ['q', 'danger ?']],

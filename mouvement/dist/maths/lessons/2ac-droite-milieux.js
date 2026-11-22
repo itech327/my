@@ -30,6 +30,11 @@
       ar: 'استعمال خاصيات مستقيم منتصفي ضلعين في مثلث: التوازي، ونصف الطول، والخاصية العكسية.'
     },
 
+    prerequis: {
+      fr: 'Milieu d\'un segment, droites parallèles ; propriété des parallèles et de la médiatrice.',
+      ar: 'منتصف قطعة والمستقيمات المتوازية.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'Un portique triangulaire',
       hud: [['b', 'base'], ['m', 'barre'], ['q', 'pourquoi ?']],

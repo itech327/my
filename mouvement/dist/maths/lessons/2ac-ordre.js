@@ -27,6 +27,11 @@
       ar: 'مقارنة الأعداد الجذرية ومعرفة تأثير الجمع والضرب على الترتيب.'
     },
 
+    prerequis: {
+      fr: 'Comparer des nombres rationnels ; additionner et multiplier des rationnels.',
+      ar: 'مقارنة الأعداد الجذرية وجمعها وضربها.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'Ifrane et Midelt',
       hud: [['i', 'Ifrane'], ['m', 'Midelt'], ['q', 'plus froid ?']],

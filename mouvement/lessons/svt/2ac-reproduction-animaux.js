@@ -29,6 +29,11 @@
       ar: 'وصف التوالد الجنسي عند الحيوانات: الأمشاج، الإخصاب الداخلي أو الخارجي، والنمو المباشر أو بالتحول.'
     },
 
+    prerequis: {
+      fr: 'Êtres vivants et leurs besoins ; notion d\'espèce.',
+      ar: 'الكائنات الحية وحاجياتها ومفهوم النوع.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'Des têtards dans une mare',
       hud: [['v', 'on voit'], ['r', 'ressemble à'], ['q', 'deviendra']],

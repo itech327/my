@@ -29,6 +29,11 @@
       ar: 'معرفة أن الضوء ينتشر وفق خط مستقيم في وسط شفاف ومتجانس، وتفسير الظل الذاتي والظل المحمول والكسوف.'
     },
 
+    prerequis: {
+      fr: 'Source de lumière, milieux transparents et opaques.',
+      ar: 'المصدر الضوئي والأوساط الشفافة والمعتمة.'
+    },
+
     ouverture: {
       vb: '0 0 360 215', label: 'Une éclipse de Soleil',
       hud: [['s', 'Soleil'], ['l', 'Lune'], ['q', 'comment ?']],

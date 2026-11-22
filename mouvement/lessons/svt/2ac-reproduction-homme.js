@@ -29,6 +29,11 @@
       ar: 'معرفة دور الجهازين التناسليين، وتغيرات البلوغ، والإخصاب، والمراحل الكبرى للحمل.'
     },
 
+    prerequis: {
+      fr: 'Organes de l\'appareil reproducteur ; puberté ; cellule.',
+      ar: 'أعضاء الجهاز التناسلي والبلوغ والخلية.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'D\'une cellule à un bébé',
       hud: [['d', 'départ'], ['a', 'arrivée'], ['q', 'comment ?']],

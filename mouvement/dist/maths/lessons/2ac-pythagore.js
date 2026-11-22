@@ -17,6 +17,11 @@
       ar: 'حساب طول ضلع في مثلث قائم الزاوية إذا عرفنا طولي الضلعين الآخرين.'
     },
 
+    prerequis: {
+      fr: 'Triangle rectangle et hypoténuse ; carré d\'un nombre ; racine carrée d\'un carré parfait.',
+      ar: 'المثلث القائم الزاوية والوتر ومربع عدد.'
+    },
+
     ouverture: {
       vb: '0 0 360 300', label: 'Un cadre de porte et sa diagonale',
       hud: [['h', 'montant'], ['l', 'traverse'], ['d', 'diagonale']],

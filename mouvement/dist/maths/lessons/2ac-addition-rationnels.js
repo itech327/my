@@ -27,6 +27,11 @@
       ar: 'جمع وطرح عددين جذريين لهما نفس المقام أو بعد توحيد المقامات.'
     },
 
+    prerequis: {
+      fr: 'Placer et comparer des nombres relatifs ; additionner des entiers relatifs.',
+      ar: 'وضع الأعداد الصحيحة النسبية ومقارنتها وجمعها.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Le niveau d\'un puits',
       hud: [['a', 'variation 1'], ['b', 'variation 2'], ['t', 'total']],

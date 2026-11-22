@@ -21,6 +21,11 @@
       ar: 'كتابة وحساب القوى، واستعمال قواعد الحساب وقوى العدد 10.'
     },
 
+    prerequis: {
+      fr: 'Multiplication de nombres relatifs ; écriture d\'un produit de facteurs égaux.',
+      ar: 'ضرب الأعداد النسبية وكتابة جداء عوامل متساوية.'
+    },
+
     ouverture: {
       vb: '0 0 360 240', label: 'Des bactéries qui doublent',
       hud: [['t', 'temps'], ['n', 'bactéries'], ['q', 'après 3 h']],

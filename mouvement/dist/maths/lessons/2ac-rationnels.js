@@ -24,6 +24,11 @@
       ar: 'كتابة خارج عددين نسبيين، وتحديد إشارته، وتمثيله على مستقيم مدرج.'
     },
 
+    prerequis: {
+      fr: 'Fractions et nombres relatifs ; droite graduée.',
+      ar: 'الكسور والأعداد النسبية والمستقيم المدرّج.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'Une température qui baisse',
       hud: [['d', 'départ'], ['a', 'arrivée'], ['h', 'par heure']],

@@ -39,6 +39,11 @@
       ar: 'تسمية أعضاء الزهرة ووصف التأبير والإخصاب وتكون الثمرة والبذرة.'
     },
 
+    prerequis: {
+      fr: 'Parties d\'une fleur ; besoins des plantes vertes.',
+      ar: 'أجزاء الزهرة وحاجيات النباتات الخضراء.'
+    },
+
     ouverture: {
       vb: '0 0 360 220', label: 'Amandier en fleur',
       hud: [['m', 'février'], ['e', 'été'], ['q', 'comment ?']],

@@ -49,6 +49,11 @@
       ar: 'معرفة مكونات الهواء وتفسير قابليته للانضغاط والتمدد.'
     },
 
+    prerequis: {
+      fr: 'Les trois états de la matière ; notion de mélange vue en 1AC.',
+      ar: 'الحالات الفيزيائية الثلاث للمادة ومفهوم الخليط.'
+    },
+
     ouverture: {
       vb: '0 0 360 240', label: 'Un ballon qu\'on gonfle',
       hud: [['b', 'ballon'], ['a', 'air'], ['q', 'question']],

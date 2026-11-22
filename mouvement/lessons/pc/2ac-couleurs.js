@@ -38,6 +38,11 @@
       ar: 'معرفة أن الضوء الأبيض مكون من أضواء ملونة، وتفسير دور المرشح ولون الجسم.'
     },
 
+    prerequis: {
+      fr: 'Propagation rectiligne de la lumière ; source de lumière et objet éclairé.',
+      ar: 'الانتشار المستقيمي للضوء والمصدر الضوئي والجسم المضاء.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'L\'arc-en-ciel',
       hud: [['l', 'lumière du Soleil'], ['a', 'arc-en-ciel'], ['q', 'd\'où viennent les couleurs ?']],

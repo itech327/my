@@ -19,6 +19,11 @@
       ar: 'معرفة أن الصفات الوراثية محمولة على الصبغيات، وتفسير انتقال الصبغيات وتحديد الجنس.'
     },
 
+    prerequis: {
+      fr: 'Cellule et noyau ; reproduction sexuée vue en 1AC.',
+      ar: 'الخلية والنواة والتوالد الجنسي.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Fille ou garçon ?',
       hud: [['p', 'père'], ['m', 'mère'], ['q', 'qui décide ?']],

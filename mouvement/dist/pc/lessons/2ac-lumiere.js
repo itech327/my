@@ -29,6 +29,11 @@
       ar: 'التمييز بين المنبع الضوئي الأولي والجسم المضاء، وتصنيف الأوساط إلى شفافة وشبه شفافة وغير شفافة.'
     },
 
+    prerequis: {
+      fr: 'Source de lumière ; propagation en ligne droite vue en 1AC.',
+      ar: 'المصدر الضوئي والانتشار المستقيمي للضوء.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'La Lune brille',
       hud: [['o', 'objet'], ['v', 'on le voit ?'], ['q', 'produit sa lumière ?']],

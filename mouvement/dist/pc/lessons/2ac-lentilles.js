@@ -31,6 +31,11 @@
       ar: 'التمييز بين العدسات المجمعة والمفرقة، ومعرفة البؤرة والمسافة البؤرية، وحساب القوة [[C = 1/f]].'
     },
 
+    prerequis: {
+      fr: 'Propagation de la lumière ; rayon lumineux et image.',
+      ar: 'انتشار الضوء والشعاع الضوئي والصورة.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'La loupe et le Soleil',
       hud: [['l', 'lumière'], ['p', 'après la loupe'], ['q', 'ce point ?']],

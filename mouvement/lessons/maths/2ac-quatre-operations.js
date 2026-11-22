@@ -28,6 +28,11 @@
       ar: 'إنجاز سلسلة من العمليات الأربع على الأعداد الجذرية مع احترام الأولويات وقواعد الإشارات.'
     },
 
+    prerequis: {
+      fr: 'Les opérations sur les rationnels, une à une : addition, soustraction, multiplication, division.',
+      ar: 'العمليات الأربع على الأعداد الجذرية كلٌّ على حدة.'
+    },
+
     ouverture: {
       vb: '0 0 360 180', label: 'L\'argent d\'Ahmed',
       hud: [['d1', '1re dépense'], ['d2', '2e dépense'], ['q', 'reste ?']],

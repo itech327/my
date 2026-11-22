@@ -34,6 +34,11 @@
       ar: 'التعرف على الهرم ومخروط الدوران وحساب حجمهما [[V = (B × h) ÷ 3]].'
     },
 
+    prerequis: {
+      fr: 'Aire d\'un triangle et d\'un disque ; volume d\'un solide droit vu en 1AC.',
+      ar: 'مساحة المثلث والقرص وحجم مجسم قائم.'
+    },
+
     ouverture: {
       vb: '0 0 360 205', label: 'Pyramide et prisme',
       hud: [['p', 'pyramide'], ['r', 'prisme'], ['q', 'combien de fois ?']],

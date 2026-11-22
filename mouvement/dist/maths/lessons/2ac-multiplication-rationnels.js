@@ -26,6 +26,11 @@
       ar: 'ضرب عددين جذريين، وتطبيق قاعدة الإشارات، والقسمة بالضرب في المقلوب.'
     },
 
+    prerequis: {
+      fr: 'Multiplier des entiers relatifs ; simplifier une fraction.',
+      ar: 'ضرب الأعداد الصحيحة النسبية واختزال كسر.'
+    },
+
     ouverture: {
       vb: '0 0 360 230', label: 'Un terrain partagé',
       hud: [['a', 'cultivé'], ['b', 'oliviers'], ['q', 'part du terrain']],

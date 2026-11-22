@@ -35,6 +35,11 @@
       ar: 'فهم دور المكبرة، ونمذجة العين بعدسة مجمعة وشاشة، وتفسير تصحيح قصر البصر وطول البصر.'
     },
 
+    prerequis: {
+      fr: 'Lentille convergente ; image réelle et image virtuelle.',
+      ar: 'العدسة المجمعة والصورة الحقيقية والصورة الوهمية.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Le tableau flou',
       hud: [['s', 'Samir'], ['v', 'vision de loin'], ['q', 'pourquoi ?']],

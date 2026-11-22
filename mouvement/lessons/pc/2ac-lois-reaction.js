@@ -30,6 +30,11 @@
       ar: 'معرفة أن الكتلة والذرات تنحفظ خلال التفاعل الكيميائي، وكتابة معادلة متوازنة.'
     },
 
+    prerequis: {
+      fr: 'Transformation chimique ; atomes et molécules ; conservation de la masse.',
+      ar: 'التحول الكيميائي والذرات والجزيئات وانحفاظ الكتلة.'
+    },
+
     ouverture: {
       vb: '0 0 360 240', label: 'Le charbon disparaît-il ?',
       hud: [['a', 'avant'], ['p', 'après'], ['q', 'question']],

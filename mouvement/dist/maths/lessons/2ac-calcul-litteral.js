@@ -27,6 +27,11 @@
       ar: 'اختزال تعبير، والنشر بخاصية التوزيع المزدوجة [[(a + b)(c + d)]]، والتعميل بعامل مشترك.'
     },
 
+    prerequis: {
+      fr: 'Remplacer une lettre par un nombre ; règles de priorité des opérations.',
+      ar: 'تعويض حرف بعدد وأولويات العمليات الحسابية.'
+    },
+
     ouverture: {
       vb: '0 0 360 230', label: 'Un jardin agrandi',
       hud: [['c', 'côtés'], ['a', 'aire'], ['q', 'développée ?']],

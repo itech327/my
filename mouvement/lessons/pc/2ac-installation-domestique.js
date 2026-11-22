@@ -34,6 +34,11 @@
       ar: 'وصف التركيب الكهربائي المنزلي: الطور، المحايد، الأرضي، العداد، الفاصل، الأجهزة المركبة على التوازي، وقواعد السلامة.'
     },
 
+    prerequis: {
+      fr: 'Courant et tension ; dangers de l\'électricité ; circuit simple et dérivation.',
+      ar: 'التيار والتوتر وأخطار الكهرباء والدارة البسيطة.'
+    },
+
     ouverture: {
       vb: '0 0 360 210', label: 'Le tournevis testeur',
       hud: [['t1', 'trou 1'], ['t2', 'trou 2'], ['q', 'pourquoi ?']],

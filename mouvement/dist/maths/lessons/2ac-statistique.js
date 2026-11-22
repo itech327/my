@@ -29,6 +29,11 @@
       ar: 'حساب المعدل الحسابي لمتسلسلة (بسيطة أو بالحصيصات)، وتحديد المنوال والحصيصات المتراكمة.'
     },
 
+    prerequis: {
+      fr: 'Lire un tableau d\'effectifs ; calculer une moyenne simple.',
+      ar: 'قراءة جدول التكرارات وحساب معدل بسيط.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Les notes de Nora',
       hud: [['n', 'notes'], ['o', 'objectif'], ['q', 'dernier devoir ?']],

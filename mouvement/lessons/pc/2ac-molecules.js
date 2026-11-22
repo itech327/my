@@ -30,6 +30,11 @@
       ar: 'تمثيل جزيئة بنموذج وبصيغة، والتمييز بين الجسم البسيط والجسم المركب.'
     },
 
+    prerequis: {
+      fr: 'Corps purs et mélanges ; transformation physique et chimique.',
+      ar: 'الأجسام الخالصة والخلائط والتحول الفيزيائي والكيميائي.'
+    },
+
     ouverture: {
       vb: '0 0 360 200', label: 'Eau et dioxygène',
       hud: [['e', 'eau'], ['o', 'dioxygène'], ['q', 'question']],
