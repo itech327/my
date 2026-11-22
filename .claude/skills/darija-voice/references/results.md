@@ -297,3 +297,4 @@ naturalness; the recognizer only guards against swallowed words.
 - Quota fallback verified end to end: نور got 429, هند spoke in 51 s, editor and API reported it (`app-hind-fusha-fallback.wav`).
 - Free-tier quota came back in short windows during the night, not only at the daily reset.
 - Ear verdict on يونس story (Gemini, darija-male designed voice, story delivery): "very good voice".
+- نور fusha, new designed voice (news-anchor prompt), via the live connector, radio delivery: CER 0.034, from Gemini (no fallback). Recognizer diffs only ذ→د, ث→ت and one split word, which is its Darija spelling. No Darija words detected. Ear verdict pending. Sample `app-nour-fusha-v2.wav`.
