@@ -80,6 +80,15 @@
       ]
     },
 
+    predire: {
+      q: "Un car quitte Casablanca à 8 h 00 et arrive à Rabat à 9 h 30, après environ 90 km. Quelle est sa vitesse moyenne ?",
+      ar: "حافلة تغادر الدار البيضاء على [[8 h 00]] وتصل الرباط على [[9 h 30]] بعد نحو [[90 km]]. ما سرعتها المتوسطة؟",
+      o: ["100 km/h", "60 km/h", "90 km/h"],
+      a: 1,
+      e: "v = d ÷ t = 90 km ÷ 1,5 h = 60 km/h. Le compteur a parfois indiqué 100 km/h, mais la vitesse moyenne tient compte de toute la durée, arrêt au péage compris.",
+      ear: "[[v = d ÷ t = 90 ÷ 1,5 = 60 km/h]]. السرعة المتوسطة تحتسب المدة كلها بما فيها التوقف."
+    },
+
     prepare: [
       ['1 h 30 min = 1,30 h', false, '30 min, c\'est la moitié d\'une heure : 1 h 30 min = 1,5 h.'],
       ['1 km = 1 000 m', true, 'Le préfixe kilo signifie mille.'],

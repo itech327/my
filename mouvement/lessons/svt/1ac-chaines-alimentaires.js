@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans une plaine, on capture presque tous les lézards. Que va-t-il arriver aux criquets ?",
+      ar: "في سهل نصطاد معظم السحالي. ماذا سيحدث للجنادب؟",
+      o: ["Rien ne changera", "Leur nombre augmentera", "Leur nombre diminuera"],
+      a: 1,
+      e: "Les lézards mangent les criquets. Sans eux, les criquets se multiplient et envahissent les champs. La disparition d'un maillon perturbe toute la chaîne alimentaire.",
+      ear: "السحالي تأكل الجنادب، وبغيابها تتكاثر الجنادب وتغزو الحقول. اختفاء حلقة واحدة يُخلّ بالسلسلة كلها."
+    },
+
     prepare: [
       ['Les plantes vertes fabriquent leur propre matière.', true, 'Ce sont des producteurs.'],
       ['Le lézard mange de l\'herbe.', false, 'Le lézard est carnivore : il mange des insectes.'],

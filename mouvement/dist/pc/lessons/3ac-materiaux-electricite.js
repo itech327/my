@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Entre les pinces d'un circuit ouvert, la mine d'un crayon fait briller la lampe, mais une règle en plastique non. Pourquoi ?",
+      ar: "بين طرفي دارة مفتوحة، قلم الرصاص يجعل المصباح يضيء لكن المسطرة البلاستيكية لا. لماذا؟",
+      o: ["La mine est plus lourde que la règle", "La mine conduit le courant, le plastique est isolant", "La règle est trop longue"],
+      a: 1,
+      e: "La mine est en graphite, un conducteur : des électrons libres peuvent s'y déplacer. Le plastique est un isolant : il ne laisse pas passer le courant électrique.",
+      ear: "سنّ القلم من الغرافيت وهو موصل تتحرك فيه إلكترونات حرة، أما البلاستيك فعازل لا يمرّر التيار."
+    },
+
     prepare: [
       ['Les fils électriques sont en cuivre.', true, 'Le cuivre conduit très bien le courant.'],
       ['Le plastique conduit le courant.', false, 'C\'est un isolant : on l\'utilise pour la gaine des fils.'],

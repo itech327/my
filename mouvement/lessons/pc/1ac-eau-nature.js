@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "En hiver, il neige sur l'Atlas. D'où vient l'eau des nuages ?",
+      ar: "في الشتاء تتساقط الثلوج على الأطلس. من أين يأتي ماء السحب؟",
+      o: ["Elle se forme seule, sans lien avec l'eau du sol", "De l'eau des mers et des sols qui s'évapore grâce au Soleil", "Elle vient de l'espace"],
+      a: 1,
+      e: "Le Soleil fait évaporer l'eau des mers, des oueds et du sol. La vapeur se condense en nuages, puis retombe en pluie ou en neige : c'est le cycle de l'eau.",
+      ear: "تبخّر الشمس مياه البحار والأودية والتربة، ويتكثف البخار سحباً ثم يسقط مطراً أو ثلجاً: إنها دورة الماء."
+    },
+
     prepare: [
       ['L\'eau existe sous trois états : solide, liquide et gazeux.', true, 'Glace, eau liquide et vapeur d\'eau.'],
       ['On voit la vapeur d\'eau.', false, 'La vapeur d\'eau est invisible. Ce qu\'on voit au-dessus d\'une casserole, ce sont de fines gouttelettes.'],

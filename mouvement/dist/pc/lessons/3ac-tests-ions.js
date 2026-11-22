@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "Trois flacons ont perdu leur étiquette : ions cuivre, fer III et zinc. On ajoute de la soude dans chacun. Quel flacon donne un précipité bleu ?",
+      ar: "ثلاث قنينات فقدت ملصقاتها: أيونات النحاس والحديد III والزنك. نضيف الصودا إلى كل منها. أي قنينة تعطي راسباً أزرق؟",
+      o: ["Le flacon à ions zinc", "Le flacon à ions fer III", "Le flacon à ions cuivre"],
+      a: 2,
+      e: "Avec la soude, Cu²⁺ donne un précipité bleu, Fe³⁺ un précipité rouille et Zn²⁺ un précipité blanc. La couleur du précipité identifie l'ion.",
+      ear: "مع الصودا: [[Cu²⁺]] راسب أزرق، و[[Fe³⁺]] راسب صدئي، و[[Zn²⁺]] راسب أبيض."
+    },
+
     prepare: [
       ['Un ion est un atome ou un groupe d\'atomes qui porte une charge.', true, 'Positive (cation) ou négative (anion).'],
       ['Une solution ionique est toujours colorée.', false, 'Beaucoup sont incolores, comme l\'eau salée.'],

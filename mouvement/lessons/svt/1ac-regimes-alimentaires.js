@@ -49,6 +49,15 @@
       ]
     },
 
+    predire: {
+      q: "Comment savoir si un animal est herbivore ou carnivore sans l'observer manger ?",
+      ar: "كيف نعرف إن كان الحيوان عاشب أو لاحماً دون أن نراه يأكل؟",
+      o: ["Grâce à sa couleur", "Grâce à sa taille", "Grâce à la forme de ses dents"],
+      a: 2,
+      e: "La forme des dents est adaptée au régime : molaires larges chez l'herbivore, canines longues chez le carnivore, et les deux chez l'omnivore.",
+      ear: "شكل الأسنان يناسب نوع التغذية: أضراس عريضة عند العواشب وأنياب طويلة عند اللواحم."
+    },
+
     prepare: [
       ['Tous les animaux mangent la même nourriture.', false, 'Chaque espèce a son régime alimentaire.'],
       ['Les plantes vertes fabriquent leur propre matière.', true, 'Elles n\'ont pas besoin de manger d\'autres êtres vivants.'],

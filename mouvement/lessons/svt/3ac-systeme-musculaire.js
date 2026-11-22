@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "Pour plier le coude et soulever un cartable, quel muscle se contracte ?",
+      ar: "لثني المرفق ورفع حقيبة، أي عضلة تتقلص؟",
+      o: ["Le triceps", "Le biceps", "Les deux en même temps"],
+      a: 1,
+      e: "Pour plier le coude, le biceps se contracte, c'est-à-dire qu'il raccourcit, pendant que le triceps se relâche. Pour tendre le bras, c'est l'inverse : ce sont des muscles antagonistes.",
+      ear: "لثني المرفق تتقلص العضلة ذات الرأسين وترتخي ثلاثية الرؤوس، وللبسط يحدث العكس: عضلتان متضادتان."
+    },
+
     prepare: [
       ['Les muscles sont attachés aux os par des tendons.', true, 'Ce sont des cordons solides.'],
       ['Un muscle peut pousser un os.', false, 'Un muscle ne fait que tirer en se contractant.'],

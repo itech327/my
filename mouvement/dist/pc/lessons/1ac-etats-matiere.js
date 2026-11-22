@@ -60,6 +60,15 @@
       ]
     },
 
+    predire: {
+      q: "Un glaçon, de l'eau liquide et de la vapeur sont toujours de l'eau. Qu'est-ce qui les distingue ?",
+      ar: "قطعة جليد وماء سائل وبخار كلها ماء. ما الذي يميّزها؟",
+      o: ["Leur substance : ce sont trois corps différents", "Leur façon d'occuper l'espace : forme et volume propres ou non", "Leur couleur"],
+      a: 1,
+      e: "C'est la même substance dans trois états. Un solide a une forme et un volume propres. Un liquide a un volume propre et prend la forme du récipient. Un gaz n'a ni forme ni volume propres.",
+      ear: "المادة واحدة بثلاث حالات: الصلب له شكل وحجم خاصان، والسائل له حجم خاص ويأخذ شكل الإناء، والغاز لا شكل له ولا حجم."
+    },
+
     prepare: [
       ['Le lait est un liquide.', true, 'Il coule et prend la forme du récipient.'],
       ['Une pierre change de forme quand on la met dans une boîte.', false, 'Un solide garde sa propre forme.'],

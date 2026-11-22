@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "Le trésor est à 3 pas vers l'est puis 2 pas vers le sud du puits O. Quelles coordonnées lui donner ?",
+      ar: "الكنز على بعد [[3]] خطوات شرقاً ثم [[2]] جنوباً من البئر [[O]]. ما إحداثياه؟",
+      o: ["(3 ; 2)", "(−3 ; 2)", "(3 ; −2)"],
+      a: 2,
+      e: "L'est est à droite : l'abscisse est +3. Le sud est vers le bas : l'ordonnée est −2. Le trésor est en (3 ; −2). Le premier nombre est toujours l'abscisse.",
+      ear: "الشرق نحو اليمين فالفاصلة [[+3]]، والجنوب نحو الأسفل فالترتيبة [[−2]]: الكنز في [[(3 ; −2)]]."
+    },
+
     prepare: [
       ['Sur une droite graduée, −3 est à gauche de 0.', true, 'Les nombres négatifs sont à gauche de l\'origine.'],
       ['Le point (2 ; 5) et le point (5 ; 2) sont le même point.', false, 'L\'ordre compte : abscisse d\'abord, ordonnée ensuite.'],

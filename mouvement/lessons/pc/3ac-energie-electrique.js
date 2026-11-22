@@ -39,6 +39,15 @@
       ]
     },
 
+    predire: {
+      q: "Une ampoule de 60 W et une lampe LED de 8 W restent allumées 5 heures. Combien de fois plus d'énergie l'ampoule consomme-t-elle ?",
+      ar: "مصباح [[60 W]] ومصباح LED [[8 W]] يبقيان مضاءين [[5]] ساعات. كم مرة تفوق طاقة المصباح العادي طاقة LED؟",
+      o: ["Environ 2 fois", "Environ 7,5 fois", "Environ 50 fois"],
+      a: 1,
+      e: "E = P × t. Pendant la même durée, l'énergie est proportionnelle à la puissance : 60 ÷ 8 = 7,5. L'ampoule consomme 300 Wh et la LED 40 Wh.",
+      ear: "[[E = P × t]]: المدة نفسها فالنسبة [[60 ÷ 8 = 7,5]]؛ [[300 Wh]] مقابل [[40 Wh]]."
+    },
+
     prepare: [
       ['La puissance s\'exprime en watts (W).', true, 'Elle est souvent écrite sur l\'appareil.'],
       ['Un appareil plus puissant consomme moins d\'énergie dans le même temps.', false, 'Il en consomme plus.'],

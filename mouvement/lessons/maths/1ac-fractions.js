@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "Hiba mange 1/2 de sa galette. Nour mange 2/4 de la sienne, de même taille. Qui a mangé le plus ?",
+      ar: "هبة أكلت [[1/2]] من فطيرتها ونور أكلت [[2/4]] من فطيرة مماثلة. من أكلت أكثر؟",
+      o: ["Hiba", "Nour", "Elles ont mangé autant"],
+      a: 2,
+      e: "2/4 = 1/2 : on peut diviser le numérateur et le dénominateur par 2 sans changer la valeur. Les deux fractions sont égales, donc les deux sœurs ont mangé la même quantité.",
+      ear: "[[2/4 = 1/2]]: نقسم البسط والمقام على [[2]]، فالكسران متساويان."
+    },
+
     prepare: [
       ['Dans 3/4, le dénominateur est 4.', true, 'Le dénominateur, en bas, dit en combien de parts égales on partage.'],
       ['3/4 veut dire : on prend 4 parts sur 3.', false, 'On partage en 4 parts égales et on en prend 3.'],

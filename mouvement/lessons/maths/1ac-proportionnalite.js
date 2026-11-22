@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "Les tomates coûtent 4 DH le kilo, plus 2 DH pour le sac. Le prix est-il proportionnel à la masse ?",
+      ar: "الطماطم [[4 DH]] للكيلوغرام زائد [[2 DH]] ثمن الكيس. هل الثمن متناسب مع الكتلة؟",
+      o: ["Oui, 2 kg coûtent le double de 1 kg", "Non, 2 kg ne coûtent pas le double de 1 kg", "On ne peut pas savoir"],
+      a: 1,
+      e: "1 kg coûte 4 + 2 = 6 DH et 2 kg coûtent 8 + 2 = 10 DH, pas 12 DH. Les 2 DH du sac cassent la proportionnalité. Pour les oranges, au contraire, 5 kg coûtent 5 × 7 = 35 DH.",
+      ear: "[[1 kg = 6 DH]] و[[2 kg = 10 DH]] وليس [[12 DH]]، فثمن الكيس يُفسد التناسب."
+    },
+
     prepare: [
       ['Si 1 cahier coûte 6 DH, 3 cahiers coûtent 18 DH.', true, '3 × 6 = 18.'],
       ['L\'âge et la taille d\'un enfant sont proportionnels.', false, 'La taille n\'est pas multipliée par 2 quand l\'âge double.'],

@@ -47,6 +47,15 @@
       ]
     },
 
+    predire: {
+      q: "Hors de l'eau, un poisson s'asphyxie alors que l'air contient beaucoup de dioxygène. Pourquoi ?",
+      ar: "خارج الماء يختنق السمك مع أن الهواء غني بثنائي الأكسجين. لماذا؟",
+      o: ["Il n'a pas besoin de dioxygène", "Ses branchies sont adaptées à l'eau et ne fonctionnent pas dans l'air", "L'air est toxique pour tous les animaux"],
+      a: 1,
+      e: "Tous les êtres vivants respirent, mais l'organe respiratoire est adapté au milieu : des branchies dans l'eau, des poumons dans l'air.",
+      ear: "كل الكائنات الحية تتنفس، لكن العضو التنفسي يناسب الوسط: خياشيم في الماء ورئتان في الهواء."
+    },
+
     prepare: [
       ['Les animaux ont besoin de dioxygène pour vivre.', true, 'Ils le prennent dans l\'air ou dans l\'eau.'],
       ['L\'eau d\'une rivière ne contient pas de dioxygène.', false, 'Le dioxygène y est dissous : les poissons l\'utilisent.'],

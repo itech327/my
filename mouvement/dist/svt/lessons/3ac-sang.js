@@ -62,6 +62,15 @@
       ]
     },
 
+    predire: {
+      q: "Quelles cellules du sang transportent le dioxygène des poumons vers les muscles ?",
+      ar: "أي خلايا الدم تنقل ثنائي الأكسجين من الرئتين إلى العضلات؟",
+      o: ["Les globules blancs", "Les globules rouges", "Les plaquettes"],
+      a: 1,
+      e: "Le sang est formé de plasma et de cellules : les globules rouges transportent le dioxygène, les globules blancs défendent l'organisme et les plaquettes servent à la coagulation. Le glucose est transporté par le plasma.",
+      ear: "الكريات الحمراء تنقل ثنائي الأكسجين، والبيضاء تدافع عن الجسم، والصفائح تساهم في التخثر، والبلازما تنقل الغلوكوز."
+    },
+
     prepare: [
       ['Le sang est rouge à cause des globules rouges.', true, 'Ils contiennent une substance rouge, l\'hémoglobine.'],
       ['Le sang reste immobile dans les vaisseaux.', false, 'Il circule sans arrêt, poussé par le cœur.'],

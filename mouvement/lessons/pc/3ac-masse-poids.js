@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "Un astronaute de 80 kg sur Terre part sur la Lune. Quelle est sa masse là-bas ?",
+      ar: "رائد فضاء كتلته [[80 kg]] على الأرض يذهب إلى القمر. كم تصبح كتلته هناك؟",
+      o: ["Environ 13 kg", "80 kg", "0 kg"],
+      a: 1,
+      e: "La masse ne dépend pas du lieu : 80 kg partout. C'est le poids qui change : P = m × g = 80 × 1,6 = 128 N sur la Lune, contre 80 × 9,8 = 784 N sur Terre.",
+      ear: "الكتلة لا تتغير بتغير المكان: [[80 kg]]. الذي يتغير هو الوزن: [[P = m × g = 128 N]] على القمر."
+    },
+
     prepare: [
       ['La masse se mesure avec une balance.', true, 'En kilogrammes (kg).'],
       ['Le poids et la masse, c\'est la même chose.', false, 'Le poids est une force, en newtons.'],

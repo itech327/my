@@ -39,6 +39,15 @@
       ]
     },
 
+    predire: {
+      q: "Une pile alimente une lampe. L'ampèremètre indique 0,18 A avant la lampe. Que va-t-il indiquer après la lampe ?",
+      ar: "عمود يغذي مصباحاً. يشير الأمبيرمتر إلى [[0,18 A]] قبل المصباح. ماذا سيشير بعد المصباح؟",
+      o: ["Moins de 0,18 A : la lampe a usé du courant", "0,18 A : la même valeur", "0 A"],
+      a: 1,
+      e: "Dans un circuit en série, l'intensité est la même en tout point. La lampe n'use pas le courant : elle transforme l'énergie électrique en lumière et en chaleur.",
+      ear: "في دارة على التوالي تكون الشدة نفسها في كل نقطة. المصباح لا يستهلك التيار بل يحوّل الطاقة إلى ضوء وحرارة."
+    },
+
     prepare: [
       ['L\'intensité du courant se mesure en ampères (A).', true, 'Symbole A.'],
       ['1 A = 100 mA.', false, '1 A = 1 000 mA.'],

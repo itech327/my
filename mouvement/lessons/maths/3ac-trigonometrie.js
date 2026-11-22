@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "Une échelle de 5 m est posée contre un mur. Elle fait un angle de 60° avec le sol. À quelle hauteur touche-t-elle le mur ?",
+      ar: "سلّم طوله [[5 m]] مسنود إلى جدار ويصنع زاوية [[60°]] مع الأرض. على أي ارتفاع يلمس الجدار؟",
+      o: ["2,5 m", "4,3 m", "5 m"],
+      a: 1,
+      e: "La hauteur est le côté opposé à l'angle de 60° : h = 5 × sin 60° ≈ 5 × 0,866 ≈ 4,3 m. Le pied de l'échelle est à 5 × cos 60° = 2,5 m du mur.",
+      ear: "الارتفاع هو الضلع المقابل للزاوية: [[h = 5 × sin 60° ≈ 4,3 m]]."
+    },
+
     prepare: [
       ['L\'hypoténuse est le côté opposé à l\'angle droit.', true, 'C\'est le plus long côté.'],
       ['Dans un triangle rectangle, les deux angles aigus font 90° ensemble.', true, '180° − 90° = 90°.'],

@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans une classe de 30 élèves, 12 préfèrent le football. Quelle est la fréquence du football ?",
+      ar: "في قسم من [[30]] تلميذاً يفضّل [[12]] كرة القدم. ما تواتر كرة القدم؟",
+      o: ["12 %", "40 %", "60 %"],
+      a: 1,
+      e: "Fréquence = effectif ÷ effectif total = 12 ÷ 30 = 0,4 = 40 %. Le nombre 12 est un effectif, pas un pourcentage.",
+      ear: "التواتر [[= 12 ÷ 30 = 0,4 = 40 %]]. العدد [[12]] هو التكرار وليس نسبة."
+    },
+
     prepare: [
       ['L\'effectif d\'une valeur est le nombre de fois où elle apparaît.', true, 'On compte.'],
       ['La somme des effectifs est l\'effectif total.', true, 'Ici, 30 élèves.'],

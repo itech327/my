@@ -45,6 +45,15 @@
       ]
     },
 
+    predire: {
+      q: "Pendant une coupure de courant, la télévision s'éteint mais la lampe de poche marche encore. Pourquoi ?",
+      ar: "أثناء انقطاع الكهرباء ينطفئ التلفاز لكن المصباح اليدوي يشتغل. لماذا؟",
+      o: ["La lampe de poche n'a pas besoin d'électricité", "La lampe de poche a sa propre source, une pile", "La télévision consomme trop"],
+      a: 1,
+      e: "Un récepteur a besoin d'une source. La télévision utilise le secteur, qui est coupé. La lampe de poche utilise sa propre pile.",
+      ear: "كل جهاز يحتاج مصدراً: التلفاز يعتمد على القطاع المنقطع، أما المصباح اليدوي ففيه عموده الخاص."
+    },
+
     prepare: [
       ['Une pile fournit de l\'électricité.', true, 'C\'est une source portable.'],
       ['Une lampe produit de l\'électricité.', false, 'Elle en consomme : c\'est un récepteur.'],

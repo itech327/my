@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "Deux équipes tirent sur une corde en sens contraires, et la corde reste immobile. Quelles conditions les deux forces doivent-elles remplir ?",
+      ar: "فريقان يشدّان حبلاً في اتجاهين متعاكسين فيبقى ساكناً. ما شروط القوتين؟",
+      o: ["Même sens et même intensité", "Même droite d'action, sens opposés et même intensité", "Seulement la même intensité"],
+      a: 1,
+      e: "Un solide soumis à deux forces est en équilibre si elles ont la même droite d'action, des sens opposés et la même intensité.",
+      ear: "يكون الجسم متوازناً تحت قوتين إذا كان لهما خط التأثير نفسه ومنحيان متعاكسان وشدة واحدة."
+    },
+
     prepare: [
       ['Une force se mesure en newtons (N).', true, 'Avec un dynamomètre.'],
       ['Une force n\'a pas de sens.', false, 'Une force a un sens : on tire ou on pousse dans une direction précise.'],

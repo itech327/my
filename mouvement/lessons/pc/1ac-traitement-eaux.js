@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "L'eau du barrage est trouble, celle du robinet est limpide et potable. Que se passe-t-il entre les deux ?",
+      ar: "ماء السد عكر وماء الصنبور رائق وصالح للشرب. ماذا يحدث بينهما؟",
+      o: ["On ajoute seulement du chlore", "On fait bouillir toute l'eau du barrage", "On retire les déchets, on décante, on filtre, puis on désinfecte"],
+      a: 2,
+      e: "Une station fait un dégrillage, une décantation, une filtration, puis une désinfection au chlore ou à l'ozone. Le chlore seul n'enlève ni la terre ni les feuilles.",
+      ear: "المحطة تُزيل الشوائب الكبيرة ثم تُرسّب وترشّح ثم تعقّم بالكلور أو الأوزون. الكلور وحده لا يزيل التراب."
+    },
+
     prepare: [
       ['Une eau limpide est toujours potable.', false, 'Elle peut contenir des microbes invisibles.'],
       ['La décantation laisse les particules lourdes tomber au fond.', true, 'Vu dans la leçon sur les mélanges.'],

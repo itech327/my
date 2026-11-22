@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Une bouteille pleine d'eau gèle au congélateur et éclate. La glace pèse-t-elle plus lourd que l'eau de départ ?",
+      ar: "قنينة مملوءة ماء تتجمد في المجمّد وتنفجر. هل يزن الجليد أكثر من الماء الأصلي؟",
+      o: ["Plus lourd, car elle occupe plus de place", "Plus léger, car la glace flotte", "Exactement la même masse"],
+      a: 2,
+      e: "Lors d'un changement d'état, la masse se conserve. Seul le volume change : l'eau qui gèle occupe environ 9 % de volume en plus, d'où la bouteille éclatée.",
+      ear: "أثناء تغيّر الحالة تبقى الكتلة ثابتة، وحجم الماء المتجمد يزداد بنحو [[9 %]] فتنفجر القنينة."
+    },
+
     prepare: [
       ['Le volume s\'exprime en litres ou en mL.', true, 'Et la masse en grammes ou en kilogrammes.'],
       ['La glace flotte sur l\'eau.', true, 'Pour la même masse, elle occupe plus de volume.'],

@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "Tous les micro-organismes sont-ils dangereux pour la santé ?",
+      ar: "هل كل الكائنات الدقيقة خطرة على الصحة؟",
+      o: ["Oui, tous causent des maladies", "Non, certains sont utiles, comme les bactéries du yaourt", "Non, aucun ne peut nous rendre malade"],
+      a: 1,
+      e: "Bactéries, virus et champignons microscopiques se multiplient très vite. Certains sont utiles (le yaourt), d'autres pathogènes (la carie, des infections). On s'en protège par l'hygiène, les antiseptiques et le froid.",
+      ear: "بعض الكائنات الدقيقة مفيد كبكتيريا اللبن، وبعضها مُمرض. نحمي أنفسنا بالنظافة والمطهرات والبرودة."
+    },
+
     prepare: [
       ['Les micro-organismes ne sont visibles qu\'au microscope.', true, 'Ils mesurent quelques micromètres, ou moins.'],
       ['Tous les microbes sont dangereux.', false, 'Beaucoup sont utiles : yaourt, pain, fromage.'],

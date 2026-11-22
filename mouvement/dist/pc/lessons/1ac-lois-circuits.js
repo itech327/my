@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans une maison, la lampe 1 grille mais la lampe 2 reste allumée. Comment sont-elles branchées ?",
+      ar: "في بيت احترق المصباح [[1]] وبقي المصباح [[2]] مضيئاً. كيف هما موصولان؟",
+      o: ["En série", "En dérivation", "On ne peut pas savoir"],
+      a: 1,
+      e: "En dérivation, chaque lampe a sa propre branche : si l'une grille, l'autre reste allumée. En série, il n'y a qu'une boucle, et si une lampe grille, tout s'éteint.",
+      ear: "في التفرع لكل مصباح فرعه، فإن احترق أحدهما بقي الآخر مضيئاً. أما في التوالي فتنطفئ الدارة كلها."
+    },
+
     prepare: [
       ['Un voltmètre se branche en dérivation.', true, 'Ses bornes aux bornes du dipôle.'],
       ['Dans un circuit en série, si une lampe grille, les autres restent allumées.', false, 'Le circuit est ouvert : toutes s\'éteignent.'],

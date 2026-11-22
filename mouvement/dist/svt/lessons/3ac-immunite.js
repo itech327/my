@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "Une écharde traverse la peau du doigt. Le lendemain, la zone est rouge, chaude et gonflée, puis tout guérit. Qui a combattu les microbes ?",
+      ar: "شظية تخترق جلد الإصبع. في اليوم التالي تصبح المنطقة حمراء ساخنة منتفخة ثم تشفى. من الذي حارب الجراثيم؟",
+      o: ["Les microbes ont disparu seuls", "Les globules blancs, des cellules de défense de l'organisme", "La peau, en cicatrisant seulement"],
+      a: 1,
+      e: "Les phagocytes, des globules blancs, arrivent vite et détruisent les microbes : c'est la phagocytose. La zone rouge, chaude et gonflée est le signe de cette réaction.",
+      ear: "البلعميات، وهي كريات بيضاء، تصل بسرعة وتلتهم الجراثيم: إنها البلعمة، والاحمرار والسخونة علامة على هذا التفاعل."
+    },
+
     prepare: [
       ['Les microbes sont des êtres vivants très petits, comme les bactéries.', true, 'Certains provoquent des maladies.'],
       ['La peau laisse entrer facilement tous les microbes.', false, 'La peau intacte est une barrière efficace.'],

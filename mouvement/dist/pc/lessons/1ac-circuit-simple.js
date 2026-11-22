@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "Pile, lampe, fils et interrupteur sont branchés, mais la lampe reste éteinte. Que faut-il vérifier d'abord ?",
+      ar: "البطارية والمصباح والأسلاك والقاطع موصولة لكن المصباح لا يضيء. ماذا نتحقق منه أولاً؟",
+      o: ["Que le circuit forme une boucle fermée, interrupteur fermé", "Que les fils soient assez longs", "Que la lampe soit plus grosse"],
+      a: 0,
+      e: "La lampe brille seulement si le circuit est une boucle fermée contenant la pile. Un interrupteur ouvert ou un fil mal branché coupe la boucle.",
+      ear: "يضيء المصباح فقط إذا كانت الدارة حلقة مغلقة. قاطع مفتوح أو سلك غير موصول يقطع الحلقة."
+    },
+
     prepare: [
       ['Une pile a deux bornes : + et −.', true, 'Le courant sort par la borne + et revient par la borne −.'],
       ['Le plastique laisse passer le courant.', false, 'C\'est un isolant.'],

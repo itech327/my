@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Un seau contient 1 L au départ et le robinet ajoute 2 L par minute. Quelle est l'équation de la droite qui donne les litres y en fonction des minutes x ?",
+      ar: "دلو فيه [[1 L]] في البداية والصنبور يضيف [[2 L]] كل دقيقة. ما معادلة المستقيم التي تعطي اللترات [[y]] بدلالة الدقائق [[x]]؟",
+      o: ["y = x + 2", "y = 2x + 1", "y = 3x"],
+      a: 1,
+      e: "La pente est 2 (2 L de plus chaque minute) et l'ordonnée à l'origine est 1 (1 L au départ). L'équation est donc y = 2x + 1. Après 3 minutes : 2 × 3 + 1 = 7 L.",
+      ear: "الميل [[2]] والترتيب عند الأصل [[1]]: [[y = 2x + 1]]."
+    },
+
     prepare: [
       ['Le point (0 ; 3) est sur l\'axe des ordonnées.', true, 'Son abscisse est nulle.'],
       ['Pour y = 2x + 1, si x = 3 alors y = 7.', true, '2 × 3 + 1 = 7.'],

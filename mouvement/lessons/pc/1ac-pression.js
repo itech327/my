@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "Au sommet de l'Oukaïmeden, on referme une bouteille vide. À Marrakech, elle est écrasée. Qui l'a écrasée ?",
+      ar: "في قمة أوكايمدن نغلق قنينة فارغة، وفي مراكش نجدها مسحوقة. من سحقها؟",
+      o: ["Le froid, qui a fait rétrécir le plastique", "La pression de l'air, plus forte à Marrakech qu'au sommet", "Le poids des autres bagages"],
+      a: 1,
+      e: "La pression atmosphérique diminue avec l'altitude. La bouteille a été fermée avec l'air peu pressant du sommet. À Marrakech, l'air extérieur presse plus fort que l'air enfermé et écrase la bouteille.",
+      ear: "الضغط الجوي يقل مع الارتفاع. أُغلقت القنينة بهواء القمة الخفيف، وفي مراكش يضغط الهواء الخارجي أكثر فيسحقها."
+    },
+
     prepare: [
       ['L\'air est de la matière.', true, 'Il a une masse et occupe un volume.'],
       ['L\'air ne pousse sur rien.', false, 'L\'air exerce une pression sur toutes les surfaces.'],

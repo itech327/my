@@ -45,6 +45,15 @@
       ]
     },
 
+    predire: {
+      q: "Après une plaie à risque de tétanos, une personne non vaccinée reçoit un sérum et non un vaccin. Pourquoi ?",
+      ar: "بعد جرح معرّض للكزاز يُحقن شخص غير ملقَّح بمصل لا بلقاح. لماذا؟",
+      o: ["Le sérum protège toute la vie", "Le sérum apporte tout de suite des anticorps tout prêts, alors que le vaccin demande du temps", "Le vaccin est interdit en cas de blessure"],
+      a: 1,
+      e: "Le sérum est curatif : il apporte immédiatement des anticorps, mais protège peu de temps. Le vaccin est préventif : il fait fabriquer des anticorps et crée une mémoire durable, mais il agit plus lentement.",
+      ear: "المصل علاجي يمنح أجساماً مضادة جاهزة فوراً لكن حمايته قصيرة، أما اللقاح فوقائي ويُنشئ ذاكرة مناعية دائمة لكنه أبطأ."
+    },
+
     prepare: [
       ['La phagocytose est une défense qui agit contre tous les microbes.', true, 'Elle n\'est pas spécifique.'],
       ['Un anticorps agit contre n\'importe quel microbe.', false, 'Chaque anticorps est spécifique d\'un antigène.'],

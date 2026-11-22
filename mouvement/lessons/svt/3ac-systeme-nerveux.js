@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "La main touche une casserole brûlante et se retire en une fraction de seconde, avant même la douleur. Qui a commandé ce retrait ?",
+      ar: "تلمس اليد قدراً ساخناً وتنسحب في جزء من الثانية قبل الإحساس بالألم. من الذي أصدر هذا الأمر؟",
+      o: ["Le cerveau, après avoir senti la douleur", "La moelle épinière, par un réflexe rapide et involontaire", "La main toute seule"],
+      a: 1,
+      e: "Un réflexe est rapide et involontaire : la moelle épinière commande le retrait avant que le cerveau ne ressente la douleur. Le trajet : récepteur, nerf sensitif, moelle épinière, nerf moteur, muscle.",
+      ear: "الفعل المنعكس سريع لاإرادي: النخاع الشوكي يأمر بالانسحاب قبل أن يشعر الدماغ بالألم."
+    },
+
     prepare: [
       ['La peau contient des récepteurs sensibles à la chaleur.', true, 'Ils captent la stimulation.'],
       ['Les muscles se contractent sans recevoir de message.', false, 'Ils obéissent à un message nerveux.'],

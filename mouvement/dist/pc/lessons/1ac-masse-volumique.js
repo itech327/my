@@ -49,6 +49,15 @@
       ]
     },
 
+    predire: {
+      q: "Après avoir secoué une vinaigrette, l'huile remonte au-dessus de l'eau. Pourquoi l'huile flotte-t-elle ?",
+      ar: "بعد رجّ الخلطة يصعد الزيت فوق الماء. لماذا يطفو الزيت؟",
+      o: ["Parce qu'il y en a moins que d'eau", "Parce que, à volume égal, elle a une masse plus petite que l'eau", "Parce que l'air la pousse vers le haut"],
+      a: 1,
+      e: "À volume égal, l'huile a une masse plus petite : sa masse volumique, environ 0,9 g/cm³, est inférieure à celle de l'eau, 1 g/cm³. La quantité d'huile ne change rien.",
+      ear: "بالحجم نفسه كتلة الزيت أصغر: كتلته الحجمية نحو [[0,9 g/cm³]] وهي أقل من كتلة الماء الحجمية [[1 g/cm³]]."
+    },
+
     prepare: [
       ['Le volume se mesure en litres ou en millilitres.', true, 'Ou en cm³ : 1 mL = 1 cm³.'],
       ['La masse se mesure avec une balance.', true, 'En grammes ou en kilogrammes.'],

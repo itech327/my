@@ -53,6 +53,15 @@
       ]
     },
 
+    predire: {
+      q: "Un lait coûte 7 DH et un pain 1,5 DH. Combien coûtent un lait et trois pains ?",
+      ar: "ثمن الحليب [[7 DH]] وثمن الخبزة [[1,5 DH]]. كم يكلف حليب وثلاث خبزات؟",
+      o: ["15 DH", "11,5 DH", "10,5 DH"],
+      a: 1,
+      e: "On écrit 7 + 3 × 1,5. La multiplication passe avant l'addition : 3 × 1,5 = 4,5, puis 7 + 4,5 = 11,5 DH. Calculer de gauche à droite, (7 + 3) × 1,5 = 15, ce serait payer comme pour 10 pains.",
+      ear: "[[7 + 3 × 1,5]]: الضرب أولاً [[3 × 1,5 = 4,5]] ثم [[7 + 4,5 = 11,5 DH]]."
+    },
+
     prepare: [
       ['3 × 1,5 = 4,5', true, 'Trois fois 1,5 : 1,5 + 1,5 + 1,5 = 4,5.'],
       ['20 − 8 = 8 − 20', false, 'La soustraction ne se fait pas dans n\'importe quel ordre : 20 − 8 = 12.'],

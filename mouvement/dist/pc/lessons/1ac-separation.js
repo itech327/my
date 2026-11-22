@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "L'eau de mer est limpide mais salée, et le sel traverse le filtre. Comment les salines récupèrent-elles le sel ?",
+      ar: "ماء البحر رائق لكنه مالح، والملح يعبر المرشح. كيف تستخرج الملاحات الملح؟",
+      o: ["En filtrant l'eau plusieurs fois", "En laissant l'eau s'évaporer au Soleil", "En congelant l'eau"],
+      a: 1,
+      e: "Le sel est dissous : il traverse le filtre. Dans les salines, le Soleil fait évaporer l'eau et le sel reste. On récupère donc le soluté par évaporation.",
+      ear: "الملح منحلّ فيعبر المرشح. في الملاحات تبخّر الشمس الماء فيبقى الملح."
+    },
+
     prepare: [
       ['Le sucre disparaît dans le thé chaud.', true, 'Il se dissout : il est toujours là, mais invisible.'],
       ['On peut dissoudre une quantité illimitée de sel dans un verre d\'eau.', false, 'Au-delà d\'une certaine masse, le sel ne se dissout plus.'],

@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "Forfait A : 3 DH par minute. Forfait B : 20 DH d'abonnement puis 1 DH par minute. Pour quelle durée les deux forfaits coûtent-ils le même prix ?",
+      ar: "العرض [[A]]: [[3 DH]] للدقيقة. العرض [[B]]: [[20 DH]] اشتراك ثم [[1 DH]] للدقيقة. بعد كم دقيقة يتساوى الثمنان؟",
+      o: ["5 minutes", "10 minutes", "20 minutes"],
+      a: 1,
+      e: "On résout 3x = 20 + x : 2x = 20, donc x = 10. À 10 minutes, les deux coûtent 30 DH. Avant, A est moins cher ; après, B est moins cher.",
+      ear: "[[3x = 20 + x]] تعطي [[x = 10]]. عند [[10]] دقائق يتساوى الثمنان ([[30 DH]])."
+    },
+
     prepare: [
       ['Si f(x) = 3x, alors f(4) = 12.', true, '3 × 4 = 12.'],
       ['Une situation proportionnelle donne une droite passant par l\'origine.', true, 'C\'est le cas d\'une fonction linéaire.'],

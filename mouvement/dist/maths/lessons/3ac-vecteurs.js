@@ -48,6 +48,15 @@
       ]
     },
 
+    predire: {
+      q: "Une cabine de téléphérique monte le long du câble. Que faut-il donner pour décrire précisément son déplacement ?",
+      ar: "مقصورة تلفريك تصعد على طول الكابل. ماذا يلزم لوصف انتقالها بدقة؟",
+      o: ["Seulement sa longueur", "Sa direction, son sens et sa longueur", "Seulement le point d'arrivée"],
+      a: 1,
+      e: "Un vecteur est défini par trois informations : sa direction, son sens et sa longueur. Dans une translation, chaque point de la cabine subit le même vecteur.",
+      ear: "المتجهة تتحدد باتجاه ومنحى وطول، وكل نقطة من المقصورة تنتقل بالمتجهة نفسها."
+    },
+
     prepare: [
       ['Les côtés opposés d\'un parallélogramme sont parallèles et de même longueur.', true, 'C\'est une propriété clé ici.'],
       ['Aller de A à B, c\'est la même chose qu\'aller de B à A.', false, 'Le sens est opposé.'],

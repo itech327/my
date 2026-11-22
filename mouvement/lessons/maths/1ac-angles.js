@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "Deux rails parallèles sont coupés par une route. Un des huit angles mesure 60°. Combien de ces huit angles mesurent aussi 60° ?",
+      ar: "سكتان متوازيتان يقطعهما طريق. أحد الزوايا الثماني يقيس [[60°]]. كم زاوية من الثماني تقيس [[60°]] أيضاً؟",
+      o: ["2", "4", "8"],
+      a: 1,
+      e: "Les huit angles ne prennent que deux valeurs : quatre mesurent 60° et quatre mesurent 120°. Les angles opposés par le sommet, alternes-internes et correspondants sont égaux, et deux angles côte à côte sur une droite font 180°.",
+      ear: "الزوايا الثماني لها قيمتان فقط: أربع زوايا [[60°]] وأربع [[120°]]، لأن [[60° + 120° = 180°]]."
+    },
+
     prepare: [
       ['Deux angles supplémentaires font 180° ensemble.', true, 'Comme deux angles qui forment un angle plat.'],
       ['Deux angles complémentaires font 180°.', false, 'Ils font 90°.'],

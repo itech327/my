@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Une chèvre est attachée à un piquet par une corde de 5 m. Quelle est la plus grande largeur du pré qu'elle peut brouter ?",
+      ar: "عنزة مربوطة بوتد بحبل طوله [[5 m]]. ما أكبر عرض للمرعى الذي تستطيع رعيه؟",
+      o: ["5 m", "10 m", "25 m"],
+      a: 1,
+      e: "Le pré est un disque de centre le piquet et de rayon 5 m. Sa plus grande largeur est le diamètre : d = 2 × r = 2 × 5 = 10 m.",
+      ear: "المرعى قرص مركزه الوتد وشعاعه [[5 m]]، وأكبر عرض هو القطر: [[d = 2 × r = 10 m]]."
+    },
+
     prepare: [
       ['On trace un cercle avec un compas.', true, 'La pointe sur le centre, l\'écartement égal au rayon.'],
       ['Tous les points d\'un cercle sont à la même distance du centre.', true, 'Cette distance est le rayon.'],

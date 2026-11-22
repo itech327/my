@@ -37,6 +37,15 @@
       ]
     },
 
+    predire: {
+      q: "On recueille l'eau d'une flaque contenant des grains de terre. Comment la rendre limpide, puis pure ?",
+      ar: "نجمع ماء بركة فيه حبيبات تراب. كيف نجعله رائقاً ثم نقياً؟",
+      o: ["On la chauffe jusqu'à ébullition", "On la filtre, puis on la distille", "On ajoute du sable et on remue"],
+      a: 1,
+      e: "La décantation et la filtration éliminent les grains de terre et rendent l'eau limpide. La distillation sépare ensuite l'eau pure des substances dissoutes.",
+      ear: "الترشيح والتصفية يزيلان التراب فيصير الماء رائقاً، ثم يفصل التقطير الماء النقي عن المواد المنحلة."
+    },
+
     prepare: [
       ['L\'eau salée est un mélange.', true, 'Elle contient de l\'eau et du sel.'],
       ['Dans l\'eau sucrée, on voit les grains de sucre.', false, 'Le sucre est dissous : on ne le voit plus.'],

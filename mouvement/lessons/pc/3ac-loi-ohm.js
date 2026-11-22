@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Avec 3 V, un conducteur ohmique est traversé par 0,03 A. Avec 6 V, par 0,06 A. Quelle intensité avec 9 V ?",
+      ar: "بتوتر [[3 V]] تعبره شدة [[0,03 A]]، وبتوتر [[6 V]] تعبره [[0,06 A]]. ما الشدة عند [[9 V]]؟",
+      o: ["0,06 A", "0,09 A", "0,12 A"],
+      a: 1,
+      e: "U et I sont proportionnelles. La résistance est R = U ÷ I = 3 ÷ 0,03 = 100 Ω, donc avec 9 V : I = 9 ÷ 100 = 0,09 A.",
+      ear: "التوتر والشدة متناسبان: [[R = 3 ÷ 0,03 = 100 Ω]] إذن [[I = 9 ÷ 100 = 0,09 A]]."
+    },
+
     prepare: [
       ['La tension se mesure en volts avec un voltmètre.', true, 'Branché en dérivation.'],
       ['L\'intensité se mesure en ohms.', false, 'Elle se mesure en ampères (A) ; l\'ohm (Ω) est l\'unité de résistance.'],

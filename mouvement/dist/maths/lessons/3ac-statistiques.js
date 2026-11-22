@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "Quatre ouvriers gagnent 3 000 DH et le patron 20 000 DH. Quel indicateur décrit le mieux un salaire typique ?",
+      ar: "أربعة عمال يتقاضون [[3 000 DH]] والمدير [[20 000 DH]]. أي مؤشر يصف الأجر المعتاد أفضل؟",
+      o: ["La moyenne, 6 400 DH", "La médiane, 3 000 DH", "Le salaire maximal, 20 000 DH"],
+      a: 1,
+      e: "La moyenne, 6 400 DH, est tirée vers le haut par une valeur extrême. La médiane, 3 000 DH, est la valeur du milieu de la série : elle décrit mieux le salaire typique.",
+      ear: "المتوسط [[6 400 DH]] يرفعه الأجر الاستثنائي، أما الوسيط [[3 000 DH]] فيصف الأجر المعتاد."
+    },
+
     prepare: [
       ['La moyenne de 2, 4, 9 est 5.', true, '15 ÷ 3 = 5.'],
       ['Une valeur très grande peut tirer la moyenne vers le haut.', true, 'La moyenne est sensible aux valeurs extrêmes.'],

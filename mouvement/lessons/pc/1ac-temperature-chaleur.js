@@ -47,6 +47,15 @@
       ]
     },
 
+    predire: {
+      q: "On mélange 200 g d'eau à 80 °C et 200 g d'eau à 20 °C. Quelle est la température du mélange, en supposant qu'il n'y a pas de perte ?",
+      ar: "نخلط [[200 g]] ماء عند [[80 °C]] و[[200 g]] ماء عند [[20 °C]]. ما حرارة الخليط دون ضياع للحرارة؟",
+      o: ["100 °C", "50 °C", "60 °C"],
+      a: 1,
+      e: "La chaleur passe du corps chaud au corps froid jusqu'à l'équilibre thermique. Avec des masses égales, la température finale est la moyenne : (80 + 20) ÷ 2 = 50 °C. Les températures ne s'additionnent pas.",
+      ear: "تنتقل الحرارة من الساخن إلى البارد حتى التوازن الحراري: [[(80 + 20) ÷ 2 = 50 °C]]."
+    },
+
     prepare: [
       ['La température se mesure avec un thermomètre.', true, 'En degrés Celsius (°C).'],
       ['La chaleur passe toujours du froid vers le chaud.', false, 'Elle passe du corps chaud vers le corps froid.'],

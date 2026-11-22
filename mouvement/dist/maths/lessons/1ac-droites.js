@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "Deux rails sont parallèles. Une traverse est perpendiculaire à l'un des rails. Est-elle perpendiculaire à l'autre ?",
+      ar: "سكتان متوازيتان. عارضة عمودية على إحداهما. هل هي عمودية على الأخرى؟",
+      o: ["Non, seulement si elle est plus courte", "On ne peut pas savoir", "Oui, toujours"],
+      a: 2,
+      e: "Si deux droites sont parallèles, toute droite perpendiculaire à l'une est perpendiculaire à l'autre. La longueur de la traverse n'a aucune importance.",
+      ear: "إذا توازى مستقيمان فكل مستقيم عمودي على أحدهما يكون عمودياً على الآخر، مهما كان طوله."
+    },
+
     prepare: [
       ['Deux droites perpendiculaires forment un angle droit.', true, 'Un angle de 90°.'],
       ['Deux droites parallèles se coupent en un point.', false, 'Elles ne se coupent jamais.'],

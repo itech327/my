@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "Un jardin carré a une aire de 50 m². Que peut-on dire de la longueur de son côté ?",
+      ar: "حديقة مربعة مساحتها [[50 m²]]. ماذا نقول عن طول ضلعها؟",
+      o: ["Elle vaut exactement 7 m", "Elle vaut 25 m", "Elle est comprise entre 7 m et 8 m"],
+      a: 2,
+      e: "7² = 49 et 8² = 64, donc le côté est entre 7 et 8 m. C'est exactement √50, soit environ 7,07 m : la racine carrée sert à nommer le côté d'un carré d'aire donnée.",
+      ear: "[[7² = 49]] و[[8² = 64]] إذن الضلع بين [[7]] و[[8]] أمتار: إنه [[√50 ≈ 7,07 m]]."
+    },
+
     prepare: [
       ['7² = 49', true, '7² = 7 × 7 = 49.'],
       ['Le carré d\'un nombre négatif est négatif.', false, '(−3)² = (−3) × (−3) = 9 : un carré est toujours positif ou nul.'],

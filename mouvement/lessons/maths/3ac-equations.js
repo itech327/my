@@ -48,6 +48,15 @@
       ]
     },
 
+    predire: {
+      q: "Une balance est en équilibre : à gauche 3 sacs de farine identiques et 2 poids de 1 kg, à droite 14 kg. Combien pèse un sac ?",
+      ar: "ميزان متوازن: على اليسار [[3]] أكياس دقيق متماثلة و[[2]] قطعتان كل منهما [[1 kg]]، وعلى اليمين [[14 kg]]. كم يزن الكيس؟",
+      o: ["4 kg", "5 kg", "12 kg"],
+      a: 0,
+      e: "3x + 2 = 14. On enlève 2 des deux côtés : 3x = 12. On divise par 3 : x = 4 kg. Vérification : 3 × 4 + 2 = 14.",
+      ear: "[[3x + 2 = 14]] إذن [[3x = 12]] و[[x = 4 kg]]."
+    },
+
     prepare: [
       ['Si 3x = 12, alors x = 4.', true, '3 × 4 = 12.'],
       ['On peut ajouter un nombre d\'un seul côté d\'une égalité sans la changer.', false, 'Il faut faire la même opération des deux côtés.'],

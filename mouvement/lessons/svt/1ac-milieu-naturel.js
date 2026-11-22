@@ -52,6 +52,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans une forêt de cèdres, il y a des mousses à l'ombre des arbres et des herbes dans la clairière. Pourquoi cette différence ?",
+      ar: "في غابة أرز توجد الطحالب في ظل الأشجار والأعشاب في المساحة المكشوفة. لماذا هذا الاختلاف؟",
+      o: ["Par pur hasard", "La lumière et l'humidité ne sont pas les mêmes aux deux endroits", "Parce que les mousses sont plus grosses que les herbes"],
+      a: 1,
+      e: "La répartition des êtres vivants dépend des facteurs du milieu, le biotope : lumière, humidité, température, sol. Sous les arbres, il fait ombragé et humide ; dans la clairière, il y a plus de lumière.",
+      ear: "توزّع الكائنات الحية يتبع عوامل الوسط: الضوء والرطوبة والحرارة والتربة، وهي تختلف بين الظل والمساحة المكشوفة."
+    },
+
     prepare: [
       ['Une pierre est un être vivant.', false, 'Une pierre ne se nourrit pas, ne respire pas, ne se reproduit pas.'],
       ['Les plantes ont besoin de lumière.', true, 'Les plantes vertes utilisent la lumière pour fabriquer leur matière.'],

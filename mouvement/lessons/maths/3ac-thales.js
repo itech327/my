@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Un bâton de 1,5 m projette une ombre de 2 m. Au même moment, l'ombre d'un palmier mesure 12 m. Quelle est la hauteur du palmier ?",
+      ar: "عصا طولها [[1,5 m]] ظلها [[2 m]]. في اللحظة نفسها ظل نخلة [[12 m]]. ما ارتفاع النخلة؟",
+      o: ["6 m", "9 m", "10,5 m"],
+      a: 1,
+      e: "À la même heure, les rapports hauteur ÷ ombre sont égaux : 1,5 ÷ 2 = h ÷ 12, donc h = 1,5 × 12 ÷ 2 = 9 m. C'est le théorème de Thalès.",
+      ear: "[[1,5 ÷ 2 = h ÷ 12]] إذن [[h = 9 m]]. هذه مبرهنة طالس."
+    },
+
     prepare: [
       ['Les rayons du soleil sont parallèles entre eux.', true, 'C\'est ce qui rend la méthode possible.'],
       ['Si 2/3 = x/12, alors x = 8.', true, 'x = 2 × 12 ÷ 3.'],

@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Une balance est en équilibre : à gauche une boîte de masse inconnue x et 3 blocs de 1 kg, à droite 8 blocs de 1 kg. Combien pèse la boîte ?",
+      ar: "ميزان متوازن: على اليسار علبة كتلتها المجهولة [[x]] و[[3]] قطع كل منها [[1 kg]]، وعلى اليمين [[8]] قطع. كم تزن العلبة؟",
+      o: ["3 kg", "5 kg", "11 kg"],
+      a: 1,
+      e: "L'équilibre donne x + 3 = 8. On enlève 3 kg des deux côtés : x = 8 − 3 = 5 kg. Pour garder l'équilibre, on fait toujours la même opération des deux côtés.",
+      ear: "التوازن يعطي [[x + 3 = 8]]، نطرح [[3]] من الطرفين فنجد [[x = 5 kg]]."
+    },
+
     prepare: [
       ['Si 5 + ? = 12, alors ? = 7.', true, '12 − 5 = 7.'],
       ['Si 4 × ? = 20, alors ? = 16.', false, '20 ÷ 4 = 5.'],

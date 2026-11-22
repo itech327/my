@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Salma achète 2 kg de pommes et 1 kg de bananes pour 32 DH. Hamza achète 1 kg de pommes et 3 kg de bananes pour 46 DH. Quel est le prix d'un kilo de pommes ?",
+      ar: "سلمى اشترت [[2 kg]] تفاحاً و[[1 kg]] موزاً بـ [[32 DH]]، وحمزة اشترى [[1 kg]] تفاحاً و[[3 kg]] موزاً بـ [[46 DH]]. كم ثمن كيلوغرام التفاح؟",
+      o: ["8 DH", "10 DH", "12 DH"],
+      a: 1,
+      e: "2p + b = 32 et p + 3b = 46. Avec b = 32 − 2p : p + 96 − 6p = 46, donc p = 10 DH et b = 12 DH. Vérification : 2 × 10 + 12 = 32 et 10 + 3 × 12 = 46.",
+      ear: "[[2p + b = 32]] و[[p + 3b = 46]] تعطيان [[p = 10 DH]] و[[b = 12 DH]]."
+    },
+
     prepare: [
       ['Si y = 32 − 2x et x = 10, alors y = 12.', true, '32 − 20 = 12.'],
       ['Une équation à deux inconnues a une seule solution.', false, 'Elle en a une infinité : il faut une deuxième équation.'],

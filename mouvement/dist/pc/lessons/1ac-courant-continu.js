@@ -53,6 +53,15 @@
       ]
     },
 
+    predire: {
+      q: "On retourne la pile d'une petite voiture électrique : elle part en marche arrière. Que s'est-il passé dans les fils ?",
+      ar: "نقلب عمود سيارة كهربائية صغيرة فتسير إلى الخلف. ماذا حدث في الأسلاك؟",
+      o: ["Le courant a disparu", "Le courant a changé de sens", "Le courant est devenu plus fort"],
+      a: 1,
+      e: "En inversant les bornes de la pile, on inverse le sens du courant, donc le moteur tourne dans l'autre sens. Dehors de la pile, le sens conventionnel va de la borne + vers la borne −.",
+      ear: "قلب القطبين يعكس اتجاه التيار فيدور المحرك في الاتجاه الآخر."
+    },
+
     prepare: [
       ['Une pile possède une borne + et une borne −.', true, 'Sur le symbole, le grand trait est la borne +.'],
       ['Une lampe brille même si on retourne la pile.', true, 'La lampe n\'est pas sensible au sens du courant.'],

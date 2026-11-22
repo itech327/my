@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans une falaise de l'Atlas, on trouve un coquillage devenu pierre, alors que la mer est à des centaines de kilomètres. Comment est-il arrivé là ?",
+      ar: "في جرف بالأطلس نجد صدفة تحجّرت، والبحر يبعد مئات الكيلومترات. كيف وصلت إلى هناك؟",
+      o: ["Un oiseau l'a apporté", "Il a poussé dans la roche", "Il vivait dans une mer qui recouvrait la région, puis les sédiments sont devenus roche"],
+      a: 2,
+      e: "Autrefois, la mer recouvrait la région. Le coquillage s'est enfoui dans des sédiments déposés en couches, qui se sont transformés en roche sédimentaire. Le coquillage est devenu un fossile.",
+      ear: "كان البحر يغطي المنطقة قديماً، فدُفنت الصدفة في رواسب تحوّلت إلى صخر رسوبي وصارت أحفورة."
+    },
+
     prepare: [
       ['La pluie et le vent usent lentement les roches.', true, 'C\'est l\'érosion.'],
       ['Les rivières transportent du sable et de la boue.', true, 'Jusqu\'aux lacs et aux mers.'],

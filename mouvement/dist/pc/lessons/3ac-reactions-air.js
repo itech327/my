@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Au bord de la mer, un balcon en fer rouille alors qu'une fenêtre en aluminium semble intacte. Pourquoi cette différence ?",
+      ar: "قرب البحر يصدأ شرفة حديدية بينما تبدو نافذة الألومنيوم سليمة. لماذا هذا الفرق؟",
+      o: ["L'aluminium ne réagit jamais avec l'air", "L'aluminium se couvre d'une couche d'alumine qui le protège, alors que la rouille du fer est poreuse", "Le fer est plus lourd, donc il rouille plus"],
+      a: 1,
+      e: "L'aluminium réagit avec l'air et forme une fine couche d'alumine qui le protège. La rouille du fer est poreuse : la corrosion continue en profondeur, et le sel l'accélère.",
+      ear: "الألومنيوم يتفاعل مع الهواء ويتغطى بطبقة أمين رقيقة تحميه، أما صدأ الحديد فمسامي فيتواصل التآكل."
+    },
+
     prepare: [
       ['L\'air contient du dioxygène et de la vapeur d\'eau.', true, 'Ce sont les deux acteurs de la rouille.'],
       ['La rouille protège le fer.', false, 'La rouille est poreuse : elle laisse l\'air atteindre le fer en dessous.'],

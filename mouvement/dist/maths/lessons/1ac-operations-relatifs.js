@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "À Midelt il fait −3 °C le matin, puis la température monte de 5 degrés. Quelle température fait-il à midi ?",
+      ar: "في ميدلت الحرارة [[−3 °C]] صباحاً ثم ترتفع بـ [[5]] درجات. كم تصبح الحرارة ظهراً؟",
+      o: ["−8 °C", "2 °C", "8 °C"],
+      a: 1,
+      e: "(−3) + 5 : on part de −3 sur la droite graduée et on avance de 5 vers la droite. On arrive à 2. Il fait donc 2 °C.",
+      ear: "[[(−3) + 5 = 2]]: ننطلق من [[−3]] ونتقدم [[5]] خانات نحو اليمين."
+    },
+
     prepare: [
       ['L\'opposé de −4 est 4.', true, 'Ils sont à la même distance de zéro.'],
       ['Sur la droite, ajouter un nombre positif fait avancer vers la droite.', true, 'Ajouter un négatif fait reculer vers la gauche.'],

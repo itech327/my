@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Sans calculatrice, combien font 101² ?",
+      ar: "بدون آلة حاسبة، كم يساوي [[101²]]؟",
+      o: ["10 001", "10 201", "10 101"],
+      a: 1,
+      e: "101² = (100 + 1)² = 100² + 2 × 100 × 1 + 1² = 10 000 + 200 + 1 = 10 201. L'erreur 10 001 oublie le double produit 2ab.",
+      ear: "[[101² = (100 + 1)² = 10 000 + 200 + 1 = 10 201]]."
+    },
+
     prepare: [
       ['L\'aire d\'un rectangle de côtés a et b est a × b.', true, 'Longueur × largeur.'],
       ['(a + b)² = a² + b²', false, 'C\'est l\'erreur classique : il manque le terme 2ab. On va le voir.'],

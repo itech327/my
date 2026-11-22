@@ -37,6 +37,15 @@
       ]
     },
 
+    predire: {
+      q: "Sans calculatrice, combien font 7 × 98 ?",
+      ar: "بدون آلة حاسبة، كم يساوي [[7 × 98]]؟",
+      o: ["686", "696", "716"],
+      a: 0,
+      e: "98 = 100 − 2, donc 7 × 98 = 7 × 100 − 7 × 2 = 700 − 14 = 686. C'est la distributivité : k(a − b) = ka − kb.",
+      ear: "[[98 = 100 − 2]] إذن [[7 × 98 = 700 − 14 = 686]]. هذه خاصية التوزيع."
+    },
+
     prepare: [
       ['L\'aire d\'un rectangle est longueur × largeur.', true, 'Par exemple 3 × 5 = 15.'],
       ['3 × 4 + 3 × 6 = 3 × 10', true, '12 + 18 = 30 = 3 × 10.'],

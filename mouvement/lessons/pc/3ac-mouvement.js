@@ -45,6 +45,15 @@
       ]
     },
 
+    predire: {
+      q: "Salma est assise dans un bus. Pour son voisin elle ne bouge pas, pour un passant elle avance à 40 km/h. Qui a raison ?",
+      ar: "سلمى جالسة في حافلة. بالنسبة لجارها هي ساكنة، وبالنسبة لمارّ على الرصيف تتحرك بـ [[40 km/h]]. من على صواب؟",
+      o: ["Le voisin : elle ne bouge pas", "Le passant : elle avance à 40 km/h", "Les deux, selon le référentiel choisi"],
+      a: 2,
+      e: "Le mouvement et le repos sont relatifs : on les décrit par rapport à un référentiel. Par rapport au bus, Salma est au repos ; par rapport au trottoir, elle avance à 40 km/h.",
+      ear: "الحركة والسكون نسبيان: يُوصفان بالنسبة إلى مرجع. بالنسبة للحافلة هي ساكنة وبالنسبة للرصيف هي متحركة."
+    },
+
     prepare: [
       ['Un objet peut être en mouvement pour un observateur et immobile pour un autre.', true, 'Tout dépend de la référence choisie.'],
       ['Si un objet parcourt des distances égales en des durées égales, sa vitesse change.', false, 'Sa vitesse est constante : le mouvement est uniforme.'],

@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "Un déboucheur à la soude porte l'inscription « ne pas utiliser sur l'aluminium ». Pourquoi ?",
+      ar: "على مُزيل الانسداد المحتوي على الصودا عبارة «لا يُستعمل على الألومنيوم». لماذا؟",
+      o: ["L'aluminium fond à froid", "La soude colle sur le métal et ne part plus", "La soude réagit avec l'aluminium et libère du dihydrogène, un gaz inflammable"],
+      a: 2,
+      e: "La soude attaque l'aluminium et le zinc, mais pas le fer ni le cuivre. La réaction produit du dihydrogène H₂, qui détone près d'une flamme.",
+      ear: "الصودا تتفاعل مع الألومنيوم فتُنتج غاز الهيدروجين [[H₂]] الذي ينفجر قرب اللهب."
+    },
+
     prepare: [
       ['L\'acide chlorhydrique est une solution acide.', true, 'Son pH est inférieur à 7.'],
       ['La soude est une solution acide.', false, 'La solution de soude est basique.'],

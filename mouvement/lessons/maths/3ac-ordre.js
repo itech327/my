@@ -34,6 +34,15 @@
       ]
     },
 
+    predire: {
+      q: "On a 2 < 5. Que peut-on dire de −2 et de −5 ?",
+      ar: "لدينا [[2 < 5]]. ماذا نقول عن [[−2]] و[[−5]]؟",
+      o: ["−2 < −5", "−2 > −5", "−2 = −5"],
+      a: 1,
+      e: "Multiplier par −1 inverse l'ordre : si a < b, alors −a > −b. Sur la droite graduée, −5 est à gauche de −2, donc −5 < −2, soit −2 > −5.",
+      ear: "الضرب في [[−1]] يعكس الترتيب: [[−5 < −2]] أي [[−2 > −5]]."
+    },
+
     prepare: [
       ['−3 < −1', true, '−3 est plus à gauche.'],
       ['Si x > 4, alors x peut valoir 4.', false, 'x > 4 : x est strictement plus grand que 4.'],

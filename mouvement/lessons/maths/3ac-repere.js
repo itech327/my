@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans un repère orthonormé, la maison est en A(1 ; 1) et le collège en B(7 ; 9), une unité valant 100 m. Quelle est la distance à vol d'oiseau ?",
+      ar: "في معلم متعامد ممنظم، البيت في [[A(1 ; 1)]] والمدرسة في [[B(7 ; 9)]] والوحدة [[100 m]]. ما المسافة على خط مستقيم؟",
+      o: ["1 400 m", "1 000 m", "800 m"],
+      a: 1,
+      e: "Le déplacement est de 6 unités en abscisse et de 8 en ordonnée. AB = √(6² + 8²) = √100 = 10 unités, soit 1 000 m. Les 14 unités de l'erreur 1 400 m sont le chemin le long des rues.",
+      ear: "[[AB = √(6² + 8²) = √100 = 10]] وحدات، أي [[1 000 m]]."
+    },
+
     prepare: [
       ['Dans A(3 ; 5), 3 est l\'abscisse.', true, 'L\'abscisse se lit sur l\'axe horizontal.'],
       ['Dans un triangle rectangle, l\'hypoténuse² = somme des carrés des deux autres côtés.', true, 'C\'est le théorème de Pythagore.'],

@@ -35,6 +35,15 @@
       ]
     },
 
+    predire: {
+      q: "Il fait 2 °C à Fès et −6 °C à Ifrane. Combien de degrés les séparent ?",
+      ar: "الحرارة [[2 °C]] في فاس و[[−6 °C]] في إفران. كم درجة تفصل بينهما؟",
+      o: ["4 degrés", "8 degrés", "−4 degrés"],
+      a: 1,
+      e: "Sur la droite graduée, de −6 à 0 il y a 6 degrés, puis de 0 à 2 il y en a 2 : 6 + 2 = 8 degrés d'écart. On ne soustrait pas 6 de 2 en oubliant le signe.",
+      ear: "من [[−6]] إلى [[0]] ست درجات ومن [[0]] إلى [[2]] درجتان: الفرق [[8]] درجات."
+    },
+
     prepare: [
       ['0 °C est la température où l\'eau gèle.', true, 'En dessous, on utilise des nombres négatifs.'],
       ['−3 se lit « moins trois ».', true, 'Le signe − indique un nombre négatif.'],

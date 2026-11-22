@@ -39,6 +39,15 @@
       ]
     },
 
+    predire: {
+      q: "Un aquarium cubique contient 10 L. On en fabrique un deux fois plus long, plus large et plus haut. Combien de litres contient-il ?",
+      ar: "حوض مكعب يسع [[10 L]]. نصنع حوضاً أطول وأعرض وأعلى بمرتين. كم لتراً يسع؟",
+      o: ["20 L", "40 L", "80 L"],
+      a: 2,
+      e: "Les longueurs sont multipliées par 2, les aires par 2² = 4 et les volumes par 2³ = 8. Le nouvel aquarium contient 10 × 8 = 80 L, et non 20 L.",
+      ear: "الأطوال ×[[2]]، والمساحات ×[[4]]، والحجوم ×[[8]]: [[10 × 8 = 80 L]]."
+    },
+
     prepare: [
       ['Le volume d\'un cube d\'arête a est a³.', true, 'a × a × a.'],
       ['Un carré de côté doublé a une aire doublée.', false, 'L\'aire est multipliée par 4 : (2a)² = 4a².'],

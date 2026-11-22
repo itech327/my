@@ -39,6 +39,15 @@
       ]
     },
 
+    predire: {
+      q: "Un radiateur, un fer à repasser puis une bouilloire sont branchés sur une multiprise : tout s'éteint d'un coup. Qui a coupé, et pourquoi ?",
+      ar: "مدفأة ثم مكواة ثم غلاية على مشترك واحد: ينقطع كل شيء فجأة. من الذي قطع، ولماذا؟",
+      o: ["La bouilloire s'est cassée", "Le disjoncteur a coupé, car l'intensité dépassait son calibre", "Le fer à repasser s'est éteint tout seul"],
+      a: 1,
+      e: "Trop d'appareils sur une multiprise provoquent une surcharge : l'intensité dépasse le calibre. Le disjoncteur, ou le fusible, coupe le courant pour éviter l'échauffement et l'incendie.",
+      ear: "كثرة الأجهزة تسبب حملاً زائداً فتتجاوز الشدة عيار القاطع، فيقطع التيار لتفادي السخونة والحريق."
+    },
+
     prepare: [
       ['Le courant du secteur (220 V) peut être mortel.', true, 'Il peut provoquer une électrocution.'],
       ['On peut toucher un appareil électrique avec les mains mouillées sans risque.', false, 'L\'eau rend le corps plus conducteur : c\'est très dangereux.'],

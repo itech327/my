@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "En hiver, le puits du village est plein. À la fin de l'été, son niveau a beaucoup baissé. D'où vient l'eau du puits ?",
+      ar: "في الشتاء يمتلئ بئر القرية، وفي نهاية الصيف ينخفض مستواه كثيراً. من أين يأتي ماء البئر؟",
+      o: ["D'un réservoir qui ne se vide jamais", "Des pluies qui s'infiltrent dans le sol et remplissent une nappe souterraine", "De l'eau de mer qui monte sous terre"],
+      a: 1,
+      e: "Une partie de l'eau de pluie s'infiltre dans le sol et forme des nappes souterraines. Le puits atteint cette nappe. En été, il pleut peu et on pompe beaucoup, donc le niveau baisse.",
+      ear: "جزء من ماء المطر يتسرب في التربة ويكوّن مياهاً جوفية يصل إليها البئر، وفي الصيف ينقص المطر ويكثر الضخ فينخفض المستوى."
+    },
+
     prepare: [
       ['L\'eau de mer est salée.', true, 'On ne peut pas la boire sans la dessaler.'],
       ['Toute l\'eau de pluie reste à la surface du sol.', false, 'Une partie s\'infiltre dans le sol.'],

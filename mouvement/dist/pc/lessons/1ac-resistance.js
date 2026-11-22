@@ -39,6 +39,15 @@
       ]
     },
 
+    predire: {
+      q: "Une lampe brille normalement. On ajoute en série un conducteur ohmique : elle brille moins. Que fait ce composant au courant ?",
+      ar: "مصباح يضيء بشكل عادي. نضيف على التوالي موصلاً أومياً فيخفت الضوء. ماذا يفعل هذا المركّب بالتيار؟",
+      o: ["Il augmente l'intensité", "Il ne change rien", "Il diminue l'intensité"],
+      a: 2,
+      e: "Un conducteur ohmique en série s'oppose au passage du courant. Plus sa résistance R est grande, plus l'intensité est petite, donc plus la lampe brille faiblement.",
+      ear: "الموصل الأومي على التوالي يعيق مرور التيار: كلما كبرت [[R]] صغرت الشدة وخفت الإضاءة."
+    },
+
     prepare: [
       ['L\'intensité se mesure avec un ampèremètre en série.', true, 'Vu dans une leçon précédente.'],
       ['Une lampe brille plus quand l\'intensité diminue.', false, 'Elle brille moins.'],

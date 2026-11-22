@@ -49,6 +49,15 @@
       ]
     },
 
+    predire: {
+      q: "Au centre de tri, des canettes en fer et en aluminium arrivent mélangées. Comment les séparer vite ?",
+      ar: "في مركز الفرز تصل علب معدنية من الحديد والألومنيوم مختلطة. كيف نفصلها بسرعة؟",
+      o: ["En les lavant à l'eau", "Avec un aimant : seul le fer est attiré", "En les regardant de près"],
+      a: 1,
+      e: "Seul le fer, et l'acier, est attiré par un aimant. Un aimant sépare donc très vite les canettes en fer de celles en aluminium.",
+      ear: "الحديد والفولاذ وحدهما ينجذبان إلى المغناطيس، فيفصل المغناطيس العلب الحديدية عن علب الألومنيوم."
+    },
+
     prepare: [
       ['Une casserole en métal conduit la chaleur.', true, 'C\'est pour cela que son manche est souvent en bois ou en plastique.'],
       ['Tous les métaux sont attirés par un aimant.', false, 'Seuls quelques-uns, comme le fer. L\'aluminium et le cuivre ne le sont pas.'],

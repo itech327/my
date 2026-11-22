@@ -34,6 +34,15 @@
       ]
     },
 
+    predire: {
+      q: "Le jus de citron pique la langue et l'eau de Javel est dangereuse pour la peau. Quel pH peut-on attendre ?",
+      ar: "عصير الليمون يلسع اللسان وماء جافيل يضرّ بالجلد. ما الرقم الهيدروجيني المتوقع؟",
+      o: ["Citron : pH inférieur à 7 ; Javel : pH supérieur à 7", "Citron : pH supérieur à 7 ; Javel : pH inférieur à 7", "Les deux ont un pH égal à 7"],
+      a: 0,
+      e: "Le citron est acide (pH inférieur à 7) et l'eau de Javel est basique (pH supérieur à 7). Concentrés, acides et bases sont corrosifs : il faut se protéger.",
+      ear: "الليمون حمضي ([[pH < 7]]) وماء جافيل قاعدي ([[pH > 7]]). المحاليل المركّزة آكلة فيجب الحذر."
+    },
+
     prepare: [
       ['L\'eau pure a un pH égal à 7.', true, 'Elle est neutre.'],
       ['Le jus de citron est basique.', false, 'Il est acide.'],

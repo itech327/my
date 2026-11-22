@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Yassine part au collège avec un soda et un croissant. Ce petit-déjeuner est-il équilibré ?",
+      ar: "يذهب ياسين إلى المدرسة بمشروب غازي وكرواسون. هل هذه الوجبة متوازنة؟",
+      o: ["Oui, il donne beaucoup d'énergie", "Non, il est riche en sucre et en graisse mais manque de fruits, de laitage et de protéines", "Oui, le sucre est un nutriment essentiel"],
+      a: 1,
+      e: "Une ration équilibrée contient tous les groupes d'aliments. Le soda et le croissant apportent du sucre et de la graisse, mais pas assez de vitamines, de fibres, de calcium ni de protéines.",
+      ear: "الوجبة المتوازنة تضم كل مجموعات الأغذية. المشروب الغازي والكرواسون غنيان بالسكر والدهون وفقيران بالفيتامينات والكالسيوم والبروتينات."
+    },
+
     prepare: [
       ['Les aliments apportent de l\'énergie au corps.', true, 'Surtout les glucides et les lipides.'],
       ['Un seul aliment suffit pour être en bonne santé.', false, 'Aucun aliment ne contient tout : il faut varier.'],

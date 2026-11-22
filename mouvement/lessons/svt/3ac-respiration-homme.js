@@ -52,6 +52,15 @@
       ]
     },
 
+    predire: {
+      q: "Après une course, on respire beaucoup plus vite qu'au repos. Pourquoi le corps a-t-il besoin de plus d'air ?",
+      ar: "بعد الجري نتنفس أسرع بكثير من الراحة. لماذا يحتاج الجسم إلى هواء أكثر؟",
+      o: ["Parce que les poumons sont fatigués", "Les muscles qui travaillent consomment plus de dioxygène et produisent plus de dioxyde de carbone", "Pour avoir plus d'air dans l'estomac"],
+      a: 1,
+      e: "Les muscles qui travaillent consomment plus de dioxygène et rejettent plus de dioxyde de carbone. Le corps accélère la ventilation pour renouveler l'air des poumons.",
+      ear: "العضلات العاملة تستهلك أكسجيناً أكثر وتطرح ثاني أكسيد الكربون أكثر، فيسرّع الجسم التهوية."
+    },
+
     prepare: [
       ['L\'air entre par le nez ou la bouche.', true, 'Puis il descend par la trachée.'],
       ['L\'air que l\'on expire ne contient plus de dioxygène.', false, 'Il en contient encore, environ 16 %, contre 21 % dans l\'air inspiré.'],

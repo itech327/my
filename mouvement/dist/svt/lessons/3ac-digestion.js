@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "Un morceau de pain est trop gros pour traverser la paroi de l'intestin. Que lui arrive-t-il pendant la digestion ?",
+      ar: "قطعة خبز أكبر من أن تعبر جدار الأمعاء. ماذا يحدث لها أثناء الهضم؟",
+      o: ["Il passe tel quel dans le sang", "Il est transformé en petits nutriments, comme le glucose, grâce aux enzymes", "Il est brûlé par l'estomac"],
+      a: 1,
+      e: "La digestion transforme les aliments en nutriments assez petits pour traverser la paroi de l'intestin. Les enzymes transforment l'amidon du pain en glucose.",
+      ear: "الهضم يحوّل الأغذية إلى مغذيات صغيرة تعبر جدار الأمعاء، والإنزيمات تحوّل نشا الخبز إلى [[glucose]]."
+    },
+
     prepare: [
       ['Le pain contient de l\'amidon.', true, 'L\'amidon est le principal constituant de la farine.'],
       ['Les aliments passent dans le sang dès la bouche, sans transformation.', false, 'Ils doivent d\'abord être transformés en très petites molécules.'],

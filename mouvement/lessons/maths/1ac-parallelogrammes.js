@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "Deux baguettes de longueurs différentes se croisent en leur milieu. Quelle figure forment leurs quatre extrémités ?",
+      ar: "عودان مختلفا الطول يتقاطعان في منتصفيهما. ما الشكل الذي تكوّنه رؤوسهما الأربعة؟",
+      o: ["Un rectangle", "Un parallélogramme", "Un cerf-volant"],
+      a: 1,
+      e: "Un quadrilatère dont les diagonales se coupent en leur milieu est un parallélogramme. Pour obtenir un carré, il faut en plus des diagonales de même longueur et perpendiculaires.",
+      ear: "الرباعي الذي يتقاطع قطراه في منتصفيهما متوازي أضلاع. ولكي يصير مربعاً يلزم أن يتساوى القطران ويتعامدا."
+    },
+
     prepare: [
       ['Un quadrilatère a quatre côtés.', true, 'Et quatre sommets.'],
       ['Les diagonales d\'un quadrilatère relient deux sommets voisins.', false, 'Elles relient deux sommets opposés.'],

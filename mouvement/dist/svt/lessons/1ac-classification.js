@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "La chauve-souris vole la nuit avec des ailes, mais son corps est couvert de poils et elle allaite ses petits. Dans quel groupe la ranger ?",
+      ar: "الخفاش يطير ليلاً بجناحين، لكن جسمه مغطى بالشعر وهو يرضع صغاره. في أي مجموعة نصنّفه؟",
+      o: ["Les oiseaux, car elle vole", "Les mammifères, car elle a des poils et allaite", "Un groupe à part"],
+      a: 1,
+      e: "On classe selon les caractères communs, pas selon ce que l'animal fait. Des poils et l'allaitement : c'est un mammifère, même s'il vole.",
+      ear: "نصنّف حسب الصفات المشتركة لا حسب ما يفعله الحيوان: الشعر والإرضاع يجعلان الخفاش من الثدييات."
+    },
+
     prepare: [
       ['Tous les animaux qui volent sont des oiseaux.', false, 'Les insectes et les chauves-souris volent aussi.'],
       ['La poule a des plumes.', true, 'Les plumes caractérisent les oiseaux.'],
