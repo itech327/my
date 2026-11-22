@@ -1,0 +1,8 @@
+frames/
+*.mp4
+*.wav
+voice_*/
+__pycache__/
+shots_*/
+_silent.mp4
+timings.voice.json

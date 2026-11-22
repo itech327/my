@@ -1,0 +1,53 @@
+{
+ "duration": 41.5,
+ "lines": [
+  {
+   "start": 3.0,
+   "end": 8.2,
+   "ar": "(a+b)² وa²+b²: يبدوان متطابقين… فلنختبر.",
+   "fr": "Mêmes lettres, même allure… on teste ?"
+  },
+  {
+   "start": 8.2,
+   "end": 13.0,
+   "ar": "a = 3 وb = 2: 25 مقابل 13. الفرق 12. أين ذهبت؟",
+   "fr": "a = 3, b = 2 : 25 contre 13. Il manque 12."
+  },
+  {
+   "start": 13.0,
+   "end": 15.8,
+   "ar": "ارسم مربّعًا ضلعه a + b…",
+   "fr": "Un carré de côté a + b…"
+  },
+  {
+   "start": 15.8,
+   "end": 20.6,
+   "ar": "فيه مربّعان a² وb²، ومستطيلان مساحة كلٍّ منهما ab.",
+   "fr": "a², b², et deux rectangles de surface ab."
+  },
+  {
+   "start": 20.6,
+   "end": 25.2,
+   "ar": "المستطيلان هما الـ12 المفقودة: 2ab!",
+   "fr": "Les 12 manquants, ce sont eux : 2ab !"
+  },
+  {
+   "start": 25.2,
+   "end": 30.0,
+   "ar": "(a+b)² = a² + 2ab + b²",
+   "fr": "L’identité remarquable"
+  },
+  {
+   "start": 30.0,
+   "end": 36.0,
+   "ar": "غيّر a وb: الفرق دائمًا 2ab.",
+   "fr": "Change a et b : l’écart vaut toujours 2ab."
+  },
+  {
+   "start": 36.0,
+   "end": 41.5,
+   "ar": "دورك الآن: خمسة تحديات. هل تتوقع الفرق؟",
+   "fr": "À toi : 5 défis. Prédis l’écart."
+  }
+ ]
+}
