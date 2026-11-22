@@ -18,6 +18,22 @@ interface Env {
   AUDIO: KVNamespace;
   GEMINI_API_KEY: string;
   MCP_ACCESS_KEY: string;
+  // Optional internal voice (F5-TTS speaker service) used when Google's quota is spent.
+  FALLBACK_TTS_URL?: string;
+  FALLBACK_TTS_KEY?: string;
+}
+
+// The internal voice service: POST {text, speaker} -> WAV. It is reached over a tunnel,
+// so the access key is sent in a header the tunnel or proxy can check.
+async function internalSpeak(env: Env, text: string, gender: 'female' | 'male'): Promise<{ audio: Uint8Array; seconds: number }> {
+  const r = await fetch(`${env.FALLBACK_TTS_URL!.replace(/\/$/, '')}/synthesize`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...(env.FALLBACK_TTS_KEY ? { 'x-sada-key': env.FALLBACK_TTS_KEY } : {}) },
+    body: JSON.stringify({ text, speaker: gender === 'female' ? 'F1' : 'M1' }),
+    signal: AbortSignal.timeout(50_000),
+  });
+  if (!r.ok) throw new Error(`internal voice ${r.status}`);
+  return { audio: new Uint8Array(await r.arrayBuffer()), seconds: Math.max(1, Math.ceil(Number(r.headers.get('x-audio-seconds') ?? '0'))) };
 }
 
 const TTL_S = 7 * 24 * 3600; // KV deletes the entry itself after this
@@ -70,16 +86,22 @@ function buildServer(env: Env, origin: string): McpServer {
       const designed = designedVoice(mode, v.gender, v.prebuilt);
       // Designed voices belong to the Google project that made them. With another
       // key they return 404, so fall back to the prebuilt voice.
+      let internal = false;
       const out = await geminiSpeak({ ...req, voice: designed }).catch((e) => {
         if (designed !== v.prebuilt && /\b404\b/.test(String(e))) return geminiSpeak({ ...req, voice: v.prebuilt });
         throw e;
+      }).catch(async (e) => {
+        // Google's daily quota is spent: speak with the internal voice, if one is set up.
+        if (!/\b429\b/.test(String(e)) || !env.FALLBACK_TTS_URL) throw e;
+        internal = true;
+        return internalSpeak(env, req.text, v.gender);
       });
       const id = newId();
       await env.AUDIO.put(`a/${id}.wav`, out.audio, { expirationTtl: TTL_S });
       const url = `${origin}/audio/${id}`;
       return {
         content: [
-          { type: 'text' as const, text: `الصوت جاهز (${v.name}، ${out.seconds} ث، صالح ٧ أيام): ${url}` },
+          { type: 'text' as const, text: `الصوت جاهز (${internal ? 'الصوت الداخلي الاحتياطي لأن حصة Google انتهت' : v.name}، ${out.seconds} ث، صالح ٧ أيام): ${url}` },
           { type: 'resource_link' as const, uri: url, name: `sada-${voice}.wav`, mimeType: 'audio/wav' },
         ],
       };

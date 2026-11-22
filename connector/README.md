@@ -74,3 +74,15 @@ then `npx wrangler dev`.
 - No free-voice fallback here: those voices need a full machine.
 - Workers Free plan has a small CPU budget per request. Decoding the audio
   uses the runtime's native base64 decoder where available.
+
+## Internal voice when Google's quota is spent
+
+Optional. Set two more secrets and `speak_moroccan` switches to the F5 speaker voices
+(هند for `nour`, إدريس for `younes`) when Google answers HTTP 429:
+
+- `FALLBACK_TTS_URL`: public address of `f5_server.py` (for example a Cloudflare Tunnel hostname).
+- `FALLBACK_TTS_KEY`: optional code, sent as header `x-sada-key`. Check it in the tunnel or a proxy in front of the service.
+
+`f5_server.py` listens on 127.0.0.1 only and has no login, so never open its port directly.
+The call waits at most 50 s (Claude's connector limit is 60 s), so use it for short texts.
+Without these secrets the tool answers that the Google quota is spent.
