@@ -19,9 +19,15 @@ interface Env {
   GEMINI_API_KEY: string;
   MCP_ACCESS_KEY: string;
   // Optional backup: our free voices on a GPU server (voice-server/Dockerfile).
+  // Either name works (two sessions built this at once):
   FREE_VOICE_URL?: string;   // e.g. https://voice-gpu.example.com (a plain variable)
   FREE_VOICE_TOKEN?: string; // the server's F5_TOKEN (a secret)
+  FALLBACK_TTS_URL?: string;
+  FALLBACK_TTS_KEY?: string;
 }
+
+const freeUrl = (env: Env) => env.FREE_VOICE_URL || env.FALLBACK_TTS_URL || '';
+const freeToken = (env: Env) => env.FREE_VOICE_TOKEN || env.FALLBACK_TTS_KEY || '';
 
 const TTL_S = 7 * 24 * 3600; // KV deletes the entry itself after this
 const VOICES = {
@@ -32,9 +38,11 @@ const VOICES = {
 // When Google refuses (quota 429, overload 5xx), the free voice of the same gender
 // speaks instead. Kept under 50 s: a Claude connector call times out at 60 s.
 async function freeVoice(env: Env, text: string, speaker: string, pace: string | undefined): Promise<{ audio: Uint8Array; seconds: number }> {
-  const r = await fetch(`${env.FREE_VOICE_URL!.replace(/\/$/, '')}/synthesize`, {
+  const token = freeToken(env);
+  const r = await fetch(`${freeUrl(env).replace(/\/$/, '')}/synthesize`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${env.FREE_VOICE_TOKEN}` },
+    // Bearer for f5_server.py; x-sada-key for a tunnel or proxy that checks that header
+    headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}`, 'x-sada-key': token } : {}) },
     body: JSON.stringify({ text, speaker, ...(pace === 'slow' ? { pace: 'story' } : {}) }),
     signal: AbortSignal.timeout(50_000),
   });
@@ -92,7 +100,7 @@ function buildServer(env: Env, origin: string): McpServer {
         if (designed !== v.prebuilt && /\b404\b/.test(String(e))) return geminiSpeak({ ...req, voice: v.prebuilt });
         throw e;
       }).catch(async (e) => {
-        if (!/\b(429|500|502|503|504)\b/.test(String(e)) || !env.FREE_VOICE_URL || !env.FREE_VOICE_TOKEN) throw e;
+        if (!/\b(429|500|502|503|504)\b/.test(String(e)) || !freeUrl(env)) throw e;
         spoke = v.backup.name;
         note = ` لم يستجب Google، فتكلّم الصوت المجاني ${spoke}.`;
         return freeVoice(env, req.text, v.backup.speaker, pace);
@@ -128,20 +136,20 @@ function buildServer(env: Env, origin: string): McpServer {
   return server;
 }
 
-async function audio(id: string, env: Env): Promise<Response> {
+async function audio(id: string, env: Env, download = false): Promise<Response> {
   if (!/^[A-Za-z0-9_-]{24}$/.test(id)) return new Response('not found', { status: 404 });
   const data = await env.AUDIO.get(`a/${id}.wav`, 'arrayBuffer');
   if (!data) return new Response('not found or expired', { status: 404 });
   return new Response(data, {
     headers: { 'Content-Type': 'audio/wav', 'Cache-Control': 'private, max-age=3600', 'X-Robots-Tag': 'noindex',
-      'Content-Disposition': `inline; filename="sada-${id.slice(0, 8)}.wav"` },
+      'Content-Disposition': `${download ? 'attachment' : 'inline'}; filename="sada-${id.slice(0, 8)}.wav"` },
   });
 }
 
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
-    if (url.pathname.startsWith('/audio/') && req.method === 'GET') return audio(url.pathname.slice(7), env);
+    if (url.pathname.startsWith('/audio/') && req.method === 'GET') return audio(url.pathname.slice(7), env, url.searchParams.has('dl'));
     const m = /^\/mcp(?:\/([^/]+))?$/.exec(url.pathname);
     if (!m) return new Response('not found', { status: 404 });
     let pathKey = '';

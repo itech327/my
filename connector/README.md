@@ -71,16 +71,22 @@ then `npx wrangler dev`.
 
 ## Limits
 
-- No free-voice fallback here: those voices need a full machine.
+- The free voices need a full machine; see the backup section below.
 - Workers Free plan has a small CPU budget per request. Decoding the audio
   uses the runtime's native base64 decoder where available.
 
 ## Free-voice backup (optional)
 
-When Google refuses (quota or overload), the connector can ask our own voices
-on a GPU server (`voice-server/`). Set in the Worker's Variables and Secrets:
+When Google refuses (quota 429 or overload 5xx), `speak_moroccan` asks our own
+voices: هند for `nour`, إدريس for `younes`, and the answer says so.
 
-- `FREE_VOICE_URL`: variable, the server's HTTPS address.
-- `FREE_VOICE_TOKEN`: secret, the server's `F5_TOKEN`.
+Set in the Worker's Variables and Secrets (either pair of names works):
 
-نور falls back to هند and يونس to إدريس, and the answer says so.
+- `FREE_VOICE_URL` or `FALLBACK_TTS_URL`: the voice server's HTTPS address.
+  For example a GPU host running `voice-server/Dockerfile`, or a Cloudflare Tunnel hostname.
+- `FREE_VOICE_TOKEN` or `FALLBACK_TTS_KEY`: the server's `F5_TOKEN`. It is sent
+  both as `Authorization: Bearer` and as `x-sada-key`.
+
+`f5_server.py` checks the token itself and refuses to listen beyond 127.0.0.1
+without one. The call waits at most 50 s, inside Claude's 60 s limit. On a CPU
+use short texts; a GPU answers in seconds.

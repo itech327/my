@@ -8,7 +8,7 @@ GET  /health                                      -> {"ok": true, "speakers": [.
 
 data/refs holds SPEAKER.wav and SPEAKER.txt (exact transcript).
 Listens on 127.0.0.1 by default. To serve it online (a GPU host), pass --host 0.0.0.0
-and set F5_TOKEN: every POST must then send Authorization: Bearer <F5_TOKEN>.
+and set F5_TOKEN: every POST must then send Authorization: Bearer <F5_TOKEN> (or header x-sada-key).
 The server refuses to listen beyond loopback without a token.
 Long text is split into sentences so each generation stays short and steady.
 With --asr and --best-of N, each sentence gets up to N takes; a Darija
@@ -106,7 +106,7 @@ def main():
             if self.path != '/synthesize':
                 return self._send(404, b'{"error":"not found"}')
             if token:
-                got = self.headers.get('Authorization', '').removeprefix('Bearer ').strip()
+                got = self.headers.get('Authorization', '').removeprefix('Bearer ').strip() or self.headers.get('x-sada-key', '').strip()
                 if not hmac.compare_digest(got.encode(), token.encode()):
                     return self._send(401, b'{"error":"unauthorized"}')
             try:
