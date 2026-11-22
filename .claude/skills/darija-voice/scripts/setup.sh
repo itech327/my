@@ -13,7 +13,9 @@ V=ary_MA-darija_m1-medium-v2
 for f in "$V.onnx" "$V.onnx.json"; do
   [ -s "$DIR/models/$f" ] || curl -fsSL -o "$DIR/models/$f" "$HF/maromoya/piper-darija/resolve/main/$f"
 done
-echo "c73cc15a9c34746c8a17347a5e8a6fb03ba4f7f0681c34c36d3a42eb7279778b  $DIR/models/$V.onnx" | sha256sum -c -
+# sha256sum on Linux, shasum on macOS
+SHA="sha256sum"; command -v sha256sum >/dev/null || SHA="shasum -a 256"
+echo "c73cc15a9c34746c8a17347a5e8a6fb03ba4f7f0681c34c36d3a42eb7279778b  $DIR/models/$V.onnx" | $SHA -c -
 if [ "${2:-}" = "--eval" ]; then
   "$DIR/venv/bin/pip" install -q torch transformers soundfile
   mkdir -p "$DIR/models/asr"

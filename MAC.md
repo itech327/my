@@ -43,7 +43,35 @@ Open http://localhost:3000.
 - Accounts and history live in memory: they reset when you stop the app.
 - Payments are test-only.
 
-## 2. Free voices (optional)
+## 2. Fast free voice for Intel Macs (recommended on Intel)
+
+The fast version of إدريس (Piper) runs well on any processor.
+- It speaks when you pick إدريس.
+- It replaces نور and يونس automatically when Google's daily quota is spent.
+
+From the repository root:
+
+```bash
+.claude/skills/darija-voice/scripts/setup.sh ~/sada-piper
+```
+
+Start it in a second Terminal window, and leave it open:
+
+```bash
+cd ~/my
+~/sada-piper/venv/bin/python .claude/skills/darija-voice/scripts/server.py \
+  --model ~/sada-piper/models/ary_MA-darija_m1-medium-v2.onnx --port 5005
+```
+
+Add this line to `app/.env.local`:
+
+```
+TTS_DARIJA_URL=http://127.0.0.1:5005
+```
+
+Then rebuild and restart the app: `npm run build && npm start`.
+
+## 3. Studio free voices (optional, best on Apple M chips)
 
 From the repository root:
 
@@ -80,7 +108,7 @@ TTS_SPEAKERS_URL=http://127.0.0.1:5007
 - هند and إدريس now speak in the app.
 - نور and يونس switch to them automatically when Google's daily quota runs out.
 
-## 3. Optional: your Mac as the connector's backup
+## 4. Optional: your Mac as the connector's backup
 
 A Cloudflare Tunnel can give the voice service a public address, so the Claude
 connector uses your Mac when Google refuses. It only works while the Mac is on.

@@ -35,8 +35,13 @@ const byVoice: Record<string, TtsProvider> = {
   ...(speakerUrl ? { 'v-ar-MA-f1': f5Provider(speakerUrl, 'F1'), 'v-ar-MA-0': f5Provider(speakerUrl, 'M1') } : {}),
   // Gemini TTS (official API, key injected by the network proxy). Darija is not officially supported: measure it.
   ...(process.env.TTS_GEMINI === '1' ? {
-    'v-ar-MA-g1': withQuotaFallback(geminiProvider('Kore', 'female'), speakerUrl ? f5Provider(speakerUrl, 'F1') : undefined, 'هند'),
-    'v-ar-MA-g2': withQuotaFallback(geminiProvider('Charon', 'male'), speakerUrl ? f5Provider(speakerUrl, 'M1') : undefined, 'إدريس'),
+    // Backup when Google refuses: the studio voices (F5) if running, else the fast Piper voice
+    // of إدريس, which runs well on any CPU (e.g. an Intel Mac).
+    'v-ar-MA-g1': speakerUrl
+      ? withQuotaFallback(geminiProvider('Kore', 'female'), f5Provider(speakerUrl, 'F1'), 'هند')
+      : withQuotaFallback(geminiProvider('Kore', 'female'), darijaUrl ? piperProvider(darijaUrl) : undefined, 'إدريس'),
+    'v-ar-MA-g2': withQuotaFallback(geminiProvider('Charon', 'male'),
+      speakerUrl ? f5Provider(speakerUrl, 'M1') : darijaUrl ? piperProvider(darijaUrl) : undefined, 'إدريس'),
   } : {}),
 };
 const byDialect: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};
