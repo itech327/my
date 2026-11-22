@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Les priorités opératoires · 1AC</title>
+<style>
+@font-face{font-family:Readex;src:url(readex-ar.woff2);font-weight:160 700;unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F,U+25CC}
+@font-face{font-family:Readex;src:url(readex-lat.woff2);font-weight:160 700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2192,U+2713,U+2190}
+:root{--bg:#0e1013;--ink:#f3f3f4;--mut:#9aa0a8;--acc:#ffd24a;--blue:#7cc4ff;--ok:#5ee0a0;--card:#191c21;--line:#2a2e35}
+*{box-sizing:border-box;margin:0}
+html,body{width:1920px;height:1080px;background:var(--bg);overflow:hidden;font-family:Readex,system-ui,sans-serif;color:var(--ink)}
+#root{position:absolute;inset:0}
+.abs{position:absolute}
+.tag{left:70px;top:48px;font-size:30px;color:var(--mut);letter-spacing:.02em;display:flex;gap:18px;align-items:center}
+.tag b{color:var(--ink);font-weight:600}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block}
+.row{display:flex;gap:30px;align-items:center;justify-content:center;font-size:132px;font-weight:500;font-variant-numeric:tabular-nums;direction:ltr}
+.tk{padding:4px 18px;border-radius:22px;line-height:1.15}
+.arrow{font-size:64px;color:var(--acc);text-align:center}
+.cap{left:0;width:1920px;text-align:center}
+.cap .ar{font-size:60px;font-weight:600;direction:rtl;line-height:1.35}
+.cap .fr{font-size:42px;color:var(--mut);margin-top:6px;font-weight:400}
+.cap .m{display:inline-block;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.ladder{right:70px;top:150px;width:430px;display:flex;flex-direction:column;gap:22px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:26px;padding:26px 32px;display:flex;align-items:center;gap:26px}
+.chip .n{width:58px;height:58px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:600}
+.chip .t{font-size:54px;font-weight:600;direction:ltr}
+.chip .s{font-size:26px;color:var(--mut);margin-top:2px}
+.chip.on{border-color:var(--acc);background:#2a2412}
+.chip.on .n{background:var(--acc);color:#141517}
+.ticket{left:300px;top:190px;width:760px;background:#ececee;border-radius:20px;padding:44px 56px;color:#141517;box-shadow:0 30px 80px #0008}
+.ticket .r{display:flex;justify-content:space-between;font-size:48px;margin-bottom:22px;font-weight:500}
+.ticket .tot{border-top:3px dashed #9aa0a8;margin-top:30px;padding-top:30px;font-size:60px;font-weight:700;text-align:center;direction:ltr}
+.bubble{padding:22px 38px;border-radius:26px;font-size:50px;font-weight:600;border:2px solid var(--line);background:var(--card)}
+.big{font-size:120px;font-weight:700}
+</style></head><body>
+<div id="root"></div>
+<script>
+const EP = {
+  title: 'Les priorités opératoires · أسبقية العمليات',
+  caps: [
+    [0.4, 4.6, 'Au hanout : un lait et trois pains.', 'في الدكان: حليب وثلاث خبزات.'],
+    [4.8, 8.4, 'Le même calcul, deux prix différents.', 'نفس العملية، لكن ثمنان مختلفان.'],
+    [8.6, 11.6, 'Qui a raison ? Les priorités décident.', 'من على صواب؟ الأسبقية هي التي تحسم.'],
+
+    [12.6, 18.6, 'Sans parenthèses : d’abord × et ÷.', 'بدون أقواس نبدأ بالضرب والقسمة.'],
+    [18.8, 25.6, 'Puis + et − : 7 + 4,5 = 11,5.', 'ثم الجمع والطرح: [[7 + 4,5 = 11,5]]'],
+    [25.8, 29.6, 'Le ticket du hanout : 11,5 DH.', 'ثمن الدكان: [[11,5 DH]]'],
+
+    [30.4, 37.0, 'Les parenthèses passent avant tout.', 'الأقواس أولاً.'],
+    [37.2, 44.0, '(7 + 3) × 1,5 = 15 : le résultat d’Amine, comme avec des parenthèses.', '[[(7 + 3) × 1,5 = 15]] هي نتيجة أمين، كأن هناك أقواساً.'],
+
+    [45.0, 51.6, 'Seulement + et − : de gauche à droite.', 'جمع وطرح فقط: من اليسار إلى اليمين.'],
+    [51.8, 58.0, '20 − 8 + 2 = 14, et pas 10.', '[[20 − 8 + 2 = 14]] وليس 10.'],
+
+    [59.0, 66.0, 'À toi : calcule 5 + 2 × 4 − 6 ÷ 3.', 'حاول أنت: احسب [[5 + 2 × 4 − 6 ÷ 3]]'],
+    [66.4, 73.0, 'D’abord × et ÷ : 2 × 4 = 8 et 6 ÷ 3 = 2.', 'أولاً الضرب والقسمة: [[2 × 4 = 8]] و [[6 ÷ 3 = 2]]'],
+    [73.2, 78.0, 'Puis + et − : 5 + 8 − 2 = 11.', 'ثم الجمع والطرح: [[5 + 8 − 2 = 11]]']
+  ],
+  duration: 84
+};
+const LAD = [
+  { n: '1', t: '( )', s: 'd’abord · أولاً' },
+  { n: '2', t: '×  ÷', s: 'puis · ثم' },
+  { n: '3', t: '+  −', s: 'enfin · أخيراً' }
+];
+// beats : [start, end, tokens1, highlight ranges, tokens2, ladder index, final?]
+const BEATS = [
+  [12.6, 18.7, ['7','+','3','×','1,5'], [[2,4]], ['7','+','4,5'], 1],
+  [18.8, 25.7, ['7','+','4,5'], [[0,2]], ['11,5'], 2],
+  [30.4, 37.1, ['(7','+','3)','×','1,5'], [[0,2]], ['10','×','1,5'], 0],
+  [37.2, 44.2, ['10','×','1,5'], [[0,2]], ['15'], 1],
+  [45.0, 51.7, ['20','−','8','+','2'], [[0,2]], ['12','+','2'], 2],
+  [51.8, 58.2, ['12','+','2'], [[0,2]], ['14'], 2],
+  [66.4, 73.1, ['5','+','2','×','4','−','6','÷','3'], [[2,4],[6,8]], ['5','+','8','−','2'], 1],
+  [73.2, 79.0, ['5','+','8','−','2'], [[0,4]], ['11'], 2]
+];
+const clamp = (x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease = x => 1-Math.pow(1-clamp(x),3);
+const fin = (t,t0,d=.45)=>ease((t-t0)/d);
+const win = (t,a,b,d=.35)=>Math.min(fin(t,a,d), clamp((b-t)/d));
+const mathify = s => s.replace(/\[\[(.+?)\]\]/g,'<span class="m">\u200E$1\u200E</span>');
+const frEsc = s => s;
+function rowHTML(toks, hi, k, tr){
+  // hi pill intensity k (0..1)
+  return '<div class="row">'+toks.map((tk,i)=>{
+    const on = hi && hi.some(r=>i>=r[0]&&i<=r[1]);
+    const a = on?k:0;
+    return '<span class="tk" style="background:rgba(255,210,74,'+a+');color:'+(a>.55?'#141517':'var(--ink)')+'">'+tk+'</span>';
+  }).join('')+'</div>';
+}
+function ladder(t, active, vis){
+  if(vis<=0) return '';
+  return '<div class="abs ladder" style="opacity:'+vis+'">'+LAD.map((c,i)=>
+    '<div class="chip'+(active===i?' on':'')+'" style="transform:translateX('+((1-fin(t,12.0+i*.25,.5))*60)+'px)"><div class="n">'+c.n+'</div><div><div class="t">'+c.t+'</div><div class="s">'+c.s+'</div></div></div>').join('')+'</div>';
+}
+function sceneTicket(t){
+  let h='';
+  const a=fin(t,0.5,.6);
+  h+='<div class="abs ticket" style="opacity:'+a+';transform:translateY('+((1-a)*40)+'px)">'
+   +'<div class="r"><span>1 lait</span><span>7 DH</span></div>'
+   +'<div class="r"><span>3 pains</span><span>1,5 DH l’un</span></div>'
+   +'<div class="tot" style="opacity:'+fin(t,2.6,.5)+'">Total = 7 + 3 × 1,5</div></div>';
+  const x1=fin(t,4.9,.5), x2=fin(t,6.0,.5);
+  h+='<div class="abs bubble" style="left:1170px;top:280px;opacity:'+x1+';transform:translateX('+((1-x1)*50)+'px)">Amine : 15 DH</div>';
+  h+='<div class="abs bubble" style="left:1170px;top:410px;opacity:'+x2+';transform:translateX('+((1-x2)*50)+'px)">Salma : 11,5 DH</div>';
+  const q=fin(t,8.7,.5);
+  h+='<div class="abs" style="left:1170px;top:575px;font-size:76px;font-weight:700;color:var(--acc);opacity:'+q+'">Qui a raison ?</div>';
+  return h;
+}
+function sceneBeat(t,b,idx){
+  const [s,e,t1,hi,t2,act]=b;
+  const vis=win(t,s,e+0.0,.35);
+  const k=fin(t,s+.9,.5);
+  const k2=fin(t,s+2.0,.5);
+  return '<div class="abs" style="left:60px;width:1340px;top:210px;opacity:'+vis+'">'+rowHTML(t1,hi,k)+'</div>'
+   +'<div class="abs arrow" style="left:60px;width:1340px;top:395px;opacity:'+(vis*k2)+'">↓</div>'
+   +'<div class="abs" style="left:60px;width:1340px;top:500px;opacity:'+(vis*k2)+';transform:translateY('+((1-k2)*24)+'px)">'+rowHTML(t2,t2.length===1?[[0,0]]:null,0)+'</div>';
+}
+function resultCard(t,txt,a,b,color){
+  const v=win(t,a,b,.5);
+  return '<div class="abs" style="left:60px;width:1340px;top:210px;text-align:center;opacity:'+v+';transform:scale('+(0.92+0.08*v)+')"><div class="big" style="color:'+color+'">'+txt+'</div></div>';
+}
+function sceneVerdict(t){
+  const v=win(t,29.6,30.2,.3);
+  return '';
+}
+function sceneTimer(t){
+  // 59.0 -> 66.0 : expression + countdown ring
+  const vis=win(t,59.0,66.0,.4);
+  const p=clamp((t-60.0)/5.8);
+  const R=120, C=2*Math.PI*R;
+  const left=Math.max(0,Math.ceil(5.8*(1-p)));
+  return '<div class="abs" style="left:60px;width:1340px;top:230px;opacity:'+vis+'">'+rowHTML(['5','+','2','×','4','−','6','÷','3'],null,0)+'</div>'
+   +'<div class="abs" style="left:560px;top:430px;width:300px;height:300px;opacity:'+vis+'">'
+   +'<svg width="300" height="300" viewBox="0 0 300 300"><circle cx="150" cy="150" r="'+R+'" fill="none" stroke="#2a2e35" stroke-width="14"/>'
+   +'<circle cx="150" cy="150" r="'+R+'" fill="none" stroke="#ffd24a" stroke-width="14" stroke-linecap="round" transform="rotate(-90 150 150)" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*p)+'"/></svg>'
+   +'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:110px;font-weight:600">'+(p<1?left:'')+'</div></div>';
+}
+function endCard(t){
+  const v=fin(t,79.6,.6);
+  return '<div class="abs" style="left:0;width:1920px;top:150px;text-align:center;opacity:'+v+'">'
+   +'<div style="font-size:84px;font-weight:700">Les priorités opératoires</div>'
+   +'<div style="font-size:64px;color:var(--mut);margin-top:10px;direction:rtl">أسبقية العمليات</div>'
+   +'<div style="display:flex;gap:36px;justify-content:center;margin-top:90px">'
+   +LAD.map(c=>'<div class="chip on" style="flex-direction:column;gap:12px;padding:40px 70px"><div class="n">'+c.n+'</div><div class="t" style="font-size:96px">'+c.t+'</div><div class="s" style="font-size:30px">'+c.s+'</div></div>').join('')
+   +'</div>'
+   +'<div style="margin-top:80px;font-size:40px;color:var(--mut)">Même niveau : de gauche à droite · على نفس المستوى: من اليسار إلى اليمين</div>'
+   +'<div style="margin-top:50px;font-size:34px;color:var(--mut)">Maths · 1AC · taalim.men</div></div>';
+}
+function render(t){
+  let h='<div class="abs tag"><i></i><b>Maths 1AC · leçon 1</b><span>'+EP.title+'</span></div>';
+  if(t<12.0) h+=sceneTicket(t);
+  let active=-1, lv=0;
+  if(t>=12.0 && t<80.0){ lv=Math.min(fin(t,12.0,.5), clamp((80.0-t)/.6)); }
+  if(t>=59.0 && t<66.9) h+=sceneTimer(t);
+  BEATS.forEach((b,i)=>{ if(t>=b[0]-0.01 && t<b[1]+0.4){ h+=sceneBeat(t,b,i); active=b[5]; } });
+  if(t>=25.8 && t<30.2) h+=resultCard(t,'= 11,5 DH <span style="color:var(--ok)">✓</span>',25.8,30.0,'var(--ink)').replace('top:210px','top:560px');
+  if(t>=79.0) h+=endCard(t);
+  if(t<79.2) h+=ladder(t,active,t>=12.0?lv:0);
+  // captions
+  EP.caps.forEach(c=>{
+    if(t>=c[0] && t<=c[1]){
+      const v=win(t,c[0],c[1],.3);
+      h+='<div class="abs cap" style="top:790px;opacity:'+v+'"><div class="ar">'+mathify(c[3])+'</div><div class="fr">'+c[2]+'</div></div>';
+    }
+  });
+  document.getElementById('root').innerHTML=h;
+}
+window.render=render; window.DURATION=EP.duration;
+document.fonts.ready.then(()=>render(0));
+</script></body></html>
