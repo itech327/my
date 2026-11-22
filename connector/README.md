@@ -74,3 +74,13 @@ then `npx wrangler dev`.
 - No free-voice fallback here: those voices need a full machine.
 - Workers Free plan has a small CPU budget per request. Decoding the audio
   uses the runtime's native base64 decoder where available.
+
+## Free-voice backup (optional)
+
+When Google refuses (quota or overload), the connector can ask our own voices
+on a GPU server (`voice-server/`). Set in the Worker's Variables and Secrets:
+
+- `FREE_VOICE_URL`: variable, the server's HTTPS address.
+- `FREE_VOICE_TOKEN`: secret, the server's `F5_TOKEN`.
+
+نور falls back to هند and يونس to إدريس, and the answer says so.

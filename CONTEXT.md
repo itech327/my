@@ -74,6 +74,17 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - **Dashboard:** Workers & Pages, Import a repository `itech327/my`, Worker name `sada-connector` (must match `wrangler.jsonc`), root directory `connector`, then add both secrets.
 - **From a computer:** follow `connector/README.md`.
 
+## Free-voice backup on a GPU (in progress)
+
+- The owner chose a GPU server for our own voices, as backup when Google refuses.
+- **Ready in the repo:**
+  - `voice-server/Dockerfile`: pinned libraries, model files checked by hash.
+  - Token protection on `f5_server.py`, tested: 401 without or with a wrong token.
+  - Connector fallback (`FREE_VOICE_URL`, `FREE_VOICE_TOKEN`). نور falls back to هند, يونس to إدريس.
+  - The app passes `TTS_SPEAKERS_TOKEN`.
+- **Not done:** choosing a GPU host and deploying the image. That needs the owner's account. Prefer a host that scales to zero.
+- A cold start can exceed Claude's 60 s limit. On a CPU, a short sentence takes about 35 s.
+
 ## Connector tools
 
 - `speak_moroccan`:

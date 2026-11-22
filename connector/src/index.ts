@@ -18,13 +18,29 @@ interface Env {
   AUDIO: KVNamespace;
   GEMINI_API_KEY: string;
   MCP_ACCESS_KEY: string;
+  // Optional backup: our free voices on a GPU server (voice-server/Dockerfile).
+  FREE_VOICE_URL?: string;   // e.g. https://voice-gpu.example.com (a plain variable)
+  FREE_VOICE_TOKEN?: string; // the server's F5_TOKEN (a secret)
 }
 
 const TTL_S = 7 * 24 * 3600; // KV deletes the entry itself after this
 const VOICES = {
-  nour: { name: 'نور', gender: 'female', prebuilt: 'Kore' },
-  younes: { name: 'يونس', gender: 'male', prebuilt: 'Charon' },
+  nour: { name: 'نور', gender: 'female', prebuilt: 'Kore', backup: { speaker: 'F1', name: 'هند' } },
+  younes: { name: 'يونس', gender: 'male', prebuilt: 'Charon', backup: { speaker: 'M1', name: 'إدريس' } },
 } as const;
+
+// When Google refuses (quota 429, overload 5xx), the free voice of the same gender
+// speaks instead. Kept under 50 s: a Claude connector call times out at 60 s.
+async function freeVoice(env: Env, text: string, speaker: string, pace: string | undefined): Promise<{ audio: Uint8Array; seconds: number }> {
+  const r = await fetch(`${env.FREE_VOICE_URL!.replace(/\/$/, '')}/synthesize`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${env.FREE_VOICE_TOKEN}` },
+    body: JSON.stringify({ text, speaker, ...(pace === 'slow' ? { pace: 'story' } : {}) }),
+    signal: AbortSignal.timeout(50_000),
+  });
+  if (!r.ok) throw new Error(`free voice server ${r.status}`);
+  return { audio: new Uint8Array(await r.arrayBuffer()), seconds: Math.max(1, Math.ceil(Number(r.headers.get('x-audio-seconds') ?? '1'))) };
+}
 
 async function sha256(s: string): Promise<Uint8Array> {
   return new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)));
@@ -70,16 +86,23 @@ function buildServer(env: Env, origin: string): McpServer {
       const designed = designedVoice(mode, v.gender, v.prebuilt);
       // Designed voices belong to the Google project that made them. With another
       // key they return 404, so fall back to the prebuilt voice.
+      let spoke: string = v.name;
+      let note = '';
       const out = await geminiSpeak({ ...req, voice: designed }).catch((e) => {
         if (designed !== v.prebuilt && /\b404\b/.test(String(e))) return geminiSpeak({ ...req, voice: v.prebuilt });
         throw e;
+      }).catch(async (e) => {
+        if (!/\b(429|500|502|503|504)\b/.test(String(e)) || !env.FREE_VOICE_URL || !env.FREE_VOICE_TOKEN) throw e;
+        spoke = v.backup.name;
+        note = ` لم يستجب Google، فتكلّم الصوت المجاني ${spoke}.`;
+        return freeVoice(env, req.text, v.backup.speaker, pace);
       });
       const id = newId();
       await env.AUDIO.put(`a/${id}.wav`, out.audio, { expirationTtl: TTL_S });
       const url = `${origin}/audio/${id}`;
       return {
         content: [
-          { type: 'text' as const, text: `الصوت جاهز (${v.name}، ${out.seconds} ث، صالح ٧ أيام): ${url}` },
+          { type: 'text' as const, text: `الصوت جاهز (${spoke}، ${out.seconds} ث، صالح ٧ أيام): ${url}${note}` },
           { type: 'resource_link' as const, uri: url, name: `sada-${voice}.wav`, mimeType: 'audio/wav' },
         ],
       };

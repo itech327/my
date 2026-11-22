@@ -6,12 +6,16 @@
 POST /synthesize {"text": "...", "speaker": "F1"} -> audio/wav (X-Audio-Seconds header)
 GET  /health                                      -> {"ok": true, "speakers": [...]}
 
-data/refs holds SPEAKER.wav and SPEAKER.txt (exact transcript). 127.0.0.1 only.
+data/refs holds SPEAKER.wav and SPEAKER.txt (exact transcript).
+Listens on 127.0.0.1 by default. To serve it online (a GPU host), pass --host 0.0.0.0
+and set F5_TOKEN: every POST must then send Authorization: Bearer <F5_TOKEN>.
+The server refuses to listen beyond loopback without a token.
 Long text is split into sentences so each generation stays short and steady.
 With --asr and --best-of N, each sentence gets up to N takes; a Darija
 recognizer checks each take and the clearest one is kept (stops early).
 """
 import argparse
+import hmac
 import glob
 import io
 import json
@@ -63,12 +67,16 @@ def main():
     ap.add_argument('--vocab', required=True)
     ap.add_argument('--refs', required=True)
     ap.add_argument('--port', type=int, default=5007)
+    ap.add_argument('--host', default='127.0.0.1', help='0.0.0.0 to serve online; needs F5_TOKEN')
     ap.add_argument('--nfe', type=int, default=16)
     ap.add_argument('--speed', type=float, default=0.9, help='below 1 gives each word more time: fewer skipped words')
     ap.add_argument('--asr', help='Darija recognizer dir: enables self-checking of each take')
     ap.add_argument('--best-of', type=int, default=1, help='takes per sentence, the clearest is kept (needs --asr)')
     ap.add_argument('--good-cer', type=float, default=0.03, help='stop early when a take is at least this clear')
     a = ap.parse_args()
+    token = os.environ.get('F5_TOKEN', '')
+    if a.host not in ('127.0.0.1', 'localhost', '::1') and len(token) < 24:
+        sys.exit('refusing to listen beyond loopback without F5_TOKEN (24+ characters)')
     torch.set_num_threads(os.cpu_count() or 4)
     model = load_model(DiT, CFG, a.ckpt, vocab_file=a.vocab)
     vocoder = load_vocoder('vocos')
@@ -97,6 +105,10 @@ def main():
         def do_POST(self):
             if self.path != '/synthesize':
                 return self._send(404, b'{"error":"not found"}')
+            if token:
+                got = self.headers.get('Authorization', '').removeprefix('Bearer ').strip()
+                if not hmac.compare_digest(got.encode(), token.encode()):
+                    return self._send(401, b'{"error":"unauthorized"}')
             try:
                 req = json.loads(self.rfile.read(min(int(self.headers.get('Content-Length', 0)), 200_000)) or b'{}')
             except (ValueError, json.JSONDecodeError):
@@ -150,8 +162,8 @@ def main():
         def log_message(self, fmt, *args):
             sys.stderr.write('f5 %s\n' % (fmt % args))
 
-    srv = ThreadingHTTPServer(('127.0.0.1', a.port), H)
-    print(f'speaker voices on http://127.0.0.1:{a.port}  speakers={sorted(refs)} nfe={a.nfe} best_of={a.best_of} self_check={asr is not None}', flush=True)
+    srv = ThreadingHTTPServer((a.host, a.port), H)
+    print(f'speaker voices on http://{a.host}:{a.port} device={"cuda" if torch.cuda.is_available() else "cpu"}  speakers={sorted(refs)} nfe={a.nfe} best_of={a.best_of} self_check={asr is not None}', flush=True)
     srv.serve_forever()
 
 
