@@ -50,6 +50,10 @@ and to the zone `taalim.men`. Make sure it includes:
 - Account: Workers KV Storage Edit
 - Zone (taalim.men): Workers Routes Edit
 
+## Status
+
+Workers Builds worker `sada-connector` created 2026-11-22, production branch `claude/new-session-thirii`, root `connector`. Secrets are set in the dashboard, never in git.
+
 ## Add it to Claude
 
 1. claude.ai: Customize, Connectors, + Add, Add custom connector.
