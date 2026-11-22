@@ -6,7 +6,7 @@
 Accent is a permanent trait, so it goes in the voice design, not in the
 per-request style text (Google docs, voice-design page, read 2026-11-21).
 POST /v1beta/voices, type "prompted", store true, language_code ar-MA.
-The API key is injected by the network proxy; we send a placeholder header.
+Key: GEMINI_API_KEY. In the cloud session the network proxy injects it instead.
 Existing ids in OUT.json are kept, so the script can be rerun after a 429.
 """
 import argparse
@@ -36,7 +36,7 @@ PERSON = {'female': 'A warm young woman in her late 20s', 'male': 'A warm, frien
 def post(body: dict) -> dict:
     for i in range(6):
         req = urllib.request.Request(URL, json.dumps(body).encode(),
-                                     {'Content-Type': 'application/json', 'x-goog-api-key': 'proxy-injected'})
+                                     {'Content-Type': 'application/json', 'x-goog-api-key': os.environ.get('GEMINI_API_KEY', 'proxy-injected')})
         try:
             return json.load(urllib.request.urlopen(req, timeout=120))
         except urllib.error.HTTPError as e:
