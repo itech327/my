@@ -1,6 +1,6 @@
 # صدى (Sada): handoff context
 
-Give this file to Claude to continue. Last updated 2026-11-22.
+Give this file to Claude to continue. Last updated 2026-11-22, after the Cloudflare setup was prepared.
 Repository `itech327/my`, branch `claude/new-session-thirii`. Not merged to `main`.
 
 ## What it is
@@ -45,27 +45,36 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Next step: deploy the connector on Cloudflare
 
-The owner hosts on Cloudflare. Only the connector goes live for now. The full app needs a real database first.
+Status on 2026-11-22: **code ready and pushed, not deployed yet.**
 
-From a computer with Node 22:
+- The owner hosts `taalim.men` on Cloudflare. Cloudflare is already linked to their GitHub.
+- The connector will answer at **`https://voice.taalim.men`**. The Custom Domain is already set in `connector/wrangler.jsonc`, and Cloudflare creates the DNS record and certificate on the first deploy.
+- Only the connector goes live for now. The full app needs a real database first.
+- The owner declined to give an API token to the cloud session. Deploy with **Workers Builds** from the Cloudflare dashboard. No token is needed in GitHub or in a chat.
+- A browser-capable Claude, with the Claude in Chrome extension in the owner's signed-in Chrome, can click these steps for them.
 
-```bash
-git clone https://github.com/itech327/my.git
-cd my && git checkout claude/new-session-thirii
-cd connector
-npm install
-npx wrangler login
-npx wrangler r2 bucket create sada-audio
-npx wrangler r2 bucket lifecycle add sada-audio expire-audio a/ --expire-days 7
-npx wrangler deploy
-npx wrangler secret put GEMINI_API_KEY    # paste the Gemini key
-npx wrangler secret put MCP_ACCESS_KEY    # paste a private code, 24+ characters
-```
+### Dashboard steps (Workers Builds)
 
-`wrangler deploy` prints the address: `https://voice.taalim.men` (Custom Domain set in `connector/wrangler.jsonc`).
-A custom domain can be added in the Cloudflare dashboard under the Worker's Domains & Routes.
+1. **R2**: **Create bucket**, named exactly `sada-audio`. Optional: a lifecycle rule that deletes objects under `a/` after 7 days.
+2. **Workers & Pages**: **Create**, **Import a repository**, repository `itech327/my`.
+3. Settings:
+   - Worker name: **`sada-connector`**. It must match `name` in `wrangler.jsonc`, or the build fails.
+   - Production branch: `claude/new-session-thirii`.
+   - Root directory: `connector`.
+   - Deploy command: `npx wrangler deploy`.
+4. Deploy. Every later push to that branch redeploys automatically.
+5. After the first deploy: **Settings**, **Variables and Secrets**, add two **secrets**:
+   - `GEMINI_API_KEY`: the Gemini key.
+   - `MCP_ACCESS_KEY`: a private code, 24+ characters, made up by the owner.
+6. Check it:
+   - `https://voice.taalim.men/mcp` without the header should answer 401.
+   - `https://voice.taalim.men/` should answer 404.
 
-**Never paste keys into a chat.** Type them only into wrangler or the Cloudflare dashboard.
+**Never paste keys into a chat.** Type them only into the Cloudflare dashboard.
+
+### Alternative: deploy from a computer
+
+With Node 22, follow `connector/README.md`: `npx wrangler login`, create the bucket, `npx wrangler deploy`, then `npx wrangler secret put` for both secrets.
 
 ## Then add it to Claude
 
