@@ -9,6 +9,7 @@
   "compatibility_flags": ["nodejs_compat"],
   // Custom Domain: Cloudflare creates the DNS record and certificate for it.
   "routes": [{ "pattern": "voice.taalim.men", "custom_domain": true }],
-  "r2_buckets": [{ "binding": "AUDIO", "bucket_name": "sada-audio" }],
+  // Audio storage: Workers KV. Wrangler creates the namespace on the first deploy (no id needed). Entries expire after 7 days.
+  "kv_namespaces": [{ "binding": "AUDIO" }],
   "observability": { "enabled": true }
 }
