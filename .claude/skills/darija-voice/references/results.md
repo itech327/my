@@ -299,3 +299,8 @@ naturalness; the recognizer only guards against swallowed words.
 - Ear verdict on يونس story (Gemini, darija-male designed voice, story delivery): "very good voice".
 - نور fusha, new designed voice (news-anchor prompt), via the live connector, radio delivery: CER 0.034, from Gemini (no fallback). Recognizer diffs only ذ→د, ث→ت and one split word, which is its Darija spelling. No Darija words detected. Ear verdict pending. Sample `app-nour-fusha-v2.wav`.
 - Ear verdict on نور fusha v2: "correct Standard Arabic with a Moroccan feel". Fusha female voice accepted.
+
+## Text front end in front of Gemini (2026-11-22)
+
+- `normalize.py` ported to TypeScript (`app/src/lib/darija-normalize.ts`); profile `open` matches Python on 80 sentences.
+- Gemini now receives Darija numbers, Arabizi, French words, units and respellings (e.g. فلّاح). Hamzas and گ kept. Standard Arabic mode: clean-up and respellings only.

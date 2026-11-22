@@ -8,7 +8,8 @@
     "start": "next start -p 3000",
     "lint": "tsc --noEmit",
     "tokens": "python3 ../replica/design/build_tokens.py && cp ../replica/design/tokens.css src/styles/tokens.css && cp ../replica/design/tailwind.tokens.js tailwind.tokens.js",
-    "test:d1": "WRANGLER_SEND_METRICS=false tsx scripts/test-d1.mts"
+    "test:d1": "WRANGLER_SEND_METRICS=false tsx scripts/test-d1.mts",
+    "test:normalize": "tsx scripts/test-normalize.mts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.2",

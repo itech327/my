@@ -24,6 +24,13 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - A new key needs `.claude/skills/darija-voice/scripts/gemini_design_voices.py` run again.
 - The Fusha female voice was redesigned. The first one drifted into Darija words and became نور's Darija voice. The new one is accepted by the owner: "correct Standard Arabic with a Moroccan feel".
 
+## Text front end
+
+- Every Moroccan text goes through `app/src/lib/darija-normalize.ts` before Gemini, in the app and the connector.
+  - Darija: numbers in Darija, Arabizi such as "3afak", French words, units, and the owner's respellings.
+  - Standard Arabic: clean-up and respellings only.
+- It is a port of the skill's `normalize.py`. `npm run test:normalize` in `app/` checks they match.
+
 ## Limits to know
 
 - **The Gemini key is on Google's Free Tier:** 10 voice requests per day. Switch to the paid tier before real users.

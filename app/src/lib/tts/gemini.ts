@@ -1,4 +1,5 @@
 import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider';
+import { normalizeDarija } from '../darija-normalize';
 
 // Google Gemini TTS through the official Interactions API.
 // Docs read 2026-11-21: aistudio.google.com/docs/speech-generation
@@ -78,7 +79,10 @@ export function geminiProvider(voice: string, gender?: 'female' | 'male'): TtsPr
   return {
     id: `gemini-${voice}`,
     async synthesize(req: SynthesisRequest): Promise<SynthesisResult> {
-      const out = await geminiSpeak({ text: stripTags(req.text), voice: designedVoice(req.register, gender, voice),
+      // Moroccan text front end first: numbers in Darija, Arabizi, French words, respellings
+      const text = req.dialect === 'ar-MA'
+        ? normalizeDarija(stripTags(req.text), { profile: req.register === 'fusha' ? 'gemini-fusha' : 'gemini' }) : stripTags(req.text);
+      const out = await geminiSpeak({ text, voice: designedVoice(req.register, gender, voice),
         style: req.styleText ?? DEFAULT_STYLE, apiKey: process.env.GEMINI_API_KEY ?? 'proxy-injected' });
       return { audio: out.audio, mime: 'audio/wav', seconds: out.seconds };
     },

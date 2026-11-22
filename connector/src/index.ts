@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { DELIVERIES, PACES, geminiStyle, type DeliveryId, type PaceId, type RegisterId } from '../../app/src/lib/delivery';
 import { designedVoice, geminiSpeak, stripTags } from '../../app/src/lib/tts/gemini';
 import { rewriteWith } from '../../app/src/lib/rewrite-core';
+import { normalizeDarija } from '../../app/src/lib/darija-normalize';
 
 interface Env {
   AUDIO: KVNamespace;
@@ -90,7 +91,7 @@ function buildServer(env: Env, origin: string): McpServer {
   }, async ({ text, voice, mode, delivery, pace }) => {
     const v = VOICES[voice];
     try {
-      const req = { text: stripTags(text), apiKey: env.GEMINI_API_KEY, style: geminiStyle(delivery, pace ?? null, mode as RegisterId) };
+      const req = { text: normalizeDarija(stripTags(text), { profile: mode === 'fusha' ? 'gemini-fusha' : 'gemini' }), apiKey: env.GEMINI_API_KEY, style: geminiStyle(delivery, pace ?? null, mode as RegisterId) };
       const designed = designedVoice(mode, v.gender, v.prebuilt);
       // Designed voices belong to the Google project that made them. With another
       // key they return 404, so fall back to the prebuilt voice.

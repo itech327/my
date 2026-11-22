@@ -145,6 +145,19 @@ The skill improves between sessions only through files. Each round:
    the voice says right).
 4. Run `evaluate.py` again. Keep the change only if CER drops. Add a test.
 
+The same rules also run in front of Gemini: `app/src/lib/darija-normalize.ts`
+is a TypeScript port of `normalize.py`, used by the web app and the Claude
+connector. Keep them in step:
+
+- After a change to `normalize.py`, make the same change in the TypeScript
+  file, then run `npm run test:normalize` in `app/`. It compares both on 80+
+  sentences and must report 0 failed.
+- After editing `data/respell.tsv`, copy it to `app/src/lib/darija/respell.json`
+  (word to spelling). The same test fails until the two match.
+- Gemini profiles keep hamzas and the letter گ, and skip the DODa spellings,
+  which only suit our own voices. Standard Arabic mode only cleans up and
+  respells.
+
 `select_ref.py` does the same for F5 voices: it ranks candidate reference
 clips by measured CER, because the reference clip decides most of the
 stutter. `f5_server.py` serves the chosen clips (`data/refs/SPEAKER.wav` +
