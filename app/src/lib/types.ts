@@ -54,6 +54,7 @@ export interface Generation {
   delivery: string | null;
   pace: string | null;
   register: string | null;
+  fallback?: string | null;   // backup voice that spoke instead, for this response only
   isFreeRegen: boolean;
   expiresAt: string;
   createdAt: string;

@@ -12,12 +12,32 @@ import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider'
 const darijaUrl = process.env.TTS_DARIJA_URL;
 const speakerUrl = process.env.TTS_SPEAKERS_URL;
 
+// When Google's daily quota is used up (HTTP 429), the free studio voice of the
+// same gender speaks instead, if that service is running.
+function withQuotaFallback(primary: TtsProvider, backup: TtsProvider | undefined, backupName: string): TtsProvider {
+  if (!backup) return primary;
+  return {
+    id: primary.id,
+    async synthesize(req) {
+      try {
+        return await primary.synthesize(req);
+      } catch (e) {
+        if (!/\b429\b/.test(e instanceof Error ? e.message : String(e))) throw e;
+        return { ...(await backup.synthesize(req)), fallback: backupName };
+      }
+    },
+  };
+}
+
 // Both Moroccan voices use the studio engine when it is available. Without it,
 // إدريس falls back to the fast Piper voice (same speaker, M1).
 const byVoice: Record<string, TtsProvider> = {
   ...(speakerUrl ? { 'v-ar-MA-f1': f5Provider(speakerUrl, 'F1'), 'v-ar-MA-0': f5Provider(speakerUrl, 'M1') } : {}),
   // Gemini TTS (official API, key injected by the network proxy). Darija is not officially supported: measure it.
-  ...(process.env.TTS_GEMINI === '1' ? { 'v-ar-MA-g1': geminiProvider('Kore', 'female'), 'v-ar-MA-g2': geminiProvider('Charon', 'male') } : {}),
+  ...(process.env.TTS_GEMINI === '1' ? {
+    'v-ar-MA-g1': withQuotaFallback(geminiProvider('Kore', 'female'), speakerUrl ? f5Provider(speakerUrl, 'F1') : undefined, 'هند'),
+    'v-ar-MA-g2': withQuotaFallback(geminiProvider('Charon', 'male'), speakerUrl ? f5Provider(speakerUrl, 'M1') : undefined, 'إدريس'),
+  } : {}),
 };
 const byDialect: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};
 

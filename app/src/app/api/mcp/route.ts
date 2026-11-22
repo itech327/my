@@ -14,10 +14,10 @@ import { putAudio } from '@/lib/mcp-audio';
 // Usage is not metered against app credits: it spends the owner's Gemini quota.
 
 const VOICES = {
-  nour: { id: 'v-ar-MA-g1', name: 'نور', fallback: 'v-ar-MA-f1' },
-  younes: { id: 'v-ar-MA-g2', name: 'يونس', fallback: 'v-ar-MA-0' },
-  hind: { id: 'v-ar-MA-f1', name: 'هند', fallback: null },
-  idriss: { id: 'v-ar-MA-0', name: 'إدريس', fallback: null },
+  nour: { id: 'v-ar-MA-g1', name: 'نور' },
+  younes: { id: 'v-ar-MA-g2', name: 'يونس' },
+  hind: { id: 'v-ar-MA-f1', name: 'هند' },
+  idriss: { id: 'v-ar-MA-0', name: 'إدريس' },
 } as const;
 
 function authorized(req: Request): boolean {
@@ -59,21 +59,15 @@ function buildServer(req: Request): McpServer {
     });
     const usable = (voiceId: string) => providerFor({ voiceId, dialect: 'ar-MA' }).id !== 'fake';
     if (!usable(v.id)) return { isError: true, content: [{ type: 'text' as const, text: `الصوت ${v.name} غير مفعّل على هذا الخادم.` }] };
-    let used: string = v.name;
-    let note = '';
     let out;
     try {
       out = await providerFor({ voiceId: v.id, dialect: 'ar-MA' }).synthesize(reqFor(v.id));
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      const fb = v.fallback;
-      if (!/\b429\b/.test(msg) || !fb || !usable(fb)) {
-        return { isError: true, content: [{ type: 'text' as const, text: /\b429\b/.test(msg) ? 'انتهت حصة Google اليومية. حاول لاحقاً.' : `تعذّر إنشاء الصوت: ${msg.slice(0, 200)}` }] };
-      }
-      out = await providerFor({ voiceId: fb, dialect: 'ar-MA' }).synthesize(reqFor(fb));
-      used = Object.values(VOICES).find((x) => x.id === fb)!.name;
-      note = ` انتهت حصة Google اليومية، فاستُعمل الصوت المجاني ${used}.`;
+      return { isError: true, content: [{ type: 'text' as const, text: /\b429\b/.test(msg) ? 'انتهت حصة Google اليومية، والأصوات المجانية غير مفعّلة على هذا الخادم. حاول لاحقاً.' : `تعذّر إنشاء الصوت: ${msg.slice(0, 200)}` }] };
     }
+    const used = out.fallback ?? v.name;
+    const note = out.fallback ? ` انتهت حصة Google اليومية، فاستُعمل الصوت المجاني ${out.fallback}.` : '';
     const url = `${baseUrl(req)}/api/mcp/audio/${putAudio(out.audio, out.mime)}`;
     return {
       content: [

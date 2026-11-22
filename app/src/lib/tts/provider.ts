@@ -15,6 +15,7 @@ export interface SynthesisResult {
   audio: Uint8Array;
   mime: 'audio/wav' | 'audio/mpeg';
   seconds: number;
+  fallback?: string;             // set when a backup voice spoke instead (e.g. Google quota used up)
 }
 
 // Every speech engine sits behind this. See replica/architecture.md.

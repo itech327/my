@@ -13,18 +13,20 @@ export async function runGeneration(input: {
   const created = await data.createGeneration(input);
   if (!created.ok) return created;
   const gen = created.value;
+  let fallback: string | undefined;
   try {
     const out = await getProvider().synthesize({
       voiceId: gen.voiceId!, dialect: gen.dialect!, text: gen.inputText, style: gen.style ?? undefined,
       styleText: geminiStyle(gen.delivery as DeliveryId | null, gen.pace as PaceId | null, gen.register as RegisterId | null),
       speed: paceById(gen.pace)?.speed, pauseScale: paceById(gen.pace)?.pauseScale, register: gen.register ?? undefined,
     });
+    fallback = out.fallback;
     await data.completeGeneration(gen.id, out.audio, out.mime, out.seconds);
   } catch (e) {
     await data.failGeneration(gen.id, e instanceof Error ? e.message : 'synthesis failed');
   }
   const final = await data.getGeneration(gen.id, input.userId);
-  return final ? { ok: true, value: final } : { ok: false, code: 'not_found', error: 'not found' };
+  return final ? { ok: true, value: { ...final, fallback: fallback ?? null } } : { ok: false, code: 'not_found', error: 'not found' };
 }
 
 export const STATUS_FOR: Record<string, number> = { not_found: 404, forbidden: 403, insufficient_credits: 402, invalid: 400, conflict: 409, provider_failed: 502 };
