@@ -269,6 +269,7 @@
     var stepper = H('nav', 'stepper', '', main); stepper.setAttribute('aria-label', 'Étapes de la séance');
     var secs = NAMES.map(function (n) { var s = H('section', 'mv-sec', '', main); s.dataset.t = n; return s; });
     var cur = 0, scenes = [], score = { prep: 0, seul: 0, done: 0 };
+    store.set('mv_last', def.id);
     fullscreenBtn();
     NAMES.forEach(function (n, i) { var b = H('button', '', (i + 1) + '. ' + n, stepper); b.onclick = function () { go(i); }; });
     function go(i) {
@@ -381,13 +382,100 @@
     MV.go = go;
   }
 
+  // accueil : une carte « Où j'en suis » (niveau, progression, prochaine étape, révision du jour)
+  function gateway() {
+    var hero = document.querySelector('.hero'); if (!hero) return;
+    var links = [].slice.call(document.querySelectorAll('a[data-lesson]'));
+    if (!links.length) return;
+    function lvOf(a) { var n = a; while (n && !(n.tagName === 'H2' && n.id)) n = n.previousElementSibling; return n ? n.id : ''; }
+    var done = function (a) { return !!store.get('mv_done_' + a.getAttribute('data-lesson')); };
+    var last = store.get('mv_last'), cur = null;
+    links.forEach(function (a) { if (a.getAttribute('data-lesson') === last) cur = a; });
+    var lv = cur ? lvOf(cur) : lvOf(links[0]);
+    var mine = links.filter(function (a) { return lvOf(a) === lv; });
+    var nDone = mine.filter(done).length, nxt = null, verb = 'Commencer';
+    if (cur && !done(cur)) { nxt = cur; verb = 'Continuer'; }
+    else {
+      var from = cur ? mine.indexOf(cur) + 1 : 0;
+      nxt = mine.slice(from).concat(mine.slice(0, from)).filter(function (a) { return !done(a); })[0] || null;
+      if (nxt && nDone) verb = 'Suite';
+    }
+    var rev = null; try { rev = JSON.parse(store.get('mv_rev1') || 'null'); } catch (_) {}
+    var today = (function () { var d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 6e4) / 864e5); })();
+    var nDue = rev && rev.cards ? Object.keys(rev.cards).filter(function (k) { return rev.cards[k][1] <= today; }).length : 0;
+    var c = H('div', 'card gate', '', null); hero.parentNode.insertBefore(c, hero.nextSibling);
+    var h = lv ? lv.replace(/^n/, '') + 'AC' : '';
+    H('div', 'eyebrow', 'Où j\'en suis' + (h ? ' · ' + h : '') + ' · أين وصلت', c);
+    H('div', 'gate-n', nDone ? '<b>' + nDone + '</b> sur ' + mine.length + ' leçons terminées' : 'Premier pas : une leçon de 10 minutes', c);
+    var bar = H('div', 'bar', '<i></i>', c); bar.firstChild.style.width = Math.round(100 * nDone / mine.length) + '%';
+    if (nxt) {
+      var a = H('a', 'btn pri big', '', c); a.href = nxt.getAttribute('href');
+      a.textContent = verb + ' : ' + nxt.querySelector('b').textContent + ' ▶';
+    } else H('p', 'small', 'Toutes les leçons de ce niveau sont terminées. Passe un examen ou lance la révision du jour.', c);
+    var r = H('a', 'btn', '', c); r.href = 'revision/';
+    r.textContent = nDue ? 'Révision du jour · ' + nDue + (nDue > 1 ? ' cartes à revoir' : ' carte à revoir') : 'Révision du jour · 5 minutes';
+  }
+
+  // accueil : un seul niveau visible, les 3 prochaines leçons, le reste derrière un bouton
+  function declutter() {
+    var nav = document.querySelector('nav.lvl'), hs = [].slice.call(document.querySelectorAll('main > h2[id]'));
+    if (!nav || !hs.length) return;
+    var groups = hs.map(function (h) {
+      var items = [], n = h.nextElementSibling;
+      while (n && !(n.tagName === 'H2' && n.id)) { if (n.classList.contains('lesson') && n.hasAttribute('data-lesson')) items.push(n); n = n.nextElementSibling; }
+      return { id: h.id, h: h, items: items };
+    });
+    // l'évaluation en ligne compacte ; la révision du jour vit déjà dans la carte « Où j'en suis »
+    [].forEach.call(document.querySelectorAll('a.lesson.exam'), function (a) {
+      if (a.getAttribute('href') === 'revision/' && document.querySelector('.gate')) a.style.display = 'none'; else a.classList.add('compact');
+    });
+    var gate = document.querySelector('.gate'), cur = store.get('mv_lvl');
+    var last = store.get('mv_last'), lastA = last && document.querySelector('a[data-lesson="' + last + '"]');
+    function gid(a) { for (var i = 0; i < groups.length; i++) if (groups[i].items.indexOf(a) >= 0) return groups[i].id; return ''; }
+    var start = lastA ? gid(lastA) : '';
+    if (!start) start = (groups.filter(function (g) { return g.items.length; })[0] || groups[0]).id;
+    var active = start, expanded = false;
+    var tabs = [].slice.call(nav.querySelectorAll('a'));
+    // même règle que la carte du haut : leçon en cours, sinon la suivante non terminée, sinon la première
+    function isDone(a) { return !!store.get('mv_done_' + a.getAttribute('data-lesson')); }
+    function startIdx(g) {
+      var n = g.items.length, ci = lastA ? g.items.indexOf(lastA) : -1;
+      if (ci >= 0 && !isDone(lastA)) return ci;
+      for (var k = 0; k < n; k++) { var i = (Math.max(ci + 1, 0) + k) % n; if (!isDone(g.items[i])) return i; }
+      return 0;
+    }
+    function render() {
+      groups.forEach(function (g) {
+        var on = g.id === active; g.h.style.display = on ? '' : 'none';
+        var firstTodo = startIdx(g);
+        var from = Math.max(0, Math.min(firstTodo, g.items.length - 3));
+        g.items.forEach(function (a, i) { a.style.display = on && (expanded || (i >= from && i < from + 3)) ? '' : 'none'; });
+        var more = g.h.nextElementSibling; while (more && !more.classList.contains('more') && !(more.tagName === 'H2' && more.id)) more = more.nextElementSibling;
+        if (more && more.classList.contains('more')) more.style.display = on && g.items.length > 3 ? '' : 'none';
+      });
+      tabs.forEach(function (t) { var on = t.getAttribute('href') === '#' + active; t.classList.toggle('on', on); t.setAttribute('aria-current', on ? 'true' : 'false'); });
+      groups.forEach(function (g) { if (g.btn) g.btn.textContent = expanded ? 'Voir moins' : 'Toutes les leçons du niveau (' + g.items.length + ')'; });
+    }
+    groups.forEach(function (g) {
+      var m = H('div', 'more', '<button class="btn" type="button"></button>', null);
+      var last = g.items.length ? g.items[g.items.length - 1] : g.h;
+      last.parentNode.insertBefore(m, last.nextSibling);
+      g.btn = m.firstChild; g.btn.onclick = function () { expanded = !expanded; render(); };
+    });
+    tabs.forEach(function (t) { t.addEventListener('click', function (e) { e.preventDefault(); active = t.getAttribute('href').slice(1); expanded = false; store.set('mv_lvl', active); render(); }); });
+    if (cur && groups.some(function (g) { return g.id === cur; }) && !lastA) active = cur;
+    render();
+  }
+
   // accueil : coche les leçons terminées
   function home() {
+    gateway();
     [].forEach.call(document.querySelectorAll('[data-lesson]'), function (a) {
       var id = a.getAttribute('data-lesson'), sc = store.get('mv_score_' + id);
       if (store.get('mv_done_' + id)) { var n = a.querySelector('.n'); if (n) n.textContent = '✓'; }
       if (sc) { var t = H('span', 'badge', fmt(+sc, 1) + '/20', null); a.appendChild(t); }
     });
+    declutter();
   }
 
   var MV = window.MV = { notifyResult: notifyResult, eleveCard: eleveCard, S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };

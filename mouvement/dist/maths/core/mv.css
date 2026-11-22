@@ -231,3 +231,16 @@ input.txt.cls{flex:0 1 150px}
 .pred .btn.opt:disabled:not(.sel){opacity:.55}
 .verdict{border-left:4px solid var(--acc)}
 .verdict p{margin:6px 0}
+
+/* accueil : carte « Où j'en suis » */
+.gate{margin:12px 0}
+.gate .gate-n{font-size:17px;margin:2px 0 4px}
+.gate .gate-n b{font:700 26px ui-monospace,Menlo,monospace;color:var(--acc-t)}
+.gate a.btn{display:block;text-align:center;text-decoration:none;margin-top:10px}
+
+/* accueil allégé : onglets de niveau, bouton « toutes les leçons », évaluation compacte */
+.lvl a.on{border-color:var(--acc);color:var(--ink);background:var(--acc-bg)}
+.more{margin:8px 0}
+.more .btn{width:100%}
+a.lesson.exam.compact{padding:8px 12px}
+a.lesson.exam.compact .ar{display:none}

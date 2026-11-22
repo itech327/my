@@ -349,7 +349,8 @@ async def lesson(pg, base, key, plan):
     if await pg.locator(f'a[data-lesson="{lid}"]').count() != 1:
         fail(f'{key}: lien absent de l\'accueil')
     await shot(pg, f'{lid}-home')
-    await pg.click(f'a[data-lesson="{lid}"]')
+    # l'accueil n'affiche que les 3 prochaines leçons : on ouvre le lien même s'il est replié
+    await pg.goto(base + (await pg.locator(f'a[data-lesson="{lid}"]').get_attribute('href')))
     await pg.wait_for_selector('section.on .cap')
     # 1. ouverture : toutes les étapes
     n = await pg.locator('section.on .dots i').count()
@@ -437,7 +438,7 @@ async def lesson(pg, base, key, plan):
         fail(f'{key}: « À retenir » incomplet')
     # retour à l'accueil : la leçon est cochée
     await pg.goto(base)
-    if (await pg.locator(f'a[data-lesson="{lid}"] .n').inner_text()).strip() != '✓':
+    if (await pg.locator(f'a[data-lesson="{lid}"] .n').text_content()).strip() != '✓':
         fail(f'{key}: leçon non cochée à l\'accueil')
 
 
