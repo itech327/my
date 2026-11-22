@@ -62,7 +62,7 @@ npx wrangler secret put GEMINI_API_KEY    # paste the Gemini key
 npx wrangler secret put MCP_ACCESS_KEY    # paste a private code, 24+ characters
 ```
 
-`wrangler deploy` prints the address: `https://sada-connector.<subdomain>.workers.dev`.
+`wrangler deploy` prints the address: `https://voice.taalim.men` (Custom Domain set in `connector/wrangler.jsonc`).
 A custom domain can be added in the Cloudflare dashboard under the Worker's Domains & Routes.
 
 **Never paste keys into a chat.** Type them only into wrangler or the Cloudflare dashboard.
@@ -70,7 +70,7 @@ A custom domain can be added in the Cloudflare dashboard under the Worker's Doma
 ## Then add it to Claude
 
 1. claude.ai: **Customize**, **Connectors**, **+ Add**, **Add custom connector**.
-2. Name `Sada`. URL `https://<worker address>/mcp`.
+2. Name `Sada`. URL `https://voice.taalim.men/mcp`.
 3. **Authentication**: No sign in.
 4. **Request headers**: `x-sada-key` = the MCP_ACCESS_KEY.
 5. In a chat: **+**, **Connectors**, turn Sada on.

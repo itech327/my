@@ -7,6 +7,8 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
+  // Custom Domain: Cloudflare creates the DNS record and certificate for it.
+  "routes": [{ "pattern": "voice.taalim.men", "custom_domain": true }],
   "r2_buckets": [{ "binding": "AUDIO", "bucket_name": "sada-audio" }],
   "observability": { "enabled": true }
 }
