@@ -22,7 +22,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - Each mode (darija, fusha) and gender has its own **designed voice** (Gemini Voice design API).
 - Ids are in `app/src/lib/tts/designed-voices.json`. They belong to the Google project of the current key.
 - A new key needs `.claude/skills/darija-voice/scripts/gemini_design_voices.py` run again.
-- The Fusha female voice was redesigned. The first one drifted into Darija words and became نور's Darija voice. A Gemini check of the new one is still pending.
+- The Fusha female voice was redesigned. The first one drifted into Darija words and became نور's Darija voice. The new one is accepted by the owner: "correct Standard Arabic with a Moroccan feel".
 
 ## Limits to know
 
@@ -111,7 +111,6 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Still open
 
-1. **Pending ear test:** Fusha female voice on Gemini. Recorded 2026-11-22 (`replica/examples/gemini/app-nour-fusha-v2.wav`, CER 0.034, no Darija words found by the recognizer). Owner to confirm by ear.
 2. **Paid tier:** switch the Gemini key to paid.
 3. **Full app:** a database and storage, so it can go live: Cloudflare D1 and KV or R2, or Supabase.
 4. **Payments:** a real payment provider.
