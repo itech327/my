@@ -1,6 +1,6 @@
 # Project context: Arabic TTS clone
 
-Hand this file to any new session or collaborator. It says what exists,
+Short handoff: see `/CONTEXT.md` at the repo root. Hand this file to any new session or collaborator. It says what exists,
 what was decided, and what is next.
 
 Last updated: 2026-11-21. Branch: `claude/new-session-thirii` in
