@@ -165,7 +165,7 @@ export function Editor({ voices, initialBalance, paid, welcome, initialVoice, ha
               </div>
               <AudioPlayer key={result.id} src={`/api/audio/${result.id}`} label="الصوت الناتج" downloadName={`voice-${result.id.slice(0, 8)}.wav`}
                 initialDuration={result.secondsCharged ?? undefined} />
-              {result.fallback && <p role="status" className="text-xs text-text-muted">انتهت حصة Google اليومية، فتكلّم الصوت المجاني {result.fallback}.</p>}
+              {result.fallback && <p role="status" className="text-xs text-text-muted">لم يستجب Google، فتكلّم الصوت المجاني {result.fallback}.</p>}
               <Link href="/app/history" className="justify-self-start text-sm underline">كل ما أنشأته</Link>
             </section>
           )}

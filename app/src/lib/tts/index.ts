@@ -12,8 +12,8 @@ import type { SynthesisRequest, SynthesisResult, TtsProvider } from './provider'
 const darijaUrl = process.env.TTS_DARIJA_URL;
 const speakerUrl = process.env.TTS_SPEAKERS_URL;
 
-// When Google's daily quota is used up (HTTP 429), the free studio voice of the
-// same gender speaks instead, if that service is running.
+// When Google refuses for any reason (quota 429, overload, key or network problem),
+// a free voice speaks instead, if one is running. The reason goes to the server log.
 function withQuotaFallback(primary: TtsProvider, backup: TtsProvider | undefined, backupName: string): TtsProvider {
   if (!backup) return primary;
   return {
@@ -22,7 +22,8 @@ function withQuotaFallback(primary: TtsProvider, backup: TtsProvider | undefined
       try {
         return await primary.synthesize(req);
       } catch (e) {
-        if (!/\b429\b/.test(e instanceof Error ? e.message : String(e))) throw e;
+        // Any refusal from Google (quota, overload, key or network problem): the free voice speaks.
+        console.error(`[tts] ${primary.id} failed, using ${backupName}: ${(e instanceof Error ? e.message : String(e)).slice(0, 200)}`);
         return { ...(await backup.synthesize(req)), fallback: backupName };
       }
     },
