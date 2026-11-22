@@ -57,9 +57,11 @@ Workers Builds worker `sada-connector` created 2026-11-22, production branch `cl
 ## Add it to Claude
 
 1. claude.ai: Customize, Connectors, + Add, Add custom connector.
-2. Name: Sada. URL: `https://voice.taalim.men/mcp`.
+2. Name: Sada. URL: `https://voice.taalim.men/mcp/<MCP_ACCESS_KEY>` (the key is part of the URL).
 3. Authentication: No sign in.
-4. Request headers: `x-sada-key` = your MCP_ACCESS_KEY.
+4. No headers needed. claude.ai only accepts approved header names, so the key goes in the URL instead:
+   `https://voice.taalim.men/mcp/<MCP_ACCESS_KEY>`. Use a key of letters, digits, `-` and `_` only.
+   (`Authorization: Bearer <key>` and `x-sada-key` still work for other MCP clients.)
 5. In a chat: +, Connectors, turn Sada on.
 
 ## Local test
