@@ -227,22 +227,10 @@
     }, function (e) { clearTimeout(t); throw e; });
   }
   function cityFromTz(tz) { var c = String(tz || '').split('/').pop(); return c ? c.replace(/_/g, ' ') : ''; }
+  /* Aucune requête réseau : la ville approximative vient du fuseau horaire du navigateur. L'adresse IP n'est ni demandée ni conservée. */
   function fetchNet() {
     var tz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || '';
-    var tries = [
-      function () { return getJSON('https://ipwho.is/').then(function (j) { if (j.success === false) throw 0; return { ip: j.ip, city: j.city, region: j.region, country: j.country, isp: j.connection && j.connection.isp, source: 'ipwho.is' }; }); },
-      function () { return getJSON('https://ipapi.co/json/').then(function (j) { if (j.error) throw 0; return { ip: j.ip, city: j.city, region: j.region, country: j.country_name, isp: j.org, source: 'ipapi.co' }; }); },
-      function () { return getJSON('https://api.ipify.org?format=json').then(function (j) { return { ip: j.ip, source: 'ipify.org' }; }); }
-    ];
-    var i = 0;
-    function next() {
-      if (i >= tries.length) return Promise.resolve({ status: 'failed', city: cityFromTz(tz), cityApprox: true, source: 'المنطقة الزمنية للمتصفح' });
-      return tries[i++]().then(function (r) {
-        if (r && r.ip) { r.status = 'ok'; if (!r.city) { r.city = cityFromTz(tz); r.cityApprox = true; } return r; }
-        return next();
-      }, next);
-    }
-    return next();
+    return Promise.resolve({ status: 'ok', city: cityFromTz(tz), cityApprox: true, source: 'المنطقة الزمنية للمتصفح' });
   }
 
   /* ---------- session ---------- */
@@ -346,7 +334,7 @@
     var weak = st.ch.filter(function (c) { return c.n >= 3 && c.ok / c.n < 0.6; }).slice(0, 5).map(function (c) { return { title: c.title, pct: Math.round(100 * c.ok / c.n), n: c.n }; });
     return {
       sid: s.id, name: s.name, cls: s.cls || '', device: deviceLabel(s.device), consent: !!s.consent,
-      ip: s.consent ? n.ip || '' : '', city: s.consent ? n.city || '' : '', region: s.consent ? n.region || '' : '', country: s.consent ? n.country || '' : '', isp: s.consent ? n.isp || '' : '', cityApprox: !!n.cityApprox,
+      city: s.consent ? n.city || '' : '', cityApprox: !!n.cityApprox,
       durMs: (s.endedAt || Date.now()) - s.startedAt, n: st.n, ok: st.ok, pct: st.pct, pts: Math.round(st.pts * 10) / 10, hints: st.hints,
       lv: [1, 2, 3, 4].map(function (k) { return [st.lv[k].ok, st.lv[k].n]; }), weak: weak
     };
@@ -741,9 +729,9 @@
       '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
       (Notify.enabled() ? '<label class="f" for="lab-cls">Code de classe (facultatif) · رمز القسم</label><input id="lab-cls" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(store.get(K_CLS, '')) + '">' : '') +
       (Notify.enabled()
-        ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil, mon IP et ma ville approximative soient envoyés à mon enseignant.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إرسال اسمي وجهازي وعنوان IP ومدينتي التقريبية إلى أستاذي.</span></span></label>' +
+        ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil et ma ville approximative (déduite du fuseau horaire) soient envoyés à mon enseignant.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إرسال اسمي وجهازي ومدينتي التقريبية (من المنطقة الزمنية) إلى أستاذي.</span></span></label>' +
           '<p class="lab-note">Une visite anonyme (page, heure, pays) est aussi signalée. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>'
-        : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil, mon IP et ma ville approximative figurent dans mon rapport.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إظهار جهازي وعنوان IP ومدينتي التقريبية في تقريري.</span></span></label>' +
+        : '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon appareil et ma ville approximative figurent dans mon rapport.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إظهار جهازي ومدينتي التقريبية في تقريري.</span></span></label>' +
           '<p class="lab-note">Données gardées dans ce navigateur. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>') +
       '<p class="lab-err" id="lab-err" role="alert"></p>' +
       '<div class="lab-actions"><button type="button" class="btn" id="lab-go">Commencer</button><button type="button" class="btn ghost" id="lab-skip">Sans session</button></div></div>';
@@ -817,15 +805,15 @@
     var old = $('#lab-report'); if (old) old.remove();
     var st = stats(s), box = h('div', { id: 'lab-report', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Rapport de session' });
     var d = s.device || {}, n = s.net || {}, end = s.endedAt || Date.now();
-    var netState = n.status === 'pending' ? 'جارٍ التحديد…' : (n.status === 'declined' ? 'لم يوافق المستخدم' : (n.status === 'failed' ? 'تعذّر الحصول على IP' : ''));
+    var netState = n.status === 'pending' ? 'جارٍ التحديد…' : (n.status === 'declined' ? 'لم يوافق المستخدم' : '');
     var place = [n.city, n.region, n.country].filter(Boolean).join('، ');
     var html = '<div class="rp"><div class="rp-top"><button type="button" class="btn ghost" data-r="close">✕ Fermer · إغلاق</button></div><p class="lab-note">' + esc(CFG.appName) + ' · rapport de session</p>' +
       '<h2>' + esc(s.name) + '</h2><p class="rp-ar" dir="rtl" lang="ar">' + (s.endedAt ? 'جلسة منتهية' : 'جلسة جارية') + ' · ' + fmtDate(s.startedAt) + ' · المدة ' + fmtDur(end - s.startedAt) + '</p>';
     html += '<h3 dir="rtl">الجهاز والموقع</h3><div class="rp-grid"><div class="rp-card" dir="rtl"><dl>' +
       rpDl('الاسم', s.name) + rpDl('الجهاز', deviceLabel(d)) + rpDl('النظام', (d.os || '') + (d.osVersion ? ' ' + d.osVersion : '')) + rpDl('المتصفح', (d.browser || '') + (d.browserVersion ? ' ' + d.browserVersion : '')) +
       rpDl('الشاشة', d.screen) + rpDl('اللغة', d.lang) + rpDl('المنطقة الزمنية', d.tz) + '</dl></div>' +
-      '<div class="rp-card" dir="rtl"><dl>' + rpDl('عنوان IP', n.ip || netState) + rpDl('المدينة', place || netState) + (n.cityApprox ? rpDl('ملاحظة', 'المدينة مأخوذة من المنطقة الزمنية') : '') + rpDl('مزوّد الخدمة', n.isp) + rpDl('المصدر', n.source) +
-      '</dl><p class="lab-note" style="margin-top:8px">المدينة تقريبية وتُستنتج من عنوان IP.</p></div></div>';
+      '<div class="rp-card" dir="rtl"><dl>' + rpDl('المدينة', place || netState) + (n.cityApprox ? rpDl('ملاحظة', 'المدينة مأخوذة من المنطقة الزمنية') : '') + rpDl('المصدر', n.source) +
+      '</dl><p class="lab-note" style="margin-top:8px">المدينة تقريبية وتُستنتج من المنطقة الزمنية للمتصفح. لا يُطلب عنوان IP ولا يُحفظ.</p></div></div>';
     html += '<h3 dir="rtl">النتائج</h3><div class="rp-kpi" dir="rtl"><div><b>' + st.n + '</b><span>أسئلة</span></div><div><b class="' + (st.pct >= 60 ? 'good' : 'bad') + '">' + st.pct + '%</b><span>صحيحة</span></div><div><b>' + (Math.round(st.pts * 10) / 10) + '</b><span>نقاط</span></div><div><b>' + (st.n ? Math.round(st.avg / 1000) : 0) + ' ث</b><span>متوسط الزمن</span></div><div><b>' + st.hints + '</b><span>تلميحات</span></div></div>';
     html += '<div dir="rtl">' + [1, 2, 3, 4].map(function (k) {
       var l = st.lv[k], p = l.n ? Math.round(100 * l.ok / l.n) : 0;
@@ -868,9 +856,9 @@
   function csvCell(v) { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",;\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
   function toCSV(s) {
     var n = s.net || {}, d = s.device || {};
-    var head = ['nom', 'appareil', 'ip', 'ville', 'app', 'chapitre', 'sujet', 'niveau', 'correct', 'points', 'indice', 'duree_ms', 'question', 'reponse', 'bonne_reponse', 'date'];
+    var head = ['nom', 'appareil', 'ville', 'app', 'chapitre', 'sujet', 'niveau', 'correct', 'points', 'indice', 'duree_ms', 'question', 'reponse', 'bonne_reponse', 'date'];
     var rows = (s.answers || []).map(function (a) {
-      return [s.name, deviceLabel(d), n.ip || '', [n.city, n.country].filter(Boolean).join(' '), a.app, a.title, a.topic, LV[a.d].fr, a.ok ? 1 : 0, a.pts, a.hint ? 1 : 0, a.ms, a.q, a.given, a.right, new Date(a.t).toISOString()].map(csvCell).join(',');
+      return [s.name, deviceLabel(d), [n.city, n.country].filter(Boolean).join(' '), a.app, a.title, a.topic, LV[a.d].fr, a.ok ? 1 : 0, a.pts, a.hint ? 1 : 0, a.ms, a.q, a.given, a.right, new Date(a.t).toISOString()].map(csvCell).join(',');
     });
     return '﻿' + head.join(',') + '\n' + rows.join('\n');
   }

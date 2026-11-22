@@ -13,14 +13,14 @@ Trois applications de cours pour le collège, option française. Chaque fichier 
 
 - Leçon « Défis » dans chaque chapitre qui a des exercices : Facile, Moyen, Difficile, Défi chronométré et mode adaptatif.
 - Le niveau Défi : problèmes à plusieurs étapes, 45 secondes par question, sans indice, une seule tentative, points x5.
-- Session : nom du visiteur, consentement, appareil, adresse IP et ville.
-- Rapport de session : appareil, IP, ville, résultats par niveau et par chapitre, recommandations, erreurs à revoir. Export PDF, CSV et JSON.
+- Session : nom du visiteur, consentement, appareil et ville approximative.
+- Rapport de session : appareil, ville approximative, résultats par niveau et par chapitre, recommandations, erreurs à revoir. Export PDF, CSV et JSON.
 - `svt.html` : nouvelle application dans le même style (figures animées et résumé en arabe).
 
 ## Vie privée
 
 - Les données restent dans le navigateur du visiteur (`localStorage`). Aucun serveur n'est utilisé.
-- L'IP et la ville viennent de services publics (ipwho.is, puis ipapi.co, puis api.ipify.org) appelés par le navigateur du visiteur, et seulement s'il coche la case de consentement.
+- L'adresse IP n'est ni demandée ni conservée : aucune requête vers un service d'adresse IP. La ville approximative est déduite du fuseau horaire du navigateur, seulement si l'élève coche la case de consentement.
 - La ville est approximative. Sans réponse des services, la ville est déduite du fuseau horaire.
 - L'enseignant ne voit pas les sessions des élèves à distance. L'élève envoie son rapport en PDF ou en JSON.
 - Le bouton « Effacer mes données » du rapport supprime tout.
@@ -39,7 +39,7 @@ Réglages du dépôt, Pages, source « Deploy from a branch », branche `lessons
 python3 tools/build.py        # assemble les trois applications
 python3 tests/ui_test.py      # session, séries, rapport
 python3 tests/chapters_test.py  # ouvre tous les chapitres
-python3 tests/net_test.py     # IP simulée, consentement, CSV
+python3 tests/net_test.py     # pas de requête IP, ville du fuseau horaire, consentement, CSV
 python3 tests/notify_test.py  # alertes avec relais simulé
 node worker/test_worker.mjs   # relais Telegram
 ```

@@ -7,7 +7,7 @@ Le site est statique : il ne peut pas garder un secret. Le jeton du bot reste do
 | Événement | Contenu |
 | --- | --- |
 | Ouverture d'une page | Nom de l'application. Visite anonyme, sans nom ni IP. Le pays seul (code à deux lettres) est ajouté par le relais. |
-| Connexion | Nom, appareil, IP, ville. Seulement si l'élève a coché le consentement. |
+| Connexion | Nom, appareil, ville approximative (déduite du fuseau horaire). Pas d'IP. Seulement si l'élève a coché le consentement. |
 | Série terminée | Nom, chapitre, niveau, score, points. |
 | Fin de session (bouton Terminer) | Résumé complet, niveaux, fiches à revoir. |
 | Fermeture de la page | Résumé de la session en cours. Une seule fois sans nouvelle réponse. |

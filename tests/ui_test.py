@@ -60,7 +60,7 @@ with sync_playwright() as p:
         check(pg.locator('#lab-report [data-r=print]').count() == 1 and pg.locator('#lab-report [data-r=csv]').count() == 0 and pg.locator('#lab-report [data-r=json]').count() == 0, f + ': rapport public : PDF seulement')
         txt = pg.locator('#lab-report').inner_text()
         check('Salma Test' in txt and 'Android' in txt, f + ': nom et appareil dans le rapport')
-        check('عنوان IP' in txt and 'المدينة' in txt, f + ': champs IP et ville présents')
+        check('عنوان IP\n' not in txt and 'المدينة' in txt, f + ': ville présente, pas d\'IP')
         ar = pg.evaluate("(function(){var e=document.querySelector('#lab-report .rp-ar');if(!e)return null;var c=getComputedStyle(e);return {bg:c.backgroundColor,bd:c.borderTopWidth,pos:c.position,w:e.getBoundingClientRect().width,rw:document.querySelector('#lab-report .rp').getBoundingClientRect().width}})()")
         check(ar is not None and ar['bd'] == '0px' and ar['bg'] == 'rgba(0, 0, 0, 0)' and ar['pos'] == 'static' and ar['w'] <= ar['rw'] + 1, f + ': note arabe du rapport sans cadre ' + str(ar))
         pg.screenshot(path='/tmp/report_%s.png' % f.split('.')[0], full_page=False)
