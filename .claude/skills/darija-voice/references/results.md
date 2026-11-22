@@ -304,3 +304,4 @@ naturalness; the recognizer only guards against swallowed words.
 
 - `normalize.py` ported to TypeScript (`app/src/lib/darija-normalize.ts`); profile `open` matches Python on 80 sentences.
 - Gemini now receives Darija numbers, Arabizi, French words, units and respellings (e.g. فلّاح). Hamzas and گ kept. Standard Arabic mode: clean-up and respellings only.
+- Live connector test, Arabizi input "ara chi bttikha nakloha m3a ssbah, 3andi 350 dh f jibi": recognizer heard "... عندي تلتمية وخمسين درهم فجيبي" (Darija number), CER 0.080. بطّيخة heard unclearly. Sample `connector-arabizi.wav`.
