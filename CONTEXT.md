@@ -36,7 +36,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 | Path | What |
 | --- | --- |
 | `app/` | Next.js 15 web app: editor, accounts, credits, history. Data is in memory for now |
-| `connector/` | Cloudflare Worker: Claude custom connector (remote MCP). **Ready to deploy** |
+| `connector/` | Cloudflare Worker: Claude custom connector (remote MCP). **Live at voice.taalim.men** |
 | `app/src/lib/delivery.ts` | Speaking modes, delivery styles, paces, templates |
 | `app/src/lib/tts/` | Engines: Gemini, F5, Piper, router with quota fallback |
 | `app/src/app/api/mcp/` | Same connector inside the app, for testing |
@@ -55,7 +55,7 @@ Status on 2026-11-22: **deployed and live at `https://voice.taalim.men`** with W
 
 ### Dashboard steps (Workers Builds)
 
-1. **R2**: **Create bucket**, named exactly `sada-audio`. Optional: a lifecycle rule that deletes objects under `a/` after 7 days.
+1. Audio storage is **Workers KV** (binding `AUDIO`). Wrangler creates the namespace on the first deploy, and each file expires after 7 days. No R2 needed.
 2. **Workers & Pages**: **Create**, **Import a repository**, repository `itech327/my`.
 3. Settings:
    - Worker name: **`sada-connector`**. It must match `name` in `wrangler.jsonc`, or the build fails.
@@ -74,7 +74,7 @@ Status on 2026-11-22: **deployed and live at `https://voice.taalim.men`** with W
 
 ### Alternative: deploy from a computer
 
-With Node 22, follow `connector/README.md`: `npx wrangler login`, create the bucket, `npx wrangler deploy`, then `npx wrangler secret put` for both secrets.
+With Node 22, follow `connector/README.md`: `npx wrangler login`, `npx wrangler deploy`, then `npx wrangler secret put` for both secrets.
 
 ## Then add it to Claude
 
