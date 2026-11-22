@@ -210,7 +210,9 @@ def home_page(s, cfg, lessons):
            f'<div class="ar">{E(cfg["ar"])}: {E(LEAD_AR)}</div><p class="small">{E(LEAD)}</p></div>\n',
            '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS if k in cfg.get('levels', '123')) + '</nav>\n',
            '<a class="lesson exam" href="examen/"><span class="n">20</span><span><span class="eyebrow">Évaluation</span><b>Examens par niveau</b>'
-           '<span class="ar">امتحانات: ثلاثة مستويات للصعوبة، النقطة على 20 والتصحيح</span></span></a>\n']
+           '<span class="ar">امتحانات: ثلاثة مستويات للصعوبة، النقطة على 20 والتصحيح</span></span></a>\n',
+           '<a class="lesson exam" href="revision/"><span class="n">8</span><span><span class="eyebrow">Chaque jour, cinq minutes</span><b>Révision du jour</b>'
+           '<span class="ar">مراجعة اليوم: بطاقات متباعدة تثبّت الذاكرة وخريطة إتقان</span></span></a>\n']
     for k, fr, ar in LEVELS:
         if k not in cfg.get('levels', '123'):
             continue
@@ -240,6 +242,17 @@ def exam_page(s, cfg):
             f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
 
 
+def revision_page(s, cfg):
+    url = f'{cfg["url"]}revision/'
+    title, desc = f'Révision du jour · {cfg["name"]} en mouvement', f'Huit cartes par jour en {cfg["full"]} : révision espacée, confiance avant la réponse, carte de maîtrise. Sans compte, sans classement.'
+    return (head(s, cfg, title, desc, url, 1, seo_extra(s, cfg, 1, None) if s in SEO else '') +
+            '<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n<script defer src="../examen/questions.js"></script>\n<script defer src="../core/revise.js"></script>\n</head>\n<body>\n<main id="ex">\n'
+            f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
+            f'<div class="eyebrow">{E(cfg["name"])} · Révision</div>\n<h1>Révision du jour</h1>\n<div class="ar">مراجعة اليوم: ثماني بطاقات في خمس دقائق</div>\n'
+            '<noscript><p class="card">La révision a besoin de JavaScript.</p></noscript>\n'
+            f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
+
+
 def exam_data(lessons):
     q = json.loads(subprocess.run(['node', str(MV / 'tools' / 'questions.js')] + [str(m['file']) for m in lessons],
                                   check=True, capture_output=True, text=True).stdout)
@@ -255,7 +268,7 @@ def build():
         (d / 'core').mkdir(parents=True)
         (d / 'lessons').mkdir()
         shutil.copy(ROOT / 'lab' / 'notify-config.js', d / 'core' / 'notify-config.js')  # adresse du relais Telegram, partagée avec le site principal
-        for f in ('mv.css', 'mv.js', 'exam.js'):
+        for f in ('mv.css', 'mv.js', 'exam.js', 'revise.js'):
             shutil.copy(MV / 'core' / f, d / 'core' / f)
         shutil.copytree(ROOT / 'fonts', d / 'fonts')
         shutil.copytree(ROOT / 'icons', d / 'icons')
@@ -273,6 +286,9 @@ def build():
         (d / 'examen' / 'index.html').write_text(exam_page(s, cfg), encoding='utf-8')
         (d / 'examen' / 'questions.js').write_text(exam_data(lessons), encoding='utf-8')
         urls.append(f'{cfg["url"]}examen/')
+        (d / 'revision').mkdir()
+        (d / 'revision' / 'index.html').write_text(revision_page(s, cfg), encoding='utf-8')
+        urls.append(f'{cfg["url"]}revision/')
         (d / '404.html').write_text(head(s, cfg, 'Page introuvable', 'Page introuvable', cfg['url'], 0) +
                                     '</head>\n<body>\n<main><h1>Page introuvable</h1><p><a href="/">Retour aux leçons</a></p></main>\n</body>\n</html>\n', encoding='utf-8')
         (d / '_headers').write_text(headers(s), encoding='utf-8')
