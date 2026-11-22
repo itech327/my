@@ -49,6 +49,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 | `app/src/app/api/mcp/` | Same connector inside the app, for testing |
 | `.claude/skills/darija-voice/` | The skill: normalizer, respellings, scripts, results log |
 | `replica/CONTEXT.md` | Longer project history and decisions |
+| `MAC.md` | Run the app and the free voices on the owner's MacBook Pro |
 
 ## Claude connector: live
 
