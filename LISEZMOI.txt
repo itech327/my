@@ -1,0 +1,12 @@
+CLUB DE REVISION - paquet hors ligne
+
+Pour commencer : double-cliquer sur index.html (de preference avec Edge ou Chrome).
+Aucune installation, aucun internet.
+
+- index.html : accueil pour les eleves (Maths, Physique-chimie).
+- resultats.html : fiche de resultats DE CE POSTE (impression, export CSV).
+- guide-enseignant.html : preparation et deroulement d'une seance.
+
+Les resultats sont gardes dans le navigateur de chaque ordinateur.
+Ne pas utiliser la navigation privee. Ne pas vider les donnees de navigation.
+Voir le guide pour copier ce dossier sur chaque poste.

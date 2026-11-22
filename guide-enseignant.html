@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr" data-s="club">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guide de séance · Club de révision</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="maths/core/mv.css">
+<link rel="stylesheet" href="club.css">
+<script src="club.js"></script>
+</head>
+<body>
+<main class="club">
+  <div class="top noprint"><a href="index.html">◀ Accueil du club</a></div>
+  <div class="eyebrow">Espace enseignant</div>
+  <h1>Guide de séance</h1>
+  <div class="ar">دليل الحصة للأستاذ</div>
+
+  <div class="card warn">
+    <div class="eyebrow">À faire une fois, avant la première séance</div>
+    <p class="small">Ce paquet n'a pas encore été essayé sur les postes de votre établissement. Prévoyez dix minutes d'essai sur un poste avant les élèves.</p>
+    <ol>
+      <li>Copier le dossier <b>club-revision</b> sur chaque ordinateur (bureau ou disque D:), ou le garder sur une clé USB. Si vous l'avez reçu en fichier .zip, <b>extraire d'abord</b> : un dossier ouvert dans le zip ne fonctionne pas.</li>
+      <li>Double-cliquer sur <b>index.html</b>, avec Edge ou Chrome. Vous devez voir deux grandes cartes, Maths et Physique-chimie.</li>
+      <li>Ouvrir une leçon : l'animation, les boutons et le texte arabe doivent s'afficher.</li>
+      <li>Faire un raccourci vers index.html sur le bureau de chaque poste.</li>
+      <li>Fermer le navigateur, le rouvrir, rouvrir la leçon, puis ouvrir <b>resultats.html</b> : les résultats doivent être encore là. Si les postes restaurent le disque à chaque redémarrage, ils disparaîtront. Dans ce cas, exportez les résultats en CSV à la fin de chaque séance.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Déroulement proposé · 50 minutes</div>
+    <table>
+      <tr><th>Durée</th><th>Activité</th></tr>
+      <tr><td class="mono">5 min</td><td>« Révision du jour » (dans la page Maths). Huit cartes. Les élèves disent s'ils sont sûrs ou s'ils hésitent avant de répondre.</td></tr>
+      <tr><td class="mono">25 min</td><td>Une leçon : ouverture, <b>prédiction</b>, je me prépare, je regarde, nous faisons.</td></tr>
+      <tr><td class="mono">12 min</td><td>« Je fais seul », en autonomie. Circulez : aidez ceux qui ont utilisé l'indice.</td></tr>
+      <tr><td class="mono">5 min</td><td>Bilan de la leçon. Question à la classe : « Qui a prédit autre chose que la réponse, et qu'est-ce qui l'a surpris ? »</td></tr>
+      <tr><td class="mono">3 min</td><td>Fin : fermer proprement la page. Exporter ou imprimer les fiches si besoin.</td></tr>
+    </table>
+    <p class="small">Choisissez la leçon du jour avec le groupe (la carte « Où j'en suis » propose la suivante dans l'ordre). Idées de départ : Maths, « Le théorème de Pythagore » ; Physique-chimie, « L'air qui nous entoure ». Les leçons n'utilisent pas de son.</p>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Ce qu'il faut regarder</div>
+    <ul>
+      <li>Une prédiction fausse n'est pas une faute : elle prépare à mieux retenir. Ne la notez pas et ne la comparez pas entre élèves.</li>
+      <li>Dans « Révision du jour », les cartes marquées « piège » sont celles où l'élève était sûr et s'est trompé. Ce sont les plus utiles à reprendre en classe.</li>
+      <li>La note sur 20 compte seulement les réponses justes du premier coup. Une réponse juste après l'indice ne compte pas.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Les résultats</div>
+    <ul>
+      <li>Chaque ordinateur garde ses propres résultats, dans son navigateur. Un autre navigateur ou une navigation privée affiche une fiche vide.</li>
+      <li>La page <a href="resultats.html">résultats de ce poste</a> permet de nommer la fiche, de l'imprimer et de la télécharger en CSV (ouvrable avec Excel).</li>
+      <li>Le bouton « Effacer les données de ce poste » remet le poste à zéro : à utiliser avant de changer de groupe.</li>
+      <li>Aucune donnée n'est envoyée sur internet. Si les élèves saisissent leur nom, il reste sur le poste. Pour la collecte et la conservation de ces données, voyez les règles de votre établissement.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Si quelque chose ne va pas</div>
+    <table>
+      <tr><th>Problème</th><th>Solution</th></tr>
+      <tr><td>Une liste de fichiers s'affiche au lieu de la page</td><td>Ouvrir le fichier <b>index.html</b> du dossier, et non le dossier lui-même.</td></tr>
+      <tr><td>Page vide ou lien cassé</td><td>Le dossier a-t-il été extrait du zip ? A-t-il été copié en entier, avec ses sous-dossiers ?</td></tr>
+      <tr><td>Résultats disparus</td><td>Navigation privée, effacement des données du navigateur, ou autre navigateur. Pensez à exporter en fin de séance.</td></tr>
+      <tr><td>Texte arabe ou formules mal affichés</td><td>Les polices sont dans le dossier « fonts ». Vérifier qu'il n'a pas été supprimé.</td></tr>
+    </table>
+  </div>
+  <footer class="noprint"><button class="btn" type="button" onclick="window.print()">Imprimer ce guide</button></footer>
+</main>
+</body>
+</html>

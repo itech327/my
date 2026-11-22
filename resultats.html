@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr" data-s="club">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Résultats de ce poste · Club de révision</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="maths/core/mv.css">
+<link rel="stylesheet" href="club.css">
+<script src="club.js"></script>
+</head>
+<body>
+<main class="club">
+  <div class="top noprint"><a href="index.html">◀ Accueil du club</a></div>
+  <div class="eyebrow">Espace enseignant</div>
+  <h1>Résultats de ce poste</h1>
+  <div class="ar">نتائج هذا الجهاز</div>
+  <p class="small">Ces résultats viennent uniquement de ce navigateur, sur cet ordinateur. Rien n'est envoyé sur internet.</p>
+  <div class="card noprint">
+    <div class="eyebrow">Étiquette de la fiche</div>
+    <div class="row"><input class="num txt" id="lab" maxlength="60" placeholder="Poste 4, ou prénom et nom" aria-label="Étiquette de la fiche"></div>
+  </div>
+  <div class="card" id="head"></div>
+  <div class="card" id="lessons"></div>
+  <div class="card" id="rev"></div>
+  <div class="row noprint">
+    <button class="btn pri" id="print" type="button">Imprimer la fiche</button>
+    <button class="btn" id="csv" type="button">Télécharger en CSV</button>
+    <button class="btn" id="clear" type="button">Effacer les données de ce poste</button>
+  </div>
+  <div class="fb" id="msg" aria-live="polite"></div>
+</main>
+<script src="resultats.js"></script>
+</body>
+</html>
