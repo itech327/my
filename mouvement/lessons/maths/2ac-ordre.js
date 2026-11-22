@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "On compare −7 et −3. Lequel est le plus petit ?",
+      ar: "قارن [[−7]] و[[−3]]. أيهما الأصغر؟",
+      o: ["−3, car 3 est plus petit que 7", "−7, car il est plus à gauche sur la droite graduée", "Ils sont égaux"],
+      a: 1,
+      e: "Sur la droite graduée, le plus petit est le plus à gauche : −7 < −3. Avec les nombres négatifs, celui qui a le plus grand chiffre est le plus petit : −7 °C est plus froid que −3 °C.",
+      ear: "الأصغر هو الأبعد يساراً على المستقيم المدرّج: [[−7 < −3]]."
+    },
+
     prepare: [
       ['Sur une droite graduée, le plus petit nombre est à gauche.', true, 'Les nombres croissent vers la droite.'],
       ['−5 > −2', false, '−5 est à gauche de −2 : −5 < −2.'],

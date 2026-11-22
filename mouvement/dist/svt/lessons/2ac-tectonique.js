@@ -74,6 +74,15 @@
       ]
     },
 
+    predire: {
+      q: "On trouve des fossiles marins (ammonites) très haut dans le Haut Atlas. Comment sont-ils arrivés là ?",
+      ar: "نجد أحافير بحرية (أمونيت) في أعلى الأطلس الكبير. كيف وصلت إلى هناك؟",
+      o: ["La mer s'est vidée d'un seul coup", "Les plaques ont bougé lentement et le fond de la mer a été soulevé", "Des animaux ont porté les fossiles en montagne"],
+      a: 1,
+      e: "Les plaques bougent de quelques millimètres à quelques centimètres par an. Quand deux plaques se rapprochent, les roches se plissent et se soulèvent : elles forment des montagnes, et des séismes se produisent.",
+      ear: "الصفائح تتحرك ببطء، وعندما تقترب إحداهما من الأخرى تنطوي الصخور وترتفع فتتكوّن الجبال وتحدث الزلازل."
+    },
+
     prepare: [
       ['Un fossile est un reste ou une trace d\'un être vivant ancien.', true, 'Conservé dans les roches.'],
       ['Le sol sous nos pieds ne bouge jamais.', false, 'Il bouge très lentement, de quelques millimètres à quelques centimètres par an.'],

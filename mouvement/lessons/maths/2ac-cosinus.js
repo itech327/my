@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Une rampe de 6 m fait un angle de 60° avec le sol. Quelle longueur occupe-t-elle au sol ?",
+      ar: "منحدر طوله [[6 m]] يصنع زاوية [[60°]] مع الأرض. ما الطول الذي يشغله على الأرض؟",
+      o: ["2 m", "3 m", "5 m"],
+      a: 1,
+      e: "Au sol, c'est le côté adjacent à l'angle de 60°. On a adjacent = hypoténuse × cos 60° = 6 × 0,5 = 3 m : plus la rampe est inclinée, plus elle est courte au sol.",
+      ear: "الضلع المجاور [[= 6 × cos 60° = 6 × 0,5 = 3 m]]."
+    },
+
     prepare: [
       ['L\'hypoténuse est le plus long côté d\'un triangle rectangle.', true, 'Elle est opposée à l\'angle droit.'],
       ['Le côté adjacent à un angle aigu touche cet angle et n\'est pas l\'hypoténuse.', true, 'C\'est le côté de l\'angle autre que l\'hypoténuse.'],

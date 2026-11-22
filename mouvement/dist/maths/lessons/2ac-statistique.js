@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Nora a eu 8, 14, 12 et 10. Quelle note doit-elle avoir au cinquième devoir pour une moyenne de 12 ?",
+      ar: "نقط نورة: [[8]] و[[14]] و[[12]] و[[10]]. ما النقطة اللازمة في الفرض الخامس لتبلغ المعدل [[12]]؟",
+      o: ["12", "14", "16"],
+      a: 2,
+      e: "Pour 12 de moyenne sur 5 notes, il faut un total de 5 × 12 = 60. Elle a déjà 8 + 14 + 12 + 10 = 44. Il lui faut donc 60 − 44 = 16. Avoir 12 ne suffit pas : ses notes précédentes valent 11 de moyenne.",
+      ear: "المجموع اللازم [[5 × 12 = 60]] ولديها [[44]]، إذن تحتاج [[60 − 44 = 16]]."
+    },
+
     prepare: [
       ['La moyenne de 10 et 14 est 12.', true, '(10 + 14) ÷ 2 = 12.'],
       ['La moyenne est toujours une des valeurs de la série.', false, 'La moyenne de 1 et 2 est 1,5.'],

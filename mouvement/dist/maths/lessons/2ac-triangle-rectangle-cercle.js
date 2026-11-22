@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "On appuie une équerre contre deux clous A et B et on la fait glisser. Quelle courbe dessine le coin M ?",
+      ar: "نسند زاوية قائمة إلى مسمارين [[A]] و[[B]] ثم نحرّكها. أي منحنى يرسمه الرأس [[M]]؟",
+      o: ["Une droite", "Un cercle de diamètre [AB]", "Une parabole"],
+      a: 1,
+      e: "Tant que l'angle en M reste droit, M reste sur le cercle de diamètre [AB] : un triangle rectangle est inscrit dans le cercle dont le diamètre est son hypoténuse.",
+      ear: "ما دامت الزاوية عند [[M]] قائمة يبقى [[M]] على الدائرة التي قطرها [[[AB]]]."
+    },
+
     prepare: [
       ['Dans un triangle rectangle, l\'hypoténuse est le côté opposé à l\'angle droit.', true, 'C\'est le plus long côté.'],
       ['Le centre d\'un cercle est le milieu de chaque diamètre.', true, 'Un diamètre passe par le centre.'],

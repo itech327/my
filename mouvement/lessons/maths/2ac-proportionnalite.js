@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Sur une carte à l'échelle 1/500 000, deux villes sont à 12 cm. Quelle est la distance réelle ?",
+      ar: "على خريطة سلّمها [[1/500 000]] تبعد مدينتان [[12 cm]]. ما المسافة الحقيقية؟",
+      o: ["6 km", "60 km", "600 km"],
+      a: 1,
+      e: "1 cm sur la carte représente 500 000 cm en vrai. 12 × 500 000 = 6 000 000 cm = 60 000 m = 60 km. Un car qui la parcourt en 45 min (0,75 h) roule à 60 ÷ 0,75 = 80 km/h.",
+      ear: "[[12 × 500 000 = 6 000 000 cm = 60 km]]. وسرعة الحافلة [[60 ÷ 0,75 = 80 km/h]]."
+    },
+
     prepare: [
       ['500 000 cm = 5 km.', true, '100 000 cm = 1 km.'],
       ['Une échelle de 1/100 signifie que 1 cm représente 100 m.', false, '1 cm représente 100 cm, soit 1 m.'],

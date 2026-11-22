@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "La Lune est bien plus petite que le Soleil. Comment peut-elle le cacher lors d'une éclipse ?",
+      ar: "القمر أصغر بكثير من الشمس. كيف يمكنه إخفاؤها أثناء الكسوف؟",
+      o: ["La Lune est plus grosse que le Soleil", "La Lune produit sa propre ombre", "La lumière va en ligne droite et la Lune est beaucoup plus proche"],
+      a: 2,
+      e: "Le Soleil est environ 400 fois plus large que la Lune, mais aussi environ 400 fois plus loin. Comme la lumière se propage en ligne droite, la Lune alignée avec le Soleil et la Terre peut le cacher.",
+      ear: "الضوء ينتشر في خط مستقيم والقمر أقرب بكثير إلى الأرض، فإذا اصطفّ بين الشمس والأرض حجبها."
+    },
+
     prepare: [
       ['Dans l\'air, la lumière se propage en ligne droite.', true, 'Comme le faisceau d\'une lampe dans la poussière.'],
       ['Un objet transparent produit une ombre bien noire.', false, 'Il laisse passer la lumière.'],

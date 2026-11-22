@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Tarif A : 10 DH + 4 DH par km. Tarif B : 25 DH + 1 DH par km. Pour combien de km paie-t-on la même chose ?",
+      ar: "التعريفة A: [[10 DH]] + [[4 DH]] لكل كيلومتر. التعريفة B: [[25 DH]] + [[1 DH]] لكل كيلومتر. بعد كم كيلومتراً يتساوى الثمنان؟",
+      o: ["3 km", "5 km", "15 km"],
+      a: 1,
+      e: "On résout 10 + 4x = 25 + x : 3x = 15, donc x = 5. Vérification à 5 km : A paie 10 + 20 = 30 DH et B paie 25 + 5 = 30 DH.",
+      ear: "[[10 + 4x = 25 + x]] تعطي [[3x = 15]] إذن [[x = 5 km]]، والثمن [[30 DH]] في الحالتين."
+    },
+
     prepare: [
       ['Si x + 7 = 10, alors x = 3.', true, '10 − 7 = 3.'],
       ['On peut ajouter un même nombre aux deux membres d\'une équation.', true, 'L\'égalité est conservée.'],

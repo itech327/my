@@ -45,6 +45,15 @@
       ]
     },
 
+    predire: {
+      q: "Une pyramide et un prisme ont la même base et la même hauteur. Combien de pyramides pleines d'eau faut-il pour remplir le prisme ?",
+      ar: "هرم ومنشور لهما نفس القاعدة ونفس الارتفاع. كم هرماً ممتلئاً بالماء يلزم لملء المنشور؟",
+      o: ["2", "3", "4"],
+      a: 1,
+      e: "Il en faut 3 : le volume d'une pyramide est le tiers de celui du prisme de même base et même hauteur. D'où V = (B × h) ÷ 3.",
+      ear: "يلزم 3 أهرام: حجم الهرم ثلث حجم المنشور، أي [[V = (B × h) ÷ 3]]."
+    },
+
     prepare: [
       ['Le volume d\'un prisme droit est aire de la base × hauteur.', true, 'V = B × h.'],
       ['Une pyramide a deux bases.', false, 'Elle a une base et un sommet.'],

@@ -43,6 +43,15 @@
       ]
     },
 
+    predire: {
+      q: "Un personnage glisse de 4 cases vers la droite et 2 vers le haut. S'il refait exactement le même déplacement, où arrive-t-il ?",
+      ar: "شخصية تنزلق [[4]] خانات يميناً و[[2]] إلى الأعلى. إن كرّرت الحركة نفسها، أين تصل؟",
+      o: ["À sa case de départ", "8 cases à droite et 4 vers le haut de sa position de départ", "6 cases à droite, sur la même ligne"],
+      a: 1,
+      e: "Une translation est un déplacement décrit par une seule flèche : le vecteur, avec sa direction, son sens et sa longueur. Le répéter double le déplacement : 8 cases à droite et 4 vers le haut.",
+      ear: "الإزاحة سهم واحد (متجهة) له اتجاه ومنحى وطول. تكرارها يضاعف الانتقال: [[8]] يميناً و[[4]] إلى الأعلى."
+    },
+
     prepare: [
       ['Dans une translation, la figure tourne.', false, 'Elle glisse sans tourner.'],
       ['Les côtés opposés d\'un parallélogramme sont parallèles et de même longueur.', true, 'On en aura besoin.'],

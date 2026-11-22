@@ -47,6 +47,15 @@
       ]
     },
 
+    predire: {
+      q: "Du charbon brûle dans un flacon fermé posé sur une balance. Que devient l'indication de la balance après la combustion ?",
+      ar: "يحترق فحم داخل قارورة مغلقة موضوعة على ميزان. ماذا يحدث لقراءة الميزان بعد الاحتراق؟",
+      o: ["Elle diminue", "Elle augmente", "Elle ne change pas"],
+      a: 2,
+      e: "Le flacon est fermé : rien ne s'échappe, la masse totale se conserve. Dans un kanoun ouvert, le charbon semble disparaître car le dioxyde de carbone formé part dans l'air.",
+      ear: "القارورة مغلقة فلا يخرج شيء: الكتلة الكلية تُحفظ. وفي الكانون المفتوح يذهب ثاني أكسيد الكربون في الهواء."
+    },
+
     prepare: [
       ['La combustion du carbone produit du dioxyde de carbone, un gaz.', true, 'Ce gaz s\'échappe dans l\'air.'],
       ['Un atome peut se transformer en un autre atome dans une combustion.', false, 'Les atomes se conservent : ils se réarrangent seulement.'],

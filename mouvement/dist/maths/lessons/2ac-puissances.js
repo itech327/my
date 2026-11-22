@@ -32,6 +32,15 @@
       ]
     },
 
+    predire: {
+      q: "Une bactérie se divise en deux toutes les 20 minutes. Combien y en a-t-il après 3 heures ?",
+      ar: "تنقسم بكتيريا إلى اثنتين كل [[20]] دقيقة. كم يصبح عددها بعد [[3]] ساعات؟",
+      o: ["18", "64", "512"],
+      a: 2,
+      e: "En 3 heures, il y a 9 divisions de 20 minutes. Le nombre double 9 fois : 2⁹ = 512. Il augmente bien plus vite que 2 × 9 = 18, c'est la croissance par puissances.",
+      ear: "في 3 ساعات تحدث 9 انقسامات، فيتضاعف العدد 9 مرات: [[2⁹ = 512]]."
+    },
+
     prepare: [
       ['2 × 2 × 2 = 6', false, '2 × 2 × 2 = 8. On multiplie, on n\'additionne pas.'],
       ['10 × 10 × 10 = 1 000', true, 'Trois facteurs 10 : trois zéros.'],

@@ -58,6 +58,15 @@
       ]
     },
 
+    predire: {
+      q: "Trois villages A, B et C veulent creuser un puits à la même distance de chacun. Où le placer ?",
+      ar: "ثلاث قرى [[A]] و[[B]] و[[C]] تريد حفر بئر على نفس المسافة من كل واحدة. أين يوضع؟",
+      o: ["Au milieu du plus grand côté", "Au point où se coupent les hauteurs", "Au point où se coupent les médiatrices"],
+      a: 2,
+      e: "Les points à égale distance de A et de B sont sur la médiatrice de [AB]. Le point équidistant des trois villages est donc à l'intersection des médiatrices : c'est le centre du cercle circonscrit au triangle.",
+      ear: "النقطة المتساوية البعد عن القرى الثلاث هي تقاطع واسطات الأضلاع، أي مركز الدائرة المحيطة بالمثلث."
+    },
+
     prepare: [
       ['La médiatrice d\'un segment est perpendiculaire à ce segment en son milieu.', true, 'Ses points sont à égale distance des extrémités.'],
       ['Une hauteur passe toujours par le milieu d\'un côté.', false, 'C\'est la médiane qui passe par le milieu.'],

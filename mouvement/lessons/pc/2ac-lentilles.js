@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "Les rayons parallèles du Soleil traversent une loupe. Que deviennent-ils derrière elle ?",
+      ar: "تعبر أشعة الشمس المتوازية عدسة مكبّرة. ماذا يحدث لها خلفها؟",
+      o: ["Ils restent parallèles", "Ils s'écartent les uns des autres", "Ils se rejoignent en un seul point"],
+      a: 2,
+      e: "Une loupe est une lentille convergente : elle rassemble les rayons parallèles en un point très brillant, le foyer image F'. La distance de ce point à la lentille est la distance focale f.",
+      ear: "العدسة المكبّرة عدسة مجمّعة: تجمع الأشعة المتوازية في نقطة شديدة السطوع هي البؤرة الصورة [[F']]."
+    },
+
     prepare: [
       ['Une lentille est un objet transparent qui dévie la lumière.', true, 'Ses faces sont courbes.'],
       ['Une loupe a les bords plus épais que le centre.', false, 'Une loupe a les bords minces : c\'est une lentille convergente.'],

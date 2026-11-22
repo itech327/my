@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Un chauffe-eau à butane fonctionne fenêtre fermée en hiver. Pourquoi est-ce dangereux ?",
+      ar: "سخّان غاز بوتان يشتغل والنافذة مغلقة في الشتاء. لماذا هذا خطير؟",
+      o: ["Le butane devient plus explosif quand l'air est froid", "Faute de dioxygène, la combustion est incomplète et produit un gaz toxique", "Le chauffe-eau chauffe trop et brûle les mains"],
+      a: 1,
+      e: "Sans assez d'air, la combustion est incomplète : elle forme du monoxyde de carbone (CO), un gaz toxique, incolore et sans odeur. C'est pourquoi il faut toujours aérer la pièce.",
+      ear: "عند نقص الهواء يكون الاحتراق غير تام فيتكوّن أحادي أكسيد الكربون [[CO]] السام عديم اللون والرائحة. لذلك يجب تهوية الغرفة."
+    },
+
     prepare: [
       ['Un feu a besoin d\'air pour brûler.', true, 'Il consomme le dioxygène de l\'air.'],
       ['Le dioxyde de carbone trouble l\'eau de chaux.', true, 'C\'est son test d\'identification.'],

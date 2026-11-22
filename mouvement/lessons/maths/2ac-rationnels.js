@@ -44,6 +44,15 @@
       ]
     },
 
+    predire: {
+      q: "La température passe de 3 °C à −4 °C en 2 heures, soit une baisse de 7 °C. Quel est le signe et la valeur de −7 ÷ 2 ?",
+      ar: "انتقلت الحرارة من [[3 °C]] إلى [[−4 °C]] في ساعتين. ما إشارة وقيمة [[−7 ÷ 2]]؟",
+      o: ["Positif : 3,5", "Négatif : −3,5", "Négatif : −14"],
+      a: 1,
+      e: "Signes contraires : le quotient est négatif. −7 ÷ 2 = −7/2 = −3,5. La température baisse de 3,5 °C chaque heure.",
+      ear: "إشارتان مختلفتان فالناتج سالب: [[−7 ÷ 2 = −3,5]]."
+    },
+
     prepare: [
       ['(−6) × 2 = −12', true, 'Signes contraires : produit négatif.'],
       ['(−6) ÷ (−2) = −3', false, 'Même signe : le quotient est positif. (−6) ÷ (−2) = 3.'],

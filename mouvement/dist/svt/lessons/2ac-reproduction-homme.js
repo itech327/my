@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Chaque être humain commence par une seule cellule, plus petite qu'un grain de sable. D'où vient-elle ?",
+      ar: "يبدأ كل إنسان بخلية واحدة أصغر من حبة رمل. من أين تأتي؟",
+      o: ["D'une cellule du corps de la mère", "De l'union d'un spermatozoïde et d'un ovule", "Elle se forme seule dans l'utérus"],
+      a: 1,
+      e: "Elle vient de la fécondation : un spermatozoïde s'unit à un ovule dans la trompe. La cellule-œuf obtenue se fixe dans l'utérus et s'y développe pendant environ 9 mois.",
+      ear: "تأتي من الإخصاب: يلتحم حيوان منوي ببويضة في قناة المبيض، وتنغرس البيضة في الرحم وتنمو نحو 9 أشهر."
+    },
+
     prepare: [
       ['La puberté est la période où le corps devient capable de se reproduire.', true, 'Elle commence en général entre 10 et 14 ans.'],
       ['Chez l\'Homme, la fécondation se fait hors du corps.', false, 'Elle est interne : dans les voies génitales de la femme.'],

@@ -41,6 +41,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans un triangle, la base mesure 12 cm. On relie les milieux des deux autres côtés. Que mesure ce segment ?",
+      ar: "في مثلث قاعدته [[12 cm]] نصل منتصفي الضلعين الآخرين. كم يقيس هذا القطعة؟",
+      o: ["4 cm", "6 cm", "8 cm"],
+      a: 1,
+      e: "Le segment qui joint les milieux de deux côtés mesure la moitié du troisième côté : 12 ÷ 2 = 6 cm. Il est aussi parallèle à ce troisième côté.",
+      ear: "القطعة الواصلة بين منتصفي ضلعين تساوي نصف الضلع الثالث [[12 ÷ 2 = 6 cm]] وتوازيه."
+    },
+
     prepare: [
       ['Le milieu d\'un segment le partage en deux longueurs égales.', true, 'Par définition.'],
       ['Deux droites parallèles se coupent.', false, 'Elles ne se coupent jamais.'],

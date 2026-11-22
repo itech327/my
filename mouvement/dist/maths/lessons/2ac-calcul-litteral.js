@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Un jardin carré de côté x m est agrandi de 3 m en longueur et de 2 m en largeur. Quelle est la nouvelle aire ?",
+      ar: "حديقة مربعة ضلعها [[x]] متر، زيدت [[3 m]] في الطول و[[2 m]] في العرض. ما مساحتها الجديدة؟",
+      o: ["x² + 6", "x² + 5x + 6", "x² + 5"],
+      a: 1,
+      e: "L'aire est (x + 3)(x + 2). Chaque terme de la première parenthèse multiplie chaque terme de la seconde : x² + 2x + 3x + 6 = x² + 5x + 6. L'erreur courante, x² + 6, oublie les deux produits croisés.",
+      ear: "المساحة [[(x + 3)(x + 2) = x² + 5x + 6]]. ننشر بضرب كل حدّ في كل حدّ."
+    },
+
     prepare: [
       ['3x + 5x = 8x', true, 'On ajoute les coefficients des termes semblables.'],
       ['2x + 3 = 5x', false, '2x et 3 ne sont pas semblables : on ne peut pas réduire.'],

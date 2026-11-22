@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "La nuit, on voit la Lune briller, alors qu'elle ne produit aucune lumière. Comment la voit-on ?",
+      ar: "نرى القمر ساطعاً ليلاً مع أنه لا ينتج أي ضوء. كيف نراه؟",
+      o: ["Elle produit sa propre lumière", "Elle renvoie vers nos yeux la lumière du Soleil", "Elle est éclairée par les lampes de la Terre"],
+      a: 1,
+      e: "La Lune est un objet diffusant : elle renvoie la lumière reçue du Soleil. On voit un objet quand sa lumière entre dans l'œil. Une source primaire, elle, produit sa propre lumière.",
+      ear: "القمر جسم مبعثِر للضوء: يعيد إلينا ضوء الشمس. نرى الجسم عندما يدخل ضوؤه العين."
+    },
+
     prepare: [
       ['Une lampe allumée produit de la lumière.', true, 'C\'est une source de lumière.'],
       ['On voit un objet même dans le noir complet.', false, 'Sans lumière qui entre dans l\'œil, on ne voit rien.'],

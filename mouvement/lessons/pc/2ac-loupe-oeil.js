@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Samir voit bien de près mais le tableau est flou depuis le fond de la classe. Où se forme l'image du tableau dans son œil ?",
+      ar: "سمير يرى جيداً عن قرب لكن السبورة غير واضحة من آخر القسم. أين تتكوّن صورة السبورة في عينه؟",
+      o: ["Exactement sur la rétine", "Avant la rétine", "Après la rétine"],
+      a: 1,
+      e: "Samir est myope : pour un objet lointain, son œil forme l'image avant la rétine, donc elle est floue. Des lunettes à lentille divergente corrigent ce défaut.",
+      ear: "سمير قصير النظر: الصورة تتكوّن أمام الشبكية فتبدو غير واضحة، وتصحّحها عدسة مفرّقة."
+    },
+
     prepare: [
       ['Une loupe est une lentille convergente.', true, 'Elle a les bords minces.'],
       ['Avec une loupe, l\'objet doit être placé loin, au-delà du foyer.', false, 'On le place entre la loupe et son foyer pour voir une image agrandie.'],

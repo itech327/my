@@ -39,6 +39,15 @@
       ]
     },
 
+    predire: {
+      q: "Ahmed dépense le tiers de son argent, puis le quart de ce qui lui reste. Quelle fraction de son argent lui reste-t-il ?",
+      ar: "أنفق أحمد ثلث ماله، ثم ربع ما بقي. ما الكسر المتبقي من ماله؟",
+      o: ["5/12", "1/2", "2/3"],
+      a: 1,
+      e: "Après le tiers, il reste 2/3. Le quart de ce reste : 1/4 × 2/3 = 1/6. Il lui reste 2/3 − 1/6 = 4/6 − 1/6 = 3/6 = 1/2. L'erreur 5/12 vient de 1/4 pris sur le total au lieu du reste.",
+      ear: "بعد الثلث يبقى [[2/3]]. ربع الباقي [[1/4 × 2/3 = 1/6]]. المتبقي [[2/3 − 1/6 = 1/2]]."
+    },
+
     prepare: [
       ['1/3 + 1/6 = 1/2', true, '2/6 + 1/6 = 3/6 = 1/2.'],
       ['(−2/3) × (−3/4) est négatif.', false, 'Deux facteurs négatifs : le produit est positif, 1/2.'],

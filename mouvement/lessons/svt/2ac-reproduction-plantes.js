@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "En février, les amandiers sont en fleurs. En été, on récolte des amandes. Comment une fleur devient-elle un fruit ?",
+      ar: "في فبراير تتفتح أزهار اللوز، وفي الصيف نجني اللوز. كيف تصير الزهرة ثمرة؟",
+      o: ["Les pétales grossissent et deviennent le fruit", "Après la pollinisation et la fécondation, l'ovaire devient le fruit", "Le fruit pousse à côté de la fleur, sur une autre branche"],
+      a: 1,
+      e: "Le pollen doit arriver sur le pistil : c'est la pollinisation, faite par les insectes ou le vent. Après la fécondation, l'ovaire devient le fruit et l'ovule devient la graine.",
+      ear: "ينتقل غبار الطلع إلى المدقّة (التلقيح)، وبعد الإخصاب يصير المبيض ثمرة وتصير البويضة بذرة."
+    },
+
     prepare: [
       ['Une graine peut donner une nouvelle plante.', true, 'Elle germe dans de bonnes conditions.'],
       ['Toutes les fleurs deviennent des fruits.', false, 'Seules les fleurs fécondées donnent des fruits.'],

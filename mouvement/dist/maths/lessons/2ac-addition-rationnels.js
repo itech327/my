@@ -38,6 +38,15 @@
       ]
     },
 
+    predire: {
+      q: "Un puits monte de 3/4 m après la pluie, puis baisse de 5/4 m avec l'arrosage. Que s'est-il passé au total ?",
+      ar: "ارتفع ماء بئر بـ [[3/4 m]] ثم انخفض بـ [[5/4 m]]. ماذا حدث في المجموع؟",
+      o: ["Il a monté de 2 m", "Il a baissé de 1/2 m", "Il a monté de 1/2 m"],
+      a: 1,
+      e: "Il baisse plus qu'il ne monte. Comme les dénominateurs sont égaux, on calcule avec les numérateurs : 3 − 5 = −2, donc 3/4 − 5/4 = −2/4 = −1/2.",
+      ear: "انخفض المستوى بـ [[1/2 m]]: [[3/4 − 5/4 = −2/4 = −1/2]]."
+    },
+
     prepare: [
       ['3/4 = 6/8', true, 'On multiplie le haut et le bas par 2.'],
       ['(−5) + 3 = −2', true, 'On part de −5 et on avance de 3.'],

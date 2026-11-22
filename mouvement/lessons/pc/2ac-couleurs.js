@@ -49,6 +49,15 @@
       ]
     },
 
+    predire: {
+      q: "Après la pluie, un arc-en-ciel apparaît. D'où viennent ses couleurs ?",
+      ar: "بعد المطر يظهر قوس قزح. من أين تأتي ألوانه؟",
+      o: ["La pluie colore la lumière du Soleil", "La lumière blanche contient déjà ces couleurs, les gouttes les séparent", "Les gouttes d'eau créent des couleurs qui n'existaient pas"],
+      a: 1,
+      e: "La lumière blanche est un mélange de lumières colorées. En traversant les gouttes, comme dans un prisme, elle est décomposée : on voit le spectre, du rouge au violet.",
+      ear: "الضوء الأبيض خليط من أضواء ملوّنة، وقطرات الماء تحلّله كما يفعل المنشور فتظهر ألوان الطيف."
+    },
+
     prepare: [
       ['La lumière blanche est faite d\'une seule couleur.', false, 'Elle contient toutes les couleurs de l\'arc-en-ciel.'],
       ['Un vitrail coloré ne laisse passer qu\'une partie de la lumière.', true, 'Il agit comme un filtre.'],

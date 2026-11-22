@@ -45,6 +45,15 @@
       ]
     },
 
+    predire: {
+      q: "Au printemps, des têtards nagent dans une mare. Que vont-ils devenir ?",
+      ar: "في الربيع تسبح شراغيف في بركة. ماذا ستصير؟",
+      o: ["De petits poissons adultes", "Des grenouilles, après une métamorphose", "Ils restent des têtards toute leur vie"],
+      a: 1,
+      e: "Le têtard est la larve de la grenouille. Il subit une métamorphose : ses pattes poussent, sa queue disparaît et il devient adulte. C'est un développement avec métamorphose.",
+      ear: "الشرغوف يرقة الضفدع، يمرّ بتحوّل: تنبت أرجله ويختفي ذيله ثم يصير ضفدعاً بالغاً."
+    },
+
     prepare: [
       ['Chez la plupart des animaux, il existe un mâle et une femelle.', true, 'La reproduction sexuée fait intervenir les deux.'],
       ['Tous les animaux pondent des œufs.', false, 'Les mammifères, par exemple, donnent naissance à des petits.'],

@@ -50,6 +50,15 @@
       ]
     },
 
+    predire: {
+      q: "Un maillot de sport en polyester est fabriqué à partir de bouteilles en plastique recyclées. Le polyester est-il une matière naturelle ?",
+      ar: "قميص رياضي من البوليستر صُنع من قنينات بلاستيكية مُعاد تدويرها. هل البوليستر مادة طبيعية؟",
+      o: ["Oui, il vient d'une plante", "Oui, c'est un minéral", "Non, il est fabriqué par l'Homme"],
+      a: 2,
+      e: "Le polyester est une matière synthétique, fabriquée par l'Homme, souvent à partir du pétrole. Les plastiques se dégradent très lentement, d'où l'intérêt de les trier et de les recycler.",
+      ear: "البوليستر مادة اصطناعية صنعها الإنسان غالباً من النفط، والبلاستيك يتحلل ببطء شديد، لذلك نفرزه ونعيد تدويره."
+    },
+
     prepare: [
       ['La laine vient du mouton.', true, 'C\'est une matière d\'origine animale.'],
       ['Le plastique pousse dans la nature.', false, 'Il est fabriqué en usine, surtout à partir du pétrole.'],

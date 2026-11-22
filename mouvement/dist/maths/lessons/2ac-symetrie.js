@@ -42,6 +42,15 @@
       ]
     },
 
+    predire: {
+      q: "Une tache d'encre est de l'autre côté du pli. Après pliage puis dépliage, où se trouve la copie d'un point A de la tache ?",
+      ar: "بقعة حبر على أحد جانبي الطيّة. بعد الطيّ والفتح، أين توجد نسخة النقطة [[A]]؟",
+      o: ["Sur la perpendiculaire au pli passant par A, à la même distance du pli", "À côté de A, parallèlement au pli", "N'importe où, on ne peut pas savoir"],
+      a: 0,
+      e: "Le pli est la médiatrice de [AA'] : A' est sur la perpendiculaire au pli qui passe par A, de l'autre côté, à la même distance du pli que A.",
+      ear: "الطيّة هي واسطة القطعة [[[AA']]]: النقطة [[A']] على العمودي على الطيّة المار من [[A]] وبنفس البعد."
+    },
+
     prepare: [
       ['La médiatrice d\'un segment passe par son milieu.', true, 'Et elle lui est perpendiculaire.'],
       ['Un point situé sur l\'axe a pour symétrique lui-même.', true, 'Il ne bouge pas au pliage.'],

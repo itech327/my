@@ -45,6 +45,15 @@
       ]
     },
 
+    predire: {
+      q: "Dans une prise, le tournevis testeur s'allume dans un trou mais pas dans l'autre. Pourquoi ?",
+      ar: "في مقبس كهربائي يضيء مفك الاختبار في ثقب ولا يضيء في الآخر. لماذا؟",
+      o: ["Un des trous est abîmé", "Un des fils est la phase, l'autre est le neutre", "Le testeur ne marche que d'un côté"],
+      a: 1,
+      e: "Le testeur ne s'allume que sur la phase, le fil sous tension, qui est dangereux. Le neutre ferme le circuit mais ne fait pas briller le testeur.",
+      ear: "المفك لا يضيء إلا على السلك الطور (الحيّ والخطر). أما سلك الحياد فيغلق الدارة ولا يُضيء المفك."
+    },
+
     prepare: [
       ['Les appareils d\'une maison sont branchés en dérivation.', true, 'Chacun fonctionne indépendamment.'],
       ['La tension du secteur est de 4,5 V.', false, 'Elle est de 220 V : elle est dangereuse.'],

@@ -40,6 +40,15 @@
       ]
     },
 
+    predire: {
+      q: "Sur un chargeur, on lit « 220 V ~ 50 Hz ». Que signifie 50 Hz pour la tension du secteur ?",
+      ar: "على شاحن نقرأ [[220 V ~ 50 Hz]]. ماذا يعني [[50 Hz]] بالنسبة لتوتر القطاع؟",
+      o: ["Elle vaut 50 volts", "Elle fait 50 cycles complets par seconde", "Elle dure 50 secondes"],
+      a: 1,
+      e: "La fréquence est le nombre de cycles par seconde. 50 Hz, c'est 50 cycles par seconde, donc une période T = 1 ÷ 50 = 0,02 s. Le symbole ~ indique une tension alternative.",
+      ear: "التردد هو عدد الدورات في الثانية: [[50 Hz]] تعني [[50]] دورة في الثانية، أي الدور [[T = 1 ÷ 50 = 0,02 s]]."
+    },
+
     prepare: [
       ['Une pile fournit une tension continue.', true, 'Elle garde toujours le même signe.'],
       ['La tension du secteur au Maroc est de 220 V.', true, 'Avec une fréquence de 50 Hz.'],

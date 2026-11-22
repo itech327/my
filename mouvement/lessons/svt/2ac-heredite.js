@@ -36,6 +36,15 @@
       ]
     },
 
+    predire: {
+      q: "Qui décide du sexe d'un enfant ?",
+      ar: "من الذي يحدّد جنس الطفل؟",
+      o: ["Uniquement la mère", "Le spermatozoïde qui féconde l'ovule", "Ce que mange la mère pendant la grossesse"],
+      a: 1,
+      e: "Tous les ovules portent un chromosome X. Un spermatozoïde porte soit X (fille, XX), soit Y (garçon, XY). C'est donc le spermatozoïde qui détermine le sexe.",
+      ear: "كل البويضات تحمل [[X]]، والحيوان المنوي يحمل [[X]] (بنت [[XX]]) أو [[Y]] (ولد [[XY]]). إذن الحيوان المنوي هو الذي يحدّد الجنس."
+    },
+
     prepare: [
       ['Une cellule possède un noyau.', true, 'Le noyau contient l\'information héréditaire.'],
       ['Le spermatozoïde vient de la mère.', false, 'Il est produit par le père ; l\'ovule vient de la mère.'],

@@ -37,6 +37,15 @@
       ]
     },
 
+    predire: {
+      q: "Les 3/4 d'un terrain sont cultivés, et les 2/3 de la partie cultivée sont plantés d'oliviers. Quelle part du terrain entier est plantée d'oliviers ?",
+      ar: "زُرع [[3/4]] من أرض، وغُرس [[2/3]] من الجزء المزروع زيتوناً. ما حصة الزيتون من الأرض كلها؟",
+      o: ["5/7", "2/3", "1/2"],
+      a: 2,
+      e: "Prendre les 2/3 des 3/4, c'est multiplier : 2/3 × 3/4 = (2 × 3)/(3 × 4) = 6/12 = 1/2. La moitié du terrain est plantée d'oliviers.",
+      ear: "[[2/3 × 3/4 = 6/12 = 1/2]]: نصف الأرض مغروس زيتوناً."
+    },
+
     prepare: [
       ['(−2) × (−5) = 10', true, 'Même signe : produit positif.'],
       ['« Les 2/3 de 12 » se calcule 2/3 × 12.', true, '2/3 × 12 = 8.'],

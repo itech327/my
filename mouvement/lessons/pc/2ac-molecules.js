@@ -46,6 +46,15 @@
       ]
     },
 
+    predire: {
+      q: "Le dioxygène de l'air et l'eau contiennent tous deux de l'oxygène, mais on respire l'un et pas l'autre. Pourquoi ?",
+      ar: "ثنائي الأوكسجين والماء كلاهما يحتوي الأوكسجين، لكننا نتنفس الأول دون الثاني. لماذا؟",
+      o: ["Les atomes d'oxygène ne sont pas les mêmes", "Les atomes sont assemblés différemment, et l'eau contient aussi de l'hydrogène", "L'eau est liquide, donc elle n'a pas d'oxygène"],
+      a: 1,
+      e: "Un corps dépend des atomes qui le forment et de leur assemblage. O₂ est un corps simple (2 atomes d'oxygène) ; H₂O est un corps composé (2 atomes d'hydrogène et 1 atome d'oxygène).",
+      ear: "خصائص الجسم تتعلق بالذرات المكوّنة له وبطريقة ترابطها: [[O₂]] جسم بسيط و[[H₂O]] جسم مركّب."
+    },
+
     prepare: [
       ['L\'air contient du dioxygène.', true, 'Environ 21 % de l\'air.'],
       ['On peut voir un atome à l\'œil nu.', false, 'Les atomes sont beaucoup trop petits.'],
