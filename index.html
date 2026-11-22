@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-8J4PH9bpiXWRbGze3jnyMmlrBoW98tBTvuooUvX2rJE=' 'sha256-G1qC6a6RKRnRwI1jq1EZNbjiGMUhlwfQq5mq/X+S9FI='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-8J4PH9bpiXWRbGze3jnyMmlrBoW98tBTvuooUvX2rJE=' 'sha256-G1qC6a6RKRnRwI1jq1EZNbjiGMUhlwfQq5mq/X+S9FI=' 'sha256-RGEevK3fXFJnCaU2S7QY8E/9XAhrJEW7CJz2luPC0Rk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس تفاعلية للسلك الإعدادي المغربي: الرياضيات والفيزياء والكيمياء وعلوم الحياة والأرض، برسوم متحركة وشرح بالعربية وتمارين من أربعة مستويات. Cours interactifs du collège marocain : maths, physique-chimie et SVT, figures animées, explications en arabe.">
 <link rel="canonical" href="https://taalim.men/">
@@ -60,43 +60,83 @@ a.card .ar{font-size:15px;color:var(--lav)}
 .box{padding:14px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--line);margin:18px 0;font-size:15px}
 .box p{margin:0 0 8px}.box p:last-child{margin:0}
 :focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.acts{display:flex;gap:8px}
+.btn.sm{min-height:36px;padding:5px 14px;font-size:14px}
+.live{margin:6px 0 16px;padding:10px 14px 8px;border-radius:20px;background:radial-gradient(120% 90% at 50% 0%,#1d1832,var(--surface) 70%);border:1px solid var(--line)}
+#fig{display:block;width:100%;max-width:min(300px,38vh);height:auto;margin:0 auto;touch-action:none;user-select:none}
+#sqA{fill:rgba(227,113,203,.22);stroke:#e371cb}#sqB{fill:rgba(155,146,220,.22);stroke:#9b92dc}#sqC{fill:rgba(108,205,182,.2);stroke:#6ccdb6}
+#fig polygon{stroke-width:1.6;stroke-linejoin:round}
+#tri{fill:rgba(242,239,249,.07);stroke:var(--fg);stroke-width:2.2}
+#ang{fill:none;stroke:var(--fg);stroke-width:1.6}
+#fig g[role=slider]{cursor:grab;outline:none}
+#fig .halo{fill:rgba(242,239,249,.0);transition:fill .15s}
+#fig g:hover .halo,#fig g:focus-visible .halo,#fig g.on .halo{fill:rgba(242,239,249,.16)}
+#fig .dot{fill:var(--fg)}
+.eq{font:600 clamp(20px,6vw,28px) ui-monospace,Menlo,monospace;text-align:center;margin:6px 0 2px;color:var(--fg);direction:ltr}
+.eq .ea{color:#e371cb}.eq .eb{color:#9b92dc}.eq .ec{color:#6ccdb6}
+.hint{text-align:center;color:var(--muted);font-size:14px;margin:0}
+.hint.ar{text-align:center;font-size:14px;color:var(--teal)}
+.sub{display:flex;flex-direction:column;gap:6px}
+.sub a.card{flex:1;padding:20px 20px 18px;transition:transform .15s,border-color .15s}
+.sub a.card strong{font-size:22px}
+.sub a.card .glyph{font-size:17px;padding:3px 12px}
+.sub a.alt{font-size:13px;color:var(--muted);text-align:center;padding:4px;text-decoration:none}
+.sub a.alt:hover,.sub a.alt:focus-visible{color:var(--fg);text-decoration:underline}
+@media (prefers-reduced-motion:no-preference){.sub a.card:hover{transform:translateY(-3px)}}
+@media (min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
+.links{text-align:center;color:var(--muted);font-size:14px;margin:26px 0 0}
+.links a{color:var(--muted)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <p class="kicker">Collège · option française</p>
+  <div class="top">
+    <span class="kicker">Collège · option française</span>
+    <span class="acts"><button class="btn sm" id="go-start" type="button">Session</button><button class="btn sm ghost" id="go-report" type="button">Mon rapport</button></span>
+  </div>
   <h1><svg class="mark" viewBox="0 0 48 32" aria-hidden="true"><path class="arc" pathLength="1" d="M4 26Q24 -6 44 26"/><circle class="d1" cx="10" cy="17.8" r="3.6" fill="#e371cb"/><circle class="d2" cx="24" cy="10" r="3.6" fill="#9b92dc"/><circle class="d3" cx="38" cy="17.8" r="3.6" fill="#6ccdb6"/></svg>Cours en mouvement</h1>
   <p class="tag ar" lang="ar" dir="rtl">دروس الإعدادي بالحركة</p>
-  <p class="welcome">Merci de ta visite. Ici, les cours bougent : tu touches la figure, tu changes les valeurs et tu comprends. Choisis ta matière pour commencer.</p>
-  <p class="welcome ar" lang="ar" dir="rtl">شكرًا لزيارتك! هنا تتحرّك الدروس: تلمس الشكل وتغيّر القيم فتفهم. اختر المادة التي تناسبك لتبدأ.</p>
-  <p class="step">1 · Choisis ta matière <span class="ar" lang="ar" dir="rtl">اختر المادة</span></p>
+
+  <section class="live" aria-labelledby="live-t">
+    <svg id="fig" viewBox="20 20 260 260" role="img" aria-labelledby="live-t live-d">
+      <title id="live-t">Le théorème de Pythagore, à toucher</title>
+      <desc id="live-d">Un triangle rectangle et les trois carrés construits sur ses côtés. Déplace les points : la somme des deux petits carrés reste égale au grand.</desc>
+      <polygon id="sqA" /><polygon id="sqB" /><polygon id="sqC" />
+      <polygon id="tri" />
+      <path id="ang" />
+      <g id="hA" tabindex="0" role="slider" aria-label="Côté horizontal" aria-valuemin="30" aria-valuemax="80"><circle class="halo" r="17"/><circle class="dot" r="7"/></g>
+      <g id="hB" tabindex="0" role="slider" aria-label="Côté vertical" aria-valuemin="30" aria-valuemax="80"><circle class="halo" r="17"/><circle class="dot" r="7"/></g>
+    </svg>
+    <p class="eq" id="eq" aria-live="polite"><span class="ea">9</span> + <span class="eb">16</span> = <span class="ec">25</span></p>
+    <p class="hint">Touche un point : les aires changent, la somme reste juste.</p>
+    <p class="hint ar" lang="ar" dir="rtl">المس نقطة: تتغيّر المساحات ويبقى المجموع صحيحاً.</p>
+  </section>
+
   <div class="grid">
-    <a class="card" style="--c:var(--pink)" href="maths.html"><i class="glyph" aria-hidden="true">π</i><strong>Maths en mouvement</strong><span>1<sup>re</sup>, 2<sup>e</sup> et 3<sup>e</sup> année · collège ordinaire</span><span class="ar" lang="ar" dir="rtl">الرياضيات</span></a>
-    <a class="card" style="--c:var(--lav)" href="physique-chimie.html"><i class="glyph" aria-hidden="true">H₂O</i><strong>Physique-Chimie en mouvement</strong><span>1<sup>re</sup>, 2<sup>e</sup> et 3<sup>e</sup> année · collège ordinaire</span><span class="ar" lang="ar" dir="rtl">الفيزياء والكيمياء</span></a>
-    <a class="card" style="--c:var(--teal)" href="svt.html"><i class="glyph" aria-hidden="true">ADN</i><strong>SVT en mouvement</strong><span>1<sup>re</sup>, 2<sup>e</sup> et 3<sup>e</sup> année · corps humain, santé, reproduction, géologie</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض</span></a>
+    <div class="sub" style="--c:var(--pink)">
+      <a class="card" href="https://maths.taalim.men/"><i class="glyph" aria-hidden="true">π</i><strong>Mathématiques</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">الرياضيات</span></a>
+      <a class="alt" href="maths.html">Version classique · النسخة الكلاسيكية</a>
+    </div>
+    <div class="sub" style="--c:var(--lav)">
+      <a class="card" href="https://pc.taalim.men/"><i class="glyph" aria-hidden="true">H₂O</i><strong>Physique-Chimie</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">الفيزياء والكيمياء</span></a>
+      <a class="alt" href="physique-chimie.html">Version classique · النسخة الكلاسيكية</a>
+    </div>
+    <div class="sub" style="--c:var(--teal)">
+      <a class="card" href="https://svt.taalim.men/"><i class="glyph" aria-hidden="true">ADN</i><strong>SVT</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض</span></a>
+      <a class="alt" href="svt.html">Version classique · النسخة الكلاسيكية</a>
+    </div>
+  </div>
+  <!-- Technologie : masquée jusqu'à la fin de la préparation des autres matières. Pour la rétablir, replacer cette carte dans <div class="grid"> (sous forme de <div class="sub">) :
     <a class="card" style="--c:var(--coral)" href="https://technologie.taalim.men/"><i class="glyph" aria-hidden="true">⚙</i><strong>Technologie en mouvement</strong><span>3<sup>e</sup> année · systèmes techniques, chaîne d’information, chaîne d’énergie, dessin technique</span><span class="ar" lang="ar" dir="rtl">التكنولوجيا</span></a>
-  </div>
-  <p class="step">Nouveau · Leçons pas à pas <span class="ar" lang="ar" dir="rtl">جديد: دروس خطوة بخطوة</span></p>
-  <p class="lead"><b>Voici une autre façon d’apprendre et d’explorer !</b> Une leçon complète : une scène animée qui explique, des exercices guidés, puis des exercices seul.</p>
-  <p class="lead ar" lang="ar" dir="rtl"><b>هنا طريقة أخرى للتعلم والاستكشاف!</b></p>
-  <div class="grid">
-    <a class="card" style="--c:var(--pink)" href="https://maths.taalim.men/"><i class="glyph" aria-hidden="true">π</i><strong>Maths pas à pas</strong><span>maths.taalim.men · nouvelles leçons</span><span class="ar" lang="ar" dir="rtl">الرياضيات خطوة بخطوة</span></a>
-    <a class="card" style="--c:var(--lav)" href="https://pc.taalim.men/"><i class="glyph" aria-hidden="true">⚛</i><strong>Physique-Chimie pas à pas</strong><span>pc.taalim.men · nouvelles leçons</span><span class="ar" lang="ar" dir="rtl">الفيزياء والكيمياء خطوة بخطوة</span></a>
-    <a class="card" style="--c:var(--teal)" href="https://svt.taalim.men/"><i class="glyph" aria-hidden="true">✿</i><strong>SVT pas à pas</strong><span>svt.taalim.men · nouvelles leçons</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض خطوة بخطوة</span></a>
-  </div>
-  <p class="step">2 · Commence une session, si tu veux <span class="ar" lang="ar" dir="rtl">ابدأ جلسة إن أردت</span></p>
-  <p class="lead">Une session garde tes résultats et te donne un rapport à imprimer. Tu peux aussi explorer sans session.</p>
-  <div class="row"><button class="btn" id="go-start" type="button">Démarrer une session</button><button class="btn ghost" id="go-report" type="button">Mon rapport</button></div>
+  -->
   <div class="box" id="pwa" hidden>
     <p><b>Installer l’application.</b> <span id="pwa-ios" hidden>Sur iPhone : bouton Partager, puis « Sur l’écran d’accueil ». </span>Elle s’ouvre en plein écran et marche sans connexion.</p>
     <p class="ar" lang="ar" dir="rtl">ثبّت التطبيق على هاتفك. يفتح بملء الشاشة ويعمل بدون إنترنت.</p>
     <div class="row"><button class="btn" id="pwa-btn" type="button" hidden>Installer · تثبيت</button></div>
   </div>
-  <div class="box">
-    <p><b>Exercices par niveaux.</b> Dans chaque chapitre, la dernière leçon « Défis » propose Facile, Moyen, Difficile, Défi chronométré et un mode adaptatif.</p>
-    <p class="ar" lang="ar" dir="rtl">في كل فصل، الدرس الأخير «Défis» يحتوي على تمارين: سهل، متوسط، صعب، تحدٍّ بمؤقّت، ونمط تكيّفي.</p>
-    <p><b>Session et rapport.</b> Après avoir entré ton nom, le rapport affiche ton nom, ton appareil et ta ville approximative. Les données restent dans ce navigateur. La ville est approximative. <a href="confidentialite.html">Confidentialité · الخصوصية</a> · <a href="a-propos.html">À propos · من نحن</a></p>
-  </div>
+  <p class="links"><a href="confidentialite.html">Confidentialité · الخصوصية</a> · <a href="a-propos.html">À propos · من نحن</a></p>
 </div>
 <script>window.LAB_CONFIG={app:'portal',appName:'Cours en mouvement',map:{},gen:function(){return null}};</script>
 <script src="lab/notify-config.js"></script>
@@ -113,6 +153,37 @@ document.getElementById('go-start').addEventListener('click',function(){var s=La
   if(/iphone|ipad|ipod/i.test(navigator.userAgent)){box.hidden=false;document.getElementById('pwa-ios').hidden=false;}
 })();
 document.getElementById('go-report').addEventListener('click',function(){var s=Lab.Session.cur()||Lab.Session.hist()[0];if(s)Lab.openReport(s);else Lab.openStart();});
+</script>
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg',O={x:110,y:190},U=20,a=60,b=80,drag=null,auto=true;
+  var $=function(i){return document.getElementById(i)};
+  var sqA=$('sqA'),sqB=$('sqB'),sqC=$('sqC'),tri=$('tri'),ang=$('ang'),hA=$('hA'),hB=$('hB'),eq=$('eq'),svg=$('fig');
+  function pts(l){return l.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')}
+  function sq(P,Q,away){var dx=Q[0]-P[0],dy=Q[1]-P[1],nx=-dy,ny=dx,mx=(P[0]+Q[0])/2-away[0],my=(P[1]+Q[1])/2-away[1];if(nx*mx+ny*my<0){nx=-nx;ny=-ny}return [P,Q,[Q[0]+nx,Q[1]+ny],[P[0]+nx,P[1]+ny]]}
+  function draw(){
+    var A=[O.x,O.y],B=[O.x+a,O.y],C=[O.x,O.y-b];
+    tri.setAttribute('points',pts([A,B,C]));
+    sqA.setAttribute('points',pts(sq(A,B,C)));sqB.setAttribute('points',pts(sq(A,C,B)));sqC.setAttribute('points',pts(sq(B,C,A)));
+    ang.setAttribute('d','M'+(O.x+11)+' '+O.y+'v-11h-11');
+    hA.setAttribute('transform','translate('+B[0]+' '+B[1]+')');hB.setAttribute('transform','translate('+C[0]+' '+C[1]+')');
+    hA.setAttribute('aria-valuenow',Math.round(a));hB.setAttribute('aria-valuenow',Math.round(b));
+    var la=a/U,lb=b/U,x=Math.round(la*la*10)/10,y=Math.round(lb*lb*10)/10,z=Math.round((x+y)*10)/10;
+    eq.innerHTML='<span class="ea">'+x.toFixed(1)+'</span> + <span class="eb">'+y.toFixed(1)+'</span> = <span class="ec">'+z.toFixed(1)+'</span>';
+  }
+  function clamp(v){return Math.max(30,Math.min(80,v))}
+  function pos(e){var r=svg.getBoundingClientRect(),k=260/r.width;return [20+(e.clientX-r.left)*k,20+(e.clientY-r.top)*k]}
+  function down(which,e){drag=which;auto=false;which.classList.add('on');try{svg.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()}
+  hA.addEventListener('pointerdown',function(e){down(hA,e)});hB.addEventListener('pointerdown',function(e){down(hB,e)});
+  svg.addEventListener('pointermove',function(e){if(!drag)return;var p=pos(e);if(drag===hA)a=clamp(p[0]-O.x);else b=clamp(O.y-p[1]);draw()});
+  function up(){if(drag)drag.classList.remove('on');drag=null}
+  svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+  [[hA,function(d){a=clamp(a+d)}],[hB,function(d){b=clamp(b+d)}]].forEach(function(x){x[0].addEventListener('keydown',function(e){var d={ArrowRight:4,ArrowUp:4,ArrowLeft:-4,ArrowDown:-4}[e.key];if(!d)return;auto=false;x[1](d);draw();e.preventDefault()})});
+  draw();
+  if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){
+    var t0=null;(function loop(t){if(!auto)return;if(t0===null)t0=t;var k=(t-t0)/1000;a=60+16*Math.sin(k*.9);b=60+16*Math.sin(k*.9+2.4);draw();requestAnimationFrame(loop)})(performance.now());
+  }
+})();
 </script>
 </body>
 </html>

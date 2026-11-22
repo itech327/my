@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-aF0q5wizOSNLPv0qv30RQe2pt6CV+is2zNH5923xYBY=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-/HHZitWpt4LniLQXwA2o1y8q6l8shla+QeTjTDgjczg=' 'sha256-Fu26TPqAL3v784LMASoAy5DGUJ+jDgvptXFMCRt6Big=' 'sha256-I85HNJ1/Hx4vxlntaBICYdVdTN08oaT0OrL0Su5JBnM=' 'sha256-HL8rO9D1nEo864TEz81ZDH3VwLlQ4lQ1dui+y1+sruE=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-o8dBdpHxLS2POmJ2kdxjicxyy6IMkS2Bdl/bUEeqBwg=' 'sha256-I9XQNk7JTJyFU9yQC7sPk9SNmwXwRJU8UMqfqaM2bpk=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-bTschY0GQf0aRuPtvE8z/D1xQO82+zm7hyfeMjPAhFk=' 'sha256-/CCZyJuBL8TsRedTGvGP1kVq+K4xDx+DB4by1cWshg8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-aF0q5wizOSNLPv0qv30RQe2pt6CV+is2zNH5923xYBY=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-YdgS+w6WzqkSekGElK30puxCBMEUiXpFkYbgF4nN86E=' 'sha256-Fu26TPqAL3v784LMASoAy5DGUJ+jDgvptXFMCRt6Big=' 'sha256-I85HNJ1/Hx4vxlntaBICYdVdTN08oaT0OrL0Su5JBnM=' 'sha256-HL8rO9D1nEo864TEz81ZDH3VwLlQ4lQ1dui+y1+sruE=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-o8dBdpHxLS2POmJ2kdxjicxyy6IMkS2Bdl/bUEeqBwg=' 'sha256-I9XQNk7JTJyFU9yQC7sPk9SNmwXwRJU8UMqfqaM2bpk=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-bTschY0GQf0aRuPtvE8z/D1xQO82+zm7hyfeMjPAhFk=' 'sha256-/CCZyJuBL8TsRedTGvGP1kVq+K4xDx+DB4by1cWshg8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://taalim-relay.abderrahim-habz.workers.dev https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس الرياضيات للسنوات الأولى والثانية والثالثة إعدادي برسوم متحركة وملخصات بالعربية وتمارين حسب المستوى. Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths">
@@ -2743,6 +2743,7 @@ window.addEventListener('load',function(){
   function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.welcomeDue = welcomeDue;
   function welcome() {
+    return; /* plus de fenêtre d'accueil : le mot d'équilibre figure en pied de la page d'accueil seulement */
     if (!document.body || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
     var n = h('div', { 'class': 'lab-welcome lab-noprint', 'role': 'status', 'aria-live': 'polite' }), done = false, tm = 0;
     var c = h('div', { 'class': 'lab-welcome-card' });
@@ -2761,6 +2762,7 @@ window.addEventListener('load',function(){
     store.set('lab_wel', Date.now());
   }
   function footNote() {
+    if (CFG.app !== 'portal') return; /* le mot d'équilibre en pied de page : accueil seulement */
     if (document.querySelector('.lab-balance.foot')) return;
     var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
     if (f && f.parentNode) f.parentNode.insertBefore(n, f);

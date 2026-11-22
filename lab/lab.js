@@ -954,6 +954,7 @@
   function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.welcomeDue = welcomeDue;
   function welcome() {
+    return; /* plus de fenêtre d'accueil : le mot d'équilibre figure en pied de la page d'accueil seulement */
     if (!document.body || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
     var n = h('div', { 'class': 'lab-welcome lab-noprint', 'role': 'status', 'aria-live': 'polite' }), done = false, tm = 0;
     var c = h('div', { 'class': 'lab-welcome-card' });
@@ -972,6 +973,7 @@
     store.set('lab_wel', Date.now());
   }
   function footNote() {
+    if (CFG.app !== 'portal') return; /* le mot d'équilibre en pied de page : accueil seulement */
     if (document.querySelector('.lab-balance.foot')) return;
     var f = document.querySelector('footer'), n = balanceNote('foot'); n.classList.add('foot');
     if (f && f.parentNode) f.parentNode.insertBefore(n, f);
