@@ -66,10 +66,13 @@ function buildServer(env: Env, origin: string): McpServer {
   }, async ({ text, voice, mode, delivery, pace }) => {
     const v = VOICES[voice];
     try {
-      const out = await geminiSpeak({
-        text: stripTags(text), apiKey: env.GEMINI_API_KEY,
-        voice: designedVoice(mode, v.gender, v.prebuilt),
-        style: geminiStyle(delivery, pace ?? null, mode as RegisterId),
+      const req = { text: stripTags(text), apiKey: env.GEMINI_API_KEY, style: geminiStyle(delivery, pace ?? null, mode as RegisterId) };
+      const designed = designedVoice(mode, v.gender, v.prebuilt);
+      // Designed voices belong to the Google project that made them. With another
+      // key they return 404, so fall back to the prebuilt voice.
+      const out = await geminiSpeak({ ...req, voice: designed }).catch((e) => {
+        if (designed !== v.prebuilt && /\b404\b/.test(String(e))) return geminiSpeak({ ...req, voice: v.prebuilt });
+        throw e;
       });
       const id = newId();
       await env.AUDIO.put(`a/${id}.wav`, out.audio, { expirationTtl: TTL_S });
