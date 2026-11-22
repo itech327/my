@@ -306,3 +306,8 @@ naturalness; the recognizer only guards against swallowed words.
 - Gemini now receives Darija numbers, Arabizi, French words, units and respellings (e.g. فلّاح). Hamzas and گ kept. Standard Arabic mode: clean-up and respellings only.
 - Live connector test, Arabizi input "ara chi bttikha nakloha m3a ssbah, 3andi 350 dh f jibi": recognizer heard "... عندي تلتمية وخمسين درهم فجيبي" (Darija number), CER 0.080. بطّيخة heard unclearly. Sample `connector-arabizi.wav`.
 - Library pilot: نور Standard Arabic items num-fusha-01..04 approved by the owner: "رائع بالفصحى".
+
+## New Gemini key, voices recreated (2026-11-22)
+
+- The owner moved to a new Gemini key (another account). Designed voices are per Google project, so all four were recreated with `gemini_design_voices.py` and the current prompts.
+- Old ids (previous project) are replaced in `designed-voices.json`. The new darija-female uses the general Darija prompt, not the drifted Fusha voice the owner liked: needs a new ear test.
