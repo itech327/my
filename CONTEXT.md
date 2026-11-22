@@ -50,6 +50,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 | `.claude/skills/darija-voice/` | The skill: normalizer, respellings, scripts, results log |
 | `replica/CONTEXT.md` | Longer project history and decisions |
 | `library/` | Reference audio library for teaching. Pilot: middle school, numbers and operations, 20 items. See its README |
+| `MIGRATION.md` | Moving the project to another Claude account: what moves, what to set up again |
 | `MAC.md` | Run the app and the free voices on the owner's MacBook Pro |
 
 ## Claude connector: live
@@ -94,6 +95,13 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - **Postponed by the owner on 2026-11-22.** The owner has no GPU provider account. Cloudflare Containers have no GPU (max 4 vCPU, 12 GiB). When resuming: a GPU host that runs Docker and scales to zero (for example Hugging Face, RunPod or Modal; compare current prices first), or the owner's own computer through a Cloudflare Tunnel.
 - Recommended first: switch the Gemini key to Google's paid tier, which removes the 10-requests-a-day limit that makes the backup necessary.
 - A cold start can exceed Claude's 60 s limit. On a CPU, a short sentence takes about 35 s.
+
+## Audio library
+
+- `library/`: reference audio for teaching.
+- Pilot: middle school (الإعدادي), numbers and operations, 20 items.
+- 4 approved by the owner (نور, Standard Arabic), 16 still to generate.
+- Run `library/generate.mts` once a day on the free Gemini tier: it stops at the quota and resumes.
 
 ## Connector tools
 
