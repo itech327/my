@@ -1,6 +1,6 @@
 // Claude custom connector for the Moroccan voices, on Cloudflare Workers.
 // Remote MCP (official SDK, Streamable HTTP, stateless, JSON responses) at /mcp.
-// Audio is stored in R2 and served at /audio/<id> for 7 days.
+// Audio is stored in Workers KV (auto-expires after 7 days) and served at /audio/<id>.
 // Owner-only: every MCP request must carry header x-sada-key = MCP_ACCESS_KEY.
 // Voice styles, designed voices and the Gemini calls are shared with the app.
 
@@ -12,12 +12,12 @@ import { designedVoice, geminiSpeak, stripTags } from '../../app/src/lib/tts/gem
 import { rewriteWith } from '../../app/src/lib/rewrite-core';
 
 interface Env {
-  AUDIO: R2Bucket;
+  AUDIO: KVNamespace;
   GEMINI_API_KEY: string;
   MCP_ACCESS_KEY: string;
 }
 
-const TTL_MS = 7 * 24 * 3600 * 1000;
+const TTL_S = 7 * 24 * 3600; // KV deletes the entry itself after this
 const VOICES = {
   nour: { name: 'نور', gender: 'female', prebuilt: 'Kore' },
   younes: { name: 'يونس', gender: 'male', prebuilt: 'Charon' },
@@ -66,7 +66,7 @@ function buildServer(env: Env, origin: string): McpServer {
         style: geminiStyle(delivery, pace ?? null, mode as RegisterId),
       });
       const id = newId();
-      await env.AUDIO.put(`a/${id}.wav`, out.audio, { httpMetadata: { contentType: 'audio/wav' } });
+      await env.AUDIO.put(`a/${id}.wav`, out.audio, { expirationTtl: TTL_S });
       const url = `${origin}/audio/${id}`;
       return {
         content: [
@@ -98,9 +98,9 @@ function buildServer(env: Env, origin: string): McpServer {
 
 async function audio(id: string, env: Env): Promise<Response> {
   if (!/^[A-Za-z0-9_-]{24}$/.test(id)) return new Response('not found', { status: 404 });
-  const obj = await env.AUDIO.get(`a/${id}.wav`);
-  if (!obj || Date.now() - obj.uploaded.getTime() > TTL_MS) return new Response('not found or expired', { status: 404 });
-  return new Response(obj.body, {
+  const data = await env.AUDIO.get(`a/${id}.wav`, 'arrayBuffer');
+  if (!data) return new Response('not found or expired', { status: 404 });
+  return new Response(data, {
     headers: { 'Content-Type': 'audio/wav', 'Cache-Control': 'private, max-age=3600', 'X-Robots-Tag': 'noindex',
       'Content-Disposition': `inline; filename="sada-${id.slice(0, 8)}.wav"` },
   });

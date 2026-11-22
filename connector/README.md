@@ -1,7 +1,7 @@
 # Sada connector
 
 A Claude custom connector for the Moroccan voices, on Cloudflare Workers.
-Remote MCP at `/mcp`. Audio in R2, served at `/audio/<id>` for 7 days.
+Remote MCP at `/mcp`. Audio in Workers KV (no R2 needed), served at `/audio/<id>` for 7 days.
 
 Tools:
 
@@ -20,8 +20,6 @@ Needs Node 22 and a Cloudflare account.
 cd connector
 npm install
 npx wrangler login
-npx wrangler r2 bucket create sada-audio
-npx wrangler r2 bucket lifecycle add sada-audio expire-audio a/ --expire-days 7
 npx wrangler deploy
 npx wrangler secret put GEMINI_API_KEY    # paste your Gemini key when asked
 npx wrangler secret put MCP_ACCESS_KEY    # paste a private code of 24+ characters
@@ -32,15 +30,14 @@ The Worker answers at `https://voice.taalim.men` (Custom Domain in
 
 ## Automatic deploys with Workers Builds
 
-Cloudflare's own GitHub link deploys on every push. In the dashboard:
+Cloudflare's own GitHub link deploys on every push. Audio uses Workers KV;
+Wrangler creates the namespace itself on the first deploy. In the dashboard:
 
-1. R2: create the bucket `sada-audio`. Optional: add a lifecycle rule that
-   deletes objects under `a/` after 7 days.
-2. Workers & Pages: Create, Import a repository, `itech327/my`.
-3. Worker name: `sada-connector` (must match `name` in `wrangler.jsonc`).
-4. Production branch: `claude/new-session-thirii`. Root directory: `connector`.
+1. Workers & Pages: Create, Import a repository, `itech327/my`.
+2. Worker name: `sada-connector` (must match `name` in `wrangler.jsonc`).
+3. Production branch: `claude/new-session-thirii`. Root directory: `connector`.
    Deploy command: `npx wrangler deploy`.
-5. After the first deploy: Settings, Variables and Secrets, add the secrets
+4. After the first deploy: Settings, Variables and Secrets, add the secrets
    `GEMINI_API_KEY` and `MCP_ACCESS_KEY`.
 
 ## API token permissions (only for deploying from a computer or CI)
@@ -50,7 +47,7 @@ Create Token, template "Edit Cloudflare Workers"). Scope it to your account
 and to the zone `taalim.men`. Make sure it includes:
 
 - Account: Workers Scripts Edit
-- Account: Workers R2 Storage Edit
+- Account: Workers KV Storage Edit
 - Zone (taalim.men): Workers Routes Edit
 
 ## Add it to Claude
