@@ -30,14 +30,20 @@ npx wrangler secret put MCP_ACCESS_KEY    # paste a private code of 24+ characte
 The Worker answers at `https://voice.taalim.men` (Custom Domain in
 `wrangler.jsonc`; Cloudflare creates the DNS record and certificate).
 
-## Automatic deploys from GitHub
+## Automatic deploys with Workers Builds
 
-`.github/workflows/deploy-connector.yml` redeploys on every push that touches
-the connector or the shared voice code. Add two repository secrets in GitHub,
-Settings, Secrets and variables, Actions: `CLOUDFLARE_API_TOKEN` and
-`CLOUDFLARE_ACCOUNT_ID`.
+Cloudflare's own GitHub link deploys on every push. In the dashboard:
 
-## API token permissions
+1. R2: create the bucket `sada-audio`. Optional: add a lifecycle rule that
+   deletes objects under `a/` after 7 days.
+2. Workers & Pages: Create, Import a repository, `itech327/my`.
+3. Worker name: `sada-connector` (must match `name` in `wrangler.jsonc`).
+4. Production branch: `claude/new-session-thirii`. Root directory: `connector`.
+   Deploy command: `npx wrangler deploy`.
+5. After the first deploy: Settings, Variables and Secrets, add the secrets
+   `GEMINI_API_KEY` and `MCP_ACCESS_KEY`.
+
+## API token permissions (only for deploying from a computer or CI)
 
 Create an account API token in Cloudflare (Manage Account, API Tokens,
 Create Token, template "Edit Cloudflare Workers"). Scope it to your account
