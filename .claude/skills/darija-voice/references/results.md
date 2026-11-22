@@ -293,3 +293,6 @@ naturalness; the recognizer only guards against swallowed words.
 - Respelling بالإحداثيات fixed that word. تمّاك still wrong ("تم اكن").
 - Pattern: words before a comma get an extra sound: والوراقل, النسخل, المهمن, اكن. Same family as مرحبن. Next test: drop commas inside a chunk, keep only sentence ends.
 - Ear test: فلاح was read as falāḥ (success). Native listener: فلّاح (farmer). Added فلاح, الفلاح, والفلاح, فلاحة, الفلاحة, والفلاحة, فلاحين, الفلاحين to respell.tsv. Sample: `bir/idriss-fallah.wav`.
+- يونس on Gemini, same story text, story delivery: CER 0.061 in 13.9 s. فلاح read right. إدريس: 0.068 in 4.5 min.
+- Quota fallback verified end to end: نور got 429, هند spoke in 51 s, editor and API reported it (`app-hind-fusha-fallback.wav`).
+- Free-tier quota came back in short windows during the night, not only at the daily reset.
