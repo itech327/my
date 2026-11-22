@@ -1,6 +1,6 @@
 # صدى (Sada): handoff context
 
-Give this file to Claude to continue. Last updated 2026-11-22, after the Cloudflare setup was prepared.
+Give this file to Claude to continue. Last updated 2026-11-22: the Claude connector is live and tested.
 Repository `itech327/my`, branch `claude/new-session-thirii`. Not merged to `main`.
 
 ## What it is
@@ -43,49 +43,36 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 | `.claude/skills/darija-voice/` | The skill: normalizer, respellings, scripts, results log |
 | `replica/CONTEXT.md` | Longer project history and decisions |
 
-## Next step: deploy the connector on Cloudflare
+## Claude connector: live
 
-Status on 2026-11-22: **deployed and live at `https://voice.taalim.men`** with Workers Builds. Checked from the cloud session: `/` answers 404, `/mcp` without the right code answers 401, so both secrets are set. Added to Claude and tested end to end on 2026-11-22: `rewrite_moroccan` answers in about a second, `speak_moroccan` returned يونس (designed voice, same Gemini key) as a working WAV link. claude.ai rejects custom header names, so the access code goes in the URL: `https://voice.taalim.men/mcp/<MCP_ACCESS_KEY>`. Keep Cloudflare logs private. Workers Builds may need build watch paths for `app/src/lib/*` so shared-code changes redeploy.
+- **Address:** `https://voice.taalim.men`, a Cloudflare Worker deployed with **Workers Builds** from branch `claude/new-session-thirii`, root directory `connector`.
+- **Tested from Claude on 2026-11-22:**
+  - `rewrite_moroccan` answers in about a second.
+  - `speak_moroccan` returned يونس, the designed voice, as a working WAV link.
+  - The Worker uses the same Gemini key as the tests, so the designed voices work.
+- **Storage:** audio in Workers KV (binding `AUDIO`), each file deleted after 7 days.
+- **Rewrite models:**
+  - Order: `gemini-3.6-flash`, then `gemini-3.8-flash`, then `gemini-3.5-flash-lite`.
+  - Thinking level `low`, 15 s per model, 45 s total. A Claude connector call times out at 60 s.
+  - `gemini-2.5-flash` is closed to new users.
+- **Secrets in Cloudflare:** `GEMINI_API_KEY` and `MCP_ACCESS_KEY`, under Workers & Pages, `sada-connector`, Settings, Variables and Secrets. **Never paste keys into a chat.**
+- **Redeploys:** every push to the branch. Add `app/src/lib/*` to the build watch paths, so changes to the shared voice code redeploy too.
 
-- The owner hosts `taalim.men` on Cloudflare. Cloudflare is already linked to their GitHub.
-- The connector will answer at **`https://voice.taalim.men`**. The Custom Domain is already set in `connector/wrangler.jsonc`, and Cloudflare creates the DNS record and certificate on the first deploy.
-- Only the connector goes live for now. The full app needs a real database first.
-- The owner declined to give an API token to the cloud session. Deploy with **Workers Builds** from the Cloudflare dashboard. No token is needed in GitHub or in a chat.
-- A browser-capable Claude, with the Claude in Chrome extension in the owner's signed-in Chrome, can click these steps for them.
-
-### Dashboard steps (Workers Builds)
-
-1. Audio storage is **Workers KV** (binding `AUDIO`). Wrangler creates the namespace on the first deploy, and each file expires after 7 days. No R2 needed.
-2. **Workers & Pages**: **Create**, **Import a repository**, repository `itech327/my`.
-3. Settings:
-   - Worker name: **`sada-connector`**. It must match `name` in `wrangler.jsonc`, or the build fails.
-   - Production branch: `claude/new-session-thirii`.
-   - Root directory: `connector`.
-   - Deploy command: `npx wrangler deploy`.
-4. Deploy. Every later push to that branch redeploys automatically.
-5. After the first deploy: **Settings**, **Variables and Secrets**, add two **secrets**:
-   - `GEMINI_API_KEY`: the Gemini key.
-   - `MCP_ACCESS_KEY`: a private code, 24+ characters, made up by the owner.
-6. Check it:
-   - `https://voice.taalim.men/mcp` without the header should answer 401.
-   - `https://voice.taalim.men/` should answer 404.
-
-**Never paste keys into a chat.** Type them only into the Cloudflare dashboard.
-
-### Alternative: deploy from a computer
-
-With Node 22, follow `connector/README.md`: `npx wrangler login`, `npx wrangler deploy`, then `npx wrangler secret put` for both secrets.
-
-## Then add it to Claude
+### Add it to Claude
 
 1. claude.ai: **Customize**, **Connectors**, **+ Add**, **Add custom connector**.
-2. Name `Sada`. URL `https://voice.taalim.men/mcp`.
+2. Name `Sada`. URL `https://voice.taalim.men/mcp/<MCP_ACCESS_KEY>`.
+   - claude.ai rejects custom header names, so the access code goes in the URL.
+   - `Authorization: Bearer` and `x-sada-key` headers also work for other clients.
+   - Keep Cloudflare logs private.
 3. **Authentication**: No sign in.
-4. **Request headers**: `x-sada-key` = the MCP_ACCESS_KEY.
-5. In a chat: **+**, **Connectors**, turn Sada on.
-6. Ask, for example: "سجّل هاد النص بالدارجة بصوت يونس، بأسلوب الحكاية".
+4. In a chat: **+**, **Connectors**, turn Sada on.
+5. Ask, for example: "سجّل هاد النص بالدارجة بصوت يونس، بأسلوب الحكاية".
 
-The Free plan allows one custom connector.
+### Deploying again from scratch
+
+- **Dashboard:** Workers & Pages, Import a repository `itech327/my`, Worker name `sada-connector` (must match `wrangler.jsonc`), root directory `connector`, then add both secrets.
+- **From a computer:** follow `connector/README.md`.
 
 ## Connector tools
 
@@ -102,6 +89,7 @@ The Free plan allows one custom connector.
 
 - **Connector:**
   - Locally on Workers: wrong access code refused, tools listed, Google reached, bad audio links refused.
+  - Live from Claude: rewrite and voice both work (sample `replica/examples/gemini/connector-younes.wav`).
   - In the app: rewrite correct, quota fallback to هند works.
 - **Story test on the same text:**
 
@@ -114,7 +102,7 @@ The Free plan allows one custom connector.
 
 1. **Pending ear test:** Fusha female voice on Gemini. Check that no word drifts into Darija.
 2. **Paid tier:** switch the Gemini key to paid.
-3. **Full app:** a database and storage, so it can go live: Cloudflare D1 and R2, or Supabase.
+3. **Full app:** a database and storage, so it can go live: Cloudflare D1 and KV or R2, or Supabase.
 4. **Payments:** a real payment provider.
 5. **Free voices:**
    - Words before a comma get an extra sound ("المهمن"). Next test: drop commas inside sentences.
