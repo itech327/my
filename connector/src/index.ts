@@ -1,7 +1,10 @@
 // Claude custom connector for the Moroccan voices, on Cloudflare Workers.
 // Remote MCP (official SDK, Streamable HTTP, stateless, JSON responses) at /mcp.
 // Audio is stored in Workers KV (auto-expires after 7 days) and served at /audio/<id>.
-// Owner-only: every MCP request must carry header x-sada-key = MCP_ACCESS_KEY.
+// Owner-only: every MCP request must carry MCP_ACCESS_KEY, in any ONE of three places:
+//   path:    /mcp/<MCP_ACCESS_KEY>      (works in claude.ai, which only allows approved header names)
+//   header:  Authorization: Bearer <MCP_ACCESS_KEY>
+//   header:  x-sada-key: <MCP_ACCESS_KEY>
 // Voice styles, designed voices and the Gemini calls are shared with the app.
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -27,12 +30,15 @@ async function sha256(s: string): Promise<Uint8Array> {
   return new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)));
 }
 
-async function authorized(req: Request, env: Env): Promise<boolean> {
+async function authorized(req: Request, env: Env, pathKey: string): Promise<boolean> {
   const want = env.MCP_ACCESS_KEY;
-  const got = req.headers.get('x-sada-key');
-  if (!want || want.length < 24 || !got) return false;
-  const [a, b] = await Promise.all([sha256(want), sha256(got)]);
-  return crypto.subtle.timingSafeEqual(a, b);
+  if (!want || want.length < 24) return false;
+  const bearer = (req.headers.get('authorization') ?? '').replace(/^Bearer\s+/i, '');
+  const candidates = [pathKey, bearer, req.headers.get('x-sada-key') ?? ''].filter(Boolean);
+  const w = await sha256(want);
+  let ok = false;
+  for (const c of candidates) ok = crypto.subtle.timingSafeEqual(w, await sha256(c)) || ok;
+  return ok;
 }
 
 function newId(): string {
@@ -60,10 +66,13 @@ function buildServer(env: Env, origin: string): McpServer {
   }, async ({ text, voice, mode, delivery, pace }) => {
     const v = VOICES[voice];
     try {
-      const out = await geminiSpeak({
-        text: stripTags(text), apiKey: env.GEMINI_API_KEY,
-        voice: designedVoice(mode, v.gender, v.prebuilt),
-        style: geminiStyle(delivery, pace ?? null, mode as RegisterId),
+      const req = { text: stripTags(text), apiKey: env.GEMINI_API_KEY, style: geminiStyle(delivery, pace ?? null, mode as RegisterId) };
+      const designed = designedVoice(mode, v.gender, v.prebuilt);
+      // Designed voices belong to the Google project that made them. With another
+      // key they return 404, so fall back to the prebuilt voice.
+      const out = await geminiSpeak({ ...req, voice: designed }).catch((e) => {
+        if (designed !== v.prebuilt && /\b404\b/.test(String(e))) return geminiSpeak({ ...req, voice: v.prebuilt });
+        throw e;
       });
       const id = newId();
       await env.AUDIO.put(`a/${id}.wav`, out.audio, { expirationTtl: TTL_S });
@@ -110,9 +119,12 @@ export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
     if (url.pathname.startsWith('/audio/') && req.method === 'GET') return audio(url.pathname.slice(7), env);
-    if (url.pathname !== '/mcp') return new Response('not found', { status: 404 });
+    const m = /^\/mcp(?:\/([^/]+))?$/.exec(url.pathname);
+    if (!m) return new Response('not found', { status: 404 });
+    let pathKey = '';
+    try { pathKey = m[1] ? decodeURIComponent(m[1]) : ''; } catch { /* bad escape: treated as no key */ }
     if (!env.MCP_ACCESS_KEY || !env.GEMINI_API_KEY) return Response.json({ error: 'connector not configured' }, { status: 503 });
-    if (!(await authorized(req, env))) return Response.json({ error: 'unauthorized' }, { status: 401 });
+    if (!(await authorized(req, env, pathKey))) return Response.json({ error: 'unauthorized' }, { status: 401 });
     const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
     await buildServer(env, url.origin).connect(transport);
     return transport.handleRequest(req);
