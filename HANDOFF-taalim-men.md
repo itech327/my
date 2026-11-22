@@ -126,7 +126,8 @@
 ## 11. سياق تقني للمتابعة
 
 - المنطقة الزمنية: Africa/Casablanca (UTC+0).
-- Project في claude.ai اسمه «تطوير موقع taalim.men» يحوي 30 مستنداً (الفيديو والصوت والأفكار). اقرأ `video-episodes/lab-carre-qui-triche/README.md` أولاً.
+- **كل ملفات المختبر على GitHub:** `git clone -b claude/taalim-video-lab https://github.com/itech327/my.git` (الصفحة، السكربتات، KaTeX والخطوط، نص التعليق، وهذا الملف). لا حاجة إلى رفع شيء يدوياً.
+- Project في claude.ai اسمه «تطوير موقع taalim.men» يحوي نحو 31 مستنداً (الفيديو والصوت والأفكار). اقرأ `video-episodes/lab-carre-qui-triche/README.md` أولاً.
 - للمستودع `sada`: ملف `CONTEXT.md` في جذر الفرع `claude/new-session-thirii` هو تسليم المشروع الصوتي. وقواعده: لا مفاتيح في الشيفرة أو المحادثة، لا استنساخ أصوات أشخاص حقيقيين دون موافقة، واجهات رسمية فقط، الالتزام على `claude/new-session-thirii`.
 
 ## 12. أول ما يُفعل في الحساب الجديد
