@@ -296,3 +296,4 @@ naturalness; the recognizer only guards against swallowed words.
 - يونس on Gemini, same story text, story delivery: CER 0.061 in 13.9 s. فلاح read right. إدريس: 0.068 in 4.5 min.
 - Quota fallback verified end to end: نور got 429, هند spoke in 51 s, editor and API reported it (`app-hind-fusha-fallback.wav`).
 - Free-tier quota came back in short windows during the night, not only at the daily reset.
+- Ear verdict on يونس story (Gemini, darija-male designed voice, story delivery): "very good voice".
