@@ -160,11 +160,16 @@ def head(s, cfg, title, desc, url, depth, extra=''):
 """
 
 
+TECH_VISIBLE = False   # liens vers la technologie masqués dans les autres matières, le temps de finir maths, pc et svt (le site tech lui-même n'est pas modifié)
+
+
 def footer(s):
-    others = ' '.join(f'<a href="{c["url"]}">{c["glyph"]} {c["name"]}</a>' for k, c in SUBJECTS.items()
-                      if k != s and (c.get('live', True) or k == 'tech' and s == 'tech'))
-    labo = ('<a href="https://technologie.taalim.men/">⚙ Labo et jeux de technologie</a>' if s == 'tech' or SUBJECTS['tech'].get('live', True)
-            else '<a href="https://technologie.taalim.men/">⚙ Technologie</a>')
+    show = lambda k: k != s and (k != 'tech' or TECH_VISIBLE or s == 'tech') and (SUBJECTS[k].get('live', True) or k == 'tech' and s == 'tech')
+    others = ' '.join(f'<a href="{c["url"]}">{c["glyph"]} {c["name"]}</a>' for k, c in SUBJECTS.items() if show(k))
+    labo = ''
+    if s == 'tech' or TECH_VISIBLE:
+        labo = ('<a href="https://technologie.taalim.men/">⚙ Labo et jeux de technologie</a>' if s == 'tech' or SUBJECTS['tech'].get('live', True)
+                else '<a href="https://technologie.taalim.men/">⚙ Technologie</a>')
     return (f'<nav class="others" aria-label="Autres matières">{others}'
             f'{labo}<a href="https://taalim.men/">Tous les cours</a></nav>'
             '<p class="note">Cours en mouvement · collège, option française · taalim.men</p>')
