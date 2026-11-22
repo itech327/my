@@ -18,7 +18,7 @@ socketserver.TCPServer.allow_reuse_address = True
 srv = socketserver.TCPServer(('127.0.0.1', 0), functools.partial(H, directory=ROOT))
 BASE = 'http://127.0.0.1:%d' % srv.server_address[1]
 threading.Thread(target=srv.serve_forever, daemon=True).start()
-RELAY = 'https://taalim-relay.abderrahim-habz.workers.dev/'
+RELAY = 'https://relay.taalim.men/'
 
 with sync_playwright() as p:
     try: b = p.chromium.launch()

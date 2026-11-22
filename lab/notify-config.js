@@ -1,1 +1,1 @@
-window.LAB_NOTIFY_URL = "https://taalim-relay.abderrahim-habz.workers.dev";
+window.LAB_NOTIFY_URL = "https://relay.taalim.men";

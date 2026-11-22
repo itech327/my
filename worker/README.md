@@ -53,3 +53,9 @@ La page `/teacher` lit `/api/teacher/events` sur le relais. L'accès demande une
 Le bouton « Supprimer » efface toutes les lignes d'un élève. C'est la réponse à une demande de parent.
 
 Option plus tard : Cloudflare Access (Zero Trust) devant `/teacher`, si le compte l'active sans carte bancaire.
+
+## Adresse publique : relay.taalim.men
+
+Le relais est servi sur un domaine de taalim.men, pas sur un sous-domaine workers.dev d'un compte personnel.
+Dans Cloudflare : Workers & Pages > taalim-relay > Settings > Domains & Routes > Add > Custom domain > `relay.taalim.men`.
+Ensuite `lab/notify-config.js` contient `https://relay.taalim.men`. Garder l'ancienne adresse workers.dev active quelques jours, le temps que les pages en cache passent à la nouvelle.
