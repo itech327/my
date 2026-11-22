@@ -22,7 +22,7 @@ with sync_playwright() as p:
         else: r.continue_()
     pg.route('**/*', route)
     pg.goto('file://' + ROOT + '/index.html'); pg.wait_for_timeout(500)
-    check(pg.locator('.lab-modal').count() == 0 and 'Merci de ta visite' in pg.inner_text('body'), 'portail : accueil sans fenêtre, avec remerciement')
+    check(pg.locator('.lab-modal').count() == 0 and pg.locator('.lab-welcome').count() == 0 and pg.locator('.sub a.card').count() == 3 and 'technologie.taalim.men' not in pg.evaluate("document.body.innerHTML.replace(/<!--[\\s\\S]*?-->/g,'')"), 'portail : accueil sans fenêtre ni accueil plein écran, trois matières, technologie masquée')
     pg.click('#go-start'); pg.wait_for_timeout(200)
     check(pg.locator('.lab-modal').count() == 1, 'portail : le bouton ouvre la fenêtre de session')
     pg.fill('#lab-name', 'Youssef'); pg.check('#lab-cons'); pg.click('#lab-go'); pg.wait_for_timeout(800)

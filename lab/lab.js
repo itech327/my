@@ -954,6 +954,7 @@
   function welcomeDue(now) { var t = Number(store.get('lab_wel', 0)); return !(t > 0) || (now - t) > 7 * 864e5 || t > now; }
   Lab.welcomeDue = welcomeDue;
   function welcome() {
+    if (CFG.app === 'portal') return; /* l'accueil porte déjà le mot d'équilibre en pied de page */
     if (!document.body || document.querySelector('.lab-welcome') || !welcomeDue(Date.now())) return;
     var n = h('div', { 'class': 'lab-welcome lab-noprint', 'role': 'status', 'aria-live': 'polite' }), done = false, tm = 0;
     var c = h('div', { 'class': 'lab-welcome-card' });
