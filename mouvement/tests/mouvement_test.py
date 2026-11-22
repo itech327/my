@@ -357,6 +357,13 @@ async def lesson(pg, base, key, plan):
     await nexts(pg, n - 1)
     await shot(pg, f'{lid}-1-ouverture-b')
     await nexts(pg, 1)
+    # prédiction facultative : on choisit la première réponse, puis on continue
+    if await pg.locator('section.on .pred').count():
+        await pg.locator('section.on .pred .opt').first.click()
+        await pg.locator('section.on .pred .btn.pri').click()
+        await pg.wait_for_timeout(250)
+        if await pg.locator('section.on .tf').count() == 0:
+            fail(f'{key}: la prédiction ne mène pas à « Je me prépare »')
     # 2. je me prépare : on répond « Vrai » partout, le bouton suivant doit apparaître
     for i in range(await pg.locator('section.on .tf').count()):
         await pg.locator('section.on .tf').nth(i).get_by_text('Vrai', exact=True).click()
@@ -370,6 +377,8 @@ async def lesson(pg, base, key, plan):
             await shot(pg, f'{lid}-3-regarde-{k}')
         if k < n - 1:
             await nexts(pg, 1)
+    if await pg.locator('section.on .verdict').count() and not await pg.locator('section.on .verdict').is_visible():
+        fail(f'{key}: verdict de prédiction invisible à la dernière étape')
     await nexts(pg, 1)
     # 4. nous faisons
     sec = pg.locator('section.on')

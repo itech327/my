@@ -69,6 +69,14 @@
       ]
     },
 
+    predire: {
+      q: 'On pompe de l\'air dans un ballon déjà plein. Que deviennent les particules d\'air à l\'intérieur ?',
+      ar: 'نضخّ هواء في كرة ممتلئة أصلا. ماذا يحدث لدقائق الهواء داخلها؟',
+      o: ['Elles rapetissent pour tenir', 'Elles gardent leur taille et se rapprochent', 'Elles se transforment en liquide'], a: 1,
+      e: 'Les particules ne changent pas de taille : c\'est l\'espace entre elles qui diminue. C\'est pour cela que l\'air est compressible.',
+      ear: 'دقائق الهواء لا يتغير حجمها، بل تتقارب فيما بينها، ولهذا الهواء قابل للانضغاط.'
+    },
+
     prepare: [
       ['L\'air est de la matière.', true, 'Il a une masse et il occupe un volume, même s\'il est invisible.'],
       ['L\'air est un seul gaz : l\'oxygène.', false, 'L\'air est un mélange de plusieurs gaz.'],

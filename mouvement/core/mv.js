@@ -240,6 +240,28 @@
     document.addEventListener('fullscreenchange', upd); document.addEventListener('webkitfullscreenchange', upd);
   }
 
+  /* ---------- prédiction avant l'explication ---------- */
+  // def.predire = { q, ar?, o:[choix], a:index juste, e:explication, ear? } : le choix est enregistré, la réponse vient après la scène.
+  var PRED_KEY = 'mv_pred1';
+  function predStats() { try { var o = JSON.parse(store.get(PRED_KEY) || 'null'); if (o && o.by) return o; } catch (_) {} return { by: {} }; }
+  function predLine() { var b = predStats().by, k = Object.keys(b); if (!k.length) return ''; var ok = k.filter(function (x) { return b[x]; }).length; return ok + ' / ' + k.length; }
+  function predictCard(parent, pr, onPick, onNext) {
+    var c = H('div', 'card pred', '<div class="eyebrow">Je prédis avant de savoir</div><div class="q">' + pr.q + '</div>' + (pr.ar ? '<div class="ar">' + ar(pr.ar) + '</div>' : '') +
+      '<div class="opts"></div><p class="small">Pas de note ici : ton intuition compte. La réponse viendra dans « Je regarde ».</p><div class="fb" aria-live="polite"></div>', parent);
+    var box = c.querySelector('.opts'), fb = c.querySelector('.fb'), done = false;
+    pr.o.forEach(function (t, i) {
+      var b = H('button', 'btn opt', t, box);
+      b.onclick = function () {
+        if (done) return; done = true;
+        [].forEach.call(box.children, function (x) { x.disabled = true; }); b.classList.add('sel');
+        fb.className = 'fb'; fb.textContent = 'Prédiction enregistrée : ' + t + '.';
+        onPick(i);
+        var nb = H('button', 'btn pri', 'Je me prépare ▶', c); nb.style.marginTop = '12px'; nb.onclick = onNext;
+      };
+    });
+    return c;
+  }
+
   /* ---------- la séance ---------- */
   var NAMES = ['Ouverture', 'Je me prépare', 'Je regarde', 'Nous faisons', 'Je fais seul', 'Bilan'];
   function lesson(def) {
@@ -263,8 +285,19 @@
     // 1. Ouverture
     H('div', 'card obj', '<div class="eyebrow">Objectif de la séance</div><div>' + def.objectif.fr + '</div><div class="ar">' + ar(def.objectif.ar) + '</div>', secs[0]);
     var c0 = H('div', 'card', '', secs[0]);
-    def.ouverture.end = def.ouverture.end || 'Je me prépare ▶';
-    scenes[0] = scene(c0, def.ouverture, function () { go(1); });
+    var cp = null;
+    if (def.predire) {
+      def.ouverture.end = def.ouverture.end || 'Je fais ma prédiction ▶';
+      cp = predictCard(secs[0], def.predire, function (i) {
+        score.pred = i === def.predire.a ? 1 : 0; score.predPick = i;
+        var all = predStats(); all.by[def.id] = score.pred; store.set(PRED_KEY, JSON.stringify(all));
+      }, function () { go(1); });
+      cp.style.display = 'none';
+      scenes[0] = scene(c0, def.ouverture, function () { cp.style.display = ''; if (cp.scrollIntoView) cp.scrollIntoView({ block: 'center', behavior: 'smooth' }); });
+    } else {
+      def.ouverture.end = def.ouverture.end || 'Je me prépare ▶';
+      scenes[0] = scene(c0, def.ouverture, function () { go(1); });
+    }
 
     // 2. Je me prépare
     var c1 = H('div', 'card', '<div class="eyebrow">Je me prépare · vrai ou faux ?</div>', secs[1]), left = def.prepare.length;
@@ -282,9 +315,23 @@
     });
 
     // 3. Je regarde
-    var c2 = H('div', 'card', '', secs[2]);
+    var c2 = H('div', 'card', '', secs[2]), verdict = null;
     def.regarde.end = def.regarde.end || 'Nous faisons ▶';
+    if (def.predire) {
+      verdict = H('div', 'card verdict', '', secs[2]); verdict.style.display = 'none';
+      var lastSt = def.regarde.steps[def.regarde.steps.length - 1], prevRun = lastSt.run;
+      lastSt.run = function (e, svg) { if (prevRun) prevRun(e, svg); showVerdict(); };
+    }
     scenes[2] = scene(c2, def.regarde, function () { go(3); });
+    function showVerdict() {
+      var pr = def.predire;
+      if (score.pred == null) { verdict.style.display = 'none'; return; }
+      verdict.style.display = '';
+      verdict.innerHTML = '<div class="eyebrow">Ma prédiction · الجواب</div>' +
+        '<p>Tu avais prédit : <b>' + pr.o[score.predPick] + '</b>.</p>' +
+        '<p>Réponse : <b>' + pr.o[pr.a] + '</b>. ' + (score.pred ? 'Prédiction juste.' : 'Pas cette fois, et c\'est utile : se tromper avant d\'apprendre aide à mieux retenir.') + '</p>' +
+        '<p class="small">' + pr.e + '</p>' + (pr.ear ? '<div class="ar">' + ar(pr.ear) + '</div>' : '');
+    }
 
     // 4. Nous faisons
     def.faisons.forEach(function (f, i) {
@@ -319,6 +366,8 @@
         '<div class="note20"><b>' + fmt(note, 1) + '</b><span>/ 20</span></div><div class="mention">' + mention(note) + '</div>') +
         '<table class="voc"><tr><td>Je me prépare : bonnes réponses</td><td class="mono">' + score.prep + ' / ' + P + '</td></tr>' +
         '<tr><td>Je fais seul : réussis du premier coup</td><td class="mono">' + score.seul + ' / ' + N + '</td></tr>' +
+        (def.predire && score.pred != null ? '<tr><td>Ma prédiction dans cette leçon</td><td class="mono">' + (score.pred ? 'juste' : 'à retenir') + '</td></tr>' : '') +
+        (predLine() ? '<tr><td>Mes prédictions justes (toutes les leçons)</td><td class="mono">' + predLine() + '</td></tr>' : '') +
         (best >= 0 ? '<tr><td>Ma meilleure note</td><td class="mono">' + fmt(best, 1) + ' / 20</td></tr>' : '') + '</table>' +
         '<p class="small">Une réponse juste après une erreur ou après l\'indice ne compte pas dans la note.</p>';
     }

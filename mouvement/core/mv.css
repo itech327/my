@@ -224,3 +224,10 @@ input.txt.cls{flex:0 1 150px}
 .stat3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin:8px 0}
 .stat3 b{display:block;font:700 26px/1.1 ui-monospace,Menlo,monospace;color:var(--acc-t)}
 .stat3 span{font-size:12px;color:var(--mute)}
+
+/* prédiction avant l'explication */
+.pred .opts{display:grid;gap:8px;margin:10px 0}
+.pred .btn.opt.sel{border-color:var(--acc);background:var(--acc-bg);color:var(--ink);opacity:1}
+.pred .btn.opt:disabled:not(.sel){opacity:.55}
+.verdict{border-left:4px solid var(--acc)}
+.verdict p{margin:6px 0}

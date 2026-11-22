@@ -41,6 +41,14 @@
       ]
     },
 
+    predire: {
+      q: 'Les deux côtés mesurent 60 cm et 80 cm. À ton avis, combien mesure la diagonale du cadre ?',
+      ar: 'الضلعان يقيسان [[60 cm]] و [[80 cm]]. ما طول القطر في رأيك؟',
+      o: ['70 cm', '100 cm', '140 cm'], a: 1,
+      e: 'Ce n\'est pas 60 + 80 = 140 : la diagonale est plus courte que le chemin par les deux côtés, et ce n\'est pas la moyenne non plus. On a 60² + 80² = 3 600 + 6 400 = 10 000 = 100².',
+      ear: 'الجواب [[100 cm]]، لأن [[60² + 80² = 100²]]، وليس مجموع الطولين.'
+    },
+
     prepare: [
       ['3² = 6', false, '3² = 3 × 3 = 9. Ce n\'est pas 3 × 2.'],
       ['Dans un triangle rectangle, l\'hypoténuse est le plus long côté.', true, 'Elle est en face de l\'angle droit, le plus grand angle du triangle.'],
