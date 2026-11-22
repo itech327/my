@@ -45,7 +45,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Next step: deploy the connector on Cloudflare
 
-Status on 2026-11-22: **code ready and pushed, not deployed yet.**
+Status on 2026-11-22: **deployed and live at `https://voice.taalim.men`** with Workers Builds. Checked from the cloud session: `/` answers 404, `/mcp` without the right code answers 401, so both secrets are set. Next: add the connector in Claude and test a real voice.
 
 - The owner hosts `taalim.men` on Cloudflare. Cloudflare is already linked to their GitHub.
 - The connector will answer at **`https://voice.taalim.men`**. The Custom Domain is already set in `connector/wrangler.jsonc`, and Cloudflare creates the DNS record and certificate on the first deploy.
