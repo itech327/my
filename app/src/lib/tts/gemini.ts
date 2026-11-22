@@ -19,7 +19,7 @@ import designed from './designed-voices.json';
 const DESIGNED = designed as Record<string, string>;
 
 const URL = 'https://generativelanguage.googleapis.com/v1beta/interactions';
-const MODEL = process.env.GEMINI_TTS_MODEL ?? 'gemini-3.8-flash-tts';
+const MODEL = (typeof process !== 'undefined' ? process.env.GEMINI_TTS_MODEL : undefined) ?? 'gemini-3.8-flash-tts';
 
 interface InteractionResponse {
   steps?: { type: string; content?: { type: string; data?: string }[] }[];
@@ -38,36 +38,52 @@ function wavSeconds(buf: Uint8Array): number {
   return buf.length / (24000 * 2);
 }
 
+// Shared by the app and the Cloudflare connector Worker: plain fetch, no Node APIs.
+export async function geminiSpeak(o: { text: string; voice: string; style: string; apiKey: string; model?: string }): Promise<{ audio: Uint8Array; seconds: number }> {
+  const r = await fetch(URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-goog-api-key': o.apiKey },
+    body: JSON.stringify({
+      model: o.model ?? MODEL,
+      input: [{ type: 'user_input', content: [{ type: 'text', text: o.text, annotations: [{ type: 'speech_metadata', style: o.style }] }] }],
+      response_format: { type: 'audio' },
+      generation_config: { speech_config: [{ voice: o.voice }] },
+    }),
+    signal: AbortSignal.timeout(120_000),
+  });
+  const j = (await r.json().catch(() => ({}))) as InteractionResponse;
+  if (!r.ok) throw new Error(`gemini ${r.status}: ${j.error?.message ?? 'request failed'}`);
+  const audio = j.steps?.filter((s) => s.type === 'model_output').flatMap((s) => s.content ?? [])
+    .filter((c) => c.type === 'audio' && c.data).pop()?.data;
+  if (!audio) throw new Error('gemini: no audio in response');
+  // native decoder where the runtime has it (cheap on Workers' CPU budget), else a loop
+  const fast = (Uint8Array as unknown as { fromBase64?: (s: string) => Uint8Array }).fromBase64;
+  let bytes: Uint8Array;
+  if (fast) bytes = fast(audio);
+  else {
+    const bin = atob(audio);
+    bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  }
+  return { audio: bytes, seconds: Math.max(1, Math.ceil(wavSeconds(bytes))) };
+}
+
+// The designed voice for a speaking mode and gender, else the prebuilt voice.
+export const designedVoice = (register: string | undefined, gender: 'female' | 'male' | undefined, prebuilt: string) =>
+  (gender && DESIGNED[`${register ?? 'darija'}-${gender}`]) || prebuilt;
+
+export const stripTags = (t: string) => t.replace(/\[\/?[^\]\s]{1,8}\]/g, '').trim();
+
 export function geminiProvider(voice: string, gender?: 'female' | 'male'): TtsProvider {
   return {
     id: `gemini-${voice}`,
     async synthesize(req: SynthesisRequest): Promise<SynthesisResult> {
-      const chosen = (gender && DESIGNED[`${req.register ?? 'darija'}-${gender}`]) || voice;
-      const text = req.text.replace(/\[\/?[^\]\s]{1,8}\]/g, '').trim();
-      const r = await fetch(URL, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY ?? 'proxy-injected' },
-        body: JSON.stringify({
-          model: MODEL,
-          input: [{
-            type: 'user_input',
-            content: [{ type: 'text', text, annotations: [{ type: 'speech_metadata', style: req.styleText ?? DEFAULT_STYLE }] }],
-          }],
-          response_format: { type: 'audio' },
-          generation_config: { speech_config: [{ voice: chosen }] },
-        }),
-        signal: AbortSignal.timeout(120_000),
-      });
-      const j = (await r.json().catch(() => ({}))) as InteractionResponse;
-      if (!r.ok) throw new Error(`gemini ${r.status}: ${j.error?.message ?? 'request failed'}`);
-      const audio = j.steps?.filter((s) => s.type === 'model_output').flatMap((s) => s.content ?? [])
-        .filter((c) => c.type === 'audio' && c.data).pop()?.data;
-      if (!audio) throw new Error('gemini: no audio in response');
-      const bytes = new Uint8Array(Buffer.from(audio, 'base64'));
-      return { audio: bytes, mime: 'audio/wav', seconds: Math.max(1, Math.ceil(wavSeconds(bytes))) };
+      const out = await geminiSpeak({ text: stripTags(req.text), voice: designedVoice(req.register, gender, voice),
+        style: req.styleText ?? DEFAULT_STYLE, apiKey: process.env.GEMINI_API_KEY ?? 'proxy-injected' });
+      return { audio: out.audio, mime: 'audio/wav', seconds: out.seconds };
     },
   };
 }
 
 export const DEFAULT_STYLE =
-  'Speak in natural Moroccan Darija with a Casablanca register, like a native speaker from Morocco. Warm, natural pace, short breathing pauses.';
+  'Speak in natural Moroccan Darija that every Moroccan understands, like a native speaker from Morocco. Warm, natural pace, short breathing pauses.';

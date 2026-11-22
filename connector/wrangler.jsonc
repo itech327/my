@@ -1,0 +1,12 @@
+{
+  // Claude custom connector for the Moroccan voices (remote MCP on Cloudflare Workers).
+  // Secrets, set in the Cloudflare dashboard or with `wrangler secret put`:
+  //   GEMINI_API_KEY  your Google Gemini API key
+  //   MCP_ACCESS_KEY  a private access code of 24+ characters; Claude sends it as header x-sada-key
+  "name": "sada-connector",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "r2_buckets": [{ "binding": "AUDIO", "bucket_name": "sada-audio" }],
+  "observability": { "enabled": true }
+}
