@@ -105,20 +105,20 @@ function buildServer(env: Env, origin: string): McpServer {
   return server;
 }
 
-async function audio(id: string, env: Env): Promise<Response> {
+async function audio(id: string, env: Env, download = false): Promise<Response> {
   if (!/^[A-Za-z0-9_-]{24}$/.test(id)) return new Response('not found', { status: 404 });
   const data = await env.AUDIO.get(`a/${id}.wav`, 'arrayBuffer');
   if (!data) return new Response('not found or expired', { status: 404 });
   return new Response(data, {
     headers: { 'Content-Type': 'audio/wav', 'Cache-Control': 'private, max-age=3600', 'X-Robots-Tag': 'noindex',
-      'Content-Disposition': `inline; filename="sada-${id.slice(0, 8)}.wav"` },
+      'Content-Disposition': `${download ? 'attachment' : 'inline'}; filename="sada-${id.slice(0, 8)}.wav"` },
   });
 }
 
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
-    if (url.pathname.startsWith('/audio/') && req.method === 'GET') return audio(url.pathname.slice(7), env);
+    if (url.pathname.startsWith('/audio/') && req.method === 'GET') return audio(url.pathname.slice(7), env, url.searchParams.has('dl'));
     const m = /^\/mcp(?:\/([^/]+))?$/.exec(url.pathname);
     if (!m) return new Response('not found', { status: 404 });
     let pathKey = '';
