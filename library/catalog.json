@@ -13,11 +13,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "صفر، واحد، اثنان، ثلاثة، أربعة، خمسة، ستة، سبعة، ثمانية، تسعة، عشرة.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-01.mp3",
       "seconds": 11,
       "generatedAt": "2026-11-22T17:26:18.334Z",
-      "spokenText": "صفر، واحد، اثنان، ثلاثة، أربعة، خمسة، ستة، سبعة، ثمانية، تسعة، عشرة."
+      "spokenText": "صفر، واحد، اثنان، ثلاثة، أربعة، خمسة، ستة، سبعة، ثمانية، تسعة، عشرة.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-22"
     },
     {
       "id": "num-fusha-02",
@@ -29,11 +31,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "أحد عشر، اثنا عشر، ثلاثة عشر، أربعة عشر، خمسة عشر، ستة عشر، سبعة عشر، ثمانية عشر، تسعة عشر، عشرون.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-02.mp3",
       "seconds": 15,
       "generatedAt": "2026-11-22T17:26:31.243Z",
-      "spokenText": "أحد عشر، اثنا عشر، ثلاثة عشر، أربعة عشر، خمسة عشر، ستة عشر، سبعة عشر، ثمانية عشر، تسعة عشر، عشرون."
+      "spokenText": "أحد عشر، اثنا عشر، ثلاثة عشر، أربعة عشر، خمسة عشر، ستة عشر، سبعة عشر، ثمانية عشر، تسعة عشر، عشرون.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-22"
     },
     {
       "id": "num-fusha-03",
@@ -45,11 +49,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "عشرة، عشرون، ثلاثون، أربعون، خمسون، ستون، سبعون، ثمانون، تسعون، مائة.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-03.mp3",
       "seconds": 12,
       "generatedAt": "2026-11-22T17:26:35.912Z",
-      "spokenText": "عشرة، عشرون، ثلاثون، أربعون، خمسون، ستون، سبعون، ثمانون، تسعون، مائة."
+      "spokenText": "عشرة، عشرون، ثلاثون، أربعون، خمسون، ستون، سبعون، ثمانون، تسعون، مائة.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-22"
     },
     {
       "id": "num-fusha-04",
@@ -61,11 +67,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "مائة، ألف، عشرة آلاف، مائة ألف، مليون.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-04.mp3",
       "seconds": 7,
       "generatedAt": "2026-11-22T17:26:39.925Z",
-      "spokenText": "مائة، ألف، عشرة آلاف، مائة ألف، مليون."
+      "spokenText": "مائة، ألف، عشرة آلاف، مائة ألف، مليون.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-22"
     },
     {
       "id": "num-fusha-05",
