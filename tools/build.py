@@ -203,8 +203,8 @@ hdr = ['# Généré par tools/build.py : ne pas modifier à la main.', '/*',
 today = datetime.date.today().isoformat()
 urls = []
 # contact : à renseigner. Sans adresse, la section n'est pas affichée (on n'invente pas de contact).
-ABOUT_CONTACT = os.environ.get('ABOUT_CONTACT', '')   # ex. contact@taalim.men
-ABOUT_NAME = os.environ.get('ABOUT_NAME', '')         # nom du responsable du site
+ABOUT_CONTACT = os.environ.get('ABOUT_CONTACT', 'teknoo@hotmail.fr')   # surchargeable ; à remplacer par contact@taalim.men une fois créé
+ABOUT_NAME = os.environ.get('ABOUT_NAME', 'Abdou Tech')         # nom du responsable du site
 _ap = rd('a-propos.html')
 _blk = ''
 if ABOUT_CONTACT:
