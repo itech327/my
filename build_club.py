@@ -44,6 +44,8 @@ for s in SUBJ:
     mv = (c / 'mv.js').read_text(encoding='utf-8')
     assert mv.count("'revision/'") == 2, 'mv.js: liens revision inattendus'
     mv = mv.replace("'revision/'", "'revision/index.html'")
+    assert mv.count("'parcours/'") == 2 and mv.count("'../parcours/'") == 1, 'mv.js: liens parcours inattendus'
+    mv = mv.replace("'parcours/'", "'parcours/index.html'").replace("'../parcours/'", "'../parcours/index.html'")
     a = "var lv = cur ? lvOf(cur) : lvOf(links[0]);"
     assert a in mv; mv = mv.replace(a, "var lv = cur ? lvOf(cur) : (window.CLUB_LEVEL || lvOf(links[0]));")
     b = "    if (!start) start = (groups"
@@ -54,6 +56,9 @@ for s in SUBJ:
         n = t.count("+ '/\">'")
         assert n >= 1, f
         (c / f).write_text(t.replace("+ '/\">'", "+ '/index.html\">'"), encoding='utf-8')
+    pj = (c / 'parcours.js').read_text(encoding='utf-8')
+    assert pj.count("'../revision/'") == 1, 'parcours.js: lien revision inattendu'
+    (c / 'parcours.js').write_text(pj.replace("'../revision/'", "'../revision/index.html'"), encoding='utf-8')
     # pas d'envoi réseau au club ; la 2AC d'abord
     (c / 'notify-config.js').write_text("window.CLUB_LEVEL = '%s';\n" % LEVEL, encoding='utf-8')
 
