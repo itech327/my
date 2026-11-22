@@ -8,7 +8,7 @@ let r = await worker.fetch(req({ type: 'open', page: 'Maths en mouvement' }), en
 ok(r.status === 200 && sent[0].body.text.includes('زائر مجهول'), 'open anonyme');
 ok(sent[0].url === 'https://api.telegram.org/botTKN/sendMessage' && sent[0].body.chat_id === '123', 'envoi Telegram avec secrets de env');
 r = await worker.fetch(req({ type: 'login', page: 'SVT', name: 'Salma', device: 'Téléphone / Android 13', consent: true, ip: '198.51.100.4', city: 'Rabat', country: 'Morocco', sid: 's1' }), env);
-ok(r.status === 200 && sent[1].body.text.includes('Salma') && sent[1].body.text.includes('Rabat') && sent[1].body.text.includes('203.0.113.9'), 'login : nom, ville, IP serveur');
+ok(r.status === 200 && sent[1].body.text.includes('Salma') && sent[1].body.text.includes('Rabat') && !sent[1].body.text.includes('203.0.113.9') && !sent[1].body.text.includes('198.51.100.4'), 'login : nom, ville, aucune IP');
 r = await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Salma', title: 'Équations', d: 4, good: 4, asked: 5, pct: 80, pts: 20, max: 25, sid: 's1' }), env);
 ok(sent[2].body.text.includes('تحدّي') && sent[2].body.text.includes('4/5'), 'série : niveau et score');
 r = await worker.fetch(req({ type: 'end', page: 'Maths', name: 'Salma', device: 'x', durMs: 125000, n: 20, ok: 15, pct: 75, pts: 30, hints: 2, lv: [[5, 5], [5, 6], [3, 5], [2, 4]], weak: [{ title: 'Thalès', pct: 40 }], sid: 's1' }), env);
@@ -19,6 +19,8 @@ r = await worker.fetch(req('pas du json'), env); ok(r.status === 400, 'JSON inva
 r = await worker.fetch(req({ type: 'zzz' }), env); ok(r.status === 400, 'type inconnu refusé');
 r = await worker.fetch(req('x'.repeat(5000)), env); ok(r.status === 413, 'corps trop gros refusé');
 r = await worker.fetch(req({}, { method: 'OPTIONS' }), env); ok(r.status === 204 && r.headers.get('Access-Control-Allow-Origin') === env.ALLOWED_ORIGIN, 'préflight CORS');
+const envMulti = Object.assign({}, env, { ALLOWED_ORIGIN: 'https://a.example,https://relay-client.example' });
+r = await worker.fetch(new Request('https://w.example/', { method: 'OPTIONS', headers: { Origin: 'https://relay-client.example' } }), envMulti); ok(r.status === 204 && r.headers.get('Access-Control-Allow-Origin') === 'https://relay-client.example', 'plusieurs origines : la deuxième est acceptée');
 let c429 = 0; for (let i = 0; i < 60; i++) { const x = await worker.fetch(req({ type: 'open', page: 'p' }, { ip: '198.18.0.1' }), env); if (x.status === 429) c429++; }
 ok(c429 > 0, 'limite par IP : ' + c429 + ' refus sur 60');
 ok(!format({ type: 'login', name: 'A\nB<script>', device: 'd', consent: false, page: 'P' }, {}, '1.1.1.1').includes('1.1.1.1'), 'sans consentement : IP serveur absente');
