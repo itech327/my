@@ -149,7 +149,7 @@
     function finish() {
       var t = today(), first = log, good = first.filter(function (x) { return x.ok; }).length;
       if (S.streak.last !== t) { S.streak = { last: t, n: S.streak.last === t - 1 ? S.streak.n + 1 : 1 }; }
-      save();
+      save(); if (MV.badges) MV.badges.check(false);
       var after = mastery(cards), gain = after - before;
       var envoye = MV.notifyResult({ title: 'Révision du jour · ' + S.level + 'AC', d: 1, good: good, asked: first.length, pct: Math.round(100 * good / first.length), pts: good, max: first.length });
       box.innerHTML = '';

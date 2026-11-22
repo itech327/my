@@ -362,6 +362,7 @@
         var h1 = document.querySelector('h1');
         sent = notifyResult({ title: 'Leçon : ' + (h1 ? h1.textContent : def.id), d: 0, good: score.prep + score.seul, asked: P + N, pct: Math.round(100 * (score.prep + score.seul) / (P + N)), pts: note, max: 20 });
       }
+      if (score.done === N) badgeCheck(false);
       ev.innerHTML = '<div class="eyebrow">Mon évaluation</div>' +
         (score.done < N ? '<p class="small">Termine les ' + N + ' exercices de « Je fais seul » pour obtenir ta note. Exercices réussis : ' + score.done + ' sur ' + N + '.</p>' :
         '<div class="note20"><b>' + fmt(note, 1) + '</b><span>/ 20</span></div><div class="mention">' + mention(note) + '</div>') +
@@ -414,6 +415,10 @@
     } else H('p', 'small', 'Toutes les leçons de ce niveau sont terminées. Passe un examen ou lance la révision du jour.', c);
     var r = H('a', 'btn', '', c); r.href = 'revision/';
     r.textContent = nDue ? 'Révision du jour · ' + nDue + (nDue > 1 ? ' cartes à revoir' : ' carte à revoir') : 'Révision du jour · 5 minutes';
+    badgeCheck(true);
+    var nb = Object.keys(badgeEarned()).length;
+    var pl = H('a', 'small', '', c); pl.href = 'parcours/'; pl.style.display = 'block'; pl.style.marginTop = '10px';
+    pl.textContent = 'Mon parcours : ' + nb + ' étape' + (nb > 1 ? 's' : '') + ' sur ' + BADGES.length + ' ▶';
   }
 
   // accueil : un seul niveau visible, les 3 prochaines leçons, le reste derrière un bouton
@@ -478,7 +483,56 @@
     declutter();
   }
 
-  var MV = window.MV = { notifyResult: notifyResult, eleveCard: eleveCard, S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store };
+
+  /* ---------- étapes (badges) : individuelles, jamais comparées entre élèves ---------- */
+  var BADGES = [
+    { id: 'pas1', fam: 'Compréhension', n: 'Premier pas', ar: 'الخطوة الأولى', d: 'Terminer une leçon', k: 'lessons', t: 1 },
+    { id: 'lec5', fam: 'Compréhension', n: 'Cinq leçons', ar: 'خمسة دروس', d: 'Terminer cinq leçons', k: 'lessons', t: 5 },
+    { id: 'lec15', fam: 'Compréhension', n: 'Quinze leçons', ar: 'خمسة عشر درساً', d: 'Terminer quinze leçons', k: 'lessons', t: 15 },
+    { id: 'exc3', fam: 'Excellence', n: 'Maîtrise nette', ar: 'إتقان واضح', d: 'Obtenir 16/20 ou plus à trois leçons', k: 'excel', t: 3 },
+    { id: 'reg3', fam: 'Régularité', n: 'Trois jours de suite', ar: 'ثلاثة أيام متتالية', d: 'Faire la révision du jour trois jours de suite', k: 'streak', t: 3 },
+    { id: 'reg7', fam: 'Régularité', n: 'Une semaine de suite', ar: 'أسبوع متتال', d: 'Faire la révision du jour sept jours de suite', k: 'streak', t: 7 },
+    { id: 'mem10', fam: 'Mémoire', n: 'Mémoire solide', ar: 'ذاكرة راسخة', d: 'Maîtriser dix cartes de révision', k: 'master', t: 10 },
+    { id: 'mem30', fam: 'Mémoire', n: 'Mémoire d\'acier', ar: 'ذاكرة فولاذية', d: 'Maîtriser trente cartes de révision', k: 'master', t: 30 },
+    { id: 'int5', fam: 'Intuition', n: 'Esprit curieux', ar: 'عقل فضولي', d: 'Faire cinq prédictions avant d\'apprendre', k: 'preds', t: 5 }
+  ];
+  function dayNo() { var d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 6e4) / 864e5); }
+  function badgeStats() {
+    var o = { lessons: 0, excel: 0, master: 0, streak: 0, preds: 0 };
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k.indexOf('mv_done_') === 0) o.lessons++;
+        else if (k.indexOf('mv_score_') === 0 && +localStorage.getItem(k) >= 16) o.excel++;
+      }
+    } catch (e) {}
+    var rev = null; try { rev = JSON.parse(store.get('mv_rev1') || 'null'); } catch (e) {}
+    if (rev && rev.cards) o.master = Object.keys(rev.cards).filter(function (c) { return rev.cards[c][0] >= 3; }).length;
+    if (rev && rev.streak && rev.streak.last >= dayNo() - 1) o.streak = rev.streak.n || 0;
+    o.preds = Object.keys(predStats().by).length;
+    return o;
+  }
+  function badgeEarned() { try { return JSON.parse(store.get('mv_badges') || '{}') || {}; } catch (e) { return {}; } }
+  // enregistre les étapes atteintes ; avec quiet = false, annonce les nouvelles
+  function badgeCheck(quiet) {
+    var st = badgeStats(), got = badgeEarned(), fresh = [];
+    BADGES.forEach(function (b) { if (!got[b.id] && st[b.k] >= b.t) { got[b.id] = dayNo(); fresh.push(b); } });
+    if (fresh.length) store.set('mv_badges', JSON.stringify(got));
+    if (fresh.length && !quiet) badgeToast(fresh);
+    return fresh;
+  }
+  function badgeToast(list) {
+    var PARC = document.body && document.body.hasAttribute('data-home') ? 'parcours/' : '../parcours/';
+    var old = document.querySelector('.toast'); if (old) old.remove();
+    var t = H('div', 'toast', '', document.body); t.setAttribute('role', 'status');
+    t.innerHTML = '<div class="eyebrow">Étape franchie · <span class="ar">مرحلة جديدة</span></div>' +
+      list.map(function (b) { return '<div><b>' + b.n + '</b> <span class="small">' + b.d + '</span></div>'; }).join('') +
+      '<a class="btn" href="' + PARC + '">Voir mon parcours</a><button class="btn" type="button" aria-label="Fermer">Fermer</button>';
+    t.querySelector('button').onclick = function () { t.remove(); };
+    setTimeout(function () { if (t.parentNode) t.remove(); }, 12000);
+  }
+
+  var MV = window.MV = { notifyResult: notifyResult, eleveCard: eleveCard, S: S, T: T, H: H, show: show, ar: ar, fmt: fmt, parseNum: parseNum, noteSur20: noteSur20, mention: mention, fullscreenBtn: fullscreenBtn, numQ: numQ, optQ: optQ, tapQ: tapQ, guide: guide, slider: slider, hud: hudBox, lesson: lesson, store: store, badges: { defs: BADGES, stats: badgeStats, earned: badgeEarned, check: badgeCheck } };
   notifyOpen();
   if (document.body && document.body.hasAttribute('data-home')) { home(); var hero = document.querySelector('.hero'); if (hero) themeBtn(hero, hero.firstChild); }
 })();

@@ -244,3 +244,14 @@ input.txt.cls{flex:0 1 150px}
 .more .btn{width:100%}
 a.lesson.exam.compact{padding:8px 12px}
 a.lesson.exam.compact .ar{display:none}
+
+/* parcours : étapes franchies */
+.step{display:grid;grid-template-columns:26px 1fr auto;gap:2px 10px;align-items:center;margin:12px 0;opacity:.62}
+.step.on{opacity:1}
+.step .mk{width:22px;height:22px;border:1.5px solid var(--line);border-radius:50%;display:grid;place-items:center;font-size:13px;color:var(--bg)}
+.step.on .mk{background:var(--acc);border-color:var(--acc)}
+.step .bar{grid-column:2/-1;margin:2px 0 0}
+.toast{position:fixed;inset-inline:12px;bottom:12px;max-width:520px;margin:0 auto;background:var(--panel);border:1px solid var(--acc);border-radius:12px;padding:12px 14px;z-index:50;box-shadow:0 6px 24px #0008}
+.toast>div{margin:4px 0}
+.toast .btn{margin:8px 8px 0 0;display:inline-block;text-decoration:none}
+@media (prefers-reduced-motion:no-preference){.toast{animation:tin .25s ease-out}@keyframes tin{from{transform:translateY(20px);opacity:0}}}

@@ -253,6 +253,17 @@ def revision_page(s, cfg):
             f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
 
 
+def parcours_page(s, cfg):
+    url = f'{cfg["url"]}parcours/'
+    title, desc = f'Mon parcours · {cfg["name"]} en mouvement', f'Étapes franchies et carte de maîtrise en {cfg["full"]}. Individuel, sans compte, sans classement.'
+    return (head(s, cfg, title, desc, url, 1, seo_extra(s, cfg, 1, None) if s in SEO else '') +
+            '<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n<script defer src="../examen/questions.js"></script>\n<script defer src="../core/parcours.js"></script>\n</head>\n<body>\n<main id="ex">\n'
+            f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
+            f'<div class="eyebrow">{E(cfg["name"])} · Parcours</div>\n<h1>Mon parcours</h1>\n<div class="ar">الإتقان والمراحل: تقدّمك أنت، دون مقارنة بأحد</div>\n'
+            '<noscript><p class="card">Le parcours a besoin de JavaScript.</p></noscript>\n'
+            f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
+
+
 def exam_data(lessons):
     q = json.loads(subprocess.run(['node', str(MV / 'tools' / 'questions.js')] + [str(m['file']) for m in lessons],
                                   check=True, capture_output=True, text=True).stdout)
@@ -268,7 +279,7 @@ def build():
         (d / 'core').mkdir(parents=True)
         (d / 'lessons').mkdir()
         shutil.copy(ROOT / 'lab' / 'notify-config.js', d / 'core' / 'notify-config.js')  # adresse du relais Telegram, partagée avec le site principal
-        for f in ('mv.css', 'mv.js', 'exam.js', 'revise.js'):
+        for f in ('mv.css', 'mv.js', 'exam.js', 'revise.js', 'parcours.js'):
             shutil.copy(MV / 'core' / f, d / 'core' / f)
         shutil.copytree(ROOT / 'fonts', d / 'fonts')
         shutil.copytree(ROOT / 'icons', d / 'icons')
@@ -289,6 +300,9 @@ def build():
         (d / 'revision').mkdir()
         (d / 'revision' / 'index.html').write_text(revision_page(s, cfg), encoding='utf-8')
         urls.append(f'{cfg["url"]}revision/')
+        (d / 'parcours').mkdir()
+        (d / 'parcours' / 'index.html').write_text(parcours_page(s, cfg), encoding='utf-8')
+        urls.append(f'{cfg["url"]}parcours/')
         (d / '404.html').write_text(head(s, cfg, 'Page introuvable', 'Page introuvable', cfg['url'], 0) +
                                     '</head>\n<body>\n<main><h1>Page introuvable</h1><p><a href="/">Retour aux leçons</a></p></main>\n</body>\n</html>\n', encoding='utf-8')
         (d / '_headers').write_text(headers(s), encoding='utf-8')
