@@ -90,3 +90,10 @@ Set in the Worker's Variables and Secrets (either pair of names works):
 `f5_server.py` checks the token itself and refuses to listen beyond 127.0.0.1
 without one. The call waits at most 50 s, inside Claude's 60 s limit. On a CPU
 use short texts; a GPU answers in seconds.
+
+## Moving audio into a session: `fetch_audio`
+
+A coding session usually cannot reach this host, but connector calls travel through Anthropic's servers.
+`fetch_audio(audio, offset, max_bytes)` returns a slice of a generated WAV as base64 text (up to 450 KB per call).
+Call again with `next_offset` until `done=true`, then join the slices and decode with `base64 -d`.
+Anyone holding the connector key can read audio by id, the same as with the public link.

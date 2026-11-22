@@ -134,6 +134,32 @@ function buildServer(env: Env, origin: string): McpServer {
     }
   });
 
+  // Lets Claude pull a generated file through the connector itself. A session whose
+  // network cannot reach this host (the usual case) still gets the bytes this way.
+  server.registerTool('fetch_audio', {
+    title: 'Fetch generated audio as base64',
+    description: 'Read a WAV made by speak_moroccan, as base64 text, in slices. Pass the link or its id. '
+      + 'Call again with offset set to next_offset until done is true. Used to move audio into a coding session.',
+    inputSchema: {
+      audio: z.string().min(24).max(300).describe('The link returned by speak_moroccan, or just its 24-character id'),
+      offset: z.number().int().min(0).default(0).describe('Byte offset to start from'),
+      max_bytes: z.number().int().min(1000).max(450_000).default(450_000).describe('Slice size in bytes before base64'),
+    },
+    annotations: { readOnlyHint: true, openWorldHint: false },
+  }, async ({ audio: ref, offset, max_bytes }) => {
+    const id = /([A-Za-z0-9_-]{24})\/?(?:\?.*)?$/.exec(ref.trim())?.[1] ?? '';
+    const data = id ? await env.AUDIO.get(`a/${id}.wav`, 'arrayBuffer') : null;
+    if (!data) return { isError: true, content: [{ type: 'text' as const, text: 'not found or expired' }] };
+    const end = Math.min(data.byteLength, offset + max_bytes);
+    const bytes = new Uint8Array(data, Math.min(offset, data.byteLength), Math.max(0, end - offset));
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    return { content: [
+      { type: 'text' as const, text: `id=${id} total_bytes=${data.byteLength} offset=${offset} next_offset=${end} done=${end >= data.byteLength}` },
+      { type: 'text' as const, text: btoa(bin) },
+    ] };
+  });
+
   return server;
 }
 
