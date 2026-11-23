@@ -35,7 +35,7 @@ REGIONS = {
 OVERRIDE = {'fusha-male': ('A composed man in his early 30s, a Moroccan Arabic-language news presenter, who reads formal Modern'
                            ' Standard Arabic (Fusha) exactly as written, with careful standard pronunciation of every letter and'
                            ' full grammatical endings, in the style of a classical recitation teacher. He never uses Darija'
-                           ' pronunciation or Darija words. Only a light, natural Moroccan warmth in the voice.')}
+                           ' pronunciation or Darija words. Only a light, natural Moroccan warmth in the voice. He speaks at a natural, steady, fairly brisk pace with smooth flow, never slow or halting, and with lively, expressive intonation.')}
 PERSON = {'female': 'A warm young woman in her late 20s', 'male': 'A warm, friendly man in his early 30s'}
 
 
