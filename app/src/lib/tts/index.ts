@@ -43,6 +43,9 @@ const byVoice: Record<string, TtsProvider> = {
       : withQuotaFallback(geminiProvider('Kore', 'female'), darijaUrl ? piperProvider(darijaUrl) : undefined, 'إدريس'),
     'v-ar-MA-g2': withQuotaFallback(geminiProvider('Charon', 'male'),
       speakerUrl ? f5Provider(speakerUrl, 'M1') : darijaUrl ? piperProvider(darijaUrl) : undefined, 'إدريس'),
+    // Akram: a young, light voice for advice to students; one designed voice for both modes
+    'v-ar-MA-g3': withQuotaFallback(geminiProvider('Puck', 'male', 'akram'),
+      speakerUrl ? f5Provider(speakerUrl, 'M1') : darijaUrl ? piperProvider(darijaUrl) : undefined, 'إدريس'),
   } : {}),
 };
 const byDialect: Partial<Record<DialectCode, TtsProvider>> = darijaUrl ? { 'ar-MA': piperProvider(darijaUrl) } : {};

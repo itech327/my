@@ -16,6 +16,7 @@ import { putAudio } from '@/lib/mcp-audio';
 const VOICES = {
   nour: { id: 'v-ar-MA-g1', name: 'نور' },
   younes: { id: 'v-ar-MA-g2', name: 'يونس' },
+  akram: { id: 'v-ar-MA-g3', name: 'أكرم' },
   hind: { id: 'v-ar-MA-f1', name: 'هند' },
   idriss: { id: 'v-ar-MA-0', name: 'إدريس' },
 } as const;
@@ -42,7 +43,7 @@ function buildServer(req: Request): McpServer {
       + 'Write Darija text in Arabic letters. Maximum 2000 characters.',
     inputSchema: {
       text: z.string().min(1).max(2000).describe('The text to speak, in Arabic letters'),
-      voice: z.enum(['nour', 'younes', 'hind', 'idriss']).default('nour').describe('nour (female) and younes (male) are the best voices; hind and idriss are free open voices, slower'),
+      voice: z.enum(['nour', 'younes', 'akram', 'hind', 'idriss']).default('nour').describe('nour (female), younes (male) and akram (young male, for advice to students) are the best voices; hind and idriss are free open voices, slower'),
       mode: z.enum(['darija', 'fusha']).default('darija'),
       delivery: z.enum(DELIVERIES.map((d) => d.id) as [DeliveryId, ...DeliveryId[]]).default('conversational')
         .describe('conversational, ad, radio, story or service'),

@@ -78,14 +78,14 @@ export const designedVoice = (register: string | undefined, gender: 'female' | '
 
 export const stripTags = (t: string) => t.replace(/\[\/?[^\]\s]{1,8}\]/g, '').trim();
 
-export function geminiProvider(voice: string, gender?: 'female' | 'male'): TtsProvider {
+export function geminiProvider(voice: string, gender?: 'female' | 'male', named?: string): TtsProvider {
   return {
     id: `gemini-${voice}`,
     async synthesize(req: SynthesisRequest): Promise<SynthesisResult> {
       // Moroccan text front end first: numbers in Darija, Arabizi, French words, respellings
       const text = req.dialect === 'ar-MA'
         ? normalizeDarija(stripTags(req.text), { profile: req.register === 'fusha' ? 'gemini-fusha' : 'gemini' }) : stripTags(req.text);
-      const out = await geminiSpeak({ text, voice: designedVoice(req.register, gender, voice),
+      const out = await geminiSpeak({ text, voice: named ? namedVoice(named, voice) : designedVoice(req.register, gender, voice),
         style: req.styleText ?? DEFAULT_STYLE, apiKey: process.env.GEMINI_API_KEY ?? 'proxy-injected' });
       return { audio: out.audio, mime: 'audio/wav', seconds: out.seconds };
     },

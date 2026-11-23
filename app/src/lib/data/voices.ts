@@ -14,6 +14,7 @@ export function seedVoices(): Voice[] {
   if (process.env.TTS_GEMINI === '1') {
     out.push({ id: 'v-ar-MA-g1', name: 'نور', dialect: 'ar-MA', gender: 'female', useCase: 'ads', isPremium: false, ownerId: null, steerable: true });
     out.push({ id: 'v-ar-MA-g2', name: 'يونس', dialect: 'ar-MA', gender: 'male', useCase: 'documentary', isPremium: false, ownerId: null, steerable: true });
+    out.push({ id: 'v-ar-MA-g3', name: 'أكرم', dialect: 'ar-MA', gender: 'male', useCase: 'education', isPremium: false, ownerId: null, steerable: true });
   }
   // Moroccan Darija has one real open voice (Piper darija_m1, male, measured
   // median pitch 141 Hz). List exactly that, so the picker does not promise
