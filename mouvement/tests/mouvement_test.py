@@ -117,6 +117,11 @@ PLAN = {
     'pc/2ac-matieres': {'sliders': [8], 'guide': [('opt', 'naturelle'), ('opt', 'synthétique'), ('opt', 'du pétrole')], 'seul': ['naturelle', 'synthétique', 'minérale', '25']},
     'pc/3ac-acides-bases': {'sliders': [4], 'buttons': ['Acide pH 2'], 'guide': [('opt', 'acide'), ('opt', 'augmente vers 7'), ('opt', 'non')], 'seul': ['basique', 'pH 2', '5', '3']},
     'svt/1ac-classification': {'sliders': [5], 'guide': [('opt', 'vertébré'), ('opt', 'poils'), ('opt', 'mammifère')], 'seul': ['oiseau', 'amphibien', 'mammifère', '5']},
+    'svt/2ac-seismes': {'sliders': [40], 'guide': [('num', '60'), ('num', '20'), ('opt', 'à la verticale du foyer')], 'seul': ['le foyer', 'diminue', '30', 'Les plaques s']},
+    'svt/2ac-volcans': {'sliders': [9], 'guide': [('num', '12'), ('opt', 'la lave'), ('opt', 'explosive, avec')], 'seul': ['la cheminée', 'effusive', '450', 'Ses gaz restent']},
+    'svt/2ac-roches-magmatiques': {'sliders': [6], 'guide': [('num', '30'), ('num', '10'), ('opt', 'en profondeur, par refroidissement lent')], 'seul': ['grenue', 'rapide de la lave', '10', 'en profondeur']},
+    'svt/2ac-deformations': {'buttons': ['Comprimer des roches souples', 'Comprimer des roches rigides', 'Étirer des roches rigides'], 'guide': [('num', '300'), ('opt', 'une faille normale'), ('opt', 'un anticlinal')], 'seul': ['une faille', 'un synclinal', '50', 'une compression']},
+    'svt/2ac-chaines-montagnes': {'buttons': ['Océan contre continent'] + ['Faire avancer'] * 4 + ['Continent contre continent'] + ['Faire avancer'] * 4, 'guide': [('num', '50'), ('opt', 'la plaque océanique'), ('opt', 'une chaîne de collision')], 'seul': ['la subduction', 'une chaîne de subduction', '80', 'Un océan s']},
     'svt/2ac-heredite': {'buttons': ['Spermatozoïde X', 'Spermatozoïde Y'], 'guide': [('num', '46'), ('num', '23'), ('opt', 'du père')], 'seul': ['les chromosomes', '23', 'un garçon', '50']},
     'svt/3ac-nutrition': {'buttons': ['Pain', 'Orange', 'Lait', 'Œuf', 'Huile'], 'guide': [('num', '760'), ('num', '595'), ('opt', 'presque pas')], 'seul': ['des protéines', 'des caries', 'pain, lait', '380']},
     'maths/1ac-operations-relatifs': {

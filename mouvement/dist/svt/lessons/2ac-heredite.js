@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-heredite","level":"2","order":5,"theme":"Reproduction","title":"L'hérédité chez l'Homme","ar":"الوراثة عند الإنسان","lead":"Fille ou garçon : qui le décide ? On suit les chromosomes du père et de la mère jusqu'à la cellule-œuf."} */
+/* @meta {"id":"2ac-heredite","level":"2","order":10,"theme":"Reproduction","title":"L'hérédité chez l'Homme","ar":"الوراثة عند الإنسان","lead":"Fille ou garçon : qui le décide ? On suit les chromosomes du père et de la mère jusqu'à la cellule-œuf."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;
