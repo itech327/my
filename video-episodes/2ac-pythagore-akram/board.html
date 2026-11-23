@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Le théorème de Pythagore · 2AC</title>
+<style>
+@font-face{font-family:Readex;src:url(readex-ar.woff2);font-weight:160 700;unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F,U+25CC}
+@font-face{font-family:Readex;src:url(readex-lat.woff2);font-weight:160 700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2192,U+2713,U+2190,U+221A,U+00B2}
+:root{--bg:#0e1013;--ink:#f3f3f4;--mut:#9aa0a8;--acc:#ffd24a;--blue:#7cc4ff;--ok:#5ee0a0;--card:#191c21;--line:#2a2e35}
+*{box-sizing:border-box;margin:0}
+html,body{width:1920px;height:1080px;background:var(--bg);overflow:hidden;font-family:Readex,system-ui,sans-serif;color:var(--ink)}
+#root{position:absolute;inset:0}
+.abs{position:absolute}
+.tag{left:70px;top:48px;font-size:30px;color:var(--mut);display:flex;gap:18px;align-items:center}
+.tag b{color:var(--ink);font-weight:600}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block}
+.cap{left:0;width:1920px;text-align:center}
+.cap .ar{font-size:58px;font-weight:600;direction:rtl;line-height:1.35}
+.cap .fr{font-size:40px;color:var(--mut);margin-top:6px}
+.cap .m{display:inline-block;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.panel{left:1060px;width:800px;display:flex;flex-direction:column;gap:26px;align-items:flex-start}
+.eq{font-size:84px;font-weight:600;direction:ltr;font-variant-numeric:tabular-nums;white-space:nowrap}
+.eq.s{font-size:64px}
+.hi{color:var(--acc)}
+.okc{color:var(--ok)}
+.bubble{padding:22px 38px;border-radius:26px;font-size:50px;font-weight:600;border:2px solid var(--line);background:var(--card)}
+.card{left:260px;top:220px;width:1400px;border:3px solid var(--acc);background:#2a2412;border-radius:36px;padding:56px 70px;text-align:center}
+.card .ar{font-size:62px;font-weight:600;direction:rtl;line-height:1.45}
+.card .fr{font-size:42px;color:var(--mut);margin-top:18px}
+.card .f{font-size:110px;font-weight:700;color:var(--acc);direction:ltr;margin:26px 0}
+svg text{font-family:Readex,system-ui,sans-serif}
+</style></head><body>
+<div id="root"></div>
+<script>
+/* Durées des voix d'Akram (secondes), mesurées sur les fichiers WAV : 11.20 8.48 10.56 10.76 9.20 12.76 9.08 9.24 9.20 */
+const SEG = [[0.5,11.7],[12.5,21.0],[21.8,32.4],[33.2,44.0],[44.8,54.0],[54.8,67.6],[68.4,77.5],[83.3,92.6],[93.4,102.6]];
+const DURATION = 105;
+const CAPS = [
+  [0.5, 6.0, 'Un menuisier de Fès pose un cadre de porte. Le coin doit être droit.', 'نجار في فاس يركّب إطار باب، والركن يجب أن يكون قائما.'],
+  [6.1, 11.7, '60 cm et 80 cm : quelle diagonale ?', '[[60 cm]] و [[80 cm]]: كم يجب أن يكون القطر؟'],
+  [12.5, 21.0, 'Triangle rectangle : le côté opposé à l’angle droit est l’hypoténuse.', 'مثلث قائم الزاوية: الضلع المقابل للزاوية القائمة هو الوتر.'],
+  [21.8, 32.4, 'Un carré sur chaque côté : 3 → 9 cases, 4 → 16 cases.', 'مربع على كل ضلع: [[3 → 9]] و [[4 → 16]]'],
+  [33.2, 44.0, 'Les cases remplissent exactement le grand carré : 9 + 16 = 25.', 'المربعات الصغيرة تملأ المربع الكبير بالضبط: [[9 + 16 = 25]]'],
+  [44.8, 54.0, 'BC² = AB² + AC², donc BC = √25 = 5.', 'مربع الوتر يساوي مجموع مربعي الضلعين: [[BC = √25 = 5]]'],
+  [54.8, 67.6, '60² + 80² = 3 600 + 6 400 = 10 000 ; √10 000 = 100 cm.', '[[60² + 80² = 10 000]] إذن القطر [[100 cm]]'],
+  [68.4, 82.6, 'À toi : les côtés de l’angle droit mesurent 6 et 8. L’hypoténuse ?', 'دورك: الضلعان [[6]] و [[8]]. كم طول الوتر؟'],
+  [83.3, 92.6, '6² + 8² = 36 + 64 = 100 ; √100 = 10.', '[[6² + 8² = 100]] إذن الوتر [[10]]']
+];
+const clamp = (x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease = x => 1-Math.pow(1-clamp(x),3);
+const eio = x => { x = clamp(x); return x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; };
+const fin = (t,t0,d=.45)=>ease((t-t0)/d);
+const win = (t,a,b,d=.35)=>Math.min(fin(t,a,d), clamp((b-t)/d));
+const mathify = s => s.replace(/\[\[(.+?)\]\]/g,'<span class="m">‎$1‎</span>');
+
+/* ---------- géométrie du triangle 3-4-5 ---------- */
+const U = 60, A = [560,530], B = [560, 530-3*U], C = [560+4*U, 530];
+const BC = [C[0]-B[0], C[1]-B[1]], N = [3*U, -4*U];          // N : normale extérieure, même longueur que BC
+const ANG = Math.atan2(BC[1], BC[0]) * 180 / Math.PI;       // 36,87°
+const hypCell = (i,j) => [B[0] + (i+.5)/5*BC[0] + (j+.5)/5*N[0], B[1] + (i+.5)/5*BC[1] + (j+.5)/5*N[1]];
+const SRC = [];
+for (let j=0;j<3;j++) for (let i=0;i<3;i++) SRC.push({x:A[0]-3*U+(i+.5)*U, y:B[1]+(j+.5)*U, c:'#7cc4ff'});
+for (let j=0;j<4;j++) for (let i=0;i<4;i++) SRC.push({x:A[0]+(i+.5)*U, y:A[1]+(j+.5)*U, c:'#5ee0a0'});
+const DST = []; for (let j=0;j<5;j++) for (let i=0;i<5;i++) DST.push(hypCell(i,j));
+/* ordre d'arrivée : les cases bleues remplissent le bas du grand carré, les vertes le reste */
+const ORDER = DST.map((p,k)=>k).sort((a,b)=> (Math.floor(a/5)-Math.floor(b/5)) || (a%5-b%5));
+
+function pts(a){ return a.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' '); }
+function tri(t, o){
+  const a = o.a ?? 1, hyp = o.hyp ?? 0;
+  let s = '<polygon points="'+pts([A,B,C])+'" fill="#191c21" stroke="#f3f3f4" stroke-width="5" stroke-linejoin="round" opacity="'+a+'"/>';
+  s += '<path d="M'+(A[0]+26)+' '+A[1]+' v-26 h-26" fill="none" stroke="#ffd24a" stroke-width="4" opacity="'+a+'"/>';
+  if (hyp > 0) s += '<line x1="'+B[0]+'" y1="'+B[1]+'" x2="'+C[0]+'" y2="'+C[1]+'" stroke="#ffd24a" stroke-width="10" stroke-linecap="round" opacity="'+hyp+'"/>';
+  const L = (p,txt,dx,dy)=>'<text x="'+(p[0]+dx)+'" y="'+(p[1]+dy)+'" font-size="44" font-weight="600" fill="#f3f3f4" text-anchor="middle" opacity="'+a+'">'+txt+'</text>';
+  s += L(A,'A',-30,48) + L(B,'B',-30,-10) + L(C,'C',34,48);
+  if (o.len) {
+    const la = o.len;
+    s += '<text x="'+(A[0]+22)+'" y="'+((A[1]+B[1])/2+14)+'" font-size="40" fill="#7cc4ff" opacity="'+la+'">3</text>';
+    s += '<text x="'+((A[0]+C[0])/2)+'" y="'+(A[1]-14)+'" font-size="40" fill="#5ee0a0" text-anchor="middle" opacity="'+la+'">4</text>';
+  }
+  return s;
+}
+function cellRect(x,y,rot,col,op,sc){
+  const h = U/2 - 2;
+  return '<rect x="'+(-h)+'" y="'+(-h)+'" width="'+(2*h)+'" height="'+(2*h)+'" rx="6" fill="'+col+'" fill-opacity=".85" stroke="#0e1013" stroke-width="2" transform="translate('+x.toFixed(1)+','+y.toFixed(1)+') rotate('+rot.toFixed(2)+') scale('+sc+')" opacity="'+op+'"/>';
+}
+function hypOutline(a){
+  const P = [B, C, [C[0]+N[0],C[1]+N[1]], [B[0]+N[0],B[1]+N[1]]];
+  return '<polygon points="'+pts(P)+'" fill="none" stroke="#ffd24a" stroke-width="4" stroke-dasharray="14 10" opacity="'+a+'"/>';
+}
+function sqOutline(x,y,w,col,a){ return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+w+'" fill="none" stroke="'+col+'" stroke-width="4" opacity="'+a+'"/>'; }
+
+function sceneGeo(t){
+  // 12.5 → 54.4 : triangle, carrés, cases qui glissent, formule
+  const vis = win(t, 12.5, 54.4, .5);
+  let s = '<svg class="abs" style="left:0;top:0" width="1060" height="780" viewBox="0 0 1060 780" opacity="'+vis+'">';
+  s += tri(t, {a: 1, hyp: win(t, 16.0, 21.0, .5) + (t>=44.8 ? fin(t,44.8,.5) : 0), len: fin(t, 21.8, .5)});
+  // carrés sur les côtés de l'angle droit
+  const sq = fin(t, 22.4, .6);
+  s += sqOutline(A[0]-3*U, B[1], 3*U, '#7cc4ff', sq) + sqOutline(A[0], A[1], 4*U, '#5ee0a0', fin(t, 26.6, .6));
+  s += hypOutline(fin(t, 33.4, .6));
+  // cases : apparition (3x3 puis 4x4), puis glissement vers le carré de l'hypoténuse
+  SRC.forEach((c, k) => {
+    const blue = k < 9, appear = blue ? 23.0 + k*.22 : 27.2 + (k-9)*.16;
+    const op = fin(t, appear, .35);
+    if (op <= 0) return;
+    const slot = ORDER[k], d = DST[slot];
+    const m = eio((t - (35.0 + k*.22)) / 1.4);
+    const x = c.x + (d[0]-c.x)*m, y = c.y + (d[1]-c.y)*m, r = ANG*m;
+    s += cellRect(x, y, r, c.c, op, 0.6 + 0.4*fin(t, appear, .35));
+  });
+  // compteurs
+  const n9 = Math.min(9, Math.max(0, Math.floor((t-23.0)/.22)+1)), n16 = Math.min(16, Math.max(0, Math.floor((t-27.2)/.16)+1));
+  if (t > 23 && t < 35.2) s += '<text x="'+(A[0]-1.5*U)+'" y="'+(B[1]-20)+'" font-size="46" font-weight="700" fill="#7cc4ff" text-anchor="middle">'+n9+'</text>';
+  if (t > 27.2 && t < 35.2) s += '<text x="'+(A[0]+2*U)+'" y="'+(A[1]+4*U+52)+'" font-size="46" font-weight="700" fill="#5ee0a0" text-anchor="middle">'+n16+'</text>';
+  if (t > 41.0) s += '<text x="'+(B[0]+N[0]/2+BC[0]/2)+'" y="'+(B[1]+N[1]/2+BC[1]/2+18)+'" font-size="64" font-weight="700" fill="#0e1013" text-anchor="middle" opacity="'+fin(t,41.0,.5)+'">25</text>';
+  s += '</svg>';
+  // panneau de droite
+  let p = '<div class="abs panel" style="top:250px;opacity:'+vis+'">';
+  if (t >= 16.0) p += '<div class="bubble" style="opacity:'+win(t,16.0,21.2,.4)+'">BC : l’hypoténuse · الوتر</div>';
+  if (t >= 24.0 && t < 44.8) p += '<div class="eq s" style="opacity:'+fin(t,24.0,.5)+'"><span style="color:#7cc4ff">3² = 9</span></div>';
+  if (t >= 28.6 && t < 44.8) p += '<div class="eq s" style="opacity:'+fin(t,28.6,.5)+'"><span style="color:#5ee0a0">4² = 16</span></div>';
+  if (t >= 40.6 && t < 44.8) p += '<div class="eq" style="opacity:'+fin(t,40.6,.5)+'">9 + 16 = <span class="hi">25</span></div>';
+  if (t >= 44.8) {
+    p += '<div class="eq" style="opacity:'+fin(t,45.2,.5)+'"><span class="hi">BC²</span> = AB² + AC²</div>';
+    p += '<div class="eq s" style="opacity:'+fin(t,48.6,.5)+'">BC² = 9 + 16 = 25</div>';
+    p += '<div class="eq" style="opacity:'+fin(t,50.8,.5)+'">BC = √25 = <span class="okc">5</span></div>';
+  }
+  p += '</div>';
+  return s + p;
+}
+
+/* ---------- le cadre de porte ---------- */
+function door(t, a, showCalc){
+  // échelle : 7 px par cm ; coin en (220, 720)
+  const X = 220, Y = 690, h = 60*7, w = 80*7;
+  let s = '<svg class="abs" style="left:0;top:0" width="1060" height="780" viewBox="0 0 1060 780" opacity="'+a+'">';
+  s += '<line x1="120" y1="'+(Y+14)+'" x2="960" y2="'+(Y+14)+'" stroke="#3a3d42" stroke-width="4"/>';
+  s += '<rect x="'+(X-14)+'" y="'+(Y-h)+'" width="14" height="'+h+'" fill="#c9a35a"/>';
+  s += '<rect x="'+(X-14)+'" y="'+Y+'" width="'+(w+14)+'" height="14" fill="#c9a35a"/>';
+  s += '<path d="M'+(X+30)+' '+Y+' v-30 h-30" fill="none" stroke="#ffd24a" stroke-width="4" opacity="'+fin(t, a>0?3.0:0, .5)+'"/>';
+  s += '<text x="'+(X-40)+'" y="'+(Y-h/2)+'" font-size="44" fill="#7cc4ff" text-anchor="end">60 cm</text>';
+  s += '<text x="'+(X+w/2)+'" y="'+(Y+70)+'" font-size="44" fill="#5ee0a0" text-anchor="middle">80 cm</text>';
+  const dl = showCalc ? 1 : fin(t, 7.0, 1.0);
+  const x2 = X + w*dl, y2 = (Y-h) + h*dl;
+  s += '<line x1="'+X+'" y1="'+(Y-h)+'" x2="'+x2+'" y2="'+y2+'" stroke="#ffd24a" stroke-width="8" stroke-linecap="round" stroke-dasharray="18 12"/>';
+  s += '<text x="'+(X+w/2+40)+'" y="'+(Y-h/2-20)+'" font-size="64" font-weight="700" fill="#ffd24a" opacity="'+(showCalc ? fin(t,65.0,.5) : fin(t,8.2,.5))+'">'+(showCalc ? '100 cm' : '?')+'</text>';
+  s += '</svg>';
+  return s;
+}
+function sceneDoor(t){
+  const a = win(t, 0.3, 12.1, .5);
+  return door(t, a, false);
+}
+function sceneDoor2(t){
+  const a = win(t, 54.8, 67.9, .5);
+  let s = door(t, a, true);
+  s += '<div class="abs panel" style="top:220px;opacity:'+a+'">';
+  s += '<div class="eq s" style="opacity:'+fin(t,56.0,.5)+'">d² = 60² + 80²</div>';
+  s += '<div class="eq s" style="opacity:'+fin(t,57.6,.5)+'">d² = 3 600 + 6 400</div>';
+  s += '<div class="eq s" style="opacity:'+fin(t,61.0,.5)+'">d² = <span class="hi">10 000</span></div>';
+  s += '<div class="eq s" style="opacity:'+fin(t,62.8,.5)+'">d = √10 000 = <span class="okc">100 cm</span></div>';
+  s += '</div>';
+  return s;
+}
+
+/* ---------- à toi ---------- */
+function sceneToi(t){
+  const a = win(t, 68.4, 92.9, .5);
+  const P = [[330,640],[330,340],[730,640]];   // 6 et 8 à l'échelle 50 px
+  let s = '<svg class="abs" style="left:0;top:0" width="1060" height="780" viewBox="0 0 1060 780" opacity="'+a+'">';
+  s += '<polygon points="'+pts(P)+'" fill="#191c21" stroke="#f3f3f4" stroke-width="5" stroke-linejoin="round"/>';
+  s += '<path d="M356 640 v-26 h-26" fill="none" stroke="#ffd24a" stroke-width="4"/>';
+  s += '<text x="300" y="505" font-size="52" fill="#7cc4ff" text-anchor="end">6</text>';
+  s += '<text x="530" y="700" font-size="52" fill="#5ee0a0" text-anchor="middle">8</text>';
+  const ans = fin(t, 90.0, .5);
+  s += '<text x="570" y="470" font-size="72" font-weight="700" fill="#ffd24a">'+(t >= 90.0 ? '10' : '?')+'</text>';
+  s += '</svg>';
+  let p = '';
+  if (t < 83.3) {
+    // compte à rebours de 5 s : 77.6 → 82.6
+    const v = win(t, 77.4, 83.0, .4), q = clamp((t-77.6)/5), R = 110, Cc = 2*Math.PI*R, left = Math.max(0, Math.ceil(5*(1-q)));
+    p += '<div class="abs" style="left:1260px;top:250px;width:280px;height:280px;opacity:'+v+'"><svg width="280" height="280" viewBox="0 0 280 280">'
+      + '<circle cx="140" cy="140" r="'+R+'" fill="none" stroke="#2a2e35" stroke-width="14"/>'
+      + '<circle cx="140" cy="140" r="'+R+'" fill="none" stroke="#ffd24a" stroke-width="14" stroke-linecap="round" transform="rotate(-90 140 140)" stroke-dasharray="'+Cc+'" stroke-dashoffset="'+(Cc*q)+'"/></svg>'
+      + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:110px;font-weight:700">'+left+'</div></div>';
+    p += '<div class="abs bubble" style="left:1120px;top:600px;opacity:'+win(t,68.8,83.0,.4)+'">À toi · دورك</div>';
+  } else {
+    p += '<div class="abs panel" style="top:240px">';
+    p += '<div class="eq s" style="opacity:'+fin(t,83.6,.5)+'">h² = 6² + 8²</div>';
+    p += '<div class="eq s" style="opacity:'+fin(t,85.4,.5)+'">h² = 36 + 64 = <span class="hi">100</span></div>';
+    p += '<div class="eq" style="opacity:'+fin(t,89.2,.5)+'">h = √100 = <span class="okc">10</span></div>';
+    p += '</div>';
+  }
+  return s + p;
+}
+
+/* ---------- à retenir ---------- */
+function sceneEnd(t){
+  const a = fin(t, 93.4, .6);
+  return '<div class="abs card" style="opacity:'+a+';transform:scale('+(0.94+0.06*a)+')">'
+    + '<div class="ar">في المثلث القائم الزاوية، مربع الوتر يساوي مجموع مربعي الضلعين الآخرين.</div>'
+    + '<div class="f">BC² = AB² + AC²</div>'
+    + '<div class="fr">Dans un triangle rectangle en A, le carré de l’hypoténuse est égal à la somme des carrés des deux autres côtés.</div>'
+    + '<div style="margin-top:34px;font-size:54px;font-weight:700;opacity:'+fin(t,99.5,.6)+'">Le théorème de Pythagore · مبرهنة فيتاغورس</div></div>';
+}
+
+function render(t){
+  let h = '<div class="abs tag"><i></i><b>Maths 2AC</b><span>Le théorème de Pythagore · مبرهنة فيتاغورس</span></div>';
+  if (t < 12.2) h += sceneDoor(t);
+  if (t >= 12.4 && t < 54.5) h += sceneGeo(t);
+  if (t >= 54.6 && t < 68.0) h += sceneDoor2(t);
+  if (t >= 68.2 && t < 93.0) h += sceneToi(t);
+  if (t >= 93.2) h += sceneEnd(t);
+  CAPS.forEach(c => {
+    if (t >= c[0] && t <= c[1]) {
+      const v = win(t, c[0], c[1], .3);
+      h += '<div class="abs cap" style="top:810px;opacity:'+v+'"><div class="ar">'+mathify(c[3])+'</div><div class="fr">'+c[2]+'</div></div>';
+    }
+  });
+  document.getElementById('root').innerHTML = h;
+}
+window.render = render; window.DURATION = DURATION; window.SEG = SEG;
+document.fonts.ready.then(() => render(0));
+</script></body></html>
