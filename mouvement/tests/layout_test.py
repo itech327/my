@@ -82,6 +82,11 @@ async def check_page(ctx, url, label, sections, shot):
     await page.goto(url, wait_until='load')
     await page.wait_for_timeout(250)
     probs = []
+    if sections and (page.viewport_size or {}).get('width', 0) >= 980:
+        # ordinateur : la scène d'ouverture doit tenir dans l'écran sans défiler
+        fit = await page.evaluate("()=>{const s=document.querySelector('.scn .stage svg');if(!s)return null;const r=s.getBoundingClientRect();return [Math.round(r.bottom),innerHeight]}")
+        if fit and fit[0] > fit[1]:
+            probs.append('scène d’ouverture coupée : bas %d px pour un écran de %d px' % tuple(fit))
     n = await page.locator('.stepper button').count() if sections else 0
     for i in range(max(1, n)):
         if n:
