@@ -1,4 +1,4 @@
-import worker, { format, toRow } from './worker.js';
+import worker, { format, toRow, _reset, classes } from './worker.js';
 let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++; };
 const sent = [];
 globalThis.fetch = async (url, init) => { sent.push({ url, body: JSON.parse(init.body) }); return new Response('{"ok":true}', { status: 200 }); };
@@ -8,7 +8,14 @@ let r = await worker.fetch(req({ type: 'open', page: 'Maths en mouvement' }), en
 ok(r.status === 200 && sent[0].body.text.includes('زائر مجهول'), 'open anonyme');
 ok(sent[0].url === 'https://api.telegram.org/botTKN/sendMessage' && sent[0].body.chat_id === '123', 'envoi Telegram avec secrets de env');
 r = await worker.fetch(req({ type: 'login', page: 'SVT', name: 'Salma', device: 'Téléphone / Android 13', consent: true, ip: '198.51.100.4', city: 'Rabat', country: 'Morocco', sid: 's1' }), env);
-ok(r.status === 200 && sent[1].body.text.includes('Salma') && sent[1].body.text.includes('Rabat') && sent[1].body.text.includes('203.0.113.9'), 'login : nom, ville, IP serveur');
+ok(r.status === 200 && sent[1].body.text.includes('Salma') && sent[1].body.text.includes('Rabat') && !sent[1].body.text.includes('203.0.113.9') && !sent[1].body.text.includes('198.51.100.4'), 'login : nom, ville, aucune IP');
+ok(sent[1].body.text.includes('غير موثّق'), 'login sans classe connue : alerte marquée non vérifiée');
+r = await worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { 'CF-Connecting-IP': '203.0.113.50' }, body: '{"type":"open"}' }), env);
+ok(r.status === 403, 'sans en-tête Origin (curl, script) : refusé');
+r = await worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { Origin: 'null', 'CF-Connecting-IP': '203.0.113.51' }, body: '{"type":"open"}' }), env);
+ok(r.status === 403, 'Origin null : refusé');
+ok(classes({}).indexOf('2APIC3') >= 0 && classes({}).indexOf('1APIC') >= 0 && classes({}).length === 12, 'classes par défaut : 1APIC à 3APIC, groupes 1 à 3');
+ok(classes({ CLASSES: '3apic4, 2APIC1' }).join() === '3APIC4,2APIC1', 'variable CLASSES prioritaire');
 r = await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Salma', title: 'Équations', d: 4, good: 4, asked: 5, pct: 80, pts: 20, max: 25, sid: 's1' }), env);
 ok(sent[2].body.text.includes('تحدّي') && sent[2].body.text.includes('4/5'), 'série : niveau et score');
 r = await worker.fetch(req({ type: 'end', page: 'Maths', name: 'Salma', device: 'x', durMs: 125000, n: 20, ok: 15, pct: 75, pts: 30, hints: 2, lv: [[5, 5], [5, 6], [3, 5], [2, 4]], weak: [{ title: 'Thalès', pct: 40 }], sid: 's1' }), env);
@@ -16,11 +23,16 @@ ok(sent[3].body.text.includes('Thalès') && sent[3].body.text.includes('2 min 5 
 r = await worker.fetch(new Request('https://w.example/', { method: 'POST', headers: { Origin: 'https://evil.example' }, body: '{"type":"open"}' }), env);
 ok(r.status === 403, 'origine refusée');
 r = await worker.fetch(req('pas du json'), env); ok(r.status === 400, 'JSON invalide refusé');
+_reset();
 r = await worker.fetch(req({ type: 'zzz' }), env); ok(r.status === 400, 'type inconnu refusé');
 r = await worker.fetch(req('x'.repeat(5000)), env); ok(r.status === 413, 'corps trop gros refusé');
 r = await worker.fetch(req({}, { method: 'OPTIONS' }), env); ok(r.status === 204 && r.headers.get('Access-Control-Allow-Origin') === env.ALLOWED_ORIGIN, 'préflight CORS');
+const envMulti = Object.assign({}, env, { ALLOWED_ORIGIN: 'https://a.example,https://relay-client.example' });
+r = await worker.fetch(new Request('https://w.example/', { method: 'OPTIONS', headers: { Origin: 'https://relay-client.example' } }), envMulti); ok(r.status === 204 && r.headers.get('Access-Control-Allow-Origin') === 'https://relay-client.example', 'plusieurs origines : la deuxième est acceptée');
 let c429 = 0; for (let i = 0; i < 60; i++) { const x = await worker.fetch(req({ type: 'open', page: 'p' }, { ip: '198.18.0.1' }), env); if (x.status === 429) c429++; }
 ok(c429 > 0, 'limite par IP : ' + c429 + ' refus sur 60');
+_reset(); let call = 0; for (let i = 0; i < 40; i++) { const x = await worker.fetch(req({ type: 'open', page: 'p' }, { ip: '198.19.0.' + i }), env); if (x.status === 429) call++; }
+ok(call === 10, 'limite globale : 30 alertes par minute (' + call + ' refus sur 40)'); _reset();
 ok(!format({ type: 'login', name: 'A\nB<script>', device: 'd', consent: false, page: 'P' }, {}, '1.1.1.1').includes('1.1.1.1'), 'sans consentement : IP serveur absente');
 r = await worker.fetch(req({ type: 'open' }), { ALLOWED_ORIGIN: env.ALLOWED_ORIGIN }); ok(r.status === 500, 'config manquante : 500');
 
@@ -36,10 +48,15 @@ const env2 = Object.assign({}, env, { DB: fakeDB, TEACHER_KEY: KEY });
 sent.length = 0;
 await worker.fetch(req({ type: 'open', page: 'Maths' }, { ip: '198.18.1.1' }), env2);
 ok(rows.length === 0, 'visite anonyme : rien dans D1');
-await worker.fetch(req({ type: 'login', page: 'Maths', name: 'Salma', device: 'x', consent: true, sid: 'sa1', cls: 'ab-12', ip: 'secret-ip', city: 'Rabat' }, { ip: '198.18.1.2' }), env2);
-await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Salma', title: 'Thalès', d: 2, good: 4, asked: 5, pct: 80, pts: 8, max: 10, sid: 'sa1', cls: 'AB12' }, { ip: '198.18.1.2' }), env2);
-await worker.fetch(req({ type: 'login', page: 'SVT', name: 'Omar', device: 'y', consent: true, sid: 'om1', cls: 'ZZ99' }, { ip: '198.18.1.3' }), env2);
-ok(rows.length === 3 && rows[0].cls === 'AB12' && rows[1].type === 'series', 'événements consentis stockés, code normalisé');
+await worker.fetch(req({ type: 'login', page: 'Maths', name: 'Salma', device: 'x', consent: true, sid: 'sa1', cls: '2apic-1', ip: 'secret-ip', city: 'Rabat' }, { ip: '198.18.1.2' }), env2);
+await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Salma', title: 'Thalès', d: 2, good: 4, asked: 5, pct: 80, pts: 8, max: 10, sid: 'sa1', cls: '2APIC1' }, { ip: '198.18.1.2' }), env2);
+await worker.fetch(req({ type: 'login', page: 'SVT', name: 'Omar', device: 'y', consent: true, sid: 'om1', cls: '3APIC3' }, { ip: '198.18.1.3' }), env2);
+ok(rows.length === 3 && rows[0].cls === '2APIC1' && rows[1].type === 'series', 'élèves d’une classe connue stockés, code normalisé');
+const avant = rows.length, alertes = sent.length;
+r = await worker.fetch(req({ type: 'end', page: 'Maths', name: 'PENTEST', sid: 'pt1', cls: 'PENTEST', n: 1 }, { ip: '198.18.1.4' }), env2);
+ok(r.status === 200 && rows.length === avant && sent.length === alertes + 1 && sent[sent.length - 1].body.text.includes('غير موثّق'), 'classe inconnue : rien dans la base, alerte marquée');
+r = await worker.fetch(req({ type: 'series', page: 'Maths', name: 'X', sid: 'x9' }, { ip: '198.18.1.5' }), env2);
+ok(rows.length === avant, 'sans classe : rien dans la base');
 ok(!rows.some((r) => /secret-ip/.test(r.data)), 'IP du client jamais stockée');
 ok(sent.length >= 4, 'alertes Telegram toujours envoyées');
 const noname = toRow({ type: 'login', sid: 'x1' }, 1); ok(noname === null, 'sans nom : non stocké');
@@ -56,7 +73,7 @@ r = await worker.fetch(new Request('https://w.example/api/teacher/events', { met
 r = await worker.fetch(tReq('/api/teacher/events'), env2); let j = await r.json();
 ok(r.status === 200 && j.events.length === 3 && j.classes.length === 2 && j.events[0].data && typeof j.events[0].data === 'object', 'liste des événements et des classes');
 ok(r.headers.get('Cache-Control') === 'no-store' && r.headers.get('Access-Control-Allow-Origin') === env.ALLOWED_ORIGIN, 'réponse non mise en cache, CORS limité');
-r = await worker.fetch(tReq('/api/teacher/events?cls=zz-99'), env2); j = await r.json(); ok(j.events.length === 1 && j.events[0].name === 'Omar', 'filtre par classe');
+r = await worker.fetch(tReq('/api/teacher/events?cls=3apic-3'), env2); j = await r.json(); ok(j.events.length === 1 && j.events[0].name === 'Omar', 'filtre par classe');
 r = await worker.fetch(tReq('/api/teacher/delete', { method: 'POST', body: JSON.stringify({ sid: 'sa1' }) }), env2); j = await r.json();
 ok(j.ok && j.deleted === 2 && rows.length === 1, 'suppression des données d’un élève (droit des parents)');
 r = await worker.fetch(tReq('/api/teacher/nimporte'), env2); ok(r.status === 404, 'route inconnue : 404');

@@ -1,6 +1,13 @@
-name = "cours-telegram"
+# Relais Telegram et tableau de bord de taalim.men.
+# Le Worker en production s'appelle « taalim-relay » (domaine relay.taalim.men).
+# ATTENTION : la base D1 « taalim » (liaison DB) et les secrets BOT_TOKEN, CHAT_ID, TEACHER_KEY sont réglés dans Cloudflare.
+# Ce fichier ne déclare pas la liaison D1 : un « wrangler deploy » avec ce fichier tel quel la supprimerait.
+# Méthode sûre : coller worker.js dans l'éditeur du tableau de bord Cloudflare, ou passer par l'API Cloudflare en gardant les liaisons.
+name = "taalim-relay"
 main = "worker.js"
 compatibility_date = "2024-09-23"
+keep_vars = true
 
 [vars]
-ALLOWED_ORIGIN = "https://itech327.github.io"
+ALLOWED_ORIGIN = "https://taalim.men,https://maths.taalim.men,https://pc.taalim.men,https://svt.taalim.men,https://tech.taalim.men,https://technologie.taalim.men"
+CLASSES = "1APIC,1APIC1,1APIC2,1APIC3,2APIC,2APIC1,2APIC2,2APIC3,3APIC,3APIC1,3APIC2,3APIC3"
