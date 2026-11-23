@@ -30,6 +30,12 @@ REGIONS = {
     'fusha': ('a Moroccan news anchor on national television who reads Modern Standard Arabic (Fusha) word for word'
               ' exactly as written, never switching to Darija, with a Moroccan voice and intonation'),
 }
+# 2026-11-23 ear test: the male Fusha voice (younes) spoke Darija. Stronger prompt for it only;
+# the female Fusha voice was accepted, so her prompt stays. To redo: delete 'fusha-male' from the ids file.
+OVERRIDE = {'fusha-male': ('A composed man in his early 30s, a Moroccan Arabic-language news presenter, who reads formal Modern'
+                           ' Standard Arabic (Fusha) exactly as written, with careful standard pronunciation of every letter and'
+                           ' full grammatical endings, in the style of a classical recitation teacher. He never uses Darija'
+                           ' pronunciation or Darija words. Only a light, natural Moroccan warmth in the voice.')}
 PERSON = {'female': 'A warm young woman in her late 20s', 'male': 'A warm, friendly man in his early 30s'}
 
 
@@ -60,7 +66,7 @@ def main():
             d = post({'store': True, 'voice': {
                 'model': MODEL, 'type': 'prompted', 'display_name': f'Sada {region} {gender}',
                 'gender': gender, 'language_code': 'ar-MA',
-                'prompted': {'input': f'{person} {where}, like a native Moroccan.'}}})
+                'prompted': {'input': OVERRIDE.get(key) or f'{person} {where}, like a native Moroccan.'}}})
             ids[key] = d['id']
             json.dump(ids, open(a.out, 'w'), indent=2, sort_keys=True)
             if a.samples and d.get('sample_audio', {}).get('data'):
