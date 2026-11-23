@@ -87,8 +87,8 @@
       "text": "الأعداد السالبة أصغر من الصفر. نقرأ: سالب واحد، سالب اثنين، سالب ثلاثة.",
       "status": "generated",
       "file": "audio/num-fusha-05.mp3",
-      "seconds": 9,
-      "generatedAt": "2026-11-23T16:24:38.074Z",
+      "seconds": 10,
+      "generatedAt": "2026-11-23T17:13:27.292Z",
       "spokenText": "الأعداد السالبة أصغر من الصفر. نقرأ: سالب واحد، سالب اثنين، سالب ثلاثة."
     },
     {
@@ -103,8 +103,8 @@
       "text": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة.",
       "status": "generated",
       "file": "audio/num-fusha-06.mp3",
-      "seconds": 11,
-      "generatedAt": "2026-11-23T16:24:43.136Z",
+      "seconds": 12,
+      "generatedAt": "2026-11-23T17:13:32.450Z",
       "spokenText": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة."
     },
     {
@@ -119,8 +119,8 @@
       "text": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر.",
       "status": "generated",
       "file": "audio/num-fusha-07.mp3",
-      "seconds": 7,
-      "generatedAt": "2026-11-23T16:24:47.570Z",
+      "seconds": 9,
+      "generatedAt": "2026-11-23T17:13:36.479Z",
       "spokenText": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر."
     },
     {
@@ -136,7 +136,7 @@
       "status": "generated",
       "file": "audio/num-fusha-08.mp3",
       "seconds": 9,
-      "generatedAt": "2026-11-23T16:24:52.484Z",
+      "generatedAt": "2026-11-23T17:13:40.940Z",
       "spokenText": "في الكسر ثلاثة على أربعة، يسمى العدد ثلاثة بسطا، ويسمى العدد أربعة مقاما."
     },
     {
@@ -151,8 +151,8 @@
       "text": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع.",
       "status": "generated",
       "file": "audio/num-fusha-09.mp3",
-      "seconds": 7,
-      "generatedAt": "2026-11-23T16:24:56.751Z",
+      "seconds": 9,
+      "generatedAt": "2026-11-23T17:13:45.224Z",
       "spokenText": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع."
     },
     {
@@ -168,7 +168,7 @@
       "status": "generated",
       "file": "audio/num-fusha-10.mp3",
       "seconds": 8,
-      "generatedAt": "2026-11-23T16:29:24.549Z",
+      "generatedAt": "2026-11-23T17:13:49.768Z",
       "spokenText": "العمليات الحسابية الأربع هي: الجمع، والطرح، والضرب، والقسمة."
     },
     {
@@ -183,8 +183,8 @@
       "text": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة.",
       "status": "generated",
       "file": "audio/num-darija-01.mp3",
-      "seconds": 10,
-      "generatedAt": "2026-11-23T16:29:29.104Z",
+      "seconds": 11,
+      "generatedAt": "2026-11-23T17:13:54.805Z",
       "spokenText": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة."
     },
     {
@@ -197,7 +197,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "حضاش، طناش، تلطاش، ربعطاش، خمسطاش، سطاش، سبعطاش، تمنطاش، تسعطاش، عشرين.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-02.mp3",
+      "seconds": 12,
+      "generatedAt": "2026-11-23T17:13:59.951Z",
+      "spokenText": "حضاش، طناش، تلطاش، ربعطاش، خمسطاش، سطاش، سبعطاش، تمنطاش، تسعطاش، عشرين."
     },
     {
       "id": "num-darija-03",
@@ -209,7 +213,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "الكسر هو جزء من شي حاجة. إلا قسمنا خبزة على ربعة، كل طرف هو ربع.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-03.mp3",
+      "seconds": 5,
+      "generatedAt": "2026-11-23T17:14:03.983Z",
+      "spokenText": "الكسر هو جزء من شي حاجة. إلا قسمنا خبزة على ربعة، كل طرف هو ربع."
     },
     {
       "id": "num-darija-04",
@@ -221,7 +229,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "الأعداد السالبة هي اللي تحت الصفر، بحال الحرارة فالشتا: ناقص جوج درجات.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-04.mp3",
+      "seconds": 6,
+      "generatedAt": "2026-11-23T17:14:08.041Z",
+      "spokenText": "الأعداد السالبة هي اللي تحت الصفر، بحال الحرارة فالشتا: ناقص جوج درجات."
     },
     {
       "id": "num-darija-05",
@@ -233,7 +245,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "العدد العشري فيه فاصلة. تلاتة فاصلة خمسة يعني تلاتة ونص.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-05.mp3",
+      "seconds": 5,
+      "generatedAt": "2026-11-23T17:14:12.061Z",
+      "spokenText": "العدد العشري فيه فاصلة. تلاتة فاصلة خمسة يعني تلاتة ونص."
     },
     {
       "id": "num-darija-06",
@@ -245,7 +261,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "خمسين فالمية معناها النص، وخمسة وعشرين فالمية هي الربع.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-06.mp3",
+      "seconds": 5,
+      "generatedAt": "2026-11-23T17:14:15.731Z",
+      "spokenText": "خمسين فالمية معناها النص، وخمسة وعشرين فالمية هي الربع."
     },
     {
       "id": "num-darija-07",
@@ -257,7 +277,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "تلاتة ضرب ربعة كتعطينا طناش.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-07.mp3",
+      "seconds": 3,
+      "generatedAt": "2026-11-23T17:14:19.042Z",
+      "spokenText": "تلاتة ضرب ربعة كتعطينا طناش."
     },
     {
       "id": "class-darija-01",
@@ -269,7 +293,11 @@
       "voice": "younes",
       "delivery": "service",
       "text": "دابا غادي نحسبو مع بعضياتنا. ركز معايا مزيان.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/class-darija-01.mp3",
+      "seconds": 4,
+      "generatedAt": "2026-11-23T17:14:22.793Z",
+      "spokenText": "دابا غادي نحسبو مع بعضياتنا. ركز معايا مزيان."
     },
     {
       "id": "class-darija-02",
@@ -281,7 +309,11 @@
       "voice": "younes",
       "delivery": "service",
       "text": "مزيان بزاف! جواب صحيح، برافو عليك.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/class-darija-02.mp3",
+      "seconds": 4,
+      "generatedAt": "2026-11-23T17:14:26.545Z",
+      "spokenText": "مزيان بزاف! جواب صحيح، برافو عليك."
     },
     {
       "id": "class-darija-03",
@@ -293,7 +325,11 @@
       "voice": "younes",
       "delivery": "service",
       "text": "ماشي مشكل، عاود حاول مرة أخرى، راك قريب.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/class-darija-03.mp3",
+      "seconds": 4,
+      "generatedAt": "2026-11-23T17:14:29.915Z",
+      "spokenText": "ماشي مشكل، عاود حاول مرة أخرى، راك قريب."
     }
   ]
 }
