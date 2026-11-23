@@ -1,13 +1,24 @@
 /* Relais Telegram pour « Cours en mouvement » (Cloudflare Worker).
    Secrets (jamais dans le dépôt) : BOT_TOKEN, CHAT_ID.
-   Variable : ALLOWED_ORIGIN, par exemple https://itech327.github.io */
+   Variable : ALLOWED_ORIGIN, par exemple https://itech327.github.io
+   Plusieurs origines possibles, séparées par des virgules. L'API enseignant n'accepte que la première.
+   Variable facultative : CLASSES, codes de classe acceptés séparés par des virgules (sinon la liste par défaut ci-dessous).
+
+   Protections de l'envoi (rapport F-1 du 17/11/2026) :
+   - origine obligatoire : une requête sans en-tête Origin (curl, script) ou d'une autre origine est refusée ;
+   - seuls les élèves d'une classe connue sont enregistrés dans la base ; les autres donnent une alerte marquée « غير موثّق » ;
+   - limites : 20 messages par minute et par IP, 60 par heure et par session, 30 alertes par minute au total. */
 
 const MAX_BODY = 4000;
-const LIMIT_IP = 40;       // messages par minute et par IP
+const LIMIT_IP = 20;       // messages par minute et par IP
+const LIMIT_ALL = 30;      // alertes Telegram par minute, toutes IP confondues (par instance du Worker)
+const DEFAULT_CLASSES = ['1APIC', '2APIC', '3APIC'].reduce((a, n) => a.concat([n, n + '1', n + '2', n + '3']), []);
 const LIMIT_SESSION = 60;  // messages par heure et par session
 const RETENTION_DAYS = 180;  // durée de conservation des événements dans D1
 const hits = new Map();
+export function _reset() { hits.clear(); }  // pour les tests
 
+function origins(env) { return String(env.ALLOWED_ORIGIN || '').split(',').map(function (x) { return clean(x.trim(), 200); }).filter(Boolean); }
 function clean(v, n) {
   return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, n || 80);
 }
@@ -19,9 +30,13 @@ function limited(key, max, windowMs, now) {
   if (hits.size > 5000) for (const k of hits.keys()) { hits.delete(k); if (hits.size < 2500) break; }
   return false;
 }
+export function classes(env) {
+  const l = String((env && env.CLASSES) || '').split(',').map(clsClean).filter(Boolean);
+  return l.length ? l : DEFAULT_CLASSES;
+}
 export function clsClean(v) { v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); return v.length >= 3 ? v : ''; }
 
-/* Événement à stocker pour le tableau de bord : seulement les élèves ayant consenti (login, series, end, exit). */
+/* Événement à stocker pour le tableau de bord : élèves nommés (login, series, end, exit). Le serveur ne l'appelle que pour une classe connue. */
 export function toRow(p, now) {
   const type = clean(p.type, 10);
   if (['login', 'series', 'end', 'exit'].indexOf(type) < 0) return null;
@@ -63,7 +78,7 @@ async function teacher(request, env, url, cors) {
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
   const withCors = (r) => { Object.keys(cors).forEach((k) => r.headers.set(k, cors[k])); return r; };
   const origin = request.headers.get('Origin') || '';
-  if (origin && origin !== clean(env.ALLOWED_ORIGIN, 200)) return withCors(J({ error: 'origin' }, 403));
+  if (origin && origin !== (origins(env)[0] || '')) return withCors(J({ error: 'origin' }, 403));
   const key = String(env.TEACHER_KEY || '');
   if (key.length < 12) return withCors(J({ error: 'config' }, 503));
   const ip = request.headers.get('CF-Connecting-IP') || '', now = Date.now(), fk = 'authfail:' + ip;
@@ -106,7 +121,7 @@ export function format(p, cf, ip) {
   if (type === 'open') return '👀 فتح صفحة\n' + page + (name ? '\nالاسم: ' + name : '\n(زائر مجهول)') + (cf && cf.country ? '\nالبلد: ' + clean(cf.country, 10) : '');
   const who = () => {
     const seen = [place(p) && 'المدينة: ' + place(p) + (p.cityApprox ? ' (تقريبية)' : '')].filter(Boolean);
-    return ['الاسم: ' + name, 'الجهاز: ' + clean(p.device, 120)].concat(seen);
+    return ['الاسم: ' + name, 'الجهاز: ' + clean(p.device, 120)].concat(clsClean(p.cls) ? ['القسم: ' + clsClean(p.cls)] : [], seen);
   };
   if (type === 'login') {
     const obs = [];
@@ -129,14 +144,14 @@ export function format(p, cf, ip) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const allowed0 = clean(env.ALLOWED_ORIGIN, 200);
+    const list = origins(env), allowed0 = list[0] || '';
     if (url.pathname.indexOf('/api/teacher/') === 0) return teacher(request, env, url, { 'Access-Control-Allow-Origin': allowed0 || 'null', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization', 'Vary': 'Origin' });
     const origin = request.headers.get('Origin') || '';
-    const allowed = clean(env.ALLOWED_ORIGIN, 200);
+    const allowed = (origin && list.indexOf(origin) >= 0) ? origin : allowed0;
     const cors = { 'Access-Control-Allow-Origin': allowed || 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (request.method !== 'POST') return new Response('method', { status: 405, headers: cors });
-    if (!allowed || (origin && origin !== allowed)) return new Response('origin', { status: 403, headers: cors });
+    if (!origin || list.indexOf(origin) < 0) return new Response('origin', { status: 403, headers: cors });
     if (!env.BOT_TOKEN || !env.CHAT_ID) return new Response('config', { status: 500, headers: cors });
     const raw = await request.text();
     if (raw.length > MAX_BODY) return new Response('size', { status: 413, headers: cors });
@@ -146,9 +161,13 @@ export default {
     if (limited('ip:' + ip, LIMIT_IP, 60000, now)) return new Response('rate', { status: 429, headers: cors });
     const sid = clean(p.sid, 40);
     if (sid && limited('sid:' + sid, LIMIT_SESSION, 3600000, now)) return new Response('rate', { status: 429, headers: cors });
-    const text = format(p, request.cf, ip);
+    let text = format(p, request.cf, ip);
     if (!text) return new Response('type', { status: 400, headers: cors });
-    await store(env, toRow(p, now));
+    const named = ['login', 'series', 'end', 'exit'].indexOf(clean(p.type, 10)) >= 0 && clean(p.name, 60);
+    const known = classes(env).indexOf(clsClean(p.cls)) >= 0;
+    if (named && !known) text = '⚠️ غير موثّق: قسم غير معروف (' + (clsClean(p.cls) || 'بدون قسم') + ')\n' + text;
+    if (limited('all', LIMIT_ALL, 60000, now)) return new Response('rate', { status: 429, headers: cors });
+    if (named && known) await store(env, toRow(p, now));
     const r = await fetch('https://api.telegram.org/bot' + env.BOT_TOKEN + '/sendMessage', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: env.CHAT_ID, text: text.slice(0, 3900), disable_web_page_preview: true })

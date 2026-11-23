@@ -131,7 +131,7 @@
     '.lab-card{width:100%;max-width:480px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}',
     '.lab-card h3{font-family:var(--f-display,serif);font-style:italic;font-size:32px;margin:0 0 4px}',
     '.lab-card label.f{display:block;font-weight:600;margin:12px 0 4px}',
-    '.lab-card input[type=text]{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}',
+    '.lab-card select,.lab-card input[type=text]{font:inherit;color:var(--fg);background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}',
     '.lab-chk{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:14px;line-height:1.5}.lab-chk .lab-ar{display:block;margin:2px 0 0;font-size:14px;line-height:1.7}',
     '.lab-chk input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--pink)}',
     '.lab-err{color:var(--coral);min-height:22px;margin:4px 0}',
@@ -236,6 +236,11 @@
   /* ---------- session ---------- */
   var K_CUR = 'lab_cur', K_HIST = 'lab_hist', K_PROG = 'lab_prog', K_NAME = 'lab_name', K_CLS = 'lab_cls';
   /* code de classe : 3 à 12 lettres ou chiffres, fourni par l'enseignant (lien ?c=CODE ou saisie) */
+  /* classes reconnues par le relais (variable CLASSES du Worker) : les résultats des autres ne sont pas gardés au tableau de bord */
+  var CLASSES = ['1APIC1', '1APIC2', '1APIC3', '2APIC1', '2APIC2', '2APIC3', '3APIC1', '3APIC2', '3APIC3'];
+  function clsSelect(cur) {
+    return '<select id="lab-cls"><option value="">Choisis ta classe · اختر قسمك</option>' + CLASSES.map(function (c) { return '<option value="' + c + '"' + (c === cur ? ' selected' : '') + '>' + c + '</option>'; }).join('') + '<option value="AUTRE"' + (cur && CLASSES.indexOf(cur) < 0 ? ' selected' : '') + '>Autre · قسم آخر</option></select>';
+  }
   function clsClean(v) { v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); return v.length >= 3 ? v : ''; }
   try { var mc = /[?&]c=([^&#]*)/.exec(location.search); if (mc && clsClean(decodeURIComponent(mc[1]))) store.set(K_CLS, clsClean(decodeURIComponent(mc[1]))); } catch (_) {}
   var Sess = (Lab.Session = {});
@@ -727,7 +732,8 @@
     modal.innerHTML =
       '<div class="lab-card"><h3>Ma session · جلستي</h3>' +
       '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
-      (Notify.enabled() ? '<label class="f" for="lab-cls">Code de classe (facultatif) · رمز القسم</label><input id="lab-cls" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(store.get(K_CLS, '')) + '">' : '') +
+      (Notify.enabled() ? '<label class="f" for="lab-cls">Classe · القسم</label>' + clsSelect(store.get(K_CLS, '')) +
+        '<p class="lab-note">Sans une classe de la liste, l’enseignant reçoit l’alerte mais ne garde pas tes résultats. · بدون قسم من القائمة لا تُحفظ نتائجك عند الأستاذ.</p>' : '') +
       (Notify.enabled()
         ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil et ma ville approximative (déduite du fuseau horaire) soient envoyés à mon enseignant.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إرسال اسمي وجهازي ومدينتي التقريبية (من المنطقة الزمنية) إلى أستاذي.</span></span></label>' +
           '<p class="lab-note">Une visite anonyme (page, heure, pays) est aussi signalée. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>'
@@ -743,7 +749,9 @@
       if (n.length < 2) { $('#lab-err', modal).textContent = 'Écris ton nom (2 lettres au moins). · اكتب اسمك'; return; }
       var okc = $('#lab-cons', modal).checked;
       if (Notify.enabled() && !okc) { $('#lab-err', modal).textContent = 'Coche la case pour continuer, ou choisis « Sans session ». · وافق للمتابعة أو اختر «Sans session»'; return; }
-      var ce = $('#lab-cls', modal); Sess.start(n, okc, ce ? ce.value : ''); closeModal();
+      var ce = $('#lab-cls', modal), cv = ce ? ce.value : '';
+      if (cv === 'AUTRE') cv = store.get(K_CLS, '') && CLASSES.indexOf(store.get(K_CLS, '')) < 0 ? store.get(K_CLS, '') : '';
+      Sess.start(n, okc, cv); closeModal();
     });
     nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#lab-go', modal).click(); });
     $('#lab-skip', modal).addEventListener('click', function () { try { sessionStorage.setItem('lab_skip', '1'); } catch (_) {} closeModal(); render(); });
