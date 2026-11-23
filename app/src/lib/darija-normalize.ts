@@ -200,6 +200,10 @@ export function normalizeDarija(text: string, opts: NormalizeOptions = {}): stri
   t = t.replace(EMOJI, ' ');
   t = t.replace(/([ء-ي])\1{2,}/gu, '$1$1'); // stretched Arabic letters
   t = t.replace(/([!?؟.])\1+/g, '$1');
+  // Maths: "5x6" is read "5 في 6" in Darija and "5 مضروبة في 6" in Standard Arabic;
+  // "(-3)" and "5 - 3" are read with "ناقص" (never "سالب").
+  t = t.replace(/(\d)\s*[x×✕*]\s*(?=\d)/gi, `$1 ${profile === 'gemini-fusha' ? 'مضروبة في' : 'في'} `);
+  t = t.replace(/(^|[\s(،,:;])[-−–]\s?(?=\d)/g, '$1ناقص ');
 
   if (profile !== 'gemini-fusha') {
     t = t.replace(/(\d+)\s*%/g, '$1 فالمية');

@@ -33,7 +33,7 @@ const extra = [
   'عندي 1250000 درهم و 3afak jib l\'mail', 'تمن 99.75 dh فقط!!!', 'الساعة 3 h و 45 min', '7 كغ ديال البطيخة',
   'Bonjour, wach kayn chi taxi? ok merci', 'ذهبت إلى السوق، واشتريت 12 كيلو من الخضر.', 'Facebook w Instagram w youtube',
   'lyoum f lmatch rbe7na 3-1', 'كاين 1000 و 2000000 و 10000', 'ddar w ssbah w zzitoun', 'سلام 👋🏽 كيداير؟؟',
-  'هاد الشي ب 100% صحيح', 'غادي نمشي ل 3 أيام', 'مرحبا بيكم فالبطيخة', 'رقم 212612345678 ديالي', 'wa7d 2 l7em, 3 tajine',
+  'هاد الشي ب 100% صحيح', 'غادي نمشي ل 3 أيام', 'مرحبا بيكم فالبطيخة', 'رقم 212612345678 ديالي', 'wa7d 2 l7em, 3 tajine', 'النتيجة (-3) و 5x6 و 7 × 8', 'درجة الحرارة -3 فالشتا', 'خمسة - 3',
 ];
 const sentences = readFileSync(`${SKILL}data/test_sentences.txt`, 'utf8').split('\n').filter((l) => l.trim() && !l.startsWith('#'));
 const pyTests = execFileSync('python3', ['-I', '-c', `import sys, json; sys.path.insert(0, ${JSON.stringify(`${SKILL}scripts`)}); import normalize as n; print(json.dumps([s for s, _ in n.TESTS], ensure_ascii=False))`]).toString();
@@ -51,12 +51,19 @@ const G: [string, string][] = [
   ['ڭالها ليا', 'گالها ليا'],                               // g kept for Gemini
   ['كأنني فعلا فلاح', 'كأنني فعلا فلّاح'],                    // respelling applies
   ['5 كغ و 20 km', 'خمسة كيلو و عشرين كيلومتر'],
+  ['(-3)', 'ناقص تلاتة'],
+  ['5x6', 'خمسة في ستة'],
+  ['7 × 8', 'سبعة في تمنية'],
+  ['درجة الحرارة -3 فالشتا', 'درجة الحرارة ناقص تلاتة فالشتا'],
 ];
 for (const [s, want] of G) check(`gemini: ${s}`, normalizeDarija(s, { profile: 'gemini' }), want);
 const F: [string, string][] = [
   ['يسعدنا أن نرحب بكم في عام 2026', 'يسعدنا أن نرحب بكم في عام 2026'], // numbers left to Gemini in Standard Arabic
   ['إلى اللقاء!!!', 'إلى اللقاء!'],
   ['زوييييين 😍', 'زويين'],
+  ['(-3)', 'ناقص 3'],
+  ['5x6', '5 مضروبة في 6'],
+  ['5 × 6', '5 مضروبة في 6'],
 ];
 for (const [s, want] of F) check(`gemini-fusha: ${s}`, normalizeDarija(s, { profile: 'gemini-fusha' }), want);
 

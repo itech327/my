@@ -235,6 +235,9 @@ def normalize(text: str) -> str:
     t = EMOJI.sub(' ', t)
     t = re.sub(r'([ء-ي])\1{2,}', r'\1\1', t)          # stretched Arabic letters
     t = re.sub(r'([!?؟.])\1+', r'\1', t)
+    # maths: "5x6" is read "5 في 6"; "(-3)" and "5 - 3" are read with "ناقص", never "سالب"
+    t = re.sub(r'(\d)\s*[x×✕*]\s*(?=\d)', r'\1 في ', t, flags=re.I)
+    t = re.sub(r'(^|[\s(،,:;])[-−–]\s?(?=\d)', r'\1ناقص ', t)
     t = re.sub(r'(\d+)\s*%', r'\1 فالمية', t)
     t = re.sub(r'(\d+)\s*(dh|DH|MAD|درهم)\b', r'\1 درهم', t)
     # units after a number: "2 كلم" would be read as the verb كلّم

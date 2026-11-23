@@ -84,12 +84,8 @@
       "mode": "fusha",
       "voice": "nour",
       "delivery": "radio",
-      "text": "الأعداد السالبة أصغر من الصفر. نقرأ: سالب واحد، سالب اثنين، سالب ثلاثة.",
-      "status": "generated",
-      "file": "audio/num-fusha-05.mp3",
-      "seconds": 10,
-      "generatedAt": "2026-11-23T17:13:27.292Z",
-      "spokenText": "الأعداد السالبة أصغر من الصفر. نقرأ: سالب واحد، سالب اثنين، سالب ثلاثة."
+      "text": "الأعداد الناقصة أصغر من الصفر. نقرأ: ناقص واحد، ناقص اثنين، ناقص ثلاثة.",
+      "status": "pending"
     },
     {
       "id": "num-fusha-06",
@@ -276,12 +272,8 @@
       "mode": "darija",
       "voice": "younes",
       "delivery": "conversational",
-      "text": "تلاتة ضرب ربعة كتعطينا طناش.",
-      "status": "generated",
-      "file": "audio/num-darija-07.mp3",
-      "seconds": 3,
-      "generatedAt": "2026-11-23T17:14:19.042Z",
-      "spokenText": "تلاتة ضرب ربعة كتعطينا طناش."
+      "text": "تلاتة في ربعة كتعطينا طناش.",
+      "status": "pending"
     },
     {
       "id": "class-darija-01",
