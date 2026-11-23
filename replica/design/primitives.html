@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design primitives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* Component styles use only tokens. This page is the design-system check, not the app. */
+  .page { max-width: var(--layout-wide-max); margin-inline: auto; padding: var(--space-6) var(--space-5) var(--space-9); }
+  h1 { font-size: var(--text-2xl); line-height: var(--leading-2xl); font-weight: var(--weight-2xl); margin: 0 0 var(--space-2); }
+  h2 { font-size: var(--text-xl); line-height: var(--leading-xl); margin: var(--space-8) 0 var(--space-4); }
+  .muted { color: var(--color-text-muted); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+  .grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fill, minmax(var(--layout-card-min-width), 1fr)); }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; height: var(--layout-header-height); }
+  .brand { font-weight: 700; font-size: var(--text-lg); display: flex; gap: var(--space-3); align-items: center; }
+  .brand-mark { width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-accent); }
+  .pill { display: flex; gap: var(--space-2); padding: var(--space-2); background: var(--color-surface-sunken); border: 1px solid var(--color-border); border-radius: var(--radius-pill); }
+
+  a.btn { text-decoration: none; }
+  .btn { font: inherit; font-size: var(--text-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--space-3);
+         height: 40px; padding-inline: 20px; border-radius: var(--radius-pill); border: 1px solid transparent; cursor: pointer;
+         transition: transform var(--motion-fast) var(--motion-ease), background var(--motion-fast); }
+  .btn:active { transform: scale(.98); }
+  .btn-ink { background: var(--color-ink); color: var(--color-on-ink); }
+  .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border); }
+  .btn-ghost { background: transparent; color: var(--color-text-muted); }
+  .btn-danger { background: var(--color-danger); color: var(--color-on-ink); }
+  .btn-sm { height: 32px; padding-inline: 16px; }
+  .btn-lg { height: 52px; padding-inline: 40px; font-size: var(--text-lg); font-weight: 700; }
+  .btn[disabled] { opacity: .4; cursor: not-allowed; }
+  .spin { width: 14px; height: 14px; border: 2px solid currentColor; border-inline-end-color: transparent; border-radius: 50%; animation: s 1s linear infinite; }
+  @keyframes s { to { transform: rotate(360deg); } }
+  .flip { transform: scaleX(-1); }
+
+  .badge { display: inline-flex; align-items: center; height: 20px; padding-inline: 8px; border-radius: var(--radius-pill); font-size: var(--text-xs); font-weight: 600; }
+  .badge-premium { background: var(--color-badge); color: var(--color-on-badge); }
+  .badge-neutral { background: var(--color-accent-soft); color: var(--color-on-accent-soft); }
+  .badge-success { background: var(--color-success-soft); color: var(--color-on-success-soft); }
+
+  .chip { font: inherit; height: 36px; padding-inline: 16px; border-radius: var(--radius-pill); border: 1px solid var(--color-border);
+          background: var(--color-surface); color: var(--color-text); font-size: var(--text-sm); font-weight: 500; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--color-ink); color: var(--color-on-ink); border-color: var(--color-ink); }
+
+  .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); box-shadow: var(--shadow-card); }
+  .card:hover { box-shadow: var(--shadow-raised); }
+  .card.selected { border: 2px solid var(--color-border-strong); }
+  .voice-head { display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4); }
+  .avatar { width: 48px; height: 48px; border-radius: 50%; flex: none; }
+  .voice-name { font-size: var(--text-lg); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .use { white-space: nowrap; margin-inline-start: auto; font-size: var(--text-sm); color: var(--color-text-muted); }
+
+  .player { display: flex; align-items: center; gap: var(--space-4); background: var(--color-surface-sunken); border-radius: var(--radius-md); padding: var(--space-4); }
+  .play { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--color-ink); color: var(--color-on-ink); display: grid; place-items: center; cursor: pointer; flex: none; }
+  .track { flex: 1; }
+  .bar { height: 4px; border-radius: 2px; background: var(--color-border-input); position: relative; direction: ltr; }
+  .bar > i { position: absolute; inset-block: 0; left: 0; background: var(--color-ink); border-radius: 2px; }
+  .times { display: flex; justify-content: space-between; direction: ltr; font-variant-numeric: tabular-nums; font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-2); }
+
+  .editor { background: var(--color-surface); border: 1px solid var(--color-border-input); border-radius: var(--radius-lg); }
+  .toolbar { display: flex; gap: var(--space-2); padding: var(--space-3); border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
+  .text { min-height: 140px; padding: var(--space-5); font-size: var(--text-lg); line-height: 2; }
+  .tag { background: var(--color-accent-soft); border-radius: var(--radius-sm); padding: 2px 4px; }
+  .tag::before { content: attr(data-tag); font-size: var(--text-xs); color: var(--color-on-accent-soft); font-weight: 600; margin-inline-end: 4px; }
+  .editor-foot { display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) var(--space-5); border-top: 1px solid var(--color-border); font-size: var(--text-sm); }
+
+  .plan { position: relative; border: 1px solid var(--color-border-strong); border-radius: var(--radius-lg); background: var(--color-surface); padding: var(--space-7) var(--space-6) var(--space-6); }
+  .plan-tab { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: var(--color-ink); color: var(--color-on-ink); border-radius: var(--radius-pill); padding: 2px 16px; font-size: var(--text-sm); font-weight: 700; }
+  .price { font-size: var(--text-2xl); font-weight: 700; text-align: center; }
+  .price small { font-size: var(--text-sm); color: var(--color-text-muted); font-weight: 400; }
+  .feat { list-style: none; padding: 0; margin: var(--space-5) 0; display: grid; gap: var(--space-3); font-size: var(--text-sm); }
+  .feat li { display: flex; gap: var(--space-3); align-items: center; }
+  .check { width: 18px; height: 18px; border-radius: 50%; background: var(--color-success-soft); color: var(--color-on-success-soft); display: grid; place-items: center; font-size: 11px; flex: none; }
+  .skel { background: var(--color-surface-sunken); border-radius: var(--radius-sm); height: 14px; margin-block: var(--space-3); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .5; } }
+
+  .meter { height: 6px; background: var(--color-surface-sunken); border-radius: 3px; overflow: hidden; }
+  .meter > i { display: block; height: 100%; background: var(--color-warning); }
+
+  .field { display: grid; gap: var(--space-2); max-width: 360px; }
+  .field label { font-size: var(--text-sm); font-weight: 600; }
+  .field input { font: inherit; height: 44px; border-radius: var(--radius-md); border: 1px solid var(--color-border-input); padding-inline: 12px; background: var(--color-surface); color: var(--color-text); }
+  .field.invalid input { border-color: var(--color-danger); }
+  .err { color: var(--color-danger); font-size: var(--text-sm); }
+
+  details { border-bottom: 1px solid var(--color-border); padding-block: var(--space-4); }
+  summary { font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+  summary::after { content: "⌄"; color: var(--color-text-muted); }
+  details[open] summary::after { content: "⌃"; }
+  details p { color: var(--color-text-muted); margin: var(--space-3) 0 0; }
+
+  .empty { text-align: center; padding: var(--space-8) var(--space-5); border: 1px dashed var(--color-border-input); border-radius: var(--radius-lg); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); }
+  .sw { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; font-size: var(--text-xs); background: var(--color-surface); }
+  .sw i { display: block; height: 40px; }
+  .sw span { display: block; padding: var(--space-2) var(--space-3); direction: ltr; text-align: left; }
+  @media (max-width: 640px) { .pill { display: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="nav">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>اسم التطبيق</div>
+    <nav class="pill" aria-label="القائمة الرئيسية">
+      <a class="btn btn-ink btn-sm" aria-current="page" href="#">الرئيسية</a>
+      <a class="btn btn-ghost btn-sm" href="#">الأسعار</a>
+      <a class="btn btn-ghost btn-sm" href="#">المدونة</a>
+    </nav>
+    <a class="btn btn-ink btn-sm" href="#">دخول</a>
+  </header>
+
+  <h1>نظام التصميم</h1>
+  <p class="muted">كل العناصر مبنية من الرموز فقط. اللون الرئيسي محايد مؤقتاً إلى أن نختار الهوية.</p>
+
+  <h2>الألوان</h2>
+  <div class="swatches" id="sw"></div>
+
+  <h2>الأزرار</h2>
+  <div class="row">
+    <button class="btn btn-ink btn-lg">جرّب مجاناً <svg class="flip" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button class="btn btn-ink">إنشاء الصوت</button>
+    <button class="btn btn-secondary">معاينة</button>
+    <button class="btn btn-ghost">إلغاء</button>
+    <button class="btn btn-danger">حذف الحساب</button>
+    <button class="btn btn-ink" aria-busy="true"><span class="spin" aria-hidden="true"></span>جارٍ الإنشاء</button>
+    <button class="btn btn-ink" disabled>غير متاح</button>
+  </div>
+
+  <h2>الشارات واللهجات</h2>
+  <div class="row">
+    <span class="badge badge-premium">مميّز</span>
+    <span class="badge badge-neutral">جديد</span>
+    <span class="badge badge-success">باقتك الحالية</span>
+  </div>
+  <div class="row" style="margin-top: var(--space-4)">
+    <button class="chip" aria-pressed="true">الدارجة المغربية</button>
+    <button class="chip" aria-pressed="false">المصرية</button>
+    <button class="chip" aria-pressed="false">السعودية</button>
+    <button class="chip" aria-pressed="false">التونسية</button>
+    <button class="chip" aria-pressed="false">الفصحى</button>
+  </div>
+
+  <h2>بطاقات الأصوات</h2>
+  <div class="grid">
+    <article class="card selected">
+      <div class="voice-head"><span class="avatar" style="background: conic-gradient(var(--color-ink), var(--color-border-input), var(--color-ink))"></span>
+        <span class="voice-name">صوت تجريبي ١</span><span class="badge badge-premium">مميّز</span><span class="use">إعلانات</span></div>
+      <div class="player"><button class="play" aria-label="تشغيل صوت تجريبي ١">▶</button>
+        <div class="track"><div class="bar"><i style="width: 35%"></i></div><div class="times"><span>0:07</span><span>0:21</span></div></div></div>
+    </article>
+    <article class="card">
+      <div class="voice-head"><span class="avatar" style="background: radial-gradient(circle at 30% 30%, var(--color-surface-sunken), var(--color-accent))"></span>
+        <span class="voice-name">صوت تجريبي ٢</span><span class="use">قصص</span></div>
+      <div class="player"><button class="play" aria-label="تشغيل صوت تجريبي ٢">▶</button>
+        <div class="track"><div class="bar"><i style="width: 0%"></i></div><div class="times"><span>0:00</span><span>0:34</span></div></div></div>
+    </article>
+    <article class="card">
+      <div class="voice-head"><span class="avatar" style="background: linear-gradient(135deg, var(--color-border-input), var(--color-ink))"></span>
+        <span class="voice-name">صوت تجريبي ٣</span><span class="use">وثائقي</span></div>
+      <div class="player"><button class="play" aria-label="جارٍ التحميل" aria-busy="true"><span class="spin"></span></button>
+        <div class="track"><div class="bar"><i style="width: 0%"></i></div><div class="times"><span>0:00</span><span>--:--</span></div></div></div>
+    </article>
+  </div>
+
+  <h2>المحرر</h2>
+  <div class="editor">
+    <div class="toolbar" role="toolbar" aria-label="المشاعر">
+      <button class="btn btn-secondary btn-sm">ضحك</button><button class="btn btn-secondary btn-sm" aria-pressed="true">همس</button>
+      <button class="btn btn-secondary btn-sm">حزن</button><button class="btn btn-secondary btn-sm">غضب</button>
+      <button class="btn btn-secondary btn-sm">أسرع</button><button class="btn btn-secondary btn-sm">أبطأ</button>
+    </div>
+    <div class="text" contenteditable="true" dir="auto" aria-label="النص">السلام عليكم، <span class="tag" data-tag="همس">عندي ليك واحد الخبر زوين</span> غادي نحكيه ليك دابا.</div>
+    <div class="editor-foot"><span class="muted">٦٤ حرفاً · نحو ٦ ثوانٍ</span><button class="btn btn-ink">إنشاء الصوت</button></div>
+  </div>
+
+  <h2>الباقات</h2>
+  <div class="grid">
+    <div class="plan"><span class="plan-tab">باقة أ</span><div class="price">9 <small>$ / شهر</small></div>
+      <ul class="feat"><li><span class="check">✓</span><b>٣٠ دقيقة صوت</b></li><li><span class="check">✓</span>كل اللهجات</li><li><span class="check">✓</span>وسوم المشاعر</li></ul>
+      <span class="badge badge-success">وفّر ٢٠٪</span>
+      <button class="btn btn-ink" style="width: 100%; justify-content: center; margin-top: var(--space-5)">اشترك</button></div>
+    <div class="plan" aria-busy="true"><span class="plan-tab">جارٍ التحميل</span>
+      <div class="skel" style="width: 40%; margin-inline: auto; height: 28px"></div><div class="skel"></div><div class="skel" style="width: 80%"></div><div class="skel" style="width: 60%"></div></div>
+  </div>
+
+  <h2>الرصيد والحقول</h2>
+  <div class="grid">
+    <div class="card"><div class="row" style="justify-content: space-between"><b>الرصيد</b><span class="badge badge-neutral">ينتهي ٣٠ نونبر</span></div>
+      <p style="margin: var(--space-3) 0" >٤٢ ثانية متبقية · رصيد منخفض</p>
+      <div class="meter" role="meter" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100" aria-label="الرصيد"><i style="width: 7%"></i></div></div>
+    <div class="card">
+      <div class="field"><label for="e">البريد الإلكتروني</label><input id="e" type="email" dir="ltr" value="name@example.com"></div>
+      <div class="field invalid" style="margin-top: var(--space-4)"><label for="p">كلمة المرور</label><input id="p" type="password" aria-describedby="pe" aria-invalid="true"><span class="err" id="pe">٨ أحرف على الأقل</span></div>
+    </div>
+  </div>
+
+  <h2>الأسئلة والحالة الفارغة</h2>
+  <div class="grid">
+    <div><details open><summary>هل يمكنني استعمال الصوت تجارياً؟</summary><p>نعم، الصوت الذي تنشئه ملكك.</p></details>
+      <details><summary>كم يبقى الملف على الخادم؟</summary><p>سبعة أيام، ثم يُحذف.</p></details></div>
+    <div class="empty"><p style="font-weight: 600; margin: 0">لا يوجد سجل بعد</p><p class="muted">أنشئ أول صوت وسيظهر هنا.</p><button class="btn btn-ink btn-sm">ابدأ الآن</button></div>
+  </div>
+</div>
+<script>
+  const css = getComputedStyle(document.documentElement);
+  const names = ["bg","surface","surface-sunken","border","border-input","text","text-muted","ink","accent","accent-soft","badge","success","success-soft","warning","danger","focus"];
+  document.getElementById("sw").innerHTML = names.map(n => {
+    const v = css.getPropertyValue("--color-" + n).trim();
+    return `<div class="sw"><i style="background:${v}"></i><span>${n}<br>${v}</span></div>`;
+  }).join("");
+</script>
+</body>
+</html>

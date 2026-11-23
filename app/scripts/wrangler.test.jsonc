@@ -1,0 +1,7 @@
+// Local-only bindings for scripts/test-d1.mts (nothing here is deployed).
+{
+  "name": "sada-app-test",
+  "compatibility_date": "2026-11-01",
+  "d1_databases": [{ "binding": "DB", "database_name": "sada-test", "database_id": "00000000-0000-0000-0000-000000000000" }],
+  "kv_namespaces": [{ "binding": "KV", "id": "00000000000000000000000000000000" }]
+}

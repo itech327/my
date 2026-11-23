@@ -1,0 +1,6 @@
+app/node_modules
+connector/node_modules
+app/.next
+connector/.wrangler
+replica
+.git

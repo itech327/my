@@ -1,0 +1,15 @@
+{
+  // Claude custom connector for the Moroccan voices (remote MCP on Cloudflare Workers).
+  // Secrets, set in the Cloudflare dashboard or with `wrangler secret put`:
+  //   GEMINI_API_KEY  your Google Gemini API key
+  //   MCP_ACCESS_KEY  a private access code of 24+ characters; Claude sends it as header x-sada-key
+  "name": "sada-connector",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Custom Domain: Cloudflare creates the DNS record and certificate for it.
+  "routes": [{ "pattern": "voice.taalim.men", "custom_domain": true }],
+  // Audio storage: Workers KV. Wrangler creates the namespace on the first deploy (no id needed). Entries expire after 7 days.
+  "kv_namespaces": [{ "binding": "AUDIO" }],
+  "observability": { "enabled": true }
+}

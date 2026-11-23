@@ -1,0 +1,9 @@
+@import './tokens.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* next/font gives the hashed family name in --font-plex. */
+html[lang] { --font-sans: var(--font-plex), "IBM Plex Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif; }
+h1, h2, h3 { font-weight: 700; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
