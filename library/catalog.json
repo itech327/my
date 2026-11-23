@@ -165,7 +165,11 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "العمليات الحسابية الأربع هي: الجمع، والطرح، والضرب، والقسمة.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-fusha-10.mp3",
+      "seconds": 8,
+      "generatedAt": "2026-11-23T16:29:24.549Z",
+      "spokenText": "العمليات الحسابية الأربع هي: الجمع، والطرح، والضرب، والقسمة."
     },
     {
       "id": "num-darija-01",
@@ -177,7 +181,11 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-darija-01.mp3",
+      "seconds": 10,
+      "generatedAt": "2026-11-23T16:29:29.104Z",
+      "spokenText": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة."
     },
     {
       "id": "num-darija-02",
