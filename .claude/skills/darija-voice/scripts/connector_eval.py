@@ -22,6 +22,7 @@ import os
 import re
 import sys
 import tempfile
+import time
 import urllib.request
 import wave
 
@@ -29,6 +30,8 @@ import numpy as np
 
 UA = 'sada-eval/1.0'  # Cloudflare answers 403 to the default Python user agent
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from normalize import normalize  # noqa: E402  (the reference is what the voice should say: Arabizi and numbers spelled out)
 DIAC = re.compile('[\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u0640]')
 
 
@@ -125,13 +128,19 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         for i, s in enumerate(sents):
             wav = os.path.join(tmp, f's{i}.wav')
-            try:
-                speak(url, key, s, a.voice, a.mode, a.delivery, a.pace, wav)
-                heard = asr(wav)
-            except Exception as e:  # keep going: one failure must not hide the rest
-                print(f'FAIL {i + 1}: {e}', file=sys.stderr)
+            heard = None
+            for attempt in range(5):  # a per-minute rate limit clears in under a minute
+                try:
+                    speak(url, key, s, a.voice, a.mode, a.delivery, a.pace, wav)
+                    heard = asr(wav)
+                    break
+                except Exception as e:  # keep going: one failure must not hide the rest
+                    print(f'retry {i + 1} ({attempt + 1}): {e}', file=sys.stderr, flush=True)
+                    time.sleep(30)
+            if heard is None:
+                print(f'FAIL {i + 1}', file=sys.stderr)
                 continue
-            cer, wer = rates(s, heard)
+            cer, wer = rates(normalize(s) if a.mode == 'darija' else s, heard)
             rows.append({'text': s, 'heard': heard, 'cer': round(cer, 3), 'wer': round(wer, 3)})
             print(f'{i + 1:2d}  CER {cer:.3f}  WER {wer:.3f}  {s[:50]}', flush=True)
     if not rows:
