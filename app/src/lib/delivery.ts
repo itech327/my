@@ -53,9 +53,12 @@ export const deliveryById = (id?: string | null) => DELIVERIES.find((d) => d.id 
 export const paceById = (id?: string | null) => PACES.find((p) => p.id === id);
 
 export function geminiStyle(delivery?: DeliveryId | null, pace?: PaceId | null, register?: RegisterId | null): string {
-  const d = deliveryById(delivery) ?? DELIVERIES[0];
-  const p = paceById(pace ?? d.defaultPace);
   const r = registerById(register) ?? REGISTERS[0];
+  // Ear test 2026-11-23: the chatty "conversational" style pulled the male Fusha voice into Darija.
+  // Fusha with that style (or none) uses the composed radio style instead.
+  const wanted = deliveryById(delivery) ?? DELIVERIES[0];
+  const d = r.id === 'fusha' && wanted.id === 'conversational' ? deliveryById('radio')! : wanted;
+  const p = paceById(pace ?? wanted.defaultPace);
   return [d.style.replace(DARIJA, r.style), p?.style].filter(Boolean).join(' ');
 }
 
