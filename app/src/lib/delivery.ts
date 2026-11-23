@@ -58,8 +58,8 @@ export function geminiStyle(delivery?: DeliveryId | null, pace?: PaceId | null, 
   // Fusha with that style (or none) uses the composed radio style instead.
   const wanted = deliveryById(delivery) ?? DELIVERIES[0];
   const d = r.id === 'fusha' && wanted.id === 'conversational' ? deliveryById('radio')! : wanted;
-  // Ear test 2026-11-23: male Fusha sounds best with the radio style at a slow pace.
-  const p = paceById(pace ?? (r.id === 'fusha' ? 'slow' : wanted.defaultPace));
+  // Ear test 2026-11-23: the redesigned Fusha voices already read slowly, so no extra slow pace.
+  const p = paceById(pace ?? wanted.defaultPace);
   return [d.style.replace(DARIJA, r.style), p?.style].filter(Boolean).join(' ');
 }
 
