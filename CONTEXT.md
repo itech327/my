@@ -1,6 +1,6 @@
 # صدى (Sada): handoff context
 
-Give this file to Claude to continue. Last updated 2026-11-22: the Claude connector is live and tested.
+Give this file to Claude to continue. Last updated 2026-11-23: new Gemini key, app running on the owner's Intel Mac.
 Repository `itech327/my`, branch `claude/new-session-thirii`. Not merged to `main`.
 
 ## What it is
@@ -16,13 +16,17 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 | --- | --- | --- |
 | يونس (male) | Google Gemini TTS, designed voice | Main voice. Owner: "very good voice" |
 | نور (female) | Google Gemini TTS, designed voice | Main voice. Very natural in Darija |
-| إدريس (male), هند (female) | Open F5-TTS model on a CPU | Free backup. Slower, some wrong words |
+| إدريس (male), هند (female) | Open F5-TTS model on a CPU | Free backup, studio quality. Slow on a CPU |
+| إدريس, fast version | Open Piper model | Free backup on any CPU. Weakest quality |
 
 - Gemini model `gemini-3.8-flash-tts`, official Interactions API.
 - Each mode (darija, fusha) and gender has its own **designed voice** (Gemini Voice design API).
 - Ids are in `app/src/lib/tts/designed-voices.json`. They belong to the Google project of the current key.
 - A new key needs `.claude/skills/darija-voice/scripts/gemini_design_voices.py` run again.
-- The Fusha female voice was redesigned. The first one drifted into Darija words and became نور's Darija voice. The new one is accepted by the owner: "correct Standard Arabic with a Moroccan feel".
+- **2026-11-23: the owner moved to a new Gemini key, from another account.** The four designed voices were recreated in its project with the same prompts.
+  - New ids are in `designed-voices.json`.
+  - The earlier approvals were for the old project's voices: نور's Darija voice that came from the drifted Fusha design, and نور's Fusha voice. **The new voices need a new ear test.**
+- History: the first Fusha female voice drifted into Darija words and became نور's Darija voice. The redesigned Fusha voice was accepted: "correct Standard Arabic with a Moroccan feel".
 
 ## Text front end
 
@@ -36,7 +40,9 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - **The Gemini key is on Google's Free Tier:** 10 voice requests per day. Switch to the paid tier before real users.
 - **Don't rotate several Google accounts** to get around the limit. It breaks Google's terms.
 - **Darija isn't an official language** for Gemini TTS. Keep checking quality by ear.
-- **Free backup:** the app switches to هند or إدريس when Google returns its limit error (HTTP 429), and says so.
+- **Free backup:** the app switches to a free voice when Google refuses for any reason (quota, overload, key or network). It says so, and logs the reason as `[tts] ... failed, using ...`.
+  - The studio voices are used if `TTS_SPEAKERS_URL` is set.
+  - Otherwise the fast Piper voice, if `TTS_DARIJA_URL` is set.
 
 ## Parts of the repo
 
@@ -59,7 +65,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - **Tested from Claude on 2026-11-22:**
   - `rewrite_moroccan` answers in about a second.
   - `speak_moroccan` returned يونس, the designed voice, as a working WAV link.
-  - The Worker uses the same Gemini key as the tests, so the designed voices work.
+  - **Action needed:** after the key change, replace the Worker's `GEMINI_API_KEY` secret in Cloudflare with the new key. With the old key the new voice ids answer 404, and the Worker falls back to Google's stock voices.
 - **Storage:** audio in Workers KV (binding `AUDIO`), each file deleted after 7 days.
 - **Rewrite models:**
   - Order: `gemini-3.6-flash`, then `gemini-3.8-flash`, then `gemini-3.5-flash-lite`.
@@ -84,6 +90,15 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - **Dashboard:** Workers & Pages, Import a repository `itech327/my`, Worker name `sada-connector` (must match `wrangler.jsonc`), root directory `connector`, then add both secrets.
 - **From a computer:** follow `connector/README.md`.
 
+## The owner's Mac
+
+- MacBook Pro, **Intel** (x86_64), macOS 15.7.4, Node 26, Python 3.12.
+- The repo is in `~/my`. The app runs at http://localhost:3000 with `npm start` in `~/my/app`. `app/.env.local` holds `TTS_GEMINI=1`, `GEMINI_API_KEY` and `TTS_DARIJA_URL`.
+- Homebrew 3.6 is too old for this macOS. Node was installed from nodejs.org. `brew update-reset` is still to do.
+- **Piper fallback** runs in a second Terminal window, `server.py` on port 5005. It works: the switch was confirmed by the log. Quality is poor by the owner's ear: CER 0.187 on the "تقديم شركة" template.
+- **F5 studio voices on an Intel Mac:** PyTorch has no Intel-macOS wheels after torch 2.2.2, so the pip install in `MAC.md` section 3 does not work there. Use Docker with `voice-server/Dockerfile` instead: about a minute per sentence on the CPU. On the same sentence F5 scored CER 0.013.
+- **Owner's open choice:** Docker with F5, or Google's paid tier, which removes the need for the backup.
+
 ## Free-voice backup on a GPU (in progress)
 
 - The owner chose a GPU server for our own voices, as backup when Google refuses.
@@ -102,6 +117,8 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - Pilot: middle school (الإعدادي), numbers and operations, 20 items.
 - 4 approved by the owner (نور, Standard Arabic), 16 still to generate.
 - Run `library/generate.mts` once a day on the free Gemini tier: it stops at the quota and resumes.
+- After the key change, generation needs the **new** key. In the cloud session, update the network secret for `generativelanguage.googleapis.com` to the new key. With the old key, the new voice ids answer 404.
+- The 4 approved items were made with the old project's نور Fusha voice. Remaking them would change their sound, so keep the files.
 
 ## Connector tools
 
