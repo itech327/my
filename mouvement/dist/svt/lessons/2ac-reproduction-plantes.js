@@ -1,4 +1,4 @@
-/* @meta {"id":"2ac-reproduction-plantes","level":"2","order":3,"theme":"Reproduction","title":"La reproduction des plantes à fleurs","ar":"التوالد عند النباتات الزهرية","lead":"À Tafraout, les amandiers fleurissent en février et donnent des amandes en été : on suit le pollen, de la fleur au fruit."} */
+/* @meta {"id":"2ac-reproduction-plantes","level":"2","order":8,"theme":"Reproduction","title":"La reproduction des plantes à fleurs","ar":"التوالد عند النباتات الزهرية","lead":"À Tafraout, les amandiers fleurissent en février et donnent des amandes en été : on suit le pollen, de la fleur au fruit."} */
 (function () {
   'use strict';
   var S = MV.S, T = MV.T;
