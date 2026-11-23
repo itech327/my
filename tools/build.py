@@ -62,7 +62,8 @@ svt_body = '''
   <div class="view" id="home">
   <header>
     <p class="kicker">Collège · option française</p>
-    <h1 class="display">SVT en mouvement</h1>
+    <h1 class="display">SVT · exercices et défis</h1>
+    <p class="lead"><a href="https://svt.taalim.men/">Les leçons animées sont sur svt.taalim.men</a> · <span lang="ar" dir="rtl">الدروس المتحركة في svt.taalim.men</span></p>
     <p class="lead">Cours de sciences de la vie et de la Terre du collège, de la 1<sup>re</sup> à la 3<sup>e</sup> année : milieu et géologie, reproduction et hérédité, nutrition, système nerveux, muscles et santé, avec des figures animées et un résumé en arabe sous chaque leçon.</p>
     <p class="lead ar-lead" dir="rtl" lang="ar">دروس علوم الحياة والأرض للسنوات الأولى والثانية والثالثة إعدادي: الوسط والجيولوجيا، والتوالد والوراثة، والتغذية، والجهازان العصبي والعضلي، والصحة، مع رسوم متحركة وشرح بالعربية تحت كل درس.</p>
   </header>
@@ -92,13 +93,13 @@ DESC = {
  'index.html': ('دروس متحركة للسلك الإعدادي | Cours du collège en mouvement',
                 'دروس تفاعلية للسلك الإعدادي المغربي: الرياضيات والفيزياء والكيمياء وعلوم الحياة والأرض، برسوم متحركة وشرح بالعربية وتمارين من أربعة مستويات. Cours interactifs du collège marocain : maths, physique-chimie et SVT, figures animées, explications en arabe.',
                 'default'),
- 'maths.html': ('الرياضيات للسلك الإعدادي | Maths en mouvement',
+ 'maths.html': ('الرياضيات: تمارين وتحديات | Maths · exercices et défis',
                 'دروس الرياضيات للسنوات الأولى والثانية والثالثة إعدادي برسوم متحركة وملخصات بالعربية وتمارين حسب المستوى. Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.',
                 'maths'),
- 'physique-chimie.html': ('الفيزياء والكيمياء للسلك الإعدادي | Physique-Chimie en mouvement',
+ 'physique-chimie.html': ('الفيزياء والكيمياء: تمارين وتحديات | Physique-Chimie · exercices et défis',
                 'دروس الفيزياء والكيمياء للسنوات الأولى والثانية والثالثة إعدادي بمحاكاة متحركة وملخصات بالعربية وتمارين حسب المستوى. Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.',
                 'pc'),
- 'svt.html': ('علوم الحياة والأرض للسنة الثالثة إعدادي | SVT en mouvement',
+ 'svt.html': ('علوم الحياة والأرض: تمارين وتحديات | SVT · exercices et défis',
                 'دروس علوم الحياة والأرض للسنة الثالثة إعدادي: التغذية والصحة، برسوم متحركة وملخصات بالعربية. Sciences de la vie et de la Terre, 3e année du collège : nutrition et santé, figures animées et résumés en arabe.',
                 'svt'),
  'confidentialite.html': ('بياناتك | Confidentialité · Cours en mouvement',

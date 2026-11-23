@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-8J4PH9bpiXWRbGze3jnyMmlrBoW98tBTvuooUvX2rJE=' 'sha256-G1qC6a6RKRnRwI1jq1EZNbjiGMUhlwfQq5mq/X+S9FI=' 'sha256-RGEevK3fXFJnCaU2S7QY8E/9XAhrJEW7CJz2luPC0Rk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-8J4PH9bpiXWRbGze3jnyMmlrBoW98tBTvuooUvX2rJE=' 'sha256-G1qC6a6RKRnRwI1jq1EZNbjiGMUhlwfQq5mq/X+S9FI=' 'sha256-XUkEB+y7LwGoiRbmqBUJNR021h+T1zm8bepu85ovTuQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس تفاعلية للسلك الإعدادي المغربي: الرياضيات والفيزياء والكيمياء وعلوم الحياة والأرض، برسوم متحركة وشرح بالعربية وتمارين من أربعة مستويات. Cours interactifs du collège marocain : maths, physique-chimie et SVT, figures animées, explications en arabe.">
 <link rel="canonical" href="https://taalim.men/">
@@ -82,8 +82,12 @@ a.card .ar{font-size:15px;color:var(--lav)}
 .sub a.card{flex:1;padding:20px 20px 18px;transition:transform .15s,border-color .15s}
 .sub a.card strong{font-size:22px}
 .sub a.card .glyph{font-size:17px;padding:3px 12px}
-.sub a.alt{font-size:13px;color:var(--muted);text-align:center;padding:4px;text-decoration:none}
-.sub a.alt:hover,.sub a.alt:focus-visible{color:var(--fg);text-decoration:underline}
+.atelier{margin:22px 0 0;padding:16px 18px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+.atelier h2{font-size:18px;margin:0 0 6px}
+.atelier p{margin:0 0 6px;color:var(--muted);font-size:14px}
+.atelier .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.wrap{padding-bottom:84px}
+.live{margin-top:18px}
 @media (prefers-reduced-motion:no-preference){.sub a.card:hover{transform:translateY(-3px)}}
 @media (min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
 .links{text-align:center;color:var(--muted);font-size:14px;margin:26px 0 0}
@@ -99,6 +103,18 @@ a.card .ar{font-size:15px;color:var(--lav)}
   <h1><svg class="mark" viewBox="0 0 48 32" aria-hidden="true"><path class="arc" pathLength="1" d="M4 26Q24 -6 44 26"/><circle class="d1" cx="10" cy="17.8" r="3.6" fill="#e371cb"/><circle class="d2" cx="24" cy="10" r="3.6" fill="#9b92dc"/><circle class="d3" cx="38" cy="17.8" r="3.6" fill="#6ccdb6"/></svg>Cours en mouvement</h1>
   <p class="tag ar" lang="ar" dir="rtl">دروس الإعدادي بالحركة</p>
 
+  <div class="grid">
+    <div class="sub" style="--c:var(--pink)">
+      <a class="card" href="https://maths.taalim.men/"><i class="glyph" aria-hidden="true">π</i><strong>Mathématiques</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">الرياضيات</span></a>
+    </div>
+    <div class="sub" style="--c:var(--lav)">
+      <a class="card" href="https://pc.taalim.men/"><i class="glyph" aria-hidden="true">H₂O</i><strong>Physique-Chimie</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">الفيزياء والكيمياء</span></a>
+    </div>
+    <div class="sub" style="--c:var(--teal)">
+      <a class="card" href="https://svt.taalim.men/"><i class="glyph" aria-hidden="true">ADN</i><strong>SVT</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض</span></a>
+    </div>
+  </div>
+
   <section class="live" aria-labelledby="live-t">
     <svg id="fig" viewBox="20 20 260 260" role="img" aria-labelledby="live-t live-d">
       <title id="live-t">Le théorème de Pythagore, à toucher</title>
@@ -113,24 +129,15 @@ a.card .ar{font-size:15px;color:var(--lav)}
     <p class="hint">Touche un point : les aires changent, la somme reste juste.</p>
     <p class="hint ar" lang="ar" dir="rtl">المس نقطة: تتغيّر المساحات ويبقى المجموع صحيحاً.</p>
   </section>
-
-  <div class="grid">
-    <div class="sub" style="--c:var(--pink)">
-      <a class="card" href="https://maths.taalim.men/"><i class="glyph" aria-hidden="true">π</i><strong>Mathématiques</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">الرياضيات</span></a>
-      <a class="alt" href="maths.html">Version classique · النسخة الكلاسيكية</a>
-    </div>
-    <div class="sub" style="--c:var(--lav)">
-      <a class="card" href="https://pc.taalim.men/"><i class="glyph" aria-hidden="true">H₂O</i><strong>Physique-Chimie</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">الفيزياء والكيمياء</span></a>
-      <a class="alt" href="physique-chimie.html">Version classique · النسخة الكلاسيكية</a>
-    </div>
-    <div class="sub" style="--c:var(--teal)">
-      <a class="card" href="https://svt.taalim.men/"><i class="glyph" aria-hidden="true">ADN</i><strong>SVT</strong><span>1AC · 2AC · 3AC</span><span class="ar" lang="ar" dir="rtl">علوم الحياة والأرض</span></a>
-      <a class="alt" href="svt.html">Version classique · النسخة الكلاسيكية</a>
-    </div>
-  </div>
   <!-- Technologie : masquée jusqu'à la fin de la préparation des autres matières. Pour la rétablir, replacer cette carte dans <div class="grid"> (sous forme de <div class="sub">) :
     <a class="card" style="--c:var(--coral)" href="https://technologie.taalim.men/"><i class="glyph" aria-hidden="true">⚙</i><strong>Technologie en mouvement</strong><span>3<sup>e</sup> année · systèmes techniques, chaîne d’information, chaîne d’énergie, dessin technique</span><span class="ar" lang="ar" dir="rtl">التكنولوجيا</span></a>
   -->
+  <section class="atelier" aria-labelledby="atelier-t">
+    <h2 id="atelier-t">Exercices et défis · <span lang="ar" dir="rtl">تمارين وتحديات</span></h2>
+    <p>Toutes les séries d’exercices par niveau, les défis et les séances Riyada, chapitre par chapitre.</p>
+    <p class="ar" lang="ar" dir="rtl">كل سلاسل التمارين حسب المستوى، والتحديات، وحصص الريادة، فصلا بفصل.</p>
+    <p class="row"><a class="btn sm ghost" href="maths.html">Maths</a><a class="btn sm ghost" href="physique-chimie.html">Physique-Chimie</a><a class="btn sm ghost" href="svt.html">SVT</a></p>
+  </section>
   <div class="box" id="pwa" hidden>
     <p><b>Installer l’application.</b> <span id="pwa-ios" hidden>Sur iPhone : bouton Partager, puis « Sur l’écran d’accueil ». </span>Elle s’ouvre en plein écran et marche sans connexion.</p>
     <p class="ar" lang="ar" dir="rtl">ثبّت التطبيق على هاتفك. يفتح بملء الشاشة ويعمل بدون إنترنت.</p>
@@ -169,7 +176,7 @@ document.getElementById('go-report').addEventListener('click',function(){var s=L
     hA.setAttribute('transform','translate('+B[0]+' '+B[1]+')');hB.setAttribute('transform','translate('+C[0]+' '+C[1]+')');
     hA.setAttribute('aria-valuenow',Math.round(a));hB.setAttribute('aria-valuenow',Math.round(b));
     var la=a/U,lb=b/U,x=Math.round(la*la*10)/10,y=Math.round(lb*lb*10)/10,z=Math.round((x+y)*10)/10;
-    eq.innerHTML='<span class="ea">'+x.toFixed(1)+'</span> + <span class="eb">'+y.toFixed(1)+'</span> = <span class="ec">'+z.toFixed(1)+'</span>';
+    var f=function(v){return v.toFixed(1).replace('.',',')};eq.innerHTML='<span class="ea">'+f(x)+'</span> + <span class="eb">'+f(y)+'</span> = <span class="ec">'+f(z)+'</span>';
   }
   function clamp(v){return Math.max(30,Math.min(80,v))}
   function pos(e){var r=svg.getBoundingClientRect(),k=260/r.width;return [20+(e.clientX-r.left)*k,20+(e.clientY-r.top)*k]}

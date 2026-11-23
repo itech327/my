@@ -50,7 +50,7 @@ with sync_playwright() as p:
     # passer hors ligne : nouvelle visite de chaque page
     pg.reload(); pg.wait_for_timeout(1200)   # le SW prend le contrôle
     ctx.set_offline(True)
-    for path, title in (('/maths', 'Maths en mouvement'), ('/maths.html', 'Maths en mouvement'), ('/physique-chimie', 'Physique-Chimie'), ('/svt', 'SVT'), ('/', 'Cours en mouvement')):
+    for path, title in (('/maths', 'Maths · exercices'), ('/maths.html', 'Maths · exercices'), ('/physique-chimie', 'Physique-Chimie'), ('/svt', 'SVT'), ('/', 'Cours en mouvement')):
         try:
             pg.goto(BASE + path, wait_until='domcontentloaded'); pg.wait_for_timeout(500)
             check(title.lower() in pg.title().lower() or title.lower() in pg.evaluate("document.body.innerText.slice(0,400)").lower(), 'hors ligne : %s s’ouvre (%s)' % (path, pg.title()))
