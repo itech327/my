@@ -30,6 +30,7 @@ npx --prefix app tsx library/generate.mts
 ```
 
 - Needs `GEMINI_API_KEY` and ffmpeg.
+- In the cloud session, run it from `app/` as `NODE_USE_ENV_PROXY=1 npx tsx ../library/generate.mts`. Without it Node skips the proxy and Google answers 400 invalid key.
 - It stops cleanly when Google's daily quota is spent. Run it again the next day to continue.
 - `--only ID` makes one item. `--redo` remakes items that already have audio.
 
