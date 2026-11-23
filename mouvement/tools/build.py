@@ -282,6 +282,23 @@ def exam_data(lessons):
     return '/* Généré par build.py à partir des leçons. */\nwindow.MVQ = ' + json.dumps(data, ensure_ascii=False) + ';\n'
 
 
+def stamp(d):
+    """Ajoute ?v=<empreinte> aux scripts et feuilles de style locaux de chaque page HTML :
+    le navigateur garde ces fichiers en cache plusieurs heures, l'empreinte force la nouvelle version après une publication."""
+    import hashlib
+    for page in d.rglob('*.html'):
+        html = page.read_text(encoding='utf-8')
+        def rep(m):
+            ref = m.group(2)
+            f = (page.parent / ref).resolve()
+            if not f.is_file():
+                return m.group(0)
+            return m.group(1) + ref + '?v=' + hashlib.sha1(f.read_bytes()).hexdigest()[:8] + '"'
+        new = re.sub(r'((?:src|href)=")((?!https?:|//|/)[^"?#]+\.(?:js|css))"', rep, html)
+        if new != html:
+            page.write_text(new, encoding='utf-8')
+
+
 def build():
     for s, cfg in SUBJECTS.items():
         d = DIST / s
@@ -323,6 +340,7 @@ def build():
         (d / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {cfg["url"]}sitemap.xml\n', encoding='utf-8')
         (d / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
                                        ''.join(f'  <url><loc>{u}</loc></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
+        stamp(d)
         print(f'{s}: {len(lessons)} leçon(s) -> {d.relative_to(ROOT)}')
 
 
