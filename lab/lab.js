@@ -1,11 +1,15 @@
 /* Lab : exercices par niveaux + session visiteur + rapport.
    Partagé par « Maths en mouvement » et « Physique-Chimie en mouvement ».
-   Configuration : window.LAB_CONFIG = {app, appName, map, gen(key,d)} */
+   Configuration : window.LAB_CONFIG = {app, appName, map, gen(key,d)}
+   Mode intégré (sites « en mouvement ») : LAB_CONFIG.embed = true. Pas de barre de session, pas de fenêtre de
+   démarrage ni de service worker ; la session vient de la carte élève (localStorage mv_eleve) ; la page appelle
+   Lab.mount(el, idChapitre, titre), Lab.mountWeek(el) et Lab.riddleInto(el). */
 (function () {
   'use strict';
   var CFG = window.LAB_CONFIG;
   if (!CFG) return;
   var Lab = (window.Lab = {});
+  var EMBED = !!CFG.embed;
 
   /* ---------- utilitaires ---------- */
   function $(s, r) { return (r || document).querySelector(s); }
@@ -566,7 +570,8 @@
         : (d === 4 ? 'التحدّي: 5 أسئلة من أصعب مستوى، ' + SECS + ' ثانية لكل سؤال، بلا تلميح، ومحاولة واحدة. النقاط ×5.'
           : 'ستّ أسئلة. استعمال التلميح يخسّرك نصف النقاط. النجاح عند 80% فما فوق.');
       info.innerHTML = '<p class="lab-note">' + txt + '</p><p class="lab-ar" dir="rtl" lang="ar">' + ar + '</p>' +
-        (s ? '' : '<p class="lab-note lab-noprint">Aucune session ouverte : tes résultats ne sont pas enregistrés. <a href="#" data-lab-start>Démarrer une session</a></p>');
+        (s ? '' : EMBED ? '<p class="lab-note lab-noprint">Sans carte élève, tes résultats restent sur cet appareil et ne sont pas envoyés à ton enseignant.</p>'
+          : '<p class="lab-note lab-noprint">Aucune session ouverte : tes résultats ne sont pas enregistrés. <a href="#" data-lab-start>Démarrer une session</a></p>');
       var a = info.querySelector('[data-lab-start]');
       if (a) a.addEventListener('click', function (e) { e.preventDefault(); openStart(); });
       arena.innerHTML = '';
@@ -811,7 +816,7 @@
   Lab.openWeek = openWeek;
 
   /* ---------- application installable et hors ligne ---------- */
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  if (!EMBED && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
   }
 
@@ -841,7 +846,7 @@
     else if (a === 'last') openReport(Sess.hist()[0]);
     else if (a === 'end') { if (confirm('Terminer la session et voir le rapport ? · إنهاء الجلسة وعرض التقرير؟')) openReport(Sess.end()); }
   });
-  Sess.on(render);
+  Sess.on(function () { if (!EMBED) render(); });
 
   /* ---------- rapport ---------- */
   function rpDl(label, val) { return '<dt>' + label + '</dt><dd>' + (val === '' || val == null ? '-' : esc(val)) + '</dd>'; }
@@ -958,9 +963,10 @@
   function dayKey(now) { var d = new Date(now || Date.now()); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
   function riddleIndex(app, day, n) { return Math.floor(rng('riddle|' + app + '|' + day)() * n); }
   Lab.riddleIndex = riddleIndex; Lab.dayKey = dayKey;
-  function riddleCard() {
+  function riddleCard(target) {
     var R = CFG.riddles, home = document.getElementById('home'), head = home && home.querySelector('header');
-    if (!R || !R.length || !head || home.querySelector('.lab-riddle')) return;
+    if (!R || !R.length) return;
+    if (!target && (!head || home.querySelector('.lab-riddle'))) return;
     var day = dayKey(), r = R[riddleIndex(CFG.app, day, R.length)], saved = store.get('lab_rid', {});
     var card = h('section', { 'class': 'lab-riddle lab-noprint', 'aria-label': 'Énigme du jour' });
     var body = h('div');
@@ -979,7 +985,7 @@
     });
     body.appendChild(opts); body.appendChild(fb);
     card.innerHTML = MASCOT; card.appendChild(body);
-    head.parentNode.insertBefore(card, head.nextSibling);
+    if (target) target.appendChild(card); else head.parentNode.insertBefore(card, head.nextSibling);
     if (saved && saved.day === day && saved.app === CFG.app && typeof saved.pick === 'number' && saved.pick >= 0 && saved.pick < r.o.length) reveal(saved.pick);
   }
   Lab.riddleCard = riddleCard;
@@ -1025,7 +1031,28 @@
     else { var w = document.querySelector('.wrap'); if (w) w.appendChild(n); }
   }
 
+  /* mode intégré : la session suit la carte élève des sites « en mouvement » */
+  function syncStudent() {
+    var e = null; try { e = JSON.parse(localStorage.getItem('mv_eleve') || 'null'); } catch (_) {}
+    var cur = Sess.cur(), name = e && e.consent ? String(e.name || '').trim() : '';
+    if (!name) { if (cur) Sess.end(); return; }
+    if (cur && cur.name === name && cur.cls === clsClean(e.cls)) return;
+    if (cur) Sess.end();
+    Sess.start(name, true, e.cls || '');
+  }
+  Lab.syncStudent = syncStudent;
+  Lab.mount = function (el, id, title) {
+    if (!CFG.map || !CFG.map[id]) return false;
+    mount(el, { id: id, title: title || id, cfg: CFG.map[id] }); return true;
+  };
+  Lab.mountWeek = function (el) {
+    var seen = {}, all = [];
+    Object.keys(CFG.map || {}).forEach(function (k) { (CFG.map[k].topics || []).forEach(function (t) { if (!seen[t]) { seen[t] = 1; all.push(t); } }); });
+    if (all.length) mount(el, { id: 'week', title: 'Défi de la semaine', cfg: { topics: all }, fixed: 'week' });
+  };
+  Lab.riddleInto = function (el) { riddleCard(el); };
   function boot() {
+    if (EMBED) { try { syncStudent(); } catch (_) {} return; }
     try { welcome(); } catch (_) {}
     try { footNote(); } catch (_) {}
     try { riddleCard(); } catch (_) {}
