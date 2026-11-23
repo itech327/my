@@ -1,0 +1,698 @@
+{
+ "maths": [
+  [
+   "c1-1",
+   "1",
+   "Opérations sur les entiers et décimaux positifs",
+   ""
+  ],
+  [
+   "c1-2",
+   "1",
+   "Les nombres fractionnaires",
+   ""
+  ],
+  [
+   "c1-3",
+   "1",
+   "Nombres relatifs : introduction et comparaison",
+   ""
+  ],
+  [
+   "c1-4",
+   "1",
+   "Nombres relatifs : opérations, puissances de 10",
+   ""
+  ],
+  [
+   "c1-5",
+   "1",
+   "Factorisation et développement",
+   ""
+  ],
+  [
+   "c1-6",
+   "1",
+   "Équations",
+   ""
+  ],
+  [
+   "c1-7",
+   "1",
+   "Droites dans le plan : parallélisme et perpendicularité",
+   ""
+  ],
+  [
+   "c1-11",
+   "1",
+   "Parallélogrammes et quadrilatères particuliers",
+   ""
+  ],
+  [
+   "c1-12",
+   "1",
+   "Angles et parallèles",
+   ""
+  ],
+  [
+   "c1-13",
+   "1",
+   "Cercle",
+   ""
+  ],
+  [
+   "c1-14",
+   "1",
+   "Droite graduée et repère dans le plan",
+   ""
+  ],
+  [
+   "c1-18",
+   "1",
+   "Périmètres et aires",
+   ""
+  ],
+  [
+   "c1-15",
+   "1",
+   "Prismes et cylindres droits",
+   ""
+  ],
+  [
+   "c1-16",
+   "1",
+   "Proportionnalité",
+   ""
+  ],
+  [
+   "c1-17",
+   "1",
+   "Statistiques",
+   ""
+  ],
+  [
+   "c2-1",
+   "2",
+   "Introduction des nombres rationnels",
+   ""
+  ],
+  [
+   "c2-2",
+   "2",
+   "Addition et soustraction des nombres rationnels",
+   ""
+  ],
+  [
+   "c2-3",
+   "2",
+   "Multiplication et division des nombres rationnels",
+   ""
+  ],
+  [
+   "c2-4",
+   "2",
+   "Puissances",
+   ""
+  ],
+  [
+   "c2-5",
+   "2",
+   "Calcul littéral",
+   ""
+  ],
+  [
+   "c2-6",
+   "2",
+   "Équations",
+   ""
+  ],
+  [
+   "c2-7",
+   "2",
+   "Ordre des nombres rationnels et opérations",
+   ""
+  ],
+  [
+   "c2-8",
+   "2",
+   "Symétrie axiale",
+   ""
+  ],
+  [
+   "c2-10",
+   "2",
+   "Triangle et parallèles",
+   ""
+  ],
+  [
+   "c2-11",
+   "2",
+   "Triangle rectangle et cercle",
+   ""
+  ],
+  [
+   "c2-12",
+   "2",
+   "Vecteurs et translations",
+   ""
+  ],
+  [
+   "c2-13",
+   "2",
+   "Pyramides et cônes de révolution",
+   ""
+  ],
+  [
+   "c2-14",
+   "2",
+   "Proportionnalité",
+   ""
+  ],
+  [
+   "c2-15",
+   "2",
+   "Statistique",
+   ""
+  ],
+  [
+   "c3-1",
+   "3",
+   "Racines carrées",
+   ""
+  ],
+  [
+   "c3-2",
+   "3",
+   "Calcul numérique, identités remarquables, puissances",
+   ""
+  ],
+  [
+   "c3-3",
+   "3",
+   "Ordre et opérations",
+   ""
+  ],
+  [
+   "c3-4",
+   "3",
+   "Équations et inéquations",
+   ""
+  ],
+  [
+   "c3-5",
+   "3",
+   "Systèmes de deux équations à deux inconnues",
+   ""
+  ],
+  [
+   "c3-6",
+   "3",
+   "Théorème de Pythagore et trigonométrie",
+   ""
+  ],
+  [
+   "c2-9",
+   "2",
+   "Droites remarquables dans un triangle",
+   ""
+  ],
+  [
+   "c2-16",
+   "2",
+   "Les quatre opérations sur les nombres rationnels",
+   ""
+  ],
+  [
+   "c2-17",
+   "2",
+   "Théorème de Pythagore",
+   ""
+  ],
+  [
+   "c2-18",
+   "2",
+   "Cosinus d’un angle aigu",
+   ""
+  ],
+  [
+   "c3-7",
+   "3",
+   "Théorème de Thalès",
+   ""
+  ],
+  [
+   "c3-8",
+   "3",
+   "Angles inscrits, angles au centre",
+   ""
+  ],
+  [
+   "c3-9",
+   "3",
+   "Triangles isométriques et triangles semblables",
+   ""
+  ],
+  [
+   "c3-10",
+   "3",
+   "Vecteurs et translation",
+   ""
+  ],
+  [
+   "c3-11",
+   "3",
+   "Repère dans le plan",
+   ""
+  ],
+  [
+   "c3-12",
+   "3",
+   "Équations de droite",
+   ""
+  ],
+  [
+   "c3-13",
+   "3",
+   "Volumes, agrandissement et réduction",
+   ""
+  ],
+  [
+   "c3-14",
+   "3",
+   "Fonctions linéaires, fonctions affines",
+   ""
+  ],
+  [
+   "c3-15",
+   "3",
+   "Statistiques",
+   ""
+  ]
+ ],
+ "pc": [
+  [
+   "c1-2",
+   "1",
+   "Les trois états de la matière",
+   "الحالات الفيزيائية الثلاث للمادة"
+  ],
+  [
+   "c1-3",
+   "1",
+   "Volume, masse et masse volumique",
+   "الحجم والكتلة والكتلة الحجمية"
+  ],
+  [
+   "c1-11",
+   "1",
+   "Le circuit électrique simple",
+   "الدارة الكهربائية البسيطة"
+  ],
+  [
+   "c1-16",
+   "1",
+   "Loi des nœuds et additivité des tensions",
+   "قانون العُقد وخاصية إضافية التوترات"
+  ],
+  [
+   "c2-2",
+   "2",
+   "L’air et ses constituants",
+   "الهواء ومكوّناته"
+  ],
+  [
+   "c2-3",
+   "2",
+   "Les molécules et les atomes",
+   "الجزيئات والذرات"
+  ],
+  [
+   "c2-4",
+   "2",
+   "La réaction chimique : les combustions",
+   "التفاعل الكيميائي: الاحتراق"
+  ],
+  [
+   "c2-5",
+   "2",
+   "La réaction chimique et ses lois",
+   "التفاعل الكيميائي وقوانينه"
+  ],
+  [
+   "c2-9",
+   "2",
+   "Lumière et couleurs",
+   "الضوء والألوان"
+  ],
+  [
+   "c2-10",
+   "2",
+   "Propagation de la lumière",
+   "انتشار الضوء"
+  ],
+  [
+   "c3-4",
+   "3",
+   "Les solutions acides et basiques",
+   "المحاليل الحمضية والأساسية"
+  ],
+  [
+   "c3-6",
+   "3",
+   "Tests d’identification de quelques ions",
+   "التعرف على بعض الأيونات"
+  ],
+  [
+   "c3-9",
+   "3",
+   "La vitesse moyenne",
+   "السرعة المتوسطة"
+  ],
+  [
+   "c3-12",
+   "3",
+   "Équilibre d’un solide soumis à deux forces",
+   "توازن جسم صلب خاضع لقوتين"
+  ],
+  [
+   "c3-13",
+   "3",
+   "Masse et poids",
+   "الكتلة والوزن"
+  ],
+  [
+   "c3-14",
+   "3",
+   "Résistance électrique et loi d’Ohm",
+   "المقاومة الكهربائية وقانون أوم"
+  ],
+  [
+   "c3-16",
+   "3",
+   "L’énergie électrique",
+   "الطاقة الكهربائية"
+  ],
+  [
+   "c3-17",
+   "3",
+   "Trajectoire et types de mouvement",
+   "المسار وأنواع الحركة"
+  ],
+  [
+   "c1-1",
+   "1",
+   "L’eau dans la nature",
+   "الماء في الطبيعة"
+  ],
+  [
+   "c1-4",
+   "1",
+   "Pression et pression atmosphérique",
+   "الضغط والضغط الجوي"
+  ],
+  [
+   "c1-7",
+   "1",
+   "Les mélanges",
+   "الخلائط"
+  ],
+  [
+   "c1-8",
+   "1",
+   "Séparation des constituants d’un mélange",
+   "فصل مكونات خليط"
+  ],
+  [
+   "c1-9",
+   "1",
+   "Traitement des eaux",
+   "معالجة المياه"
+  ],
+  [
+   "c1-10",
+   "1",
+   "L’électricité autour de nous",
+   "الكهرباء من حولنا"
+  ],
+  [
+   "c1-14",
+   "1",
+   "Le courant électrique continu",
+   "التيار الكهربائي المستمر"
+  ],
+  [
+   "c1-15",
+   "1",
+   "Mesure de l’intensité du courant",
+   "قياس شدة التيار الكهربائي"
+  ],
+  [
+   "c1-17",
+   "1",
+   "Protection contre les dangers du courant",
+   "الوقاية من أخطار التيار الكهربائي"
+  ],
+  [
+   "c1-18",
+   "1",
+   "Température et chaleur",
+   "درجة الحرارة والحرارة"
+  ],
+  [
+   "c1-19",
+   "1",
+   "Conservation de la masse et du volume",
+   "انحفاظ الكتلة والحجم"
+  ],
+  [
+   "c1-20",
+   "1",
+   "Influence de la résistance sur l’intensité",
+   "تأثير المقاومة على شدة التيار"
+  ],
+  [
+   "c2-6",
+   "2",
+   "Matières naturelles et synthétiques",
+   "المواد الطبيعية والمواد الاصطناعية"
+  ],
+  [
+   "c2-7",
+   "2",
+   "La pollution de l’air",
+   "تلوث الهواء"
+  ],
+  [
+   "c2-8",
+   "2",
+   "La lumière autour de nous",
+   "الضوء من حولنا"
+  ],
+  [
+   "c2-11",
+   "2",
+   "Les lentilles minces",
+   "العدسات الرقيقة"
+  ],
+  [
+   "c2-12",
+   "2",
+   "La loupe et l’œil",
+   "المكبّرة والعين"
+  ],
+  [
+   "c2-13",
+   "2",
+   "Le courant alternatif sinusoïdal",
+   "التيار الكهربائي المتناوب الجيبي"
+  ],
+  [
+   "c2-14",
+   "2",
+   "L’installation électrique domestique",
+   "التركيب الكهربائي المنزلي"
+  ],
+  [
+   "c3-1",
+   "3",
+   "Matériaux de la vie quotidienne",
+   "مواد الحياة اليومية"
+  ],
+  [
+   "c3-2",
+   "3",
+   "Matériaux et électricité",
+   "المواد والكهرباء"
+  ],
+  [
+   "c3-3",
+   "3",
+   "Réactions de quelques matériaux avec l’air",
+   "تفاعل بعض المواد مع الهواء"
+  ],
+  [
+   "c3-5",
+   "3",
+   "Métaux, solutions acides et basiques",
+   "الفلزات والمحاليل الحمضية والأساسية"
+  ],
+  [
+   "c3-7",
+   "3",
+   "Dangers de quelques matériaux",
+   "أخطار بعض المواد"
+  ],
+  [
+   "c3-10",
+   "3",
+   "Actions mécaniques et leurs effets",
+   "الأفعال الميكانيكية وتأثيراتها"
+  ],
+  [
+   "c3-11",
+   "3",
+   "Notion de force",
+   "مفهوم القوة"
+  ]
+ ],
+ "svt": [
+  [
+   "s3-1",
+   "3",
+   "La digestion et l’absorption intestinale",
+   "الهضم والامتصاص المعوي"
+  ],
+  [
+   "s3-2",
+   "3",
+   "La respiration chez l’Homme",
+   "التنفّس عند الإنسان"
+  ],
+  [
+   "s3-3",
+   "3",
+   "Le sang et la circulation sanguine",
+   "الدم والدورة الدموية"
+  ],
+  [
+   "s3-4",
+   "3",
+   "L’excrétion urinaire chez l’Homme",
+   "الإبراز البولي عند الإنسان"
+  ],
+  [
+   "s3-5",
+   "3",
+   "L’immunité",
+   "المناعة"
+  ],
+  [
+   "s3-6",
+   "3",
+   "L’éducation nutritionnelle",
+   "التربية الغذائية"
+  ],
+  [
+   "s3-7",
+   "3",
+   "Le système nerveux",
+   "الجهاز العصبي"
+  ],
+  [
+   "s3-8",
+   "3",
+   "Le système musculaire",
+   "الجهاز العضلي"
+  ],
+  [
+   "s3-9",
+   "3",
+   "Les micro-organismes",
+   "الجراثيم"
+  ],
+  [
+   "s3-10",
+   "3",
+   "Les réponses immunitaires",
+   "الاستجابات المناعية"
+  ],
+  [
+   "s3-11",
+   "3",
+   "Les dysfonctionnements du système immunitaire",
+   "اضطرابات جهاز المناعة"
+  ],
+  [
+   "s2-1",
+   "2",
+   "La tectonique des plaques",
+   "تكتونية الصفائح"
+  ],
+  [
+   "s2-2",
+   "2",
+   "La reproduction chez les animaux",
+   "التوالد عند الحيوانات"
+  ],
+  [
+   "s2-3",
+   "2",
+   "La reproduction chez les plantes à fleurs",
+   "التوالد عند النباتات الزهرية"
+  ],
+  [
+   "s2-4",
+   "2",
+   "La reproduction chez l’Homme",
+   "التوالد عند الإنسان"
+  ],
+  [
+   "s2-5",
+   "2",
+   "L’hérédité chez l’Homme",
+   "الوراثة عند الإنسان"
+  ],
+  [
+   "s1-1",
+   "1",
+   "Le milieu naturel et la cellule",
+   "الوسط الطبيعي والخلية"
+  ],
+  [
+   "s1-2",
+   "1",
+   "La respiration chez les êtres vivants",
+   "التنفس في أوساط مختلفة"
+  ],
+  [
+   "s1-3",
+   "1",
+   "La nutrition et les régimes alimentaires",
+   "التغذية والأنظمة الغذائية"
+  ],
+  [
+   "s1-4",
+   "1",
+   "Chaînes, réseaux alimentaires et équilibres naturels",
+   "السلاسل والشبكات الغذائية والتوازنات الطبيعية"
+  ],
+  [
+   "s1-5",
+   "1",
+   "La classification des êtres vivants",
+   "تصنيف الكائنات الحية"
+  ],
+  [
+   "s1-6",
+   "1",
+   "Le cycle sédimentaire et les fossiles",
+   "الدورة الرسوبية والأحافير"
+  ],
+  [
+   "s1-7",
+   "1",
+   "Les ressources en eau",
+   "الموارد المائية"
+  ]
+ ]
+}
