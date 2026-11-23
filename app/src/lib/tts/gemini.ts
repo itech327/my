@@ -69,6 +69,9 @@ export async function geminiSpeak(o: { text: string; voice: string; style: strin
   return { audio: bytes, seconds: Math.max(1, Math.ceil(wavSeconds(bytes))) };
 }
 
+// A named designed voice (one voice for both modes, e.g. akram), else the prebuilt voice.
+export const namedVoice = (name: string, prebuilt: string) => DESIGNED[name] || prebuilt;
+
 // The designed voice for a speaking mode and gender, else the prebuilt voice.
 export const designedVoice = (register: string | undefined, gender: 'female' | 'male' | undefined, prebuilt: string) =>
   (gender && DESIGNED[`${register ?? 'darija'}-${gender}`]) || prebuilt;

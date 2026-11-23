@@ -11,7 +11,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { z } from 'zod';
 import { DELIVERIES, PACES, geminiStyle, type DeliveryId, type PaceId, type RegisterId } from '../../app/src/lib/delivery';
-import { designedVoice, geminiSpeak, stripTags } from '../../app/src/lib/tts/gemini';
+import { designedVoice, geminiSpeak, namedVoice, stripTags } from '../../app/src/lib/tts/gemini';
 import { rewriteWith } from '../../app/src/lib/rewrite-core';
 import { normalizeDarija } from '../../app/src/lib/darija-normalize';
 
@@ -34,6 +34,8 @@ const TTL_S = 7 * 24 * 3600; // KV deletes the entry itself after this
 const VOICES = {
   nour: { name: 'نور', gender: 'female', prebuilt: 'Kore', backup: { speaker: 'F1', name: 'هند' } },
   younes: { name: 'يونس', gender: 'male', prebuilt: 'Charon', backup: { speaker: 'M1', name: 'إدريس' } },
+  // a young, light voice for advice to students; one designed voice for both modes
+  akram: { name: 'أكرم', gender: 'male', prebuilt: 'Puck', backup: { speaker: 'M1', name: 'إدريس' }, designed: 'akram' },
 } as const;
 
 // When Google refuses (quota 429, overload 5xx), the free voice of the same gender
@@ -81,7 +83,7 @@ function buildServer(env: Env, origin: string): McpServer {
       + 'Write Darija text in Arabic letters. Maximum 2000 characters.',
     inputSchema: {
       text: z.string().min(1).max(2000).describe('The text to speak, in Arabic letters'),
-      voice: z.enum(['nour', 'younes']).default('younes').describe('nour (female) or younes (male)'),
+      voice: z.enum(['nour', 'younes', 'akram']).default('younes').describe('nour (female), younes (male), akram (young male, light voice, for advice to students)'),
       mode: z.enum(['darija', 'fusha']).default('darija'),
       delivery: z.enum(DELIVERIES.map((d) => d.id) as [DeliveryId, ...DeliveryId[]]).default('conversational')
         .describe('conversational, ad, radio, story or service'),
@@ -92,7 +94,7 @@ function buildServer(env: Env, origin: string): McpServer {
     const v = VOICES[voice];
     try {
       const req = { text: normalizeDarija(stripTags(text), { profile: mode === 'fusha' ? 'gemini-fusha' : 'gemini' }), apiKey: env.GEMINI_API_KEY, style: geminiStyle(delivery, pace ?? null, mode as RegisterId) };
-      const designed = designedVoice(mode, v.gender, v.prebuilt);
+      const designed = 'designed' in v ? namedVoice(v.designed, v.prebuilt) : designedVoice(mode, v.gender, v.prebuilt);
       // Designed voices belong to the Google project that made them. With another
       // key they return 404, so fall back to the prebuilt voice.
       let spoke: string = v.name;
