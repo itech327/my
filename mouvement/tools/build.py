@@ -55,6 +55,8 @@ if GA4 and not re.fullmatch(r'G-[A-Z0-9]{6,}', GA4):
 if any(CFWA.values()) and GA4:
     raise SystemExit('Choisir Cloudflare ou GA4, pas les deux')
 RELAY = re.search(r'LAB_NOTIFY_URL\s*=\s*"(https://[^"/]+)', (ROOT / 'lab' / 'notify-config.js').read_text(encoding='utf-8')).group(1)  # une seule source : lab/notify-config.js
+TURNSTILE = bool(re.search(r'LAB_TURNSTILE_SITEKEY\s*=\s*"[\w-]{10,}"', (ROOT / 'lab' / 'notify-config.js').read_text(encoding='utf-8')))  # phase 2 : CSP seulement si une clé de site existe
+TS_ORIGIN = 'https://challenges.cloudflare.com'
 
 
 def csp(s):
@@ -66,7 +68,11 @@ def csp(s):
         script.append('https://www.googletagmanager.com')
         conn += ['https://www.google-analytics.com', 'https://region1.google-analytics.com', 'https://*.analytics.google.com']
         img.append('https://www.google-analytics.com')
-    return (f"default-src 'none'; script-src {' '.join(script)}; style-src 'self' 'unsafe-inline'; img-src {' '.join(img)}; font-src 'self'; "
+    frame = ''
+    if TURNSTILE:
+        script.append(TS_ORIGIN)
+        frame = f'frame-src {TS_ORIGIN}; '
+    return (f"default-src 'none'; script-src {' '.join(script)}; style-src 'self' 'unsafe-inline'; img-src {' '.join(img)}; font-src 'self'; {frame}"
             f"connect-src {' '.join(conn)}; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; "
             "upgrade-insecure-requests; frame-ancestors 'none'")
 

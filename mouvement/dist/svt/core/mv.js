@@ -157,7 +157,38 @@
   // classes reconnues par le relais (variable CLASSES du Worker) : les notes des autres ne sont pas gardées au tableau de bord
   var CLASSES = ['1APIC1', '1APIC2', '1APIC3', '2APIC1', '2APIC2', '2APIC3', '3APIC1', '3APIC2', '3APIC3'];
   function eleve() { try { return JSON.parse(store.get('mv_eleve') || 'null'); } catch (_) { return null; } }
+  /* Turnstile (phase 2) : laissez-passer demandé une fois par session, seulement pour les notes nommées.
+     Sans clé de site dans notify-config.js, rien n'est chargé. */
+  var passWait = null;
+  function getPass(cb) {
+    var key = window.LAB_TURNSTILE_SITEKEY || '', u = window.LAB_NOTIFY_URL;
+    if (!key || !u) return cb('');
+    try { var o = JSON.parse(sessionStorage.getItem('mv_pass') || 'null'); if (o && o.pass && o.exp > Date.now() + 60000) return cb(o.pass); } catch (_) {}
+    if (passWait) { passWait.push(cb); return; }
+    passWait = [cb];
+    var box = null, timer = setTimeout(function () { done(''); }, 20000);
+    function done(p) { clearTimeout(timer); var l = passWait || []; passWait = null; if (box && box.parentNode) box.parentNode.removeChild(box); l.forEach(function (f) { f(p); }); }
+    function go() {
+      try {
+        box = document.createElement('div'); box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999'; document.body.appendChild(box);
+        window.turnstile.render(box, { sitekey: key, appearance: 'interaction-only', action: 'notes',
+          callback: function (t) {
+            fetch(u.replace(/\/$/, '') + '/token', { method: 'POST', body: JSON.stringify({ t: t }), headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
+              .then(function (r) { return r.ok ? r.json() : {}; })
+              .then(function (j) { if (j && j.pass) { try { sessionStorage.setItem('mv_pass', JSON.stringify({ pass: j.pass, exp: j.exp })); } catch (_) {} } done((j && j.pass) || ''); })
+              ['catch'](function () { done(''); });
+          },
+          'error-callback': function () { done(''); }
+        });
+      } catch (_) { done(''); }
+    }
+    if (window.turnstile) return go();
+    var sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true;
+    sc.onload = go; sc.onerror = function () { done(''); }; document.head.appendChild(sc);
+  }
   function send(p) {
+    if (p.type !== 'open' && !p.pass && window.LAB_TURNSTILE_SITEKEY) return getPass(function (x) { p.pass = x || 'none'; send(p); });
+    if (p.pass === 'none') delete p.pass;
     var u = window.LAB_NOTIFY_URL; if (!u) return;
     p.v = 1; p.page = SITE; p.t = Date.now();
     try { fetch(u, { method: 'POST', body: JSON.stringify(p), keepalive: true, headers: { 'Content-Type': 'text/plain;charset=UTF-8' } }).catch(function () {}); } catch (_) {}
