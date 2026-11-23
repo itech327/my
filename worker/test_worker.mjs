@@ -1,7 +1,11 @@
-import worker, { format, toRow, _reset, classes } from './worker.js';
+import worker, { format, toRow, _reset, classes, makePass, checkPass } from './worker.js';
 let fails = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++; };
 const sent = [];
-globalThis.fetch = async (url, init) => { sent.push({ url, body: JSON.parse(init.body) }); return new Response('{"ok":true}', { status: 200 }); };
+const verif = [];
+globalThis.fetch = async (url, init) => {
+  if (/siteverify/.test(url)) { const t = init.body.get('response'); verif.push({ secret: init.body.get('secret'), t }); return new Response(JSON.stringify({ success: t === 'bon-jeton' || t === 'autre-site', hostname: t === 'autre-site' ? 'evil.example' : 'itech327.github.io' }), { status: 200 }); }
+  sent.push({ url, body: JSON.parse(init.body) }); return new Response('{"ok":true}', { status: 200 });
+};
 const env = { BOT_TOKEN: 'TKN', CHAT_ID: '123', ALLOWED_ORIGIN: 'https://itech327.github.io' };
 const req = (body, o = {}) => new Request('https://w.example/', { method: o.method || 'POST', headers: Object.assign({ Origin: 'https://itech327.github.io', 'CF-Connecting-IP': o.ip || '203.0.113.9' }, o.headers || {}), body: o.method === 'OPTIONS' ? undefined : (typeof body === 'string' ? body : JSON.stringify(body)) });
 let r = await worker.fetch(req({ type: 'open', page: 'Maths en mouvement' }), env);
@@ -80,4 +84,35 @@ r = await worker.fetch(tReq('/api/teacher/nimporte'), env2); ok(r.status === 404
 let blocked = 0; for (let i = 0; i < 14; i++) { const x = await worker.fetch(tReq('/api/teacher/events', { key: 'mauvaise-cle-' + i, ip: '192.0.2.77' }), env2); if (x.status === 429) blocked++; }
 ok(blocked === 4, 'blocage après 10 échecs : ' + blocked + ' refus 429');
 r = await worker.fetch(tReq('/api/teacher/events', { ip: '192.0.2.77' }), env2); ok(r.status === 429, 'IP bloquée même avec la bonne clé');
+
+/* ---- phase 2 : Turnstile ---- */
+_reset(); rows.length = 0; sent.length = 0;
+const env3 = Object.assign({}, env2, { TURNSTILE_SECRET: 'secret-ts-test' });
+const tok = (t, o = {}) => new Request('https://w.example/token', { method: 'POST', headers: { Origin: o.origin || env.ALLOWED_ORIGIN, 'CF-Connecting-IP': o.ip || '198.51.100.70' }, body: JSON.stringify({ t }) });
+r = await worker.fetch(tok('bon-jeton'), env2); ok(r.status === 404, 'sans TURNSTILE_SECRET : /token désactivé');
+r = await worker.fetch(tok('bon-jeton'), env3); j = await r.json();
+ok(r.status === 200 && /^\d+\.[\w-]+$/.test(j.pass) && verif[verif.length - 1].secret === 'secret-ts-test', 'jeton valide : laissez-passer signé');
+const pass = j.pass;
+ok(r.headers.get('Access-Control-Allow-Origin') === env.ALLOWED_ORIGIN, '/token : CORS limité à l’origine');
+r = await worker.fetch(tok('mauvais'), env3); ok(r.status === 403, 'jeton refusé par Cloudflare : 403');
+r = await worker.fetch(tok('autre-site'), env3); ok(r.status === 403, 'jeton d’un autre site : 403');
+r = await worker.fetch(tok('bon-jeton', { origin: 'https://evil.example' }), env3); ok(r.status === 403, '/token depuis une autre origine : 403');
+r = await worker.fetch(new Request('https://w.example/token', { method: 'POST', headers: { 'CF-Connecting-IP': '198.51.100.71' }, body: '{"t":"bon-jeton"}' }), env3); ok(r.status === 403, '/token sans Origin : 403');
+let t429 = 0; for (let i = 0; i < 14; i++) { const x = await worker.fetch(tok('mauvais', { ip: '198.51.100.72' }), env3); if (x.status === 429) t429++; }
+ok(t429 === 4, '/token : 10 essais par minute (' + t429 + ' refus)');
+const now0 = Date.now();
+ok(await checkPass(env3, env.ALLOWED_ORIGIN, pass, now0), 'laissez-passer valide');
+ok(!(await checkPass(env3, 'https://evil.example', pass, now0)), 'laissez-passer lié à l’origine');
+ok(!(await checkPass(Object.assign({}, env3, { TURNSTILE_SECRET: 'autre' }), env.ALLOWED_ORIGIN, pass, now0)), 'laissez-passer lié au secret');
+ok(!(await checkPass(env3, env.ALLOWED_ORIGIN, pass, now0 + 7 * 3600 * 1000)), 'laissez-passer expiré après 6 h');
+ok(!(await checkPass(env3, env.ALLOWED_ORIGIN, pass.slice(0, -2) + 'AA', now0)), 'signature modifiée : refusée');
+const loin = await makePass(env3, env.ALLOWED_ORIGIN, String(now0 + 48 * 3600 * 1000));
+ok(!(await checkPass(env3, env.ALLOWED_ORIGIN, loin, now0)), 'date d’expiration trop lointaine : refusée');
+await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Salma', title: 'T', sid: 'ts1', cls: '2APIC1', pass }, { ip: '198.18.2.1' }), env3);
+ok(rows.length === 1 && !/pass/.test(rows[0].data), 'élève avec laissez-passer : stocké, laissez-passer non stocké');
+await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Bot', title: 'T', sid: 'ts2', cls: '2APIC1' }, { ip: '198.18.2.2' }), env3);
+ok(rows.length === 1 && sent[sent.length - 1].body.text.includes('Turnstile'), 'sans laissez-passer : alerte marquée, rien stocké');
+await worker.fetch(req({ type: 'series', page: 'Maths', name: 'Bot', title: 'T', sid: 'ts3', cls: '2APIC1', pass: '123.abc' }, { ip: '198.18.2.3' }), env3);
+ok(rows.length === 1, 'faux laissez-passer : rien stocké');
+r = await worker.fetch(req({ type: 'open', page: 'Maths' }, { ip: '198.18.2.4' }), env3); ok(r.status === 200, 'visite anonyme : aucun laissez-passer demandé');
 console.log('FAILS:', fails); process.exit(fails ? 1 : 0);

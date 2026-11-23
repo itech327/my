@@ -7,7 +7,13 @@
    Protections de l'envoi (rapport F-1 du 17/11/2026) :
    - origine obligatoire : une requête sans en-tête Origin (curl, script) ou d'une autre origine est refusée ;
    - seuls les élèves d'une classe connue sont enregistrés dans la base ; les autres donnent une alerte marquée « غير موثّق » ;
-   - limites : 20 messages par minute et par IP, 60 par heure et par session, 30 alertes par minute au total. */
+   - limites : 20 messages par minute et par IP, 60 par heure et par session, 30 alertes par minute au total.
+
+   Phase 2 : Cloudflare Turnstile (actif seulement si le secret TURNSTILE_SECRET existe).
+   - POST /token avec { t: jeton Turnstile } : le relais vérifie le jeton auprès de Cloudflare et renvoie un laissez-passer
+     signé (HMAC, valable 6 heures, lié à l'origine). Rien n'est stocké.
+   - Un élève nommé n'est enregistré que si son message porte un laissez-passer valide ; sinon l'alerte Telegram part,
+     marquée « غير موثّق », et rien n'est stocké. Les visites anonymes (open) ne demandent rien. */
 
 const MAX_BODY = 4000;
 const LIMIT_IP = 20;       // messages par minute et par IP
@@ -15,6 +21,8 @@ const LIMIT_ALL = 30;      // alertes Telegram par minute, toutes IP confondues 
 const DEFAULT_CLASSES = ['1APIC', '2APIC', '3APIC'].reduce((a, n) => a.concat([n, n + '1', n + '2', n + '3']), []);
 const LIMIT_SESSION = 60;  // messages par heure et par session
 const RETENTION_DAYS = 180;  // durée de conservation des événements dans D1
+const PASS_TTL = 6 * 3600 * 1000;  // durée du laissez-passer Turnstile
+const LIMIT_TOKEN = 10;    // demandes de laissez-passer par minute et par IP
 const hits = new Map();
 export function _reset() { hits.clear(); }  // pour les tests
 
@@ -35,6 +43,39 @@ export function classes(env) {
   return l.length ? l : DEFAULT_CLASSES;
 }
 export function clsClean(v) { v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); return v.length >= 3 ? v : ''; }
+
+/* ---- Turnstile : laissez-passer signé ---- */
+function b64u(buf) { let s = ''; new Uint8Array(buf).forEach((b) => { s += String.fromCharCode(b); }); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function passKey(env) {
+  return crypto.subtle.importKey('raw', new TextEncoder().encode('taalim-pass|' + env.TURNSTILE_SECRET), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+}
+export async function makePass(env, origin, exp) {
+  const sig = await crypto.subtle.sign('HMAC', await passKey(env), new TextEncoder().encode(origin + '|' + exp));
+  return exp + '.' + b64u(sig);
+}
+export async function checkPass(env, origin, pass, now) {
+  const m = /^(\d{10,15})\.([\w-]{20,60})$/.exec(String(pass || ''));
+  if (!m || Number(m[1]) < now || Number(m[1]) > now + PASS_TTL + 60000) return false;
+  const good = await makePass(env, origin, m[1]);
+  if (good.length !== pass.length) return false;
+  let d = 0; for (let i = 0; i < good.length; i++) d |= good.charCodeAt(i) ^ pass.charCodeAt(i);
+  return d === 0;
+}
+async function token(request, env, origin, cors) {
+  const H = Object.assign({ 'Content-Type': 'application/json' }, cors), now = Date.now();
+  if (!env.TURNSTILE_SECRET) return new Response('{"error":"off"}', { status: 404, headers: H });
+  if (limited('tok:' + (request.headers.get('CF-Connecting-IP') || ''), LIMIT_TOKEN, 60000, now)) return new Response('{"error":"rate"}', { status: 429, headers: H });
+  const raw = await request.text();
+  if (raw.length > 4096) return new Response('{"error":"size"}', { status: 413, headers: H });
+  let t = ''; try { t = String(JSON.parse(raw).t || ''); } catch (_) { /* vide */ }
+  if (!t || t.length > 2048) return new Response('{"error":"token"}', { status: 400, headers: H });
+  const f = new FormData(); f.append('secret', env.TURNSTILE_SECRET); f.append('response', t);
+  const ip = request.headers.get('CF-Connecting-IP'); if (ip) f.append('remoteip', ip);
+  let j = {}; try { j = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f })).json(); } catch (_) { j = {}; }
+  if (!j.success || (j.hostname && 'https://' + j.hostname !== origin)) return new Response('{"error":"verify"}', { status: 403, headers: H });
+  const exp = now + PASS_TTL;
+  return new Response(JSON.stringify({ pass: await makePass(env, origin, exp), exp }), { status: 200, headers: H });
+}
 
 /* Événement à stocker pour le tableau de bord : élèves nommés (login, series, end, exit). Le serveur ne l'appelle que pour une classe connue. */
 export function toRow(p, now) {
@@ -152,6 +193,7 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (request.method !== 'POST') return new Response('method', { status: 405, headers: cors });
     if (!origin || list.indexOf(origin) < 0) return new Response('origin', { status: 403, headers: cors });
+    if (url.pathname === '/token') return token(request, env, origin, cors);
     if (!env.BOT_TOKEN || !env.CHAT_ID) return new Response('config', { status: 500, headers: cors });
     const raw = await request.text();
     if (raw.length > MAX_BODY) return new Response('size', { status: 413, headers: cors });
@@ -165,9 +207,11 @@ export default {
     if (!text) return new Response('type', { status: 400, headers: cors });
     const named = ['login', 'series', 'end', 'exit'].indexOf(clean(p.type, 10)) >= 0 && clean(p.name, 60);
     const known = classes(env).indexOf(clsClean(p.cls)) >= 0;
+    const human = !env.TURNSTILE_SECRET || !named || await checkPass(env, origin, p.pass, now);
     if (named && !known) text = '⚠️ غير موثّق: قسم غير معروف (' + (clsClean(p.cls) || 'بدون قسم') + ')\n' + text;
+    else if (named && !human) text = '⚠️ غير موثّق: تحقق Turnstile غير صالح\n' + text;
     if (limited('all', LIMIT_ALL, 60000, now)) return new Response('rate', { status: 429, headers: cors });
-    if (named && known) await store(env, toRow(p, now));
+    if (named && known && human) await store(env, toRow(p, now));
     const r = await fetch('https://api.telegram.org/bot' + env.BOT_TOKEN + '/sendMessage', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: env.CHAT_ID, text: text.slice(0, 3900), disable_web_page_preview: true })

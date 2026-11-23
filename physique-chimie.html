@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-caCgjUEPOLhNq+vINUQaH/ZY37YXdqJvPMOB75sXOdU=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-oVYzUI28r/sEE3ulI6qD5yOfIR4WFXim+hsHLiiryOU=' 'sha256-TDhLLaAoyK8csqN3uEMabgBPzrWGMCI+HnRpkLrMBEI=' 'sha256-PVZ6WSjlR9PZQI6KkTidaly887/OUvifsewT7aCbl9M=' 'sha256-uvFn6mVqn11ziNOM9DuQ1L3gz/Q9dHJBfRLOhY8mt8w=' 'sha256-8ZnQbroxM3tv9pMoXeT2AS5A4QyQoG3AdxEarW7V/M0=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-iW8h82t55A1VFLGHYsxUA2Rn22n1GtUZelL/iU/upRw=' 'sha256-5OEfrD9FSheeTI7+6Yqn1NtFEq7eGMHNW1UQ3S9Q6rU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-wpe1g8DqxQOLH9uGEsFJdIBQN0+zhfv4dCmKY+v3cLg=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-oVYzUI28r/sEE3ulI6qD5yOfIR4WFXim+hsHLiiryOU=' 'sha256-TDhLLaAoyK8csqN3uEMabgBPzrWGMCI+HnRpkLrMBEI=' 'sha256-PVZ6WSjlR9PZQI6KkTidaly887/OUvifsewT7aCbl9M=' 'sha256-uvFn6mVqn11ziNOM9DuQ1L3gz/Q9dHJBfRLOhY8mt8w=' 'sha256-8ZnQbroxM3tv9pMoXeT2AS5A4QyQoG3AdxEarW7V/M0=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-iW8h82t55A1VFLGHYsxUA2Rn22n1GtUZelL/iU/upRw=' 'sha256-5OEfrD9FSheeTI7+6Yqn1NtFEq7eGMHNW1UQ3S9Q6rU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس الفيزياء والكيمياء للسنوات الأولى والثانية والثالثة إعدادي بمحاكاة متحركة وملخصات بالعربية وتمارين حسب المستوى. Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie">
@@ -522,7 +522,7 @@ document.addEventListener('click',function(e){
 })();
 
 </script>
-<script src="lab/notify-config.js?v=442d20fd"></script>
+<script src="lab/notify-config.js?v=58d2e37b"></script>
 <script>
 /* Configuration des défis : Physique-Chimie en mouvement */
 (function () {
@@ -1043,7 +1043,44 @@ document.addEventListener('click',function(e){
   var Notify = (Lab.Notify = {});
   function nurl() { return window.LAB_NOTIFY_URL || ''; }
   Notify.enabled = function () { return !!nurl(); };
+  /* Turnstile (phase 2) : laissez-passer demandé une fois par session, seulement pour les envois nommés.
+     Sans clé de site dans notify-config.js, rien n'est chargé. */
+  var passWait = null;
+  function getPass(cb) {
+    var key = window.LAB_TURNSTILE_SITEKEY || '', u = nurl();
+    if (!key || !u) return cb('');
+    try { var o = JSON.parse(sessionStorage.getItem('lab_pass') || 'null'); if (o && o.pass && o.exp > Date.now() + 60000) return cb(o.pass); } catch (_) {}
+    if (passWait) { passWait.push(cb); return; }
+    passWait = [cb];
+    var box = null, timer = setTimeout(function () { done(''); }, 20000);
+    function done(p) { clearTimeout(timer); var l = passWait || []; passWait = null; if (box && box.parentNode) box.parentNode.removeChild(box); l.forEach(function (f) { f(p); }); }
+    function go() {
+      try {
+        box = document.createElement('div'); box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999'; document.body.appendChild(box);
+        window.turnstile.render(box, { sitekey: key, appearance: 'interaction-only', action: 'notes',
+          callback: function (t) {
+            fetch(u.replace(/\/$/, '') + '/token', { method: 'POST', body: JSON.stringify({ t: t }), headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
+              .then(function (r) { return r.ok ? r.json() : {}; })
+              .then(function (j) { if (j && j.pass) { try { sessionStorage.setItem('lab_pass', JSON.stringify({ pass: j.pass, exp: j.exp })); } catch (_) {} } done((j && j.pass) || ''); })
+              ['catch'](function () { done(''); });
+          },
+          'error-callback': function () { done(''); }
+        });
+      } catch (_) { done(''); }
+    }
+    if (window.turnstile) return go();
+    var sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true;
+    sc.onload = go; sc.onerror = function () { done(''); }; document.head.appendChild(sc);
+  }
+  Notify.getPass = getPass;
   function send(payload, beacon) {
+    if (payload.type !== 'open' && !payload.pass && window.LAB_TURNSTILE_SITEKEY) {
+      return getPass(function (p) { payload.pass = p || 'none'; send(payload, beacon); });
+    }
+    if (payload.pass === 'none') delete payload.pass;
+    sendNow(payload, beacon);
+  }
+  function sendNow(payload, beacon) {
     var u = nurl(); if (!u) return;
     payload.v = 1; payload.page = CFG.appName; payload.t = Date.now();
     var body = JSON.stringify(payload);
