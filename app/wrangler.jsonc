@@ -1,0 +1,27 @@
+{
+	// Sada web app on Cloudflare Workers (OpenNext adapter). Needs the Workers Paid plan:
+	// the free plan allows 10 ms of CPU per request, too little for server-rendered pages.
+	//
+	// First deploy, from app/:
+	//   npx wrangler d1 create sada                       (or let the deploy create it)
+	//   npx wrangler d1 migrations apply sada --remote    (schema in migrations/)
+	//   npx wrangler secret put GEMINI_API_KEY            (the Google key, never in this file)
+	//   npx wrangler secret put MCP_ACCESS_KEY            (access code of the in-app MCP route)
+	//   npm run deploy
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "sada-app",
+	"compatibility_date": "2026-11-23",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+	"services": [
+		// self-reference used by the adapter, the service name must match the worker name
+		{ "binding": "WORKER_SELF_REFERENCE", "service": "sada-app" }
+	],
+	// accounts, sessions, credits and history; ids are created on the first deploy
+	"d1_databases": [{ "binding": "DB", "database_name": "sada", "migrations_dir": "migrations" }],
+	// generated audio, each file expires after 7 days
+	"kv_namespaces": [{ "binding": "AUDIO" }],
+	"vars": { "TTS_GEMINI": "1" },
+	"observability": { "enabled": true }
+}
