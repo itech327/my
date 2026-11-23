@@ -97,11 +97,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-06.mp3",
       "seconds": 12,
       "generatedAt": "2026-11-23T17:13:32.450Z",
-      "spokenText": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة."
+      "spokenText": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-fusha-07",
@@ -113,11 +115,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-07.mp3",
       "seconds": 9,
       "generatedAt": "2026-11-23T17:13:36.479Z",
-      "spokenText": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر."
+      "spokenText": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-fusha-08",
@@ -129,11 +133,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "في الكسر ثلاثة على أربعة، يسمى العدد ثلاثة بسطا، ويسمى العدد أربعة مقاما.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-08.mp3",
       "seconds": 9,
       "generatedAt": "2026-11-23T17:13:40.940Z",
-      "spokenText": "في الكسر ثلاثة على أربعة، يسمى العدد ثلاثة بسطا، ويسمى العدد أربعة مقاما."
+      "spokenText": "في الكسر ثلاثة على أربعة، يسمى العدد ثلاثة بسطا، ويسمى العدد أربعة مقاما.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-fusha-09",
@@ -145,11 +151,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-09.mp3",
       "seconds": 9,
       "generatedAt": "2026-11-23T17:13:45.224Z",
-      "spokenText": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع."
+      "spokenText": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-fusha-10",
@@ -161,11 +169,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "العمليات الحسابية الأربع هي: الجمع، والطرح، والضرب، والقسمة.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-10.mp3",
       "seconds": 8,
       "generatedAt": "2026-11-23T17:13:49.768Z",
-      "spokenText": "العمليات الحسابية الأربع هي: الجمع، والطرح، والضرب، والقسمة."
+      "spokenText": "العمليات الحسابية الأربع هي: الجمع، والطرح، والضرب، والقسمة.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-01",
@@ -177,11 +187,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-01.mp3",
       "seconds": 11,
       "generatedAt": "2026-11-23T17:13:54.805Z",
-      "spokenText": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة."
+      "spokenText": "واحد، جوج، تلاتة، ربعة، خمسة، ستة، سبعة، تمنية، تسعود، عشرة.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-02",
@@ -193,11 +205,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "حضاش، طناش، تلطاش، ربعطاش، خمسطاش، سطاش، سبعطاش، تمنطاش، تسعطاش، عشرين.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-02.mp3",
       "seconds": 12,
       "generatedAt": "2026-11-23T17:13:59.951Z",
-      "spokenText": "حضاش، طناش، تلطاش، ربعطاش، خمسطاش، سطاش، سبعطاش، تمنطاش، تسعطاش، عشرين."
+      "spokenText": "حضاش، طناش، تلطاش، ربعطاش، خمسطاش، سطاش، سبعطاش، تمنطاش، تسعطاش، عشرين.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-03",
@@ -209,11 +223,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "الكسر هو جزء من شي حاجة. إلا قسمنا خبزة على ربعة، كل طرف هو ربع.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-03.mp3",
       "seconds": 5,
       "generatedAt": "2026-11-23T17:14:03.983Z",
-      "spokenText": "الكسر هو جزء من شي حاجة. إلا قسمنا خبزة على ربعة، كل طرف هو ربع."
+      "spokenText": "الكسر هو جزء من شي حاجة. إلا قسمنا خبزة على ربعة، كل طرف هو ربع.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-04",
@@ -225,11 +241,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "الأعداد السالبة هي اللي تحت الصفر، بحال الحرارة فالشتا: ناقص جوج درجات.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-04.mp3",
       "seconds": 6,
       "generatedAt": "2026-11-23T17:14:08.041Z",
-      "spokenText": "الأعداد السالبة هي اللي تحت الصفر، بحال الحرارة فالشتا: ناقص جوج درجات."
+      "spokenText": "الأعداد السالبة هي اللي تحت الصفر، بحال الحرارة فالشتا: ناقص جوج درجات.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-05",
@@ -241,11 +259,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "العدد العشري فيه فاصلة. تلاتة فاصلة خمسة يعني تلاتة ونص.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-05.mp3",
       "seconds": 5,
       "generatedAt": "2026-11-23T17:14:12.061Z",
-      "spokenText": "العدد العشري فيه فاصلة. تلاتة فاصلة خمسة يعني تلاتة ونص."
+      "spokenText": "العدد العشري فيه فاصلة. تلاتة فاصلة خمسة يعني تلاتة ونص.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-06",
@@ -257,11 +277,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "خمسين فالمية معناها النص، وخمسة وعشرين فالمية هي الربع.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-06.mp3",
       "seconds": 5,
       "generatedAt": "2026-11-23T17:14:15.731Z",
-      "spokenText": "خمسين فالمية معناها النص، وخمسة وعشرين فالمية هي الربع."
+      "spokenText": "خمسين فالمية معناها النص، وخمسة وعشرين فالمية هي الربع.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "num-darija-07",
@@ -285,11 +307,13 @@
       "voice": "younes",
       "delivery": "service",
       "text": "دابا غادي نحسبو مع بعضياتنا. ركز معايا مزيان.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/class-darija-01.mp3",
       "seconds": 4,
       "generatedAt": "2026-11-23T17:14:22.793Z",
-      "spokenText": "دابا غادي نحسبو مع بعضياتنا. ركز معايا مزيان."
+      "spokenText": "دابا غادي نحسبو مع بعضياتنا. ركز معايا مزيان.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "class-darija-02",
@@ -301,11 +325,13 @@
       "voice": "younes",
       "delivery": "service",
       "text": "مزيان بزاف! جواب صحيح، برافو عليك.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/class-darija-02.mp3",
       "seconds": 4,
       "generatedAt": "2026-11-23T17:14:26.545Z",
-      "spokenText": "مزيان بزاف! جواب صحيح، برافو عليك."
+      "spokenText": "مزيان بزاف! جواب صحيح، برافو عليك.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     },
     {
       "id": "class-darija-03",
@@ -317,11 +343,13 @@
       "voice": "younes",
       "delivery": "service",
       "text": "ماشي مشكل، عاود حاول مرة أخرى، راك قريب.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/class-darija-03.mp3",
       "seconds": 4,
       "generatedAt": "2026-11-23T17:14:29.915Z",
-      "spokenText": "ماشي مشكل، عاود حاول مرة أخرى، راك قريب."
+      "spokenText": "ماشي مشكل، عاود حاول مرة أخرى، راك قريب.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-23"
     }
   ]
 }
