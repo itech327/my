@@ -216,7 +216,8 @@ def home_page(s, cfg, lessons):
              'publisher': {'@type': 'Organization', 'name': PARENT['name'], 'url': PARENT['url']}},
             crumbs(cfg)]}
     out = [head(s, cfg, title, desc, cfg['url'], 0, seo_extra(s, cfg, 0, ld)),
-           '<script defer src="core/notify-config.js"></script>\n<script defer src="core/mv.js"></script>\n</head>\n<body data-home>\n<main>\n',
+           '<script defer src="core/notify-config.js"></script>\n<script defer src="core/mv.js"></script>\n' +
+           ('<script defer src="core/enigmes.js"></script>\n<script defer src="core/enigme.js"></script>\n' if s in DEFIS else '') + '</head>\n<body data-home>\n<main>\n',
            f'<div class="hero"><div class="glyph">{cfg["glyph"]}</div><h1>{E(cfg["name"])} en mouvement</h1>',
            f'<div class="ar">{E(cfg["ar"])}: {E(LEAD_AR)}</div><p class="small">{E(LEAD)}</p></div>\n',
            '<nav class="lvl" aria-label="Niveaux">' + ''.join(f'<a href="#n{k}">{k}AC</a>' for k, _, _ in LEVELS if k in cfg.get('levels', '123')) + '</nav>\n',
@@ -224,6 +225,9 @@ def home_page(s, cfg, lessons):
            '<span class="ar">امتحانات: ثلاثة مستويات للصعوبة، النقطة على 20 والتصحيح</span></span></a>\n',
            '<a class="lesson exam" href="revision/"><span class="n">8</span><span><span class="eyebrow">Chaque jour, cinq minutes</span><b>Révision du jour</b>'
            '<span class="ar">مراجعة اليوم: بطاقات متباعدة تثبّت الذاكرة وخريطة إتقان</span></span></a>\n']
+    if s in DEFIS:
+        out.append('<a class="lesson exam" href="defis/"><span class="n">⚡</span><span><span class="eyebrow">Entraînement</span><b>Défis par chapitre</b>'
+                   '<span class="ar">تحديات: سلاسل عشوائية بأربعة مستويات وتحدي الأسبوع</span></span></a>\n<div id="enigme"></div>\n')
     for k, fr, ar in LEVELS:
         if k not in cfg.get('levels', '123'):
             continue
@@ -250,6 +254,25 @@ def exam_page(s, cfg):
             f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
             f'<div class="eyebrow">{E(cfg["name"])} · Examens</div>\n<h1>Examens</h1>\n<div class="ar">امتحانات حسب المستوى ودرجة الصعوبة، مع النقطة على 20 والتصحيح</div>\n'
             '<noscript><p class="card">Les examens ont besoin de JavaScript.</p></noscript>\n'
+            f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
+
+
+DEFIS = ('maths', 'pc', 'svt')   # matières qui ont des défis (moteur copié par tools/sync_defis.py)
+
+
+def defis_page(s, cfg):
+    url = f'{cfg["url"]}defis/'
+    title, desc = f'Défis · {cfg["name"]} en mouvement', f'Séries d’exercices tirées au hasard en {cfg["full"]}, chapitre par chapitre : quatre niveaux, défi chronométré et défi de la semaine.'
+    if s in SEO:
+        title = f'تحديات {cfg["ar"]} | {title}'
+        desc = f'تمارين {cfg["ar"]} للسلك الإعدادي تتجدد في كل مرة، بأربعة مستويات وتحدي الأسبوع. مجانية. {desc}'
+    return (head(s, cfg, title, desc, url, 1, seo_extra(s, cfg, 1, None) if s in SEO else '') +
+            '<script defer src="../core/notify-config.js"></script>\n<script defer src="../core/mv.js"></script>\n'
+            '<script defer src="../core/defis-donnees.js"></script>\n<script defer src="../core/lab.js"></script>\n'
+            '<script defer src="chapitres.js"></script>\n<script defer src="../core/defis.js"></script>\n</head>\n<body>\n<main id="ex">\n'
+            f'<div class="top"><a href="../">◀ Toutes les leçons</a><span class="brand">{cfg["glyph"]} {E(cfg["name"])}</span></div>\n'
+            f'<div class="eyebrow">{E(cfg["name"])} · Défis</div>\n<h1>Défis par chapitre</h1>\n<div class="ar">تحديات: أسئلة تتجدد في كل مرة، بأربعة مستويات، مع تحدٍّ بمؤقت وتحدي الأسبوع</div>\n'
+            '<noscript><p class="card">Les défis ont besoin de JavaScript.</p></noscript>\n'
             f'</main>\n<footer class="wrap">{footer(s)}</footer>\n</body>\n</html>\n')
 
 
@@ -328,6 +351,19 @@ def build():
         (d / 'revision').mkdir()
         (d / 'revision' / 'index.html').write_text(revision_page(s, cfg), encoding='utf-8')
         urls.append(f'{cfg["url"]}revision/')
+        if s in DEFIS:
+            DF = MV / 'defis'
+            shutil.copy(DF / 'lab.js', d / 'core' / 'lab.js')
+            shutil.copy(DF / f'{s}.js', d / 'core' / 'defis-donnees.js')
+            shutil.copy(MV / 'core' / 'defis.js', d / 'core' / 'defis.js')
+            shutil.copy(MV / 'core' / 'enigme.js', d / 'core' / 'enigme.js')
+            ch = json.loads((DF / 'chapitres.json').read_text(encoding='utf-8'))[s]
+            en = json.loads((DF / 'enigmes.json').read_text(encoding='utf-8'))[s]
+            (d / 'core' / 'enigmes.js').write_text('window.MVE=' + json.dumps(en, ensure_ascii=False) + ';\n', encoding='utf-8')
+            (d / 'defis').mkdir()
+            (d / 'defis' / 'chapitres.js').write_text('window.MVD=' + json.dumps(ch, ensure_ascii=False) + ';\n', encoding='utf-8')
+            (d / 'defis' / 'index.html').write_text(defis_page(s, cfg), encoding='utf-8')
+            urls.append(f'{cfg["url"]}defis/')
         (d / 'parcours').mkdir()
         (d / 'parcours' / 'index.html').write_text(parcours_page(s, cfg), encoding='utf-8')
         urls.append(f'{cfg["url"]}parcours/')

@@ -1,0 +1,255 @@
+{
+ "maths": [
+  {
+   "q": "Je pense à un nombre, je le double, j’ajoute 6, puis je divise par 2. J’obtiens 11. Quel est mon nombre ?",
+   "qa": "فكرت في عدد، ضاعفته، أضفت 6 ثم قسمت على 2 فوجدت 11. ما هو العدد؟",
+   "o": [
+    "5",
+    "8",
+    "11",
+    "14"
+   ],
+   "a": 1,
+   "e": "(2x + 6) ÷ 2 = x + 3. Donc x + 3 = 11 et x = 8.",
+   "ea": "(2x + 6) ÷ 2 = x + 3. إذن x + 3 = 11 و x = 8."
+  },
+  {
+   "q": "Combien de diagonales a un hexagone ?",
+   "qa": "كم قطرا للسداسي؟",
+   "o": [
+    "6",
+    "12",
+    "9",
+    "18"
+   ],
+   "a": 2,
+   "e": "Chaque sommet se relie à 3 autres sommets non voisins : 6 × 3 ÷ 2 = 9.",
+   "ea": "كل رأس يتصل بثلاثة رؤوس غير مجاورة: 6 × 3 ÷ 2 = 9."
+  },
+  {
+   "q": "Un carré a un périmètre de 20 cm. Quelle est son aire ?",
+   "qa": "محيط مربع 20 سم. ما مساحته؟",
+   "o": [
+    "20 cm²",
+    "40 cm²",
+    "100 cm²",
+    "25 cm²"
+   ],
+   "a": 3,
+   "e": "Le côté vaut 20 ÷ 4 = 5 cm. L’aire vaut 5 × 5 = 25 cm².",
+   "ea": "الضلع = 20 ÷ 4 = 5 سم. المساحة = 5 × 5 = 25 سم²."
+  },
+  {
+   "q": "Quel est le plus petit entier positif divisible à la fois par 2, 3 et 4 ?",
+   "qa": "ما هو أصغر عدد صحيح موجب يقبل القسمة على 2 و3 و4 معا؟",
+   "o": [
+    "12",
+    "6",
+    "24",
+    "9"
+   ],
+   "a": 0,
+   "e": "Les multiples de 4 sont 4, 8, 12… Le premier qui est aussi multiple de 3 est 12.",
+   "ea": "مضاعفات 4: 4 و8 و12... أول مضاعف منها يقبل القسمة على 3 هو 12."
+  },
+  {
+   "q": "On multiplie le côté d’un carré par 3. Par combien l’aire est-elle multipliée ?",
+   "qa": "ضربنا ضلع مربع في 3. في كم تضرب مساحته؟",
+   "o": [
+    "3",
+    "6",
+    "12",
+    "9"
+   ],
+   "a": 3,
+   "e": "Le nouveau côté est 3c, donc l’aire est (3c)² = 9c².",
+   "ea": "الضلع الجديد 3c إذن المساحة (3c)² = 9c²."
+  },
+  {
+   "q": "La moyenne de 4, 8 et x est égale à 8. Que vaut x ?",
+   "qa": "معدل الأعداد 4 و8 و x يساوي 8. كم قيمة x؟",
+   "o": [
+    "8",
+    "10",
+    "12",
+    "14"
+   ],
+   "a": 2,
+   "e": "La somme vaut 3 × 8 = 24. Donc x = 24 − 4 − 8 = 12.",
+   "ea": "المجموع = 3 × 8 = 24. إذن x = 24 − 4 − 8 = 12."
+  }
+ ],
+ "pc": [
+  {
+   "q": "Un glaçon flotte dans un verre d’eau rempli à ras bord. Quand il a fondu, le verre déborde-t-il ?",
+   "qa": "قطعة ثلج تطفو في كأس ماء ممتلئ حتى الحافة. عند ذوبانها هل ينسكب الماء؟",
+   "o": [
+    "Oui, un peu",
+    "Non, le niveau ne change pas",
+    "Oui, beaucoup",
+    "Le verre se vide"
+   ],
+   "a": 1,
+   "e": "Le glaçon déplace un volume d’eau de même masse que lui. En fondant, il donne exactement ce volume d’eau liquide.",
+   "ea": "قطعة الثلج تزيح حجما من الماء له نفس كتلتها. عند الذوبان تعطي بالضبط هذا الحجم من الماء السائل."
+  },
+  {
+   "q": "Comment s’appelle le passage de l’état liquide à l’état solide ?",
+   "qa": "ماذا نسمي الانتقال من الحالة السائلة إلى الحالة الصلبة؟",
+   "o": [
+    "La fusion",
+    "La vaporisation",
+    "La solidification",
+    "La condensation"
+   ],
+   "a": 2,
+   "e": "Liquide vers solide : solidification. Solide vers liquide : fusion.",
+   "ea": "من سائل إلى صلب: التصلب. ومن صلب إلى سائل: الانصهار."
+  },
+  {
+   "q": "Quelle grandeur est conservée quand la glace fond ?",
+   "qa": "ما المقدار الذي يبقى ثابتا عندما يذوب الثلج؟",
+   "o": [
+    "Le volume",
+    "La masse",
+    "La forme",
+    "La masse volumique"
+   ],
+   "a": 1,
+   "e": "La masse se conserve lors d’un changement d’état. Le volume et la masse volumique changent.",
+   "ea": "تبقى الكتلة ثابتة خلال تغيّر الحالة. أما الحجم والكتلة الحجمية فيتغيران."
+  },
+  {
+   "q": "Une voiture parcourt 90 km en 1 h 30. Quelle est sa vitesse moyenne ?",
+   "qa": "قطعت سيارة 90 كم في ساعة ونصف. ما سرعتها المتوسطة؟",
+   "o": [
+    "45 km/h",
+    "60 km/h",
+    "90 km/h",
+    "135 km/h"
+   ],
+   "a": 1,
+   "e": "v = d ÷ t = 90 ÷ 1,5 = 60 km/h.",
+   "ea": "v = d ÷ t = 90 ÷ 1,5 = 60 كم/س."
+  },
+  {
+   "q": "On dissout du sel dans de l’eau. Quel type de mélange obtient-on ?",
+   "qa": "أذبنا ملحا في الماء. ما نوع الخليط الناتج؟",
+   "o": [
+    "Un mélange hétérogène",
+    "Un corps pur",
+    "Un mélange homogène",
+    "Un élément chimique"
+   ],
+   "a": 2,
+   "e": "On ne distingue plus le sel de l’eau à l’œil nu : le mélange est homogène.",
+   "ea": "لا نميّز الملح عن الماء بالعين المجردة: الخليط متجانس."
+  },
+  {
+   "q": "Un seul fil relie directement les deux bornes d’une pile. Comment nomme-t-on cette situation, à ne jamais reproduire ?",
+   "qa": "سلك واحد يصل مباشرة بين قطبي عمود. ماذا نسمي هذه الوضعية التي يجب ألا نكررها؟",
+   "o": [
+    "Un circuit en série",
+    "Un circuit en dérivation",
+    "Un circuit ouvert",
+    "Un court-circuit"
+   ],
+   "a": 3,
+   "e": "C’est un court-circuit : le courant est très intense, le fil et la pile chauffent. Il est dangereux.",
+   "ea": "هذا هو القصر الكهربائي: تصبح الشدة كبيرة جدا فيسخن السلك والعمود. وهو خطير."
+  }
+ ],
+ "svt": [
+  {
+   "q": "Quelle cellule du sang transporte le dioxygène ?",
+   "qa": "أي خلية في الدم تنقل ثنائي الأوكسجين؟",
+   "o": [
+    "Les globules blancs",
+    "Les plaquettes",
+    "Les globules rouges",
+    "Le plasma"
+   ],
+   "a": 2,
+   "e": "Les globules rouges contiennent l’hémoglobine qui fixe le dioxygène.",
+   "ea": "تحتوي الكريات الحمراء على الهيموغلوبين الذي يثبت ثنائي الأوكسجين."
+  },
+  {
+   "q": "Où se fait l’essentiel de l’absorption des nutriments ?",
+   "qa": "أين يتم معظم امتصاص المغذيات؟",
+   "o": [
+    "L’estomac",
+    "L’intestin grêle",
+    "Le gros intestin",
+    "L’œsophage"
+   ],
+   "a": 1,
+   "e": "La paroi de l’intestin grêle est très plissée, ce qui offre une grande surface d’absorption.",
+   "ea": "جدار الأمعاء الدقيقة كثير الثنيات، فيوفر مساحة امتصاص كبيرة."
+  },
+  {
+   "q": "Combien de chromosomes contient une cellule non sexuelle humaine ?",
+   "qa": "كم صبغيا في خلية جسدية عند الإنسان؟",
+   "o": [
+    "23",
+    "46",
+    "92",
+    "48"
+   ],
+   "a": 1,
+   "e": "23 paires, soit 46 chromosomes. Les cellules sexuelles en ont 23.",
+   "ea": "23 زوجا أي 46 صبغيا. أما الخلايا الجنسية ففيها 23."
+  },
+  {
+   "q": "Chez une plante à fleurs, de quelle partie de la fleur le fruit se forme-t-il ?",
+   "qa": "عند نبات زهري، من أي جزء من الزهرة يتكوّن الثمر؟",
+   "o": [
+    "Du pétale",
+    "Du sépale",
+    "De l’ovaire",
+    "De l’étamine"
+   ],
+   "a": 2,
+   "e": "Après la fécondation, l’ovaire devient le fruit et les ovules deviennent les graines.",
+   "ea": "بعد الإخصاب يتحول المبيض إلى ثمرة وتتحول البويضات إلى بذور."
+  },
+  {
+   "q": "Un enfant reçoit un chromosome X de sa mère et un chromosome Y de son père. Quel est son sexe ?",
+   "qa": "طفل ورث صبغي X من أمه وصبغي Y من أبيه. ما جنسه؟",
+   "o": [
+    "Fille",
+    "Garçon",
+    "On ne peut pas savoir",
+    "Cela dépend de l’âge de la mère"
+   ],
+   "a": 1,
+   "e": "Le génotype XY correspond à un garçon. Les filles sont XX.",
+   "ea": "النمط XY يوافق ذكرا. أما الإناث فهن XX."
+  },
+  {
+   "q": "Dans une chaîne alimentaire, qui est le producteur ?",
+   "qa": "في سلسلة غذائية، من هو المنتِج؟",
+   "o": [
+    "Le carnivore",
+    "L’herbivore",
+    "Le décomposeur",
+    "La plante verte"
+   ],
+   "a": 3,
+   "e": "La plante verte fabrique sa matière organique grâce à la lumière : la photosynthèse.",
+   "ea": "النبات الأخضر يصنع مادته العضوية بفضل الضوء: التركيب الضوئي."
+  },
+  {
+   "q": "Les antibiotiques sont efficaces contre :",
+   "qa": "المضادات الحيوية فعّالة ضد:",
+   "o": [
+    "Les virus",
+    "Les bactéries",
+    "Tous les microbes",
+    "Les allergies"
+   ],
+   "a": 1,
+   "e": "Ils agissent sur les bactéries. Ils sont sans effet sur les virus comme celui de la grippe.",
+   "ea": "تؤثر في البكتيريا. ولا أثر لها على الفيروسات مثل فيروس الزكام."
+  }
+ ]
+}

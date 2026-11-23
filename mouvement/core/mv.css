@@ -255,3 +255,20 @@ a.lesson.exam.compact .ar{display:none}
 .toast>div{margin:4px 0}
 .toast .btn{margin:8px 8px 0 0;display:inline-block;text-decoration:none}
 @media (prefers-reduced-motion:no-preference){.toast{animation:tin .25s ease-out}@keyframes tin{from{transform:translateY(20px);opacity:0}}}
+
+/* défis : le moteur lab.js utilise ses propres variables, rattachées ici à celles du site */
+.lab-host,.lab-modal,.enigme{--surface:var(--panel);--surface-2:var(--bg);--fg:var(--ink);--muted:var(--mute);--teal:var(--acc);--coral:var(--bad);--pink:var(--acc);--lav:var(--acc)}
+.lab-host:empty{display:none}
+.lab-host{margin-top:12px}
+.defi{padding:0;overflow:hidden}
+.defi>.lab-host{padding:0 14px 14px}
+.defi-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;width:100%;padding:14px;cursor:pointer}
+.defi-head:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.defi-head .n{width:30px;height:30px;border-radius:50%;background:var(--acc-bg);color:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:700}
+.defi-head .ar{display:block;color:var(--mute);font-size:14px}
+.defi-head[aria-expanded="true"] .go{transform:rotate(90deg)}
+.enigme .q{font-weight:600;margin:6px 0}
+.enigme .opts{display:grid;gap:8px;margin:8px 0}
+.enigme .opts .btn{text-align:left}
+.enigme .opts .btn.ok{border-color:var(--ok);color:var(--ok)}
+.enigme .opts .btn.ko{border-color:var(--bad);color:var(--bad)}
