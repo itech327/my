@@ -85,7 +85,11 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "الأعداد السالبة أصغر من الصفر. نقرأ: سالب واحد، سالب اثنين، سالب ثلاثة.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-fusha-05.mp3",
+      "seconds": 9,
+      "generatedAt": "2026-11-23T16:24:38.074Z",
+      "spokenText": "الأعداد السالبة أصغر من الصفر. نقرأ: سالب واحد، سالب اثنين، سالب ثلاثة."
     },
     {
       "id": "num-fusha-06",
@@ -97,7 +101,11 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-fusha-06.mp3",
+      "seconds": 11,
+      "generatedAt": "2026-11-23T16:24:43.136Z",
+      "spokenText": "العدد العشري يتكون من جزء صحيح وجزء عشري، تفصل بينهما فاصلة. مثلا: ثلاثة فاصلة خمسة."
     },
     {
       "id": "num-fusha-07",
@@ -109,7 +117,11 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-fusha-07.mp3",
+      "seconds": 7,
+      "generatedAt": "2026-11-23T16:24:47.570Z",
+      "spokenText": "من الكسور المشهورة: النصف، والثلث، والربع، والخمس، والعشر."
     },
     {
       "id": "num-fusha-08",
@@ -121,7 +133,11 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "في الكسر ثلاثة على أربعة، يسمى العدد ثلاثة بسطا، ويسمى العدد أربعة مقاما.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-fusha-08.mp3",
+      "seconds": 9,
+      "generatedAt": "2026-11-23T16:24:52.484Z",
+      "spokenText": "في الكسر ثلاثة على أربعة، يسمى العدد ثلاثة بسطا، ويسمى العدد أربعة مقاما."
     },
     {
       "id": "num-fusha-09",
@@ -133,7 +149,11 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع.",
-      "status": "pending"
+      "status": "generated",
+      "file": "audio/num-fusha-09.mp3",
+      "seconds": 7,
+      "generatedAt": "2026-11-23T16:24:56.751Z",
+      "spokenText": "خمسون في المائة تعني النصف، وخمسة وعشرون في المائة تعني الربع."
     },
     {
       "id": "num-fusha-10",
