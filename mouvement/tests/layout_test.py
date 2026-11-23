@@ -113,7 +113,7 @@ async def main():
                 ids = [i for i in ids if s + '/' + i in ONLY]
             for vname, vopt in VIEWS.items():
                 ctx = await br.new_context(**vopt)
-                await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', lambda r: r.fulfill(status=200, body='ok'))  # relais Telegram simulé
+                await ctx.route('https://relay.taalim.men/**', lambda r: r.fulfill(status=200, body='ok'))  # relais Telegram simulé
                 for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
                     await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
                 await check_page(ctx, base, '%s/accueil [%s]' % (s, vname), False, '%s-accueil-%s' % (s, vname))

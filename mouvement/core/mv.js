@@ -154,6 +154,8 @@
     var v; try { v = sessionStorage.getItem('mv_sid'); if (!v) { v = 'mv' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem('mv_sid', v); } } catch (_) { v = ''; }
     return v;
   }
+  // classes reconnues par le relais (variable CLASSES du Worker) : les notes des autres ne sont pas gardées au tableau de bord
+  var CLASSES = ['1APIC1', '1APIC2', '1APIC3', '2APIC1', '2APIC2', '2APIC3', '3APIC1', '3APIC2', '3APIC3'];
   function eleve() { try { return JSON.parse(store.get('mv_eleve') || 'null'); } catch (_) { return null; } }
   function send(p) {
     var u = window.LAB_NOTIFY_URL; if (!u) return;
@@ -190,16 +192,18 @@
       var e = eleve() || {};
       c.innerHTML = '<div class="eyebrow">Envoyer mes notes à mon enseignant</div>' +
         '<div class="ar">إرسال نقطي إلى أستاذي (اختياري)</div>' +
-        '<div class="row"><input class="num txt" maxlength="40" aria-label="Prénom et nom" placeholder="Prénom et nom"><input class="num txt cls" maxlength="12" aria-label="Code de classe" placeholder="Classe (facultatif)"></div>' +
+        '<div class="row"><input class="num txt" maxlength="40" aria-label="Prénom et nom" placeholder="Prénom et nom"><select class="num txt cls" aria-label="Classe"><option value="">Classe · القسم</option>' +
+        CLASSES.map(function (k) { return '<option>' + k + '</option>'; }).join('') + '</select></div>' +
+        '<p class="small">Choisis ta classe : sans elle, l’alerte arrive mais tes notes ne sont pas gardées. · اختر قسمك، وإلا لا تُحفظ نقطك.</p>' +
         '<label class="small chk"><input type="checkbox"> J’accepte d’envoyer mon nom et mes notes à mon enseignant.</label>' +
         '<div class="fb"></div>';
-      var ins = c.querySelectorAll('input'), fb = c.querySelector('.fb');
-      ins[0].value = e.name || ''; ins[1].value = e.cls || store.get('mv_cls') || '';
+      var ins = c.querySelectorAll('input'), sel = c.querySelector('select'), fb = c.querySelector('.fb'), k0 = e.cls || store.get('mv_cls') || '';
+      ins[0].value = e.name || ''; if (CLASSES.indexOf(k0) >= 0) sel.value = k0;
       var row = H('div', 'row', '', c);
       H('button', 'btn pri', 'Enregistrer', row).onclick = function () {
-        var n = ins[0].value.trim().replace(/\s+/g, ' '), k = ins[1].value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+        var n = ins[0].value.trim().replace(/\s+/g, ' '), k = sel.value;
         if (n.length < 2) { fb.className = 'fb ko'; fb.textContent = 'Écris ton prénom et ton nom.'; return; }
-        if (!ins[2].checked) { fb.className = 'fb ko'; fb.textContent = 'Coche la case pour accepter l’envoi.'; return; }
+        if (!ins[1].checked) { fb.className = 'fb ko'; fb.textContent = 'Coche la case pour accepter l’envoi.'; return; }
         store.set('mv_eleve', JSON.stringify({ name: n, cls: k, consent: true }));
         send({ type: 'open', name: n, sid: sid() });
         vue(); if (onSave) onSave();

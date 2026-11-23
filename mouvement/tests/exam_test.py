@@ -85,17 +85,18 @@ async def main():
         SHOTS.mkdir(parents=True, exist_ok=True)
     async with async_playwright() as pw:
         br = await pw.chromium.launch()
-        for port, s in enumerate(['maths', 'pc', 'svt', 'tech'], 8861):
+        for port, s in enumerate(['maths', 'pc', 'svt'], 8861):  # tech : site figé, non reconstruit
             srv = serve(DIST / s, port)
             base = 'http://127.0.0.1:%d/' % port
             ctx = await br.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
             page = await ctx.new_page()
             sent = []
-            await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', catcher(sent))
+            await ctx.route('https://relay.taalim.men/**', catcher(sent))
             for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
                 await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
             await page.goto(base + 'examen/')
             await page.locator('.eleve input.txt').first.fill('Élève Test')
+            await page.locator('.eleve select').select_option('2APIC1')
             await page.locator('.eleve input[type=checkbox]').check()
             await page.get_by_role('button', name='Enregistrer').click()
             errs = []
@@ -136,7 +137,7 @@ async def main():
                 print(s, ': alertes', len(series), 'notes envoyées, exemple', series[0]['title'], series[0]['pts'], '/ 20')
             # accueil : lien vers les examens
             await page.goto(base)
-            if await page.locator('a.exam').count() != 1:
+            if await page.locator('a.exam[href="examen/"]').count() != 1:
                 fail(s + ' : lien examens absent de l\'accueil')
             await ctx.close()
             srv.shutdown()
@@ -147,11 +148,11 @@ async def main():
         ctx = await br.new_context(viewport={'width': 1366, 'height': 768})
         page = await ctx.new_page()
         lsent = []
-        await ctx.route('https://taalim-relay.abderrahim-habz.workers.dev/**', catcher(lsent))
+        await ctx.route('https://relay.taalim.men/**', catcher(lsent))
         for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
             await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
         await page.goto(base)
-        await page.evaluate("() => localStorage.setItem('mv_eleve', JSON.stringify({name: 'Élève Test', cls: 'TEST', consent: true}))")
+        await page.evaluate("() => localStorage.setItem('mv_eleve', JSON.stringify({name: 'Élève Test', cls: '2APIC1', consent: true}))")
         await page.goto(base + '1ac-cercle/')
         await page.get_by_role('button', name='Plein écran').click()
         await page.wait_for_timeout(300)
