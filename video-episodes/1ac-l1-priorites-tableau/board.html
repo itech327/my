@@ -164,6 +164,11 @@ function render(t){
   });
   document.getElementById('root').innerHTML=h;
 }
-window.render=render; window.DURATION=EP.duration;
-document.fonts.ready.then(()=>render(0));
+const renderOrig=render;
+window.KN=null; // noeuds [t_orig, t_nouveau] fournis par build_voiced.py
+function inv(t){const K=window.KN; if(!K) return t; if(t<=K[0][1]) return K[0][0];
+  for(let i=1;i<K.length;i++){ if(t<=K[i][1]){ const [o0,n0]=K[i-1],[o1,n1]=K[i]; return o0+(t-n0)*(o1-o0)/(n1-n0); } }
+  const L=K[K.length-1]; return L[0]+(t-L[1]); }
+window.render=function(t){ renderOrig(inv(t)); }; window.DURATION=EP.duration;
+document.fonts.ready.then(()=>window.render(0));
 </script></body></html>
