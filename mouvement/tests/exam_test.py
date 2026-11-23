@@ -92,7 +92,7 @@ async def main():
             page = await ctx.new_page()
             sent = []
             await ctx.route('https://relay.taalim.men/**', catcher(sent))
-            for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
+            for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**', 'https://challenges.cloudflare.com/**'):  # mesure d'audience et Turnstile simulés
                 await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
             await page.goto(base + 'examen/')
             await page.locator('.eleve input.txt').first.fill('Élève Test')
@@ -149,7 +149,7 @@ async def main():
         page = await ctx.new_page()
         lsent = []
         await ctx.route('https://relay.taalim.men/**', catcher(lsent))
-        for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**'):  # mesure d'audience simulée
+        for host in ('https://static.cloudflareinsights.com/**', 'https://cloudflareinsights.com/**', 'https://challenges.cloudflare.com/**'):  # mesure d'audience et Turnstile simulés
             await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
         await page.goto(base)
         await page.evaluate("() => localStorage.setItem('mv_eleve', JSON.stringify({name: 'Élève Test', cls: '2APIC1', consent: true}))")

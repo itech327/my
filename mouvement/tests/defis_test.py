@@ -23,6 +23,7 @@ with sync_playwright() as p:
             pg.on('console', lambda m: m.type == 'error' and 'ERR_TUNNEL' not in m.text and 'Failed to load resource' not in m.text and errs.append(m.text))
             pg.route('https://relay.taalim.men/**', lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body='ok', headers={'Access-Control-Allow-Origin': '*'})))
             pg.route('https://static.cloudflareinsights.com/**', lambda r: r.fulfill(status=200, body=''))
+            pg.route('https://challenges.cloudflare.com/**', lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
             pg.add_init_script("localStorage.setItem('mv_eleve', JSON.stringify({name:'Test',cls:'2APIC1',consent:true}))")
             tag = '%s %dpx' % (s, vp['width'])
             pg.goto('http://127.0.0.1:8893/%s/defis/' % s); pg.wait_for_timeout(1200)
