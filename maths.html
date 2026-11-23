@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-aF0q5wizOSNLPv0qv30RQe2pt6CV+is2zNH5923xYBY=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-kobhtsYfeHJajBD8KCGzd/741myQdwwqZSBXbHGIH5s=' 'sha256-Fu26TPqAL3v784LMASoAy5DGUJ+jDgvptXFMCRt6Big=' 'sha256-I85HNJ1/Hx4vxlntaBICYdVdTN08oaT0OrL0Su5JBnM=' 'sha256-HL8rO9D1nEo864TEz81ZDH3VwLlQ4lQ1dui+y1+sruE=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-o8dBdpHxLS2POmJ2kdxjicxyy6IMkS2Bdl/bUEeqBwg=' 'sha256-I9XQNk7JTJyFU9yQC7sPk9SNmwXwRJU8UMqfqaM2bpk=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-bTschY0GQf0aRuPtvE8z/D1xQO82+zm7hyfeMjPAhFk=' 'sha256-/CCZyJuBL8TsRedTGvGP1kVq+K4xDx+DB4by1cWshg8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'sha256-aF0q5wizOSNLPv0qv30RQe2pt6CV+is2zNH5923xYBY=' 'sha256-cY7WsatpgcJ39Qvr7bkyvCGMDzKgV+CJNQhPzrsIcCE=' 'sha256-hMr4tNq0ZAj4minOHxvAbA6lJeXS5WG5zyuM1zMQvd0=' 'sha256-Fu26TPqAL3v784LMASoAy5DGUJ+jDgvptXFMCRt6Big=' 'sha256-I85HNJ1/Hx4vxlntaBICYdVdTN08oaT0OrL0Su5JBnM=' 'sha256-HL8rO9D1nEo864TEz81ZDH3VwLlQ4lQ1dui+y1+sruE=' 'sha256-7emgRwDF2v9oELg72oFYuImUsKWX/Dr1UPhfAXl5B6E=' 'sha256-o8dBdpHxLS2POmJ2kdxjicxyy6IMkS2Bdl/bUEeqBwg=' 'sha256-I9XQNk7JTJyFU9yQC7sPk9SNmwXwRJU8UMqfqaM2bpk=' 'sha256-1zHqWo8urnBeagByeEtFX/a8L87vslVNjSzQuVpxCFY=' 'sha256-GmF9WZWgsvFW+8eMIX+w949FuuL+3dfiiBrcmD/+ShI=' 'sha256-/KSERW3bi1o5uuBiBBFXgCm1kHr7BOBCZAoVNAGScsc=' 'sha256-t4FfauotcDNpGKxmjr1d+HfjARjOlcY16FwItel4AEg=' 'sha256-bTschY0GQf0aRuPtvE8z/D1xQO82+zm7hyfeMjPAhFk=' 'sha256-/CCZyJuBL8TsRedTGvGP1kVq+K4xDx+DB4by1cWshg8='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس الرياضيات للسنوات الأولى والثانية والثالثة إعدادي برسوم متحركة وملخصات بالعربية وتمارين حسب المستوى. Mathématiques du collège (1re, 2e et 3e année) avec figures animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/maths">
@@ -1475,7 +1475,7 @@ window.addEventListener('load',function(){
 })();
 
 </script>
-<script src="lab/notify-config.js?v=442d20fd"></script>
+<script src="lab/notify-config.js?v=58d2e37b"></script>
 <script>
 /* Configuration des défis : Maths en mouvement */
 (function () {
@@ -2114,7 +2114,44 @@ window.addEventListener('load',function(){
   var Notify = (Lab.Notify = {});
   function nurl() { return window.LAB_NOTIFY_URL || ''; }
   Notify.enabled = function () { return !!nurl(); };
+  /* Turnstile (phase 2) : laissez-passer demandé une fois par session, seulement pour les envois nommés.
+     Sans clé de site dans notify-config.js, rien n'est chargé. */
+  var passWait = null;
+  function getPass(cb) {
+    var key = window.LAB_TURNSTILE_SITEKEY || '', u = nurl();
+    if (!key || !u) return cb('');
+    try { var o = JSON.parse(sessionStorage.getItem('lab_pass') || 'null'); if (o && o.pass && o.exp > Date.now() + 60000) return cb(o.pass); } catch (_) {}
+    if (passWait) { passWait.push(cb); return; }
+    passWait = [cb];
+    var box = null, timer = setTimeout(function () { done(''); }, 20000);
+    function done(p) { clearTimeout(timer); var l = passWait || []; passWait = null; if (box && box.parentNode) box.parentNode.removeChild(box); l.forEach(function (f) { f(p); }); }
+    function go() {
+      try {
+        box = document.createElement('div'); box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999'; document.body.appendChild(box);
+        window.turnstile.render(box, { sitekey: key, appearance: 'interaction-only', action: 'notes',
+          callback: function (t) {
+            fetch(u.replace(/\/$/, '') + '/token', { method: 'POST', body: JSON.stringify({ t: t }), headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
+              .then(function (r) { return r.ok ? r.json() : {}; })
+              .then(function (j) { if (j && j.pass) { try { sessionStorage.setItem('lab_pass', JSON.stringify({ pass: j.pass, exp: j.exp })); } catch (_) {} } done((j && j.pass) || ''); })
+              ['catch'](function () { done(''); });
+          },
+          'error-callback': function () { done(''); }
+        });
+      } catch (_) { done(''); }
+    }
+    if (window.turnstile) return go();
+    var sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true;
+    sc.onload = go; sc.onerror = function () { done(''); }; document.head.appendChild(sc);
+  }
+  Notify.getPass = getPass;
   function send(payload, beacon) {
+    if (payload.type !== 'open' && !payload.pass && window.LAB_TURNSTILE_SITEKEY) {
+      return getPass(function (p) { payload.pass = p || 'none'; send(payload, beacon); });
+    }
+    if (payload.pass === 'none') delete payload.pass;
+    sendNow(payload, beacon);
+  }
+  function sendNow(payload, beacon) {
     var u = nurl(); if (!u) return;
     payload.v = 1; payload.page = CFG.appName; payload.t = Date.now();
     var body = JSON.stringify(payload);

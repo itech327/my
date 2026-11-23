@@ -325,7 +325,44 @@
   var Notify = (Lab.Notify = {});
   function nurl() { return window.LAB_NOTIFY_URL || ''; }
   Notify.enabled = function () { return !!nurl(); };
+  /* Turnstile (phase 2) : laissez-passer demandé une fois par session, seulement pour les envois nommés.
+     Sans clé de site dans notify-config.js, rien n'est chargé. */
+  var passWait = null;
+  function getPass(cb) {
+    var key = window.LAB_TURNSTILE_SITEKEY || '', u = nurl();
+    if (!key || !u) return cb('');
+    try { var o = JSON.parse(sessionStorage.getItem('lab_pass') || 'null'); if (o && o.pass && o.exp > Date.now() + 60000) return cb(o.pass); } catch (_) {}
+    if (passWait) { passWait.push(cb); return; }
+    passWait = [cb];
+    var box = null, timer = setTimeout(function () { done(''); }, 20000);
+    function done(p) { clearTimeout(timer); var l = passWait || []; passWait = null; if (box && box.parentNode) box.parentNode.removeChild(box); l.forEach(function (f) { f(p); }); }
+    function go() {
+      try {
+        box = document.createElement('div'); box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999'; document.body.appendChild(box);
+        window.turnstile.render(box, { sitekey: key, appearance: 'interaction-only', action: 'notes',
+          callback: function (t) {
+            fetch(u.replace(/\/$/, '') + '/token', { method: 'POST', body: JSON.stringify({ t: t }), headers: { 'Content-Type': 'text/plain;charset=UTF-8' } })
+              .then(function (r) { return r.ok ? r.json() : {}; })
+              .then(function (j) { if (j && j.pass) { try { sessionStorage.setItem('lab_pass', JSON.stringify({ pass: j.pass, exp: j.exp })); } catch (_) {} } done((j && j.pass) || ''); })
+              ['catch'](function () { done(''); });
+          },
+          'error-callback': function () { done(''); }
+        });
+      } catch (_) { done(''); }
+    }
+    if (window.turnstile) return go();
+    var sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true;
+    sc.onload = go; sc.onerror = function () { done(''); }; document.head.appendChild(sc);
+  }
+  Notify.getPass = getPass;
   function send(payload, beacon) {
+    if (payload.type !== 'open' && !payload.pass && window.LAB_TURNSTILE_SITEKEY) {
+      return getPass(function (p) { payload.pass = p || 'none'; send(payload, beacon); });
+    }
+    if (payload.pass === 'none') delete payload.pass;
+    sendNow(payload, beacon);
+  }
+  function sendNow(payload, beacon) {
     var u = nurl(); if (!u) return;
     payload.v = 1; payload.page = CFG.appName; payload.t = Date.now();
     var body = JSON.stringify(payload);

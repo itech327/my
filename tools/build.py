@@ -123,15 +123,22 @@ def inline_hashes(html):
         hs.append("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode('utf8')).digest()).decode() + "'")
     return hs
 
+def turnstile_on():
+    """Phase 2 : Turnstile n'entre dans la CSP que si une clé de site est déclarée dans lab/notify-config.js."""
+    return bool(re.search(r'LAB_TURNSTILE_SITEKEY\s*=\s*"[\w-]{10,}"', rd('lab/notify-config.js')))
+
+TS_ORIGIN = 'https://challenges.cloudflare.com'
 CFWA_SCRIPT = 'https://static.cloudflareinsights.com'   # balise de Cloudflare Web Analytics, injectée par Cloudflare (Real User Measurements)
 CFWA_CONNECT = 'https://cloudflareinsights.com'
 
 def csp_for(html, header=False, measure=True):
     conn = ["'self'"] + ([notify_origin()] if notify_origin() else [])
     if measure: conn.append(CFWA_CONNECT)
-    parts = ["default-src 'none'", "script-src 'self' " + ((CFWA_SCRIPT + ' ') if measure else '') + ' '.join(inline_hashes(html)), "style-src 'self' 'unsafe-inline'",
+    ts = turnstile_on()
+    parts = ["default-src 'none'", "script-src 'self' " + ((CFWA_SCRIPT + ' ') if measure else '') + ((TS_ORIGIN + ' ') if ts else '') + ' '.join(inline_hashes(html)), "style-src 'self' 'unsafe-inline'",
              "img-src 'self' data:", "font-src 'self'", 'connect-src ' + ' '.join(conn), "base-uri 'none'", "form-action 'none'", "object-src 'none'",
              "manifest-src 'self'", 'upgrade-insecure-requests']
+    if ts: parts.append('frame-src ' + TS_ORIGIN)
     if header: parts.append("frame-ancestors 'none'")
     return '; '.join(parts)
 

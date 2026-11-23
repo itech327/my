@@ -1,6 +1,6 @@
 # Relais Telegram et tableau de bord de taalim.men.
 # Le Worker en production s'appelle « taalim-relay » (domaine relay.taalim.men).
-# ATTENTION : la base D1 « taalim » (liaison DB) et les secrets BOT_TOKEN, CHAT_ID, TEACHER_KEY sont réglés dans Cloudflare.
+# ATTENTION : la base D1 « taalim » (liaison DB) et les secrets BOT_TOKEN, CHAT_ID, TEACHER_KEY, TURNSTILE_SECRET (phase 2, facultatif) sont réglés dans Cloudflare.
 # Ce fichier ne déclare pas la liaison D1 : un « wrangler deploy » avec ce fichier tel quel la supprimerait.
 # Méthode sûre : coller worker.js dans l'éditeur du tableau de bord Cloudflare, ou passer par l'API Cloudflare en gardant les liaisons.
 name = "taalim-relay"
