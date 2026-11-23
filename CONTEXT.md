@@ -3,6 +3,20 @@
 Give this file to Claude to continue. Last updated 2026-11-23: new Gemini key, app running on the owner's Intel Mac.
 Repository `itech327/my`, branch `claude/new-session-thirii`. Not merged to `main`.
 
+## Update 2026-11-23: state at the end of the session
+
+- **Decision:** open engines (F5, Piper, DarijaTTS, neutts) are paused. Only Gemini TTS gives a good voice. Restart that work later, with a GPU and recordings we own.
+- **Gemini key:** new key from the paid project, billing **Tier 1**, limit 100 requests a day per model. Four designed voices and Akram were recreated in that project (ids in `designed-voices.json`). The same key must be set in Cloudflare as `GEMINI_API_KEY`: done by the owner.
+- **Voices:** نور, يونس (Darija and Fusha) and أكرم (young, light voice, one voice for both modes). Fusha uses the radio style, never the chatty one. Google blocks voice prompts for children or minors.
+- **Text front end:** `ناقص` for minus (never `سالب`), `5x6` read "5 في 6" in Darija and "5 مضروبة في 6" in Fusha, `الجديد` respelled `جّديد`.
+- **Library:** 18 of 20 items approved. `num-fusha-05` and `num-darija-07` were rewritten (ناقص, في) and wait for regeneration.
+- **Scheduled for 2026-11-24 about 08:30 UTC** (quota reset): the 15-sentence evaluation of the three voices, and the regeneration of the two library items.
+- **Evaluation tool:** `.claude/skills/darija-voice/scripts/connector_eval.py` measures the live connector with the Darija recognizer `boumehdi/wav2vec2-large-xlsr-moroccan-darija` (CER, WER). Test set `data/test_sentences_15.txt`. In the cloud session it needs `huggingface.co` and `us.aws.cdn.hf.co` allowed, `HF_HUB_DISABLE_XET=1` and a CPU `torch`.
+- **Web app on Cloudflare:** OpenNext adapter, `wrangler.jsonc` (Worker `sada-app`, D1 `DB`, KV `AUDIO`), data layer picked per request (D1 on Cloudflare, memory elsewhere). Built and previewed locally, signup wrote a user to D1. Not deployed: needs the Workers Paid plan. Payments not started.
+- **Open engines tested:** `DarijaTTS-v0.1-500M` CER 0.451 (poor). `neutts-air-darija` not run: needs a reference voice, a missing phonemizer file and conflicting packages. F5 is the best open voice but slow on a CPU.
+- **Cloud session:** Node does not use the proxy unless `NODE_USE_ENV_PROXY=1`. Run `library/generate.mts` from `app/` with it.
+- **Connector access code:** it was pasted in chat twice. Replace it with `openssl rand -hex 16` in Cloudflare (`MCP_ACCESS_KEY`), in claude.ai, and in the session secret for `voice.taalim.men`.
+
 ## What it is
 
 A Moroccan text-to-speech platform. Two jobs matter to the owner:
