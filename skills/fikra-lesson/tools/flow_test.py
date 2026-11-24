@@ -11,7 +11,7 @@ Opens the lesson at phone width (420 px) with ?test, then checks:
      with its own misconception, and the right answer is accepted;
   6. the check questions produce the report;
   7. no page error, no horizontal overflow at 420 px, file under 150 KB;
-  8. every Darija audio file referenced exists next to the lesson and stays under 400 KB.
+  8. every Darija audio file referenced exists next to the lesson (or is inlined by `bundle`) and stays under 400 KB.
 Exit code 1 on any failure.
 """
 import os, sys, argparse
@@ -26,7 +26,10 @@ def main():
     a = ap.parse_args(); path = os.path.abspath(a.lesson); fails = []
     def check(cond, msg):
         if not cond: fails.append(msg); print('FAIL', msg)
+    import re as _re
     size = os.path.getsize(path)
+    inlined = sum(len(m) for m in _re.findall(r'data:audio/[\w-]+;base64,([\w+/=]+)', open(path, encoding='utf-8').read()))
+    size -= inlined  # a bundled lesson carries its audio inside; the 150 KB budget is for the lesson itself
     check(size < 150_000, f'file is {size // 1024} KB, budget is 150 KB')
     with sync_playwright() as p:
         b = p.chromium.launch(); pg = b.new_page(viewport={'width': 420, 'height': 900})
@@ -46,6 +49,8 @@ def main():
             if a.shots: os.makedirs(a.shots, exist_ok=True); pg.locator(f'#m{n}').screenshot(path=os.path.join(a.shots, f'm{n}.png'))
         audios = pg.evaluate('[...document.querySelectorAll("[data-audio]")].map(b => b.dataset.audio)')
         for au in audios:
+            if au.startswith('data:'):
+                check(len(au) * 3 // 4 < 400_000, 'inlined audio too large'); continue
             fp = os.path.join(os.path.dirname(path), au)
             check(os.path.isfile(fp), f'audio file missing: {au}')
             if os.path.isfile(fp): check(os.path.getsize(fp) < 400_000, f'audio file too large: {au} ({os.path.getsize(fp) // 1024} KB, budget 400 KB)')
