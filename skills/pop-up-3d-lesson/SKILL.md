@@ -44,7 +44,8 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove. A questi
 ## 3. Interaction
 - Every point the student can move is a handle. Pick handles in screen space (nearest projected handle within about 34 px): it works for fingers without hit meshes.
 - Drag on the page plane, clamp to the experiment area, snap to the grid when the mode is about the grid.
-- Controls drawn on the page as 3D objects (knob on a track, toggle switch) change the result immediately. Give them invisible larger hit meshes for fingers. Hide the ones a mode does not use.
+- Controls drawn on the page as 3D objects (knob on a track, toggle switch) change the result immediately. Give them invisible larger hit meshes for fingers. Hide the ones a mode does not use, together with their labels: print each control's label and ticks on its own transparent panel, not on the page texture, so it hides with the control.
+- A search mode (find all axes, all cases) counts nothing and reveals no match until the student has moved the control once; otherwise the default position gives the answer away.
 - HTML on top: a mode bar, a sub-choice bar (shapes, materials), action buttons (Check, New, Next step, Restart), the language toggle and Reset. Reset restores the initial state of the current mode and replays the intro.
 - Drag on empty space orbits the camera with OrbitControls: no pan, damping, polar and azimuth limits and min/max distance so the book always stays in view.
 - A short slow camera move onto the experiment when the page opens (about 3 s, eased). Respect prefers-reduced-motion.

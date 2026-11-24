@@ -187,13 +187,6 @@ function rightPageTexture() {
   for (let x = RECT.x0; x <= RECT.x1; x++) { g.beginPath(); g.moveTo(X(x), Z(RECT.z0)); g.lineTo(X(x), Z(RECT.z1)); g.stroke(); }
   for (let z = RECT.z0; z <= RECT.z1; z++) { g.beginPath(); g.moveTo(X(RECT.x0), Z(z)); g.lineTo(X(RECT.x1), Z(z)); g.stroke(); }
   g.strokeStyle = 'rgba(40,40,45,.55)'; g.lineWidth = 2; g.strokeRect(X(RECT.x0), Z(RECT.z0), (RECT.x1 - RECT.x0) * PX, (RECT.z1 - RECT.z0) * PX);
-  g.fillStyle = '#26262b'; g.direction = S.lang === 'ar' ? 'rtl' : 'ltr'; g.textAlign = 'center'; g.font = `700 32px ${AR_FONT}`;
-  g.fillText(tr('ميل المحور (d)', "Inclinaison de l'axe (d)"), X((TRACK.x0 + TRACK.x1) / 2), Z(TRACK.z - 1.3));
-  g.fillText(tr('طيّ الورقة', 'Plier la feuille'), X(SW.x), Z(SW.z - 1.3));
-  g.direction = 'ltr'; g.font = `26px ${HAND}`; g.fillStyle = '#555';
-  g.fillText('-90°', X(TRACK.x0), Z(TRACK.z + 1.6)); g.fillText('0°', X((TRACK.x0 + TRACK.x1) / 2), Z(TRACK.z + 1.6)); g.fillText('90°', X(TRACK.x1), Z(TRACK.z + 1.6));
-  g.strokeStyle = '#444'; g.lineWidth = 2;
-  for (let i = 0; i <= 12; i++) { const x = X(TRACK.x0 + (TRACK.x1 - TRACK.x0) * i / 12); g.beginPath(); g.moveTo(x, Z(TRACK.z + .55)); g.lineTo(x, Z(TRACK.z + (i % 6 ? .8 : 1))); g.stroke(); }
   return tex(c);
 }
 
@@ -211,7 +204,35 @@ const rightPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.
 rightPage.position.set(10.5, 0.35 + (PAGE_Y - 0.35) / 2, 0); rightPage.receiveShadow = rightPage.castShadow = true; scene.add(rightPage);
 const leftPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), [edgeMat, edgeMat, leftTop, edgeMat, edgeMat, edgeMat]));
 leftPage.position.set(-10.5, 0.35 + (PAGE_Y - 0.35) / 2 + 0.25, 0); leftPage.rotation.z = 0.025; leftPage.receiveShadow = leftPage.castShadow = true; scene.add(leftPage);
-function refreshPages() { rightTop.map.dispose(); rightTop.map = rightPageTexture(); leftTop.map.dispose(); leftTop.map = leftPageTexture(); rightTop.needsUpdate = leftTop.needsUpdate = true; }
+function refreshPages() { rightTop.map.dispose(); rightTop.map = rightPageTexture(); leftTop.map.dispose(); leftTop.map = leftPageTexture(); rightTop.needsUpdate = leftTop.needsUpdate = true; panelKey = ''; }
+
+/* Labels of the controls: printed on their own transparent panels, so each
+   label shows only when its control is shown. */
+function makePanel(x0, x1, z0, z1) {
+  const [c, g] = makeCanvas(Math.round((x1 - x0) * PX), Math.round((z1 - z0) * PX)), t = tex(c);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2; m.position.set((x0 + x1) / 2, PAGE_Y + 0.003, (z0 + z1) / 2); m.renderOrder = 1; scene.add(m);
+  return { m, g, t, X: x => (x - x0) * PX, Z: z => (z - z0) * PX, W: c.width, H: c.height };
+}
+const sliderPanel = makePanel(TRACK.x0 - 1.5, TRACK.x1 + 1.5, TRACK.z - 2.2, TRACK.z + 2.2);
+const switchPanel = makePanel(SW.x - 3, SW.x + 3, SW.z - 2.2, SW.z - 0.8);
+let panelKey = '';
+function drawPanels() {
+  const sliderTitle = S.mode === 'axes' ? tr('ميل المرآة', 'Inclinaison du miroir') : tr('ميل المحور (d)', "Inclinaison de l'axe (d)");
+  const key = S.lang + sliderTitle; if (key === panelKey) return; panelKey = key;
+  const P = sliderPanel, g = P.g; g.clearRect(0, 0, P.W, P.H);
+  g.fillStyle = '#26262b'; g.direction = S.lang === 'ar' ? 'rtl' : 'ltr'; g.textAlign = 'center'; g.font = `700 32px ${AR_FONT}`;
+  g.fillText(sliderTitle, P.X((TRACK.x0 + TRACK.x1) / 2), P.Z(TRACK.z - 1.3));
+  g.direction = 'ltr'; g.font = `26px ${HAND}`; g.fillStyle = '#555';
+  g.fillText('-90°', P.X(TRACK.x0), P.Z(TRACK.z + 1.6)); g.fillText('0°', P.X((TRACK.x0 + TRACK.x1) / 2), P.Z(TRACK.z + 1.6)); g.fillText('90°', P.X(TRACK.x1), P.Z(TRACK.z + 1.6));
+  g.strokeStyle = '#444'; g.lineWidth = 2;
+  for (let i = 0; i <= 12; i++) { const x = P.X(TRACK.x0 + (TRACK.x1 - TRACK.x0) * i / 12); g.beginPath(); g.moveTo(x, P.Z(TRACK.z + .55)); g.lineTo(x, P.Z(TRACK.z + (i % 6 ? .8 : 1))); g.stroke(); }
+  P.t.needsUpdate = true;
+  const Q = switchPanel, h = Q.g; h.clearRect(0, 0, Q.W, Q.H);
+  h.fillStyle = '#26262b'; h.direction = S.lang === 'ar' ? 'rtl' : 'ltr'; h.textAlign = 'center'; h.font = `700 32px ${AR_FONT}`;
+  h.fillText(tr('طيّ الورقة', 'Plier la feuille'), Q.X(SW.x), Q.Z(SW.z - 1.3) + 10);
+  Q.t.needsUpdate = true;
+}
 
 /* ---------- Immediate-mode drawing pools ---------- */
 function makeSegEntry(max) {
@@ -384,7 +405,7 @@ canvas.addEventListener('pointerdown', e => {
 });
 canvas.addEventListener('pointermove', e => {
   if (!S.drag || S.drag.type === 'switch') return; setRay(e); const p = pageHit(); if (!p) return;
-  if (S.drag.type === 'knob') { const x = THREE.MathUtils.clamp(p.x, TRACK.x0, TRACK.x1); S.theta = Math.round(((x - TRACK.x0) / (TRACK.x1 - TRACK.x0) * 2 - 1) * THETA_MAX); act('axis'); return; }
+  if (S.drag.type === 'knob') { const x = THREE.MathUtils.clamp(p.x, TRACK.x0, TRACK.x1); S.theta = Math.round(((x - TRACK.x0) / (TRACK.x1 - TRACK.x0) * 2 - 1) * THETA_MAX); act('axis'); if (S.mode === 'axes') S.fig.moved = true; return; }
   if (S.drag.type === 'body') {
     const tg = p.clone().add(S.dragOff), c = centroid(S.tri); let dx = tg.x - c.x, dz = tg.y - c.y; const m = 0.4;
     dx = THREE.MathUtils.clamp(dx, RECT.x0 + m - Math.min(...S.tri.map(v => v.x)), RECT.x1 - m - Math.max(...S.tri.map(v => v.x)));
@@ -427,7 +448,7 @@ function buildHUD() {
   const subs = document.getElementById('subs');
   const list = S.mode === 'shp' ? SHP_LIST : S.mode === 'axes' ? FIG_LIST : null, cur = S.mode === 'shp' ? S.shp.kind : S.fig.kind;
   subs.innerHTML = list ? list.map(([k, a, f]) => `<button class="chip${cur === k ? ' on' : ''}" data-k="${k}">${esc(tr(a, f))}</button>`).join('') : '';
-  subs.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { if (S.mode === 'shp') S.shp.kind = b.dataset.k; else { S.fig.kind = b.dataset.k; S.fig.found = new Set(); S.theta = 15; S.fig.lo = S.fig.hi = S.theta; } act('kind'); buildHUD(); });
+  subs.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { if (S.mode === 'shp') S.shp.kind = b.dataset.k; else { S.fig.kind = b.dataset.k; S.fig.found = new Set(); S.theta = 45; S.fig.moved = false; S.fig.lo = S.fig.hi = S.theta; } act('kind'); buildHUD(); });
   const acts = document.getElementById('acts');
   acts.innerHTML = (MODES[S.mode].actions ? MODES[S.mode].actions() : []).map(([id, label, accent]) => `<button class="btn${accent ? ' acc' : ''}" data-a="${id}">${esc(label)}</button>`).join('');
   acts.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { MODES[S.mode].action(b.dataset.a); buildHUD(); });
@@ -598,7 +619,7 @@ const MODES = {
 
   /* 6: axes of symmetry of figures, with a standing mirror */
   axes: {
-    enter() { S.theta = 15; S.fig.lo = S.fig.hi = S.theta; },
+    enter() { S.theta = 45; S.fig.moved = false; S.fig.lo = S.fig.hi = S.theta; },
     handles: () => [],
     drag() {},
     verts(kind) {
@@ -616,21 +637,22 @@ const MODES = {
     },
     draw(u) {
       const f = S.fig, pts = this.verts(f.kind), img = pts.map(v => reflect(v, u)), N = FIG_LIST.find(x => x[0] === f.kind)[3];
-      f.lo = Math.min(f.lo, S.theta); f.hi = Math.max(f.hi, S.theta);
+      if (f.moved) { f.lo = Math.min(f.lo, S.theta); f.hi = Math.max(f.hi, S.theta); }
       const match = f.kind === 'circle' || img.every(q => pts.some(p => p.distanceTo(q) < 0.02));
-      const key = ((Math.round(S.theta) % 180) + 180) % 180; if (match && f.kind !== 'circle') f.found.add(key);
+      const key = ((Math.round(S.theta) % 180) + 180) % 180; if (match && f.moved && f.kind !== 'circle') f.found.add(key);
       setPrism(prOrig, ...flat(pts, Y0, H_SHAPE));
-      drawSegs(polySegs(img, true), match ? RED : BLUE, 0.1, Y0 + H_SHAPE + 0.03);
+      drawSegs(polySegs(img, true), match && f.moved ? RED : BLUE, 0.1, Y0 + H_SHAPE + 0.03);
       for (const kd of f.found) { const t = THREE.MathUtils.degToRad(kd), uu = V(Math.sin(t), -Math.cos(t)), [t0, t1] = clipLine(P0, uu); drawSegs(dashSegs(V(P0.x + uu.x * t0, P0.y + uu.y * t0), V(P0.x + uu.x * t1, P0.y + uu.y * t1), .5, .3), RED, 0.1, Y0 + H_SHAPE + 0.05); }
       const [a, b] = clipLine(P0, u), L = Math.min(b, 7) - Math.max(a, -7);
       mirror.visible = true; mirror.scale.set(L, 1, 1); mirror.position.set(P0.x, PAGE_Y + 2, P0.y); mirror.rotation.set(0, -Math.atan2(u.y, u.x), 0);
       const nInf = N === Infinity;
       card(0, tr('محاور وُجدت', 'Axes trouvés'), nInf ? '∞' : `${f.found.size} / ${N}`);
-      card(1, tr('تطابق', 'Superposition'), match ? tr('نعم', 'oui') : tr('لا', 'non'));
+      card(1, tr('تطابق', 'Superposition'), !f.moved ? '?' : match ? tr('نعم', 'oui') : tr('لا', 'non'));
       card(2, tr('ميل المرآة', 'Angle du miroir'), (S.theta > 0 ? '+' : '') + S.theta + unit('°')); card(3, '', null);
       if (nInf) notice(tr('الدائرة تنطبق على صورتها مهما كان ميل المرآة: كل مستقيم يمر من مركزها محور تماثل لها.', "Le cercle se superpose quel que soit l'angle : toute droite passant par son centre est un axe."));
       else if (N === 0 && f.hi - f.lo >= 170) notice(tr('جرّبت كل الميول: متوازي الأضلاع ليس له أي محور تماثل.', "Tu as tout essayé : le parallélogramme n'a aucun axe de symétrie."));
       else if (N > 0 && f.found.size === N) notice(tr(`وجدت كل محاور التماثل: ${N}.`, `Tu as trouvé tous les axes : ${N}.`));
+      else if (!f.moved) notice(tr('حرّك المزلاج لتدوير المرآة، وابحث عن كل الميول التي ينطبق فيها الشكل على صورته.', 'Fais glisser le curseur pour tourner le miroir et cherche toutes les positions où la figure se superpose à son image.'));
       else if (match) notice(tr('وجدت محور تماثل! الشكل ينطبق على صورته بالمرآة.', 'Axe trouvé ! La figure se superpose à son image.'));
       else notice(tr('دوّر المرآة بالمزلاج حتى ينطبق الخط الأزرق على الشكل.', 'Tourne le miroir avec le curseur jusqu’à ce que le contour bleu se superpose à la figure.'));
     }
@@ -692,7 +714,7 @@ function frame() {
 
   // controls on the page
   const knobOn = S.mode !== 'pred', swOn = S.mode === 'tri';
-  knob.visible = trackMesh.visible = knobHit.userData.on = knobOn; swBase.visible = swKnob.visible = swHit.userData.on = swOn;
+  knob.visible = trackMesh.visible = knobHit.userData.on = sliderPanel.m.visible = knobOn; swBase.visible = swKnob.visible = swHit.userData.on = switchPanel.m.visible = swOn; drawPanels();
   const kx = TRACK.x0 + (S.theta / THETA_MAX + 1) / 2 * (TRACK.x1 - TRACK.x0);
   knob.position.set(kx, PAGE_Y + 0.47, TRACK.z); knobHit.position.copy(knob.position);
   if (knobOn) drawLabel((S.theta > 0 ? '+' : '') + S.theta + '°', RED, kx, PAGE_Y + 1.8, TRACK.z - 0.4);
