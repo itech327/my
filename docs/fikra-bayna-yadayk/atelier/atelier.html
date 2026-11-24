@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier · Le concept en main</title>
+<style>
+:root{--ink:#1d2433;--paper:#faf7f0;--card:#fff;--line:#d9d3c4;--blue:#2f5bd3;--bad:#c0392b;--good:#1e7b4f;--mute:#5d6577}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+header{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card)}h1{font-size:20px;margin:0}header p{margin:2px 0 0;color:var(--mute)}
+.ar{direction:rtl;text-align:right;font-family:'Noto Naskh Arabic',Tahoma,sans-serif}
+main{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding:16px;max-width:1400px;margin:auto}
+@media(min-width:1000px){main{grid-template-columns:minmax(0,1fr) 440px}#pv{position:sticky;top:12px;height:calc(100vh - 24px)}}
+fieldset{border:1px solid var(--line);border-radius:12px;background:var(--card);margin:0 0 12px;padding:10px 12px}
+legend{font-weight:700;padding:0 6px}label{display:block;font-size:13px;color:var(--mute);margin:8px 0 2px}
+input,textarea,select{width:100%;font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:58px;resize:vertical}input[dir=rtl],textarea[dir=rtl]{font-family:'Noto Naskh Arabic',Tahoma,sans-serif}
+.item{border:1px dashed var(--line);border-radius:10px;padding:8px 10px;margin:8px 0;position:relative}
+.item>.del{position:absolute;top:6px;inset-inline-end:6px;width:auto;padding:2px 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0 8px}
+.hint{font-size:12px;color:var(--mute);margin:2px 0}
+button{font:inherit;padding:8px 12px;border-radius:9px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+button.primary{background:var(--ink);color:#fff}.bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+#pv{display:flex;flex-direction:column;gap:8px}#pv iframe{flex:1;min-height:640px;width:100%;border:1px solid var(--line);border-radius:12px;background:#fff}
+#msg{border-radius:10px;padding:8px 10px;font-size:14px}#msg.bad{border:2px solid var(--bad)}#msg.ok{border:2px solid var(--good)}
+#msg ul{margin:4px 0;padding-inline-start:18px}
+</style>
+</head>
+<body>
+<header><h1>Atelier · Le concept en main</h1><p>Le professeur remplit la fiche, l'atelier construit la leçon, la vérifie et l'affiche. Aucun code à écrire.</p>
+<p class="ar">الأستاذ يملأ البطاقة، والورشة تبني الدرس وتتحقق منه وتعرضه، دون كتابة أي شيفرة.</p></header>
+<main>
+<section>
+  <div class="bar">
+    <select id="ex" aria-label="Exemple"></select><button id="load">Charger l'exemple</button>
+    <button id="propose" title="Proposer une fiche avec l'IA">Proposer avec l'IA</button>
+    <label style="display:inline;margin:0"><input type="file" id="imp" accept=".json" hidden><button type="button" onclick="document.getElementById('imp').click()">Importer une fiche</button></label>
+  </div>
+  <div id="ia" hidden><fieldset><legend>Proposition par l'IA</legend>
+    <p class="hint">L'IA propose une fiche complète en JSON. Elle ne peut choisir qu'un widget de la bibliothèque et n'écrit ni code ni HTML. La fiche passe ensuite par les mêmes vérifications, puis par la relecture d'un professeur.</p>
+    <div class="grid"><div><label for="ia-m">Matière</label><select id="ia-m"><option>Mathématiques</option><option>Physique-chimie</option><option>SVT</option></select></div>
+    <div><label for="ia-n">Niveau</label><select id="ia-n"><option>1AC</option><option>2AC</option><option selected>3AC</option></select></div></div>
+    <label for="ia-s">Leçon, et ce que l'élève doit comprendre</label><textarea id="ia-s" placeholder="Ex. : la vitesse moyenne, v = d ÷ t, et la conversion km/h et m/s"></textarea>
+    <div class="bar" style="margin-top:8px"><button class="primary" id="ia-go">Demander une proposition</button></div><p class="hint" id="ia-st"></p>
+  </fieldset></div>
+  <form id="f" autocomplete="off"></form>
+</section>
+<section id="pv">
+  <div class="bar"><button class="primary" id="build">Construire et vérifier</button><button id="dj">Télécharger la fiche</button><button id="dh">Télécharger la leçon</button></div>
+  <div id="msg" hidden></div>
+  <iframe id="frame" title="Aperçu de la leçon"></iframe>
+</section>
+</main>
+<script>
+/*@@BEGIN-ADAPTER@@*/
+/* fikra-spec v0 · turns a lesson SPEC (pure JSON, no code) into the LESSON object the engine expects.
+   A SPEC can come from a teacher form or from an AI proposal: it never contains JavaScript or HTML.
+   Every text is escaped, every formula goes through a small safe expression parser (no eval),
+   and the experiment is one widget from a closed library. Exposes one global: FikraSpec. */
+var FikraSpec = (function () {
+  'use strict';
+  const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- safe expressions: + - * / ^, comparisons, && ||, ( ), functions, variables ---------- */
+  const FN = { sqrt: Math.sqrt, abs: Math.abs, floor: Math.floor, ceil: Math.ceil, min: Math.min, max: Math.max, pow: Math.pow,
+    round: (x, d = 0) => Math.round(x * 10 ** d) / 10 ** d };
+  const CONST = { pi: Math.PI };
+  function tokenize(src) {
+    const out = [], re = /\s*(?:(\d+(?:\.\d+)?)|([A-Za-z_]\w*)|(<=|>=|==|!=|&&|\|\||[-+*/^(),<>!]))/y;
+    let m; re.lastIndex = 0;
+    while (re.lastIndex < src.length) {
+      const at = re.lastIndex; m = re.exec(src);
+      if (!m) { if (/^\s*$/.test(src.slice(at))) break; throw new Error(`symbole inattendu dans « ${src} » à la position ${at + 1}`); }
+      out.push(m[1] ? { t: 'n', v: +m[1] } : m[2] ? { t: 'id', v: m[2] } : { t: 'op', v: m[3] });
+    }
+    return out;
+  }
+  function parse(src, known) {
+    const tk = tokenize(String(src)); let i = 0;
+    const peek = () => tk[i], eat = v => { if (tk[i] && tk[i].v === v) { i++; return true; } return false; };
+    const need = v => { if (!eat(v)) throw new Error(`« ${v} » attendu dans « ${src} »`); };
+    const bin = (next, ops) => () => { let a = next(); for (;;) { const p = peek(); if (p && p.t === 'op' && ops.includes(p.v)) { i++; a = { op: p.v, a, b: next() }; } else return a; } };
+    let or;
+    const atom = () => {
+      const p = tk[i++]; if (!p) throw new Error(`expression incomplète : « ${src} »`);
+      if (p.t === 'n') return { n: p.v };
+      if (p.t === 'op' && p.v === '(') { const e = or(); need(')'); return e; }
+      if (p.t === 'op' && (p.v === '-' || p.v === '!')) return { op: 'u' + p.v, a: unary() };
+      if (p.t === 'id') {
+        if (eat('(')) { if (!FN[p.v]) throw new Error(`fonction inconnue « ${p.v} »`); const args = []; if (!eat(')')) { do args.push(or()); while (eat(',')); need(')'); } return { f: p.v, args }; }
+        if (p.v in CONST) return { n: CONST[p.v] };
+        if (known && !known.includes(p.v)) throw new Error(`variable inconnue « ${p.v} » dans « ${src} »`);
+        return { v: p.v };
+      }
+      throw new Error(`symbole « ${p.v} » mal placé dans « ${src} »`);
+    };
+    const unary = atom;
+    const pow = () => { const a = unary(); return eat('^') ? { op: '^', a, b: pow() } : a; };
+    const mul = bin(pow, ['*', '/']), add = bin(mul, ['+', '-']), cmp = bin(add, ['<', '>', '<=', '>=', '==', '!=']), and = bin(cmp, ['&&']);
+    or = bin(and, ['||']);
+    const e = or(); if (i < tk.length) throw new Error(`fin inattendue dans « ${src} »`); return e;
+  }
+  function ev(e, env) {
+    if ('n' in e) return e.n;
+    if ('v' in e) { if (!(e.v in env)) throw new Error(`variable « ${e.v} » sans valeur`); return env[e.v]; }
+    if (e.f) return FN[e.f](...e.args.map(a => ev(a, env)));
+    const a = ev(e.a, env);
+    switch (e.op) {
+      case 'u-': return -a; case 'u!': return a ? 0 : 1;
+      case '&&': return a && ev(e.b, env) ? 1 : 0; case '||': return a || ev(e.b, env) ? 1 : 0;
+    }
+    const b = ev(e.b, env);
+    switch (e.op) {
+      case '+': return a + b; case '-': return a - b; case '*': return a * b; case '/': return a / b; case '^': return a ** b;
+      case '<': return +(a < b); case '>': return +(a > b); case '<=': return +(a <= b); case '>=': return +(a >= b);
+      case '==': return +(Math.abs(a - b) < 1e-9); case '!=': return +(Math.abs(a - b) >= 1e-9);
+    }
+  }
+  const compile = (src, known) => { const ast = parse(src, known); return env => ev(ast, env); };
+
+  /* ---------- text templates: {x} or {x:2} ---------- */
+  const fill = (tpl, env, nf) => esc(tpl).replace(/\{(\w+)(?::(\d))?\}/g, (m, k, d) => {
+    if (!(k in env)) throw new Error(`{${k}} sans valeur dans « ${tpl} »`); return nf(env[k], d == null ? 2 : +d);
+  });
+
+  /* ---------- widgets ---------- */
+  const WIDGETS = {};
+  function sliders(ins) {
+    return ins.map(s => `<label for="w-${s.id}">${esc(s.label)} <span id="w-${s.id}-o"></span></label>
+      <input id="w-${s.id}" type="range" min="${+s.min}" max="${+s.max}" step="${+(s.step || 1)}" value="${+(s.value ?? s.min)}">`).join('');
+  }
+  function cards(outs) {
+    return `<div class="readout">${outs.map(o => `<div class="card"><small>${esc(o.label)}</small><b id="w-${o.id}"></b></div>`).join('')}</div>`;
+  }
+  const carnet = (ins, outs) => `<div class="row"><button type="button" class="b" id="w-note">Noter dans mon carnet</button></div>
+    <div class="scroll"><table><thead><tr>${ins.concat(outs).map(c => `<th>${esc(c.label)}${c.unit ? ` (${esc(c.unit)})` : ''}</th>`).join('')}</tr></thead><tbody id="w-log"></tbody></table></div>`;
+
+  function core(p, extraDraw) {
+    const ins = p.inputs || [], outs = p.outputs || [], names = ins.map(s => s.id);
+    const fx = []; outs.forEach(o => { fx.push([o, compile(o.expr, names.concat(fx.map(f => f[0].id)))]); });
+    return { ins, outs, names: names.concat(outs.map(o => o.id)), mount(root, api, missions) {
+      const $ = s => root.querySelector(s);
+      const read = () => { const env = {}; ins.forEach(s => env[s.id] = +$('#w-' + s.id).value); fx.forEach(([o, f]) => env[o.id] = f(env)); return env; };
+      const unit = u => u ? ' ' + esc(u) : '';
+      const draw = () => {
+        const env = read();
+        ins.forEach(s => $(`#w-${s.id}-o`).textContent = '= ' + api.nf(env[s.id], 2) + (s.unit ? ' ' + s.unit : ''));
+        outs.forEach(o => $('#w-' + o.id).innerHTML = (isFinite(env[o.id]) ? api.nf(env[o.id], o.digits ?? 2) : '—') + unit(o.unit));
+        if (extraDraw) extraDraw(root, env, api);
+        missions.forEach(m => m.step(env));
+      };
+      ins.forEach(s => $('#w-' + s.id).addEventListener('input', draw));
+      $('#w-note').addEventListener('click', () => {
+        const env = read(), tr = document.createElement('tr');
+        tr.innerHTML = ins.concat(outs).map(c => `<td>${api.nf(env[c.id], c.digits ?? 2)}</td>`).join(''); $('#w-log').prepend(tr);
+        if (extraDraw && extraDraw.note) extraDraw.note(root, env);
+      });
+      draw();
+    } };
+  }
+
+  /* curseurs: sliders, computed values, optional bars, a carnet */
+  WIDGETS.curseurs = p => {
+    const c = core(p, (root, env) => (p.bars || []).forEach(b => {
+      const el = root.querySelector('#w-bar-' + b.id); el.style.width = Math.max(0, Math.min(100, 100 * env[b.id] / b.max)) + '%';
+    }));
+    const bars = (p.bars || []).map(b => `<div class="wbar"><small>${esc(b.label || b.id)}</small><div><i id="w-bar-${b.id}"></i></div></div>`).join('');
+    return { names: c.names, mount: c.mount,
+      html: `<style>.wbar{margin:6px 0}.wbar div{height:14px;border:1.5px solid var(--ink);border-radius:8px;overflow:hidden;background:var(--card)}.wbar i{display:block;height:100%;width:0;background:var(--blue);transition:width .2s}</style>`
+        + cards(c.outs) + bars + sliders(c.ins) + carnet(c.ins, c.outs) };
+  };
+
+  /* graphe: a curve y = f(var) drawn with the current slider values, a moving point, ghost curves when noted */
+  WIDGETS.graphe = p => {
+    const g = p.curve, W = 400, H = 300, m = 34;
+    const names = (p.inputs || []).map(s => s.id);
+    const f = compile(g.expr, names);
+    const X = x => m + (x - g.xmin) / (g.xmax - g.xmin) * (W - 2 * m), Y = y => H - m - (y - g.ymin) / (g.ymax - g.ymin) * (H - 2 * m);
+    const clampY = y => Math.max(g.ymin - 1e3, Math.min(g.ymax + 1e3, y));
+    const path = env => { let d = ''; for (let k = 0; k <= 120; k++) { const x = g.xmin + (g.xmax - g.xmin) * k / 120, y = f({ ...env, [g.var]: x }); if (isFinite(y)) d += (d ? 'L' : 'M') + X(x).toFixed(1) + ' ' + Y(clampY(y)).toFixed(1); } return d; };
+    const draw = (root, env) => {
+      root.querySelector('#w-curve').setAttribute('d', path(env));
+      const x = env[g.var], y = f(env), pt = root.querySelector('#w-pt'), inside = y >= g.ymin && y <= g.ymax;
+      pt.setAttribute('cx', X(x)); pt.setAttribute('cy', Y(Math.max(g.ymin, Math.min(g.ymax, y)))); pt.style.opacity = inside ? 1 : .3;
+      root.querySelector('#w-px').setAttribute('d', `M${X(x)} ${Y(0)}V${Y(Math.max(g.ymin, Math.min(g.ymax, y)))}H${X(0)}`);
+    };
+    draw.note = (root, env) => { const gh = document.createElementNS('http://www.w3.org/2000/svg', 'path'); gh.setAttribute('d', path(env)); gh.setAttribute('class', 'ghost'); root.querySelector('#w-ghosts').appendChild(gh); };
+    const c = core(p, draw);
+    let grid = '';
+    const step = (a, b) => { const r = b - a; return r <= 12 ? 1 : r <= 30 ? 2 : r <= 60 ? 5 : r <= 120 ? 10 : Math.pow(10, Math.floor(Math.log10(r / 6))); };
+    const sx = step(g.xmin, g.xmax), sy = step(g.ymin, g.ymax);
+    for (let x = Math.ceil(g.xmin / sx) * sx; x <= g.xmax; x += sx) grid += `<path d="M${X(x)} ${m}V${H - m}"/>` + (x ? `<text x="${X(x)}" y="${Y(0) + 14 > H - 4 ? H - 4 : Y(0) + 14}" text-anchor="middle">${x}</text>` : '');
+    for (let y = Math.ceil(g.ymin / sy) * sy; y <= g.ymax; y += sy) grid += `<path d="M${m} ${Y(y)}H${W - m}"/>` + (y ? `<text x="${X(0) - 5}" y="${Y(y) + 4}" text-anchor="end">${y}</text>` : '');
+    const svg = `<svg class="fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(g.label || 'Représentation graphique')}">
+      <style>.wg path{stroke:var(--line,#ccc);stroke-width:1}.wg text{font:11px sans-serif;fill:var(--ink)}.ghost{fill:none;stroke:#999;stroke-width:1.5;stroke-dasharray:4 4}</style>
+      <g class="wg">${grid}</g><path d="M${m} ${Y(0)}H${W - m}M${X(0)} ${m}V${H - m}" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="${W - m + 4}" y="${Y(0) - 6}" font-size="13" font-family="sans-serif" fill="var(--ink)">${esc(g.xlabel || g.var)}</text>
+      <text x="${X(0) + 6}" y="${m - 8}" font-size="13" font-family="sans-serif" fill="var(--ink)">${esc(g.ylabel || 'y')}</text>
+      <g id="w-ghosts"></g><path id="w-curve" fill="none" stroke="var(--blue)" stroke-width="3"/>
+      <path id="w-px" fill="none" stroke="var(--heat)" stroke-width="1.5" stroke-dasharray="5 4"/><circle id="w-pt" r="7" fill="var(--heat)"/></svg>`;
+    return { names: c.names, mount: c.mount, html: svg + cards(c.outs) + sliders(c.ins) + carnet(c.ins, c.outs) };
+  };
+
+  /* ---------- missions: « valeurs » (each listed value of one input seen, optionally while a condition holds) or « condition » ---------- */
+  function missionRunners(list, names, api) {
+    return list.map(ms => {
+      if (ms.type === 'valeurs') {
+        const when = ms.when ? compile(ms.when, names) : () => 1, seen = new Set();
+        return { step(env) { if (!when(env)) return; ms.values.forEach(v => { if (Math.abs(env[ms.input] - v) < 1e-9) seen.add(v); }); if (seen.size === ms.values.length) api.done(ms.id); } };
+      }
+      if (ms.type === 'condition') { const c = compile(ms.expr, names); return { step(env) { if (c(env)) api.done(ms.id); } }; }
+      throw new Error(`mission « ${ms.id} » : type inconnu « ${ms.type} »`);
+    });
+  }
+
+  /* ---------- exercises: vars, then question template, answer and traps as expressions ---------- */
+  function level(lv) {
+    const names = [], gens = (lv.vars || []).map(([k, def]) => {
+      const d = String(def).trim(), w = d.split(/\s+/); let g;
+      if (w[0] === 'int') { const [a, b, s] = w.slice(1).map(Number); g = R => R.int(a, b, s || 1); }
+      else if (w[0] === 'pick') { const list = w.slice(1).map(Number); if (list.some(isNaN)) throw new Error(`liste invalide pour ${k}`); g = R => R.pick(list); }
+      else { const f = compile(d, names.slice()); g = (R, env) => f(env); }
+      names.push(k); return [k, g];
+    });
+    const ans = compile(lv.answer, names), traps = (lv.traps || []).map(([e, c]) => [compile(e, names), c]);
+    return { label: lv.label, make(R) {
+      const env = {}; gens.forEach(([k, g]) => env[k] = g(R, env));
+      return { q: fill(lv.q, env, R.nf).replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+        unit: lv.unit || ' ', ans: ans(env), digits: lv.digits ?? 2, traps: traps.map(([f, c]) => [f(env), c]) };
+    } };
+  }
+
+  /* ---------- the whole lesson ---------- */
+  function lessonFromSpec(S) {
+    const need = (o, k, where) => { if (o == null || o[k] == null || o[k] === '') throw new Error(`${where}.${k} manquant`); return o[k]; };
+    ['meta', 'misconceptions', 'hook', 'predict', 'experiment', 'rule', 'proof', 'exercises', 'check'].forEach(k => need(S, k, 'spec'));
+    const x = S.experiment, mk = WIDGETS[x.widget];
+    if (!mk) throw new Error(`widget inconnu « ${x.widget} ». Disponibles : ${Object.keys(WIDGETS).join(', ')}`);
+    const w = mk(x.params || {});
+    (x.missions || []).forEach(m => { if (m.type === 'valeurs' && !w.names.includes(m.input)) throw new Error(`mission « ${m.id} » : curseur « ${m.input} » inconnu`); });
+    const q = arr => arr.map(it => ({ q: esc(it.q), ar: String(it.ar || ''), options: it.options.map(([l, c]) => [esc(l), String(c)]) }));
+    const mis = {}; Object.entries(S.misconceptions).forEach(([k, v]) => mis[k] = { fr: esc(v.fr), ar: String(v.ar || '') });
+    const voice = o => o.audio ? { audio: String(o.audio), audioText: String(o.audioText || '') } : {};
+    const levels = S.exercises.levels.map(level);
+    return {
+      meta: { kicker: esc(S.meta.kicker), title: esc(need(S.meta, 'title', 'meta')), titleAr: String(S.meta.titleAr || ''), short: esc(S.meta.short || S.meta.title), classes: (S.meta.classes || []).map(String), footer: String(S.meta.footer || '') },
+      misconceptions: mis,
+      hook: { title: esc(S.hook.title), svg: '', text: esc(S.hook.text), ar: String(S.hook.ar || ''), ...voice(S.hook) },
+      predict: q(S.predict),
+      experiment: { title: esc(x.title), intro: esc(x.intro || ''), html: w.html,
+        missions: (x.missions || []).map(m => ({ id: String(m.id), text: esc(m.text) })), required: x.required && x.required.length ? x.required.map(String) : undefined, note: esc(x.note || ''),
+        mount(root, api) { w.mount(root, api, missionRunners(x.missions || [], w.names, api)); } },
+      rule: { blocks: S.rule.blocks.map(b => ({ formula: esc(b.formula), text: esc(b.text || ''), ar: String(b.ar || '') })), seen: esc(S.rule.seen || ''), ...voice(S.rule) },
+      proof: { title: esc(S.proof.title), html: (S.proof.paras || []).map((p, i) => `<p${i === 0 && S.proof.firstIsFormula ? ' class="hand" style="font-size:20px"' : ''}>${esc(p)}</p>`).join(''), ar: String(S.proof.ar || '') },
+      exercises: { levels },
+      check: q(S.check)
+    };
+  }
+
+  return { lessonFromSpec, compile, widgets: () => Object.keys(WIDGETS), version: 'v0' };
+})();
+
+/*@@END-ADAPTER@@*/
+const TEMPLATE = "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>Le périmètre du cercle · Le concept en main<\/title>\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link href=\"https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap\" rel=\"stylesheet\">\n<style>\n/* STYLE:BEGIN · Le concept en main · engine v1.2 · do not edit in a lesson */\n:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}\n:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}\n*{box-sizing:border-box;min-width:0}\nbody{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 \"Atkinson Hyperlegible\",system-ui,sans-serif;overflow-x:clip}\n.wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px)}\nh1,h2,h3,.hand{font-family:Kalam,\"Comic Sans MS\",cursive;font-weight:700;line-height:1.1;margin:0}\nh1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:12px 0 6px}\np{margin:6px 0}\n.ar{font-family:\"Noto Naskh Arabic\",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}\n.num{font:700 15px Kalam,cursive;color:var(--soft)}\n.note{font-size:13px;color:var(--soft)}\nheader{padding:20px 0 6px}\n.steps{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}\n.steps .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}\n.steps button{flex:none;min-height:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px \"Atkinson Hyperlegible\",sans-serif;padding:0 10px;cursor:pointer}\n.steps button.done{border-color:var(--ok);color:var(--ok)}\n.steps button.cur{border-color:var(--ink);background:var(--ink);color:var(--bg)}\n.steps button:disabled{opacity:.45;cursor:default}\nsection.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;scroll-margin-top:60px}\nsection.moment[hidden]{display:none}\nbutton.b{font:700 16px \"Atkinson Hyperlegible\",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}\nbutton.b.primary{background:var(--ink);color:var(--bg)}\nbutton.b:disabled{opacity:.4;cursor:default}\nbutton:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}\n.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}\n.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}\n.opts button{font:700 16px \"Atkinson Hyperlegible\",sans-serif;min-height:44px;padding:8px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}\n.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}\n.opts button:disabled{cursor:default}\n.q{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}\n.q:first-child{border-top:0;margin-top:0;padding-top:0}\n.fig{width:100%;display:block}\n.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}\n.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}\n.card{border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center}\n.card small{display:block;color:var(--soft);font-size:13px}\n.card b{font:700 20px Kalam,cursive;white-space:nowrap}\n.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}\nlabel{display:block;font-weight:700}\nlabel span{font-weight:400;color:var(--soft);white-space:nowrap}\ninput[type=range]{width:100%;height:40px;accent-color:var(--blue)}\n.seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}\n.seg button{min-height:40px;padding:4px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 14px \"Atkinson Hyperlegible\",sans-serif;cursor:pointer}\n.seg button.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}\n.bars{display:grid;gap:4px;margin-top:6px;font-size:14px}\n.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}\n.bar i{display:block;height:100%;border-radius:5px}\ntable{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}\nth,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}\nth:first-child,td:first-child{text-align:left}\n.scroll{overflow-x:auto}\n.missions{list-style:none;padding:0;margin:8px 0}\n.missions li{padding:4px 0 4px 30px;position:relative}\n.missions li::before{content:\"\";position:absolute;left:0;top:7px;width:18px;height:18px;border:2px solid var(--line);border-radius:5px}\n.missions li.ok::before{border-color:var(--ok);background:var(--ok)}\n.rule{border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:8px 0}\n.formula{font:700 clamp(24px,6vw,34px) Kalam,cursive;margin:4px 0}\n.flapw{position:relative;margin-top:8px;border-radius:12px;overflow:hidden;min-height:140px}\n.proof{padding:12px;border:1.5px dashed var(--line);border-radius:12px}\n.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive;color:var(--ink);cursor:pointer}\n.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}\n.verdict{border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}\n.verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent)}\n.verdict.no{background:color-mix(in srgb,var(--bad) 12%,transparent)}\n.ex{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-top:8px}\n.ex input{font:16px \"Atkinson Hyperlegible\",sans-serif;min-height:44px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;width:9em;background:var(--card);color:var(--ink)}\n.fb{min-height:1.4em;margin-top:6px;font-weight:700}\n.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}\n.report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}\n.report .card b{font-size:26px}\nselect{font:16px \"Atkinson Hyperlegible\",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}\n.lt{white-space:nowrap}\n.voice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}\n.voice button{font:700 15px \"Atkinson Hyperlegible\",sans-serif;min-height:44px;padding:6px 14px;border-radius:22px;border:2px solid var(--blue);background:var(--card);color:var(--blue);cursor:pointer}\n.voice button.on{background:var(--blue);color:var(--bg)}\n.voice details{font-size:14px;color:var(--soft);flex-basis:100%}\n#problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}\nfooter{padding:20px 0 40px}\n@media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}\n@media(prefers-reduced-motion:reduce){*{transition:none!important}}\n/* STYLE:END */\n<\/style>\n<\/head>\n<body>\n<header><div class=\"wrap\" id=\"hd\"><\/div><\/header>\n<nav class=\"steps\" aria-label=\"Moments de la leçon\"><div class=\"wrap\" id=\"steps\"><\/div><\/nav>\n<main class=\"wrap\" id=\"main\"><\/main>\n<footer><div class=\"wrap note\" id=\"ft\"><\/div><\/footer>\n\n<script>\n/* LESSON:BEGIN · everything the lesson needs lives in this block.\n   Example lesson: the perimeter of a circle (1AC). Replace it with your own. */\nconst LESSON = {\n  meta: {\n    kicker: 'Mathématiques · 1re année collège · Le concept en main',\n    title: 'Le périmètre du cercle',\n    titleAr: 'محيط الدائرة',\n    short: 'Périmètre du cercle',\n    classes: ['1APIC-1', '1APIC-2', '1APIC-3'],\n    footer: 'Exemple du gabarit « Le concept en main ». Textes et valeurs originaux.'\n  },\n\n  misconceptions: {\n    aire: { fr: \"Tu as confondu périmètre et aire : c'est l'aire qui dépend de r², pas le périmètre.\", ar: 'خلطت بين المحيط والمساحة: المساحة هي التي تتعلق بمربع الشعاع.' },\n    constante: { fr: 'Le périmètre dépend du rayon : un cercle plus grand a un bord plus long.', ar: 'المحيط يتعلق بالشعاع: الدائرة الأكبر لها محيط أطول.' },\n    deux: { fr: 'Oubli du 2 dans P = 2·π·r.', ar: 'نسيت العدد 2 في العلاقة.' },\n    diametre: { fr: 'Le diamètre a été pris pour le rayon : r = d ÷ 2.', ar: 'اعتبرت القطر شعاعا: الشعاع نصف القطر.' },\n    inverse: { fr: 'Pour retrouver r, on divise P par 2π.', ar: 'لإيجاد الشعاع نقسم المحيط على 2π.' }\n  },\n\n  hook: {\n    title: 'Une roue deux fois plus grande…',\n    svg: `<svg class=\"fig\" viewBox=\"0 0 640 200\" role=\"img\" aria-label=\"Deux roues de rayons différents\">\n      <circle class=\"ink\" cx=\"150\" cy=\"95\" r=\"40\" fill=\"var(--card)\"/><circle class=\"ink\" cx=\"420\" cy=\"95\" r=\"70\" fill=\"var(--card)\"/>\n      <line class=\"ink\" x1=\"150\" y1=\"95\" x2=\"190\" y2=\"95\" style=\"stroke:var(--blue)\"/><line class=\"ink\" x1=\"420\" y1=\"95\" x2=\"490\" y2=\"95\" style=\"stroke:var(--heat)\"/>\n      <text x=\"150\" y=\"160\" text-anchor=\"middle\" font-family=\"Kalam\" font-weight=\"700\" font-size=\"20\" fill=\"var(--blue)\">r<\/text>\n      <text x=\"420\" y=\"185\" text-anchor=\"middle\" font-family=\"Kalam\" font-weight=\"700\" font-size=\"20\" fill=\"var(--heat)\">2r<\/text><\/svg>`,\n    text: \"Une roue a un rayon deux fois plus grand qu'une autre. En un tour, parcourt-elle deux fois plus de chemin, ou plus encore ?\",\n    ar: 'عجلة شعاعها ضعف شعاع أخرى. هل تقطع في دورة واحدة ضعف المسافة أم أكثر؟'\n  },\n\n  predict: [\n    { q: 'Si le rayon double, le périmètre est multiplié par :', ar: 'إذا تضاعف الشعاع، يُضرب المحيط في:',\n      options: [['× 2', ''], ['× 4', 'aire'], ['il ne change pas', 'constante']] }\n  ],\n\n  experiment: {\n    title: 'Le cercle qui grandit',\n    intro: 'Fais varier le rayon et observe le périmètre et l’aire.',\n    html: `<svg class=\"fig\" viewBox=\"0 0 400 220\" role=\"img\" aria-label=\"Cercle de rayon variable\"><circle id=\"cc\" class=\"ink\" cx=\"200\" cy=\"110\" r=\"40\" style=\"stroke:var(--blue)\"/><line id=\"cr\" class=\"ink\" x1=\"200\" y1=\"110\" x2=\"240\" y2=\"110\" style=\"stroke:var(--heat)\"/><\/svg>\n      <div class=\"readout\"><div class=\"card\"><small>Rayon<\/small><b id=\"xr\"><\/b><\/div><div class=\"card\"><small>Périmètre<\/small><b id=\"xp\" style=\"color:var(--blue)\"><\/b><\/div><div class=\"card\"><small>Aire<\/small><b id=\"xa\"><\/b><\/div><\/div>\n      <label for=\"rr\">Rayon <span id=\"ro\"><\/span><\/label><input id=\"rr\" type=\"range\" min=\"1\" max=\"10\" step=\"1\" value=\"2\">`,\n    missions: [\n      { id: 'r2r4', text: 'Mets r = 2 cm puis r = 4 cm et compare les périmètres.' },\n      { id: 'r3r9', text: 'Compare r = 3 cm et r = 9 cm.' }\n    ],\n    required: ['r2r4'],\n    note: 'P = 2·π·r est calculé à chaque mouvement, avec π ≈ 3,1416.',\n    mount(root, api) {\n      const $ = s => root.querySelector(s), seen = new Set();\n      const draw = () => {\n        const r = +$('#rr').value, P = 2 * Math.PI * r, A = Math.PI * r * r;\n        $('#cc').setAttribute('r', r * 10); $('#cr').setAttribute('x2', 200 + r * 10);\n        $('#xr').textContent = r + ' cm'; $('#xp').textContent = api.nf(P, 2) + ' cm'; $('#xa').textContent = api.nf(A, 2) + ' cm²'; $('#ro').textContent = '= ' + r + ' cm';\n        seen.add(r); if (seen.has(2) && seen.has(4)) api.done('r2r4'); if (seen.has(3) && seen.has(9)) api.done('r3r9');\n      };\n      $('#rr').addEventListener('input', draw); draw();\n    }\n  },\n\n  rule: {\n    blocks: [{ formula: 'P = 2 · π · r', text: 'P et r dans la même unité de longueur. π ≈ 3,14.', ar: 'المحيط يساوي 2 في π في الشعاع.' }],\n    seen: 'Rayon double, périmètre double : le périmètre est proportionnel au rayon. C’est l’aire qui quadruple.'\n  },\n\n  proof: {\n    title: 'Pourquoi « × 2 » ?',\n    html: '<p class=\"hand\" style=\"font-size:20px\">2 · π · (2r) = 2 × (2 · π · r)<\/p><p>Le rayon apparaît une seule fois, sans carré : doubler r double P.<\/p>',\n    ar: 'الشعاع يظهر مرة واحدة دون مربع، فمضاعفته تضاعف المحيط.'\n  },\n\n  exercises: {\n    levels: [\n      { label: 'Niveau 1', make(R) { const r = R.int(3, 15);\n        return { q: `Calcule le périmètre d'un cercle de rayon ${r} cm. Prends π ≈ 3,14.`, unit: 'cm', ans: 2 * 3.14 * r, digits: 2,\n          traps: [[3.14 * r, 'deux'], [3.14 * r * r, 'aire']] }; } },\n      { label: 'Niveau 2', make(R) { const d = R.pick([6, 10, 12, 14, 16, 18, 20, 24, 30]); // d = 8 would make two traps equal\n        return { q: `Calcule le périmètre d'un cercle de diamètre ${d} cm. Prends π ≈ 3,14.`, unit: 'cm', ans: 3.14 * d, digits: 2,\n          traps: [[2 * 3.14 * d, 'diametre'], [3.14 * (d / 2) ** 2, 'aire']] }; } },\n      { label: 'Niveau 3', make(R) { const r = R.int(2, 20), P = Math.round(2 * 3.14 * r * 100) / 100;\n        return { q: `Un cercle a un périmètre de ${R.nf(P, 2)} cm. Calcule son rayon. Prends π ≈ 3,14.`, unit: 'cm', ans: P / (2 * 3.14), digits: 2,\n          traps: [[P * 2 * 3.14, 'inverse'], [P / 3.14, 'deux']] }; } }\n    ]\n  },\n\n  check: [\n    { q: 'Un disque a un rayon 3 fois plus grand qu’un autre. Son périmètre est multiplié par :', ar: 'شعاع قرص ثلاثة أضعاف شعاع آخر. يُضرب محيطه في:',\n      options: [['× 3', ''], ['× 9', 'aire'], ['il ne change pas', 'constante']] }\n  ]\n};\n/* LESSON:END */\n<\/script>\n\n<script>\n/* ENGINE:BEGIN · Le concept en main · engine v1.2 · do not edit in a lesson; update it with tools/update_engine.py */\n(() => {\nconst L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];\nconst reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;\nconst nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });\n// Arabic text: keep each Latin or numeric expression left-to-right and on one line (returns HTML)\nconst iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => `<bdi dir=\"ltr\" class=\"lt\">${m}<\/bdi>`);\nconst esc = t => String(t).replace(/[&<>\"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\nconst R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };\nconst MIS = L.misconceptions || {};\nconst STEPS = (L.meta.steps || ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie']);\nconst S = { open: 1, pred: {}, check: {}, ex: {}, errs: {}, missions: new Set(), cur: null, lvl: 0 };\nconst near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);\n\n/* validation: shown to the author, caught by the flow test */\nfunction validate() {\n  const P = [], codeOk = c => c === '' || (MIS[c] && MIS[c].fr && MIS[c].ar);\n  ['kicker', 'title', 'titleAr'].forEach(k => { if (!L.meta || !L.meta[k]) P.push(`meta.${k} manquant`); });\n  for (const [set, name] of [[L.predict, 'predict'], [L.check, 'check']]) {\n    if (!set || !set.length) P.push(`${name} vide`);\n    (set || []).forEach((q, i) => {\n      if (!q.q || !q.ar) P.push(`${name}[${i}] : texte ou arabe manquant`);\n      const good = q.options.filter(o => o[1] === '').length; if (good !== 1) P.push(`${name}[${i}] : ${good} bonnes réponses au lieu d'une`);\n      q.options.forEach(o => { if (!codeOk(o[1])) P.push(`${name}[${i}] : code « ${o[1]} » absent de misconceptions`); });\n    });\n  }\n  const ex = L.experiment;\n  if (!ex || !ex.missions || !ex.missions.length) P.push('experiment.missions vide');\n  else (ex.required || [ex.missions[0].id]).forEach(id => { if (!ex.missions.some(m => m.id === id)) P.push(`mission requise « ${id} » inconnue`); });\n  (L.exercises && L.exercises.levels || []).forEach((lv, l) => {\n    for (let k = 0; k < 300; k++) {\n      let e; try { e = lv.make(R); } catch (err) { P.push(`niveau ${l + 1} : ${err.message}`); break; }\n      if (!e.q || !e.unit || !isFinite(e.ans)) { P.push(`niveau ${l + 1} : question, unité ou réponse invalide`); break; }\n      for (const [v, c] of e.traps || []) {\n        if (!codeOk(c) || !c) { P.push(`niveau ${l + 1} : code de piège « ${c} » inconnu`); return; }\n        if (!isFinite(v)) { P.push(`niveau ${l + 1} : piège ${c} non fini`); return; }\n        if (near(v, e.ans)) { P.push(`niveau ${l + 1} : le piège ${c} donne la bonne réponse pour « ${e.q} »`); return; }\n      }\n      const T = e.traps || [];\n      for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++)\n        if (T[i][1] !== T[j][1] && near(T[i][0], T[j][0])) { P.push(`niveau ${l + 1} : les pièges ${T[i][1]} et ${T[j][1]} donnent la même valeur pour « ${e.q} »`); return; }\n    }\n  });\n  if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');\n  [['hook', L.hook], ['rule', L.rule]].forEach(([k, o]) => { if (o && o.audio && !/^([\\w./-]+\\.(mp3|ogg|m4a)|data:audio\\/[\\w-]+;base64,[\\w+/=]+)$/.test(o.audio)) P.push(`${k}.audio : chemin invalide « ${o.audio} »`); });\n  return P;\n}\n\n/* optional Darija voice: { audio: 'audio/file.mp3', audioText: 'texte en darija' } */\nfunction voice(o) {\n  if (!o || !o.audio) return '';\n  return `<div class=\"voice\"><button type=\"button\" data-audio=\"${esc(o.audio)}\" aria-label=\"Écouter l'explication en darija\">▶ Écouter en darija · <span lang=\"ar\">استمع بالدارجة<\/span><\/button>`\n    + (o.audioText ? `<details><summary>Texte de l'audio<\/summary><p class=\"ar\">${iso(esc(o.audioText))}<\/p><\/details>` : '') + '<\/div>';\n}\nlet player = null;\nfunction bindVoice() {\n  $$('[data-audio]').forEach(b => b.onclick = () => {\n    if (player && player.src.endsWith(b.dataset.audio) && !player.paused) { player.pause(); return; }\n    if (player) player.pause();\n    $$('[data-audio]').forEach(x => x.classList.remove('on'));\n    player = new Audio(b.dataset.audio); b.classList.add('on');\n    const box = b.parentNode, warn = msg => { b.classList.remove('on'); let w = box.querySelector('.vwarn'); if (!w) { w = document.createElement('p'); w.className = 'vwarn note'; box.appendChild(w); } w.textContent = msg; };\n    player.onended = player.onpause = () => b.classList.remove('on');\n    player.onerror = () => warn(\"Fichier audio introuvable : ouvre la leçon avec son dossier audio/. · الملف الصوتي غير موجود.\");\n    player.play().catch(e => { if (e && e.name === 'NotAllowedError') warn('Lecture bloquée par le navigateur : touche de nouveau le bouton. · اضغط مرة أخرى.'); else b.classList.remove('on'); });\n  });\n}\n\n/* rendering */\nfunction qBlock(arr, prefix) { return arr.map((q, i) => `<div class=\"q\" id=\"${prefix}${i}\"><\/div>`).join(''); }\nfunction render() {\n  const m = L.meta, h = L.hook, x = L.experiment, r = L.rule, p = L.proof;\n  document.title = `${m.title} · Le concept en main`;\n  $('#hd').innerHTML = `<div class=\"num\">${m.kicker}<\/div><h1>${m.title}<\/h1><p class=\"ar\">${iso(esc(m.titleAr))}<\/p>`;\n  $('#ft').textContent = m.footer || '';\n  $('#main').innerHTML = `\n  <section class=\"moment\" id=\"m1\"><div class=\"num\">1 · La question<\/div><h2>${h.title}<\/h2>${h.svg || ''}<p>${h.text}<\/p><p class=\"ar\">${iso(esc(h.ar))}<\/p>${voice(h)}\n    <div class=\"row\"><button class=\"b primary\" data-next=\"2\">Je fais ma prédiction<\/button><\/div><\/section>\n  <section class=\"moment\" id=\"m2\" hidden><div class=\"num\">2 · Je prédis<\/div><h2>Avant toute explication, choisis<\/h2>\n    <p class=\"note\">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.<\/p>${qBlock(L.predict, 'p')}\n    <div class=\"row\"><button class=\"b primary\" data-next=\"3\" id=\"next2\" disabled>Je teste<\/button><\/div><\/section>\n  <section class=\"moment\" id=\"m3\" hidden><div class=\"num\">3 · Je teste<\/div><h2>${x.title}<\/h2><p>${x.intro || ''}<\/p><div id=\"exp\">${x.html}<\/div>\n    <h3>Mes missions<\/h3><ul class=\"missions\">${x.missions.map(mi => `<li data-m=\"${mi.id}\">${mi.text}<\/li>`).join('')}<\/ul>\n    ${x.note ? `<p class=\"note\">${x.note}<\/p>` : ''}\n    <div class=\"row\"><button class=\"b primary\" data-next=\"4\" id=\"next3\" disabled>J'ai observé, je nomme la règle<\/button><span class=\"note\" id=\"next3n\">Termine les missions marquées comme nécessaires.<\/span><\/div><\/section>\n  <section class=\"moment\" id=\"m4\" hidden><div class=\"num\">4 · Je nomme la règle<\/div><h2>La règle<\/h2>\n    ${r.blocks.map(b => `<div class=\"rule\"><div class=\"formula\">${b.formula}<\/div><p>${b.text || ''}<\/p>${b.ar ? `<p class=\"ar\">${iso(esc(b.ar))}<\/p>` : ''}<\/div>`).join('')}\n    ${voice(r)}${r.seen ? `<p><b>Ce que tu as vu :<\/b> ${r.seen}<\/p>` : ''}\n    <div class=\"row\"><button class=\"b primary\" data-next=\"5\">Je comprends pourquoi<\/button><\/div><\/section>\n  <section class=\"moment\" id=\"m5\" hidden><div class=\"num\">5 · Je comprends pourquoi<\/div><h2>${p.title}<\/h2>\n    <div class=\"flapw\"><div class=\"proof\">${p.html}${p.ar ? `<p class=\"ar\">${iso(esc(p.ar))}<\/p>` : ''}<\/div><button class=\"flap\" id=\"flap\">Soulever le rabat<\/button><\/div>\n    <h3>Et ma prédiction ?<\/h3><div id=\"pv\"><\/div>\n    <div class=\"row\"><button class=\"b primary\" data-next=\"6\">Je m'entraîne<\/button><\/div><\/section>\n  <section class=\"moment\" id=\"m6\" hidden><div class=\"num\">6 · Je m'entraîne<\/div><h2>Exercices sans fin<\/h2>\n    <p class=\"ar\">${iso('كل تمرين جديد بأعداد مختلفة.')}<\/p>\n    <div class=\"seg\" id=\"lv\">${L.exercises.levels.map((lv, i) => `<button data-l=\"${i}\" class=\"${i ? '' : 'on'}\">${lv.label}<\/button>`).join('')}<\/div>\n    <div class=\"ex\"><p id=\"exq\"><\/p><div class=\"row\"><input id=\"exa\" inputmode=\"decimal\" autocomplete=\"off\" aria-label=\"Ta réponse\"><span id=\"exu\" class=\"hand\" style=\"font-size:20px\"><\/span><button class=\"b\" id=\"exc\">Vérifier<\/button><button class=\"b\" id=\"exn\">Nouvel exercice<\/button><\/div><div class=\"fb\" id=\"exf\" aria-live=\"polite\"><\/div><\/div>\n    <p class=\"note\" id=\"exs\"><\/p>\n    <div class=\"row\"><button class=\"b primary\" data-next=\"7\">Je vérifie ce que j'ai compris<\/button><\/div><\/section>\n  <section class=\"moment\" id=\"m7\" hidden><div class=\"num\">7 · Je vérifie<\/div><h2>Pour finir<\/h2>${qBlock(L.check, 'c')}\n    <div id=\"rep\" hidden><h3>Mon bilan<\/h3><div class=\"report\"><div class=\"card\"><small>Prédictions justes<\/small><b id=\"r1\"><\/b><\/div><div class=\"card\"><small>Vérifications justes<\/small><b id=\"r2\"><\/b><\/div><div class=\"card\"><small>Exercices réussis<\/small><b id=\"r3\"><\/b><\/div><\/div>\n    <div id=\"r4\"><\/div>\n    <div class=\"row\"><label for=\"cls\" style=\"font-weight:400\">Ma classe<\/label><select id=\"cls\"><option value=\"\">non indiquée<\/option>${(m.classes || []).map(c => `<option>${esc(c)}<\/option>`).join('')}<\/select><button class=\"b\" id=\"copy\">Copier le bilan<\/button><span class=\"note\" id=\"cpn\"><\/span><\/div>\n    <p class=\"note\">Le bilan ne contient aucun nom. Il reste sur cet appareil.<\/p><\/div><\/section>`;\n}\n\n/* steps */\nfunction steps() {\n  $('#steps').innerHTML = STEPS.map((n, i) => `<button data-s=\"${i + 1}\" class=\"${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}\" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}<\/button>`).join('');\n  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));\n}\nfunction openStep(n) {\n  if (n > S.open) S.open = n;\n  for (let i = 1; i <= S.open; i++) $('#m' + i).hidden = false;\n  steps(); if (n === 5) verdicts(); if (n === 6 && !S.cur) newEx();\n  $('#m' + n).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });\n}\n\n/* questions */\nfunction question(q, el, store, key, onDone) {\n  el.innerHTML = `<p><b>${q.q}<\/b><\/p><p class=\"ar\">${iso(esc(q.ar))}<\/p><div class=\"opts\">${q.options.map((o, i) => `<button data-i=\"${i}\">${o[0]}<\/button>`).join('')}<\/div>`;\n  el.querySelectorAll('button').forEach(b => b.onclick = () => {\n    if (store[key]) return; const i = +b.dataset.i, code = q.options[i][1];\n    store[key] = { i, ok: code === '', code }; b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b); onDone();\n  });\n}\nfunction verdicts() {\n  $('#pv').innerHTML = L.predict.map((q, k) => {\n    const a = S.pred[k]; if (!a) return ''; const right = q.options.find(o => o[1] === '')[0];\n    return `<div class=\"verdict ${a.ok ? 'ok' : 'no'}\"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :<\/b> tu avais choisi « ${q.options[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code].fr + `<div class=\"ar\">${iso(esc(MIS[a.code].ar))}<\/div>`}<\/div>`;\n  }).join('');\n}\n\n/* experiment */\nfunction done(id) {\n  if (S.missions.has(id)) return; S.missions.add(id);\n  const li = $(`.missions li[data-m=\"${id}\"]`); if (li) li.classList.add('ok');\n  const req = L.experiment.required || [L.experiment.missions[0].id], ok = req.every(r => S.missions.has(r));\n  $('#next3').disabled = !ok;\n  $('#next3n').textContent = !ok ? 'Termine les missions marquées comme nécessaires.' : S.missions.size === L.experiment.missions.length ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.';\n}\n\n/* exercises */\nfunction newEx() {\n  const lv = L.exercises.levels[S.lvl]; S.cur = lv.make(R);\n  $('#exq').textContent = S.cur.q; $('#exu').textContent = S.cur.unit; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false;\n}\nfunction checkEx() {\n  const x = parseFloat($('#exa').value.replace(/[\\s ]/g, '').replace(',', '.')), c = S.cur;\n  if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }\n  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0]); st[1]++;\n  if (near(x, c.ans)) { st[0]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }\n  else {\n    const t = (c.traps || []).find(tp => near(x, tp[0]));\n    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class=\"ar\">${iso(esc(MIS[t[1]].ar))}<\/div>`; }\n    else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';\n    $('#exf').className = 'fb no';\n  }\n  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0]; return `${lv.label} : ${s[0]} réussi${s[0] > 1 ? 's' : ''} sur ${s[1]}`; }).join(' · ');\n}\n\n/* report */\nfunction report() {\n  const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;\n  const ok = Object.values(S.ex).reduce((s, v) => s + v[0], 0), tries = Object.values(S.ex).reduce((s, v) => s + v[1], 0);\n  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${ok} / ${tries}`;\n  const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });\n  Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);\n  const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);\n  const pr = p / L.predict.length, cr = c / L.check.length;\n  $('#r4').innerHTML = `<div class=\"verdict ${cr === 1 ? 'ok' : 'no'}\">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? \"Tu avais déjà la bonne idée, et tu l'as confirmée.\" : 'Reviens au moment « Je teste » et refais les missions.'}<\/div>`\n    + (list.length ? `<p><b>À retravailler :<\/b><\/p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class=\"note\">(${n} fois)<\/span><\/li>`).join('')}<\/ul>` : '<p>Aucune erreur type repérée.<\/p>');\n  S.summary = { p, c, ex: `${ok}/${tries}`, errs: list };\n  $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });\n}\n\n/* start */\nrender(); steps(); bindVoice();\n$$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));\nL.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));\nL.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));\n$('#flap').onclick = () => $('#flap').classList.add('open');\n$('#exc').onclick = checkEx; $('#exn').onclick = newEx;\n$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });\n$$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });\n$('#copy').onclick = async () => {\n  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices ${s.ex} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;\n  try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }\n};\nL.experiment.mount($('#exp'), { done, nf, iso, reduce });\nconst problems = validate(), testMode = /[?&]test\\b/.test(location.search);\nif (problems.length) { console.error('Leçon invalide :\\n' + problems.join('\\n')); $('#main').insertAdjacentHTML('afterbegin', `<div id=\"problems\"><b>À corriger avant publication :<\/b><ul>${problems.map(p => `<li>${esc(p)}<\/li>`).join('')}<\/ul><\/div>`); }\nif (testMode) window.__fikra = { S, L, done, openStep, problems, newEx };\n})();\n/* ENGINE:END */\n<\/script>\n<\/body>\n<\/html>\n";
+const EXAMPLES = {"maths-3ac-fonction-lineaire": {"meta": {"kicker": "Mathématiques · 3e année collège · Le concept en main", "title": "La fonction linéaire", "titleAr": "الدالة الخطية", "short": "Fonction linéaire", "classes": ["3APIC-1", "3APIC-2", "3APIC-3"], "footer": "Leçon construite depuis une fiche JSON dans l'atelier, sans code. Textes et valeurs originaux."}, "misconceptions": {"addition": {"fr": "Une fonction linéaire multiplie x par a : f(x) = a × x, pas a + x.", "ar": "الدالة الخطية تضرب x في a وليس تجمعهما."}, "inverse": {"fr": "Tu as divisé dans le mauvais sens. L'image est a × x, et le coefficient est f(x) ÷ x.", "ar": "قسمت في الاتجاه المعكوس: الصورة هي a ضرب x، والمعامل هو f(x) مقسوما على x."}, "antecedent": {"fr": "On cherchait l'antécédent, le nombre x de départ, pas l'image f(x).", "ar": "المطلوب هو السابق أي العدد x وليس الصورة."}, "origine": {"fr": "La droite d'une fonction linéaire passe toujours par l'origine, car f(0) = a × 0 = 0.", "ar": "تمثيل الدالة الخطية مستقيم يمر دائما من أصل المعلم لأن f(0) = 0."}, "courbe": {"fr": "La représentation graphique d'une fonction linéaire est une droite, pas une courbe.", "ar": "التمثيل المبياني للدالة الخطية مستقيم وليس منحنى."}, "coef": {"fr": "Le coefficient a reste le même : c'est x qui change, et f(x) change dans la même proportion.", "ar": "المعامل a لا يتغير، x هو الذي يتغير وتتغير f(x) بنفس النسبة."}}, "hook": {"title": "Le prix au kilo", "text": "Au souk, les tomates sont à 4 dirhams le kilo. Pour 2 kg on paie 8 DH. Pour 6 kg, combien ? Et si l'on dessine le prix en fonction de la masse, quelle forme obtient-on ?", "ar": "في السوق ثمن الطماطم 4 دراهم للكيلوغرام. كم ندفع مقابل 6 كيلوغرامات؟ وإذا رسمنا الثمن بدلالة الكتلة، ما الشكل الذي نحصل عليه؟"}, "predict": [{"q": "f(x) = 3x. Si x double, f(x) :", "ar": "إذا تضاعف x، فإن f(x):", "options": [["double aussi", ""], ["augmente de 3", "addition"], ["ne change pas", "coef"]]}, {"q": "La représentation graphique de f(x) = a·x est :", "ar": "التمثيل المبياني للدالة f(x) = a·x هو:", "options": [["une droite qui passe par l'origine", ""], ["une droite qui peut passer ailleurs", "origine"], ["une courbe", "courbe"]]}], "experiment": {"title": "La droite qui tourne", "intro": "Choisis le coefficient a, puis déplace x. Le point rouge est (x ; f(x)). Note une droite dans ton carnet pour la garder en pointillé.", "widget": "graphe", "params": {"inputs": [{"id": "a", "label": "Coefficient a", "min": -3, "max": 3, "step": 0.5, "value": 1}, {"id": "x", "label": "Nombre x", "min": -5, "max": 5, "step": 1, "value": 1}], "outputs": [{"id": "y", "label": "Image f(x)", "expr": "a*x", "digits": 1}], "curve": {"var": "x", "expr": "a*x", "xmin": -5, "xmax": 5, "ymin": -10, "ymax": 10, "xlabel": "x", "ylabel": "f(x)", "label": "Droite de la fonction f(x) = a·x"}}, "missions": [{"id": "double", "type": "valeurs", "input": "x", "values": [1, 2, 4], "when": "a == 2", "text": "Mets a = 2, puis x = 1, x = 2 et x = 4. Que devient f(x) quand x double ?"}, {"id": "descend", "type": "condition", "expr": "a < 0", "text": "Trouve un coefficient pour lequel la droite descend."}, {"id": "plate", "type": "condition", "expr": "a == 0", "text": "Mets a = 0. Où est la droite ?"}], "required": ["double"], "note": "f(x) = a × x est recalculé à chaque mouvement. Toutes les droites passent par le point (0 ; 0)."}, "rule": {"blocks": [{"formula": "f(x) = a · x", "text": "Une fonction linéaire de coefficient a associe à chaque nombre x le nombre a × x. Le coefficient se calcule par a = f(x) ÷ x, pour x non nul.", "ar": "الدالة الخطية ذات المعامل a تربط كل عدد x بالعدد a ضرب x، والمعامل هو f(x) مقسوما على x."}, {"formula": "droite passant par O", "text": "Sa représentation graphique est une droite qui passe par l'origine du repère. Si a > 0 elle monte, si a < 0 elle descend.", "ar": "تمثيلها المبياني مستقيم يمر من أصل المعلم، صاعد إذا كان a موجبا ونازل إذا كان سالبا."}], "seen": "Avec a fixé, quand x double, f(x) double : l'image est proportionnelle à x. Toutes les droites passent par (0 ; 0)."}, "proof": {"title": "Pourquoi l'image double quand x double ?", "firstIsFormula": true, "paras": ["f(2x) = a × (2x) = 2 × (a × x) = 2 × f(x)", "On peut changer l'ordre d'une multiplication : le 2 sort, et f(x) est multiplié par 2. Et f(0) = a × 0 = 0, donc la droite passe toujours par l'origine."], "ar": "يمكن تغيير ترتيب الضرب، فيخرج العدد 2 وتتضاعف الصورة. و f(0) = 0 لذلك يمر المستقيم دائما من الأصل."}, "exercises": {"levels": [{"label": "Image", "vars": [["a", "pick 2 3 4 5 -2 -3"], ["x", "int 3 9"]], "q": "f est la fonction linéaire de coefficient {a:0}. Calcule l'image de {x:0}.", "unit": " ", "answer": "a*x", "digits": 0, "traps": [["a+x", "addition"], ["x/a", "inverse"]]}, {"label": "Antécédent", "vars": [["a", "pick 2 3 4 5 -2 -3"], ["x0", "int 3 9"], ["y", "a*x0"]], "q": "f(x) = {a:0}x. Trouve le nombre x dont l'image est {y:0}.", "unit": " ", "answer": "y/a", "digits": 0, "traps": [["y*a", "antecedent"], ["y-a", "addition"]]}, {"label": "Coefficient", "vars": [["a", "pick 2 3 4 5 -2 -3 1.5 2.5"], ["x1", "int 4 9"], ["y1", "a*x1"]], "q": "f est une fonction linéaire et f({x1:0}) = {y1:1}. Calcule son coefficient a.", "unit": " ", "answer": "y1/x1", "digits": 2, "traps": [["x1/y1", "inverse"], ["y1-x1", "addition"]]}]}, "check": [{"q": "g(x) = −2x. Si x est multiplié par 3, g(x) :", "ar": "إذا ضُرب x في 3، فإن g(x):", "options": [["est multiplié par 3", ""], ["augmente de 3", "addition"], ["ne change pas", "coef"]]}, {"q": "Le point (0 ; 2) peut-il être sur la droite d'une fonction linéaire ?", "ar": "هل يمكن أن تكون النقطة (0 ; 2) على مستقيم دالة خطية؟", "options": [["Non, car f(0) = 0", ""], ["Oui, si a = 2", "origine"], ["Oui, si la droite est courbée", "courbe"]]}]}, "pc-3ac-energie-electrique": {"meta": {"kicker": "Physique-chimie · 3e année collège · Le concept en main", "title": "L'énergie électrique consommée", "titleAr": "الطاقة الكهربائية المستهلكة", "short": "Énergie électrique", "classes": ["3APIC-1", "3APIC-2", "3APIC-3"], "footer": "Leçon construite depuis une fiche JSON dans l'atelier, sans code. Textes et valeurs originaux."}, "misconceptions": {"puissance": {"fr": "La puissance seule ne suffit pas : l'énergie dépend aussi de la durée, E = P × t.", "ar": "القدرة وحدها لا تكفي: الطاقة تتعلق أيضا بالمدة."}, "duree": {"fr": "La durée seule ne suffit pas : un appareil puissant consomme plus en moins de temps. E = P × t.", "ar": "المدة وحدها لا تكفي: الجهاز القوي يستهلك أكثر في وقت أقل."}, "addition": {"fr": "On multiplie la puissance par la durée, on ne les additionne pas.", "ar": "نضرب القدرة في المدة ولا نجمعهما."}, "division": {"fr": "On multiplie P par t, on ne divise pas.", "ar": "نضرب القدرة في المدة ولا نقسم."}, "minutes": {"fr": "La durée doit être en heures pour obtenir des Wh : divise les minutes par 60.", "ar": "يجب تحويل المدة إلى الساعات: نقسم الدقائق على 60."}, "kwh": {"fr": "1 kWh = 1000 Wh : pour passer des Wh aux kWh, on divise par 1000.", "ar": "1 kWh = 1000 Wh: للتحويل إلى kWh نقسم على 1000."}}, "hook": {"title": "Le four ou la lampe ?", "text": "Un four de 2000 W chauffe un plat pendant 30 minutes. Une lampe de 100 W reste allumée toute une soirée de 10 heures. Lequel des deux fait le plus tourner le compteur ?", "ar": "فرن قدرته 2000 W يشتغل 30 دقيقة، ومصباح قدرته 100 W يبقى مشتعلا 10 ساعات. أيهما يستهلك طاقة أكبر؟"}, "predict": [{"q": "Un appareil fonctionne 2 h au lieu de 1 h. L'énergie qu'il consomme :", "ar": "جهاز يشتغل ساعتين بدل ساعة. الطاقة التي يستهلكها:", "options": [["double", ""], ["reste la même", "puissance"], ["augmente de 1", "addition"]]}, {"q": "Four de 2000 W pendant 30 min, lampe de 100 W pendant 10 h : qui consomme le plus ?", "ar": "فرن 2000 W لمدة 30 دقيقة ومصباح 100 W لمدة 10 ساعات: أيهما يستهلك أكثر؟", "options": [["les deux autant", ""], ["le four", "puissance"], ["la lampe", "duree"]]}], "experiment": {"title": "Le compteur d'énergie", "intro": "Règle la puissance de l'appareil et sa durée de fonctionnement. Note tes essais dans le carnet pour les comparer.", "widget": "curseurs", "params": {"inputs": [{"id": "P", "label": "Puissance", "unit": "W", "min": 100, "max": 2000, "step": 100, "value": 500}, {"id": "t", "label": "Durée", "unit": "h", "min": 0.5, "max": 10, "step": 0.5, "value": 1}], "outputs": [{"id": "E", "label": "Énergie", "unit": "Wh", "expr": "P*t", "digits": 0}, {"id": "kWh", "label": "Énergie", "unit": "kWh", "expr": "E/1000", "digits": 2}], "bars": [{"id": "E", "label": "Compteur, jusqu'à 20 kWh", "max": 20000}]}, "missions": [{"id": "duree", "type": "valeurs", "input": "t", "values": [1, 2], "when": "P == 1000", "text": "Mets P = 1000 W. Compare t = 1 h et t = 2 h."}, {"id": "puiss", "type": "valeurs", "input": "P", "values": [500, 1000], "when": "t == 1", "text": "Mets t = 1 h. Compare P = 500 W et P = 1000 W."}, {"id": "unkwh", "type": "condition", "expr": "P == 2000 && t == 0.5", "text": "Règle le four de l'accroche : 2000 W pendant une demi-heure. Lis l'énergie en kWh."}], "required": ["duree"], "note": "E = P × t est recalculé à chaque mouvement, avec P en watts et t en heures."}, "rule": {"blocks": [{"formula": "E = P × t", "text": "L'énergie électrique consommée est égale à la puissance multipliée par la durée de fonctionnement. Avec P en W et t en h, E est en Wh.", "ar": "الطاقة الكهربائية المستهلكة تساوي القدرة مضروبة في مدة الاشتغال."}, {"formula": "1 kWh = 1000 Wh", "text": "Le compteur de la maison compte en kilowattheures.", "ar": "عداد المنزل يقيس بالكيلوواط ساعة."}], "seen": "À puissance fixe, durée double, énergie double. À durée fixe, puissance double, énergie double. Le four et la lampe de l'accroche consomment tous deux 1 kWh."}, "proof": {"title": "Pourquoi multiplier ?", "firstIsFormula": true, "paras": ["1000 W pendant 1 h = 1000 Wh, et pendant 2 h = 1000 Wh + 1000 Wh", "La puissance dit combien d'énergie l'appareil consomme chaque heure. Chaque heure ajoute la même quantité : pour t heures, on l'ajoute t fois, c'est P × t."], "ar": "القدرة تخبر بالطاقة المستهلكة في كل ساعة، وكل ساعة تضيف نفس المقدار، لذلك نضرب القدرة في عدد الساعات."}, "exercises": {"levels": [{"label": "Niveau 1", "vars": [["P", "pick 60 100 500 1200 1500 2000"], ["t", "pick 2 3 4 5 8"]], "q": "Un appareil de {P:0} W fonctionne pendant {t:0} h. Calcule l'énergie consommée en Wh.", "unit": "Wh", "answer": "P*t", "digits": 0, "traps": [["P+t", "addition"], ["P/t", "division"]]}, {"label": "Niveau 2", "vars": [["P", "pick 600 900 1200 1500 1800 2400"], ["m", "pick 10 20 40 45 50"]], "q": "Une bouilloire de {P:0} W fonctionne pendant {m:0} minutes. Calcule l'énergie consommée en Wh.", "unit": "Wh", "answer": "P*m/60", "digits": 0, "traps": [["P*m", "minutes"], ["P/(m/60)", "division"]]}, {"label": "Niveau 3", "vars": [["P", "pick 75 150 250 400 800"], ["t", "pick 3 4 6 8 12"]], "q": "Un appareil de {P:0} W fonctionne {t:0} h par jour. Calcule l'énergie consommée en une journée, en kWh.", "unit": "kWh", "answer": "P*t/1000", "digits": 2, "traps": [["P*t", "kwh"], ["P+t", "addition"]]}]}, "check": [{"q": "Un chauffe-eau de 1500 W marche 2 h. Une bouilloire de 2000 W marche 6 min. Qui consomme le plus ?", "ar": "سخان ماء 1500 W يشتغل ساعتين، وغلاية 2000 W تشتغل 6 دقائق. أيهما يستهلك أكثر؟", "options": [["le chauffe-eau", ""], ["la bouilloire", "puissance"], ["les deux autant", "addition"]]}, {"q": "Une lampe de 60 W reste allumée 5 h. Elle consomme :", "ar": "مصباح 60 W يبقى مشتعلا 5 ساعات. يستهلك:", "options": [["0,3 kWh", ""], ["300 kWh", "kwh"], ["12 Wh", "division"]]}]}};
+const AI_ENDPOINT = ''; /* e.g. '/api/fikra/propose' on the platform server. Empty: the button explains that the service is not connected. */
+
+/* ---------- a small schema-driven form: the spec <-> the fields ---------- */
+const $ = s => document.querySelector(s);
+const el = (tag, attrs = {}, kids = []) => { const e = document.createElement(tag); Object.entries(attrs).forEach(([k, v]) => k === 'text' ? e.textContent = v : e.setAttribute(k, v)); kids.forEach(k => e.appendChild(k)); return e; };
+const lines = s => String(s || '').split('\n').map(l => l.trim()).filter(Boolean);
+const semi = l => l.split(';').map(x => x.trim());
+const num = v => v === '' || v == null ? undefined : +v;
+
+const AR = { dir: 'rtl' };
+const SCHEMA = [
+  ['Présentation · التقديم', [
+    ['meta.title', 'Titre', 'text'], ['meta.titleAr', 'Titre en arabe', 'text', AR], ['meta.kicker', 'Matière et niveau', 'text'],
+    ['meta.short', 'Titre court', 'text'], ['meta.classes', 'Classes, séparées par des virgules', 'csv'], ['meta.footer', 'Pied de page', 'text']]],
+  ['Erreurs fréquentes · الأخطاء الشائعة', [['misconceptions', null, 'mis']]],
+  ['1 · La question · السؤال', [['hook.title', 'Titre', 'text'], ['hook.text', 'Texte', 'area'], ['hook.ar', 'Texte en arabe', 'area', AR]]],
+  ['2 · Je prédis · أتوقع', [['predict', null, 'questions']]],
+  ['3 · Je teste · أجرب', [['experiment', null, 'experiment']]],
+  ['4 · La règle · القاعدة', [['rule.blocks', null, 'blocks'], ['rule.seen', 'Ce que l\'élève a vu', 'area']]],
+  ['5 · Pourquoi · لماذا', [['proof.title', 'Titre', 'text'], ['proof.paras', 'Paragraphes, un par ligne', 'lines'], ['proof.firstIsFormula', 'La première ligne est un calcul', 'check'], ['proof.ar', 'Explication en arabe', 'area', AR]]],
+  ['6 · Exercices · تمارين', [['exercises.levels', null, 'levels']]],
+  ['7 · Je vérifie · أتحقق', [['check', null, 'questions']]]
+];
+const get = (o, p) => p.split('.').reduce((a, k) => a == null ? a : a[k], o);
+const set = (o, p, v) => { const ks = p.split('.'); let a = o; ks.slice(0, -1).forEach(k => a = a[k] || (a[k] = {})); a[ks.at(-1)] = v; };
+
+function field(label, val, kind = 'text', attrs = {}) {
+  const id = 'f' + Math.random().toString(36).slice(2, 8), w = el('div');
+  if (label) w.appendChild(el('label', { for: id, text: label }));
+  let inp;
+  if (kind === 'area') { inp = el('textarea', { id, ...attrs }); inp.value = val ?? ''; }
+  else if (kind === 'check') { inp = el('input', { id, type: 'checkbox', style: 'width:auto' }); inp.checked = !!val; }
+  else if (kind === 'select') { inp = el('select', { id }); attrs.options.forEach(o => inp.appendChild(el('option', { value: o, text: o }))); inp.value = val ?? attrs.options[0]; }
+  else { inp = el('input', { id, ...attrs }); inp.value = val ?? ''; }
+  w.appendChild(inp); w.read = () => kind === 'check' ? inp.checked : inp.value; return w;
+}
+function repeat(title, items, makeItem, blank) {
+  const box = el('div'), list = el('div'), add = el('button', { type: 'button', text: '+ ' + title });
+  const push = v => { const it = el('div', { class: 'item' }), body = makeItem(v || blank()), del = el('button', { type: 'button', class: 'del', text: '×', 'aria-label': 'Supprimer' });
+    del.onclick = () => it.remove(); it.append(del, body); it.read = body.read; list.appendChild(it); };
+  (items || []).forEach(push); add.onclick = () => push(); box.append(list, add);
+  box.read = () => [...list.children].map(c => c.read()); return box;
+}
+function group(parts) { const g = el('div'); parts.forEach(([k, f]) => g.appendChild(f)); g.read = () => { const o = {}; parts.forEach(([k, f]) => { const v = f.read(); if (v !== undefined && v !== '') o[k] = v; }); return o; }; return g; }
+function gridOf(parts) { const g = group(parts); g.className = 'grid'; return g; }
+
+const KIND = {
+  text: (v, l, a) => field(l, v, 'text', a), area: (v, l, a) => field(l, v, 'area', a), check: (v, l) => field(l, v, 'check'),
+  csv: (v, l) => { const f = field(l, (v || []).join(', ')); const r = f.read; f.read = () => r().split(',').map(s => s.trim()).filter(Boolean); return f; },
+  lines: (v, l) => { const f = field(l, (v || []).join('\n'), 'area'); const r = f.read; f.read = () => lines(r()); return f; },
+  mis: v => { const box = repeat('erreur', Object.entries(v || {}).map(([code, m]) => ({ code, ...m })), m => group([
+      ['code', field('Code court, sans espace', m.code)], ['fr', field('Message en français', m.fr, 'area')], ['ar', field('Message en arabe', m.ar, 'area', AR)]]), () => ({}));
+    const r = box.read; box.read = () => { const o = {}; r().forEach(m => { if (m.code) o[m.code] = { fr: m.fr || '', ar: m.ar || '' }; }); return o; }; return box; },
+  questions: v => repeat('question', v, q => {
+    const o = field('Réponses, une par ligne : texte ; code de l\'erreur. La bonne réponse a un code vide.', (q.options || []).map(([t, c]) => `${t} ; ${c}`).join('\n'), 'area');
+    const g = group([['q', field('Question', q.q)], ['ar', field('Question en arabe', q.ar, 'text', AR)], ['options', o]]);
+    const r = g.read; g.read = () => { const x = r(); x.options = lines(x.options).map(l => { const [t, c = ''] = semi(l); return [t, c]; }); return x; }; return g; }, () => ({})),
+  blocks: v => repeat('bloc', v, b => group([['formula', field('Formule', b.formula)], ['text', field('Texte', b.text, 'area')], ['ar', field('Texte en arabe', b.ar, 'area', AR)]]), () => ({})),
+  levels: v => repeat('niveau', v, lv => {
+    const vars = field('Variables, une par ligne : nom ; int min max [pas] · ou pick v1 v2 … · ou un calcul', (lv.vars || []).map(([k, d]) => `${k} ; ${d}`).join('\n'), 'area');
+    const traps = field('Pièges, un par ligne : calcul faux ; code de l\'erreur', (lv.traps || []).map(([e, c]) => `${e} ; ${c}`).join('\n'), 'area');
+    const g = group([['label', field('Nom du niveau', lv.label)], ['vars', vars],
+      ['q', field('Énoncé. {x} affiche x, {x:0} sans décimale', lv.q, 'area')],
+      ['meta', gridOf([['answer', field('Réponse (calcul)', lv.answer)], ['unit', field('Unité', lv.unit)], ['digits', field('Décimales', lv.digits, 'text', { inputmode: 'numeric' })]])], ['traps', traps]]);
+    const r = g.read; g.read = () => { const x = r(), m = x.meta || {}; delete x.meta; Object.assign(x, m); x.digits = num(x.digits);
+      x.vars = lines(x.vars).map(l => { const [k, ...d] = semi(l); return [k, d.join(';')]; }); x.traps = lines(x.traps).map(l => semi(l).slice(0, 2)); return x; };
+    return g; }, () => ({ vars: [], traps: [] })),
+  experiment: v => {
+    v = v || {}; const p = v.params || {};
+    const inputs = repeat('curseur', p.inputs, s => gridOf([['id', field('Nom', s.id)], ['label', field('Étiquette', s.label)], ['unit', field('Unité', s.unit)],
+      ['min', field('Min', s.min)], ['max', field('Max', s.max)], ['step', field('Pas', s.step)], ['value', field('Départ', s.value)]]), () => ({}));
+    const outputs = repeat('valeur calculée', p.outputs, o => gridOf([['id', field('Nom', o.id)], ['label', field('Étiquette', o.label)], ['unit', field('Unité', o.unit)],
+      ['expr', field('Calcul', o.expr)], ['digits', field('Décimales', o.digits)]]), () => ({}));
+    const bars = field('Barres (curseurs) : nom ; étiquette ; maximum', (p.bars || []).map(b => `${b.id} ; ${b.label || ''} ; ${b.max}`).join('\n'), 'area');
+    const c = p.curve || {};
+    const curve = gridOf([['var', field('Variable en abscisse', c.var)], ['expr', field('Courbe y =', c.expr)], ['xmin', field('x min', c.xmin)], ['xmax', field('x max', c.xmax)],
+      ['ymin', field('y min', c.ymin)], ['ymax', field('y max', c.ymax)], ['xlabel', field('Nom de l\'axe x', c.xlabel)], ['ylabel', field('Nom de l\'axe y', c.ylabel)], ['label', field('Description pour lecteur d\'écran', c.label)]]);
+    const missions = repeat('mission', v.missions, m => gridOf([['id', field('Nom', m.id)], ['type', field('Type', m.type, 'select', { options: ['valeurs', 'condition'] })],
+      ['input', field('Curseur (valeurs)', m.input)], ['values', field('Valeurs, séparées par des espaces', (m.values || []).join(' '))], ['when', field('Seulement si (valeurs)', m.when)],
+      ['expr', field('Condition', m.expr)], ['text', field('Consigne pour l\'élève', m.text, 'area')]]), () => ({}));
+    const g = group([['title', field('Titre', v.title)], ['intro', field('Introduction', v.intro, 'area')],
+      ['widget', field('Widget', v.widget, 'select', { options: FikraSpec.widgets() })], ['inputs', inputs], ['outputs', outputs], ['bars', bars], ['curve', curve],
+      ['missions', missions], ['required', field('Missions nécessaires pour continuer, séparées par des virgules', (v.required || []).join(', '))], ['note', field('Note sous les missions', v.note, 'area')]]);
+    const r = g.read; g.read = () => { const x = r(), n = o => { ['min', 'max', 'step', 'value', 'digits'].forEach(k => { if (k in o) o[k] = num(o[k]); }); return o; };
+      const params = { inputs: (x.inputs || []).map(n), outputs: (x.outputs || []).map(n) };
+      if (x.widget === 'curseurs') params.bars = lines(x.bars).map(l => { const [id, label, max] = semi(l); return { id, label, max: +max }; });
+      if (x.widget === 'graphe') { const cv = x.curve || {}; ['xmin', 'xmax', 'ymin', 'ymax'].forEach(k => cv[k] = num(cv[k])); params.curve = cv; }
+      const out = { title: x.title, intro: x.intro, widget: x.widget, params,
+        missions: (x.missions || []).map(m => { const o = { id: m.id, type: m.type, text: m.text };
+          if (m.type === 'valeurs') { o.input = m.input; o.values = String(m.values || '').split(/\s+/).filter(Boolean).map(Number); if (m.when) o.when = m.when; } else o.expr = m.expr; return o; }),
+        required: String(x.required || '').split(',').map(s => s.trim()).filter(Boolean), note: x.note };
+      return out; };
+    return g; }
+};
+
+let readers = [];
+function renderForm(spec) {
+  const f = $('#f'); f.innerHTML = ''; readers = [];
+  SCHEMA.forEach(([title, fields]) => {
+    const fs = el('fieldset', {}, [el('legend', { text: title })]);
+    fields.forEach(([path, label, kind, attrs]) => { const w = KIND[kind](get(spec, path), label, attrs || {}); fs.appendChild(w); readers.push([path, w]); });
+    f.appendChild(fs);
+  });
+}
+function readForm() { const s = {}; readers.forEach(([p, w]) => set(s, p, w.read())); s.exercises = s.exercises || {}; return s; }
+
+/* ---------- build, check, preview, export ---------- */
+function lessonHTML(spec) {
+  const block = '/* LESSON:BEGIN · built in the atelier from a JSON spec. */\n' + ADAPTER_SRC + '\nconst SPEC = ' + JSON.stringify(spec).replace(/<\//g, '<\\/') + ';\nconst LESSON = FikraSpec.lessonFromSpec(SPEC);\n/* LESSON:END */';
+  return TEMPLATE.replace(/\/\* LESSON:BEGIN[\s\S]*?\/\* LESSON:END \*\//, () => block).replace(/<title>[\s\S]*?<\/title>/, () => `<title>${String(spec.meta && spec.meta.title || 'Leçon').replace(/[<&]/g, '')} · Le concept en main</title>`);
+}
+function say(kind, title, list) { const m = $('#msg'); m.hidden = false; m.className = kind; m.innerHTML = ''; m.appendChild(el('b', { text: title }));
+  if (list && list.length) { const ul = el('ul'); list.forEach(t => ul.appendChild(el('li', { text: t }))); m.appendChild(ul); } }
+function build() {
+  const spec = readForm();
+  try { FikraSpec.lessonFromSpec(spec); } catch (e) { say('bad', 'La fiche ne peut pas être construite :', [e.message]); return null; }
+  const fr = $('#frame'); fr.onload = () => {
+    const box = fr.contentDocument && fr.contentDocument.getElementById('problems');
+    if (box) say('bad', 'À corriger avant publication :', [...box.querySelectorAll('li')].map(li => li.textContent));
+    else say('ok', 'Leçon construite et vérifiée : une seule bonne réponse par question, codes d\'erreurs connus, 300 exercices tirés par niveau sans piège égal à la réponse. Reste la relecture d\'un professeur.');
+  };
+  fr.srcdoc = lessonHTML(spec); return spec;
+}
+const download = (name, text, type) => { const a = el('a', { href: URL.createObjectURL(new Blob([text], { type })), download: name }); document.body.appendChild(a); a.click(); a.remove(); };
+const slug = s => (s.meta && s.meta.short || 'lecon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const ADAPTER_SRC = document.currentScript.textContent.split('/*@@END-ADAPTER@@*/')[0].split('/*@@BEGIN-ADAPTER@@*/')[1] || '';
+Object.keys(EXAMPLES).forEach(k => $('#ex').appendChild(el('option', { value: k, text: EXAMPLES[k].meta.title })));
+$('#load').onclick = () => { renderForm(JSON.parse(JSON.stringify(EXAMPLES[$('#ex').value]))); build(); };
+$('#build').onclick = build;
+$('#dj').onclick = () => { const s = readForm(); download(slug(s) + '.json', JSON.stringify(s, null, 1), 'application/json'); };
+$('#dh').onclick = () => { const s = build(); if (s) download(slug(s) + '.html', lessonHTML(s), 'text/html'); };
+$('#imp').onchange = e => { const file = e.target.files[0]; if (!file) return; file.text().then(t => { try { renderForm(JSON.parse(t)); build(); } catch (err) { say('bad', 'Fichier illisible :', [err.message]); } }); };
+$('#propose').onclick = () => { $('#ia').hidden = !$('#ia').hidden; };
+$('#ia-go').onclick = async () => {
+  const st = $('#ia-st');
+  if (!AI_ENDPOINT) { st.textContent = 'Le service de proposition n\'est pas encore branché sur la plateforme. Il enverra cette demande au serveur, qui renverra une fiche à vérifier ici.'; return; }
+  st.textContent = 'Proposition en cours…';
+  try {
+    const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ matiere: $('#ia-m').value, niveau: $('#ia-n').value, sujet: $('#ia-s').value, widgets: FikraSpec.widgets() }) });
+    if (!r.ok) throw new Error('réponse ' + r.status);
+    renderForm(await r.json()); build(); st.textContent = 'Fiche proposée. Relis chaque texte avant de publier.';
+  } catch (e) { st.textContent = 'Échec de la proposition : ' + e.message; }
+};
+renderForm(EXAMPLES[Object.keys(EXAMPLES)[0]]); build();
+</script>
+</body>
+</html>

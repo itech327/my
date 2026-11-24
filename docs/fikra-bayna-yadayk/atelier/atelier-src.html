@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier · Le concept en main</title>
+<style>
+:root{--ink:#1d2433;--paper:#faf7f0;--card:#fff;--line:#d9d3c4;--blue:#2f5bd3;--bad:#c0392b;--good:#1e7b4f;--mute:#5d6577}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+header{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card)}h1{font-size:20px;margin:0}header p{margin:2px 0 0;color:var(--mute)}
+.ar{direction:rtl;text-align:right;font-family:'Noto Naskh Arabic',Tahoma,sans-serif}
+main{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding:16px;max-width:1400px;margin:auto}
+@media(min-width:1000px){main{grid-template-columns:minmax(0,1fr) 440px}#pv{position:sticky;top:12px;height:calc(100vh - 24px)}}
+fieldset{border:1px solid var(--line);border-radius:12px;background:var(--card);margin:0 0 12px;padding:10px 12px}
+legend{font-weight:700;padding:0 6px}label{display:block;font-size:13px;color:var(--mute);margin:8px 0 2px}
+input,textarea,select{width:100%;font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:58px;resize:vertical}input[dir=rtl],textarea[dir=rtl]{font-family:'Noto Naskh Arabic',Tahoma,sans-serif}
+.item{border:1px dashed var(--line);border-radius:10px;padding:8px 10px;margin:8px 0;position:relative}
+.item>.del{position:absolute;top:6px;inset-inline-end:6px;width:auto;padding:2px 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:0 8px}
+.hint{font-size:12px;color:var(--mute);margin:2px 0}
+button{font:inherit;padding:8px 12px;border-radius:9px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+button.primary{background:var(--ink);color:#fff}.bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+#pv{display:flex;flex-direction:column;gap:8px}#pv iframe{flex:1;min-height:640px;width:100%;border:1px solid var(--line);border-radius:12px;background:#fff}
+#msg{border-radius:10px;padding:8px 10px;font-size:14px}#msg.bad{border:2px solid var(--bad)}#msg.ok{border:2px solid var(--good)}
+#msg ul{margin:4px 0;padding-inline-start:18px}
+</style>
+</head>
+<body>
+<header><h1>Atelier · Le concept en main</h1><p>Le professeur remplit la fiche, l'atelier construit la leçon, la vérifie et l'affiche. Aucun code à écrire.</p>
+<p class="ar">الأستاذ يملأ البطاقة، والورشة تبني الدرس وتتحقق منه وتعرضه، دون كتابة أي شيفرة.</p></header>
+<main>
+<section>
+  <div class="bar">
+    <select id="ex" aria-label="Exemple"></select><button id="load">Charger l'exemple</button>
+    <button id="propose" title="Proposer une fiche avec l'IA">Proposer avec l'IA</button>
+    <label style="display:inline;margin:0"><input type="file" id="imp" accept=".json" hidden><button type="button" onclick="document.getElementById('imp').click()">Importer une fiche</button></label>
+  </div>
+  <div id="ia" hidden><fieldset><legend>Proposition par l'IA</legend>
+    <p class="hint">L'IA propose une fiche complète en JSON. Elle ne peut choisir qu'un widget de la bibliothèque et n'écrit ni code ni HTML. La fiche passe ensuite par les mêmes vérifications, puis par la relecture d'un professeur.</p>
+    <div class="grid"><div><label for="ia-m">Matière</label><select id="ia-m"><option>Mathématiques</option><option>Physique-chimie</option><option>SVT</option></select></div>
+    <div><label for="ia-n">Niveau</label><select id="ia-n"><option>1AC</option><option>2AC</option><option selected>3AC</option></select></div></div>
+    <label for="ia-s">Leçon, et ce que l'élève doit comprendre</label><textarea id="ia-s" placeholder="Ex. : la vitesse moyenne, v = d ÷ t, et la conversion km/h et m/s"></textarea>
+    <div class="bar" style="margin-top:8px"><button class="primary" id="ia-go">Demander une proposition</button></div><p class="hint" id="ia-st"></p>
+  </fieldset></div>
+  <form id="f" autocomplete="off"></form>
+</section>
+<section id="pv">
+  <div class="bar"><button class="primary" id="build">Construire et vérifier</button><button id="dj">Télécharger la fiche</button><button id="dh">Télécharger la leçon</button></div>
+  <div id="msg" hidden></div>
+  <iframe id="frame" title="Aperçu de la leçon"></iframe>
+</section>
+</main>
+<script>
+/*@@ADAPTER@@*/
+const TEMPLATE = /*@@TEMPLATE@@*/'';
+const EXAMPLES = /*@@EXAMPLES@@*/{};
+const AI_ENDPOINT = ''; /* e.g. '/api/fikra/propose' on the platform server. Empty: the button explains that the service is not connected. */
+
+/* ---------- a small schema-driven form: the spec <-> the fields ---------- */
+const $ = s => document.querySelector(s);
+const el = (tag, attrs = {}, kids = []) => { const e = document.createElement(tag); Object.entries(attrs).forEach(([k, v]) => k === 'text' ? e.textContent = v : e.setAttribute(k, v)); kids.forEach(k => e.appendChild(k)); return e; };
+const lines = s => String(s || '').split('\n').map(l => l.trim()).filter(Boolean);
+const semi = l => l.split(';').map(x => x.trim());
+const num = v => v === '' || v == null ? undefined : +v;
+
+const AR = { dir: 'rtl' };
+const SCHEMA = [
+  ['Présentation · التقديم', [
+    ['meta.title', 'Titre', 'text'], ['meta.titleAr', 'Titre en arabe', 'text', AR], ['meta.kicker', 'Matière et niveau', 'text'],
+    ['meta.short', 'Titre court', 'text'], ['meta.classes', 'Classes, séparées par des virgules', 'csv'], ['meta.footer', 'Pied de page', 'text']]],
+  ['Erreurs fréquentes · الأخطاء الشائعة', [['misconceptions', null, 'mis']]],
+  ['1 · La question · السؤال', [['hook.title', 'Titre', 'text'], ['hook.text', 'Texte', 'area'], ['hook.ar', 'Texte en arabe', 'area', AR]]],
+  ['2 · Je prédis · أتوقع', [['predict', null, 'questions']]],
+  ['3 · Je teste · أجرب', [['experiment', null, 'experiment']]],
+  ['4 · La règle · القاعدة', [['rule.blocks', null, 'blocks'], ['rule.seen', 'Ce que l\'élève a vu', 'area']]],
+  ['5 · Pourquoi · لماذا', [['proof.title', 'Titre', 'text'], ['proof.paras', 'Paragraphes, un par ligne', 'lines'], ['proof.firstIsFormula', 'La première ligne est un calcul', 'check'], ['proof.ar', 'Explication en arabe', 'area', AR]]],
+  ['6 · Exercices · تمارين', [['exercises.levels', null, 'levels']]],
+  ['7 · Je vérifie · أتحقق', [['check', null, 'questions']]]
+];
+const get = (o, p) => p.split('.').reduce((a, k) => a == null ? a : a[k], o);
+const set = (o, p, v) => { const ks = p.split('.'); let a = o; ks.slice(0, -1).forEach(k => a = a[k] || (a[k] = {})); a[ks.at(-1)] = v; };
+
+function field(label, val, kind = 'text', attrs = {}) {
+  const id = 'f' + Math.random().toString(36).slice(2, 8), w = el('div');
+  if (label) w.appendChild(el('label', { for: id, text: label }));
+  let inp;
+  if (kind === 'area') { inp = el('textarea', { id, ...attrs }); inp.value = val ?? ''; }
+  else if (kind === 'check') { inp = el('input', { id, type: 'checkbox', style: 'width:auto' }); inp.checked = !!val; }
+  else if (kind === 'select') { inp = el('select', { id }); attrs.options.forEach(o => inp.appendChild(el('option', { value: o, text: o }))); inp.value = val ?? attrs.options[0]; }
+  else { inp = el('input', { id, ...attrs }); inp.value = val ?? ''; }
+  w.appendChild(inp); w.read = () => kind === 'check' ? inp.checked : inp.value; return w;
+}
+function repeat(title, items, makeItem, blank) {
+  const box = el('div'), list = el('div'), add = el('button', { type: 'button', text: '+ ' + title });
+  const push = v => { const it = el('div', { class: 'item' }), body = makeItem(v || blank()), del = el('button', { type: 'button', class: 'del', text: '×', 'aria-label': 'Supprimer' });
+    del.onclick = () => it.remove(); it.append(del, body); it.read = body.read; list.appendChild(it); };
+  (items || []).forEach(push); add.onclick = () => push(); box.append(list, add);
+  box.read = () => [...list.children].map(c => c.read()); return box;
+}
+function group(parts) { const g = el('div'); parts.forEach(([k, f]) => g.appendChild(f)); g.read = () => { const o = {}; parts.forEach(([k, f]) => { const v = f.read(); if (v !== undefined && v !== '') o[k] = v; }); return o; }; return g; }
+function gridOf(parts) { const g = group(parts); g.className = 'grid'; return g; }
+
+const KIND = {
+  text: (v, l, a) => field(l, v, 'text', a), area: (v, l, a) => field(l, v, 'area', a), check: (v, l) => field(l, v, 'check'),
+  csv: (v, l) => { const f = field(l, (v || []).join(', ')); const r = f.read; f.read = () => r().split(',').map(s => s.trim()).filter(Boolean); return f; },
+  lines: (v, l) => { const f = field(l, (v || []).join('\n'), 'area'); const r = f.read; f.read = () => lines(r()); return f; },
+  mis: v => { const box = repeat('erreur', Object.entries(v || {}).map(([code, m]) => ({ code, ...m })), m => group([
+      ['code', field('Code court, sans espace', m.code)], ['fr', field('Message en français', m.fr, 'area')], ['ar', field('Message en arabe', m.ar, 'area', AR)]]), () => ({}));
+    const r = box.read; box.read = () => { const o = {}; r().forEach(m => { if (m.code) o[m.code] = { fr: m.fr || '', ar: m.ar || '' }; }); return o; }; return box; },
+  questions: v => repeat('question', v, q => {
+    const o = field('Réponses, une par ligne : texte ; code de l\'erreur. La bonne réponse a un code vide.', (q.options || []).map(([t, c]) => `${t} ; ${c}`).join('\n'), 'area');
+    const g = group([['q', field('Question', q.q)], ['ar', field('Question en arabe', q.ar, 'text', AR)], ['options', o]]);
+    const r = g.read; g.read = () => { const x = r(); x.options = lines(x.options).map(l => { const [t, c = ''] = semi(l); return [t, c]; }); return x; }; return g; }, () => ({})),
+  blocks: v => repeat('bloc', v, b => group([['formula', field('Formule', b.formula)], ['text', field('Texte', b.text, 'area')], ['ar', field('Texte en arabe', b.ar, 'area', AR)]]), () => ({})),
+  levels: v => repeat('niveau', v, lv => {
+    const vars = field('Variables, une par ligne : nom ; int min max [pas] · ou pick v1 v2 … · ou un calcul', (lv.vars || []).map(([k, d]) => `${k} ; ${d}`).join('\n'), 'area');
+    const traps = field('Pièges, un par ligne : calcul faux ; code de l\'erreur', (lv.traps || []).map(([e, c]) => `${e} ; ${c}`).join('\n'), 'area');
+    const g = group([['label', field('Nom du niveau', lv.label)], ['vars', vars],
+      ['q', field('Énoncé. {x} affiche x, {x:0} sans décimale', lv.q, 'area')],
+      ['meta', gridOf([['answer', field('Réponse (calcul)', lv.answer)], ['unit', field('Unité', lv.unit)], ['digits', field('Décimales', lv.digits, 'text', { inputmode: 'numeric' })]])], ['traps', traps]]);
+    const r = g.read; g.read = () => { const x = r(), m = x.meta || {}; delete x.meta; Object.assign(x, m); x.digits = num(x.digits);
+      x.vars = lines(x.vars).map(l => { const [k, ...d] = semi(l); return [k, d.join(';')]; }); x.traps = lines(x.traps).map(l => semi(l).slice(0, 2)); return x; };
+    return g; }, () => ({ vars: [], traps: [] })),
+  experiment: v => {
+    v = v || {}; const p = v.params || {};
+    const inputs = repeat('curseur', p.inputs, s => gridOf([['id', field('Nom', s.id)], ['label', field('Étiquette', s.label)], ['unit', field('Unité', s.unit)],
+      ['min', field('Min', s.min)], ['max', field('Max', s.max)], ['step', field('Pas', s.step)], ['value', field('Départ', s.value)]]), () => ({}));
+    const outputs = repeat('valeur calculée', p.outputs, o => gridOf([['id', field('Nom', o.id)], ['label', field('Étiquette', o.label)], ['unit', field('Unité', o.unit)],
+      ['expr', field('Calcul', o.expr)], ['digits', field('Décimales', o.digits)]]), () => ({}));
+    const bars = field('Barres (curseurs) : nom ; étiquette ; maximum', (p.bars || []).map(b => `${b.id} ; ${b.label || ''} ; ${b.max}`).join('\n'), 'area');
+    const c = p.curve || {};
+    const curve = gridOf([['var', field('Variable en abscisse', c.var)], ['expr', field('Courbe y =', c.expr)], ['xmin', field('x min', c.xmin)], ['xmax', field('x max', c.xmax)],
+      ['ymin', field('y min', c.ymin)], ['ymax', field('y max', c.ymax)], ['xlabel', field('Nom de l\'axe x', c.xlabel)], ['ylabel', field('Nom de l\'axe y', c.ylabel)], ['label', field('Description pour lecteur d\'écran', c.label)]]);
+    const missions = repeat('mission', v.missions, m => gridOf([['id', field('Nom', m.id)], ['type', field('Type', m.type, 'select', { options: ['valeurs', 'condition'] })],
+      ['input', field('Curseur (valeurs)', m.input)], ['values', field('Valeurs, séparées par des espaces', (m.values || []).join(' '))], ['when', field('Seulement si (valeurs)', m.when)],
+      ['expr', field('Condition', m.expr)], ['text', field('Consigne pour l\'élève', m.text, 'area')]]), () => ({}));
+    const g = group([['title', field('Titre', v.title)], ['intro', field('Introduction', v.intro, 'area')],
+      ['widget', field('Widget', v.widget, 'select', { options: FikraSpec.widgets() })], ['inputs', inputs], ['outputs', outputs], ['bars', bars], ['curve', curve],
+      ['missions', missions], ['required', field('Missions nécessaires pour continuer, séparées par des virgules', (v.required || []).join(', '))], ['note', field('Note sous les missions', v.note, 'area')]]);
+    const r = g.read; g.read = () => { const x = r(), n = o => { ['min', 'max', 'step', 'value', 'digits'].forEach(k => { if (k in o) o[k] = num(o[k]); }); return o; };
+      const params = { inputs: (x.inputs || []).map(n), outputs: (x.outputs || []).map(n) };
+      if (x.widget === 'curseurs') params.bars = lines(x.bars).map(l => { const [id, label, max] = semi(l); return { id, label, max: +max }; });
+      if (x.widget === 'graphe') { const cv = x.curve || {}; ['xmin', 'xmax', 'ymin', 'ymax'].forEach(k => cv[k] = num(cv[k])); params.curve = cv; }
+      const out = { title: x.title, intro: x.intro, widget: x.widget, params,
+        missions: (x.missions || []).map(m => { const o = { id: m.id, type: m.type, text: m.text };
+          if (m.type === 'valeurs') { o.input = m.input; o.values = String(m.values || '').split(/\s+/).filter(Boolean).map(Number); if (m.when) o.when = m.when; } else o.expr = m.expr; return o; }),
+        required: String(x.required || '').split(',').map(s => s.trim()).filter(Boolean), note: x.note };
+      return out; };
+    return g; }
+};
+
+let readers = [];
+function renderForm(spec) {
+  const f = $('#f'); f.innerHTML = ''; readers = [];
+  SCHEMA.forEach(([title, fields]) => {
+    const fs = el('fieldset', {}, [el('legend', { text: title })]);
+    fields.forEach(([path, label, kind, attrs]) => { const w = KIND[kind](get(spec, path), label, attrs || {}); fs.appendChild(w); readers.push([path, w]); });
+    f.appendChild(fs);
+  });
+}
+function readForm() { const s = {}; readers.forEach(([p, w]) => set(s, p, w.read())); s.exercises = s.exercises || {}; return s; }
+
+/* ---------- build, check, preview, export ---------- */
+function lessonHTML(spec) {
+  const block = '/* LESSON:BEGIN · built in the atelier from a JSON spec. */\n' + ADAPTER_SRC + '\nconst SPEC = ' + JSON.stringify(spec).replace(/<\//g, '<\\/') + ';\nconst LESSON = FikraSpec.lessonFromSpec(SPEC);\n/* LESSON:END */';
+  return TEMPLATE.replace(/\/\* LESSON:BEGIN[\s\S]*?\/\* LESSON:END \*\//, () => block).replace(/<title>[\s\S]*?<\/title>/, () => `<title>${String(spec.meta && spec.meta.title || 'Leçon').replace(/[<&]/g, '')} · Le concept en main</title>`);
+}
+function say(kind, title, list) { const m = $('#msg'); m.hidden = false; m.className = kind; m.innerHTML = ''; m.appendChild(el('b', { text: title }));
+  if (list && list.length) { const ul = el('ul'); list.forEach(t => ul.appendChild(el('li', { text: t }))); m.appendChild(ul); } }
+function build() {
+  const spec = readForm();
+  try { FikraSpec.lessonFromSpec(spec); } catch (e) { say('bad', 'La fiche ne peut pas être construite :', [e.message]); return null; }
+  const fr = $('#frame'); fr.onload = () => {
+    const box = fr.contentDocument && fr.contentDocument.getElementById('problems');
+    if (box) say('bad', 'À corriger avant publication :', [...box.querySelectorAll('li')].map(li => li.textContent));
+    else say('ok', 'Leçon construite et vérifiée : une seule bonne réponse par question, codes d\'erreurs connus, 300 exercices tirés par niveau sans piège égal à la réponse. Reste la relecture d\'un professeur.');
+  };
+  fr.srcdoc = lessonHTML(spec); return spec;
+}
+const download = (name, text, type) => { const a = el('a', { href: URL.createObjectURL(new Blob([text], { type })), download: name }); document.body.appendChild(a); a.click(); a.remove(); };
+const slug = s => (s.meta && s.meta.short || 'lecon').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const ADAPTER_SRC = document.currentScript.textContent.split('/*@@END-ADAPTER@@*/')[0].split('/*@@BEGIN-ADAPTER@@*/')[1] || '';
+Object.keys(EXAMPLES).forEach(k => $('#ex').appendChild(el('option', { value: k, text: EXAMPLES[k].meta.title })));
+$('#load').onclick = () => { renderForm(JSON.parse(JSON.stringify(EXAMPLES[$('#ex').value]))); build(); };
+$('#build').onclick = build;
+$('#dj').onclick = () => { const s = readForm(); download(slug(s) + '.json', JSON.stringify(s, null, 1), 'application/json'); };
+$('#dh').onclick = () => { const s = build(); if (s) download(slug(s) + '.html', lessonHTML(s), 'text/html'); };
+$('#imp').onchange = e => { const file = e.target.files[0]; if (!file) return; file.text().then(t => { try { renderForm(JSON.parse(t)); build(); } catch (err) { say('bad', 'Fichier illisible :', [err.message]); } }); };
+$('#propose').onclick = () => { $('#ia').hidden = !$('#ia').hidden; };
+$('#ia-go').onclick = async () => {
+  const st = $('#ia-st');
+  if (!AI_ENDPOINT) { st.textContent = 'Le service de proposition n\'est pas encore branché sur la plateforme. Il enverra cette demande au serveur, qui renverra une fiche à vérifier ici.'; return; }
+  st.textContent = 'Proposition en cours…';
+  try {
+    const r = await fetch(AI_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ matiere: $('#ia-m').value, niveau: $('#ia-n').value, sujet: $('#ia-s').value, widgets: FikraSpec.widgets() }) });
+    if (!r.ok) throw new Error('réponse ' + r.status);
+    renderForm(await r.json()); build(); st.textContent = 'Fiche proposée. Relis chaque texte avant de publier.';
+  } catch (e) { st.textContent = 'Échec de la proposition : ' + e.message; }
+};
+renderForm(EXAMPLES[Object.keys(EXAMPLES)[0]]); build();
+</script>
+</body>
+</html>
