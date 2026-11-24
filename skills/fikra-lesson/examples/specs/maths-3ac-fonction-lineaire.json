@@ -1,0 +1,314 @@
+{
+ "meta": {
+  "kicker": "Mathématiques · 3e année collège · Le concept en main",
+  "title": "La fonction linéaire",
+  "titleAr": "الدالة الخطية",
+  "short": "Fonction linéaire",
+  "classes": [
+   "3APIC-1",
+   "3APIC-2",
+   "3APIC-3"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier, sans code. Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "addition": {
+   "fr": "Une fonction linéaire multiplie x par a : f(x) = a × x, pas a + x.",
+   "ar": "الدالة الخطية تضرب x في a وليس تجمعهما."
+  },
+  "inverse": {
+   "fr": "Tu as divisé dans le mauvais sens. L'image est a × x, et le coefficient est f(x) ÷ x.",
+   "ar": "قسمت في الاتجاه المعكوس: الصورة هي a ضرب x، والمعامل هو f(x) مقسوما على x."
+  },
+  "antecedent": {
+   "fr": "On cherchait l'antécédent, le nombre x de départ, pas l'image f(x).",
+   "ar": "المطلوب هو السابق أي العدد x وليس الصورة."
+  },
+  "origine": {
+   "fr": "La droite d'une fonction linéaire passe toujours par l'origine, car f(0) = a × 0 = 0.",
+   "ar": "تمثيل الدالة الخطية مستقيم يمر دائما من أصل المعلم لأن f(0) = 0."
+  },
+  "courbe": {
+   "fr": "La représentation graphique d'une fonction linéaire est une droite, pas une courbe.",
+   "ar": "التمثيل المبياني للدالة الخطية مستقيم وليس منحنى."
+  },
+  "coef": {
+   "fr": "Le coefficient a reste le même : c'est x qui change, et f(x) change dans la même proportion.",
+   "ar": "المعامل a لا يتغير، x هو الذي يتغير وتتغير f(x) بنفس النسبة."
+  }
+ },
+ "hook": {
+  "title": "Le prix au kilo",
+  "text": "Au souk, les tomates sont à 4 dirhams le kilo. Pour 2 kg on paie 8 DH. Pour 6 kg, combien ? Et si l'on dessine le prix en fonction de la masse, quelle forme obtient-on ?",
+  "ar": "في السوق ثمن الطماطم 4 دراهم للكيلوغرام. كم ندفع مقابل 6 كيلوغرامات؟ وإذا رسمنا الثمن بدلالة الكتلة، ما الشكل الذي نحصل عليه؟",
+  "audioText": "فالسوق، الطماطم بربعة دراهم للكيلو. جوج كيلو كانخلصو عليهم تمنية دراهم. ستة كيلو بشحال؟ وإلا رسمنا الثمن على حساب الكتلة، شنو الشكل اللي غادي يبان لينا: خط مستقيم، ولا منحنى؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "f(x) = 3x. Si x double, f(x) :",
+   "ar": "إذا تضاعف x، فإن f(x):",
+   "options": [
+    [
+     "double aussi",
+     ""
+    ],
+    [
+     "augmente de 3",
+     "addition"
+    ],
+    [
+     "ne change pas",
+     "coef"
+    ]
+   ]
+  },
+  {
+   "q": "La représentation graphique de f(x) = a·x est :",
+   "ar": "التمثيل المبياني للدالة f(x) = a·x هو:",
+   "options": [
+    [
+     "une droite qui passe par l'origine",
+     ""
+    ],
+    [
+     "une droite qui peut passer ailleurs",
+     "origine"
+    ],
+    [
+     "une courbe",
+     "courbe"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "La droite qui tourne",
+  "intro": "Choisis le coefficient a, puis déplace x. Le point rouge est (x ; f(x)). Note une droite dans ton carnet pour la garder en pointillé.",
+  "widget": "graphe",
+  "params": {
+   "inputs": [
+    {
+     "id": "a",
+     "label": "Coefficient a",
+     "min": -3,
+     "max": 3,
+     "step": 0.5,
+     "value": 1
+    },
+    {
+     "id": "x",
+     "label": "Nombre x",
+     "min": -5,
+     "max": 5,
+     "step": 1,
+     "value": 1
+    }
+   ],
+   "outputs": [
+    {
+     "id": "y",
+     "label": "Image f(x)",
+     "expr": "a*x",
+     "digits": 1
+    }
+   ],
+   "curve": {
+    "var": "x",
+    "expr": "a*x",
+    "xmin": -5,
+    "xmax": 5,
+    "ymin": -10,
+    "ymax": 10,
+    "xlabel": "x",
+    "ylabel": "f(x)",
+    "label": "Droite de la fonction f(x) = a·x"
+   }
+  },
+  "missions": [
+   {
+    "id": "double",
+    "type": "valeurs",
+    "input": "x",
+    "values": [
+     1,
+     2,
+     4
+    ],
+    "when": "a == 2",
+    "text": "Mets a = 2, puis x = 1, x = 2 et x = 4. Que devient f(x) quand x double ?"
+   },
+   {
+    "id": "descend",
+    "type": "condition",
+    "expr": "a < 0",
+    "text": "Trouve un coefficient pour lequel la droite descend."
+   },
+   {
+    "id": "plate",
+    "type": "condition",
+    "expr": "a == 0",
+    "text": "Mets a = 0. Où est la droite ?"
+   }
+  ],
+  "required": [
+   "double"
+  ],
+  "note": "f(x) = a × x est recalculé à chaque mouvement. Toutes les droites passent par le point (0 ; 0)."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "f(x) = a · x",
+    "text": "Une fonction linéaire de coefficient a associe à chaque nombre x le nombre a × x. Le coefficient se calcule par a = f(x) ÷ x, pour x non nul.",
+    "ar": "الدالة الخطية ذات المعامل a تربط كل عدد x بالعدد a ضرب x، والمعامل هو f(x) مقسوما على x."
+   },
+   {
+    "formula": "droite passant par O",
+    "text": "Sa représentation graphique est une droite qui passe par l'origine du repère. Si a > 0 elle monte, si a < 0 elle descend.",
+    "ar": "تمثيلها المبياني مستقيم يمر من أصل المعلم، صاعد إذا كان a موجبا ونازل إذا كان سالبا."
+   }
+  ],
+  "seen": "Avec a fixé, quand x double, f(x) double : l'image est proportionnelle à x. Toutes les droites passent par (0 ; 0).",
+  "audioText": "القاعدة هي: الدالة الخطية كاتضرب كل عدد إكس فواحد العدد ثابت، كانسميوه المعامل آ. الصورة هي آ ضرب إكس، ماشي آ زايد إكس. وإلا بغيتي المعامل، كاتقسم الصورة على إكس. التمثيل ديالها خط مستقيم كايدوز ديما من الأصل ديال المعلم، طالع إلا كان آ موجب، وهابط إلا كان سالب."
+ },
+ "proof": {
+  "title": "Pourquoi l'image double quand x double ?",
+  "firstIsFormula": true,
+  "paras": [
+   "f(2x) = a × (2x) = 2 × (a × x) = 2 × f(x)",
+   "On peut changer l'ordre d'une multiplication : le 2 sort, et f(x) est multiplié par 2. Et f(0) = a × 0 = 0, donc la droite passe toujours par l'origine."
+  ],
+  "ar": "يمكن تغيير ترتيب الضرب، فيخرج العدد 2 وتتضاعف الصورة. و f(0) = 0 لذلك يمر المستقيم دائما من الأصل."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Image",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 4 5 -2 -3"
+     ],
+     [
+      "x",
+      "int 3 9"
+     ]
+    ],
+    "q": "f est la fonction linéaire de coefficient {a:0}. Calcule l'image de {x:0}.",
+    "unit": " ",
+    "answer": "a*x",
+    "digits": 0,
+    "traps": [
+     [
+      "a+x",
+      "addition"
+     ],
+     [
+      "x/a",
+      "inverse"
+     ]
+    ]
+   },
+   {
+    "label": "Antécédent",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 4 5 -2 -3"
+     ],
+     [
+      "x0",
+      "int 3 9"
+     ],
+     [
+      "y",
+      "a*x0"
+     ]
+    ],
+    "q": "f(x) = {a:0}x. Trouve le nombre x dont l'image est {y:0}.",
+    "unit": " ",
+    "answer": "y/a",
+    "digits": 0,
+    "traps": [
+     [
+      "y*a",
+      "antecedent"
+     ],
+     [
+      "y-a",
+      "addition"
+     ]
+    ]
+   },
+   {
+    "label": "Coefficient",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 4 5 -2 -3 1.5 2.5"
+     ],
+     [
+      "x1",
+      "int 4 9"
+     ],
+     [
+      "y1",
+      "a*x1"
+     ]
+    ],
+    "q": "f est une fonction linéaire et f({x1:0}) = {y1:1}. Calcule son coefficient a.",
+    "unit": " ",
+    "answer": "y1/x1",
+    "digits": 2,
+    "traps": [
+     [
+      "x1/y1",
+      "inverse"
+     ],
+     [
+      "y1-x1",
+      "addition"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "g(x) = −2x. Si x est multiplié par 3, g(x) :",
+   "ar": "إذا ضُرب x في 3، فإن g(x):",
+   "options": [
+    [
+     "est multiplié par 3",
+     ""
+    ],
+    [
+     "augmente de 3",
+     "addition"
+    ],
+    [
+     "ne change pas",
+     "coef"
+    ]
+   ]
+  },
+  {
+   "q": "Le point (0 ; 2) peut-il être sur la droite d'une fonction linéaire ?",
+   "ar": "هل يمكن أن تكون النقطة (0 ; 2) على مستقيم دالة خطية؟",
+   "options": [
+    [
+     "Non, car f(0) = 0",
+     ""
+    ],
+    [
+     "Oui, si a = 2",
+     "origine"
+    ],
+    [
+     "Oui, si la droite est courbée",
+     "courbe"
+    ]
+   ]
+  }
+ ]
+}

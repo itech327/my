@@ -11,7 +11,9 @@ Files (GitHub `itech327/my`, branch `skills`, folder `skills/fikra-lesson/`):
 
 - `template/lesson-template.html`: the engine, the style and a small valid example lesson (perimeter of a circle).
 - `examples/energie-lesson-block.js` and `examples/pc-3ac-energie-cinetique.html`: a full lesson (kinetic energy and stopping distance, 3AC).
-- `tools/build_lesson.py`: `new LESSON_BLOCK.js OUT.html` builds a lesson from the template; `sync LESSON.html` refreshes its engine and style.
+- `tools/build_lesson.py`: `new LESSON_BLOCK.js OUT.html` builds a lesson from the template; `sync LESSON.html` refreshes its engine and style; `bundle LESSON.html OUT.html` inlines every `audio/*.mp3` as a data URI, giving one standalone file to send.
+- `spec/fikra-spec.js`, `tools/build_spec.py`, `examples/specs/*.json`: the second route, a lesson from a JSON spec with no code (section 2b).
+- `tools/build_atelier.py` and `spec/atelier-src.html`: the teacher atelier, one HTML page to fill a spec, check it and preview the lesson.
 - `tools/flow_test.py`: the test every lesson must pass before delivery.
 
 Use the 3D skill `pop-up-3d-lesson` instead only when the concept is spatial or needs several modes.
@@ -54,6 +56,20 @@ const LESSON = {
 
 - Optional Darija voice: add `audio: 'audio/NAME.mp3'` and `audioText` (the spoken Darija text) to `hook` and `rule`. The engine shows a play button. Keep each clip mono, 22050 Hz, about 40 kb/s, under 400 KB; the flow test checks the file exists and its size.
 
+## 2b. Or write a JSON spec, when a library widget fits
+
+Prefer this route when the experiment is sliders with computed values (`curseurs`) or a curve with a moving point (`graphe`). It is faster, it contains no code, and a teacher can edit it in the atelier.
+
+- Copy one of `examples/specs/*.json` and replace everything. Same seven moments, same rules as section 1.
+- `experiment.widget` and its `params`: `inputs` (sliders), `outputs` (computed with `expr`), `bars` for `curseurs`, `curve` for `graphe`.
+- Missions: `{ type: 'valeurs', input, values, when? }` or `{ type: 'condition', expr }`.
+- Exercises: `vars` as `[name, 'int a b step' | 'pick v1 v2 …' | expression]`, `q` with `{x}` or `{x:0}`, `answer` and `traps` as expressions.
+- Expressions accept numbers, declared names, `+ - * / ^`, comparisons, `&& ||`, and `sqrt abs round floor ceil min max pow pi`. No `**`, no code: the adapter refuses it.
+- Texts are plain, never HTML; the adapter escapes them. `hook.svg` is not available on this route.
+- Build: `python3 tools/build_spec.py my-spec.json my-lesson.html`, then the same flow test.
+- A widget that is missing (tubes and reagent plate, moving geometric figure, circuit) goes into `spec/fikra-spec.js`, tested, before any lesson uses it. Otherwise use section 2.
+- Teacher atelier: `python3 tools/build_atelier.py atelier.html [SPECS_DIR] [AUDIO_BASE_DIR]`. The service endpoints `AI_ENDPOINT` and `VOICE_ENDPOINT` stay empty until the platform server exists; `spec/prompt-ia.md` holds the instructions for that service.
+
 ## 3. Build and test
 
 ```
@@ -76,6 +92,6 @@ When the template's engine changes, run `build_lesson.py sync` on every lesson, 
 
 ## 4. Deliver
 
-- The lesson HTML file, whole, as a downloadable file, plus 3 to 6 short lines in the user's language: what the lesson covers, what was tested, what was not (scientific review by a teacher, Darija voice).
+- The lesson HTML file, whole, as a downloadable file. If it has audio, send the `bundle` version: a lone HTML file cannot reach its `audio/` folder. Add 3 to 6 short lines in the user's language: what the lesson covers, what was tested, what was not (scientific review by a teacher, Darija voice).
 - Work stays outside production: lessons go to branch `plan/modeles-pro`, folder `docs/fikra-bayna-yadayk/lecons/`, with `[skip ci]` in the commit message. Never to `lessons-site`.
 - Push only with the user's explicit permission. No secrets, no Drive content, no personal data in the public repository.
