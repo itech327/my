@@ -79,6 +79,7 @@ th:first-child,td:first-child{text-align:left}
 .report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
 .report .card b{font-size:26px}
 select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
+.lt{white-space:nowrap}
 #problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
 footer{padding:20px 0 40px}
 @media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
@@ -187,13 +188,13 @@ const LESSON = {
 </script>
 
 <script>
-/* ENGINE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson; update it with tools/update_engine.py */
+/* ENGINE:BEGIN · Le concept en main · engine v1.1 · do not edit in a lesson; update it with tools/update_engine.py */
 (() => {
 const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });
-// Arabic text: keep each Latin or numeric expression left-to-right
-const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => '⁦' + m + '⁩');
+// Arabic text: keep each Latin or numeric expression left-to-right and on one line (returns HTML)
+const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => `<bdi dir="ltr" class="lt">${m}</bdi>`);
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };
 const MIS = L.misconceptions || {};

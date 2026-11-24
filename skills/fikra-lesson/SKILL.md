@@ -47,7 +47,8 @@ const LESSON = {
 
 - `mount(root, api)` draws the experiment inside `root` and calls `api.done(id)` when a mission is met. `api.nf` formats numbers with a decimal comma, `api.reduce` says whether to skip animations.
 - Every value shown in the experiment is computed from the equation each time an input changes. Nothing pre-animated.
-- Arabic strings are plain text. The engine isolates Latin and numeric expressions so A', 50 km/h or Ec = ½·m·v² keep their order.
+- Arabic strings are plain text. The engine wraps Latin and numeric expressions in `<bdi dir="ltr">` so A', 50 km/h or 7² = 5² + 6² keep their order and stay on one line. `api.iso(text)` returns HTML: insert it with `innerHTML`.
+- A figure whose size changes with the inputs computes its own bounding box from its points and sets the SVG `viewBox`; `getBBox()` returns zero while the moment is still hidden.
 - Units: SI in physics, with conversions shown (km/h ÷ 3,6). Decimal comma.
 - No student name anywhere. The report uses an optional class code only.
 
