@@ -28,6 +28,7 @@ Relecteur : ………………………… · Date : ………… · Décision :
 
 - [ ] Question (le verre) : modèle principal. Règle : modèle de secours, qualité plus basse. Écouter les deux.
 
-## 5. Non vérifié
+## 5. Décors
 
-- [ ] Le rendu 3D réel n'a pas été lancé : three.js n'était pas joignable depuis l'environnement de test. Ouvrir la page sur un téléphone et signaler tout cadre rouge d'erreur.
+- [ ] Le verre dans une maison marocaine (zellige, plateau de thé, mida), la section et le remplissage dans le désert (pyramides, kasbah, palmiers), les cubes dans une salle de jeux. Les décors conviennent-ils aux élèves ?
+- [ ] Rendu réel vérifié avec three.js r160 en portrait et en paysage, sans erreur. À confirmer sur un vrai téléphone : fluidité et lisibilité.
