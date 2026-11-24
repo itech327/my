@@ -321,7 +321,7 @@ function validate() {
     }
   });
   if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
-  [['hook', L.hook], ['rule', L.rule]].forEach(([k, o]) => { if (o && o.audio && !/^[\w./-]+\.(mp3|ogg|m4a)$/.test(o.audio)) P.push(`${k}.audio : chemin invalide « ${o.audio} »`); });
+  [['hook', L.hook], ['rule', L.rule]].forEach(([k, o]) => { if (o && o.audio && !/^([\w./-]+\.(mp3|ogg|m4a)|data:audio\/[\w-]+;base64,[\w+/=]+)$/.test(o.audio)) P.push(`${k}.audio : chemin invalide « ${o.audio} »`); });
   return P;
 }
 
@@ -338,8 +338,10 @@ function bindVoice() {
     if (player) player.pause();
     $$('[data-audio]').forEach(x => x.classList.remove('on'));
     player = new Audio(b.dataset.audio); b.classList.add('on');
+    const box = b.parentNode, warn = msg => { b.classList.remove('on'); let w = box.querySelector('.vwarn'); if (!w) { w = document.createElement('p'); w.className = 'vwarn note'; box.appendChild(w); } w.textContent = msg; };
     player.onended = player.onpause = () => b.classList.remove('on');
-    player.play().catch(() => b.classList.remove('on'));
+    player.onerror = () => warn("Fichier audio introuvable : ouvre la leçon avec son dossier audio/. · الملف الصوتي غير موجود.");
+    player.play().catch(e => { if (e && e.name === 'NotAllowedError') warn('Lecture bloquée par le navigateur : touche de nouveau le bouton. · اضغط مرة أخرى.'); else b.classList.remove('on'); });
   });
 }
 
