@@ -31,8 +31,8 @@
 | `lecons/svt-3ac-amylase.html` | SVT 3AC | خفيف SVG | الأميلاز اللعابي ودرجة الحرارة، ثلاثة أنابيب وصفيحة ماء يودي، لم يراجعه أستاذ |
 | `lecons/maths-3ac-fonction-lineaire.html` | Maths 3AC | من بطاقة JSON | الدالة الخطية، مبني في الورشة دون شيفرة، لم يراجعه أستاذ |
 | `lecons/pc-3ac-energie-electrique.html` | PC 3AC | من بطاقة JSON | الطاقة الكهربائية المستهلكة، مبني في الورشة دون شيفرة، لم يراجعه أستاذ |
-| `lecons/maths-3ac-agrandissement-3d.html` | Maths 3AC | 3D | التكبير والتصغير: الكأس المخروطية، مقطع الهرم، الملء بالهرم الصغير، المكعبات. بصوت، وخلفية تتبع سياق كل وضع. جُرّب العرض الحقيقي |
-| `lecons/maths-3ac-pythagore-3d.html` | Maths 3AC | 3D | فيثاغورس: السلّم، أحواض المربعات، البرهان بالتقطيع، حبل البنّائين، العلبة. بصوت، وخلفية لكل وضع. جُرّب العرض الحقيقي |
+| `lecons/maths-3ac-agrandissement-3d.html` | Maths 3AC | 3D | التكبير والتصغير: الكأس المخروطية، مقطع الهرم، الملء بالهرم الصغير، المكعبات. بصوت، وخلفية الصحراء. جُرّب العرض الحقيقي |
+| `lecons/maths-3ac-pythagore-3d.html` | Maths 3AC | 3D | فيثاغورس: السلّم، أحواض المربعات، البرهان بالتقطيع، حبل البنّائين، العلبة. بصوت، وخلفية ورش البناء. جُرّب العرض الحقيقي |
 | `prototypes/pc-3ac-energie-cinetique-v0.html` | PC 3AC | خفيف SVG | النموذج الأولي الذي بُني منه الدرس |
 | `prototypes/maths-symetrie-axiale-2d-v0.html` | Maths | خفيف SVG | نموذج أولي |
 | `prototypes/maths-symetrie-axiale-3d-v1.html` | Maths | كتاب ثلاثي الأبعاد، ستة أوضاع بلغتين | الأكثر اكتمالا، لم يراجعه أستاذ |

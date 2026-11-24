@@ -30,5 +30,5 @@ Relecteur : ………………………… · Date : ………… · Décision :
 
 ## 5. Décors
 
-- [ ] Le verre dans une maison marocaine (zellige, plateau de thé, mida), la section et le remplissage dans le désert (pyramides, kasbah, palmiers), les cubes dans une salle de jeux. Les décors conviennent-ils aux élèves ?
+- [ ] Un seul décor pour toute la leçon : le désert (pyramides, kasbah, palmiers). Convient-il aux élèves ?
 - [ ] Rendu réel vérifié avec three.js r160 en portrait et en paysage, sans erreur. À confirmer sur un vrai téléphone : fluidité et lisibilité.

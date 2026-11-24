@@ -3,15 +3,17 @@
 Page : `lecons/maths-3ac-pythagore-3d.html` · voix : `lecons/audio/maths-3ac-pythagore-3d-*.mp3`
 Relecteur : ………………………… · Date : ………… · Décision : ☐ validée ☐ à corriger
 
-## 1. Les cinq modes et leurs décors
+## 1. Les cinq modes
 
-| Mode | Ce que l'élève fait | Décor | Valeurs à vérifier |
-| --- | --- | --- | --- |
-| L'échelle | place la hauteur qu'il prévoit, puis vérifie | chantier | échelle 5 m, pied 3 m : 4 m ; échelle 4 m, pied 1,5 m : 3,71 m |
-| Les carrés | verse l'eau des deux petits bassins carrés dans le grand | maison, zellige | angle C = 90° : 42,25 = 42,25, juste plein ; 60° : déborde (192 %) ; 120° : 68 % |
-| La preuve | déplace les quatre triangles dans un carré de côté a + b | classe | a = 5, b = 3 : 64 − 30 = 34 = c² = a² + b² |
-| La corde | choisit 3·4·5, 4·4·4, 2·5·5 ou 3·3·6 sur une corde à 12 nœuds | jardin | seul 3·4·5 donne 90° ; 3·3·6 est aplati |
-| La boîte | Pythagore deux fois, baguette de 10 à 45 cm | salle de jeux | 20×15×10 : AC = 25 cm, AG ≈ 26,9 cm |
+Décor unique : un chantier (échelle, corde des bâtisseurs).
+
+| Mode | Ce que l'élève fait | Valeurs à vérifier |
+| --- | --- | --- |
+| L'échelle | place la hauteur qu'il prévoit, puis vérifie | échelle 5 m, pied 3 m : 4 m ; échelle 4 m, pied 1,5 m : 3,71 m |
+| Les carrés | verse l'eau des deux petits bassins carrés dans le grand | angle C = 90° : 42,25 = 42,25, juste plein ; 60° : déborde (192 %) ; 120° : 68 % |
+| La preuve | déplace les quatre triangles dans un carré de côté a + b | a = 5, b = 3 : 64 − 30 = 34 = c² = a² + b² |
+| La corde | choisit 3·4·5, 4·4·4, 2·5·5 ou 3·3·6 sur une corde à 12 nœuds | seul 3·4·5 donne 90° ; 3·3·6 est aplati |
+| La boîte | Pythagore deux fois, baguette de 10 à 45 cm | 20×15×10 : AC = 25 cm, AG ≈ 26,9 cm |
 
 ## 2. Erreurs diagnostiquées dans « L'échelle »
 
