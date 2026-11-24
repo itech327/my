@@ -22,12 +22,20 @@
   .cards{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
   .card{background:var(--paper);border:1.5px solid #3a3a40;border-radius:4px;padding:4px 9px 3px;box-shadow:2px 3px 0 rgba(0,0,0,.25);min-width:80px;text-align:center;transform:rotate(var(--r,0deg))}
   .card[hidden]{display:none}
-  .card small{display:block;font-size:13px;color:#555}
+  .card small{display:block;font-size:13px;color:#555;unicode-bidi:plaintext}
   .card b{font:700 20px/1.15 "Comic Sans MS","Chalkboard SE","Marker Felt",cursive;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
   .card b i{font-style:normal;font-size:14px;color:#555;margin-left:3px}
   #notice{background:rgba(251,250,246,.95);border-radius:8px;padding:6px 14px;font-size:15px;max-width:660px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
   #notice b{color:var(--red)}
   #err{position:fixed;top:110px;left:12px;right:12px;background:#fff;border:2px solid var(--red);padding:10px;display:none;font-size:14px;direction:ltr;z-index:9}
+  #notice{min-height:3.2em;display:flex;align-items:center;justify-content:center}
+  @media (orientation:landscape) and (max-height:600px){
+    .cards{position:fixed;left:calc(8px + env(safe-area-inset-left));flex-direction:column;align-items:stretch;gap:5px;pointer-events:none}
+    .card{min-width:0;padding:2px 8px;transform:none}.card b{font-size:15px}.card small{font-size:11px}
+    .hud{padding-left:calc(170px + env(safe-area-inset-left));gap:5px}
+    #notice{font-size:13px;min-height:2.6em;padding:4px 12px}
+    .chip,.btn{min-height:36px;padding:4px 10px;font-size:14px}
+  }
   @media (max-width:520px){.card{min-width:68px;padding:3px 6px}.card b{font-size:16px}.card small{font-size:12px}#notice{font-size:13.5px}}
 </style>
 <script type="importmap">
@@ -78,7 +86,9 @@ const S = {
   tri: null, trail: [],
   pred: null, shp: null, med: null, fig: null, con: null,
 };
-const tr = (ar, fr) => S.lang === 'ar' ? ar : fr;
+// In Arabic text, isolate each Latin expression (A', [MM'], AH = A'H = 3,2 cm) so it keeps its left-to-right order.
+const isoLatin = t => t.replace(/[\[(A-Za-z][A-Za-z0-9'()\[\]=·⊥,. ]*[A-Za-z0-9')\]]/g, m => '\u2066' + m + '\u2069');
+const tr = (ar, fr) => S.lang === 'ar' ? isoLatin(ar) : fr;
 const V = (x, z) => new THREE.Vector2(x, z);
 function initState() {
   S.theta = 0; S.foldOn = false; S.phi = 0; S.trail = [];
@@ -162,8 +172,8 @@ function leftPageTexture() {
   g.direction = 'ltr'; g.textAlign = 'center'; g.font = `700 60px ${HAND}`; g.fillStyle = '#2f5bd3';
   g.fillText("HM = HM'   et   (MM') ⊥ (d)", W / 2, 580);
   g.direction = ar ? 'rtl' : 'ltr'; g.textAlign = ar ? 'right' : 'left'; g.fillStyle = '#26262b'; g.font = `${ar ? 44 : 38}px ${AR_FONT}`;
-  const lines = ar ? ['١. التماثل يحافظ على الأطوال والزوايا والمساحات.', '٢. لكنه يقلب اتجاه الدوران.', "٣. كل نقطة من (d) تبعد بنفس المسافة عن M وM'."]
-                   : ['1. Elle conserve longueurs, angles et aires.', '2. Mais elle inverse le sens de rotation.', "3. Tout point de (d) est à égale distance de M et M'."];
+  const lines = (ar ? ['١. التماثل يحافظ على الأطوال والزوايا والمساحات.', '٢. لكنه يقلب اتجاه الدوران.', "٣. كل نقطة من (d) تبعد بنفس المسافة عن M وM'."]
+                   : ['1. Elle conserve longueurs, angles et aires.', '2. Mais elle inverse le sens de rotation.', "3. Tout point de (d) est à égale distance de M et M'."]).map(l => ar ? isoLatin(l) : l);
   lines.forEach((l, i) => g.fillText(l, X, 760 + i * 110));
   g.font = `${ar ? 34 : 30}px ${AR_FONT}`; g.fillStyle = '#6a6a72';
   g.fillText(tr('اسحب النقط بإصبعك، واسحب الفراغ لتدوير الكتاب.', 'Fais glisser les points ; glisse dans le vide pour tourner.'), X, 1170);
@@ -314,15 +324,42 @@ let swX = SW.x - 0.8;
 
 /* ---------- Camera ---------- */
 const home = { pos: new THREE.Vector3(), target: new THREE.Vector3(), dist: 60 };
+// Frame the book inside the free area of the screen (not under the HUD):
+// the camera renders a window of a larger virtual view whose centre is the
+// centre of the free rectangle.
+const view = { W: 1, H: 1, Fw: 1, Fh: 1, freeW: 1, freeH: 1 };
+function measureFree() {
+  const W = innerWidth, H = innerHeight;
+  const cardsEl = document.querySelector('.cards'), column = getComputedStyle(cardsEl).position === 'fixed';
+  const topB = document.querySelector('.top').getBoundingClientRect().bottom;
+  if (column) cardsEl.style.top = (topB + 8) + 'px'; else cardsEl.style.top = '';
+  let hudTop = H;
+  for (const el of [document.getElementById('acts'), document.getElementById('notice'), column ? null : cardsEl]) {
+    if (!el) continue; const r = el.getBoundingClientRect(); if (r.height > 0) hudTop = Math.min(hudTop, r.top);
+  }
+  const left = column ? cardsEl.getBoundingClientRect().right + 8 : 0;
+  const top = topB + 6, bottom = Math.max(top + 80, hudTop - 6);
+  return { W, H, left, right: W, top, bottom };
+}
 function computeHome() {
-  const a = camera.aspect, portrait = a < 0.9, fitW = portrait ? 30 : 46, fitH = 33;
-  const vf = THREE.MathUtils.degToRad(camera.fov) / 2, hf = Math.atan(Math.tan(vf) * a);
-  home.dist = Math.max((fitW / 2) / Math.tan(hf), (fitH / 2) / Math.tan(vf)) * 1.05;
+  const f = measureFree(), W = f.W, H = f.H;
+  const cx = (f.left + f.right) / 2, cy = (f.top + f.bottom) / 2;
+  const Fw = 2 * Math.max(cx, W - cx), Fh = 2 * Math.max(cy, H - cy);
+  Object.assign(view, { W, H, Fw, Fh, freeW: f.right - f.left, freeH: f.bottom - f.top });
+  camera.aspect = Fw / Fh;
+  camera.setViewOffset(Fw, Fh, Fw / 2 - cx, Fh / 2 - cy, W, H);
+  const portrait = view.freeW / view.freeH < 0.9, fitW = portrait ? 30 : 46, fitH = 31;
+  const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  home.dist = Math.max(fitW * Fh / (2 * view.freeW * tv), fitH * Fh / (2 * view.freeH * tv)) * 1.04;
   home.target.set(portrait ? 5.5 : 0, 0, 1.5);
   home.pos.copy(home.target).add(new THREE.Vector3(0.08, 0.8, 0.6).normalize().multiplyScalar(home.dist));
 }
 let orbit = null;
-function resize() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); computeHome(); if (orbit) { orbit.minDistance = home.dist * .5; orbit.maxDistance = home.dist * 1.35; } }
+function resize(rehome = true) {
+  renderer.setSize(innerWidth, innerHeight, false); computeHome();
+  if (orbit) { orbit.minDistance = home.dist * .5; orbit.maxDistance = home.dist * 1.35;
+    if (rehome && !intro) { camera.position.copy(home.pos); orbit.target.copy(home.target); orbit.update(); } }
+}
 
 /* ---------- Pointer (registered before OrbitControls) ---------- */
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), pagePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -PAGE_Y);
@@ -394,6 +431,7 @@ function buildHUD() {
   const acts = document.getElementById('acts');
   acts.innerHTML = (MODES[S.mode].actions ? MODES[S.mode].actions() : []).map(([id, label, accent]) => `<button class="btn${accent ? ' acc' : ''}" data-a="${id}">${esc(label)}</button>`).join('');
   acts.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { MODES[S.mode].action(b.dataset.a); buildHUD(); });
+  requestAnimationFrame(() => resize(false));
 }
 function setMode(m) { S.mode = m; S.foldOn = false; S.phi = 0; act('mode'); MODES[m].enter && MODES[m].enter(); buildHUD(); }
 

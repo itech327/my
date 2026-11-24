@@ -11,7 +11,7 @@ export class Color{constructor(){}set(){return this}}
 class Obj{constructor(geometry,material){this.geometry=geometry;this.material=material;this.position=new Vector3();this.scale=new Vector3(1,1,1);this.rotation={x:0,y:0,z:0,set(){}};this.quaternion={setFromUnitVectors(){}};this.userData={};this.visible=true;this.children=[]}add(...c){this.children.push(...c);return this}lookAt(){}}
 export class Object3D extends Obj{}export class Mesh extends Obj{}export class Sprite extends Obj{}export class LineSegments extends Obj{}export class Line extends Obj{}export class LineLoop extends Obj{}export class Group extends Obj{}
 export class Scene extends Obj{}
-export class PerspectiveCamera extends Obj{constructor(fov,aspect){super();this.fov=fov;this.aspect=aspect}updateProjectionMatrix(){}}
+export class PerspectiveCamera extends Obj{constructor(fov,aspect){super();this.fov=fov;this.aspect=aspect}updateProjectionMatrix(){}setViewOffset(...a){this.view=a;window.__view=a}}
 class Light extends Obj{constructor(){super();this.shadow={mapSize:{set(){}},camera:{},bias:0}}}
 export class HemisphereLight extends Light{}export class DirectionalLight extends Light{}
 class Mat{constructor(o={}){Object.assign(this,o);this.color=new Color()}dispose(){}}

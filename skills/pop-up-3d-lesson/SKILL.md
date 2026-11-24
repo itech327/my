@@ -55,6 +55,7 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove. A questi
 - The toggle switches `<html lang dir>`, rebuilds the HUD, and regenerates the canvas textures of both pages (title, law, labels on the page).
 - Canvas text: Arabic with `direction='rtl'`, `textAlign='right'`, fonts `"Noto Naskh Arabic","Geeza Pro",Arial,serif`; French left-aligned. Formulas stay LTR in both.
 - Numbers use a decimal comma in both languages.
+- Bidi: in Arabic text, wrap every Latin expression in LRI/PDI isolates (`\u2066 ... \u2069`), e.g. `t.replace(/[\[(A-Za-z][A-Za-z0-9'()\[\]=·⊥,. ]*[A-Za-z0-9')\]]/g, m => '\u2066' + m + '\u2069')`. Without it A' shows as 'A and "AB = A'B'" is reversed. Apply it in `tr()` and to canvas text. Short Latin labels in cards use `unicode-bidi: plaintext`.
 
 ## 5. Technical rules
 - One self-contained HTML file. three.js 0.160 via import map:
@@ -65,7 +66,8 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove. A questi
 - Structure: one object per mode with `enter()`, `handles()`, `drag(id, p)`, `draw(u, now)`, optional `actions()` and `action(id)`. The frame loop resets the pools, calls the active mode, then hides unused pool items.
 - Immediate-mode pools: flat ribbon segments for lines (WebGL lines are 1 px and vanish on phones), spheres for points, sprites for labels (redraw a label canvas only when its text changes), a few prisms for cut-out shapes (preallocated BufferGeometry updated in place, `computeVertexNormals`, `frustumCulled=false`, DoubleSide when shapes can be mirrored or folded). Label sprites use `depthTest:false`.
 - Performance on phones: pixel ratio capped at 2, one shadow-casting directional light with a 1024 map, no post-processing, 60 fps.
-- Layout: compute the home camera distance from the aspect ratio; in portrait frame the right page plus the spine side of the left page. HUD with safe-area padding.
+- Layout: the book must never sit under the HUD. Measure the free rectangle between the top bars and the bottom HUD (and a side column of cards), then centre the camera on it with `camera.setViewOffset(Fw, Fh, Fw/2 - cx, Fh/2 - cy, W, H)` where `Fw = 2·max(cx, W-cx)`, `Fh = 2·max(cy, H-cy)`, `camera.aspect = Fw/Fh`, and fit the book in the free width and height. Re-measure on resize and when the HUD changes. In portrait frame the right page plus the spine side of the left page.
+- Landscape phones (height under 600 px): value cards go in a narrow column on the side, the notice and buttons stay compact at the bottom. HUD with safe-area padding.
 - A visible error box (`window.onerror`) so the user can screenshot any runtime error.
 - Everything computed every frame from the equations. Nothing pre-animated or faked, except timed step animations that are themselves computed (an arc swept by a compass).
 
