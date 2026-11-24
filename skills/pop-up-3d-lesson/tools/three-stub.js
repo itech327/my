@@ -7,12 +7,13 @@ crossVectors(a,b){const x=a.y*b.z-a.z*b.y,y=a.z*b.x-a.x*b.z,z=a.x*b.y-a.y*b.x;re
 multiplyScalar(s){this.x*=s;this.y*=s;this.z*=s;return this}normalize(){return this.multiplyScalar(1/(this.length()||1))}lerpVectors(a,b,t){return this.set(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,a.z+(b.z-a.z)*t)}
 project(){this.x=0;this.y=0;return this}distanceTo(v){return Math.hypot(this.x-v.x,this.y-v.y,this.z-v.z)}setScalar(s){return this.set(s,s,s)}}
 export const MathUtils={degToRad:d=>d*Math.PI/180,radToDeg:r=>r*180/Math.PI,clamp:(v,a,b)=>Math.max(a,Math.min(b,v))};
-export class Color{constructor(){}set(){return this}}
+export class Color{constructor(){}set(){return this}getHexString(){return 'ffffff'}}
+export class Fog{constructor(c,n,f){this.color=new Color();this.near=n;this.far=f}}
 class Obj{constructor(geometry,material){this.geometry=geometry;this.material=material;this.position=new Vector3();this.scale=new Vector3(1,1,1);this.rotation={x:0,y:0,z:0,set(){}};this.quaternion={setFromUnitVectors(){}};this.userData={};this.visible=true;this.children=[]}add(...c){this.children.push(...c);return this}lookAt(){}}
 export class Object3D extends Obj{}export class Mesh extends Obj{}export class Sprite extends Obj{}export class LineSegments extends Obj{}export class Line extends Obj{}export class LineLoop extends Obj{}export class Group extends Obj{}
 export class Scene extends Obj{}
 export class PerspectiveCamera extends Obj{constructor(fov,aspect){super();this.fov=fov;this.aspect=aspect}updateProjectionMatrix(){}setViewOffset(...a){this.view=a;window.__view=a}}
-class Light extends Obj{constructor(){super();this.shadow={mapSize:{set(){}},camera:{},bias:0}}}
+class Light extends Obj{constructor(c,g,i){super();this.color=new Color();this.groundColor=new Color();this.intensity=typeof g==='number'?g:(i||1);this.shadow={mapSize:{set(){}},camera:{},bias:0}}}
 export class HemisphereLight extends Light{}export class DirectionalLight extends Light{}
 class Mat{constructor(o={}){Object.assign(this,o);this.color=new Color()}dispose(){}}
 export class MeshStandardMaterial extends Mat{}export class MeshBasicMaterial extends Mat{}export class LineBasicMaterial extends Mat{}export class SpriteMaterial extends Mat{}export class LineDashedMaterial extends Mat{}
@@ -24,4 +25,4 @@ export class WebGLRenderer{constructor(){this.shadowMap={};this.capabilities={ge
 export class Plane{constructor(n,c){this.normal=n;this.constant=c}}
 export class Raycaster{constructor(){this.ray={intersectPlane:(pl,t)=>window.__hit?(t.set(window.__hit[0],1.2,window.__hit[1]),t):null}}setFromCamera(){}intersectObjects(){return []}}
 export class Clock{getDelta(){return 0.016}}
-export const SRGBColorSpace='srgb',PCFSoftShadowMap=2,DoubleSide=2,RepeatWrapping=1;
+export const SRGBColorSpace='srgb',PCFSoftShadowMap=2,DoubleSide=2,BackSide=1,RepeatWrapping=1;

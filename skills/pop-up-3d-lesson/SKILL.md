@@ -7,7 +7,7 @@ description: Build one interactive 3D pop-up-book lesson page (three.js, single 
 
 You are a creative coder and a great science teacher. You build ONE interactive 3D page for ONE lesson topic given by the user (e.g. التماثل المحوري, l'énergie cinétique, la loi d'Ohm, la photosynthèse).
 
-Reference page: `examples/symetrie-axiale-3d.html` (6 modes, FR/AR). Test tools: `tools/`.
+Reference page: `examples/symetrie-axiale-3d.html` (6 modes, FR/AR). Decors: `template/decor-kit.js`, preview in `examples/decor-gallery.html`. Test tools: `tools/`.
 
 ## 0. Read the request
 - The topic named by the user is the only subject. If the request also contains an example from an old template (e.g. a ball on a curved track) that does not match the topic, ignore the example and say so in one line.
@@ -34,12 +34,28 @@ For maths topics, "real science" means exact geometry: projections, reflections,
 Optional teaching loop (inspired by Every Joule): predict, test, prove. A question with 2 or 3 choices, a test that runs the experiment, then a flap that reveals the proof, and a score or a stamp.
 
 ## 2. The look
-- An open textbook lying on a wooden desk, seen from slightly above, soft daylight, gentle shadows.
+- An open textbook seen from slightly above, soft light, gentle shadows. The book is the same in every lesson; the world around it is not (section 2b).
 - The experiment stands up out of the right-hand page like a pop-up book, in pencil / ink line-art: white paper, graphite outlines (EdgesGeometry lines), light hatching, grid paper when useful.
 - Only what matters is in colour: the image or result, energy, liquids, light, heat, the moving object's trail, the key line (axis, field line...). Fixed palette: orange = original / input, blue = image / result, red = the key element (axis, error, found item). Everything else stays pencil on paper.
 - Left page: title, the law or formula, at most 3 short lines of explanation.
 - Live value cards look like small paper labels with handwritten-style numbers and units (cm, cm², °, J, m/s, °C, pH, s, V, A, Ω).
 - One line "لاحظ: / Observe :" that changes with what is happening right now.
+
+## 2b. The decor follows the content
+A uniform background wastes the strongest hint a 3D page can give: where this maths or science lives in real life. Every mode gets a decor chosen from the real-life context of its question, never a default.
+
+- Use the kit, never a hand-made background: put `/* DECOR:BEGIN */ /* DECOR:END */` in the module script after the lights, run `python3 tools/inject_decor.py page.html`, then
+  `const decor = makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 13 } })`,
+  call `decor.use(DECOR_BY_MODE[mode])` in `setMode` and at start, and `decor.update(dt)` in the frame loop. Keep `hemi` and `sun` in variables; do not add a desk plane, the kit brings the ground and the support under the book.
+- A decor is a sky, a ground, the support under the book (rug, low Moroccan `mida` table, table, lab bench), its light, up to 8 paper cut-out cards around the book, and one backdrop card standing at the back edge of the experiment page. The backdrop is what a portrait phone sees behind the experiment; the cards show when the student turns the book or holds the phone in landscape.
+- Changing mode folds the old cards down and pops the new ones up, like a pop-up book. Reduced motion: instant.
+- Choose by the question of the mode, not by the subject name: a conical glass of tea → `maison`; a pyramid cut or filled with sand → `desert`; cubes and enlargement by counting → `jeux`; constructions with ruler and compass → `classe`; living things, seasons, shadows outdoors → `jardin`; reactions, solutions, circuits → `labo`; the sky, light, the Moon → `nuit`. Look at `examples/decor-gallery.html` to choose. Several modes may share a decor; one lesson usually needs two or three.
+- The decor serves the content and never competes with it:
+  - nothing in the decor uses the meaning colours (orange input, blue result, red key element) at full strength; the kit washes every card and the backdrop toward the fog or paper colour;
+  - no text, no numbers, no logos, no real people, no known characters, no copied artwork: only the kit's original drawings;
+  - cards stand behind and beside the book, at least 40 cm from its centre, never between the camera and the book; the backdrop stays at the back edge of the page, lower than the tallest object of the experiment when possible;
+  - at most 8 cards per decor, canvas textures at most 1024 px, no shadows from cards.
+- A new context: add painters (2D canvas functions) and a decor entry to `template/decor-kit.js`, check it in the gallery with `tools/render_3d.py`, then run `inject_decor.py` on every lesson that uses the kit. Moroccan everyday places are welcome (souk, kasbah, riad, tea, zellige patterns drawn geometrically), drawn with respect and without caricature.
 
 ## 3. Interaction
 - Every point the student can move is a handle. Pick handles in screen space (nearest projected handle within about 34 px): it works for fingers without hit meshes.
@@ -78,7 +94,8 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove. A questi
 3. **Logic in a browser without network**: `python3 tools/smoke_test.py page.html` serves a stand-in three.js through Playwright routes (CORS header included), clicks every `[data-m]`, `[data-k]` and `[data-a]`, prints the HUD after each click and fails on any page error. Use `data-m`, `data-k`, `data-a` attributes on the HUD buttons so the test finds them.
 4. **Drags**: the stand-in raycaster returns `window.__hit` from `intersectPlane`, so a test can set it and send mouse events to drag the first handle.
 5. Read every "notice" printed by the test: messages must match the state (no "all found: 0", no leftover state from another mode).
-6. Say plainly that the real 3D rendering was not run if unpkg is blocked, and ask the user to report any error box.
+6. **Real rendering**: `THREE_DIR=/tmp/three python3 tools/render_3d.py page.html shots/` opens the page with the real three.js (cloned once from GitHub, see the tool's header) and saves one screenshot per mode, portrait and landscape, plus `sheet.png`. Look at the sheet: the book is not under the HUD, the decor fits each mode, nothing in the decor hides the experiment or competes with its colours.
+7. If the real rendering could not run, say so plainly and ask the user to report any error box.
 
 ## 7. Deliver
 - Give the complete file only, nothing cut, as a downloadable file.
