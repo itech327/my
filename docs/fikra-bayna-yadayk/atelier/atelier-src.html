@@ -55,7 +55,8 @@ button.primary{background:var(--ink);color:#fff}.bar{display:flex;flex-wrap:wrap
 /*@@ADAPTER@@*/
 const TEMPLATE = /*@@TEMPLATE@@*/'';
 const EXAMPLES = /*@@EXAMPLES@@*/{};
-const AI_ENDPOINT = ''; /* e.g. '/api/fikra/propose' on the platform server. Empty: the button explains that the service is not connected. */
+const AI_ENDPOINT = '';
+const VOICE_ENDPOINT = ''; /* e.g. '/api/fikra/voix': POST { text } returns an mp3. Empty: the button explains that the service is not connected. */ /* e.g. '/api/fikra/propose' on the platform server. Empty: the button explains that the service is not connected. */
 
 /* ---------- a small schema-driven form: the spec <-> the fields ---------- */
 const $ = s => document.querySelector(s);
@@ -70,10 +71,10 @@ const SCHEMA = [
     ['meta.title', 'Titre', 'text'], ['meta.titleAr', 'Titre en arabe', 'text', AR], ['meta.kicker', 'Matière et niveau', 'text'],
     ['meta.short', 'Titre court', 'text'], ['meta.classes', 'Classes, séparées par des virgules', 'csv'], ['meta.footer', 'Pied de page', 'text']]],
   ['Erreurs fréquentes · الأخطاء الشائعة', [['misconceptions', null, 'mis']]],
-  ['1 · La question · السؤال', [['hook.title', 'Titre', 'text'], ['hook.text', 'Texte', 'area'], ['hook.ar', 'Texte en arabe', 'area', AR]]],
+  ['1 · La question · السؤال', [['hook.title', 'Titre', 'text'], ['hook.text', 'Texte', 'area'], ['hook.ar', 'Texte en arabe', 'area', AR], ['hook', 'Voix en darija pour la question', 'voice']]],
   ['2 · Je prédis · أتوقع', [['predict', null, 'questions']]],
   ['3 · Je teste · أجرب', [['experiment', null, 'experiment']]],
-  ['4 · La règle · القاعدة', [['rule.blocks', null, 'blocks'], ['rule.seen', 'Ce que l\'élève a vu', 'area']]],
+  ['4 · La règle · القاعدة', [['rule.blocks', null, 'blocks'], ['rule.seen', 'Ce que l\'élève a vu', 'area'], ['rule', 'Voix en darija pour la règle', 'voice']]],
   ['5 · Pourquoi · لماذا', [['proof.title', 'Titre', 'text'], ['proof.paras', 'Paragraphes, un par ligne', 'lines'], ['proof.firstIsFormula', 'La première ligne est un calcul', 'check'], ['proof.ar', 'Explication en arabe', 'area', AR]]],
   ['6 · Exercices · تمارين', [['exercises.levels', null, 'levels']]],
   ['7 · Je vérifie · أتحقق', [['check', null, 'questions']]]
@@ -108,6 +109,26 @@ const KIND = {
   mis: v => { const box = repeat('erreur', Object.entries(v || {}).map(([code, m]) => ({ code, ...m })), m => group([
       ['code', field('Code court, sans espace', m.code)], ['fr', field('Message en français', m.fr, 'area')], ['ar', field('Message en arabe', m.ar, 'area', AR)]]), () => ({}));
     const r = box.read; box.read = () => { const o = {}; r().forEach(m => { if (m.code) o[m.code] = { fr: m.fr || '', ar: m.ar || '' }; }); return o; }; return box; },
+  voice: (v, l) => {
+    v = v || {}; let audio = v.audio || '';
+    const box = el('div', { class: 'item' }); box.appendChild(el('label', { text: l }));
+    const txt = field('Texte dit en darija, en lettres arabes', v.audioText, 'area', AR), st = el('p', { class: 'hint' }), player = el('audio', { controls: '', style: 'width:100%' });
+    const file = el('input', { type: 'file', accept: 'audio/*', hidden: '' });
+    const show = () => { player.hidden = !audio; if (audio) player.src = audio;
+      st.textContent = !audio ? 'Pas de voix. Le bouton de lecture n\'apparaîtra pas.' : audio.startsWith('data:') ? `Voix intégrée à la leçon, ${Math.round(audio.length * 3 / 4 / 1024)} KB.` : `Fichier lié : ${audio}. Il doit être à côté de la leçon.`; };
+    const up = el('button', { type: 'button', text: 'Ajouter mon enregistrement' }), gen = el('button', { type: 'button', text: 'Générer en darija' }), rm = el('button', { type: 'button', text: 'Retirer' });
+    up.onclick = () => file.click(); rm.onclick = () => { audio = ''; show(); };
+    file.onchange = () => { const f = file.files[0]; if (!f) return; if (f.size > 400000) { st.textContent = `Fichier trop lourd : ${Math.round(f.size / 1024)} KB. La limite est 400 KB, soit environ une minute.`; return; }
+      const r = new FileReader(); r.onload = () => { audio = r.result; show(); }; r.readAsDataURL(f); };
+    gen.onclick = async () => {
+      const t = txt.read().trim(); if (!t) { st.textContent = 'Écris d\'abord le texte en darija.'; return; }
+      if (!VOICE_ENDPOINT) { st.textContent = 'La génération de voix n\'est pas encore branchée sur la plateforme. En attendant, ajoute ton propre enregistrement.'; return; }
+      st.textContent = 'Génération en cours…';
+      try { const r = await fetch(VOICE_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: t }) }); if (!r.ok) throw new Error('réponse ' + r.status);
+        const b = await r.blob(); audio = await new Promise(ok => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(b); }); show(); st.textContent += ' Voix générée : écoute-la avant de publier.'; }
+      catch (e) { st.textContent = 'Échec de la génération : ' + e.message; } };
+    box.append(txt, el('div', { class: 'bar', style: 'margin:8px 0 4px' }, [up, gen, rm]), file, player, st); show();
+    box.read = () => { const t = txt.read().trim(); const o = {}; if (audio) o.audio = audio; if (t) o.audioText = t; return o; }; box.merge = true; return box; },
   questions: v => repeat('question', v, q => {
     const o = field('Réponses, une par ligne : texte ; code de l\'erreur. La bonne réponse a un code vide.', (q.options || []).map(([t, c]) => `${t} ; ${c}`).join('\n'), 'area');
     const g = group([['q', field('Question', q.q)], ['ar', field('Question en arabe', q.ar, 'text', AR)], ['options', o]]);
@@ -159,7 +180,7 @@ function renderForm(spec) {
     f.appendChild(fs);
   });
 }
-function readForm() { const s = {}; readers.forEach(([p, w]) => set(s, p, w.read())); s.exercises = s.exercises || {}; return s; }
+function readForm() { const s = {}; readers.forEach(([p, w]) => { if (w.merge) { const o = get(s, p) || {}; set(s, p, Object.assign(o, w.read())); } else set(s, p, w.read()); }); s.exercises = s.exercises || {}; return s; }
 
 /* ---------- build, check, preview, export ---------- */
 function lessonHTML(spec) {

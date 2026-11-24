@@ -44,7 +44,7 @@ Modèle simplifié, annoncé à l'élève : activité maximale à 37 °C, divis�
 
 ## 5. Audio en darija
 
-- [ ] Pas encore d'audio pour cette leçon. À enregistrer après validation des textes.
+- [ ] Deux clips, question et règle, voix akram, modèle principal. Écouter : prononciation de « أميلاز », « مالتوز », « فهلينغ ».
 
 ## 6. Exercices
 

@@ -25,6 +25,8 @@ const LESSON = {
 
   hook: {
     title: 'Le pain qui devient sucré',
+    audio: 'audio/svt-3ac-amylase-question.mp3',
+    audioText: 'مضغ طرف ديال الخبز مدة طويلة فالفم ديالك، غادي تحس بيه ولّى حلو شوية. شكون اللي بدّل النشا اللي فالخبز لسكر؟ وإلا كان الفم سخون بزاف، بحال تمانين درجة، واش غادي يولّي حلو كتر، ولا قل، ولا ما غاديش يتبدل والو؟ دير التوقع ديالك.',
     svg: `<svg class="fig" viewBox="0 0 640 220" role="img" aria-label="Un morceau de pain mâché, et une bouche imaginaire à 80 degrés">
       <path class="ink" fill="var(--card)" d="M90 150 Q80 80 150 70 Q230 60 250 110 Q262 150 240 160 L110 168 Q92 166 90 150 Z"/>
       <path class="ink" d="M120 110 q10 -8 20 0 M160 100 q10 -8 20 0 M200 112 q10 -8 20 0" style="stroke-width:1.6;opacity:.6"/>
@@ -131,6 +133,8 @@ const LESSON = {
   },
 
   rule: {
+    audio: 'audio/svt-3ac-amylase-regle.mp3',
+    audioText: 'القاعدة هي: الأميلاز اللي فاللعاب أنزيم، كايبدّل النشا لسكر سميتو المالتوز. الماء اليودي كايزرق إلا كان النشا، ومحلول فهلينغ كايعطي لون أحمر آجوري مع المالتوز. الأميلاز كايخدم مزيان قريب من سبعة وتلاتين درجة، بحال حرارة الجسم. البرد كايبطّأو بلا ما يخسرو، أما الحرارة القوية كاتخسرو نهائيا، وما كايرجعش يخدم حتى إلا برد.',
     blocks: [
       { formula: 'amidon → maltose', text: "L'amylase de la salive est une enzyme : elle transforme l'amidon en maltose, un sucre. L'eau iodée bleuit en présence d'amidon. La liqueur de Fehling donne, à chaud, un précipité rouge brique avec le maltose.", ar: 'الأميلاز اللعابي أنزيم يحوّل النشا إلى مالتوز وهو سكر. الماء اليودي يزرقّ بوجود النشا، ومحلول فهلينغ يعطي راسبا أحمر آجوريا مع المالتوز عند التسخين.' },
       { formula: 'optimum vers 37 °C', text: "Le froid ralentit l'amylase sans la détruire. Une forte chaleur, vers 65 °C et plus, la détruit : son action ne revient pas en refroidissant. Le tube témoin sans salive montre que l'amidon ne se transforme pas tout seul.", ar: 'البرودة تبطئ الأميلاز دون أن تخرّبه، والحرارة المرتفعة تخرّبه نهائيا. الأنبوب الشاهد يبيّن أن النشا لا يتحول وحده.' }

@@ -4,27 +4,83 @@
   "title": "L'énergie électrique consommée",
   "titleAr": "الطاقة الكهربائية المستهلكة",
   "short": "Énergie électrique",
-  "classes": ["3APIC-1", "3APIC-2", "3APIC-3"],
+  "classes": [
+   "3APIC-1",
+   "3APIC-2",
+   "3APIC-3"
+  ],
   "footer": "Leçon construite depuis une fiche JSON dans l'atelier, sans code. Textes et valeurs originaux."
  },
  "misconceptions": {
-  "puissance": { "fr": "La puissance seule ne suffit pas : l'énergie dépend aussi de la durée, E = P × t.", "ar": "القدرة وحدها لا تكفي: الطاقة تتعلق أيضا بالمدة." },
-  "duree": { "fr": "La durée seule ne suffit pas : un appareil puissant consomme plus en moins de temps. E = P × t.", "ar": "المدة وحدها لا تكفي: الجهاز القوي يستهلك أكثر في وقت أقل." },
-  "addition": { "fr": "On multiplie la puissance par la durée, on ne les additionne pas.", "ar": "نضرب القدرة في المدة ولا نجمعهما." },
-  "division": { "fr": "On multiplie P par t, on ne divise pas.", "ar": "نضرب القدرة في المدة ولا نقسم." },
-  "minutes": { "fr": "La durée doit être en heures pour obtenir des Wh : divise les minutes par 60.", "ar": "يجب تحويل المدة إلى الساعات: نقسم الدقائق على 60." },
-  "kwh": { "fr": "1 kWh = 1000 Wh : pour passer des Wh aux kWh, on divise par 1000.", "ar": "1 kWh = 1000 Wh: للتحويل إلى kWh نقسم على 1000." }
+  "puissance": {
+   "fr": "La puissance seule ne suffit pas : l'énergie dépend aussi de la durée, E = P × t.",
+   "ar": "القدرة وحدها لا تكفي: الطاقة تتعلق أيضا بالمدة."
+  },
+  "duree": {
+   "fr": "La durée seule ne suffit pas : un appareil puissant consomme plus en moins de temps. E = P × t.",
+   "ar": "المدة وحدها لا تكفي: الجهاز القوي يستهلك أكثر في وقت أقل."
+  },
+  "addition": {
+   "fr": "On multiplie la puissance par la durée, on ne les additionne pas.",
+   "ar": "نضرب القدرة في المدة ولا نجمعهما."
+  },
+  "division": {
+   "fr": "On multiplie P par t, on ne divise pas.",
+   "ar": "نضرب القدرة في المدة ولا نقسم."
+  },
+  "minutes": {
+   "fr": "La durée doit être en heures pour obtenir des Wh : divise les minutes par 60.",
+   "ar": "يجب تحويل المدة إلى الساعات: نقسم الدقائق على 60."
+  },
+  "kwh": {
+   "fr": "1 kWh = 1000 Wh : pour passer des Wh aux kWh, on divise par 1000.",
+   "ar": "1 kWh = 1000 Wh: للتحويل إلى kWh نقسم على 1000."
+  }
  },
  "hook": {
   "title": "Le four ou la lampe ?",
   "text": "Un four de 2000 W chauffe un plat pendant 30 minutes. Une lampe de 100 W reste allumée toute une soirée de 10 heures. Lequel des deux fait le plus tourner le compteur ?",
-  "ar": "فرن قدرته 2000 W يشتغل 30 دقيقة، ومصباح قدرته 100 W يبقى مشتعلا 10 ساعات. أيهما يستهلك طاقة أكبر؟"
+  "ar": "فرن قدرته 2000 W يشتغل 30 دقيقة، ومصباح قدرته 100 W يبقى مشتعلا 10 ساعات. أيهما يستهلك طاقة أكبر؟",
+  "audio": "audio/pc-3ac-energie-electrique-question.mp3",
+  "audioText": "فران قوتو ألفين واط، خدم نص ساعة باش يطيب طاجين. ولامبة قوتها مية واط، بقات شاعلة عشر سوايع فالليل. شكون فيهم اللي دوّر الكونتور كتر؟ الفران حيت قوي، ولا اللامبة حيت طولات، ولا بجوج بحال بحال؟ دير التوقع ديالك."
  },
  "predict": [
-  { "q": "Un appareil fonctionne 2 h au lieu de 1 h. L'énergie qu'il consomme :", "ar": "جهاز يشتغل ساعتين بدل ساعة. الطاقة التي يستهلكها:",
-    "options": [["double", ""], ["reste la même", "puissance"], ["augmente de 1", "addition"]] },
-  { "q": "Four de 2000 W pendant 30 min, lampe de 100 W pendant 10 h : qui consomme le plus ?", "ar": "فرن 2000 W لمدة 30 دقيقة ومصباح 100 W لمدة 10 ساعات: أيهما يستهلك أكثر؟",
-    "options": [["les deux autant", ""], ["le four", "puissance"], ["la lampe", "duree"]] }
+  {
+   "q": "Un appareil fonctionne 2 h au lieu de 1 h. L'énergie qu'il consomme :",
+   "ar": "جهاز يشتغل ساعتين بدل ساعة. الطاقة التي يستهلكها:",
+   "options": [
+    [
+     "double",
+     ""
+    ],
+    [
+     "reste la même",
+     "puissance"
+    ],
+    [
+     "augmente de 1",
+     "addition"
+    ]
+   ]
+  },
+  {
+   "q": "Four de 2000 W pendant 30 min, lampe de 100 W pendant 10 h : qui consomme le plus ?",
+   "ar": "فرن 2000 W لمدة 30 دقيقة ومصباح 100 W لمدة 10 ساعات: أيهما يستهلك أكثر؟",
+   "options": [
+    [
+     "les deux autant",
+     ""
+    ],
+    [
+     "le four",
+     "puissance"
+    ],
+    [
+     "la lampe",
+     "duree"
+    ]
+   ]
+  }
  ],
  "experiment": {
   "title": "Le compteur d'énergie",
@@ -32,53 +88,231 @@
   "widget": "curseurs",
   "params": {
    "inputs": [
-    { "id": "P", "label": "Puissance", "unit": "W", "min": 100, "max": 2000, "step": 100, "value": 500 },
-    { "id": "t", "label": "Durée", "unit": "h", "min": 0.5, "max": 10, "step": 0.5, "value": 1 }
+    {
+     "id": "P",
+     "label": "Puissance",
+     "unit": "W",
+     "min": 100,
+     "max": 2000,
+     "step": 100,
+     "value": 500
+    },
+    {
+     "id": "t",
+     "label": "Durée",
+     "unit": "h",
+     "min": 0.5,
+     "max": 10,
+     "step": 0.5,
+     "value": 1
+    }
    ],
    "outputs": [
-    { "id": "E", "label": "Énergie", "unit": "Wh", "expr": "P*t", "digits": 0 },
-    { "id": "kWh", "label": "Énergie", "unit": "kWh", "expr": "E/1000", "digits": 2 }
+    {
+     "id": "E",
+     "label": "Énergie",
+     "unit": "Wh",
+     "expr": "P*t",
+     "digits": 0
+    },
+    {
+     "id": "kWh",
+     "label": "Énergie",
+     "unit": "kWh",
+     "expr": "E/1000",
+     "digits": 2
+    }
    ],
-   "bars": [ { "id": "E", "label": "Compteur, jusqu'à 20 kWh", "max": 20000 } ]
+   "bars": [
+    {
+     "id": "E",
+     "label": "Compteur, jusqu'à 20 kWh",
+     "max": 20000
+    }
+   ]
   },
   "missions": [
-   { "id": "duree", "type": "valeurs", "input": "t", "values": [1, 2], "when": "P == 1000", "text": "Mets P = 1000 W. Compare t = 1 h et t = 2 h." },
-   { "id": "puiss", "type": "valeurs", "input": "P", "values": [500, 1000], "when": "t == 1", "text": "Mets t = 1 h. Compare P = 500 W et P = 1000 W." },
-   { "id": "unkwh", "type": "condition", "expr": "P == 2000 && t == 0.5", "text": "Règle le four de l'accroche : 2000 W pendant une demi-heure. Lis l'énergie en kWh." }
+   {
+    "id": "duree",
+    "type": "valeurs",
+    "input": "t",
+    "values": [
+     1,
+     2
+    ],
+    "when": "P == 1000",
+    "text": "Mets P = 1000 W. Compare t = 1 h et t = 2 h."
+   },
+   {
+    "id": "puiss",
+    "type": "valeurs",
+    "input": "P",
+    "values": [
+     500,
+     1000
+    ],
+    "when": "t == 1",
+    "text": "Mets t = 1 h. Compare P = 500 W et P = 1000 W."
+   },
+   {
+    "id": "unkwh",
+    "type": "condition",
+    "expr": "P == 2000 && t == 0.5",
+    "text": "Règle le four de l'accroche : 2000 W pendant une demi-heure. Lis l'énergie en kWh."
+   }
   ],
-  "required": ["duree"],
+  "required": [
+   "duree"
+  ],
   "note": "E = P × t est recalculé à chaque mouvement, avec P en watts et t en heures."
  },
  "rule": {
   "blocks": [
-   { "formula": "E = P × t", "text": "L'énergie électrique consommée est égale à la puissance multipliée par la durée de fonctionnement. Avec P en W et t en h, E est en Wh.", "ar": "الطاقة الكهربائية المستهلكة تساوي القدرة مضروبة في مدة الاشتغال." },
-   { "formula": "1 kWh = 1000 Wh", "text": "Le compteur de la maison compte en kilowattheures.", "ar": "عداد المنزل يقيس بالكيلوواط ساعة." }
+   {
+    "formula": "E = P × t",
+    "text": "L'énergie électrique consommée est égale à la puissance multipliée par la durée de fonctionnement. Avec P en W et t en h, E est en Wh.",
+    "ar": "الطاقة الكهربائية المستهلكة تساوي القدرة مضروبة في مدة الاشتغال."
+   },
+   {
+    "formula": "1 kWh = 1000 Wh",
+    "text": "Le compteur de la maison compte en kilowattheures.",
+    "ar": "عداد المنزل يقيس بالكيلوواط ساعة."
+   }
   ],
-  "seen": "À puissance fixe, durée double, énergie double. À durée fixe, puissance double, énergie double. Le four et la lampe de l'accroche consomment tous deux 1 kWh."
+  "seen": "À puissance fixe, durée double, énergie double. À durée fixe, puissance double, énergie double. Le four et la lampe de l'accroche consomment tous deux 1 kWh.",
+  "audio": "audio/pc-3ac-energie-electrique-regle.mp3",
+  "audioText": "القاعدة هي: الطاقة الكهربائية المستهلكة كاتساوي القدرة ضرب المدة. إلا كانت القدرة بالواط والمدة بالساعة، الطاقة كاتخرج بالواط ساعة. ضاعف المدة، تضاعف الطاقة. ضاعف القدرة، تضاعف الطاقة. وما تنساش: إلا كانت المدة بالدقايق، قسمها على ستين. والكونتور ديال الدار كايحسب بالكيلوواط ساعة، والكيلوواط ساعة فيه ألف واط ساعة."
  },
  "proof": {
   "title": "Pourquoi multiplier ?",
   "firstIsFormula": true,
-  "paras": ["1000 W pendant 1 h = 1000 Wh, et pendant 2 h = 1000 Wh + 1000 Wh", "La puissance dit combien d'énergie l'appareil consomme chaque heure. Chaque heure ajoute la même quantité : pour t heures, on l'ajoute t fois, c'est P × t."],
+  "paras": [
+   "1000 W pendant 1 h = 1000 Wh, et pendant 2 h = 1000 Wh + 1000 Wh",
+   "La puissance dit combien d'énergie l'appareil consomme chaque heure. Chaque heure ajoute la même quantité : pour t heures, on l'ajoute t fois, c'est P × t."
+  ],
   "ar": "القدرة تخبر بالطاقة المستهلكة في كل ساعة، وكل ساعة تضيف نفس المقدار، لذلك نضرب القدرة في عدد الساعات."
  },
  "exercises": {
   "levels": [
-   { "label": "Niveau 1", "vars": [["P", "pick 60 100 500 1200 1500 2000"], ["t", "pick 2 3 4 5 8"]],
-     "q": "Un appareil de {P:0} W fonctionne pendant {t:0} h. Calcule l'énergie consommée en Wh.", "unit": "Wh", "answer": "P*t", "digits": 0,
-     "traps": [["P+t", "addition"], ["P/t", "division"]] },
-   { "label": "Niveau 2", "vars": [["P", "pick 600 900 1200 1500 1800 2400"], ["m", "pick 10 20 40 45 50"]],
-     "q": "Une bouilloire de {P:0} W fonctionne pendant {m:0} minutes. Calcule l'énergie consommée en Wh.", "unit": "Wh", "answer": "P*m/60", "digits": 0,
-     "traps": [["P*m", "minutes"], ["P/(m/60)", "division"]] },
-   { "label": "Niveau 3", "vars": [["P", "pick 75 150 250 400 800"], ["t", "pick 3 4 6 8 12"]],
-     "q": "Un appareil de {P:0} W fonctionne {t:0} h par jour. Calcule l'énergie consommée en une journée, en kWh.", "unit": "kWh", "answer": "P*t/1000", "digits": 2,
-     "traps": [["P*t", "kwh"], ["P+t", "addition"]] }
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "P",
+      "pick 60 100 500 1200 1500 2000"
+     ],
+     [
+      "t",
+      "pick 2 3 4 5 8"
+     ]
+    ],
+    "q": "Un appareil de {P:0} W fonctionne pendant {t:0} h. Calcule l'énergie consommée en Wh.",
+    "unit": "Wh",
+    "answer": "P*t",
+    "digits": 0,
+    "traps": [
+     [
+      "P+t",
+      "addition"
+     ],
+     [
+      "P/t",
+      "division"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "P",
+      "pick 600 900 1200 1500 1800 2400"
+     ],
+     [
+      "m",
+      "pick 10 20 40 45 50"
+     ]
+    ],
+    "q": "Une bouilloire de {P:0} W fonctionne pendant {m:0} minutes. Calcule l'énergie consommée en Wh.",
+    "unit": "Wh",
+    "answer": "P*m/60",
+    "digits": 0,
+    "traps": [
+     [
+      "P*m",
+      "minutes"
+     ],
+     [
+      "P/(m/60)",
+      "division"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "P",
+      "pick 75 150 250 400 800"
+     ],
+     [
+      "t",
+      "pick 3 4 6 8 12"
+     ]
+    ],
+    "q": "Un appareil de {P:0} W fonctionne {t:0} h par jour. Calcule l'énergie consommée en une journée, en kWh.",
+    "unit": "kWh",
+    "answer": "P*t/1000",
+    "digits": 2,
+    "traps": [
+     [
+      "P*t",
+      "kwh"
+     ],
+     [
+      "P+t",
+      "addition"
+     ]
+    ]
+   }
   ]
  },
  "check": [
-  { "q": "Un chauffe-eau de 1500 W marche 2 h. Une bouilloire de 2000 W marche 6 min. Qui consomme le plus ?", "ar": "سخان ماء 1500 W يشتغل ساعتين، وغلاية 2000 W تشتغل 6 دقائق. أيهما يستهلك أكثر؟",
-    "options": [["le chauffe-eau", ""], ["la bouilloire", "puissance"], ["les deux autant", "addition"]] },
-  { "q": "Une lampe de 60 W reste allumée 5 h. Elle consomme :", "ar": "مصباح 60 W يبقى مشتعلا 5 ساعات. يستهلك:",
-    "options": [["0,3 kWh", ""], ["300 kWh", "kwh"], ["12 Wh", "division"]] }
+  {
+   "q": "Un chauffe-eau de 1500 W marche 2 h. Une bouilloire de 2000 W marche 6 min. Qui consomme le plus ?",
+   "ar": "سخان ماء 1500 W يشتغل ساعتين، وغلاية 2000 W تشتغل 6 دقائق. أيهما يستهلك أكثر؟",
+   "options": [
+    [
+     "le chauffe-eau",
+     ""
+    ],
+    [
+     "la bouilloire",
+     "puissance"
+    ],
+    [
+     "les deux autant",
+     "addition"
+    ]
+   ]
+  },
+  {
+   "q": "Une lampe de 60 W reste allumée 5 h. Elle consomme :",
+   "ar": "مصباح 60 W يبقى مشتعلا 5 ساعات. يستهلك:",
+   "options": [
+    [
+     "0,3 kWh",
+     ""
+    ],
+    [
+     "300 kWh",
+     "kwh"
+    ],
+    [
+     "12 Wh",
+     "division"
+    ]
+   ]
+  }
  ]
 }
