@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L'énergie cinétique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: carnet de physique vivant, calme, pour élèves de 3AC
+   IDEA: un cahier d'expériences dont les dessins à l'encre prennent vie
+   PICTURE: banc d'essai routier, voiture à l'encre entourée d'un halo d'énergie
+   COLOUR and TYPE: papier, encre bleu nuit, halo ambre, chaleur rouge; Kalam + Atkinson + Naskh
+   LAYOUT: titre, banc d'essai, trois expériences prédire-tester-prouver, à retenir */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(22px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3,.hand{font-family:Kalam,"Comic Sans MS",cursive;font-weight:700;line-height:1.05;margin:0}
+h1{font-size:clamp(34px,6vw,50px);text-wrap:balance}
+h2{font-size:28px;margin-bottom:12px}h3{font-size:24px;margin:4px 0 8px}
+.ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
+.sub{color:var(--soft);margin:6px 0 0}
+header .top{display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between}
+.slots{display:flex;gap:10px}
+.slot{width:54px;height:54px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font:700 18px Kalam,cursive;color:var(--soft);transition:.4s}
+.slot.on{border:3px double var(--blue);color:var(--blue);transform:rotate(-10deg);background:color-mix(in srgb,var(--blue) 10%,transparent)}
+.bench{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 2px 0 var(--line)}
+.fig{position:relative;aspect-ratio:800/260;width:100%}
+.fig svg{position:absolute;inset:0;width:100%;height:100%}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.big{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:baseline;margin:8px 0 4px}
+#ec{font:700 clamp(34px,7vw,48px)/1 Kalam,cursive;color:var(--glow);white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--soft)}
+.legend b{color:var(--ink);white-space:nowrap}
+.sw{display:inline-block;width:14px;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.ctl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 24px;margin-top:12px}
+label{display:block;font-weight:700}
+label span{font-weight:400;color:var(--soft);white-space:nowrap}
+input[type=range]{width:100%;height:44px;accent-color:var(--blue)}
+.bars{display:grid;gap:6px;margin-top:6px;font-size:14px}
+.bar{height:12px;border-radius:6px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;border-radius:6px}
+button{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--ink);color:var(--bg)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.cards{display:grid;gap:18px}
+.card{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:18px}
+.num{font:700 15px Kalam,cursive;color:var(--soft)}
+.step{font-weight:700;margin:14px 0 6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}
+.res{min-height:1.5em;font-weight:700;color:var(--blue);margin:8px 0 0}
+.flapw{position:relative;margin-top:10px;border-radius:12px;overflow:hidden;perspective:900px;min-height:120px}
+.proof{padding:14px;border:1.5px dashed var(--line);border-radius:12px}
+.proof p{margin:4px 0}
+.f{font:700 19px Kalam,cursive}
+.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s ease,opacity .7s;font:700 19px Kalam,cursive}
+.flap:disabled{opacity:1;color:var(--soft)}
+.flap:disabled::after{content:" · après le test"}
+.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}
+.stamp{position:absolute;bottom:14px;right:14px;background:var(--card);padding:6px 12px;border:3px double var(--blue);border-radius:10px;color:var(--blue);font:700 18px Kalam,cursive;transform:rotate(-12deg) scale(1.6);opacity:0;transition:.35s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.stamp.on{opacity:1;transform:rotate(-12deg) scale(1)}
+.retenir{border:2.5px solid var(--ink);border-radius:18px;padding:18px;background:var(--card)}
+.formula{font:700 clamp(30px,6vw,42px) Kalam,cursive;margin:6px 0 10px}
+details{margin-top:18px;color:var(--soft);font-size:15px}
+summary{cursor:pointer;font-weight:700;color:var(--ink);min-height:44px;display:flex;align-items:center}
+.note{font-size:13px;color:var(--soft);margin-top:8px}
+#glow{transition:r .4s}
+@media(max-width:600px){.ctl{grid-template-columns:minmax(0,1fr)}.card{padding:14px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap top">
+  <div>
+    <div class="num">Physique-Chimie · 3e année collège</div>
+    <h1>L'énergie cinétique</h1>
+    <p class="ar">الطاقة الحركية: طاقة يمتلكها الجسم بسبب حركته</p>
+  </div>
+  <div class="slots" aria-label="Tampons gagnés"><div class="slot" id="s0">1</div><div class="slot" id="s1">2</div><div class="slot" id="s2">3</div></div>
+</div></header>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <div class="bench" id="bench">
+    <div class="fig">
+      <svg viewBox="0 0 800 260" role="img" aria-label="Voiture sur une route, entourée d'un halo d'énergie">
+        <defs><radialGradient id="g"><stop offset="0" stop-color="#f5a300" stop-opacity=".75"/><stop offset=".55" stop-color="#f5a300" stop-opacity=".25"/><stop offset="1" stop-color="#f5a300" stop-opacity="0"/></radialGradient></defs>
+        <path class="ink" style="stroke-width:1.4;opacity:.45" d="M0 120 Q90 82 180 112 T380 104 Q480 78 560 110 T800 100"/>
+        <g class="ink" style="stroke-width:1.4;opacity:.45"><path d="M640 110 v-26 M628 96 l12-14 12 14 M630 104 l10-10 10 10"/><path d="M110 104 v-22 M100 90 l10-12 10 12"/></g>
+        <line class="ink" x1="0" y1="191" x2="800" y2="191"/>
+        <line class="ink" x1="0" y1="232" x2="800" y2="232"/>
+        <line class="ink" x1="0" y1="212" x2="800" y2="212" style="stroke-width:2;stroke-dasharray:16 14;opacity:.5"/>
+        <rect id="mr" y="240" height="8" rx="4" fill="var(--blue)" width="0"/>
+        <rect id="mf" y="240" height="8" rx="4" fill="var(--heat)" width="0"/>
+        <g id="sign" style="opacity:0;transition:opacity .2s"><line class="ink" id="pole" x1="0" y1="190" x2="0" y2="120"/><path id="tri" fill="var(--bg)" class="ink" d=""/><text id="ex" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="26" fill="var(--heat)">!</text></g>
+        <g id="car">
+          <circle id="glow" cx="-36" cy="158" r="40" fill="url(#g)"/>
+          <g id="lines" class="ink" style="stroke-width:2"><path d="M-84 140 h-26 M-90 155 h-34 M-84 170 h-22"/></g>
+          <ellipse cx="-36" cy="191" rx="40" ry="4" fill="var(--ink)" opacity=".15"/>
+          <path class="ink" fill="var(--card)" d="M-72 174 L-72 154 Q-71 147 -62 146 L-50 146 L-40 129 Q-37 124 -30 124 L-14 124 Q-7 124 -3 131 L4 146 Q12 147 12 156 L12 174 Z" transform="translate(-12 0)"/>
+          <path class="ink" style="stroke-width:1.8" d="M-58 146 L-50 132 L-38 132 L-38 146 Z M-34 146 L-34 132 L-22 132 L-16 146 Z"/>
+          <circle class="ink" fill="var(--card)" cx="-62" cy="178" r="11"/><circle class="ink" fill="var(--card)" cx="-14" cy="178" r="11"/>
+          <circle class="brk" cx="-62" cy="178" r="6" fill="var(--heat)" opacity="0"/><circle class="brk" cx="-14" cy="178" r="6" fill="var(--heat)" opacity="0"/>
+        </g>
+      </svg>
+    </div>
+    <div class="big"><span id="ec">0 kJ</span><span class="hand" style="font-size:20px">énergie cinétique de la voiture</span></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--blue)"></i>Distance de réaction <b id="dr"></b></span>
+      <span><i class="sw" style="background:var(--heat)"></i>Distance de freinage <b id="df"></b></span>
+      <span>Distance d'arrêt <b id="da"></b></span>
+    </div>
+    <div class="bars">
+      <span>Énergie cinétique</span><div class="bar"><i id="bk" style="background:var(--glow)"></i></div>
+      <span>Énergie thermique dans les freins</span><div class="bar"><i id="bh" style="background:var(--heat);width:0"></i></div>
+    </div>
+    <div class="ctl">
+      <div><label for="m">Masse m <span id="mo"></span></label><input id="m" type="range" min="500" max="2000" step="100" value="1000"></div>
+      <div><label for="v">Vitesse v <span id="vo"></span> <span id="vms"></span></label><input id="v" type="range" min="10" max="130" step="10" value="50"></div>
+    </div>
+    <div class="row"><button class="primary" id="go">Danger ! Freiner</button><span class="note">Le conducteur voit le danger, réagit en 1 s, puis freine.</span></div>
+  </div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <h2>Trois expériences : je prédis, je teste, je prouve</h2>
+  <div class="cards" id="cards"></div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <div class="retenir">
+    <h2>Je retiens</h2>
+    <div class="formula">E<sub>c</sub> = ½ · m · v²</div>
+    <p>E<sub>c</sub> en joules (J), m en kilogrammes (kg), v en mètres par seconde (m/s). Pour convertir : v (m/s) = v (km/h) ÷ 3,6.</p>
+    <p>Si la masse double, E<sub>c</sub> double. Si la vitesse double, E<sub>c</sub> est multipliée par 4.</p>
+    <p>Distance d'arrêt = distance de réaction + distance de freinage.</p>
+    <p class="ar">الطاقة الحركية تتناسب مع الكتلة ومع مربع السرعة. مسافة التوقف = مسافة رد الفعل + مسافة الكبح.</p>
+  </div>
+  <details><summary>Notes pour le professeur</summary>
+    <p>Modèle utilisé : temps de réaction 1 s, décélération constante de 7 m/s² sur route sèche. Les valeurs réelles dépendent du conducteur, des pneus et de l'état de la route. Dans ce modèle la masse ne change pas la distance de freinage.</p>
+    <p>Objectifs : relier E<sub>c</sub> à m et à v², puis relier E<sub>c</sub> à la distance de freinage par la conversion en énergie thermique. Chaque expérience suit la boucle prédire, tester, prouver ; la preuve reste cachée sous un rabat jusqu'au test.</p>
+  </details>
+  <p class="note">Prototype de leçon pour taalim.men. Textes et valeurs originaux.</p>
+</div></section>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const A=7,TR=1,RATE=1.4,START=-14;
+const nf=(x,d=1)=>x.toLocaleString('fr-FR',{maximumFractionDigits:d});
+const ms=k=>k/3.6,ecOf=(m,k)=>.5*m*ms(k)**2;
+const EMAX=ecOf(2000,130);
+const mS=$('#m'),vS=$('#v'),go=$('#go');
+const X=d=>20+(d-START+11)*4.75;
+const wait=t=>new Promise(r=>setTimeout(r,t));
+let busy=false,cur=null;
+
+function read(){const m=+mS.value,v=+vS.value,s=ms(v);return{m,v,s,e:ecOf(m,v),dr:s*TR,df:s*s/(2*A)}}
+function setCar(d,vf,hf){
+  $('#car').setAttribute('transform','translate('+X(d).toFixed(1)+' 0)');
+  $('#lines').style.opacity=vf;
+  document.querySelectorAll('.brk').forEach(b=>b.setAttribute('opacity',hf.toFixed(2)));
+}
+function setGlow(e){$('#glow').setAttribute('r',(18+72*Math.sqrt(e/EMAX)).toFixed(1))}
+function bars(ef){$('#bk').style.width=(ef*100)+'%';$('#bh').style.width=((1-ef)*100)+'%'}
+function marks(r,a,b){
+  const x0=X(0),x1=X(r.dr);
+  $('#mr').setAttribute('x',x0);$('#mr').setAttribute('width',Math.max(0,X(a)-x0));
+  $('#mf').setAttribute('x',x1);$('#mf').setAttribute('width',Math.max(0,X(r.dr+b)-x1));
+}
+function sign(){const x=X(0);$('#pole').setAttribute('x1',x);$('#pole').setAttribute('x2',x);
+  $('#tri').setAttribute('d','M'+x+' 84 L'+(x+24)+' 124 L'+(x-24)+' 124 Z');$('#ex').setAttribute('x',x);$('#ex').setAttribute('y','120')}
+function update(){
+  cur=read();const r=cur;
+  $('#mo').textContent='= '+nf(r.m,0)+' kg';$('#vo').textContent='= '+r.v+' km/h';$('#vms').textContent='('+nf(r.s,1)+' m/s)';
+  $('#ec').textContent=nf(r.e/1000)+' kJ';
+  $('#dr').textContent=nf(r.dr,0)+' m';$('#df').textContent=nf(r.df,0)+' m';$('#da').textContent=nf(r.dr+r.df,0)+' m';
+  setCar(START,1,0);setGlow(r.e);bars(1);marks(r,0,0);$('#sign').style.opacity=0;
+}
+function lock(b){busy=b;mS.disabled=vS.disabled=go.disabled=b;document.querySelectorAll('.go').forEach(x=>x.dataset.wait=b?'1':'')}
+function run(){
+  return new Promise(res=>{
+    if(busy){res(read());return}
+    update();lock(true);
+    const r=cur,s=r.s,tA=-START/s,tB=tA+TR,tC=tB+s/A;
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let t0=null;
+    const step=now=>{
+      if(t0===null)t0=now;
+      let t=reduce?tC:(now-t0)/1000*RATE;if(t>tC)t=tC;
+      let d,vc;
+      if(t<tB){d=START+s*t;vc=s}else{const tb=t-tB;vc=Math.max(0,s-A*tb);d=START+s*tB+s*tb-.5*A*tb*tb}
+      const ef=(vc/s)**2;
+      setCar(d,vc/s,t>=tB?1-ef:0);setGlow(r.e*ef);bars(ef);
+      $('#sign').style.opacity=t>=tA?1:0;
+      marks(r,Math.min(Math.max(d,0),r.dr),Math.max(0,d-r.dr));
+      $('#ec').textContent=nf(r.e*ef/1000)+' kJ';
+      if(t<tC)requestAnimationFrame(step);else{lock(false);res(r)}
+    };
+    requestAnimationFrame(step);
+  });
+}
+function set(m,v){mS.value=m;vS.value=v;update()}
+async function focusSim(){$('#bench').scrollIntoView({behavior:'smooth',block:'center'});await wait(500)}
+
+const CH=[
+ {t:'La vitesse double',q:'Une voiture de 1 000 kg passe de 50 km/h à 100 km/h. Son énergie cinétique est multipliée par…',qa:'سيارة كتلتها 1000 kg تمر سرعتها من 50 إلى 100 km/h. بكم تُضرب طاقتها الحركية؟',o:['× 2','× 4','× 8'],a:1,
+  test:async()=>{await focusSim();set(1000,50);const e1=cur.e;await wait(1200);set(1000,100);const e2=cur.e;await wait(700);return 'Mesuré : '+nf(e1/1000)+' kJ puis '+nf(e2/1000)+' kJ, soit × '+nf(e2/e1)},
+  p:'<p class="f">½ · m · (2v)² = ½ · m · 4v² = 4 × E<sub>c</sub></p><p>50 km/h = 13,9 m/s : E<sub>c</sub> = ½ × 1 000 × 13,9² ≈ 96 kJ.<br>100 km/h = 27,8 m/s : E<sub>c</sub> ≈ 386 kJ, quatre fois plus.</p><p class="ar">السرعة مرفوعة إلى المربع في العلاقة، فإذا تضاعفت السرعة تضاعفت الطاقة الحركية أربع مرات.</p>'},
+ {t:'La masse double',q:'À 50 km/h, on remplace la voiture de 1 000 kg par un véhicule de 2 000 kg. L\'énergie cinétique est multipliée par…',qa:'بنفس السرعة 50 km/h نعوض السيارة بمركبة كتلتها 2000 kg. بكم تُضرب الطاقة الحركية؟',o:['× 1','× 2','× 4'],a:1,
+  test:async()=>{await focusSim();set(1000,50);const e1=cur.e;await wait(1200);set(2000,50);const e2=cur.e;await wait(700);return 'Mesuré : '+nf(e1/1000)+' kJ puis '+nf(e2/1000)+' kJ, soit × '+nf(e2/e1)},
+  p:'<p class="f">½ · (2m) · v² = 2 × E<sub>c</sub></p><p>E<sub>c</sub> est proportionnelle à la masse : 96 kJ deviennent 193 kJ. La masse n\'est pas au carré, l\'effet est donc plus faible que celui de la vitesse.</p><p class="ar">الطاقة الحركية تتناسب مع الكتلة: كتلة مضاعفة تعني طاقة مضاعفة مرتين فقط.</p>'},
+ {t:'La distance de freinage',q:'À 50 km/h, la voiture freine sur environ 14 m. À 100 km/h, sa distance de freinage devient environ…',qa:'عند 50 km/h مسافة الكبح حوالي 14 m. كم تصبح عند 100 km/h؟',o:['≈ 28 m','≈ 55 m','≈ 110 m'],a:1,
+  test:async()=>{await focusSim();set(1000,50);const a=await run();await wait(700);set(1000,100);const b=await run();return 'Mesuré : '+nf(a.df,0)+' m puis '+nf(b.df,0)+' m, soit × '+nf(b.df/a.df)},
+  p:'<p>Pour s\'arrêter, les freins transforment toute l\'énergie cinétique en énergie thermique. À 100 km/h il y a 4 fois plus d\'énergie à transformer : la distance de freinage est environ 4 fois plus grande, de 14 m à 55 m.</p><p class="f">vitesse × 2 → E<sub>c</sub> × 4 → freinage × 4</p><p class="ar">الفرامل تحول الطاقة الحركية إلى طاقة حرارية. أربعة أضعاف الطاقة تحتاج تقريبا أربعة أضعاف مسافة الكبح.</p>'}
+];
+
+let saved={};try{saved=JSON.parse(localStorage.getItem('ej_stamps')||'{}')}catch(e){}
+function save(){try{localStorage.setItem('ej_stamps',JSON.stringify(saved))}catch(e){}}
+
+$('#cards').innerHTML=CH.map((c,i)=>`<article class="card" id="c${i}">
+ <div class="num">Expérience ${i+1}</div><h3>${c.t}</h3><p>${c.q}</p><p class="ar">${c.qa}</p>
+ <div class="step">1. Je prédis</div><div class="opts">${c.o.map((o,j)=>`<button data-j="${j}">${o}</button>`).join('')}</div>
+ <div class="step">2. Je teste</div><button class="go" disabled>Tester sur le banc d'essai</button><p class="res" aria-live="polite"></p>
+ <div class="step">3. Je prouve</div><div class="flapw"><div class="proof">${c.p}</div><button class="flap" disabled>Soulever le rabat</button></div>
+ <div class="stamp"></div></article>`).join('');
+
+function stamp(i,good){
+  const el=$('#c'+i+' .stamp');el.textContent=good?'Bien prédit':'Prouvé';el.classList.add('on');
+  $('#s'+i).classList.add('on');$('#s'+i).textContent='✓';
+}
+CH.forEach((c,i)=>{
+  const card=$('#c'+i),goB=card.querySelector('.go'),flap=card.querySelector('.flap'),res=card.querySelector('.res');
+  let pick=null;
+  card.querySelectorAll('.opts button').forEach(b=>b.addEventListener('click',()=>{
+    if(pick!==null)return;pick=+b.dataset.j;b.classList.add('pick');
+    card.querySelectorAll('.opts button').forEach(x=>x.disabled=x!==b);goB.disabled=false;
+  }));
+  goB.addEventListener('click',async()=>{
+    if(busy)return;goB.disabled=true;res.textContent='Test en cours…';
+    res.textContent=await c.test();
+    card.scrollIntoView({behavior:'smooth',block:'nearest'});flap.disabled=false;
+  });
+  flap.addEventListener('click',()=>{
+    flap.classList.add('open');const good=pick===c.a;
+    res.textContent+=good?'. Ta prédiction était juste.':'. La bonne réponse était '+c.o[c.a]+'.';
+    setTimeout(()=>stamp(i,good),500);saved[i]=good;save();
+  });
+  if(i in saved){$('#s'+i).classList.add('on');$('#s'+i).textContent='✓'}
+});
+
+mS.addEventListener('input',update);vS.addEventListener('input',update);
+go.addEventListener('click',()=>run());
+sign();update();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>التماثل المحوري · La symétrie axiale</title>
+<style>
+  :root{--paper:#fbfaf6;--ink:#2a2a2e;--blue:#2f5bd3;--orange:#e8710a;--red:#d1153f}
+  *{box-sizing:border-box;min-width:0}
+  html,body{margin:0;height:100%;background:#5c4029;overflow:hidden;font-family:"Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;color:var(--ink)}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+  .top{position:fixed;top:0;left:0;right:0;padding:calc(8px + env(safe-area-inset-top)) 10px 0;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+  .row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;pointer-events:auto;padding-bottom:2px}
+  .row::-webkit-scrollbar{display:none}
+  .chip,.btn{flex:none;font:700 15px "Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:10px;padding:6px 12px;min-height:40px;box-shadow:2px 2px 0 rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
+  .chip.on{background:var(--ink);color:var(--paper)}
+  .sub .chip{font-size:14px;min-height:36px;padding:4px 10px;border-width:1.5px}
+  .btn.acc{background:var(--red);border-color:var(--red);color:#fff}
+  .chip:focus-visible,.btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  .hud{position:fixed;left:0;right:0;bottom:0;padding:8px 10px calc(10px + env(safe-area-inset-bottom));pointer-events:none;display:flex;flex-direction:column;gap:7px;align-items:center}
+  .acts{display:flex;gap:8px;pointer-events:auto}
+  .cards{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+  .card{background:var(--paper);border:1.5px solid #3a3a40;border-radius:4px;padding:4px 9px 3px;box-shadow:2px 3px 0 rgba(0,0,0,.25);min-width:80px;text-align:center;transform:rotate(var(--r,0deg))}
+  .card[hidden]{display:none}
+  .card small{display:block;font-size:13px;color:#555;unicode-bidi:plaintext}
+  .card b{font:700 20px/1.15 "Comic Sans MS","Chalkboard SE","Marker Felt",cursive;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+  .card b i{font-style:normal;font-size:14px;color:#555;margin-left:3px}
+  #notice{background:rgba(251,250,246,.95);border-radius:8px;padding:6px 14px;font-size:15px;max-width:660px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  #notice b{color:var(--red)}
+  #err{position:fixed;top:110px;left:12px;right:12px;background:#fff;border:2px solid var(--red);padding:10px;display:none;font-size:14px;direction:ltr;z-index:9}
+  #notice{min-height:3.2em;display:flex;align-items:center;justify-content:center}
+  @media (orientation:landscape) and (max-height:600px){
+    .cards{position:fixed;left:calc(8px + env(safe-area-inset-left));flex-direction:column;align-items:stretch;gap:5px;pointer-events:none}
+    .card{min-width:0;padding:2px 8px;transform:none}.card b{font-size:15px}.card small{font-size:11px}
+    .hud{padding-left:calc(170px + env(safe-area-inset-left));gap:5px}
+    #notice{font-size:13px;min-height:2.6em;padding:4px 12px}
+    .chip,.btn{min-height:36px;padding:4px 10px;font-size:14px}
+  }
+  @media (max-width:520px){.card{min-width:68px;padding:3px 6px}.card b{font-size:16px}.card small{font-size:12px}#notice{font-size:13.5px}}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<canvas id="c" aria-label="Symétrie axiale 3D"></canvas>
+<div class="top">
+  <div class="row" id="modes"></div>
+  <div class="row sub" id="subs"></div>
+</div>
+<div class="hud">
+  <div class="acts" id="acts"></div>
+  <div class="cards">
+    <div class="card" id="k0" style="--r:-2deg"><small></small><b></b></div>
+    <div class="card" id="k1" style="--r:1.5deg"><small></small><b></b></div>
+    <div class="card" id="k2" style="--r:-1deg"><small></small><b></b></div>
+    <div class="card" id="k3" style="--r:2deg"><small></small><b></b></div>
+  </div>
+  <div id="notice"></div>
+</div>
+<div id="err"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+window.addEventListener('error', e => { const el = document.getElementById('err'); el.style.display = 'block'; el.textContent = 'Error: ' + e.message; });
+
+/* =========================================================
+   Units: 1 world unit = 1 cm. Page coordinates (x, z) are a
+   2D plane: x to the right, z toward the reader.
+   ========================================================= */
+const PAGE_Y = 1.2;
+const RECT = { x0: 2, x1: 19, z0: -11.5, z1: 5.5 };
+const P0 = new THREE.Vector2(11, -3);          // a grid node on the axis (d)
+const H_SHAPE = 0.3, Y0 = PAGE_Y + 0.01, YA = Y0 + H_SHAPE / 2;
+const YL = PAGE_Y + 0.035;                      // drawing height for lines on the page
+const TRACK = { x0: 3, x1: 11, z: 9 }, SW = { x: 16.5, z: 9 };
+const THETA_MAX = 90;
+
+/* ---------- State ---------- */
+const S = {
+  lang: 'ar', mode: 'tri', theta: 0, foldOn: false, phi: 0,
+  drag: null, dragOff: new THREE.Vector2(), handles: [],
+  lastAction: 'idle', actionTime: 0,
+  tri: null, trail: [],
+  pred: null, shp: null, med: null, fig: null, con: null,
+};
+// In Arabic text, isolate each Latin expression (A', [MM'], AH = A'H = 3,2 cm) so it keeps its left-to-right order.
+const isoLatin = t => t.replace(/[\[(A-Za-z][A-Za-z0-9'()\[\]=·⊥,. ]*[A-Za-z0-9')\]]/g, m => '\u2066' + m + '\u2069');
+const tr = (ar, fr) => S.lang === 'ar' ? isoLatin(ar) : fr;
+const V = (x, z) => new THREE.Vector2(x, z);
+function initState() {
+  S.theta = 0; S.foldOn = false; S.phi = 0; S.trail = [];
+  S.tri = [V(5, -6), V(8, -4.2), V(5.6, -1)];
+  S.pred = { A: V(6, -6), G: V(16, 3), checked: false, score: 0, tries: 0 };
+  S.shp = { kind: 'seg', P: { seg: [V(5, -7), V(8, -2)], line: [V(5, -7), V(8, -3)], circle: [V(6, -4), V(8.5, -4)], angle: [V(5, -3), V(8, -7), V(8.5, -1)] } };
+  S.med = { A: V(6, -6), t: -4 };
+  S.fig = { kind: 'square', found: new Set(), lo: 0, hi: 0 };
+  S.con = { A: V(7, -5), step: 0, t0: 0 };
+}
+initState();
+
+/* ---------- Geometry (exact, recomputed every frame) ---------- */
+const axisDir = () => { const t = THREE.MathUtils.degToRad(S.theta); return V(Math.sin(t), -Math.cos(t)); };
+function project(M, u) { const d = (M.x - P0.x) * u.x + (M.y - P0.y) * u.y; return V(P0.x + d * u.x, P0.y + d * u.y); }
+function reflect(M, u) { const H = project(M, u); return V(2 * H.x - M.x, 2 * H.y - M.y); }
+function side(M, u) { return u.x * (M.y - P0.y) - u.y * (M.x - P0.x); }
+const cross = (a, b, c) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+function angleAt(a, b, c) { const u1 = V(b.x - a.x, b.y - a.y), u2 = V(c.x - a.x, c.y - a.y); const l = u1.length() * u2.length(); return l < 1e-9 ? 0 : THREE.MathUtils.radToDeg(Math.acos(THREE.MathUtils.clamp(u1.dot(u2) / l, -1, 1))); }
+function clipLine(p, d) { // slab clip of p + t d to RECT
+  let tmin = -1e9, tmax = 1e9;
+  const sl = (q, dd, a, b) => { if (Math.abs(dd) < 1e-9) { if (q < a || q > b) { tmin = 1; tmax = 0; } return; } const t1 = (a - q) / dd, t2 = (b - q) / dd; tmin = Math.max(tmin, Math.min(t1, t2)); tmax = Math.min(tmax, Math.max(t1, t2)); };
+  sl(p.x, d.x, RECT.x0, RECT.x1); sl(p.y, d.y, RECT.z0, RECT.z1);
+  return [tmin, tmax];
+}
+function rotHinge(p, k, phi) { // Rodrigues rotation around the fold hinge
+  const v = new THREE.Vector3(p.x - P0.x, p.y - YA, p.z - P0.y), c = Math.cos(phi), s = Math.sin(phi);
+  const kxv = new THREE.Vector3().crossVectors(k, v), kd = k.dot(v);
+  return new THREE.Vector3(v.x * c + kxv.x * s + k.x * kd * (1 - c) + P0.x, v.y * c + kxv.y * s + k.y * kd * (1 - c) + YA, v.z * c + kxv.z * s + k.z * kd * (1 - c) + P0.y);
+}
+function halfRect(u, sgn) {
+  const R = [V(RECT.x0, RECT.z0), V(RECT.x1, RECT.z0), V(RECT.x1, RECT.z1), V(RECT.x0, RECT.z1)], out = [];
+  for (let i = 0; i < 4; i++) { const a = R[i], b = R[(i + 1) % 4], sa = sgn * side(a, u), sb = sgn * side(b, u);
+    if (sa >= 0) out.push(a);
+    if ((sa >= 0) !== (sb >= 0)) { const t = sa / (sa - sb); out.push(V(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t)); } }
+  return out;
+}
+const clampRect = (v, m = 0.4) => { v.x = THREE.MathUtils.clamp(v.x, RECT.x0 + m, RECT.x1 - m); v.y = THREE.MathUtils.clamp(v.y, RECT.z0 + m, RECT.z1 - m); return v; };
+const inRect = (v, m = 0.4) => v.x >= RECT.x0 + m && v.x <= RECT.x1 - m && v.y >= RECT.z0 + m && v.y <= RECT.z1 - m;
+
+/* ---------- Renderer ---------- */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x5c4029);
+const camera = new THREE.PerspectiveCamera(40, 1, 1, 600);
+scene.add(new THREE.HemisphereLight(0xfffaf0, 0x6b4a2f, 1.1));
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.6);
+sun.position.set(-30, 60, 25); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -35, right: 35, top: 30, bottom: -30, near: 10, far: 150 }); sun.shadow.bias = -0.0008;
+scene.add(sun);
+
+/* ---------- Canvas textures ---------- */
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
+function tex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; }
+const AR_FONT = '"Noto Naskh Arabic","Geeza Pro",Arial,serif', HAND = '"Comic Sans MS","Chalkboard SE","Marker Felt",cursive';
+function woodTexture() {
+  const [c, g] = makeCanvas(1024, 1024); g.fillStyle = '#8a5f3c'; g.fillRect(0, 0, 1024, 1024);
+  for (let i = 0; i < 260; i++) { const y = Math.random() * 1024, a = 0.05 + Math.random() * 0.12;
+    g.strokeStyle = Math.random() < .5 ? `rgba(60,35,18,${a})` : `rgba(190,140,95,${a})`; g.lineWidth = 1 + Math.random() * 3;
+    g.beginPath(); g.moveTo(0, y); for (let x = 0; x <= 1024; x += 32) g.lineTo(x, y + Math.sin(x / 90 + i) * 6 + Math.sin(x / 23 + i * 3) * 1.5); g.stroke(); }
+  const t = tex(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 2); return t;
+}
+function paperBase(g, w, h, spineRight) {
+  g.fillStyle = '#fbfaf6'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 3000; i++) { g.fillStyle = `rgba(120,110,90,${Math.random() * .05})`; g.fillRect(Math.random() * w, Math.random() * h, 2, 2); }
+  g.strokeStyle = 'rgba(80,80,90,.10)'; g.lineWidth = 1.2;
+  for (let i = -h; i < h; i += 7) { const x0 = spineRight ? w - 60 : 0; g.beginPath(); g.moveTo(x0, i); g.lineTo(x0 + 60, i + 60); g.stroke(); }
+}
+function leftPageTexture() {
+  const W = 1000, H = 1300, [c, g] = makeCanvas(W, H); paperBase(g, W, H, true);
+  const ar = S.lang === 'ar', X = ar ? W - 90 : 90;
+  g.direction = ar ? 'rtl' : 'ltr'; g.textAlign = ar ? 'right' : 'left'; g.fillStyle = '#26262b';
+  g.font = `700 ${ar ? 84 : 76}px ${AR_FONT}`; g.fillText(tr('التماثل المحوري', 'La symétrie axiale'), X, 200);
+  g.strokeStyle = '#d1153f'; g.lineWidth = 4; g.beginPath(); g.moveTo(X, 232); g.lineTo(ar ? X - 430 : X + 430, 236); g.stroke();
+  g.font = `700 ${ar ? 50 : 42}px ${AR_FONT}`;
+  g.fillText(tr("M' مماثلة M بالنسبة للمستقيم (d)", "M' est le symétrique de M par rapport à (d)"), X, 360);
+  g.fillText(tr("يعني: (d) واسط القطعة [MM']", "signifie : (d) est la médiatrice de [MM']"), X, 440);
+  g.direction = 'ltr'; g.textAlign = 'center'; g.font = `700 60px ${HAND}`; g.fillStyle = '#2f5bd3';
+  g.fillText("HM = HM'   et   (MM') ⊥ (d)", W / 2, 580);
+  g.direction = ar ? 'rtl' : 'ltr'; g.textAlign = ar ? 'right' : 'left'; g.fillStyle = '#26262b'; g.font = `${ar ? 44 : 38}px ${AR_FONT}`;
+  const lines = (ar ? ['١. التماثل يحافظ على الأطوال والزوايا والمساحات.', '٢. لكنه يقلب اتجاه الدوران.', "٣. كل نقطة من (d) تبعد بنفس المسافة عن M وM'."]
+                   : ['1. Elle conserve longueurs, angles et aires.', '2. Mais elle inverse le sens de rotation.', "3. Tout point de (d) est à égale distance de M et M'."]).map(l => ar ? isoLatin(l) : l);
+  lines.forEach((l, i) => g.fillText(l, X, 760 + i * 110));
+  g.font = `${ar ? 34 : 30}px ${AR_FONT}`; g.fillStyle = '#6a6a72';
+  g.fillText(tr('اسحب النقط بإصبعك، واسحب الفراغ لتدوير الكتاب.', 'Fais glisser les points ; glisse dans le vide pour tourner.'), X, 1170);
+  return tex(c);
+}
+const PX = 48;
+function rightPageTexture() {
+  const W = 20 * PX, H = 26 * PX, [c, g] = makeCanvas(W, H); paperBase(g, W, H, false);
+  const X = x => (x - 0.5) * PX, Z = z => (z + 13) * PX;
+  g.strokeStyle = 'rgba(70,90,130,.18)'; g.lineWidth = 1;
+  for (let x = RECT.x0; x <= RECT.x1; x++) { g.beginPath(); g.moveTo(X(x), Z(RECT.z0)); g.lineTo(X(x), Z(RECT.z1)); g.stroke(); }
+  for (let z = RECT.z0; z <= RECT.z1; z++) { g.beginPath(); g.moveTo(X(RECT.x0), Z(z)); g.lineTo(X(RECT.x1), Z(z)); g.stroke(); }
+  g.strokeStyle = 'rgba(40,40,45,.55)'; g.lineWidth = 2; g.strokeRect(X(RECT.x0), Z(RECT.z0), (RECT.x1 - RECT.x0) * PX, (RECT.z1 - RECT.z0) * PX);
+  return tex(c);
+}
+
+/* ---------- Desk and book ---------- */
+const pencil = new THREE.LineBasicMaterial({ color: 0x4a4a52 });
+function withEdges(mesh, thr = 20) { mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, thr), pencil)); return mesh; }
+const desk = new THREE.Mesh(new THREE.PlaneGeometry(260, 200), new THREE.MeshStandardMaterial({ map: woodTexture(), roughness: .75 }));
+desk.rotation.x = -Math.PI / 2; desk.receiveShadow = true; scene.add(desk);
+const cover = new THREE.Mesh(new THREE.BoxGeometry(43, 0.35, 28.4), new THREE.MeshStandardMaterial({ color: 0x7b2d26, roughness: .8 }));
+cover.position.set(0, 0.175, 0); cover.castShadow = cover.receiveShadow = true; scene.add(cover);
+const edgeMat = new THREE.MeshStandardMaterial({ color: 0xf1ede2, roughness: .95 });
+const rightTop = new THREE.MeshStandardMaterial({ map: rightPageTexture(), roughness: .95 });
+const leftTop = new THREE.MeshStandardMaterial({ map: leftPageTexture(), roughness: .95 });
+const rightPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), [edgeMat, edgeMat, rightTop, edgeMat, edgeMat, edgeMat]));
+rightPage.position.set(10.5, 0.35 + (PAGE_Y - 0.35) / 2, 0); rightPage.receiveShadow = rightPage.castShadow = true; scene.add(rightPage);
+const leftPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), [edgeMat, edgeMat, leftTop, edgeMat, edgeMat, edgeMat]));
+leftPage.position.set(-10.5, 0.35 + (PAGE_Y - 0.35) / 2 + 0.25, 0); leftPage.rotation.z = 0.025; leftPage.receiveShadow = leftPage.castShadow = true; scene.add(leftPage);
+function refreshPages() { rightTop.map.dispose(); rightTop.map = rightPageTexture(); leftTop.map.dispose(); leftTop.map = leftPageTexture(); rightTop.needsUpdate = leftTop.needsUpdate = true; panelKey = ''; }
+
+/* Labels of the controls: printed on their own transparent panels, so each
+   label shows only when its control is shown. */
+function makePanel(x0, x1, z0, z1) {
+  const [c, g] = makeCanvas(Math.round((x1 - x0) * PX), Math.round((z1 - z0) * PX)), t = tex(c);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2; m.position.set((x0 + x1) / 2, PAGE_Y + 0.003, (z0 + z1) / 2); m.renderOrder = 1; scene.add(m);
+  return { m, g, t, X: x => (x - x0) * PX, Z: z => (z - z0) * PX, W: c.width, H: c.height };
+}
+const sliderPanel = makePanel(TRACK.x0 - 1.5, TRACK.x1 + 1.5, TRACK.z - 2.2, TRACK.z + 2.2);
+const switchPanel = makePanel(SW.x - 3, SW.x + 3, SW.z - 2.2, SW.z - 0.8);
+let panelKey = '';
+function drawPanels() {
+  const sliderTitle = S.mode === 'axes' ? tr('ميل المرآة', 'Inclinaison du miroir') : tr('ميل المحور (d)', "Inclinaison de l'axe (d)");
+  const key = S.lang + sliderTitle; if (key === panelKey) return; panelKey = key;
+  const P = sliderPanel, g = P.g; g.clearRect(0, 0, P.W, P.H);
+  g.fillStyle = '#26262b'; g.direction = S.lang === 'ar' ? 'rtl' : 'ltr'; g.textAlign = 'center'; g.font = `700 32px ${AR_FONT}`;
+  g.fillText(sliderTitle, P.X((TRACK.x0 + TRACK.x1) / 2), P.Z(TRACK.z - 1.3));
+  g.direction = 'ltr'; g.font = `26px ${HAND}`; g.fillStyle = '#555';
+  g.fillText('-90°', P.X(TRACK.x0), P.Z(TRACK.z + 1.6)); g.fillText('0°', P.X((TRACK.x0 + TRACK.x1) / 2), P.Z(TRACK.z + 1.6)); g.fillText('90°', P.X(TRACK.x1), P.Z(TRACK.z + 1.6));
+  g.strokeStyle = '#444'; g.lineWidth = 2;
+  for (let i = 0; i <= 12; i++) { const x = P.X(TRACK.x0 + (TRACK.x1 - TRACK.x0) * i / 12); g.beginPath(); g.moveTo(x, P.Z(TRACK.z + .55)); g.lineTo(x, P.Z(TRACK.z + (i % 6 ? .8 : 1))); g.stroke(); }
+  P.t.needsUpdate = true;
+  const Q = switchPanel, h = Q.g; h.clearRect(0, 0, Q.W, Q.H);
+  h.fillStyle = '#26262b'; h.direction = S.lang === 'ar' ? 'rtl' : 'ltr'; h.textAlign = 'center'; h.font = `700 32px ${AR_FONT}`;
+  h.fillText(tr('طيّ الورقة', 'Plier la feuille'), Q.X(SW.x), Q.Z(SW.z - 1.3) + 10);
+  Q.t.needsUpdate = true;
+}
+
+/* ---------- Immediate-mode drawing pools ---------- */
+function makeSegEntry(max) {
+  const geo = new THREE.BufferGeometry(), attr = new THREE.BufferAttribute(new Float32Array(max * 18), 3);
+  geo.setAttribute('position', attr);
+  const mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0, transparent: true, side: THREE.DoubleSide, depthWrite: false }));
+  mesh.frustumCulled = false; mesh.renderOrder = 2; mesh.visible = false; scene.add(mesh);
+  return { mesh, geo, attr, max };
+}
+const smallPool = Array.from({ length: 28 }, () => makeSegEntry(64)), bigPool = Array.from({ length: 4 }, () => makeSegEntry(400));
+let smallUsed = 0, bigUsed = 0;
+// segs: [[x1,z1,x2,z2], ...] drawn as flat ribbons on the page
+function drawSegs(segs, color, w = 0.12, y = YL, opacity = 1) {
+  const big = segs.length > 64, pool = big ? bigPool : smallPool, idx = big ? bigUsed++ : smallUsed++;
+  if (idx >= pool.length) return;
+  const e = pool[idx], A = e.attr.array, n = Math.min(segs.length, e.max); let k = 0;
+  for (let i = 0; i < n; i++) {
+    const [x1, z1, x2, z2] = segs[i], dx = x2 - x1, dz = z2 - z1, L = Math.hypot(dx, dz); if (L < 1e-6) continue;
+    const nx = -dz / L * w / 2, nz = dx / L * w / 2;
+    const q = [x1 + nx, z1 + nz, x1 - nx, z1 - nz, x2 - nx, z2 - nz, x2 + nx, z2 + nz];
+    for (const j of [0, 1, 2, 0, 2, 3]) { A[k++] = q[2 * j]; A[k++] = y; A[k++] = q[2 * j + 1]; }
+  }
+  e.geo.setDrawRange(0, k / 3); e.attr.needsUpdate = true;
+  e.mesh.material.color.set(color); e.mesh.material.opacity = opacity; e.mesh.visible = true;
+}
+const polySegs = (pts, closed) => { const s = []; for (let i = 0; i < pts.length - (closed ? 0 : 1); i++) { const a = pts[i], b = pts[(i + 1) % pts.length]; s.push([a.x, a.y, b.x, b.y]); } return s; };
+function dashSegs(a, b, dash = .35, gap = .25) { const L = a.distanceTo(b), s = []; for (let t = 0; t < L; t += dash + gap) { const t2 = Math.min(L, t + dash); s.push([a.x + (b.x - a.x) * t / L, a.y + (b.y - a.y) * t / L, a.x + (b.x - a.x) * t2 / L, a.y + (b.y - a.y) * t2 / L]); } return s; }
+function arcPts(c, r, a0, a1, n = 40) { const p = []; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; p.push(V(c.x + r * Math.cos(a), c.y + r * Math.sin(a))); } return p; }
+function arrowArc(c, r, dir, color, y) { // 270° arc with an arrow head; dir>0 = clockwise on screen
+  const a0 = -Math.PI / 2, a1 = a0 + dir * 1.5 * Math.PI, pts = arcPts(c, r, a0, a1, 36), tip = pts[pts.length - 1];
+  const tg = V(-Math.sin(a1) * dir, Math.cos(a1) * dir), hs = [];
+  for (const s of [1, -1]) { const ang = Math.atan2(tg.y, tg.x) + Math.PI + s * 0.5; hs.push([tip.x, tip.y, tip.x + 0.35 * Math.cos(ang), tip.y + 0.35 * Math.sin(ang)]); }
+  drawSegs(polySegs(pts, false).concat(hs), color, 0.09, y);
+}
+
+const dotPool = Array.from({ length: 16 }, () => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 10), new THREE.MeshStandardMaterial({ color: 0, roughness: .5 })); m.castShadow = true; m.visible = false; scene.add(m); return m; });
+let dotUsed = 0;
+function drawDot(p, color, r = 0.2, y = YL + 0.1) { const m = dotPool[dotUsed++]; if (!m) return; m.position.set(p.x, y, p.y); m.scale.setScalar(r); m.material.color.set(color); m.visible = true; }
+
+const labPool = Array.from({ length: 18 }, () => {
+  const [c, g] = makeCanvas(160, 96), t = tex(c);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthTest: false }));
+  s.renderOrder = 10; s.visible = false; s.userData = { g, t, key: '' }; scene.add(s); return s;
+});
+let labUsed = 0;
+function drawLabel(text, color, x, y, z, size = 1.3) {
+  const s = labPool[labUsed++]; if (!s) return; const key = text + color;
+  if (s.userData.key !== key) { const g = s.userData.g; g.clearRect(0, 0, 160, 96); g.font = `700 60px ${HAND}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 8; g.strokeStyle = 'rgba(251,250,246,.95)'; g.strokeText(text, 80, 50); g.fillStyle = color; g.fillText(text, 80, 50); s.userData.t.needsUpdate = true; s.userData.key = key; }
+  s.scale.set(size * 5 / 3, size, 1); s.position.set(x, y, z); s.visible = true;
+}
+const labelAt = (text, color, p, out, h = 0.9) => drawLabel(text, color, p.x + (out ? out.x : 0), YL + h, p.y + (out ? out.y : 0));
+const outward = (p, c, d = 0.8) => { const o = V(p.x - c.x, p.y - c.y); return o.lengthSq() < 1e-9 ? V(0, -d) : o.normalize().multiplyScalar(d); };
+
+// prisms (cut-out paper shapes), up to 48 sides
+function makePrism(material, edgeColor) {
+  const N = 48, geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array((4 * N - 4) * 9), 3));
+  const mesh = new THREE.Mesh(geo, material); mesh.castShadow = true; mesh.frustumCulled = false; mesh.visible = false;
+  const eg = new THREE.BufferGeometry(); eg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3 * N * 6), 3));
+  const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({ color: edgeColor })); edges.frustumCulled = false; edges.visible = false;
+  scene.add(mesh, edges); return { mesh, edges };
+}
+function setPrism(pr, bot, top) {
+  const n = bot.length, P = pr.mesh.geometry.attributes.position, E = pr.edges.geometry.attributes.position; let k = 0;
+  const put = v => P.setXYZ(k++, v.x, v.y, v.z);
+  for (let i = 1; i < n - 1; i++) { put(top[0]); put(top[i]); put(top[i + 1]); put(bot[0]); put(bot[i + 1]); put(bot[i]); }
+  for (let i = 0; i < n; i++) { const j = (i + 1) % n; put(bot[i]); put(bot[j]); put(top[j]); put(bot[i]); put(top[j]); put(top[i]); }
+  pr.mesh.geometry.setDrawRange(0, k); P.needsUpdate = true; pr.mesh.geometry.computeVertexNormals(); pr.mesh.geometry.computeBoundingSphere();
+  k = 0; const putE = (a, b) => { E.setXYZ(k++, a.x, a.y, a.z); E.setXYZ(k++, b.x, b.y, b.z); };
+  for (let i = 0; i < n; i++) { const j = (i + 1) % n; putE(bot[i], bot[j]); putE(top[i], top[j]); if (n <= 8) putE(bot[i], top[i]); }
+  pr.edges.geometry.setDrawRange(0, k); E.needsUpdate = true;
+  pr.mesh.visible = pr.edges.visible = true;
+}
+const flat = (pts, y0, h) => [pts.map(p => new THREE.Vector3(p.x, y0, p.y)), pts.map(p => new THREE.Vector3(p.x, y0 + h, p.y))];
+const prOrig = makePrism(new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .9, side: THREE.DoubleSide }), 0x303036);
+const prImg = makePrism(new THREE.MeshStandardMaterial({ color: 0x2f5bd3, transparent: true, opacity: .55, roughness: .6, side: THREE.DoubleSide, depthWrite: false }), 0x1d3d99);
+prImg.mesh.castShadow = false;
+const prTool = makePrism(new THREE.MeshStandardMaterial({ color: 0xe9eef6, transparent: true, opacity: .7, roughness: .3, side: THREE.DoubleSide, depthWrite: false }), 0x55607a);
+
+// tracing flap for folding
+const flapGeo = new THREE.BufferGeometry(); flapGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(9 * 3), 3));
+const flap = new THREE.Mesh(flapGeo, new THREE.MeshStandardMaterial({ color: 0xeef3ff, transparent: true, opacity: .38, side: THREE.DoubleSide, depthWrite: false, roughness: .4 }));
+flap.frustumCulled = false; scene.add(flap);
+
+// standing mirror (Mira) for the axes-of-symmetry mode
+const mirror = new THREE.Mesh(new THREE.PlaneGeometry(1, 4), new THREE.MeshStandardMaterial({ color: 0xd1153f, transparent: true, opacity: .22, side: THREE.DoubleSide, depthWrite: false }));
+const mirrorEdge = new THREE.LineSegments(new THREE.EdgesGeometry(mirror.geometry), new THREE.LineBasicMaterial({ color: 0x8a1030 }));
+mirror.add(mirrorEdge); scene.add(mirror);
+
+// compass for the construction mode
+const graphite = new THREE.MeshStandardMaterial({ color: 0x8e9099, metalness: .4, roughness: .4 });
+const legA = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 10), graphite), legB = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 10), graphite);
+const hinge = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 8), graphite);
+const compass = new THREE.Group(); compass.add(legA, legB, hinge); legA.castShadow = legB.castShadow = true; scene.add(compass);
+function placeCyl(m, a, b, r) { const d = new THREE.Vector3().subVectors(b, a), L = d.length(); m.position.copy(a).addScaledVector(d, .5); m.scale.set(r, L, r); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize()); }
+function placeCompass(H, P) { const top = new THREE.Vector3((H.x + P.x) / 2, PAGE_Y + 5.2, (H.y + P.y) / 2);
+  placeCyl(legA, top, new THREE.Vector3(H.x, PAGE_Y + 0.02, H.y), 0.09); placeCyl(legB, top, new THREE.Vector3(P.x, PAGE_Y + 0.02, P.y), 0.11); hinge.position.copy(top); }
+
+// slider and switch on the page
+const trackMesh = withEdges(new THREE.Mesh(new THREE.BoxGeometry(TRACK.x1 - TRACK.x0, 0.12, 0.35), new THREE.MeshStandardMaterial({ color: 0xe4e0d4 })));
+trackMesh.position.set((TRACK.x0 + TRACK.x1) / 2, PAGE_Y + 0.06, TRACK.z); scene.add(trackMesh);
+const knob = withEdges(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.7, 24), new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .8 })), 30);
+knob.castShadow = true; scene.add(knob);
+const knobHit = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 1.4, 12), new THREE.MeshBasicMaterial({ visible: false })); scene.add(knobHit);
+const swBase = withEdges(new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.4, 1.4), new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .9 })));
+swBase.position.set(SW.x, PAGE_Y + 0.2, SW.z); swBase.castShadow = true; scene.add(swBase);
+const swKnob = withEdges(new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.5, 1.1), new THREE.MeshStandardMaterial({ color: 0xbdbdc4, roughness: .7 })));
+swKnob.castShadow = true; scene.add(swKnob);
+const swHit = new THREE.Mesh(new THREE.BoxGeometry(4.2, 1.6, 2.4), new THREE.MeshBasicMaterial({ visible: false })); swHit.position.copy(swBase.position); scene.add(swHit);
+let swX = SW.x - 0.8;
+
+/* ---------- Camera ---------- */
+const home = { pos: new THREE.Vector3(), target: new THREE.Vector3(), dist: 60 };
+// Frame the book inside the free area of the screen (not under the HUD):
+// the camera renders a window of a larger virtual view whose centre is the
+// centre of the free rectangle.
+const view = { W: 1, H: 1, Fw: 1, Fh: 1, freeW: 1, freeH: 1 };
+function measureFree() {
+  const W = innerWidth, H = innerHeight;
+  const cardsEl = document.querySelector('.cards'), column = getComputedStyle(cardsEl).position === 'fixed';
+  const topB = document.querySelector('.top').getBoundingClientRect().bottom;
+  if (column) cardsEl.style.top = (topB + 8) + 'px'; else cardsEl.style.top = '';
+  let hudTop = H;
+  for (const el of [document.getElementById('acts'), document.getElementById('notice'), column ? null : cardsEl]) {
+    if (!el) continue; const r = el.getBoundingClientRect(); if (r.height > 0) hudTop = Math.min(hudTop, r.top);
+  }
+  const left = column ? cardsEl.getBoundingClientRect().right + 8 : 0;
+  const top = topB + 6, bottom = Math.max(top + 80, hudTop - 6);
+  return { W, H, left, right: W, top, bottom };
+}
+function computeHome() {
+  const f = measureFree(), W = f.W, H = f.H;
+  const cx = (f.left + f.right) / 2, cy = (f.top + f.bottom) / 2;
+  const Fw = 2 * Math.max(cx, W - cx), Fh = 2 * Math.max(cy, H - cy);
+  Object.assign(view, { W, H, Fw, Fh, freeW: f.right - f.left, freeH: f.bottom - f.top });
+  camera.aspect = Fw / Fh;
+  camera.setViewOffset(Fw, Fh, Fw / 2 - cx, Fh / 2 - cy, W, H);
+  const portrait = view.freeW / view.freeH < 0.9, fitW = portrait ? 30 : 46, fitH = 31;
+  const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  home.dist = Math.max(fitW * Fh / (2 * view.freeW * tv), fitH * Fh / (2 * view.freeH * tv)) * 1.04;
+  home.target.set(portrait ? 5.5 : 0, 0, 1.5);
+  home.pos.copy(home.target).add(new THREE.Vector3(0.08, 0.8, 0.6).normalize().multiplyScalar(home.dist));
+}
+let orbit = null;
+function resize(rehome = true) {
+  renderer.setSize(innerWidth, innerHeight, false); computeHome();
+  if (orbit) { orbit.minDistance = home.dist * .5; orbit.maxDistance = home.dist * 1.35;
+    if (rehome && !intro) { camera.position.copy(home.pos); orbit.target.copy(home.target); orbit.update(); } }
+}
+
+/* ---------- Pointer (registered before OrbitControls) ---------- */
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), pagePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -PAGE_Y);
+function setRay(e) { const r = canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(ndc, camera); }
+function pageHit() { const p = new THREE.Vector3(); return ray.ray.intersectPlane(pagePlane, p) ? V(p.x, p.z) : null; }
+function act(n) { S.lastAction = n; S.actionTime = performance.now(); }
+const centroid = pts => pts.reduce((s, v) => s.add(v), V(0, 0)).multiplyScalar(1 / pts.length);
+function inTri(p, t) { const a = cross(t[0], t[1], p), b = cross(t[1], t[2], p), c = cross(t[2], t[0], p); return (a >= 0 && b >= 0 && c >= 0) || (a <= 0 && b <= 0 && c <= 0); }
+
+canvas.addEventListener('pointerdown', e => {
+  setRay(e); const r = canvas.getBoundingClientRect(); let best = null, bd = 34;
+  for (const h of S.handles) { const v = new THREE.Vector3(h.x, YL + 0.1, h.z).project(camera); const d = Math.hypot((v.x + 1) / 2 * r.width - (e.clientX - r.left), (1 - v.y) / 2 * r.height - (e.clientY - r.top)); if (d < bd) { bd = d; best = h; } }
+  if (best) S.drag = { type: 'h', id: best.id };
+  else {
+    const p = pageHit();
+    if (S.mode === 'tri' && S.phi < 1 && p && inTri(p, S.tri)) { S.drag = { type: 'body' }; S.dragOff.copy(centroid(S.tri)).sub(p); }
+    else { const hits = ray.intersectObjects([knobHit, swHit].filter(o => o.userData.on), false);
+      if (!hits.length) return;
+      if (hits[0].object === swHit) { S.foldOn = !S.foldOn; act('fold'); S.drag = { type: 'switch' }; } else S.drag = { type: 'knob' }; }
+  }
+  orbit.enabled = false; canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!S.drag || S.drag.type === 'switch') return; setRay(e); const p = pageHit(); if (!p) return;
+  if (S.drag.type === 'knob') { const x = THREE.MathUtils.clamp(p.x, TRACK.x0, TRACK.x1); S.theta = Math.round(((x - TRACK.x0) / (TRACK.x1 - TRACK.x0) * 2 - 1) * THETA_MAX); act('axis'); if (S.mode === 'axes') S.fig.moved = true; return; }
+  if (S.drag.type === 'body') {
+    const tg = p.clone().add(S.dragOff), c = centroid(S.tri); let dx = tg.x - c.x, dz = tg.y - c.y; const m = 0.4;
+    dx = THREE.MathUtils.clamp(dx, RECT.x0 + m - Math.min(...S.tri.map(v => v.x)), RECT.x1 - m - Math.max(...S.tri.map(v => v.x)));
+    dz = THREE.MathUtils.clamp(dz, RECT.z0 + m - Math.min(...S.tri.map(v => v.y)), RECT.z1 - m - Math.max(...S.tri.map(v => v.y)));
+    S.tri.forEach(v => { v.x += dx; v.y += dz; }); act('body'); return;
+  }
+  MODES[S.mode].drag(S.drag.id, clampRect(p.clone()));
+});
+function endDrag(e) { if (S.drag) { S.drag = null; if (!intro) orbit.enabled = true; try { canvas.releasePointerCapture(e.pointerId); } catch (_) {} } }
+canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+
+orbit = new OrbitControls(camera, canvas);
+Object.assign(orbit, { enablePan: false, enableDamping: true, dampingFactor: .08, minPolarAngle: .12, maxPolarAngle: 1.12, minAzimuthAngle: -.75, maxAzimuthAngle: .75, rotateSpeed: .6 });
+
+let intro = null;
+function startIntro() { computeHome(); const from = home.target.clone().add(new THREE.Vector3(-.35, 1.2, 1.1).normalize().multiplyScalar(home.dist * 1.9));
+  intro = { t0: performance.now(), dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 3000, from }; orbit.enabled = false; orbit.target.copy(home.target); camera.position.copy(from); camera.lookAt(home.target); }
+
+/* ---------- HUD ---------- */
+const fmt = (x, d = 1) => (Math.round(x * 10 ** d) / 10 ** d).toFixed(d).replace('.', ',');
+const cards = [0, 1, 2, 3].map(i => { const el = document.getElementById('k' + i); return { el, s: el.querySelector('small'), b: el.querySelector('b'), key: '' }; });
+function card(i, label, val) { const c = cards[i], key = label + '|' + val; if (c.key === key) return; c.key = key; if (val === null) { c.el.hidden = true; return; } c.el.hidden = false; c.s.textContent = label; c.b.innerHTML = val; }
+const unit = u => `<i>${u}</i>`;
+const noticeEl = document.getElementById('notice'); let lastNotice = '';
+function notice(t) { const h = `<b>${tr('لاحظ: ', 'Observe : ')}</b>` + t; if (h !== lastNotice) { noticeEl.innerHTML = h; lastNotice = h; } }
+const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const MODE_LIST = [['tri', 'المثلث', 'Triangle'], ['pred', "توقّع A'", "Prédire A'"], ['shp', 'أشكال', 'Figures'], ['med', 'الواسط', 'Médiatrice'], ['axes', 'محاور التماثل', 'Axes de symétrie'], ['con', 'الإنشاء', 'Construction']];
+const SHP_LIST = [['seg', 'قطعة', 'Segment'], ['line', 'مستقيم', 'Droite'], ['circle', 'دائرة', 'Cercle'], ['angle', 'زاوية', 'Angle']];
+const FIG_LIST = [['square', 'مربع', 'Carré', 4], ['rect', 'مستطيل', 'Rectangle', 2], ['equi', 'مثلث متساوي الأضلاع', 'Triangle équilatéral', 3], ['iso', 'مثلث متساوي الساقين', 'Triangle isocèle', 1], ['para', 'متوازي الأضلاع', 'Parallélogramme', 0], ['hex', 'سداسي منتظم', 'Hexagone régulier', 6], ['circle', 'دائرة', 'Cercle', Infinity]];
+
+function buildHUD() {
+  document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === 'ar' ? 'rtl' : 'ltr';
+  const modes = document.getElementById('modes');
+  modes.innerHTML = MODE_LIST.map(([k, a, f]) => `<button class="chip${S.mode === k ? ' on' : ''}" data-m="${k}">${esc(tr(a, f))}</button>`).join('')
+    + `<button class="chip" id="lang">${S.lang === 'ar' ? 'Français' : 'العربية'}</button><button class="chip" id="reset">${tr('إعادة', 'Réinitialiser')}</button>`;
+  modes.querySelectorAll('[data-m]').forEach(b => b.onclick = () => setMode(b.dataset.m));
+  document.getElementById('lang').onclick = () => { S.lang = S.lang === 'ar' ? 'fr' : 'ar'; refreshPages(); buildHUD(); cards.forEach(c => c.key = ''); };
+  document.getElementById('reset').onclick = () => { const m = S.mode, l = S.lang; initState(); S.mode = m; S.lang = l; MODES[m].enter && MODES[m].enter(); buildHUD(); startIntro(); };
+  const subs = document.getElementById('subs');
+  const list = S.mode === 'shp' ? SHP_LIST : S.mode === 'axes' ? FIG_LIST : null, cur = S.mode === 'shp' ? S.shp.kind : S.fig.kind;
+  subs.innerHTML = list ? list.map(([k, a, f]) => `<button class="chip${cur === k ? ' on' : ''}" data-k="${k}">${esc(tr(a, f))}</button>`).join('') : '';
+  subs.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { if (S.mode === 'shp') S.shp.kind = b.dataset.k; else { S.fig.kind = b.dataset.k; S.fig.found = new Set(); S.theta = 45; S.fig.moved = false; S.fig.lo = S.fig.hi = S.theta; } act('kind'); buildHUD(); });
+  const acts = document.getElementById('acts');
+  acts.innerHTML = (MODES[S.mode].actions ? MODES[S.mode].actions() : []).map(([id, label, accent]) => `<button class="btn${accent ? ' acc' : ''}" data-a="${id}">${esc(label)}</button>`).join('');
+  acts.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { MODES[S.mode].action(b.dataset.a); buildHUD(); });
+  requestAnimationFrame(() => resize(false));
+}
+function setMode(m) { S.mode = m; S.foldOn = false; S.phi = 0; act('mode'); MODES[m].enter && MODES[m].enter(); buildHUD(); }
+
+/* =========================================================
+   Modes. Each one: handles(u), drag(id,p), draw(u,now), and
+   optional enter(), actions(), action(id).
+   ========================================================= */
+const ORANGE = '#e8710a', BLUE = '#2f5bd3', RED = '#d1153f', INK = '#26262b', GREY = '#8a8f9c';
+function drawAxisLine(u, color = RED, w = 0.16, y = YL - 0.01) { const [t0, t1] = clipLine(P0, u); const a = V(P0.x + u.x * t0, P0.y + u.y * t0), b = V(P0.x + u.x * t1, P0.y + u.y * t1); drawSegs([[a.x, a.y, b.x, b.y]], color, w, y); const top = a.y < b.y ? a : b; drawLabel('(d)', color, top.x + 0.9, YL + 0.8, top.y + 0.6); return [a, b]; }
+function rightMark(H, u, A, color, s = 0.5) { const n = V(A.x - H.x, A.y - H.y); if (n.length() < 0.05) return; n.normalize(); const p1 = V(H.x + u.x * s, H.y + u.y * s), p2 = V(p1.x + n.x * s, p1.y + n.y * s), p3 = V(H.x + n.x * s, H.y + n.y * s); drawSegs(polySegs([p1, p2, p3], false), color, 0.07); }
+const recent = (name, ms = 2500) => S.lastAction === name && performance.now() - S.actionTime < ms;
+
+const MODES = {
+  /* 2 + 3: drag each vertex, conservation cards, orientation reversal, fold */
+  tri: {
+    handles: () => S.phi < 1 ? S.tri.map((v, i) => ({ id: i, x: v.x, z: v.y })) : [],
+    drag(id, p) { S.tri[id].copy(p); act('vertex'); },
+    draw(u, now) {
+      const k3 = new THREE.Vector3(u.x, 0, u.y), c = centroid(S.tri), sA = Math.sign(side(c, u)) || 1;
+      const probe = new THREE.Vector3(P0.x - u.y * sA, YA, P0.y + u.x * sA), sg = rotHinge(probe, k3, Math.PI / 2).y > YA ? 1 : -1;
+      const phiR = THREE.MathUtils.degToRad(S.phi) * sg;
+      drawAxisLine(u);
+      const img = S.tri.map(v => reflect(v, u));
+      setPrism(prOrig, S.tri.map(v => rotHinge(new THREE.Vector3(v.x, Y0, v.y), k3, phiR)), S.tri.map(v => rotHinge(new THREE.Vector3(v.x, Y0 + H_SHAPE, v.y), k3, phiR)));
+      setPrism(prImg, ...flat(img, Y0 + 0.02, H_SHAPE - 0.04));
+      // flap
+      flap.visible = S.phi > 0.5;
+      if (flap.visible) { const hr = halfRect(u, sA).map(v => rotHinge(new THREE.Vector3(v.x, Y0 - 0.004, v.y), k3, phiR)), fp = flap.geometry.attributes.position; let n = 0;
+        for (let i = 1; i < hr.length - 1; i++) for (const v of [hr[0], hr[i], hr[i + 1]]) fp.setXYZ(n++, v.x, v.y, v.z);
+        flap.geometry.setDrawRange(0, n); fp.needsUpdate = true; flap.geometry.computeVertexNormals(); }
+      // A, H, AA'
+      const A = S.tri[0], A2 = img[0], H = project(A, u), AH = A.distanceTo(H);
+      if (S.phi < 1) {
+        if (AH > 0.05) { drawSegs(dashSegs(A, A2), ORANGE, 0.08); rightMark(H, u, A, ORANGE); }
+        drawDot(H, ORANGE, 0.15); drawLabel('H', ORANGE, H.x + 0.7, YL + 0.7, H.y + 0.7, 1.1);
+        S.tri.forEach(v => drawDot(v, INK, 0.22, Y0 + H_SHAPE + 0.1));
+        // orientation arrows (3)
+        const o = Math.sign(cross(...S.tri)) || 1, ci = centroid(img);
+        arrowArc(c, 0.7, o, ORANGE, Y0 + H_SHAPE + 0.02); arrowArc(ci, 0.7, -o, BLUE, Y0 + H_SHAPE + 0.02);
+      }
+      const names = ['A', 'B', 'C'];
+      S.tri.forEach((v, i) => { const q = rotHinge(new THREE.Vector3(v.x + outward(v, c).x, Y0 + H_SHAPE + 0.6, v.y + outward(v, c).y), k3, phiR); drawLabel(names[i], INK, q.x, q.y, q.z); });
+      if (S.phi < 170) img.forEach((v, i) => labelAt(names[i] + "'", BLUE, v, outward(v, centroid(img))));
+      // trail of A and A'
+      if (S.drag && (S.drag.type === 'body' || S.drag.type === 'knob' || S.drag.id === 0)) { const last = S.trail[S.trail.length - 1]; if (!last || last[0].distanceTo(A) > 0.15 || last[1].distanceTo(A2) > 0.15) { S.trail.push([A.clone(), A2.clone()]); if (S.trail.length > 300) S.trail.shift(); } }
+      if (S.trail.length > 1) { drawSegs(polySegs(S.trail.map(t => t[0]), false), ORANGE, 0.07, PAGE_Y + 0.02, .7); drawSegs(polySegs(S.trail.map(t => t[1]), false), BLUE, 0.07, PAGE_Y + 0.02, .7); }
+      // measures (2)
+      const [B, C] = [S.tri[1], S.tri[2]], [B2, C2] = [img[1], img[2]];
+      const area = Math.abs(cross(A, B, C)) / 2, area2 = Math.abs(cross(A2, B2, C2)) / 2, o = Math.sign(cross(A, B, C));
+      card(0, "AB · A'B'", `${fmt(A.distanceTo(B))} = ${fmt(A2.distanceTo(B2))}${unit('cm')}`);
+      card(1, "Â · Â'", `${fmt(angleAt(A, B, C), 0)} = ${fmt(angleAt(A2, B2, C2), 0)}${unit('°')}`);
+      card(2, tr('المساحة', 'Aire'), `${fmt(area)} = ${fmt(area2)}${unit('cm²')}`);
+      if (S.phi > 0.5) card(3, tr('زاوية الطي', 'Angle de pliage'), fmt(S.phi, 0) + unit('°'));
+      else card(3, tr('اتجاه الدوران', 'Sens de rotation'), `ABC ${o > 0 ? '↻' : '↺'} · A'B'C' ${o > 0 ? '↺' : '↻'}`);
+      const sides = S.tri.map(v => Math.sign(side(v, u))), crosses = sides.some(s => s > 0) && sides.some(s => s < 0);
+      if (S.phi > 0.5 && S.phi < 179.5) notice(tr('أثناء الطي تدور كل نقطة حول المحور (d)، ونقط المحور لا تتحرك.', 'Pendant le pliage, chaque point tourne autour de (d) ; les points de (d) ne bougent pas.'));
+      else if (S.phi >= 179.5) notice(tr("بعد الطي ينطبق المثلث ABC تمامًا على صورته A'B'C'.", "Après le pliage, ABC se superpose exactement à A'B'C'."));
+      else if (S.drag && S.drag.type === 'knob' || recent('axis')) notice(tr("مهما كان ميل المحور، يبقى (AA') عموديًا على (d).", "Quelle que soit l'inclinaison, (AA') reste perpendiculaire à (d)."));
+      else if (recent('vertex')) notice(tr('غيّر شكل المثلث كما تشاء: الأطوال والزوايا والمساحة تبقى متساوية في الصورة.', "Déforme le triangle : longueurs, angles et aire restent égaux dans l'image."));
+      else if (recent('body')) notice(tr(`كلما ابتعدت A عن المحور ابتعدت A' بنفس المسافة: AH = A'H = ${fmt(AH)} cm.`, `Plus A s'éloigne de (d), plus A' s'en éloigne : AH = A'H = ${fmt(AH)} cm.`));
+      else if (crosses) notice(tr('المثلث يقطع المحور: النقط الواقعة على (d) هي مماثلات نفسها.', 'Le triangle coupe (d) : les points de (d) sont leurs propres symétriques.'));
+      else notice(tr("السهم البرتقالي يدور في اتجاه، والأزرق في الاتجاه المعاكس: التماثل المحوري يقلب اتجاه الدوران.", "La flèche orange tourne dans un sens, la bleue dans l'autre : la symétrie axiale inverse le sens."));
+    }
+  },
+
+  /* 1: predict A' */
+  pred: {
+    enter() { if (!S.pred.ready) this.newPoint(); },
+    newPoint() {
+      const thetas = [0, 30, -30, 45, -45, 60, -60, 90];
+      for (let k = 0; k < 200; k++) {
+        S.theta = thetas[Math.floor(Math.random() * thetas.length)]; const u = axisDir();
+        const A = V(Math.round(3 + Math.random() * 15), Math.round(-10 + Math.random() * 14)), d = Math.abs(side(A, u)), A2 = reflect(A, u);
+        if (d > 1.5 && d < 5.5 && inRect(A, 1) && inRect(A2, 1)) { const G = clampRect(V(A2.x + (Math.random() < .5 ? 3 : -3), A2.y + (Math.random() < .5 ? 2.5 : -2.5)), 1);
+          Object.assign(S.pred, { A, G, checked: false, ready: true }); return; }
+      }
+    },
+    actions() { return S.pred.checked ? [['new', tr('نقطة جديدة', 'Nouveau point'), true]] : [['check', tr('تحقق', 'Vérifier'), true]]; },
+    action(id) { if (id === 'check') { const A2 = reflect(S.pred.A, axisDir()); S.pred.err = S.pred.G.distanceTo(A2); S.pred.tries++; if (S.pred.err < 0.5) S.pred.score++; S.pred.checked = true; act('check'); } else { this.newPoint(); act('new'); } },
+    handles: () => S.pred.checked ? [] : [{ id: 'G', x: S.pred.G.x, z: S.pred.G.y }],
+    drag(id, p) { S.pred.G.copy(p); act('guess'); },
+    draw(u) {
+      const { A, G } = S.pred, A2 = reflect(A, u), H = project(A, u);
+      drawAxisLine(u); drawDot(A, ORANGE, 0.24); labelAt('A', ORANGE, A, V(-0.6, -0.6));
+      drawDot(G, BLUE, 0.26); labelAt(S.pred.checked ? tr('توقعي', 'moi') : '?', BLUE, G, V(0.7, -0.7));
+      const AH = A.distanceTo(H);
+      card(0, tr('النتيجة', 'Score'), `${S.pred.score} / ${S.pred.tries}`);
+      if (S.pred.checked) {
+        drawSegs(polySegs(arcPts(A2, 0.32, 0, 2 * Math.PI, 28), true), BLUE, 0.07); labelAt("A'", BLUE, A2, V(0.7, 0.7));
+        drawSegs(dashSegs(A, A2), ORANGE, 0.08); rightMark(H, u, A, ORANGE); drawDot(H, ORANGE, 0.14);
+        drawSegs([[G.x, G.y, A2.x, A2.y]], RED, 0.07);
+        card(1, tr('الخطأ', 'Erreur'), fmt(S.pred.err, 2) + unit('cm')); card(2, 'AH', fmt(AH) + unit('cm')); card(3, "A'H", fmt(A2.distanceTo(H)) + unit('cm'));
+        const along = Math.abs((G.x - A.x) * u.x + (G.y - A.y) * u.y), dG = side(G, u), dA = side(A, u);
+        if (S.pred.err < 0.5) notice(tr(`ممتاز! الخطأ ${fmt(S.pred.err, 2)} cm فقط.`, `Bravo ! Erreur de ${fmt(S.pred.err, 2)} cm seulement.`));
+        else if (Math.sign(dG) === Math.sign(dA)) notice(tr("A' تقع في الجهة الأخرى من المحور.", "A' est de l'autre côté de l'axe."));
+        else if (along > 0.5) notice(tr(`انزلق توقعك بـ ${fmt(along)} cm على طول المحور: تذكّر أن (AA') عمودي على (d).`, `Ta réponse a glissé de ${fmt(along)} cm le long de (d) : (AA') doit être perpendiculaire à (d).`));
+        else notice(tr(`الاتجاه صحيح، لكن المسافة لا: يجب أن تكون A'H = AH = ${fmt(AH)} cm.`, `Bonne direction, mauvaise distance : il faut A'H = AH = ${fmt(AH)} cm.`));
+      } else { card(1, tr('الخطأ', 'Erreur'), '?'); card(2, 'AH', fmt(AH) + unit('cm')); card(3, "A'H", '?');
+        notice(tr("اسحب النقطة الزرقاء إلى حيث تتوقع A'، ثم اضغط «تحقق».", "Place le point bleu là où tu penses que se trouve A', puis appuie sur « Vérifier ».")); }
+    }
+  },
+
+  /* 4: other figures */
+  shp: {
+    handles() { return S.shp.P[S.shp.kind].map((v, i) => ({ id: i, x: v.x, z: v.y })); },
+    drag(id, p) { S.shp.P[S.shp.kind][id].copy(p); act('shape'); },
+    draw(u) {
+      drawAxisLine(u); const k = S.shp.kind, P = S.shp.P[k], Q = P.map(v => reflect(v, u));
+      const names = { seg: ['A', 'B'], line: ['A', 'B'], circle: ['O', 'M'], angle: ['S', 'B', 'C'] }[k];
+      P.forEach((v, i) => { drawDot(v, ORANGE, 0.22); labelAt(names[i], ORANGE, v, V(-0.6, -0.6)); });
+      Q.forEach((v, i) => { drawDot(v, BLUE, 0.18); labelAt(names[i] + "'", BLUE, v, V(0.6, -0.6)); });
+      const card3 = () => card(3, '', null);
+      if (k === 'seg') {
+        drawSegs([[P[0].x, P[0].y, P[1].x, P[1].y]], INK, 0.13); drawSegs([[Q[0].x, Q[0].y, Q[1].x, Q[1].y]], BLUE, 0.13);
+        card(0, 'AB', fmt(P[0].distanceTo(P[1])) + unit('cm')); card(1, "A'B'", fmt(Q[0].distanceTo(Q[1])) + unit('cm')); card(2, '', null); card3();
+        notice(tr("صورة قطعة قطعة لها نفس الطول: AB = A'B'.", "L'image d'un segment est un segment de même longueur : AB = A'B'."));
+      } else if (k === 'line') {
+        const d = V(P[1].x - P[0].x, P[1].y - P[0].y), d2 = V(Q[1].x - Q[0].x, Q[1].y - Q[0].y);
+        for (const [p, dd, col] of [[P[0], d, INK], [Q[0], d2, BLUE]]) { const [t0, t1] = clipLine(p, dd); if (t1 > t0) drawSegs([[p.x + dd.x * t0, p.y + dd.y * t0, p.x + dd.x * t1, p.y + dd.y * t1]], col, 0.12); }
+        const ang = THREE.MathUtils.radToDeg(Math.acos(Math.min(1, Math.abs(d.clone().normalize().dot(u))))), ang2 = THREE.MathUtils.radToDeg(Math.acos(Math.min(1, Math.abs(d2.clone().normalize().dot(u)))));
+        const den = u.x * d.y - u.y * d.x;
+        card(0, tr('زاوية (AB) مع (d)', '(AB) et (d)'), fmt(ang, 0) + unit('°')); card(1, tr("زاوية (A'B') مع (d)", "(A'B') et (d)"), fmt(ang2, 0) + unit('°'));
+        if (ang < 1) { card(2, '', null); notice(tr('(AB) يوازي (d): صورته توازي (d) أيضًا.', '(AB) est parallèle à (d) : son image aussi.')); }
+        else if (ang > 89) { card(2, '', null); notice(tr('(AB) عمودي على (d): صورته هي المستقيم نفسه.', "(AB) est perpendiculaire à (d) : c'est sa propre image.")); }
+        else { const s = -side(P[0], u) / den, I = V(P[0].x + d.x * s, P[0].y + d.y * s);
+          if (inRect(I, 0)) { drawDot(I, RED, 0.22); labelAt('I', RED, I, V(0.7, 0.7)); }
+          card(2, tr('I على (d)؟', 'I sur (d) ?'), Math.abs(side(I, u)) < 1e-6 ? tr('نعم', 'oui') : tr('لا', 'non'));
+          notice(tr('(AB) وصورته يتقاطعان في نقطة I من المحور، ويصنعان معه نفس الزاوية.', "(AB) et son image se coupent en un point I de (d) et font le même angle avec lui.")); }
+        card3();
+      } else if (k === 'circle') {
+        const r = P[0].distanceTo(P[1]), r2 = Q[0].distanceTo(Q[1]);
+        drawSegs(polySegs(arcPts(P[0], r, 0, 2 * Math.PI, 64), true), INK, 0.11); drawSegs(polySegs(arcPts(Q[0], r2, 0, 2 * Math.PI, 64), true), BLUE, 0.11);
+        const dO = Math.abs(side(P[0], u));
+        card(0, tr('الشعاع r', 'Rayon r'), fmt(r) + unit('cm')); card(1, tr("الشعاع r'", "Rayon r'"), fmt(r2) + unit('cm')); card(2, tr('بعد O عن (d)', 'Distance O à (d)'), fmt(dO) + unit('cm')); card3();
+        notice(dO < 0.2 ? tr('مركز الدائرة على المحور: الدائرة هي صورة نفسها.', 'Le centre est sur (d) : le cercle est sa propre image.')
+                        : tr("صورة دائرة دائرة لها نفس الشعاع، ومركزها O' مماثل O.", "L'image d'un cercle est un cercle de même rayon, de centre O', symétrique de O."));
+      } else {
+        for (const [T, col] of [[P, INK], [Q, BLUE]]) { const segs = []; for (const j of [1, 2]) { const dd = V(T[j].x - T[0].x, T[j].y - T[0].y), [, t1] = clipLine(T[0], dd); segs.push([T[0].x, T[0].y, T[0].x + dd.x * t1, T[0].y + dd.y * t1]); }
+          drawSegs(segs, col, 0.11); const a1 = Math.atan2(T[1].y - T[0].y, T[1].x - T[0].x); let a2 = Math.atan2(T[2].y - T[0].y, T[2].x - T[0].x); let da = a2 - a1; while (da > Math.PI) da -= 2 * Math.PI; while (da < -Math.PI) da += 2 * Math.PI;
+          drawSegs(polySegs(arcPts(T[0], 0.9, a1, a1 + da, 20), false), col === INK ? ORANGE : BLUE, 0.08); }
+        card(0, 'BŜC', fmt(angleAt(P[0], P[1], P[2]), 0) + unit('°')); card(1, "B'Ŝ'C'", fmt(angleAt(Q[0], Q[1], Q[2]), 0) + unit('°')); card(2, '', null); card3();
+        notice(tr('صورة زاوية زاوية لها نفس القياس.', "L'image d'un angle est un angle de même mesure."));
+      }
+    }
+  },
+
+  /* 5: perpendicular bisector */
+  med: {
+    handles() { const u = axisDir(); return [{ id: 'A', x: S.med.A.x, z: S.med.A.y }, { id: 'K', x: P0.x + u.x * S.med.t, z: P0.y + u.y * S.med.t }]; },
+    drag(id, p) { const u = axisDir(); if (id === 'A') { S.med.A.copy(p); act('A'); } else { const [t0, t1] = clipLine(P0, u); S.med.t = THREE.MathUtils.clamp((p.x - P0.x) * u.x + (p.y - P0.y) * u.y, t0 + .3, t1 - .3); act('K'); } },
+    draw(u) {
+      drawAxisLine(u); const A = S.med.A, A2 = reflect(A, u), H = project(A, u), [t0, t1] = clipLine(P0, u);
+      S.med.t = THREE.MathUtils.clamp(S.med.t, t0 + .3, t1 - .3); const K = V(P0.x + u.x * S.med.t, P0.y + u.y * S.med.t);
+      drawSegs(dashSegs(A, A2), GREY, 0.07); rightMark(H, u, A, GREY);
+      drawSegs([[K.x, K.y, A.x, A.y]], ORANGE, 0.11); drawSegs([[K.x, K.y, A2.x, A2.y]], BLUE, 0.11);
+      drawDot(A, ORANGE, 0.22); labelAt('A', ORANGE, A, V(-0.6, -0.6)); drawDot(A2, BLUE, 0.22); labelAt("A'", BLUE, A2, V(0.6, -0.6));
+      drawDot(K, RED, 0.26); labelAt('K', RED, K, V(0.8, 0)); drawDot(H, GREY, 0.13); labelAt('H', GREY, H, V(0.6, 0.6));
+      card(0, 'KA', fmt(K.distanceTo(A), 2) + unit('cm')); card(1, "KA'", fmt(K.distanceTo(A2), 2) + unit('cm'));
+      card(2, 'AH', fmt(A.distanceTo(H)) + unit('cm')); card(3, "A'H", fmt(A2.distanceTo(H)) + unit('cm'));
+      notice(recent('K') ? tr("حرّك K على المحور: تبقى KA = KA' دائمًا.", "Déplace K sur (d) : on a toujours KA = KA'.")
+        : tr("(d) واسط [AA']: كل نقطة منه تبعد بنفس المسافة عن A و A'. اسحب K.", "(d) est la médiatrice de [AA'] : chacun de ses points est à égale distance de A et A'. Fais glisser K."));
+    }
+  },
+
+  /* 6: axes of symmetry of figures, with a standing mirror */
+  axes: {
+    enter() { S.theta = 45; S.fig.moved = false; S.fig.lo = S.fig.hi = S.theta; },
+    handles: () => [],
+    drag() {},
+    verts(kind) {
+      const reg = (n, r, a0) => Array.from({ length: n }, (_, i) => V(P0.x + r * Math.cos(a0 + i * 2 * Math.PI / n), P0.y + r * Math.sin(a0 + i * 2 * Math.PI / n)));
+      const off = a => a.map(([x, z]) => V(P0.x + x, P0.y + z));
+      switch (kind) {
+        case 'square': return off([[-3, -3], [3, -3], [3, 3], [-3, 3]]);
+        case 'rect': return off([[-4, -2], [4, -2], [4, 2], [-4, 2]]);
+        case 'equi': return reg(3, 4.2, -Math.PI / 2);
+        case 'iso': return off([[0, -4.5], [2.6, 3], [-2.6, 3]]);
+        case 'para': return off([[-4, -2.5], [2, -2.5], [4, 2.5], [-2, 2.5]]);
+        case 'hex': return reg(6, 4, 0);
+        default: return reg(48, 4, 0);
+      }
+    },
+    draw(u) {
+      const f = S.fig, pts = this.verts(f.kind), img = pts.map(v => reflect(v, u)), N = FIG_LIST.find(x => x[0] === f.kind)[3];
+      if (f.moved) { f.lo = Math.min(f.lo, S.theta); f.hi = Math.max(f.hi, S.theta); }
+      const match = f.kind === 'circle' || img.every(q => pts.some(p => p.distanceTo(q) < 0.02));
+      const key = ((Math.round(S.theta) % 180) + 180) % 180; if (match && f.moved && f.kind !== 'circle') f.found.add(key);
+      setPrism(prOrig, ...flat(pts, Y0, H_SHAPE));
+      drawSegs(polySegs(img, true), match && f.moved ? RED : BLUE, 0.1, Y0 + H_SHAPE + 0.03);
+      for (const kd of f.found) { const t = THREE.MathUtils.degToRad(kd), uu = V(Math.sin(t), -Math.cos(t)), [t0, t1] = clipLine(P0, uu); drawSegs(dashSegs(V(P0.x + uu.x * t0, P0.y + uu.y * t0), V(P0.x + uu.x * t1, P0.y + uu.y * t1), .5, .3), RED, 0.1, Y0 + H_SHAPE + 0.05); }
+      const [a, b] = clipLine(P0, u), L = Math.min(b, 7) - Math.max(a, -7);
+      mirror.visible = true; mirror.scale.set(L, 1, 1); mirror.position.set(P0.x, PAGE_Y + 2, P0.y); mirror.rotation.set(0, -Math.atan2(u.y, u.x), 0);
+      const nInf = N === Infinity;
+      card(0, tr('محاور وُجدت', 'Axes trouvés'), nInf ? '∞' : `${f.found.size} / ${N}`);
+      card(1, tr('تطابق', 'Superposition'), !f.moved ? '?' : match ? tr('نعم', 'oui') : tr('لا', 'non'));
+      card(2, tr('ميل المرآة', 'Angle du miroir'), (S.theta > 0 ? '+' : '') + S.theta + unit('°')); card(3, '', null);
+      if (nInf) notice(tr('الدائرة تنطبق على صورتها مهما كان ميل المرآة: كل مستقيم يمر من مركزها محور تماثل لها.', "Le cercle se superpose quel que soit l'angle : toute droite passant par son centre est un axe."));
+      else if (N === 0 && f.hi - f.lo >= 170) notice(tr('جرّبت كل الميول: متوازي الأضلاع ليس له أي محور تماثل.', "Tu as tout essayé : le parallélogramme n'a aucun axe de symétrie."));
+      else if (N > 0 && f.found.size === N) notice(tr(`وجدت كل محاور التماثل: ${N}.`, `Tu as trouvé tous les axes : ${N}.`));
+      else if (!f.moved) notice(tr('حرّك المزلاج لتدوير المرآة، وابحث عن كل الميول التي ينطبق فيها الشكل على صورته.', 'Fais glisser le curseur pour tourner le miroir et cherche toutes les positions où la figure se superpose à son image.'));
+      else if (match) notice(tr('وجدت محور تماثل! الشكل ينطبق على صورته بالمرآة.', 'Axe trouvé ! La figure se superpose à son image.'));
+      else notice(tr('دوّر المرآة بالمزلاج حتى ينطبق الخط الأزرق على الشكل.', 'Tourne le miroir avec le curseur jusqu’à ce que le contour bleu se superpose à la figure.'));
+    }
+  },
+
+  /* 7: construction with set square and compass */
+  con: {
+    enter() { if (S.con.step === 0) S.theta = 45; },
+    actions() { return [['restart', tr('من جديد', 'Recommencer'), false], ['next', S.con.step >= 5 ? tr('انتهى', 'Terminé') : tr('الخطوة التالية', 'Étape suivante'), true]]; },
+    action(id) { if (id === 'restart') S.con.step = 0; else if (S.con.step < 5) { S.con.step++; S.con.t0 = performance.now(); } act('step'); },
+    handles: () => [{ id: 'A', x: S.con.A.x, z: S.con.A.y }],
+    drag(id, p) { S.con.A.set(Math.round(p.x), Math.round(p.y)); S.con.step = 0; act('A'); },
+    draw(u, now) {
+      drawAxisLine(u); const c = S.con, A = c.A, H = project(A, u), A2 = reflect(A, u), AH = A.distanceTo(H), st = c.step;
+      drawDot(A, ORANGE, 0.22); labelAt('A', ORANGE, A, V(-0.6, -0.6));
+      const n = AH > 1e-6 ? V((A.x - H.x) / AH, (A.y - H.y) / AH) : V(-u.y, u.x);
+      if (st >= 1) { const [t0, t1] = clipLine(H, n); drawSegs([[H.x + n.x * t0, H.y + n.y * t0, H.x + n.x * t1, H.y + n.y * t1]], GREY, 0.07); }
+      if (st === 1 || st === 2) { const Lg = Math.max(AH + 1, 3); setPrism(prTool, ...flat([H, V(H.x + u.x * 4, H.y + u.y * 4), V(H.x + n.x * Lg, H.y + n.y * Lg)], Y0 + 0.02, 0.22)); }
+      if (st >= 2) { drawDot(H, RED, 0.16); labelAt('H', RED, H, V(0.7, 0.7)); rightMark(H, u, A, RED); drawSegs([[H.x, H.y, A.x, A.y]], ORANGE, 0.09); }
+      const aA = Math.atan2(A.y - H.y, A.x - H.x);
+      if (st === 3) { placeCompass(H, A); compass.visible = true; drawSegs(polySegs(arcPts(H, AH, aA - .25, aA + .25, 10), false), ORANGE, 0.07); }
+      if (st >= 4) { const p = st === 4 ? Math.min(1, (now - c.t0) / 1800) : 1, a = aA + Math.PI * p, P = V(H.x + AH * Math.cos(a), H.y + AH * Math.sin(a));
+        drawSegs(polySegs(arcPts(H, AH, aA, a, 40), false), BLUE, 0.08); if (st === 4) { placeCompass(H, P); compass.visible = true; }
+        if (p >= 1) { drawDot(A2, BLUE, 0.22); labelAt("A'", BLUE, A2, V(0.6, -0.6)); } }
+      card(0, tr('الخطوة', 'Étape'), `${st} / 5`); card(1, 'AH', fmt(AH) + unit('cm'));
+      card(2, "A'H", st >= 4 ? fmt(A2.distanceTo(H)) + unit('cm') : '?'); card(3, tr("(AA') و (d)", "(AA') et (d)"), st >= 2 ? '90' + unit('°') : '?');
+      const dx = A.x - H.x, dz = A.y - H.y, num = v => fmt(Math.abs(v), Math.abs(Math.abs(v) - Math.round(Math.abs(v))) < 0.05 ? 0 : 1);
+      const hz = (v, inv) => ((v > 0) !== inv ? tr('يمينًا', 'à droite') : tr('يسارًا', 'à gauche')), vt = (v, inv) => ((v > 0) !== inv ? tr('نحو الأسفل', 'vers le bas') : tr('نحو الأعلى', 'vers le haut'));
+      const mv = inv => { const parts = []; if (Math.abs(dx) > 0.05) parts.push(`${num(dx)} ${hz(dx, inv)}`); if (Math.abs(dz) > 0.05) parts.push(`${num(dz)} ${vt(dz, inv)}`); return parts.join(tr(' و', ' et ')); };
+      const T = [
+        tr("نريد إنشاء A' مماثلة A بالنسبة لـ (d). اضغط «الخطوة التالية». يمكنك سحب A.", "On veut construire A', symétrique de A par rapport à (d). Appuie sur « Étape suivante ». Tu peux déplacer A."),
+        tr('ضع الكوس على (d) ومرّره من A، ثم ارسم العمودي على (d) المار من A.', "Place l'équerre sur (d), fais-la passer par A et trace la perpendiculaire à (d) passant par A."),
+        tr('H هي نقطة تقاطع العمودي مع (d).', "H est le point d'intersection de la perpendiculaire avec (d)."),
+        tr('افتح البركار: الرأس في H والقلم في A.', 'Ouvre le compas : pointe en H, mine en A.'),
+        tr("دون تغيير الفتحة، ارسم قوسًا في الجهة الأخرى: يقطع العمودي في A'.", "Sans changer l'écartement, trace l'arc de l'autre côté : il coupe la perpendiculaire en A'."),
+        tr(`على الشبكة، بعدد المربعات: من H إلى A: ${mv(false)}. ومن H إلى A': ${mv(true)}. الإزاحة معكوسة تمامًا.`, `Sur le quadrillage, en carreaux : de H à A, ${mv(false)} ; de H à A', ${mv(true)}. Le déplacement est exactement inversé.`)];
+      notice(T[st]);
+    }
+  },
+};
+
+/* ---------- Frame loop ---------- */
+const clock = new THREE.Clock();
+function frame() {
+  const dt = Math.min(clock.getDelta(), 0.05), now = performance.now();
+  if (intro) { const k = Math.min(1, (now - intro.t0) / intro.dur), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    camera.position.lerpVectors(intro.from, home.pos, e); camera.lookAt(home.target);
+    if (k >= 1) { intro = null; orbit.enabled = true; orbit.target.copy(home.target); orbit.update(); } } else orbit.update();
+
+  const goal = S.foldOn ? 180 : 0; S.phi += Math.sign(goal - S.phi) * Math.min(Math.abs(goal - S.phi), 90 * dt);
+
+  smallUsed = bigUsed = dotUsed = labUsed = 0;
+  for (const p of [prOrig, prImg, prTool]) p.mesh.visible = p.edges.visible = false;
+  flap.visible = false; mirror.visible = false; compass.visible = false;
+
+  const u = axisDir(), M = MODES[S.mode];
+  M.draw(u, now);
+  S.handles = M.handles(u);
+
+  // controls on the page
+  const knobOn = S.mode !== 'pred', swOn = S.mode === 'tri';
+  knob.visible = trackMesh.visible = knobHit.userData.on = sliderPanel.m.visible = knobOn; swBase.visible = swKnob.visible = swHit.userData.on = switchPanel.m.visible = swOn; drawPanels();
+  const kx = TRACK.x0 + (S.theta / THETA_MAX + 1) / 2 * (TRACK.x1 - TRACK.x0);
+  knob.position.set(kx, PAGE_Y + 0.47, TRACK.z); knobHit.position.copy(knob.position);
+  if (knobOn) drawLabel((S.theta > 0 ? '+' : '') + S.theta + '°', RED, kx, PAGE_Y + 1.8, TRACK.z - 0.4);
+  swX += ((S.foldOn ? SW.x + 0.8 : SW.x - 0.8) - swX) * Math.min(1, dt * 12);
+  swKnob.position.set(swX, PAGE_Y + 0.55, SW.z); swKnob.material.color.set(S.foldOn ? 0xd1153f : 0xbdbdc4);
+
+  for (let i = smallUsed; i < smallPool.length; i++) smallPool[i].mesh.visible = false;
+  for (let i = bigUsed; i < bigPool.length; i++) bigPool[i].mesh.visible = false;
+  for (let i = dotUsed; i < dotPool.length; i++) dotPool[i].visible = false;
+  for (let i = labUsed; i < labPool.length; i++) labPool[i].visible = false;
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener('resize', resize);
+resize(); buildHUD(); startIntro(); requestAnimationFrame(frame);
+</script>
+</body>
+</html>

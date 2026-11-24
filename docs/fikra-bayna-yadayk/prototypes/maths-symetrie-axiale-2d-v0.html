@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La symétrie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: carnet de géométrie calme pour élèves de collège
+   IDEA: une feuille de calque qu'on plie ou qu'on fait tourner sur une punaise
+   PICTURE: la lettre F à l'encre et son image bleue qui se plie ou tourne
+   COLOUR and TYPE: papier, encre bleu nuit, image bleue, accent magenta; Kalam + Atkinson + Naskh
+   LAYOUT: titre, trois expériences prédire-tester-prouver, atelier, à retenir */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--blue:light-dark(#2f5bd3,#86a8ff);--acc:light-dark(#d1155f,#ff6fa3)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(22px,4vw,56px) max(5vw,16px)}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3{font-family:Kalam,cursive;font-weight:700;line-height:1.05;margin:0}
+h1{font-size:clamp(34px,6vw,50px)}h2{font-size:28px;margin-bottom:12px}h3{font-size:24px;margin:4px 0 8px}
+.ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:end;justify-content:space-between}
+.slots{display:flex;gap:10px}
+.slot{width:54px;height:54px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font:700 18px Kalam,cursive;color:var(--soft);transition:.4s}
+.slot.on{border:3px double var(--blue);color:var(--blue);transform:rotate(-10deg)}
+.num{font:700 15px Kalam,cursive;color:var(--soft)}
+.cards{display:grid;gap:18px}
+.card{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:18px}
+.stage{width:100%;display:block;background:repeating-linear-gradient(0deg,transparent 0 19px,var(--line) 19px 20px),repeating-linear-gradient(90deg,transparent 0 19px,var(--line) 19px 20px);border-radius:12px;border:1.5px solid var(--line);touch-action:none}
+.ink{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ghost{fill:color-mix(in srgb,var(--ink) 14%,transparent);stroke:var(--ink);stroke-width:2}
+.img{fill:color-mix(in srgb,var(--blue) 30%,transparent);stroke:var(--blue);stroke-width:2.4}
+.axis{stroke:var(--acc);stroke-width:2.4;stroke-dasharray:8 6}
+.lbl{font:700 14px Kalam,cursive;fill:var(--ink)}
+.lblb{font:700 14px Kalam,cursive;fill:var(--blue)}
+.proofm{opacity:0;transition:opacity .5s}.proofm.on{opacity:1}
+.step{font-weight:700;margin:14px 0 6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+button{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+.opts button{padding:6px}.opts svg{width:56px;height:64px;display:block}
+.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card));opacity:1}
+.opts.txt button{padding:8px 14px}
+.res{min-height:1.5em;font-weight:700;color:var(--blue);margin:8px 0 0}
+.flapw{position:relative;margin-top:10px;border-radius:12px;overflow:hidden;perspective:900px;min-height:120px}
+.proof{padding:14px;border:1.5px dashed var(--line);border-radius:12px}.proof p{margin:4px 0}
+.f{font:700 19px Kalam,cursive}
+.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive}
+.flap:disabled{opacity:1;color:var(--soft)}.flap:disabled::after{content:" · après le test"}
+.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}
+.stamp{position:absolute;bottom:14px;right:14px;background:var(--card);padding:6px 12px;border:3px double var(--blue);border-radius:10px;color:var(--blue);font:700 18px Kalam,cursive;transform:rotate(-12deg) scale(1.6);opacity:0;transition:.35s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.stamp.on{opacity:1;transform:rotate(-12deg) scale(1)}
+.mode{display:flex;gap:8px;margin:10px 0}
+.mode button.on{background:var(--ink);color:var(--bg)}
+.meas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 16px;font-size:15px;margin-top:8px}
+.meas b{white-space:nowrap}
+.retenir{border:2.5px solid var(--ink);border-radius:18px;padding:18px;background:var(--card)}
+.note{font-size:13px;color:var(--soft);margin-top:8px}
+.card{padding-bottom:64px}@media(max-width:600px){.card{padding:14px 14px 64px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap top">
+  <div><div class="num">Mathématiques · collège</div><h1>La symétrie</h1>
+  <p class="ar">التماثل المحوري والتماثل المركزي</p></div>
+  <div class="slots"><div class="slot" id="s0">1</div><div class="slot" id="s1">2</div><div class="slot" id="s2">3</div></div>
+</div></header>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <h2>Je prédis, je teste, je prouve</h2>
+  <div class="cards" id="cards"></div>
+</div></section>
+
+<section class="band" style="padding-top:0"><div class="wrap">
+  <div class="retenir">
+    <h2>Je retiens</h2>
+    <p><b>Symétrie axiale</b> d'axe (d) : l'axe est la médiatrice de [MM']. La figure est retournée, comme un pliage.</p>
+    <p><b>Symétrie centrale</b> de centre O : O est le milieu de [MM']. La figure fait un demi-tour, elle n'est pas retournée.</p>
+    <p>Les deux symétries conservent les longueurs, les angles, les aires et l'alignement.</p>
+    <p class="ar">في التماثل المحوري المحور هو واسط القطعة [MM'] والشكل ينقلب. في التماثل المركزي المركز O هو منتصف [MM'] والشكل يدور نصف دورة دون أن ينقلب. التماثلان يحافظان على الأطوال والزوايا والمساحات والاستقامية.</p>
+  </div>
+  <p class="note">Prototype de leçon pour taalim.men, non publié sur le site. Textes originaux.</p>
+</div></section>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const F='M0 0 H40 V12 H12 V26 H32 V36 H12 V60 H0 Z';
+const wait=t=>new Promise(r=>setTimeout(r,t));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf=(x,d=1)=>x.toLocaleString('fr-FR',{maximumFractionDigits:d,minimumFractionDigits:d});
+const T={same:'',mir:'translate(60 0) scale(-1 1)',rot:'rotate(180 30 35)'};
+const thumb=k=>`<svg viewBox="0 0 60 70" aria-hidden="true"><path class="img" transform="translate(10 5) ${k==='mir'?'translate(40 0) scale(-1 1)':k==='rot'?'rotate(180 20 30)':''}" d="${F}"/></svg>`;
+const NAME={same:'F identique',mir:'F retourné',rot:'F à l\'envers'};
+
+/* Stage: F at (80,70), axis x=160, centre O (160,100) */
+const P=[[80,70,'M'],[120,70,'N'],[80,130,'P']];
+function stageSVG(kind){
+  const axial=kind==='ax';
+  const imgP=P.map(([x,y,n])=>axial?[320-x,y,n]:[320-x,200-y,n]);
+  let marks='';
+  P.forEach(([x,y,n],i)=>{const [u,v]=imgP[i];
+    marks+=`<line class="ink" style="stroke-dasharray:4 4;stroke-width:1.5" x1="${x}" y1="${y}" x2="${u}" y2="${v}"/>`;
+    const mx=(x+u)/2,my=(y+v)/2;
+    [[x,y],[u,v]].forEach(([a,b])=>{const cx=(a+mx)/2,cy=(b+my)/2;marks+=axial?`<line class="ink" x1="${cx}" y1="${cy-5}" x2="${cx}" y2="${cy+5}"/>`:`<line class="ink" x1="${cx-3}" y1="${cy-4}" x2="${cx+3}" y2="${cy+4}"/>`});
+    if(axial)marks+=`<path class="ink" style="stroke-width:1.5" d="M${mx} ${my-8} h8 v8"/>`;
+    marks+=`<circle cx="${x}" cy="${y}" r="3.5" fill="var(--ink)"/><circle cx="${u}" cy="${v}" r="3.5" fill="var(--blue)"/>`;
+    marks+=`<text class="lbl" x="${x-16}" y="${y+(y<100?-4:16)}">${n}</text><text class="lblb" x="${u+6}" y="${v+(v<100?-4:16)}">${n}'</text>`;
+  });
+  const guide=axial?`<line class="axis" x1="160" y1="8" x2="160" y2="192"/><text class="lbl" x="166" y="22" style="fill:var(--acc)">(d)</text>`
+    :`<circle cx="160" cy="100" r="5" fill="var(--acc)"/><text class="lbl" x="166" y="96" style="fill:var(--acc)">O</text>`;
+  return `<svg class="stage" viewBox="0 0 320 200" role="img" aria-label="La lettre F et son image">
+    ${guide}<path class="ghost" transform="translate(80 70)" d="${F}"/>
+    <g class="mv"><path class="img" transform="translate(80 70)" d="${F}" style="opacity:0"/></g>
+    <g class="proofm">${marks}</g></svg>`;
+}
+function animate(card,kind){
+  const g=card.querySelector('.mv'),p=g.firstElementChild;p.style.opacity=1;
+  return new Promise(res=>{let t0=null;const D=1600;
+    const step=now=>{if(t0===null)t0=now;let k=reduce?1:Math.min(1,(now-t0)/D);const e=.5-.5*Math.cos(Math.PI*k);
+      g.setAttribute('transform',kind==='ax'?`translate(160 0) scale(${1-2*e} 1) translate(-160 0)`:`rotate(${180*e} 160 100)`);
+      if(k<1)requestAnimationFrame(step);else res()};requestAnimationFrame(step)});
+}
+
+/* Atelier */
+let tri=[[60,60],[125,95],[70,175]],mode='ax';
+function img([x,y]){return mode==='ax'?[320-x,y]:[320-x,240-y]}
+const d2=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1])/20;
+function ang(a,b,c){const u=[b[0]-a[0],b[1]-a[1]],v=[c[0]-a[0],c[1]-a[1]];return Math.acos((u[0]*v[0]+u[1]*v[1])/(Math.hypot(...u)*Math.hypot(...v)))*180/Math.PI}
+function atelierSVG(){return `<div class="mode"><button data-m="ax" class="on">Symétrie axiale</button><button data-m="ce">Symétrie centrale</button></div>
+<svg class="stage" id="at" viewBox="0 0 320 240" role="img" aria-label="Triangle ABC et son image"></svg>
+<div class="meas"><span>AB = <b id="ab"></b></span><span>A'B' = <b id="ab2"></b></span><span>angle BAC = <b id="a1"></b></span><span>angle B'A'C' = <b id="a2"></b></span></div>
+<p class="note">Fais glisser les sommets A, B et C.</p>`}
+function drawAt(){
+  const s=$('#at');if(!s)return;const im=tri.map(img),L=['A','B','C'];
+  const guide=mode==='ax'?`<line class="axis" x1="160" y1="6" x2="160" y2="234"/>`:`<circle cx="160" cy="120" r="5" fill="var(--acc)"/><text class="lbl" x="166" y="116" style="fill:var(--acc)">O</text>`;
+  s.innerHTML=guide+`<polygon class="ghost" points="${tri.join(' ')}"/><polygon class="img" points="${im.join(' ')}"/>`+
+   tri.map((p,i)=>`<circle data-i="${i}" cx="${p[0]}" cy="${p[1]}" r="13" fill="var(--acc)" fill-opacity=".25" style="cursor:grab"/><circle cx="${p[0]}" cy="${p[1]}" r="4" fill="var(--ink)" pointer-events="none"/><text class="lbl" pointer-events="none" x="${p[0]-18}" y="${p[1]-8}">${L[i]}</text>`).join('')+
+   im.map((p,i)=>`<text class="lblb" x="${p[0]+8}" y="${p[1]-8}">${L[i]}'</text>`).join('');
+  $('#ab').textContent=nf(d2(tri[0],tri[1]));$('#ab2').textContent=nf(d2(im[0],im[1]));
+  $('#a1').textContent=nf(ang(...tri),0)+'°';$('#a2').textContent=nf(ang(im[0],im[1],im[2]),0)+'°';
+}
+function bindAt(){
+  const s=$('#at');let drag=-1;
+  const pt=e=>{const m=s.getScreenCTM().inverse();const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(m);return[Math.max(10,Math.min(310,p.x)),Math.max(10,Math.min(230,p.y))]};
+  s.addEventListener('pointerdown',e=>{const i=e.target.dataset&&e.target.dataset.i;if(i!==undefined){drag=+i;s.setPointerCapture(e.pointerId)}});
+  s.addEventListener('pointermove',e=>{if(drag<0)return;tri[drag]=pt(e).map(Math.round);drawAt()});
+  s.addEventListener('pointerup',()=>drag=-1);
+  document.querySelectorAll('.mode button').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.m;document.querySelectorAll('.mode button').forEach(x=>x.classList.toggle('on',x===b));drawAt()}));
+}
+async function moveTri(to){const from=tri.map(p=>p.slice());const D=reduce?1:900;let t0=performance.now();
+  return new Promise(res=>{const st=now=>{const k=Math.min(1,(now-t0)/D);tri=from.map((p,i)=>[p[0]+(to[i][0]-p[0])*k,p[1]+(to[i][1]-p[1])*k]);drawAt();k<1?requestAnimationFrame(st):res()};requestAnimationFrame(st)})}
+
+const CH=[
+ {t:'Le pliage',stage:()=>stageSVG('ax'),q:'On fait le symétrique de la lettre F par rapport à la droite (d). À quoi ressemble l\'image ?',qa:'نرسم مماثل الحرف F بالنسبة للمستقيم (d). كيف تبدو الصورة؟',o:['same','mir','rot'],a:1,
+  test:async c=>{await animate(c,'ax');return 'Le calque s\'est plié autour de (d) : l\'image est un F retourné'},
+  p:'<p>Pour chaque point, l\'axe (d) coupe [MM\'] en son milieu et perpendiculairement : (d) est la <b>médiatrice</b> de [MM\'].</p><p class="f">pliage → la figure est retournée</p><p class="ar">المحور (d) هو واسط القطعة [MM\']: يقطعها في منتصفها وبشكل عمودي. لذلك تنقلب الصورة كما في الطي.</p>'},
+ {t:'Le demi-tour',stage:()=>stageSVG('ce'),q:'Cette fois, on fait le symétrique du F par rapport au point O. À quoi ressemble l\'image ?',qa:'نرسم مماثل الحرف F بالنسبة للنقطة O. كيف تبدو الصورة؟',o:['mir','rot','same'],a:1,
+  test:async c=>{await animate(c,'ce');return 'Le calque a tourné d\'un demi-tour autour de O : l\'image est un F à l\'envers, pas retourné'},
+  p:'<p>Pour chaque point, O est le <b>milieu</b> de [MM\'] : M, O et M\' sont alignés et OM = OM\'.</p><p class="f">demi-tour de 180° → la figure n\'est pas retournée</p><p class="ar">النقطة O هي منتصف القطعة [MM\']. التماثل المركزي دوران بنصف دورة، فالشكل لا ينقلب.</p>'},
+ {t:'Ce que la symétrie garde',stage:atelierSVG,txt:true,q:'Après une symétrie, la longueur A\'B\' est…',qa:'بعد التماثل، الطول A\'B\' يكون…',o:['plus grande que AB','égale à AB','ça dépend de la position'],a:1,
+  test:async()=>{const pos=[[[40,40],[140,70],[60,200]],[[100,120],[30,40],[140,200]],[[60,60],[125,95],[70,175]]];const seen=[];
+   for(const m of ['ax','ce']){mode=m;document.querySelectorAll('.mode button').forEach(x=>x.classList.toggle('on',x.dataset.m===m));
+    for(const p of pos){await moveTri(p);await wait(350);seen.push(Math.abs(d2(tri[0],tri[1])-d2(img(tri[0]),img(tri[1])))<.05)}}
+   return seen.every(Boolean)?'6 positions testées : A\'B\' = AB à chaque fois, les angles aussi':'Mesure à revoir'},
+  p:'<p>Une symétrie déplace la figure sans la déformer. Elle conserve :</p><p class="f">les longueurs · les angles · les aires · l\'alignement</p><p class="ar">التماثل ينقل الشكل دون أن يغيّر شكله: يحافظ على الأطوال والزوايا والمساحات والاستقامية.</p>'}
+];
+
+let saved={};try{saved=JSON.parse(localStorage.getItem('sym_stamps')||'{}')}catch(e){}
+$('#cards').innerHTML=CH.map((c,i)=>`<article class="card" id="c${i}">
+ <div class="num">Expérience ${i+1}</div><h3>${c.t}</h3><p>${c.q}</p><p class="ar">${c.qa}</p>
+ ${c.stage()}
+ <div class="step">1. Je prédis</div><div class="opts${c.txt?' txt':''}">${c.o.map((o,j)=>`<button data-j="${j}" aria-label="${c.txt?o:NAME[o]}">${c.txt?o:thumb(o)}</button>`).join('')}</div>
+ <div class="step">2. Je teste</div><button class="go" disabled>Tester</button><p class="res" aria-live="polite"></p>
+ <div class="step">3. Je prouve</div><div class="flapw"><div class="proof">${c.p}</div><button class="flap" disabled>Soulever le rabat</button></div>
+ <div class="stamp"></div></article>`).join('');
+drawAt();bindAt();
+
+CH.forEach((c,i)=>{
+  const card=$('#c'+i),goB=card.querySelector('.go'),flap=card.querySelector('.flap'),res=card.querySelector('.res');let pick=null;
+  card.querySelectorAll('.opts button').forEach(b=>b.addEventListener('click',()=>{if(pick!==null)return;pick=+b.dataset.j;b.classList.add('pick');
+    card.querySelectorAll('.opts button').forEach(x=>x.disabled=x!==b);goB.disabled=false}));
+  goB.addEventListener('click',async()=>{goB.disabled=true;res.textContent='Test en cours…';res.textContent=await c.test(card);flap.disabled=false});
+  flap.addEventListener('click',()=>{flap.classList.add('open');const good=pick===c.a;
+    res.textContent+=good?'. Ta prédiction était juste.':'. La bonne réponse : '+(c.txt?c.o[c.a]:NAME[c.o[c.a]])+'.';
+    const pm=card.querySelector('.proofm');if(pm)pm.classList.add('on');
+    setTimeout(()=>{const st=card.querySelector('.stamp');st.textContent=good?'Bien prédit':'Prouvé';st.classList.add('on');$('#s'+i).classList.add('on');$('#s'+i).textContent='✓'},500);
+    saved[i]=good;try{localStorage.setItem('sym_stamps',JSON.stringify(saved))}catch(e){}});
+  if(i in saved){$('#s'+i).classList.add('on');$('#s'+i).textContent='✓'}
+});
+}
+</script>
+</body>
+</html>
