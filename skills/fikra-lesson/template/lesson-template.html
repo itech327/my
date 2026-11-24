@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le périmètre du cercle · Le concept en main</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* STYLE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px)}
+h1,h2,h3,.hand{font-family:Kalam,"Comic Sans MS",cursive;font-weight:700;line-height:1.1;margin:0}
+h1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:12px 0 6px}
+p{margin:6px 0}
+.ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
+.num{font:700 15px Kalam,cursive;color:var(--soft)}
+.note{font-size:13px;color:var(--soft)}
+header{padding:20px 0 6px}
+.steps{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}
+.steps .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
+.steps button{flex:none;min-height:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px "Atkinson Hyperlegible",sans-serif;padding:0 10px;cursor:pointer}
+.steps button.done{border-color:var(--ok);color:var(--ok)}
+.steps button.cur{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.steps button:disabled{opacity:.45;cursor:default}
+section.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;scroll-margin-top:60px}
+section.moment[hidden]{display:none}
+button.b{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button.b.primary{background:var(--ink);color:var(--bg)}
+button.b:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.opts button{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}
+.opts button:disabled{cursor:default}
+.q{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+.q:first-child{border-top:0;margin-top:0;padding-top:0}
+.fig{width:100%;display:block}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
+.card{border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center}
+.card small{display:block;color:var(--soft);font-size:13px}
+.card b{font:700 20px Kalam,cursive;white-space:nowrap}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}
+label{display:block;font-weight:700}
+label span{font-weight:400;color:var(--soft);white-space:nowrap}
+input[type=range]{width:100%;height:40px;accent-color:var(--blue)}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.seg button{min-height:40px;padding:4px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 14px "Atkinson Hyperlegible",sans-serif;cursor:pointer}
+.seg button.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.bars{display:grid;gap:4px;margin-top:6px;font-size:14px}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.scroll{overflow-x:auto}
+.missions{list-style:none;padding:0;margin:8px 0}
+.missions li{padding:4px 0 4px 30px;position:relative}
+.missions li::before{content:"";position:absolute;left:0;top:7px;width:18px;height:18px;border:2px solid var(--line);border-radius:5px}
+.missions li.ok::before{border-color:var(--ok);background:var(--ok)}
+.rule{border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:8px 0}
+.formula{font:700 clamp(24px,6vw,34px) Kalam,cursive;margin:4px 0}
+.flapw{position:relative;margin-top:8px;border-radius:12px;overflow:hidden;min-height:140px}
+.proof{padding:12px;border:1.5px dashed var(--line);border-radius:12px}
+.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive;color:var(--ink);cursor:pointer}
+.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}
+.verdict{border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}
+.verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.verdict.no{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.ex{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-top:8px}
+.ex input{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;width:9em;background:var(--card);color:var(--ink)}
+.fb{min-height:1.4em;margin-top:6px;font-weight:700}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.report .card b{font-size:26px}
+select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
+#problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+footer{padding:20px 0 40px}
+@media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* STYLE:END */
+</style>
+</head>
+<body>
+<header><div class="wrap" id="hd"></div></header>
+<nav class="steps" aria-label="Moments de la leçon"><div class="wrap" id="steps"></div></nav>
+<main class="wrap" id="main"></main>
+<footer><div class="wrap note" id="ft"></div></footer>
+
+<script>
+/* LESSON:BEGIN · everything the lesson needs lives in this block.
+   Example lesson: the perimeter of a circle (1AC). Replace it with your own. */
+const LESSON = {
+  meta: {
+    kicker: 'Mathématiques · 1re année collège · Le concept en main',
+    title: 'Le périmètre du cercle',
+    titleAr: 'محيط الدائرة',
+    short: 'Périmètre du cercle',
+    classes: ['1APIC-1', '1APIC-2', '1APIC-3'],
+    footer: 'Exemple du gabarit « Le concept en main ». Textes et valeurs originaux.'
+  },
+
+  misconceptions: {
+    aire: { fr: "Tu as confondu périmètre et aire : c'est l'aire qui dépend de r², pas le périmètre.", ar: 'خلطت بين المحيط والمساحة: المساحة هي التي تتعلق بمربع الشعاع.' },
+    constante: { fr: 'Le périmètre dépend du rayon : un cercle plus grand a un bord plus long.', ar: 'المحيط يتعلق بالشعاع: الدائرة الأكبر لها محيط أطول.' },
+    deux: { fr: 'Oubli du 2 dans P = 2·π·r.', ar: 'نسيت العدد 2 في العلاقة.' },
+    diametre: { fr: 'Le diamètre a été pris pour le rayon : r = d ÷ 2.', ar: 'اعتبرت القطر شعاعا: الشعاع نصف القطر.' },
+    inverse: { fr: 'Pour retrouver r, on divise P par 2π.', ar: 'لإيجاد الشعاع نقسم المحيط على 2π.' }
+  },
+
+  hook: {
+    title: 'Une roue deux fois plus grande…',
+    svg: `<svg class="fig" viewBox="0 0 640 200" role="img" aria-label="Deux roues de rayons différents">
+      <circle class="ink" cx="150" cy="95" r="40" fill="var(--card)"/><circle class="ink" cx="420" cy="95" r="70" fill="var(--card)"/>
+      <line class="ink" x1="150" y1="95" x2="190" y2="95" style="stroke:var(--blue)"/><line class="ink" x1="420" y1="95" x2="490" y2="95" style="stroke:var(--heat)"/>
+      <text x="150" y="160" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--blue)">r</text>
+      <text x="420" y="185" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--heat)">2r</text></svg>`,
+    text: "Une roue a un rayon deux fois plus grand qu'une autre. En un tour, parcourt-elle deux fois plus de chemin, ou plus encore ?",
+    ar: 'عجلة شعاعها ضعف شعاع أخرى. هل تقطع في دورة واحدة ضعف المسافة أم أكثر؟'
+  },
+
+  predict: [
+    { q: 'Si le rayon double, le périmètre est multiplié par :', ar: 'إذا تضاعف الشعاع، يُضرب المحيط في:',
+      options: [['× 2', ''], ['× 4', 'aire'], ['il ne change pas', 'constante']] }
+  ],
+
+  experiment: {
+    title: 'Le cercle qui grandit',
+    intro: 'Fais varier le rayon et observe le périmètre et l’aire.',
+    html: `<svg class="fig" viewBox="0 0 400 220" role="img" aria-label="Cercle de rayon variable"><circle id="cc" class="ink" cx="200" cy="110" r="40" style="stroke:var(--blue)"/><line id="cr" class="ink" x1="200" y1="110" x2="240" y2="110" style="stroke:var(--heat)"/></svg>
+      <div class="readout"><div class="card"><small>Rayon</small><b id="xr"></b></div><div class="card"><small>Périmètre</small><b id="xp" style="color:var(--blue)"></b></div><div class="card"><small>Aire</small><b id="xa"></b></div></div>
+      <label for="rr">Rayon <span id="ro"></span></label><input id="rr" type="range" min="1" max="10" step="1" value="2">`,
+    missions: [
+      { id: 'r2r4', text: 'Mets r = 2 cm puis r = 4 cm et compare les périmètres.' },
+      { id: 'r3r9', text: 'Compare r = 3 cm et r = 9 cm.' }
+    ],
+    required: ['r2r4'],
+    note: 'P = 2·π·r est calculé à chaque mouvement, avec π ≈ 3,1416.',
+    mount(root, api) {
+      const $ = s => root.querySelector(s), seen = new Set();
+      const draw = () => {
+        const r = +$('#rr').value, P = 2 * Math.PI * r, A = Math.PI * r * r;
+        $('#cc').setAttribute('r', r * 10); $('#cr').setAttribute('x2', 200 + r * 10);
+        $('#xr').textContent = r + ' cm'; $('#xp').textContent = api.nf(P, 2) + ' cm'; $('#xa').textContent = api.nf(A, 2) + ' cm²'; $('#ro').textContent = '= ' + r + ' cm';
+        seen.add(r); if (seen.has(2) && seen.has(4)) api.done('r2r4'); if (seen.has(3) && seen.has(9)) api.done('r3r9');
+      };
+      $('#rr').addEventListener('input', draw); draw();
+    }
+  },
+
+  rule: {
+    blocks: [{ formula: 'P = 2 · π · r', text: 'P et r dans la même unité de longueur. π ≈ 3,14.', ar: 'المحيط يساوي 2 في π في الشعاع.' }],
+    seen: 'Rayon double, périmètre double : le périmètre est proportionnel au rayon. C’est l’aire qui quadruple.'
+  },
+
+  proof: {
+    title: 'Pourquoi « × 2 » ?',
+    html: '<p class="hand" style="font-size:20px">2 · π · (2r) = 2 × (2 · π · r)</p><p>Le rayon apparaît une seule fois, sans carré : doubler r double P.</p>',
+    ar: 'الشعاع يظهر مرة واحدة دون مربع، فمضاعفته تضاعف المحيط.'
+  },
+
+  exercises: {
+    levels: [
+      { label: 'Niveau 1', make(R) { const r = R.int(3, 15);
+        return { q: `Calcule le périmètre d'un cercle de rayon ${r} cm. Prends π ≈ 3,14.`, unit: 'cm', ans: 2 * 3.14 * r, digits: 2,
+          traps: [[3.14 * r, 'deux'], [3.14 * r * r, 'aire']] }; } },
+      { label: 'Niveau 2', make(R) { const d = R.pick([6, 10, 12, 14, 16, 18, 20, 24, 30]); // d = 8 would make two traps equal
+        return { q: `Calcule le périmètre d'un cercle de diamètre ${d} cm. Prends π ≈ 3,14.`, unit: 'cm', ans: 3.14 * d, digits: 2,
+          traps: [[2 * 3.14 * d, 'diametre'], [3.14 * (d / 2) ** 2, 'aire']] }; } },
+      { label: 'Niveau 3', make(R) { const r = R.int(2, 20), P = Math.round(2 * 3.14 * r * 100) / 100;
+        return { q: `Un cercle a un périmètre de ${R.nf(P, 2)} cm. Calcule son rayon. Prends π ≈ 3,14.`, unit: 'cm', ans: P / (2 * 3.14), digits: 2,
+          traps: [[P * 2 * 3.14, 'inverse'], [P / 3.14, 'deux']] }; } }
+    ]
+  },
+
+  check: [
+    { q: 'Un disque a un rayon 3 fois plus grand qu’un autre. Son périmètre est multiplié par :', ar: 'شعاع قرص ثلاثة أضعاف شعاع آخر. يُضرب محيطه في:',
+      options: [['× 3', ''], ['× 9', 'aire'], ['il ne change pas', 'constante']] }
+  ]
+};
+/* LESSON:END */
+</script>
+
+<script>
+/* ENGINE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson; update it with tools/update_engine.py */
+(() => {
+const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });
+// Arabic text: keep each Latin or numeric expression left-to-right
+const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => '⁦' + m + '⁩');
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };
+const MIS = L.misconceptions || {};
+const STEPS = (L.meta.steps || ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie']);
+const S = { open: 1, pred: {}, check: {}, ex: {}, errs: {}, missions: new Set(), cur: null, lvl: 0 };
+const near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);
+
+/* validation: shown to the author, caught by the flow test */
+function validate() {
+  const P = [], codeOk = c => c === '' || (MIS[c] && MIS[c].fr && MIS[c].ar);
+  ['kicker', 'title', 'titleAr'].forEach(k => { if (!L.meta || !L.meta[k]) P.push(`meta.${k} manquant`); });
+  for (const [set, name] of [[L.predict, 'predict'], [L.check, 'check']]) {
+    if (!set || !set.length) P.push(`${name} vide`);
+    (set || []).forEach((q, i) => {
+      if (!q.q || !q.ar) P.push(`${name}[${i}] : texte ou arabe manquant`);
+      const good = q.options.filter(o => o[1] === '').length; if (good !== 1) P.push(`${name}[${i}] : ${good} bonnes réponses au lieu d'une`);
+      q.options.forEach(o => { if (!codeOk(o[1])) P.push(`${name}[${i}] : code « ${o[1]} » absent de misconceptions`); });
+    });
+  }
+  const ex = L.experiment;
+  if (!ex || !ex.missions || !ex.missions.length) P.push('experiment.missions vide');
+  else (ex.required || [ex.missions[0].id]).forEach(id => { if (!ex.missions.some(m => m.id === id)) P.push(`mission requise « ${id} » inconnue`); });
+  (L.exercises && L.exercises.levels || []).forEach((lv, l) => {
+    for (let k = 0; k < 300; k++) {
+      let e; try { e = lv.make(R); } catch (err) { P.push(`niveau ${l + 1} : ${err.message}`); break; }
+      if (!e.q || !e.unit || !isFinite(e.ans)) { P.push(`niveau ${l + 1} : question, unité ou réponse invalide`); break; }
+      for (const [v, c] of e.traps || []) {
+        if (!codeOk(c) || !c) { P.push(`niveau ${l + 1} : code de piège « ${c} » inconnu`); return; }
+        if (!isFinite(v)) { P.push(`niveau ${l + 1} : piège ${c} non fini`); return; }
+        if (near(v, e.ans)) { P.push(`niveau ${l + 1} : le piège ${c} donne la bonne réponse pour « ${e.q} »`); return; }
+      }
+      const T = e.traps || [];
+      for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++)
+        if (T[i][1] !== T[j][1] && near(T[i][0], T[j][0])) { P.push(`niveau ${l + 1} : les pièges ${T[i][1]} et ${T[j][1]} donnent la même valeur pour « ${e.q} »`); return; }
+    }
+  });
+  if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
+  return P;
+}
+
+/* rendering */
+function qBlock(arr, prefix) { return arr.map((q, i) => `<div class="q" id="${prefix}${i}"></div>`).join(''); }
+function render() {
+  const m = L.meta, h = L.hook, x = L.experiment, r = L.rule, p = L.proof;
+  document.title = `${m.title} · Le concept en main`;
+  $('#hd').innerHTML = `<div class="num">${m.kicker}</div><h1>${m.title}</h1><p class="ar">${iso(esc(m.titleAr))}</p>`;
+  $('#ft').textContent = m.footer || '';
+  $('#main').innerHTML = `
+  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>
+    <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div></section>
+  <section class="moment" id="m2" hidden><div class="num">2 · Je prédis</div><h2>Avant toute explication, choisis</h2>
+    <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>${qBlock(L.predict, 'p')}
+    <div class="row"><button class="b primary" data-next="3" id="next2" disabled>Je teste</button></div></section>
+  <section class="moment" id="m3" hidden><div class="num">3 · Je teste</div><h2>${x.title}</h2><p>${x.intro || ''}</p><div id="exp">${x.html}</div>
+    <h3>Mes missions</h3><ul class="missions">${x.missions.map(mi => `<li data-m="${mi.id}">${mi.text}</li>`).join('')}</ul>
+    ${x.note ? `<p class="note">${x.note}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="4" id="next3" disabled>J'ai observé, je nomme la règle</button><span class="note" id="next3n">Termine les missions marquées comme nécessaires.</span></div></section>
+  <section class="moment" id="m4" hidden><div class="num">4 · Je nomme la règle</div><h2>La règle</h2>
+    ${r.blocks.map(b => `<div class="rule"><div class="formula">${b.formula}</div><p>${b.text || ''}</p>${b.ar ? `<p class="ar">${iso(esc(b.ar))}</p>` : ''}</div>`).join('')}
+    ${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
+  <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
+    <div class="flapw"><div class="proof">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
+    <h3>Et ma prédiction ?</h3><div id="pv"></div>
+    <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div></section>
+  <section class="moment" id="m6" hidden><div class="num">6 · Je m'entraîne</div><h2>Exercices sans fin</h2>
+    <p class="ar">${iso('كل تمرين جديد بأعداد مختلفة.')}</p>
+    <div class="seg" id="lv">${L.exercises.levels.map((lv, i) => `<button data-l="${i}" class="${i ? '' : 'on'}">${lv.label}</button>`).join('')}</div>
+    <div class="ex"><p id="exq"></p><div class="row"><input id="exa" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><span id="exu" class="hand" style="font-size:20px"></span><button class="b" id="exc">Vérifier</button><button class="b" id="exn">Nouvel exercice</button></div><div class="fb" id="exf" aria-live="polite"></div></div>
+    <p class="note" id="exs"></p>
+    <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div></section>
+  <section class="moment" id="m7" hidden><div class="num">7 · Je vérifie</div><h2>Pour finir</h2>${qBlock(L.check, 'c')}
+    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices réussis</small><b id="r3"></b></div></div>
+    <div id="r4"></div>
+    <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option>${(m.classes || []).map(c => `<option>${esc(c)}</option>`).join('')}</select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
+    <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p></div></section>`;
+}
+
+/* steps */
+function steps() {
+  $('#steps').innerHTML = STEPS.map((n, i) => `<button data-s="${i + 1}" class="${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}</button>`).join('');
+  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));
+}
+function openStep(n) {
+  if (n > S.open) S.open = n;
+  for (let i = 1; i <= S.open; i++) $('#m' + i).hidden = false;
+  steps(); if (n === 5) verdicts(); if (n === 6 && !S.cur) newEx();
+  $('#m' + n).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* questions */
+function question(q, el, store, key, onDone) {
+  el.innerHTML = `<p><b>${q.q}</b></p><p class="ar">${iso(esc(q.ar))}</p><div class="opts">${q.options.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}</div>`;
+  el.querySelectorAll('button').forEach(b => b.onclick = () => {
+    if (store[key]) return; const i = +b.dataset.i, code = q.options[i][1];
+    store[key] = { i, ok: code === '', code }; b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b); onDone();
+  });
+}
+function verdicts() {
+  $('#pv').innerHTML = L.predict.map((q, k) => {
+    const a = S.pred[k]; if (!a) return ''; const right = q.options.find(o => o[1] === '')[0];
+    return `<div class="verdict ${a.ok ? 'ok' : 'no'}"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :</b> tu avais choisi « ${q.options[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code].fr + `<div class="ar">${iso(esc(MIS[a.code].ar))}</div>`}</div>`;
+  }).join('');
+}
+
+/* experiment */
+function done(id) {
+  if (S.missions.has(id)) return; S.missions.add(id);
+  const li = $(`.missions li[data-m="${id}"]`); if (li) li.classList.add('ok');
+  const req = L.experiment.required || [L.experiment.missions[0].id], ok = req.every(r => S.missions.has(r));
+  $('#next3').disabled = !ok;
+  $('#next3n').textContent = !ok ? 'Termine les missions marquées comme nécessaires.' : S.missions.size === L.experiment.missions.length ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.';
+}
+
+/* exercises */
+function newEx() {
+  const lv = L.exercises.levels[S.lvl]; S.cur = lv.make(R);
+  $('#exq').textContent = S.cur.q; $('#exu').textContent = S.cur.unit; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false;
+}
+function checkEx() {
+  const x = parseFloat($('#exa').value.replace(/[\s ]/g, '').replace(',', '.')), c = S.cur;
+  if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }
+  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0]); st[1]++;
+  if (near(x, c.ans)) { st[0]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
+  else {
+    const t = (c.traps || []).find(tp => near(x, tp[0]));
+    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class="ar">${iso(esc(MIS[t[1]].ar))}</div>`; }
+    else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';
+    $('#exf').className = 'fb no';
+  }
+  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0]; return `${lv.label} : ${s[0]} réussi${s[0] > 1 ? 's' : ''} sur ${s[1]}`; }).join(' · ');
+}
+
+/* report */
+function report() {
+  const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;
+  const ok = Object.values(S.ex).reduce((s, v) => s + v[0], 0), tries = Object.values(S.ex).reduce((s, v) => s + v[1], 0);
+  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${ok} / ${tries}`;
+  const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
+  Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);
+  const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);
+  const pr = p / L.predict.length, cr = c / L.check.length;
+  $('#r4').innerHTML = `<div class="verdict ${cr === 1 ? 'ok' : 'no'}">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au moment « Je teste » et refais les missions.'}</div>`
+    + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
+  S.summary = { p, c, ex: `${ok}/${tries}`, errs: list };
+  $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* start */
+render(); steps();
+$$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
+L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
+L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));
+$('#flap').onclick = () => $('#flap').classList.add('open');
+$('#exc').onclick = checkEx; $('#exn').onclick = newEx;
+$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
+$$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
+$('#copy').onclick = async () => {
+  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices ${s.ex} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
+  try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }
+};
+L.experiment.mount($('#exp'), { done, nf, iso, reduce });
+const problems = validate(), testMode = /[?&]test\b/.test(location.search);
+if (problems.length) { console.error('Leçon invalide :\n' + problems.join('\n')); $('#main').insertAdjacentHTML('afterbegin', `<div id="problems"><b>À corriger avant publication :</b><ul>${problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`); }
+if (testMode) window.__fikra = { S, L, done, openStep, problems, newEx };
+})();
+/* ENGINE:END */
+</script>
+</body>
+</html>
