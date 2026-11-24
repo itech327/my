@@ -85,11 +85,13 @@
       "voice": "nour",
       "delivery": "radio",
       "text": "الأعداد السالبة أصغر من الصفر. نقرأ: ناقص واحد، ناقص اثنين، ناقص ثلاثة.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-fusha-05.mp3",
       "seconds": 8,
       "generatedAt": "2026-11-24T00:01:33.348Z",
-      "spokenText": "الأعداد السالبة أصغر من الصفر. نقرأ: ناقص واحد، ناقص اثنين، ناقص ثلاثة."
+      "spokenText": "الأعداد السالبة أصغر من الصفر. نقرأ: ناقص واحد، ناقص اثنين، ناقص ثلاثة.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-24"
     },
     {
       "id": "num-fusha-06",
@@ -299,11 +301,13 @@
       "voice": "younes",
       "delivery": "conversational",
       "text": "تلاتة في ربعة كتعطينا طناش.",
-      "status": "generated",
+      "status": "approved",
       "file": "audio/num-darija-07.mp3",
       "seconds": 3,
       "generatedAt": "2026-11-24T00:01:36.638Z",
-      "spokenText": "تلاتة في ربعة كتعطينا طناش."
+      "spokenText": "تلاتة في ربعة كتعطينا طناش.",
+      "reviewedBy": "owner (native listener)",
+      "reviewedAt": "2026-11-24"
     },
     {
       "id": "class-darija-01",
