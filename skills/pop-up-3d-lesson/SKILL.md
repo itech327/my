@@ -42,14 +42,14 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove. A questi
 - One line "لاحظ: / Observe :" that changes with what is happening right now.
 
 ## 2b. The decor follows the content
-A uniform background wastes the strongest hint a 3D page can give: where this maths or science lives in real life. Every mode gets a decor chosen from the real-life context of its question, never a default.
+A uniform background wastes the strongest hint a 3D page can give: where this maths or science lives in real life. Each lesson gets ONE decor, chosen from the real-life context of the whole lesson, never a default. One decor per lesson, not one per mode: changing the world at every mode distracts from the content.
 
 - Use the kit, never a hand-made background: put `/* DECOR:BEGIN */ /* DECOR:END */` in the module script after the lights, run `python3 tools/inject_decor.py page.html`, then
   `const decor = makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 13 } })`,
-  call `decor.use(DECOR_BY_MODE[mode])` in `setMode` and at start, and `decor.update(dt)` in the frame loop. Keep `hemi` and `sun` in variables; do not add a desk plane, the kit brings the ground and the support under the book.
+  then `const DECOR = 'chantier';` and `decor.use(DECOR)` once at start, and `decor.update(dt)` in the frame loop. Do not change the decor in `setMode`. Keep `hemi` and `sun` in variables; do not add a desk plane, the kit brings the ground and the support under the book.
 - A decor is a sky, a ground, the support under the book (rug, low Moroccan `mida` table, table, lab bench), its light, up to 8 paper cut-out cards around the book, and one backdrop card standing at the back edge of the experiment page. The backdrop is what a portrait phone sees behind the experiment; the cards show when the student turns the book or holds the phone in landscape.
-- Changing mode folds the old cards down and pops the new ones up, like a pop-up book. Reduced motion: instant.
-- Choose by the question of the mode, not by the subject name: a conical glass of tea → `maison`; a pyramid cut or filled with sand → `desert`; cubes and enlargement by counting → `jeux`; constructions with ruler and compass → `classe`; living things, seasons, shadows outdoors → `jardin`; reactions, solutions, circuits → `labo`; the sky, light, the Moon → `nuit`. Look at `examples/decor-gallery.html` to choose. Several modes may share a decor; one lesson usually needs two or three.
+- When the page opens, the cards and the backdrop pop up like a pop-up book. Reduced motion: instant.
+- Choose the place where the lesson's main question lives: Pythagoras with a ladder and the builders' rope → `chantier`; sections and reductions of pyramids → `desert`; axial symmetry and zellige stars → `maison`; geometry constructions → `classe`; living things, seasons, outdoor shadows → `jardin`; reactions, solutions, circuits → `labo`; the sky, light, the Moon → `nuit`; counting and building with cubes → `jeux`. Look at `examples/decor-gallery.html` to choose.
 - The decor serves the content and never competes with it:
   - nothing in the decor uses the meaning colours (orange input, blue result, red key element) at full strength; the kit washes every card and the backdrop toward the fog or paper colour;
   - no text, no numbers, no logos, no real people, no known characters, no copied artwork: only the kit's original drawings;

@@ -143,7 +143,7 @@ sun.position.set(-30, 60, 25); sun.castShadow = true; sun.shadow.mapSize.set(102
 Object.assign(sun.shadow.camera, { left: -35, right: 35, top: 30, bottom: -30, near: 10, far: 150 }); sun.shadow.bias = -0.0008;
 scene.add(sun);
 
-/* ---------- Decor: the classroom for folding and construction, a Moroccan house for the axes of symmetry (zellige stars) ---------- */
+/* ---------- Decor: one world around the book, chosen from the context of the lesson ---------- */
 /* DECOR:BEGIN · pop-up decor kit v1 · source: skills/pop-up-3d-lesson/template/decor-kit.js
    Do not edit inside a lesson: edit the kit, then run tools/inject_decor.py on the lesson.
 
@@ -156,7 +156,7 @@ scene.add(sun);
            // optional: a pop-up backdrop standing at the back edge of the experiment page,
            // so the context shows behind the experiment even in portrait
            makeDecorKit({ ..., backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 13 } });
-           decor.use('desert');            // on mode change
+           decor.use('desert');            // once, at start: one decor for the whole lesson
            decor.update(dt);               // every frame
            decor.names                     // available decors                                   */
 function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
@@ -419,7 +419,7 @@ function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
 }
 /* DECOR:END */
 const decor = makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 12 } });
-const DECOR_BY_MODE = { tri: 'classe', pred: 'classe', shp: 'classe', med: 'classe', axes: 'maison', con: 'classe' };
+const DECOR = 'maison';   // one decor for the whole lesson: zellige: symmetry in every star
 
 /* ---------- Canvas textures ---------- */
 function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
@@ -723,7 +723,7 @@ function buildHUD() {
   acts.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { MODES[S.mode].action(b.dataset.a); buildHUD(); });
   requestAnimationFrame(() => resize(false));
 }
-function setMode(m) { S.mode = m; decor.use(DECOR_BY_MODE[m]); S.foldOn = false; S.phi = 0; act('mode'); MODES[m].enter && MODES[m].enter(); buildHUD(); }
+function setMode(m) { S.mode = m; S.foldOn = false; S.phi = 0; act('mode'); MODES[m].enter && MODES[m].enter(); buildHUD(); }
 
 /* =========================================================
    Modes. Each one: handles(u), drag(id,p), draw(u,now), and
@@ -1001,7 +1001,7 @@ function frame() {
 }
 
 window.addEventListener('resize', resize);
-decor.use(DECOR_BY_MODE[S.mode]);
+decor.use(DECOR);
 resize(); buildHUD(); startIntro(); requestAnimationFrame(frame);
 </script>
 </body>

@@ -10,7 +10,7 @@
            // optional: a pop-up backdrop standing at the back edge of the experiment page,
            // so the context shows behind the experiment even in portrait
            makeDecorKit({ ..., backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 13 } });
-           decor.use('desert');            // on mode change
+           decor.use('desert');            // once, at start: one decor for the whole lesson
            decor.update(dt);               // every frame
            decor.names                     // available decors                                   */
 function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
