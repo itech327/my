@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* STYLE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson */
+/* STYLE:BEGIN · Le concept en main · engine v1.2 · do not edit in a lesson */
 :root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
@@ -80,6 +80,10 @@ th:first-child,td:first-child{text-align:left}
 .report .card b{font-size:26px}
 select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
 .lt{white-space:nowrap}
+.voice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.voice button{font:700 15px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 14px;border-radius:22px;border:2px solid var(--blue);background:var(--card);color:var(--blue);cursor:pointer}
+.voice button.on{background:var(--blue);color:var(--bg)}
+.voice details{font-size:14px;color:var(--soft);flex-basis:100%}
 #problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
 footer{padding:20px 0 40px}
 @media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
@@ -129,7 +133,9 @@ const LESSON = {
       <text x="172" y="98" font-family="Kalam" font-weight="700" font-size="22" fill="var(--blue)">50 km/h</text>
       <text x="172" y="184" font-family="Kalam" font-weight="700" font-size="22" fill="var(--heat)">100 km/h</text></svg>`,
     text: "Un ballon roule sur la route. Deux voitures identiques freinent au même endroit : l'une roule à 50 km/h, l'autre à 100 km/h. La seconde va deux fois plus vite. A-t-elle besoin de deux fois plus de distance pour s'arrêter ?",
-    ar: 'كرة تتدحرج على الطريق. سيارتان متماثلتان تكبحان في نفس المكان، الأولى بسرعة 50 km/h والثانية بسرعة 100 km/h. هل تحتاج الثانية إلى ضعف المسافة لتتوقف؟'
+    ar: 'كرة تتدحرج على الطريق. سيارتان متماثلتان تكبحان في نفس المكان، الأولى بسرعة 50 km/h والثانية بسرعة 100 km/h. هل تحتاج الثانية إلى ضعف المسافة لتتوقف؟',
+    audio: 'audio/pc-3ac-energie-cinetique-question.mp3',
+    audioText: 'شوف معايا: جوج طوموبيلات بحال بحال، وحدة كاتمشي بخمسين كيلومتر فالساعة، والأخرى بمية. كورة طاحت فالطريق، وبجوج فرانو فنفس البلاصة. واش اللي كاتمشي بجوج مرات أسرع، غادي تحتاج غير جوج مرات المسافة باش توقف؟ فكر مزيان، ودير التوقع ديالك.'
   },
 
   predict: [
@@ -227,7 +233,9 @@ const LESSON = {
       { formula: 'E<sub>c</sub> = ½ · m · v²', text: 'Ec en joules (J), m en kilogrammes (kg), v en mètres par seconde (m/s). Pour convertir : v (m/s) = v (km/h) ÷ 3,6.', ar: 'الطاقة الحركية تساوي نصف جداء الكتلة في مربع السرعة. نحوّل السرعة إلى m/s بالقسمة على 3,6.' },
       { formula: 'D<sub>A</sub> = D<sub>R</sub> + D<sub>F</sub>', text: "La distance d'arrêt est la somme de la distance parcourue pendant le temps de réaction et de la distance de freinage.", ar: 'مسافة التوقف = مسافة رد الفعل + مسافة الكبح.' }
     ],
-    seen: 'masse double, Ec double. Vitesse double, Ec quadruple, et la distance de freinage aussi. Route mouillée ou conducteur distrait : la distance d’arrêt s’allonge.'
+    seen: 'masse double, Ec double. Vitesse double, Ec quadruple, et la distance de freinage aussi. Route mouillée ou conducteur distrait : la distance d’arrêt s’allonge.',
+    audio: 'audio/pc-3ac-energie-cinetique-regle.mp3',
+    audioText: 'القاعدة هي: الطاقة الحركية كاتساوي النص ديال الكتلة ضرب مربع السرعة. يعني إلا ضاعفنا الكتلة، الطاقة كاتضاعف. ولكن إلا ضاعفنا السرعة، الطاقة كاتضرب فربعة، حيت السرعة مرفوعة للمربع. وما تنساش: قبل ما تحسب، حول السرعة من كيلومتر فالساعة لمتر فالثانية، كاتقسم على تلاتة فاصلة ستة. ومسافة التوقف هي مسافة رد الفعل زايد مسافة الفرانة.'
   },
 
   proof: {
@@ -267,7 +275,7 @@ const LESSON = {
 </script>
 
 <script>
-/* ENGINE:BEGIN · Le concept en main · engine v1.1 · do not edit in a lesson; update it with tools/update_engine.py */
+/* ENGINE:BEGIN · Le concept en main · engine v1.2 · do not edit in a lesson; update it with tools/update_engine.py */
 (() => {
 const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -311,7 +319,26 @@ function validate() {
     }
   });
   if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
+  [['hook', L.hook], ['rule', L.rule]].forEach(([k, o]) => { if (o && o.audio && !/^[\w./-]+\.(mp3|ogg|m4a)$/.test(o.audio)) P.push(`${k}.audio : chemin invalide « ${o.audio} »`); });
   return P;
+}
+
+/* optional Darija voice: { audio: 'audio/file.mp3', audioText: 'texte en darija' } */
+function voice(o) {
+  if (!o || !o.audio) return '';
+  return `<div class="voice"><button type="button" data-audio="${esc(o.audio)}" aria-label="Écouter l'explication en darija">▶ Écouter en darija · <span lang="ar">استمع بالدارجة</span></button>`
+    + (o.audioText ? `<details><summary>Texte de l'audio</summary><p class="ar">${iso(esc(o.audioText))}</p></details>` : '') + '</div>';
+}
+let player = null;
+function bindVoice() {
+  $$('[data-audio]').forEach(b => b.onclick = () => {
+    if (player && player.src.endsWith(b.dataset.audio) && !player.paused) { player.pause(); return; }
+    if (player) player.pause();
+    $$('[data-audio]').forEach(x => x.classList.remove('on'));
+    player = new Audio(b.dataset.audio); b.classList.add('on');
+    player.onended = player.onpause = () => b.classList.remove('on');
+    player.play().catch(() => b.classList.remove('on'));
+  });
 }
 
 /* rendering */
@@ -322,7 +349,7 @@ function render() {
   $('#hd').innerHTML = `<div class="num">${m.kicker}</div><h1>${m.title}</h1><p class="ar">${iso(esc(m.titleAr))}</p>`;
   $('#ft').textContent = m.footer || '';
   $('#main').innerHTML = `
-  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>
+  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>${voice(h)}
     <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div></section>
   <section class="moment" id="m2" hidden><div class="num">2 · Je prédis</div><h2>Avant toute explication, choisis</h2>
     <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>${qBlock(L.predict, 'p')}
@@ -333,7 +360,7 @@ function render() {
     <div class="row"><button class="b primary" data-next="4" id="next3" disabled>J'ai observé, je nomme la règle</button><span class="note" id="next3n">Termine les missions marquées comme nécessaires.</span></div></section>
   <section class="moment" id="m4" hidden><div class="num">4 · Je nomme la règle</div><h2>La règle</h2>
     ${r.blocks.map(b => `<div class="rule"><div class="formula">${b.formula}</div><p>${b.text || ''}</p>${b.ar ? `<p class="ar">${iso(esc(b.ar))}</p>` : ''}</div>`).join('')}
-    ${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
+    ${voice(r)}${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
     <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
   <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
     <div class="flapw"><div class="proof">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
@@ -423,7 +450,7 @@ function report() {
 }
 
 /* start */
-render(); steps();
+render(); steps(); bindVoice();
 $$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
 L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
 L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));

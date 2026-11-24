@@ -32,7 +32,9 @@ const LESSON = {
       <text x="492" y="132" font-family="Kalam" font-weight="700" font-size="20" fill="var(--blue)">30 cm</text>
       <text x="300" y="118" font-family="Kalam" font-weight="700" font-size="30" fill="var(--heat)">?</text></svg>`,
     text: "Un écran mesure 40 cm de large et 30 cm de haut. Sa diagonale mesure-t-elle 40 + 30 = 70 cm ? Plus ? Moins ?",
-    ar: 'شاشة عرضها 40 cm وارتفاعها 30 cm. هل طول قطرها 70 cm؟ أكثر أم أقل؟'
+    ar: 'شاشة عرضها 40 cm وارتفاعها 30 cm. هل طول قطرها 70 cm؟ أكثر أم أقل؟',
+    audio: 'audio/maths-3ac-pythagore-question.mp3',
+    audioText: 'عندك شاشة، العرض ديالها ربعين سانتيم، والطول ديالها تلاتين. واش القطر ديالها هو سبعين سانتيم؟ يعني غير نجمعو الطولين؟ ولا كتر؟ ولا قل؟ دير التوقع ديالك قبل ما نشوفو الجواب.'
   },
 
   predict: [
@@ -159,7 +161,9 @@ const LESSON = {
       { formula: 'Réciproque', text: "Si, dans un triangle ABC, BC² = AB² + AC², alors ce triangle est rectangle en A. On compare toujours le carré du plus grand côté à la somme des carrés des deux autres. S'ils sont différents, le triangle n'est pas rectangle.", ar: 'المبرهنة العكسية: إذا كان BC² = AB² + AC² فإن المثلث ABC قائم الزاوية في A. نقارن دائما مربع أطول ضلع بمجموع مربعي الضلعين الآخرين.' },
       { formula: 'AC² = BC² − AB²', text: "Pour calculer un côté de l'angle droit, on soustrait les carrés. On trouve la longueur avec la racine carrée, à la calculatrice si besoin.", ar: 'لحساب ضلع من ضلعي الزاوية القائمة نطرح المربعات، ثم نأخذ الجذر المربع.' }
     ],
-    seen: "avec un angle droit, l'aire du grand carré est exactement la somme des deux autres. Dès que l'angle change, l'égalité disparaît : angle plus grand, BC² plus grand ; angle plus petit, BC² plus petit."
+    seen: "avec un angle droit, l'aire du grand carré est exactement la somme des deux autres. Dès que l'angle change, l'égalité disparaît : angle plus grand, BC² plus grand ; angle plus petit, BC² plus petit.",
+    audio: 'audio/maths-3ac-pythagore-regle.mp3',
+    audioText: 'فالمثلث القائم الزاوية، الضلع الطويل اللي مقابل للزاوية القائمة كانسميوه الوتر. مربع الوتر كايساوي مجموع مربعات الضلعين الآخرين. ماشي الأطوال اللي كانجمعو، المربعات. وبالعكس: إلا لقيتي مربع أطول ضلع كايساوي مجموع مربعي الضلعين الآخرين، راه المثلث قائم الزاوية، بلا ما تحتاج المنقلة.'
   },
 
   proof: {
