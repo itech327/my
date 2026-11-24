@@ -20,6 +20,8 @@ import designed from './designed-voices.json';
 const DESIGNED = designed as Record<string, string>;
 
 const URL = 'https://generativelanguage.googleapis.com/v1beta/interactions';
+// Lighter model with its own daily quota, used when the main model's quota is spent.
+export const LITE_MODEL = 'gemini-3.8-flash-lite-tts';
 const MODEL = (typeof process !== 'undefined' ? process.env.GEMINI_TTS_MODEL : undefined) ?? 'gemini-3.8-flash-tts';
 
 interface InteractionResponse {
@@ -85,9 +87,17 @@ export function geminiProvider(voice: string, gender?: 'female' | 'male', named?
       // Moroccan text front end first: numbers in Darija, Arabizi, French words, respellings
       const text = req.dialect === 'ar-MA'
         ? normalizeDarija(stripTags(req.text), { profile: req.register === 'fusha' ? 'gemini-fusha' : 'gemini' }) : stripTags(req.text);
-      const out = await geminiSpeak({ text, voice: named ? namedVoice(named, voice) : designedVoice(req.register, gender, voice),
-        style: req.styleText ?? DEFAULT_STYLE, apiKey: process.env.GEMINI_API_KEY ?? 'proxy-injected' });
-      return { audio: out.audio, mime: 'audio/wav', seconds: out.seconds };
+      const args = { text, voice: named ? namedVoice(named, voice) : designedVoice(req.register, gender, voice),
+        style: req.styleText ?? DEFAULT_STYLE, apiKey: process.env.GEMINI_API_KEY ?? 'proxy-injected' };
+      try {
+        const out = await geminiSpeak(args);
+        return { audio: out.audio, mime: 'audio/wav', seconds: out.seconds };
+      } catch (e) {
+        // quota spent on the main model: the lighter model has its own daily quota
+        if (!/\b429\b/.test(String(e))) throw e;
+        const out = await geminiSpeak({ ...args, model: LITE_MODEL });
+        return { audio: out.audio, mime: 'audio/wav', seconds: out.seconds, fallback: 'النموذج الاحتياطي' };
+      }
     },
   };
 }

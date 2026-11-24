@@ -11,7 +11,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { z } from 'zod';
 import { DELIVERIES, PACES, geminiStyle, type DeliveryId, type PaceId, type RegisterId } from '../../app/src/lib/delivery';
-import { designedVoice, geminiSpeak, namedVoice, stripTags } from '../../app/src/lib/tts/gemini';
+import { LITE_MODEL, designedVoice, geminiSpeak, namedVoice, stripTags } from '../../app/src/lib/tts/gemini';
 import { rewriteWith } from '../../app/src/lib/rewrite-core';
 import { normalizeDarija } from '../../app/src/lib/darija-normalize';
 
@@ -31,6 +31,10 @@ const freeUrl = (env: Env) => env.FREE_VOICE_URL || env.FALLBACK_TTS_URL || '';
 const freeToken = (env: Env) => env.FREE_VOICE_TOKEN || env.FALLBACK_TTS_KEY || '';
 
 const TTL_S = 7 * 24 * 3600; // KV deletes the entry itself after this
+// A saved take is forgotten an hour before its audio, so a saved take never points at a deleted file.
+const CACHE_TTL_S = TTL_S - 3600;
+
+const hex = (b: Uint8Array) => [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
 const VOICES = {
   nour: { name: 'نور', gender: 'female', prebuilt: 'Kore', backup: { speaker: 'F1', name: 'هند' } },
   younes: { name: 'يونس', gender: 'male', prebuilt: 'Charon', backup: { speaker: 'M1', name: 'إدريس' } },
@@ -88,9 +92,10 @@ function buildServer(env: Env, origin: string): McpServer {
       delivery: z.enum(DELIVERIES.map((d) => d.id) as [DeliveryId, ...DeliveryId[]]).default('conversational')
         .describe('conversational, ad, radio, story or service'),
       pace: z.enum(PACES.map((p) => p.id) as [PaceId, ...PaceId[]]).optional().describe('slow, medium or fast; default depends on delivery'),
+      fresh: z.boolean().default(false).describe('true makes a new take even if the same text, voice and style was made in the last 7 days'),
     },
     annotations: { readOnlyHint: false, openWorldHint: true },
-  }, async ({ text, voice, mode, delivery, pace }) => {
+  }, async ({ text, voice, mode, delivery, pace, fresh }) => {
     const v = VOICES[voice];
     try {
       const req = { text: normalizeDarija(stripTags(text), { profile: mode === 'fusha' ? 'gemini-fusha' : 'gemini' }), apiKey: env.GEMINI_API_KEY, style: geminiStyle(delivery, pace ?? null, mode as RegisterId) };
@@ -99,17 +104,41 @@ function buildServer(env: Env, origin: string): McpServer {
       // key they return 404, so fall back to the prebuilt voice.
       let spoke: string = v.name;
       let note = '';
+      // Same text, voice and style within 7 days: hand back the saved take, no Google request.
+      const cacheKey = `c/${hex(await sha256(JSON.stringify([req.text, req.style, designed, v.name])))}`;
+      if (!fresh) {
+        const saved = await env.AUDIO.get(cacheKey, 'json').catch(() => null) as { id: string; seconds: number } | null;
+        if (saved?.id) {
+          const url = `${origin}/audio/${saved.id}`;
+          return {
+            content: [
+              { type: 'text' as const, text: `الصوت جاهز (${spoke}، ${saved.seconds} ث، صالح ٧ أيام): ${url} هذا الصوت محفوظ من طلب سابق بنفس النص والصوت والأسلوب. لإنشاء نسخة جديدة استعمل fresh=true.` },
+              { type: 'resource_link' as const, uri: url, name: `sada-${voice}.wav`, mimeType: 'audio/wav' },
+            ],
+          };
+        }
+      }
+      let cacheable = true;
       const out = await geminiSpeak({ ...req, voice: designed }).catch((e) => {
         if (designed !== v.prebuilt && /\b404\b/.test(String(e))) return geminiSpeak({ ...req, voice: v.prebuilt });
         throw e;
       }).catch(async (e) => {
+        // quota spent on the main model: the lighter model has its own quota
+        if (!/\b429\b/.test(String(e))) throw e;
+        const lite = await geminiSpeak({ ...req, voice: designed, model: LITE_MODEL });
+        cacheable = false; // do not pin a lighter take for 7 days
+        note = ' حصة النموذج الأساسي منتهية اليوم، فاستُعمل النموذج الاحتياطي، وجودته أقل.';
+        return lite;
+      }).catch(async (e) => {
         if (!/\b(429|500|502|503|504)\b/.test(String(e)) || !freeUrl(env)) throw e;
         spoke = v.backup.name;
+        cacheable = false;
         note = ` لم يستجب Google، فتكلّم الصوت المجاني ${spoke}.`;
         return freeVoice(env, req.text, v.backup.speaker, pace);
       });
       const id = newId();
       await env.AUDIO.put(`a/${id}.wav`, out.audio, { expirationTtl: TTL_S });
+      if (cacheable) await env.AUDIO.put(cacheKey, JSON.stringify({ id, seconds: out.seconds }), { expirationTtl: CACHE_TTL_S }).catch(() => undefined);
       const url = `${origin}/audio/${id}`;
       return {
         content: [
