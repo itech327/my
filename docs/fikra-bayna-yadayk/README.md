@@ -27,7 +27,7 @@
 | الملف | المادة | النموذج | الحالة |
 | --- | --- | --- | --- |
 | `lecons/pc-3ac-energie-cinetique.html` | PC 3AC | خفيف SVG | أول درس كامل باللحظات السبع، لم يراجعه أستاذ |
-| `lecons/maths-3ac-pythagore.html` | Maths 3AC | خفيف SVG | مبرهنة فيثاغورس باللحظات السبع، لم يراجعه أستاذ |
+| `lecons/maths-3ac-pythagore.html` | Maths 3AC | خفيف SVG | مبرهنة فيثاغورس والمبرهنة العكسية باللحظات السبع، لم يراجعه أستاذ |
 | `prototypes/pc-3ac-energie-cinetique-v0.html` | PC 3AC | خفيف SVG | النموذج الأولي الذي بُني منه الدرس |
 | `prototypes/maths-symetrie-axiale-2d-v0.html` | Maths | خفيف SVG | نموذج أولي |
 | `prototypes/maths-symetrie-axiale-3d-v1.html` | Maths | كتاب ثلاثي الأبعاد، ستة أوضاع بلغتين | الأكثر اكتمالا، لم يراجعه أستاذ |

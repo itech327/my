@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Le théorème de Pythagore · Le concept en main</title>
+<title>Le théorème de Pythagore et sa réciproque · Le concept en main</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -98,8 +98,8 @@ footer{padding:20px 0 40px}
 const LESSON = {
   meta: {
     kicker: 'Mathématiques · 3e année collège · Le concept en main',
-    title: 'Le théorème de Pythagore',
-    titleAr: 'مبرهنة فيثاغورس',
+    title: 'Le théorème de Pythagore et sa réciproque',
+    titleAr: 'مبرهنة فيثاغورس والمبرهنة العكسية',
     short: 'Pythagore',
     classes: ['3APIC-1', '3APIC-2', '3APIC-3'],
     footer: 'Prototype « Le concept en main » pour taalim.men, hors production. Textes, valeurs et dessins originaux. Non relu par un professeur de mathématiques.'
@@ -112,7 +112,10 @@ const LESSON = {
     hypotenuse: { fr: "L'hypoténuse est le plus long côté : pour un côté de l'angle droit, on soustrait, AC² = BC² − AB².", ar: 'الوتر هو أطول ضلع: لحساب ضلع من ضلعي الزاوية القائمة نطرح.' },
     soustraction: { fr: 'On soustrait les carrés, pas les longueurs : AC² = BC² − AB².', ar: 'نطرح المربعات وليس الأطوال.' },
     nonrectangle: { fr: "L'égalité de Pythagore n'est vraie que si le triangle est rectangle.", ar: 'علاقة فيثاغورس لا تصح إلا إذا كان المثلث قائم الزاوية.' },
-    jamais: { fr: "Elle est vraie dès que l'angle en A est droit : c'est le théorème de Pythagore.", ar: 'تصح كلما كانت الزاوية في A قائمة: هذه هي مبرهنة فيثاغورس.' }
+    jamais: { fr: "Elle est vraie dès que l'angle en A est droit : c'est le théorème de Pythagore.", ar: 'تصح كلما كانت الزاوية في A قائمة: هذه هي مبرهنة فيثاغورس.' },
+    reciproque: { fr: "Pas besoin de rapporteur : si le carré du plus grand côté est égal à la somme des carrés des deux autres, la réciproque dit que le triangle est rectangle.", ar: 'لا نحتاج إلى المنقلة: إذا كان مربع أطول ضلع يساوي مجموع مربعي الضلعين الآخرين فالمثلث قائم حسب المبرهنة العكسية.' },
+    inegalite: { fr: "Comparer la somme des longueurs ne dit rien de l'angle droit : on compare les carrés.", ar: 'مقارنة مجموع الأطوال لا تخبر شيئا عن الزاوية القائمة: نقارن المربعات.' },
+    plusgrand: { fr: 'On compare le carré du plus grand côté à la somme des carrés des deux autres, pas un autre côté.', ar: 'نقارن مربع أطول ضلع بمجموع مربعي الضلعين الآخرين.' }
   },
 
   hook: {
@@ -132,7 +135,9 @@ const LESSON = {
     { q: "Un triangle est rectangle. Les deux côtés de l'angle droit mesurent 3 cm et 4 cm. Le troisième côté mesure :", ar: 'مثلث قائم الزاوية، ضلعا الزاوية القائمة 3 cm و 4 cm. طول الضلع الثالث هو:',
       options: [['7 cm', 'somme'], ['5 cm', ''], ['25 cm', 'oubliracine']] },
     { q: "L'égalité BC² = AB² + AC² est vraie :", ar: 'المتساوية BC² = AB² + AC² صحيحة:',
-      options: [['dans tous les triangles', 'nonrectangle'], ['seulement si le triangle est rectangle en A', ''], ['dans aucun triangle', 'jamais']] }
+      options: [['dans tous les triangles', 'nonrectangle'], ['seulement si le triangle est rectangle en A', ''], ['dans aucun triangle', 'jamais']] },
+    { q: "Un triangle a des côtés de 6 cm, 8 cm et 10 cm. Sans rapporteur, peut-on savoir s'il est rectangle ?", ar: 'مثلث أضلاعه 6 cm و 8 cm و 10 cm. هل نعرف دون منقلة إن كان قائما؟',
+      options: [['non, il faut mesurer un angle', 'reciproque'], ['oui, en comparant 10² à 6² + 8²', ''], ['oui, car 6 + 8 est plus grand que 10', 'inegalite']] }
   ],
 
   experiment: {
@@ -158,11 +163,24 @@ const LESSON = {
     <div class="ctl">
       <div><label for="ab">AB <span id="oab"></span></label><input id="ab" type="range" min="1" max="8" step="1" value="3"></div>
       <div><label for="ac">AC <span id="oac"></span></label><input id="ac" type="range" min="1" max="8" step="1" value="2"></div>
-      <div><label for="an">Angle en A <span id="oan"></span></label><input id="an" type="range" min="60" max="120" step="5" value="90"></div></div>`,
+      <div><label for="an">Angle en A <span id="oan"></span></label><input id="an" type="range" min="60" max="120" step="5" value="90"></div></div>
+    <h3>La réciproque : le testeur de triangle</h3>
+    <p>Choisis trois longueurs. Le testeur compare le carré du plus grand côté à la somme des carrés des deux autres, puis mesure l'angle opposé.</p>
+    <svg class="fig" id="tt" viewBox="0 0 340 190" role="img" aria-label="Triangle construit à partir de trois longueurs"><polygon id="ttp" class="ink" fill="var(--card)"/><path id="ttr" class="ink" style="stroke-width:1.6;stroke:var(--ok)"/><text id="ttm" x="170" y="100" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="18" fill="var(--bad)"></text></svg>
+    <div class="readout">
+      <div class="card"><small>(plus grand côté)²</small><b id="tl" style="color:var(--heat)"></b></div>
+      <div class="card"><small>somme des deux autres carrés</small><b id="ts" style="color:var(--blue)"></b></div>
+      <div class="card"><small>angle opposé</small><b id="tg"></b></div>
+      <div class="card"><small>verdict</small><b id="tv"></b></div></div>
+    <div class="ctl">
+      <div><label for="t1">Côté 1 <span id="o1"></span></label><input id="t1" type="range" min="1" max="15" step="1" value="6"></div>
+      <div><label for="t2">Côté 2 <span id="o2"></span></label><input id="t2" type="range" min="1" max="15" step="1" value="7"></div>
+      <div><label for="t3">Côté 3 <span id="o3"></span></label><input id="t3" type="range" min="1" max="15" step="1" value="9"></div></div>`,
     missions: [
       { id: 'droit', text: 'Avec un angle droit en A, compare AB² + AC² et BC² pour deux triangles différents.' },
       { id: 'pasdroit', text: "Change l'angle en A : l'égalité tient-elle encore ?" },
-      { id: 'trois', text: 'Trouve le triangle rectangle où AB = 3 cm, AC = 4 cm. Combien mesure BC ?' }
+      { id: 'trois', text: 'Trouve le triangle rectangle où AB = 3 cm, AC = 4 cm. Combien mesure BC ?' },
+      { id: 'recip', text: 'Avec le testeur, trouve un triangle rectangle autre que 3, 4, 5, et un triangle qui ne l’est pas.' }
     ],
     required: ['droit'],
     note: "BC² est calculé à partir des coordonnées des sommets à chaque mouvement. Les aires sont en cm².",
@@ -203,12 +221,38 @@ const LESSON = {
         else api.done('pasdroit');
       };
       ['#ab', '#ac', '#an'].forEach(id => $(id).addEventListener('input', draw)); draw();
+      // the converse: build a triangle from three lengths and test it
+      const seenRect = new Set(); let seenNon = false;
+      const test = () => {
+        const v = ['#t1', '#t2', '#t3'].map(id => +$(id).value); v.forEach((x, i) => $('#o' + (i + 1)).textContent = '= ' + x + ' cm');
+        const [a, b, L] = [...v].sort((x, y) => x - y), l2 = L * L, s2 = a * a + b * b;
+        $('#tl').textContent = nf(l2, 0) + ' cm²'; $('#ts').textContent = nf(s2, 0) + ' cm²';
+        if (a + b <= L) {
+          $('#ttp').setAttribute('points', ''); $('#ttr').setAttribute('d', ''); $('#ttm').textContent = 'Ces longueurs ne forment pas de triangle.';
+          $('#tg').textContent = '·'; $('#tv').textContent = 'pas de triangle'; $('#tv').style.color = 'var(--bad)'; return;
+        }
+        $('#ttm').textContent = '';
+        const ang = Math.acos((a * a + b * b - l2) / (2 * a * b)) * 180 / Math.PI;
+        const cosP = (l2 + b * b - a * a) / (2 * L * b), sinP = Math.sqrt(1 - cosP * cosP), h = b * sinP;
+        const k = Math.min(280 / L, 150 / h), P = { x: 170 - L * k / 2, y: 175 }, Q = { x: P.x + L * k, y: 175 }, V = { x: P.x + b * k * cosP, y: 175 - h * k };
+        $('#ttp').setAttribute('points', `${P.x},${P.y} ${Q.x},${Q.y} ${V.x},${V.y}`);
+        const right = l2 === s2;
+        if (right) { const u = { x: (P.x - V.x), y: (P.y - V.y) }, w = { x: (Q.x - V.x), y: (Q.y - V.y) }, nu = Math.hypot(u.x, u.y), nw = Math.hypot(w.x, w.y), m = 14;
+          const p1 = { x: V.x + u.x / nu * m, y: V.y + u.y / nu * m }, p3 = { x: V.x + w.x / nw * m, y: V.y + w.y / nw * m };
+          $('#ttr').setAttribute('d', `M${p1.x} ${p1.y} L${p1.x + p3.x - V.x} ${p1.y + p3.y - V.y} L${p3.x} ${p3.y}`); } else $('#ttr').setAttribute('d', '');
+        $('#tg').textContent = nf(ang, 1) + '°';
+        $('#tv').textContent = right ? 'rectangle' : 'pas rectangle'; $('#tv').style.color = right ? 'var(--ok)' : 'var(--bad)';
+        if (right && !(a === 3 && b === 4 && L === 5)) seenRect.add(v.join()); if (!right) seenNon = true;
+        if (seenRect.size && seenNon) api.done('recip');
+      };
+      ['#t1', '#t2', '#t3'].forEach(id => $(id).addEventListener('input', test)); test();
     }
   },
 
   rule: {
     blocks: [
       { formula: 'BC² = AB² + AC²', text: "Si le triangle ABC est rectangle en A, alors le carré de l'hypoténuse BC est égal à la somme des carrés des deux autres côtés. L'hypoténuse est le côté opposé à l'angle droit : c'est le plus long.", ar: 'إذا كان المثلث ABC قائم الزاوية في A فإن مربع الوتر BC يساوي مجموع مربعي الضلعين الآخرين. الوتر هو الضلع المقابل للزاوية القائمة وهو أطول الأضلاع.' },
+      { formula: 'Réciproque', text: "Si, dans un triangle ABC, BC² = AB² + AC², alors ce triangle est rectangle en A. On compare toujours le carré du plus grand côté à la somme des carrés des deux autres. S'ils sont différents, le triangle n'est pas rectangle.", ar: 'المبرهنة العكسية: إذا كان BC² = AB² + AC² فإن المثلث ABC قائم الزاوية في A. نقارن دائما مربع أطول ضلع بمجموع مربعي الضلعين الآخرين.' },
       { formula: 'AC² = BC² − AB²', text: "Pour calculer un côté de l'angle droit, on soustrait les carrés. On trouve la longueur avec la racine carrée, à la calculatrice si besoin.", ar: 'لحساب ضلع من ضلعي الزاوية القائمة نطرح المربعات، ثم نأخذ الجذر المربع.' }
     ],
     seen: "avec un angle droit, l'aire du grand carré est exactement la somme des deux autres. Dès que l'angle change, l'égalité disparaît : angle plus grand, BC² plus grand ; angle plus petit, BC² plus petit."
@@ -242,7 +286,11 @@ const LESSON = {
           traps: [[Math.sqrt(c * c + g * g), 'hypotenuse'], [c - g, 'soustraction'], [c * c - g * g, 'oubliracine']] }; } },
       { label: 'Niveau 3', make(R) { const a = R.int(3, 12), b = R.int(3, 12), c = Math.round(Math.sqrt(a * a + b * b) * 10) / 10;
         return { q: `Le triangle ABC est rectangle en A, avec AB = ${a} cm et AC = ${b} cm. Calcule BC à la calculatrice, arrondi au dixième.`, unit: 'cm', ans: c, digits: 1,
-          traps: [[a + b, 'somme'], [a * a + b * b, 'oubliracine'], [2 * a + 2 * b, 'double']] }; } }
+          traps: [[a + b, 'somme'], [a * a + b * b, 'oubliracine'], [2 * a + 2 * b, 'double']] }; } },
+      { label: 'Réciproque', make(R) { const [a, b, c] = R.pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20]]);
+        const t = [a, b, c + R.pick([0, 0, 1, -1])], v = [...t].sort((x, y) => x - y), [p, q, L] = v, show = R.pick([[t[0], t[2], t[1]], [t[2], t[0], t[1]], [t[1], t[2], t[0]]]);
+        return { q: `Les côtés d'un triangle mesurent ${show[0]} cm, ${show[1]} cm et ${show[2]} cm. Calcule (plus grand côté)² − (somme des carrés des deux autres). Le triangle est rectangle si tu trouves 0.`, unit: 'cm²', ans: L * L - p * p - q * q, digits: 0,
+          traps: [[L - p - q, 'somme'], [p * p - q * q - L * L, 'plusgrand']] }; } }
     ]
   },
 
@@ -250,7 +298,9 @@ const LESSON = {
     { q: "Un triangle est rectangle. Les côtés de l'angle droit mesurent 6 cm et 8 cm. L'hypoténuse mesure :", ar: 'مثلث قائم الزاوية ضلعا زاويته القائمة 6 cm و 8 cm. طول الوتر هو:',
       options: [['14 cm', 'somme'], ['10 cm', ''], ['100 cm', 'oubliracine']] },
     { q: 'Un triangle a des côtés de 5 cm, 6 cm et 7 cm. Peut-on écrire 7² = 5² + 6² ?', ar: 'مثلث أضلاعه 5 cm و 6 cm و 7 cm. هل نكتب 7² = 5² + 6²؟',
-      options: [['oui, c’est le théorème de Pythagore', 'nonrectangle'], ['non, car ce triangle n’est pas rectangle', ''], ['oui, car 7 est le plus grand côté', 'nonrectangle']] }
+      options: [['oui, c’est le théorème de Pythagore', 'nonrectangle'], ['non, car ce triangle n’est pas rectangle', ''], ['oui, car 7 est le plus grand côté', 'nonrectangle']] },
+    { q: 'Les côtés d’un triangle mesurent 9 cm, 12 cm et 15 cm. Ce triangle est :', ar: 'مثلث أضلاعه 9 cm و 12 cm و 15 cm. هذا المثلث:',
+      options: [['rectangle, car 15² = 9² + 12²', ''], ['impossible à dire sans rapporteur', 'reciproque'], ['rectangle, car 9 + 12 est plus grand que 15', 'inegalite']] }
   ]
 };
 /* LESSON:END */
