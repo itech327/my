@@ -31,7 +31,7 @@ Keep 4 to 7 modes. Each mode has 2 to 4 live values with units and 3 to 6 "what 
 
 For maths topics, "real science" means exact geometry: projections, reflections, rotations, lengths, angles and areas recomputed from coordinates every frame (1 world unit = 1 cm). For physics, use SI units and the real equations.
 
-Optional teaching loop (inspired by Every Joule): predict, test, prove, with a score or stamps.
+Optional teaching loop (inspired by Every Joule): predict, test, prove. A question with 2 or 3 choices, a test that runs the experiment, then a flap that reveals the proof, and a score or a stamp.
 
 ## 2. The look
 - An open textbook lying on a wooden desk, seen from slightly above, soft daylight, gentle shadows.
@@ -44,8 +44,8 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove, with a s
 ## 3. Interaction
 - Every point the student can move is a handle. Pick handles in screen space (nearest projected handle within about 34 px): it works for fingers without hit meshes.
 - Drag on the page plane, clamp to the experiment area, snap to the grid when the mode is about the grid.
-- Controls drawn on the page as 3D objects (knob on a track, toggle switch) change the result immediately. Hide the ones a mode does not use.
-- HTML on top: a mode bar, a sub-choice bar (shapes, materials), action buttons (Check, New, Next step, Restart), the language toggle and Reset.
+- Controls drawn on the page as 3D objects (knob on a track, toggle switch) change the result immediately. Give them invisible larger hit meshes for fingers. Hide the ones a mode does not use.
+- HTML on top: a mode bar, a sub-choice bar (shapes, materials), action buttons (Check, New, Next step, Restart), the language toggle and Reset. Reset restores the initial state of the current mode and replays the intro.
 - Drag on empty space orbits the camera with OrbitControls: no pan, damping, polar and azimuth limits and min/max distance so the book always stays in view.
 - A short slow camera move onto the experiment when the page opens (about 3 s, eased). Respect prefers-reduced-motion.
 - Entering a mode resets the parameters it depends on (e.g. the axis angle), so no state leaks from another mode and gives a false result.
@@ -63,7 +63,7 @@ Optional teaching loop (inspired by Every Joule): predict, test, prove, with a s
 - BoxGeometry top face: canvas top row maps to -z (far side). Put the camera on +z.
 - Register your own pointerdown listener BEFORE creating OrbitControls; disable the controls when a handle or control is hit, re-enable on pointerup/pointercancel. Use pointer capture.
 - Structure: one object per mode with `enter()`, `handles()`, `drag(id, p)`, `draw(u, now)`, optional `actions()` and `action(id)`. The frame loop resets the pools, calls the active mode, then hides unused pool items.
-- Immediate-mode pools: flat ribbon segments for lines (WebGL lines are 1 px and vanish on phones), spheres for points, sprites for labels (redraw a label canvas only when its text changes), a few prisms for cut-out shapes (preallocated BufferGeometry updated in place, DoubleSide when shapes can be mirrored or folded).
+- Immediate-mode pools: flat ribbon segments for lines (WebGL lines are 1 px and vanish on phones), spheres for points, sprites for labels (redraw a label canvas only when its text changes), a few prisms for cut-out shapes (preallocated BufferGeometry updated in place, `computeVertexNormals`, `frustumCulled=false`, DoubleSide when shapes can be mirrored or folded). Label sprites use `depthTest:false`.
 - Performance on phones: pixel ratio capped at 2, one shadow-casting directional light with a 1024 map, no post-processing, 60 fps.
 - Layout: compute the home camera distance from the aspect ratio; in portrait frame the right page plus the spine side of the left page. HUD with safe-area padding.
 - A visible error box (`window.onerror`) so the user can screenshot any runtime error.
