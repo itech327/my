@@ -3,7 +3,7 @@
 import subprocess, sys, os
 from playwright.sync_api import sync_playwright
 FPS = 30
-out = sys.argv[1] if len(sys.argv) > 1 else 'pythagore-2ac-muet.mp4'
+out = sys.argv[1] if len(sys.argv) > 1 else 'pythagore-3ac-muet.mp4'
 tmp = out[:-4] + '.part.mp4'
 ff = subprocess.Popen(['ffmpeg','-y','-loglevel','error','-f','image2pipe','-c:v','mjpeg','-framerate',str(FPS),'-i','-',
     '-c:v','libx264','-preset','veryfast','-crf','18','-pix_fmt','yuv420p','-movflags','+faststart',tmp], stdin=subprocess.PIPE)

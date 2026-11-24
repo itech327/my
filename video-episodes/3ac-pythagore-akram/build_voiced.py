@@ -4,8 +4,8 @@ Télécharge les 9 voix d'Akram (voice-script.json) si 01.wav ... 09.wav manquen
 les place à leur instant de départ et les ajoute à la vidéo muette sans la réencoder."""
 import json, os, sys, subprocess, urllib.request
 here = os.path.dirname(os.path.abspath(__file__))
-src = sys.argv[1] if len(sys.argv) > 1 else os.path.join(here, 'pythagore-2ac-muet.mp4')
-out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(here, 'pythagore-2ac-akram.mp4')
+src = sys.argv[1] if len(sys.argv) > 1 else os.path.join(here, 'pythagore-3ac-muet.mp4')
+out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(here, 'pythagore-3ac-akram.mp4')
 cfg = json.load(open(os.path.join(here, 'voice-script.json'), encoding='utf-8'))
 segs = cfg['segments']; wav = lambda s: os.path.join(here, 'wav', s['n'] + '.wav')
 os.makedirs(os.path.join(here, 'wav'), exist_ok=True)
