@@ -32,13 +32,13 @@ def main():
         open(sys.argv[3], 'w', encoding='utf-8').write(out); print('wrote', sys.argv[3])
     elif len(sys.argv) == 4 and sys.argv[1] == 'bundle':
         # one standalone file: every audio/xxx.mp3 next to the lesson is inlined as a data URI
-        import base64, re
+        import base64
         src = sys.argv[2]; s = open(src, encoding='utf-8').read(); base = os.path.dirname(os.path.abspath(src))
         def inline(m):
             fp = os.path.join(base, m.group(2))
             if not os.path.isfile(fp): return m.group(0)  # e.g. the example path in the engine comment
             return m.group(1) + 'data:audio/mpeg;base64,' + base64.b64encode(open(fp, 'rb').read()).decode() + m.group(3)
-        s, n = re.subn(r"(audio:\s*')([\w./-]+\.mp3)(')", inline, s)
+        s, n = re.subn(r'''(["']?audio["']?:\s*["'])([\w./-]+\.mp3)(["'])''', inline, s)
         open(sys.argv[3], 'w', encoding='utf-8').write(s); print('wrote', sys.argv[3], f'({n} audio inlined)')
     elif len(sys.argv) == 3 and sys.argv[1] == 'sync':
         p = sys.argv[2]; s = open(p, encoding='utf-8').read()
