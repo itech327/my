@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le théorème de Pythagore · Le concept en main</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* STYLE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px)}
+h1,h2,h3,.hand{font-family:Kalam,"Comic Sans MS",cursive;font-weight:700;line-height:1.1;margin:0}
+h1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:12px 0 6px}
+p{margin:6px 0}
+.ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
+.num{font:700 15px Kalam,cursive;color:var(--soft)}
+.note{font-size:13px;color:var(--soft)}
+header{padding:20px 0 6px}
+.steps{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}
+.steps .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
+.steps button{flex:none;min-height:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px "Atkinson Hyperlegible",sans-serif;padding:0 10px;cursor:pointer}
+.steps button.done{border-color:var(--ok);color:var(--ok)}
+.steps button.cur{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.steps button:disabled{opacity:.45;cursor:default}
+section.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;scroll-margin-top:60px}
+section.moment[hidden]{display:none}
+button.b{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button.b.primary{background:var(--ink);color:var(--bg)}
+button.b:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.opts button{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}
+.opts button:disabled{cursor:default}
+.q{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+.q:first-child{border-top:0;margin-top:0;padding-top:0}
+.fig{width:100%;display:block}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
+.card{border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center}
+.card small{display:block;color:var(--soft);font-size:13px}
+.card b{font:700 20px Kalam,cursive;white-space:nowrap}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}
+label{display:block;font-weight:700}
+label span{font-weight:400;color:var(--soft);white-space:nowrap}
+input[type=range]{width:100%;height:40px;accent-color:var(--blue)}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.seg button{min-height:40px;padding:4px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 14px "Atkinson Hyperlegible",sans-serif;cursor:pointer}
+.seg button.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.bars{display:grid;gap:4px;margin-top:6px;font-size:14px}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.scroll{overflow-x:auto}
+.missions{list-style:none;padding:0;margin:8px 0}
+.missions li{padding:4px 0 4px 30px;position:relative}
+.missions li::before{content:"";position:absolute;left:0;top:7px;width:18px;height:18px;border:2px solid var(--line);border-radius:5px}
+.missions li.ok::before{border-color:var(--ok);background:var(--ok)}
+.rule{border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:8px 0}
+.formula{font:700 clamp(24px,6vw,34px) Kalam,cursive;margin:4px 0}
+.flapw{position:relative;margin-top:8px;border-radius:12px;overflow:hidden;min-height:140px}
+.proof{padding:12px;border:1.5px dashed var(--line);border-radius:12px}
+.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive;color:var(--ink);cursor:pointer}
+.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}
+.verdict{border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}
+.verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.verdict.no{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.ex{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-top:8px}
+.ex input{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;width:9em;background:var(--card);color:var(--ink)}
+.fb{min-height:1.4em;margin-top:6px;font-weight:700}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.report .card b{font-size:26px}
+select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
+.lt{white-space:nowrap}
+#problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+footer{padding:20px 0 40px}
+@media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* STYLE:END */
+</style>
+</head>
+<body>
+<header><div class="wrap" id="hd"></div></header>
+<nav class="steps" aria-label="Moments de la leçon"><div class="wrap" id="steps"></div></nav>
+<main class="wrap" id="main"></main>
+<footer><div class="wrap note" id="ft"></div></footer>
+
+<script>
+/* LESSON:BEGIN · Mathématiques 2AC · Le théorème de Pythagore */
+const LESSON = {
+  meta: {
+    kicker: 'Mathématiques · 2e année collège · Le concept en main',
+    title: 'Le théorème de Pythagore',
+    titleAr: 'مبرهنة فيثاغورس',
+    short: 'Pythagore',
+    classes: ['2APIC-1', '2APIC-2', '2APIC-3'],
+    footer: 'Prototype « Le concept en main » pour taalim.men, hors production. Textes, valeurs et dessins originaux. Non relu par un professeur de mathématiques.'
+  },
+
+  misconceptions: {
+    somme: { fr: "Les longueurs ne s'additionnent pas : ce sont les carrés des longueurs qui s'additionnent.", ar: 'الأطوال لا تُجمع، بل مربعات الأطوال هي التي تُجمع.' },
+    oubliracine: { fr: 'Tu as trouvé le carré de la longueur, pas la longueur : il faut prendre la racine carrée.', ar: 'وجدت مربع الطول وليس الطول: يجب أخذ الجذر المربع.' },
+    double: { fr: "Élever au carré n'est pas multiplier par 2 : 3² = 9, pas 6.", ar: 'المربع ليس الضرب في 2: مربع 3 هو 9 وليس 6.' },
+    hypotenuse: { fr: "L'hypoténuse est le plus long côté : pour un côté de l'angle droit, on soustrait, AC² = BC² − AB².", ar: 'الوتر هو أطول ضلع: لحساب ضلع من ضلعي الزاوية القائمة نطرح.' },
+    soustraction: { fr: 'On soustrait les carrés, pas les longueurs : AC² = BC² − AB².', ar: 'نطرح المربعات وليس الأطوال.' },
+    nonrectangle: { fr: "L'égalité de Pythagore n'est vraie que si le triangle est rectangle.", ar: 'علاقة فيثاغورس لا تصح إلا إذا كان المثلث قائم الزاوية.' },
+    jamais: { fr: "Elle est vraie dès que l'angle en A est droit : c'est le théorème de Pythagore.", ar: 'تصح كلما كانت الزاوية في A قائمة: هذه هي مبرهنة فيثاغورس.' }
+  },
+
+  hook: {
+    title: '40 cm et 30 cm… donc 70 cm ?',
+    svg: `<svg class="fig" viewBox="0 0 640 260" role="img" aria-label="Écran de 40 cm sur 30 cm avec sa diagonale">
+      <rect class="ink" x="170" y="30" width="300" height="190" rx="10" fill="var(--card)"/>
+      <rect class="ink" x="186" y="44" width="268" height="162" rx="4" style="stroke-width:1.4;opacity:.6"/>
+      <line class="ink" x1="186" y1="206" x2="454" y2="44" style="stroke:var(--heat);stroke-dasharray:10 8"/>
+            <text x="320" y="248" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--blue)">40 cm</text>
+      <text x="492" y="132" font-family="Kalam" font-weight="700" font-size="20" fill="var(--blue)">30 cm</text>
+      <text x="300" y="118" font-family="Kalam" font-weight="700" font-size="30" fill="var(--heat)">?</text></svg>`,
+    text: "Un écran mesure 40 cm de large et 30 cm de haut. Sa diagonale mesure-t-elle 40 + 30 = 70 cm ? Plus ? Moins ?",
+    ar: 'شاشة عرضها 40 cm وارتفاعها 30 cm. هل طول قطرها 70 cm؟ أكثر أم أقل؟'
+  },
+
+  predict: [
+    { q: "Un triangle est rectangle. Les deux côtés de l'angle droit mesurent 3 cm et 4 cm. Le troisième côté mesure :", ar: 'مثلث قائم الزاوية، ضلعا الزاوية القائمة 3 cm و 4 cm. طول الضلع الثالث هو:',
+      options: [['7 cm', 'somme'], ['5 cm', ''], ['25 cm', 'oubliracine']] },
+    { q: "L'égalité BC² = AB² + AC² est vraie :", ar: 'المتساوية BC² = AB² + AC² صحيحة:',
+      options: [['dans tous les triangles', 'nonrectangle'], ['seulement si le triangle est rectangle en A', ''], ['dans aucun triangle', 'jamais']] }
+  ],
+
+  experiment: {
+    title: 'Les trois carrés',
+    intro: "Sur chaque côté du triangle, on construit un carré. Change les côtés et l'angle en A, puis compare les aires.",
+    html: `<svg class="fig" id="py" viewBox="0 0 640 560" role="img" aria-label="Triangle ABC et les carrés construits sur ses côtés">
+      <polygon id="sAB" fill="var(--blue)" fill-opacity=".16" stroke="var(--blue)" stroke-width="2"/>
+      <polygon id="sAC" fill="var(--glow)" fill-opacity=".2" stroke="var(--glow)" stroke-width="2"/>
+      <polygon id="sBC" fill="var(--heat)" fill-opacity=".14" stroke="var(--heat)" stroke-width="2"/>
+      <polygon id="tri" class="ink" fill="var(--card)"/>
+      <path id="ra" class="ink" style="stroke-width:1.6"/>
+      <text id="tAB" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--blue)"></text>
+      <text id="tAC" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--ink)"></text>
+      <text id="tBC" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--heat)"></text>
+      <text id="lA" font-family="Kalam" font-weight="700" font-size="22" fill="var(--ink)">A</text>
+      <text id="lB" font-family="Kalam" font-weight="700" font-size="22" fill="var(--ink)">B</text>
+      <text id="lC" font-family="Kalam" font-weight="700" font-size="22" fill="var(--ink)">C</text></svg>
+    <div class="readout">
+      <div class="card"><small>AB² + AC²</small><b id="xs" style="color:var(--blue)"></b></div>
+      <div class="card"><small>BC²</small><b id="xh" style="color:var(--heat)"></b></div>
+      <div class="card"><small>Comparaison</small><b id="xc"></b></div>
+      <div class="card"><small>BC</small><b id="xb"></b></div></div>
+    <div class="ctl">
+      <div><label for="ab">AB <span id="oab"></span></label><input id="ab" type="range" min="1" max="8" step="1" value="3"></div>
+      <div><label for="ac">AC <span id="oac"></span></label><input id="ac" type="range" min="1" max="8" step="1" value="2"></div>
+      <div><label for="an">Angle en A <span id="oan"></span></label><input id="an" type="range" min="60" max="120" step="5" value="90"></div></div>`,
+    missions: [
+      { id: 'droit', text: 'Avec un angle droit en A, compare AB² + AC² et BC² pour deux triangles différents.' },
+      { id: 'pasdroit', text: "Change l'angle en A : l'égalité tient-elle encore ?" },
+      { id: 'trois', text: 'Trouve le triangle rectangle où AB = 3 cm, AC = 4 cm. Combien mesure BC ?' }
+    ],
+    required: ['droit'],
+    note: "BC² est calculé à partir des coordonnées des sommets à chaque mouvement. Les aires sont en cm².",
+    mount(root, api) {
+      const $ = s => root.querySelector(s), nf = api.nf, s = 18, A = { x: 250, y: 370 };
+      const rights = new Set();
+      const pts = arr => arr.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+      const square = (P, Q, G) => { // square on PQ, on the side away from the triangle's centre G
+        let n = { x: Q.y - P.y, y: -(Q.x - P.x) };
+        if (n.x * (G.x - P.x) + n.y * (G.y - P.y) > 0) n = { x: -n.x, y: -n.y };
+        return [P, Q, { x: Q.x + n.x, y: Q.y + n.y }, { x: P.x + n.x, y: P.y + n.y }];
+      };
+      const centre = q => ({ x: q.reduce((a, p) => a + p.x, 0) / 4, y: q.reduce((a, p) => a + p.y, 0) / 4 + 7 });
+      const draw = () => {
+        const ab = +$('#ab').value, ac = +$('#ac').value, an = +$('#an').value, t = an * Math.PI / 180;
+        const B = { x: A.x + ab * s, y: A.y }, C = { x: A.x + ac * s * Math.cos(t), y: A.y - ac * s * Math.sin(t) };
+        const G = { x: (A.x + B.x + C.x) / 3, y: (A.y + B.y + C.y) / 3 };
+        const bc2 = ((B.x - C.x) ** 2 + (B.y - C.y) ** 2) / (s * s), sum = ab * ab + ac * ac;
+        const qAB = square(A, B, G), qAC = square(A, C, G), qBC = square(B, C, G);
+        $('#sAB').setAttribute('points', pts(qAB)); $('#sAC').setAttribute('points', pts(qAC)); $('#sBC').setAttribute('points', pts(qBC));
+        $('#tri').setAttribute('points', pts([A, B, C]));
+        const place = (id, q, txt) => { const c = centre(q); $(id).setAttribute('x', c.x); $(id).setAttribute('y', c.y); $(id).textContent = txt; };
+        place('#tAB', qAB, nf(ab * ab, 0)); place('#tAC', qAC, nf(ac * ac, 0)); place('#tBC', qBC, nf(bc2, 1));
+        const lab = (id, P, dx, dy) => { $(id).setAttribute('x', P.x + dx); $(id).setAttribute('y', P.y + dy); };
+        lab('#lA', A, -22, 22); lab('#lB', B, 6, 22); lab('#lC', C, -8, -10);
+        const k = 14, u = { x: (B.x - A.x) / (ab * s), y: 0 }, w = { x: (C.x - A.x) / (ac * s), y: (C.y - A.y) / (ac * s) };
+        $('#ra').setAttribute('d', an === 90 ? `M${A.x + k * u.x} ${A.y} L${A.x + k * u.x + k * w.x} ${A.y + k * w.y} L${A.x + k * w.x} ${A.y + k * w.y}` : '');
+        $('#xs').textContent = nf(sum, 1) + ' cm²'; $('#xh').textContent = nf(bc2, 1) + ' cm²'; $('#xb').textContent = nf(Math.sqrt(bc2), 2) + ' cm';
+        const eq = Math.abs(bc2 - sum) < 1e-9;
+        $('#xc').textContent = eq ? 'égales' : bc2 > sum ? 'BC² plus grand' : 'BC² plus petit'; $('#xc').style.color = eq ? 'var(--ok)' : 'var(--bad)';
+        $('#oab').textContent = '= ' + ab + ' cm'; $('#oac').textContent = '= ' + ac + ' cm'; $('#oan').textContent = '= ' + an + '°';
+        // frame the figure: fit the drawing with a margin, never smaller than 320 × 280
+        const all = [A, B, C, ...qAB, ...qAC, ...qBC], xs = all.map(p => p.x), ys = all.map(p => p.y);
+        const bb = { x: Math.min(...xs), y: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+        const svg = $('#py'), W = Math.max(bb.width + 60, 320), H = Math.max(bb.height + 60, 280);
+        svg.setAttribute('viewBox', `${(bb.x + bb.width / 2 - W / 2).toFixed(0)} ${(bb.y + bb.height / 2 - H / 2).toFixed(0)} ${W.toFixed(0)} ${H.toFixed(0)}`);
+        if (an === 90) { rights.add(ab + 'x' + ac); if (rights.size >= 2) api.done('droit'); if ((ab === 3 && ac === 4) || (ab === 4 && ac === 3)) api.done('trois'); }
+        else api.done('pasdroit');
+      };
+      ['#ab', '#ac', '#an'].forEach(id => $(id).addEventListener('input', draw)); draw();
+    }
+  },
+
+  rule: {
+    blocks: [
+      { formula: 'BC² = AB² + AC²', text: "Si le triangle ABC est rectangle en A, alors le carré de l'hypoténuse BC est égal à la somme des carrés des deux autres côtés. L'hypoténuse est le côté opposé à l'angle droit : c'est le plus long.", ar: 'إذا كان المثلث ABC قائم الزاوية في A فإن مربع الوتر BC يساوي مجموع مربعي الضلعين الآخرين. الوتر هو الضلع المقابل للزاوية القائمة وهو أطول الأضلاع.' },
+      { formula: 'AC² = BC² − AB²', text: "Pour calculer un côté de l'angle droit, on soustrait les carrés. On trouve la longueur avec la racine carrée, à la calculatrice si besoin.", ar: 'لحساب ضلع من ضلعي الزاوية القائمة نطرح المربعات، ثم نأخذ الجذر المربع.' }
+    ],
+    seen: "avec un angle droit, l'aire du grand carré est exactement la somme des deux autres. Dès que l'angle change, l'égalité disparaît : angle plus grand, BC² plus grand ; angle plus petit, BC² plus petit."
+  },
+
+  proof: {
+    title: 'Pourquoi ça marche ?',
+    html: `<svg class="fig" viewBox="0 0 340 170" role="img" aria-label="Deux carrés de côté a plus b, découpés de deux façons">
+      <g transform="translate(10 10)"><rect class="ink" width="140" height="140" fill="var(--card)"/>
+        <polygon points="60,0 140,60 80,140 0,80" fill="var(--heat)" fill-opacity=".16" stroke="var(--heat)" stroke-width="2"/>
+        <text x="70" y="78" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--heat)">c²</text></g>
+      <g transform="translate(190 10)"><rect class="ink" width="140" height="140" fill="var(--card)"/>
+        <rect width="60" height="60" fill="var(--blue)" fill-opacity=".16" stroke="var(--blue)" stroke-width="2"/>
+        <rect x="60" y="60" width="80" height="80" fill="var(--glow)" fill-opacity=".2" stroke="var(--glow)" stroke-width="2"/>
+        <path class="ink" d="M60 0 L140 60 M0 60 L60 140" style="stroke-width:1.6"/>
+        <text x="30" y="37" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="18" fill="var(--blue)">a²</text>
+        <text x="100" y="107" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="18" fill="var(--ink)">b²</text></g></svg>
+      <p>Les deux grands carrés ont le même côté a + b. Chacun contient les quatre mêmes triangles rectangles, de côtés a et b et d'hypoténuse c.</p>
+      <p>Ce qui reste a donc la même aire : à gauche c², à droite a² + b². Ainsi <b>c² = a² + b²</b>.</p>`,
+    ar: 'للمربعين الكبيرين نفس الضلع a + b، وفي كل منهما نفس المثلثات القائمة الأربعة. ما يتبقى له نفس المساحة: c² في اليسار و a² + b² في اليمين.'
+  },
+
+  exercises: {
+    levels: [
+      { label: 'Niveau 1', make(R) { const [a, b, c] = R.pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20], [7, 24, 25], [15, 20, 25]]);
+        return { q: `Le triangle ABC est rectangle en A, avec AB = ${a} cm et AC = ${b} cm. Calcule BC.`, unit: 'cm', ans: c, digits: 1,
+          traps: [[a + b, 'somme'], [c * c, 'oubliracine'], [2 * a + 2 * b, 'double']] }; } },
+      { label: 'Niveau 2', make(R) { const [a, b, c] = R.pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20], [7, 24, 25]]);
+        const [g, x] = R.pick([[a, b], [b, a]]);
+        return { q: `Le triangle ABC est rectangle en A, avec BC = ${c} cm et AB = ${g} cm. Calcule AC.`, unit: 'cm', ans: x, digits: 1,
+          traps: [[Math.sqrt(c * c + g * g), 'hypotenuse'], [c - g, 'soustraction'], [c * c - g * g, 'oubliracine']] }; } },
+      { label: 'Niveau 3', make(R) { const a = R.int(3, 12), b = R.int(3, 12), c = Math.round(Math.sqrt(a * a + b * b) * 10) / 10;
+        return { q: `Le triangle ABC est rectangle en A, avec AB = ${a} cm et AC = ${b} cm. Calcule BC à la calculatrice, arrondi au dixième.`, unit: 'cm', ans: c, digits: 1,
+          traps: [[a + b, 'somme'], [a * a + b * b, 'oubliracine'], [2 * a + 2 * b, 'double']] }; } }
+    ]
+  },
+
+  check: [
+    { q: "Un triangle est rectangle. Les côtés de l'angle droit mesurent 6 cm et 8 cm. L'hypoténuse mesure :", ar: 'مثلث قائم الزاوية ضلعا زاويته القائمة 6 cm و 8 cm. طول الوتر هو:',
+      options: [['14 cm', 'somme'], ['10 cm', ''], ['100 cm', 'oubliracine']] },
+    { q: 'Un triangle a des côtés de 5 cm, 6 cm et 7 cm. Peut-on écrire 7² = 5² + 6² ?', ar: 'مثلث أضلاعه 5 cm و 6 cm و 7 cm. هل نكتب 7² = 5² + 6²؟',
+      options: [['oui, c’est le théorème de Pythagore', 'nonrectangle'], ['non, car ce triangle n’est pas rectangle', ''], ['oui, car 7 est le plus grand côté', 'nonrectangle']] }
+  ]
+};
+/* LESSON:END */
+</script>
+
+<script>
+/* ENGINE:BEGIN · Le concept en main · engine v1.1 · do not edit in a lesson; update it with tools/update_engine.py */
+(() => {
+const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });
+// Arabic text: keep each Latin or numeric expression left-to-right and on one line (returns HTML)
+const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => `<bdi dir="ltr" class="lt">${m}</bdi>`);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };
+const MIS = L.misconceptions || {};
+const STEPS = (L.meta.steps || ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie']);
+const S = { open: 1, pred: {}, check: {}, ex: {}, errs: {}, missions: new Set(), cur: null, lvl: 0 };
+const near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);
+
+/* validation: shown to the author, caught by the flow test */
+function validate() {
+  const P = [], codeOk = c => c === '' || (MIS[c] && MIS[c].fr && MIS[c].ar);
+  ['kicker', 'title', 'titleAr'].forEach(k => { if (!L.meta || !L.meta[k]) P.push(`meta.${k} manquant`); });
+  for (const [set, name] of [[L.predict, 'predict'], [L.check, 'check']]) {
+    if (!set || !set.length) P.push(`${name} vide`);
+    (set || []).forEach((q, i) => {
+      if (!q.q || !q.ar) P.push(`${name}[${i}] : texte ou arabe manquant`);
+      const good = q.options.filter(o => o[1] === '').length; if (good !== 1) P.push(`${name}[${i}] : ${good} bonnes réponses au lieu d'une`);
+      q.options.forEach(o => { if (!codeOk(o[1])) P.push(`${name}[${i}] : code « ${o[1]} » absent de misconceptions`); });
+    });
+  }
+  const ex = L.experiment;
+  if (!ex || !ex.missions || !ex.missions.length) P.push('experiment.missions vide');
+  else (ex.required || [ex.missions[0].id]).forEach(id => { if (!ex.missions.some(m => m.id === id)) P.push(`mission requise « ${id} » inconnue`); });
+  (L.exercises && L.exercises.levels || []).forEach((lv, l) => {
+    for (let k = 0; k < 300; k++) {
+      let e; try { e = lv.make(R); } catch (err) { P.push(`niveau ${l + 1} : ${err.message}`); break; }
+      if (!e.q || !e.unit || !isFinite(e.ans)) { P.push(`niveau ${l + 1} : question, unité ou réponse invalide`); break; }
+      for (const [v, c] of e.traps || []) {
+        if (!codeOk(c) || !c) { P.push(`niveau ${l + 1} : code de piège « ${c} » inconnu`); return; }
+        if (!isFinite(v)) { P.push(`niveau ${l + 1} : piège ${c} non fini`); return; }
+        if (near(v, e.ans)) { P.push(`niveau ${l + 1} : le piège ${c} donne la bonne réponse pour « ${e.q} »`); return; }
+      }
+      const T = e.traps || [];
+      for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++)
+        if (T[i][1] !== T[j][1] && near(T[i][0], T[j][0])) { P.push(`niveau ${l + 1} : les pièges ${T[i][1]} et ${T[j][1]} donnent la même valeur pour « ${e.q} »`); return; }
+    }
+  });
+  if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
+  return P;
+}
+
+/* rendering */
+function qBlock(arr, prefix) { return arr.map((q, i) => `<div class="q" id="${prefix}${i}"></div>`).join(''); }
+function render() {
+  const m = L.meta, h = L.hook, x = L.experiment, r = L.rule, p = L.proof;
+  document.title = `${m.title} · Le concept en main`;
+  $('#hd').innerHTML = `<div class="num">${m.kicker}</div><h1>${m.title}</h1><p class="ar">${iso(esc(m.titleAr))}</p>`;
+  $('#ft').textContent = m.footer || '';
+  $('#main').innerHTML = `
+  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>
+    <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div></section>
+  <section class="moment" id="m2" hidden><div class="num">2 · Je prédis</div><h2>Avant toute explication, choisis</h2>
+    <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>${qBlock(L.predict, 'p')}
+    <div class="row"><button class="b primary" data-next="3" id="next2" disabled>Je teste</button></div></section>
+  <section class="moment" id="m3" hidden><div class="num">3 · Je teste</div><h2>${x.title}</h2><p>${x.intro || ''}</p><div id="exp">${x.html}</div>
+    <h3>Mes missions</h3><ul class="missions">${x.missions.map(mi => `<li data-m="${mi.id}">${mi.text}</li>`).join('')}</ul>
+    ${x.note ? `<p class="note">${x.note}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="4" id="next3" disabled>J'ai observé, je nomme la règle</button><span class="note" id="next3n">Termine les missions marquées comme nécessaires.</span></div></section>
+  <section class="moment" id="m4" hidden><div class="num">4 · Je nomme la règle</div><h2>La règle</h2>
+    ${r.blocks.map(b => `<div class="rule"><div class="formula">${b.formula}</div><p>${b.text || ''}</p>${b.ar ? `<p class="ar">${iso(esc(b.ar))}</p>` : ''}</div>`).join('')}
+    ${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
+  <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
+    <div class="flapw"><div class="proof">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
+    <h3>Et ma prédiction ?</h3><div id="pv"></div>
+    <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div></section>
+  <section class="moment" id="m6" hidden><div class="num">6 · Je m'entraîne</div><h2>Exercices sans fin</h2>
+    <p class="ar">${iso('كل تمرين جديد بأعداد مختلفة.')}</p>
+    <div class="seg" id="lv">${L.exercises.levels.map((lv, i) => `<button data-l="${i}" class="${i ? '' : 'on'}">${lv.label}</button>`).join('')}</div>
+    <div class="ex"><p id="exq"></p><div class="row"><input id="exa" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><span id="exu" class="hand" style="font-size:20px"></span><button class="b" id="exc">Vérifier</button><button class="b" id="exn">Nouvel exercice</button></div><div class="fb" id="exf" aria-live="polite"></div></div>
+    <p class="note" id="exs"></p>
+    <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div></section>
+  <section class="moment" id="m7" hidden><div class="num">7 · Je vérifie</div><h2>Pour finir</h2>${qBlock(L.check, 'c')}
+    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices réussis</small><b id="r3"></b></div></div>
+    <div id="r4"></div>
+    <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option>${(m.classes || []).map(c => `<option>${esc(c)}</option>`).join('')}</select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
+    <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p></div></section>`;
+}
+
+/* steps */
+function steps() {
+  $('#steps').innerHTML = STEPS.map((n, i) => `<button data-s="${i + 1}" class="${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}</button>`).join('');
+  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));
+}
+function openStep(n) {
+  if (n > S.open) S.open = n;
+  for (let i = 1; i <= S.open; i++) $('#m' + i).hidden = false;
+  steps(); if (n === 5) verdicts(); if (n === 6 && !S.cur) newEx();
+  $('#m' + n).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* questions */
+function question(q, el, store, key, onDone) {
+  el.innerHTML = `<p><b>${q.q}</b></p><p class="ar">${iso(esc(q.ar))}</p><div class="opts">${q.options.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}</div>`;
+  el.querySelectorAll('button').forEach(b => b.onclick = () => {
+    if (store[key]) return; const i = +b.dataset.i, code = q.options[i][1];
+    store[key] = { i, ok: code === '', code }; b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b); onDone();
+  });
+}
+function verdicts() {
+  $('#pv').innerHTML = L.predict.map((q, k) => {
+    const a = S.pred[k]; if (!a) return ''; const right = q.options.find(o => o[1] === '')[0];
+    return `<div class="verdict ${a.ok ? 'ok' : 'no'}"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :</b> tu avais choisi « ${q.options[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code].fr + `<div class="ar">${iso(esc(MIS[a.code].ar))}</div>`}</div>`;
+  }).join('');
+}
+
+/* experiment */
+function done(id) {
+  if (S.missions.has(id)) return; S.missions.add(id);
+  const li = $(`.missions li[data-m="${id}"]`); if (li) li.classList.add('ok');
+  const req = L.experiment.required || [L.experiment.missions[0].id], ok = req.every(r => S.missions.has(r));
+  $('#next3').disabled = !ok;
+  $('#next3n').textContent = !ok ? 'Termine les missions marquées comme nécessaires.' : S.missions.size === L.experiment.missions.length ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.';
+}
+
+/* exercises */
+function newEx() {
+  const lv = L.exercises.levels[S.lvl]; S.cur = lv.make(R);
+  $('#exq').textContent = S.cur.q; $('#exu').textContent = S.cur.unit; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false;
+}
+function checkEx() {
+  const x = parseFloat($('#exa').value.replace(/[\s ]/g, '').replace(',', '.')), c = S.cur;
+  if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }
+  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0]); st[1]++;
+  if (near(x, c.ans)) { st[0]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
+  else {
+    const t = (c.traps || []).find(tp => near(x, tp[0]));
+    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class="ar">${iso(esc(MIS[t[1]].ar))}</div>`; }
+    else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';
+    $('#exf').className = 'fb no';
+  }
+  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0]; return `${lv.label} : ${s[0]} réussi${s[0] > 1 ? 's' : ''} sur ${s[1]}`; }).join(' · ');
+}
+
+/* report */
+function report() {
+  const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;
+  const ok = Object.values(S.ex).reduce((s, v) => s + v[0], 0), tries = Object.values(S.ex).reduce((s, v) => s + v[1], 0);
+  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${ok} / ${tries}`;
+  const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
+  Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);
+  const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);
+  const pr = p / L.predict.length, cr = c / L.check.length;
+  $('#r4').innerHTML = `<div class="verdict ${cr === 1 ? 'ok' : 'no'}">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au moment « Je teste » et refais les missions.'}</div>`
+    + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
+  S.summary = { p, c, ex: `${ok}/${tries}`, errs: list };
+  $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* start */
+render(); steps();
+$$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
+L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
+L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));
+$('#flap').onclick = () => $('#flap').classList.add('open');
+$('#exc').onclick = checkEx; $('#exn').onclick = newEx;
+$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
+$$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
+$('#copy').onclick = async () => {
+  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices ${s.ex} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
+  try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }
+};
+L.experiment.mount($('#exp'), { done, nf, iso, reduce });
+const problems = validate(), testMode = /[?&]test\b/.test(location.search);
+if (problems.length) { console.error('Leçon invalide :\n' + problems.join('\n')); $('#main').insertAdjacentHTML('afterbegin', `<div id="problems"><b>À corriger avant publication :</b><ul>${problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`); }
+if (testMode) window.__fikra = { S, L, done, openStep, problems, newEx };
+})();
+/* ENGINE:END */
+</script>
+</body>
+</html>
