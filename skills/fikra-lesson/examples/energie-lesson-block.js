@@ -33,7 +33,9 @@ const LESSON = {
       <text x="172" y="98" font-family="Kalam" font-weight="700" font-size="22" fill="var(--blue)">50 km/h</text>
       <text x="172" y="184" font-family="Kalam" font-weight="700" font-size="22" fill="var(--heat)">100 km/h</text></svg>`,
     text: "Un ballon roule sur la route. Deux voitures identiques freinent au même endroit : l'une roule à 50 km/h, l'autre à 100 km/h. La seconde va deux fois plus vite. A-t-elle besoin de deux fois plus de distance pour s'arrêter ?",
-    ar: 'كرة تتدحرج على الطريق. سيارتان متماثلتان تكبحان في نفس المكان، الأولى بسرعة 50 km/h والثانية بسرعة 100 km/h. هل تحتاج الثانية إلى ضعف المسافة لتتوقف؟'
+    ar: 'كرة تتدحرج على الطريق. سيارتان متماثلتان تكبحان في نفس المكان، الأولى بسرعة 50 km/h والثانية بسرعة 100 km/h. هل تحتاج الثانية إلى ضعف المسافة لتتوقف؟',
+    audio: 'audio/pc-3ac-energie-cinetique-question.mp3',
+    audioText: 'شوف معايا: جوج طوموبيلات بحال بحال، وحدة كاتمشي بخمسين كيلومتر فالساعة، والأخرى بمية. كورة طاحت فالطريق، وبجوج فرانو فنفس البلاصة. واش اللي كاتمشي بجوج مرات أسرع، غادي تحتاج غير جوج مرات المسافة باش توقف؟ فكر مزيان، ودير التوقع ديالك.'
   },
 
   predict: [
@@ -131,7 +133,9 @@ const LESSON = {
       { formula: 'E<sub>c</sub> = ½ · m · v²', text: 'Ec en joules (J), m en kilogrammes (kg), v en mètres par seconde (m/s). Pour convertir : v (m/s) = v (km/h) ÷ 3,6.', ar: 'الطاقة الحركية تساوي نصف جداء الكتلة في مربع السرعة. نحوّل السرعة إلى m/s بالقسمة على 3,6.' },
       { formula: 'D<sub>A</sub> = D<sub>R</sub> + D<sub>F</sub>', text: "La distance d'arrêt est la somme de la distance parcourue pendant le temps de réaction et de la distance de freinage.", ar: 'مسافة التوقف = مسافة رد الفعل + مسافة الكبح.' }
     ],
-    seen: 'masse double, Ec double. Vitesse double, Ec quadruple, et la distance de freinage aussi. Route mouillée ou conducteur distrait : la distance d’arrêt s’allonge.'
+    seen: 'masse double, Ec double. Vitesse double, Ec quadruple, et la distance de freinage aussi. Route mouillée ou conducteur distrait : la distance d’arrêt s’allonge.',
+    audio: 'audio/pc-3ac-energie-cinetique-regle.mp3',
+    audioText: 'القاعدة هي: الطاقة الحركية كاتساوي النص ديال الكتلة ضرب مربع السرعة. يعني إلا ضاعفنا الكتلة، الطاقة كاتضاعف. ولكن إلا ضاعفنا السرعة، الطاقة كاتضرب فربعة، حيت السرعة مرفوعة للمربع. وما تنساش: قبل ما تحسب، حول السرعة من كيلومتر فالساعة لمتر فالثانية، كاتقسم على تلاتة فاصلة ستة. ومسافة التوقف هي مسافة رد الفعل زايد مسافة الفرانة.'
   },
 
   proof: {

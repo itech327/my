@@ -52,6 +52,8 @@ const LESSON = {
 - Units: SI in physics, with conversions shown (km/h ÷ 3,6). Decimal comma.
 - No student name anywhere. The report uses an optional class code only.
 
+- Optional Darija voice: add `audio: 'audio/NAME.mp3'` and `audioText` (the spoken Darija text) to `hook` and `rule`. The engine shows a play button. Keep each clip mono, 22050 Hz, about 40 kb/s, under 400 KB; the flow test checks the file exists and its size.
+
 ## 3. Build and test
 
 ```

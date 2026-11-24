@@ -10,7 +10,8 @@ Opens the lesson at phone width (420 px) with ?test, then checks:
   5. for each exercise level, N generated exercises: every trap value is diagnosed
      with its own misconception, and the right answer is accepted;
   6. the check questions produce the report;
-  7. no page error, no horizontal overflow at 420 px, file under 150 KB.
+  7. no page error, no horizontal overflow at 420 px, file under 150 KB;
+  8. every Darija audio file referenced exists next to the lesson and stays under 400 KB.
 Exit code 1 on any failure.
 """
 import os, sys, argparse
@@ -43,6 +44,11 @@ def main():
             w = pg.evaluate('document.documentElement.scrollWidth'); check(w <= 420, f'horizontal overflow at {tag}: {w}px')
         def shot(n):
             if a.shots: os.makedirs(a.shots, exist_ok=True); pg.locator(f'#m{n}').screenshot(path=os.path.join(a.shots, f'm{n}.png'))
+        audios = pg.evaluate('[...document.querySelectorAll("[data-audio]")].map(b => b.dataset.audio)')
+        for au in audios:
+            fp = os.path.join(os.path.dirname(path), au)
+            check(os.path.isfile(fp), f'audio file missing: {au}')
+            if os.path.isfile(fp): check(os.path.getsize(fp) < 400_000, f'audio file too large: {au} ({os.path.getsize(fp) // 1024} KB, budget 400 KB)')
         shot(1); overflow('moment 1')
         pg.click('#m1 [data-next="2"]')
         # 2. predictions: pick the first wrong option when there is one
@@ -92,7 +98,7 @@ def main():
         r2 = pg.inner_text('#r2'); check(r2.startswith(str(len(L['check']))), f'report shows {r2} for all checks right')
         shot(7); overflow('moment 7')
         check(not errs, 'page errors: ' + ' | '.join(errs))
-        print(f'{os.path.basename(path)}: {total} exercises across {len(L["levels"])} levels, {len(L["predict"])} predictions, {len(L["check"])} checks, {size // 1024} KB')
+        print(f'{os.path.basename(path)}: {total} exercises across {len(L["levels"])} levels, {len(L["predict"])} predictions, {len(L["check"])} checks, {len(audios)} audio, {size // 1024} KB')
     print('RESULT:', 'OK' if not fails else f'{len(fails)} failure(s)')
     sys.exit(1 if fails else 0)
 
