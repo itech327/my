@@ -1,11 +1,11 @@
-/* LESSON:BEGIN · Mathématiques 2AC · Le théorème de Pythagore */
+/* LESSON:BEGIN · Mathématiques 3AC · Le théorème de Pythagore */
 const LESSON = {
   meta: {
-    kicker: 'Mathématiques · 2e année collège · Le concept en main',
+    kicker: 'Mathématiques · 3e année collège · Le concept en main',
     title: 'Le théorème de Pythagore',
     titleAr: 'مبرهنة فيثاغورس',
     short: 'Pythagore',
-    classes: ['2APIC-1', '2APIC-2', '2APIC-3'],
+    classes: ['3APIC-1', '3APIC-2', '3APIC-3'],
     footer: 'Prototype « Le concept en main » pour taalim.men, hors production. Textes, valeurs et dessins originaux. Non relu par un professeur de mathématiques.'
   },
 
