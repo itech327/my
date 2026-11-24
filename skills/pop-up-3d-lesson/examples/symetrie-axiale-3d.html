@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>التماثل المحوري · تجربة ثلاثية الأبعاد</title>
+<style>
+  :root{--paper:#fbfaf6;--ink:#2a2a2e;--blue:#2f5bd3;--orange:#e8710a;--red:#d1153f}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#6b4a2f;overflow:hidden;font-family:"Noto Naskh Arabic","Geeza Pro","Arial",serif;color:var(--ink)}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+  .hud{position:fixed;left:0;right:0;bottom:0;padding:10px max(12px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom));pointer-events:none;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .cards{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;direction:rtl}
+  .card{background:var(--paper);border:1.5px solid #3a3a40;border-radius:4px;padding:5px 10px 4px;box-shadow:2px 3px 0 rgba(0,0,0,.25);min-width:84px;text-align:center;transform:rotate(var(--r,0deg))}
+  .card small{display:block;font-size:13px;color:#555}
+  .card b{font:700 22px/1.1 "Comic Sans MS","Chalkboard SE","Marker Felt",cursive;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+  .card b i{font-style:normal;font-size:15px;color:#555;margin-left:3px}
+  #notice{background:rgba(251,250,246,.94);border-radius:8px;padding:6px 14px;font-size:16px;max-width:640px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  #notice::before{content:"لاحظ: ";font-weight:700;color:var(--red)}
+  #reset{position:fixed;top:calc(12px + env(safe-area-inset-top));left:12px;pointer-events:auto;font:700 16px "Noto Naskh Arabic",serif;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:8px;padding:8px 16px;min-height:44px;box-shadow:2px 3px 0 rgba(0,0,0,.3);cursor:pointer}
+  #reset:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  #err{position:fixed;top:70px;left:12px;right:12px;background:#fff;border:2px solid var(--red);padding:10px;display:none;font-size:14px;direction:ltr}
+  @media (max-width:520px){.card{min-width:72px;padding:4px 7px}.card b{font-size:18px}#notice{font-size:14px}}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<canvas id="c" aria-label="كتاب مفتوح فيه تجربة التماثل المحوري"></canvas>
+<button id="reset">إعادة</button>
+<div class="hud">
+  <div class="cards">
+    <div class="card" style="--r:-2deg"><small>المسافة AH</small><b id="vAH">0</b></div>
+    <div class="card" style="--r:1.5deg"><small>المسافة A'H</small><b id="vAH2">0</b></div>
+    <div class="card" style="--r:-1deg"><small>الزاوية بين (AA') و (d)</small><b id="vAng">0</b></div>
+    <div class="card" style="--r:2deg"><small>زاوية الطي</small><b id="vFold">0</b></div>
+  </div>
+  <div id="notice">اسحب المثلث أو غيّر ميل المحور، ثم اطوِ الورقة.</div>
+</div>
+<div id="err"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+window.addEventListener('error', e => { const el = document.getElementById('err'); el.style.display = 'block'; el.textContent = 'Error: ' + e.message; });
+
+/* ---------- Units: 1 world unit = 1 cm ---------- */
+const PAGE_Y = 1.2;                 // top surface of the right page (cm)
+const RECT = { x0: 2, x1: 19, z0: -11.5, z1: 5.5 };   // experiment area on the right page
+const P0 = new THREE.Vector2(10.5, -3);               // a fixed point of the axis (d)
+const H_SHAPE = 0.3;                // thickness of the cut-out triangle (cm)
+const Y0 = PAGE_Y + 0.01;           // bottom of the triangle
+const YA = Y0 + H_SHAPE / 2;        // height of the fold hinge
+const TRACK = { x0: 3, x1: 11, z: 9 };                // axis-angle slider
+const SW = { x: 16.5, z: 9 };                         // fold switch
+const THETA_MAX = 60;               // degrees
+
+const START_TRI = [[5, -6], [8, -4.2], [5.6, -1]];
+
+/* ---------- State ---------- */
+const S = {
+  tri: START_TRI.map(p => new THREE.Vector2(p[0], p[1])),
+  theta: 0,          // axis angle from the page's vertical direction, degrees
+  foldOn: false,
+  phi: 0,            // current fold angle, degrees, 0..180
+  drag: null,        // 'shape' | 'knob' | null
+  dragOff: new THREE.Vector2(),
+  lastAction: 'idle',
+  actionTime: 0,
+};
+
+/* ---------- Geometry helpers (all computed every frame) ---------- */
+function axisDir() { const t = THREE.MathUtils.degToRad(S.theta); return new THREE.Vector2(Math.sin(t), -Math.cos(t)); }
+// Orthogonal projection of M on (d): H = P0 + ((M-P0)·u) u
+function project(M, u) { const d = (M.x - P0.x) * u.x + (M.y - P0.y) * u.y; return new THREE.Vector2(P0.x + d * u.x, P0.y + d * u.y); }
+// Reflection across (d): M' = 2H - M
+function reflect(M, u) { const H = project(M, u); return new THREE.Vector2(2 * H.x - M.x, 2 * H.y - M.y); }
+// Signed side: cross(u, M-P0)
+function side(M, u) { return u.x * (M.y - P0.y) - u.y * (M.x - P0.x); }
+// Rodrigues rotation of a 3D point around the hinge line (through (P0.x, YA, P0.y), direction k)
+function rotHinge(p, k, phiRad) {
+  const v = new THREE.Vector3(p.x - P0.x, p.y - YA, p.z - P0.y);
+  const c = Math.cos(phiRad), s = Math.sin(phiRad);
+  const kxv = new THREE.Vector3().crossVectors(k, v);
+  const kdv = k.dot(v);
+  return new THREE.Vector3(
+    v.x * c + kxv.x * s + k.x * kdv * (1 - c) + P0.x,
+    v.y * c + kxv.y * s + k.y * kdv * (1 - c) + YA,
+    v.z * c + kxv.z * s + k.z * kdv * (1 - c) + P0.y);
+}
+// Clip the infinite line P0 + t u to the experiment rectangle (slab method)
+function clipAxis(u) {
+  let tmin = -1e9, tmax = 1e9;
+  const sl = (p, d, a, b) => { if (Math.abs(d) < 1e-9) return; const t1 = (a - p) / d, t2 = (b - p) / d; tmin = Math.max(tmin, Math.min(t1, t2)); tmax = Math.min(tmax, Math.max(t1, t2)); };
+  sl(P0.x, u.x, RECT.x0, RECT.x1); sl(P0.y, u.y, RECT.z0, RECT.z1);
+  return [tmin, tmax];
+}
+// Half of the rectangle on side sgn of the axis (Sutherland–Hodgman, one clip edge)
+function halfRect(u, sgn) {
+  const R = [[RECT.x0, RECT.z0], [RECT.x1, RECT.z0], [RECT.x1, RECT.z1], [RECT.x0, RECT.z1]].map(p => new THREE.Vector2(p[0], p[1]));
+  const out = [];
+  for (let i = 0; i < R.length; i++) {
+    const a = R[i], b = R[(i + 1) % R.length];
+    const sa = sgn * side(a, u), sb = sgn * side(b, u);
+    if (sa >= 0) out.push(a);
+    if ((sa >= 0) !== (sb >= 0)) { const t = sa / (sa - sb); out.push(new THREE.Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t)); }
+  }
+  return out;
+}
+
+/* ---------- Renderer, scene, camera ---------- */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x5c4029);
+const camera = new THREE.PerspectiveCamera(40, 1, 1, 600);
+
+scene.add(new THREE.HemisphereLight(0xfffaf0, 0x6b4a2f, 1.1));
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.6);
+sun.position.set(-30, 60, 25);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -35, right: 35, top: 30, bottom: -30, near: 10, far: 150 });
+sun.shadow.bias = -0.0008;
+scene.add(sun);
+
+/* ---------- Canvas textures ---------- */
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
+function tex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; }
+
+function woodTexture() {
+  const [c, g] = makeCanvas(1024, 1024);
+  g.fillStyle = '#8a5f3c'; g.fillRect(0, 0, 1024, 1024);
+  for (let i = 0; i < 260; i++) {
+    const y = Math.random() * 1024, a = 0.05 + Math.random() * 0.12;
+    g.strokeStyle = Math.random() < .5 ? `rgba(60,35,18,${a})` : `rgba(190,140,95,${a})`;
+    g.lineWidth = 1 + Math.random() * 3;
+    g.beginPath(); g.moveTo(0, y);
+    for (let x = 0; x <= 1024; x += 32) g.lineTo(x, y + Math.sin(x / 90 + i) * 6 + Math.sin(x / 23 + i * 3) * 1.5);
+    g.stroke();
+  }
+  for (let i = 0; i < 6; i++) { // knots
+    const x = Math.random() * 1024, y = Math.random() * 1024;
+    g.strokeStyle = 'rgba(70,40,20,.25)';
+    for (let r = 4; r < 30; r += 4) { g.beginPath(); g.ellipse(x, y, r * 2.2, r, 0, 0, 7); g.stroke(); }
+  }
+  const t = tex(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 2); return t;
+}
+
+function paperBase(g, w, h, spineRight) {
+  g.fillStyle = '#fbfaf6'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 3000; i++) { g.fillStyle = `rgba(120,110,90,${Math.random() * .05})`; g.fillRect(Math.random() * w, Math.random() * h, 2, 2); }
+  // pencil hatching near the spine
+  g.strokeStyle = 'rgba(80,80,90,.10)'; g.lineWidth = 1.2;
+  for (let i = -h; i < h; i += 7) {
+    const x0 = spineRight ? w - 60 : 0;
+    g.beginPath(); g.moveTo(x0, i); g.lineTo(x0 + 60, i + 60); g.stroke();
+  }
+}
+
+function leftPageTexture() {
+  const W = 1000, H = 1300;
+  const [c, g] = makeCanvas(W, H);
+  paperBase(g, W, H, true);
+  g.direction = 'rtl'; g.textAlign = 'right'; g.fillStyle = '#26262b';
+  const R = W - 90;
+  g.font = '700 84px "Noto Naskh Arabic","Geeza Pro","Arial",serif';
+  g.fillText('التماثل المحوري', R, 200);
+  g.strokeStyle = '#d1153f'; g.lineWidth = 4; g.beginPath(); g.moveTo(R, 232); g.lineTo(R - 430, 236); g.stroke();
+  // law
+  g.font = '700 50px "Noto Naskh Arabic","Geeza Pro","Arial",serif';
+  g.fillText('M\' مماثلة M بالنسبة للمستقيم (d)', R, 360);
+  g.fillText('يعني: (d) واسط القطعة [MM\']', R, 440);
+  g.direction = 'ltr'; g.textAlign = 'center';
+  g.font = '700 64px "Comic Sans MS","Chalkboard SE","Marker Felt",cursive';
+  g.fillStyle = '#2f5bd3';
+  g.fillText('HM = HM\'   et   (MM\') ⊥ (d)', W / 2 + 60, 580);
+  g.direction = 'rtl'; g.textAlign = 'right'; g.fillStyle = '#26262b';
+  g.font = '44px "Noto Naskh Arabic","Geeza Pro","Arial",serif';
+  const lines = [
+    '١. المحور (d) يقطع [MM\'] في منتصفها H ويعامدها.',
+    '٢. التماثل يحافظ على الأطوال والزوايا والمساحات.',
+    '٣. اطوِ الورقة حول (d): ينطبق الشكل على صورته.',
+  ];
+  lines.forEach((l, i) => g.fillText(l, R, 760 + i * 110));
+  g.font = '34px "Noto Naskh Arabic","Geeza Pro","Arial",serif'; g.fillStyle = '#6a6a72';
+  g.fillText('اسحب المثلث بإصبعك، واسحب الفراغ لتدوير الكتاب.', R, 1170);
+  return tex(c);
+}
+
+const PX = 48; // texture pixels per cm on the right page
+function rightPageTexture() {
+  const W = 20 * PX, H = 26 * PX; // page spans x 0.5..20.5, z -13..13
+  const [c, g] = makeCanvas(W, H);
+  paperBase(g, W, H, false);
+  const X = x => (x - 0.5) * PX, Z = z => (z + 13) * PX;
+  // 1 cm grid in the experiment area
+  g.strokeStyle = 'rgba(70,90,130,.16)'; g.lineWidth = 1;
+  for (let x = RECT.x0; x <= RECT.x1 + 1e-6; x++) { g.beginPath(); g.moveTo(X(x), Z(RECT.z0)); g.lineTo(X(x), Z(RECT.z1)); g.stroke(); }
+  for (let z = RECT.z0; z <= RECT.z1 + 1e-6; z++) { g.beginPath(); g.moveTo(X(RECT.x0), Z(z)); g.lineTo(X(RECT.x1), Z(z)); g.stroke(); }
+  g.strokeStyle = 'rgba(40,40,45,.55)'; g.lineWidth = 2; g.strokeRect(X(RECT.x0), Z(RECT.z0), (RECT.x1 - RECT.x0) * PX, (RECT.z1 - RECT.z0) * PX);
+  // control labels
+  g.fillStyle = '#26262b'; g.direction = 'rtl'; g.textAlign = 'center';
+  g.font = '700 34px "Noto Naskh Arabic","Geeza Pro","Arial",serif';
+  g.fillText('ميل المحور (d)', X((TRACK.x0 + TRACK.x1) / 2), Z(TRACK.z - 1.3));
+  g.fillText('طيّ الورقة', X(SW.x), Z(SW.z - 1.3));
+  g.direction = 'ltr'; g.font = '26px "Comic Sans MS","Chalkboard SE",cursive'; g.fillStyle = '#555';
+  g.fillText('-60°', X(TRACK.x0), Z(TRACK.z + 1.6)); g.fillText('0°', X((TRACK.x0 + TRACK.x1) / 2), Z(TRACK.z + 1.6)); g.fillText('60°', X(TRACK.x1), Z(TRACK.z + 1.6));
+  // tick marks under the slider
+  g.strokeStyle = '#444'; g.lineWidth = 2;
+  for (let i = 0; i <= 12; i++) { const x = X(TRACK.x0 + (TRACK.x1 - TRACK.x0) * i / 12); g.beginPath(); g.moveTo(x, Z(TRACK.z + .55)); g.lineTo(x, Z(TRACK.z + (i % 6 ? .8 : 1))); g.stroke(); }
+  return tex(c);
+}
+
+function labelSprite(text, color, size = 1.5) {
+  const [c, g] = makeCanvas(128, 96);
+  const t = tex(c);
+  const m = new THREE.SpriteMaterial({ map: t, transparent: true, depthTest: false });
+  const s = new THREE.Sprite(m); s.scale.set(size * 4 / 3, size, 1); s.renderOrder = 10;
+  s.userData.draw = txt => { g.clearRect(0, 0, 128, 96); g.font = '700 64px "Comic Sans MS","Chalkboard SE","Marker Felt",cursive'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 8; g.strokeStyle = 'rgba(251,250,246,.95)'; g.strokeText(txt, 64, 50); g.fillStyle = color; g.fillText(txt, 64, 50); t.needsUpdate = true; };
+  s.userData.draw(text);
+  return s;
+}
+
+/* ---------- Desk and book ---------- */
+const pencil = new THREE.LineBasicMaterial({ color: 0x4a4a52 });
+function withEdges(mesh, thr = 20) { const e = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, thr), pencil); mesh.add(e); return mesh; }
+
+const desk = new THREE.Mesh(new THREE.PlaneGeometry(260, 200), new THREE.MeshStandardMaterial({ map: woodTexture(), roughness: .75 }));
+desk.rotation.x = -Math.PI / 2; desk.receiveShadow = true; scene.add(desk);
+
+const coverMat = new THREE.MeshStandardMaterial({ color: 0x7b2d26, roughness: .8 });
+const cover = new THREE.Mesh(new THREE.BoxGeometry(43, 0.35, 28.4), coverMat);
+cover.position.set(0, 0.175, 0); cover.castShadow = cover.receiveShadow = true; scene.add(cover);
+
+const edgeMat = new THREE.MeshStandardMaterial({ color: 0xf1ede2, roughness: .95 });
+// right page block
+const rightMats = [edgeMat, edgeMat, new THREE.MeshStandardMaterial({ map: rightPageTexture(), roughness: .95 }), edgeMat, edgeMat, edgeMat];
+const rightPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), rightMats));
+rightPage.position.set(10.5, 0.35 + (PAGE_Y - 0.35) / 2, 0); rightPage.receiveShadow = true; rightPage.castShadow = true; scene.add(rightPage);
+// left page block, slightly lifted toward the spine like a real open book
+const leftMats = [edgeMat, edgeMat, new THREE.MeshStandardMaterial({ map: leftPageTexture(), roughness: .95 }), edgeMat, edgeMat, edgeMat];
+const leftPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), leftMats));
+leftPage.position.set(-10.5, 0.35 + (PAGE_Y - 0.35) / 2 + 0.25, 0); leftPage.rotation.z = 0.025; leftPage.receiveShadow = true; leftPage.castShadow = true; scene.add(leftPage);
+// spine curve
+const spine = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 26, 16, 1, false, Math.PI, Math.PI), edgeMat);
+spine.rotation.x = Math.PI / 2; spine.position.set(0, PAGE_Y - 0.1, 0); scene.add(spine);
+
+/* ---------- The experiment ---------- */
+// axis (d): red strip
+const axisMesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 0.16), new THREE.MeshBasicMaterial({ color: 0xd1153f, side: THREE.DoubleSide }));
+axisMesh.rotation.x = -Math.PI / 2; scene.add(axisMesh);
+const axisLabel = labelSprite('(d)', '#d1153f', 1.4); scene.add(axisLabel);
+
+// triangle prisms: 8 triangles = 24 vertices, edges = 9 segments
+function makePrism(material, edgeColor) {
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(24 * 3), 3));
+  const mesh = new THREE.Mesh(geo, material); mesh.castShadow = true; mesh.frustumCulled = false;
+  const eg = new THREE.BufferGeometry(); eg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(18 * 3), 3));
+  const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({ color: edgeColor })); edges.frustumCulled = false;
+  scene.add(mesh, edges);
+  return { mesh, edges };
+}
+function setPrism(pr, bot, top) { // bot, top: arrays of 3 Vector3
+  const P = pr.mesh.geometry.attributes.position, E = pr.edges.geometry.attributes.position;
+  const tris = [[top[0], top[1], top[2]], [bot[0], bot[2], bot[1]]];
+  for (let i = 0; i < 3; i++) { const j = (i + 1) % 3; tris.push([bot[i], bot[j], top[j]], [bot[i], top[j], top[i]]); }
+  let k = 0; for (const t of tris) for (const v of t) P.setXYZ(k++, v.x, v.y, v.z);
+  P.needsUpdate = true; pr.mesh.geometry.computeVertexNormals(); pr.mesh.geometry.computeBoundingSphere();
+  k = 0; for (let i = 0; i < 3; i++) { const j = (i + 1) % 3; for (const [a, b] of [[bot[i], bot[j]], [top[i], top[j]], [bot[i], top[i]]]) { E.setXYZ(k++, a.x, a.y, a.z); E.setXYZ(k++, b.x, b.y, b.z); } }
+  E.needsUpdate = true;
+}
+const original = makePrism(new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .9, side: THREE.DoubleSide }), 0x303036);
+const image = makePrism(new THREE.MeshStandardMaterial({ color: 0x2f5bd3, transparent: true, opacity: .55, roughness: .6, side: THREE.DoubleSide, depthWrite: false }), 0x1d3d99);
+image.mesh.castShadow = false;
+
+// tracing-paper flap that folds with the triangle
+const flapGeo = new THREE.BufferGeometry();
+flapGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(8 * 3 * 3), 3));
+const flap = new THREE.Mesh(flapGeo, new THREE.MeshStandardMaterial({ color: 0xeef3ff, transparent: true, opacity: .38, side: THREE.DoubleSide, depthWrite: false, roughness: .4 }));
+flap.frustumCulled = false; scene.add(flap);
+const flapEdge = new THREE.LineLoop(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(8 * 3), 3)), new THREE.LineBasicMaterial({ color: 0x7d8db0 }));
+flapEdge.frustumCulled = false; scene.add(flapEdge);
+
+// AA' dashed segment and right-angle mark
+const segGeo = new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
+const seg = new THREE.Line(segGeo, new THREE.LineDashedMaterial({ color: 0xe8710a, dashSize: .35, gapSize: .25 })); seg.frustumCulled = false; scene.add(seg);
+const rightGeo = new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(9), 3));
+const rightMark = new THREE.Line(rightGeo, new THREE.LineBasicMaterial({ color: 0xe8710a })); rightMark.frustumCulled = false; scene.add(rightMark);
+const hDot = new THREE.Mesh(new THREE.SphereGeometry(.16, 12, 8), new THREE.MeshBasicMaterial({ color: 0xe8710a })); scene.add(hDot);
+const hLabel = labelSprite('H', '#e8710a', 1.2); scene.add(hLabel);
+
+// trails of A and A'
+function makeTrail(color) {
+  const N = 400, g = new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+  g.setDrawRange(0, 0);
+  const l = new THREE.Line(g, new THREE.LineBasicMaterial({ color, transparent: true, opacity: .85 })); l.frustumCulled = false; scene.add(l);
+  return { l, n: 0, N, last: null };
+}
+const trailA = makeTrail(0xe8710a), trailB = makeTrail(0x2f5bd3);
+function pushTrail(tr, p) {
+  if (tr.last && tr.last.distanceTo(p) < 0.15) return;
+  const P = tr.l.geometry.attributes.position;
+  if (tr.n >= tr.N) { P.array.copyWithin(0, 3); tr.n = tr.N - 1; }
+  P.setXYZ(tr.n++, p.x, p.y, p.z); P.needsUpdate = true; tr.l.geometry.setDrawRange(0, tr.n); tr.last = p.clone();
+}
+function clearTrail(tr) { tr.n = 0; tr.last = null; tr.l.geometry.setDrawRange(0, 0); }
+
+// vertex labels
+const NAMES = ['A', 'B', 'C'];
+const labO = NAMES.map(n => { const s = labelSprite(n, '#26262b'); scene.add(s); return s; });
+const labI = NAMES.map(n => { const s = labelSprite(n + "'", '#2f5bd3'); scene.add(s); return s; });
+
+// slider on the page
+const trackMesh = withEdges(new THREE.Mesh(new THREE.BoxGeometry(TRACK.x1 - TRACK.x0, 0.12, 0.35), new THREE.MeshStandardMaterial({ color: 0xe4e0d4 })));
+trackMesh.position.set((TRACK.x0 + TRACK.x1) / 2, PAGE_Y + 0.06, TRACK.z); trackMesh.receiveShadow = true; scene.add(trackMesh);
+const knob = withEdges(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.7, 24), new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .8 })), 30);
+knob.castShadow = true; scene.add(knob);
+const knobHit = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 1.4, 12), new THREE.MeshBasicMaterial({ visible: false }));
+scene.add(knobHit);
+const thetaLabel = labelSprite('0°', '#d1153f', 1.3); scene.add(thetaLabel);
+
+// fold switch on the page
+const swBase = withEdges(new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.4, 1.4), new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .9 })));
+swBase.position.set(SW.x, PAGE_Y + 0.2, SW.z); swBase.castShadow = true; scene.add(swBase);
+const swKnob = withEdges(new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.5, 1.1), new THREE.MeshStandardMaterial({ color: 0xbdbdc4, roughness: .7 })));
+swKnob.castShadow = true; scene.add(swKnob);
+const swHit = new THREE.Mesh(new THREE.BoxGeometry(4.2, 1.6, 2.4), new THREE.MeshBasicMaterial({ visible: false }));
+swHit.position.copy(swBase.position); scene.add(swHit);
+let swX = SW.x - 0.8;
+
+/* ---------- Camera and controls ---------- */
+const controls = { ref: null };
+const home = { pos: new THREE.Vector3(), target: new THREE.Vector3() };
+function computeHome() {
+  const a = camera.aspect, portrait = a < 0.9;
+  const fitW = portrait ? 30 : 46, fitH = 31;
+  const vf = THREE.MathUtils.degToRad(camera.fov) / 2, hf = Math.atan(Math.tan(vf) * a);
+  const dist = Math.max((fitW / 2) / Math.tan(hf), (fitH / 2) / Math.tan(vf)) * 1.05;
+  home.target.set(portrait ? 5.5 : 0, 0, portrait ? 0.5 : 0.5);
+  home.pos.copy(home.target).add(new THREE.Vector3(0.08, 0.80, 0.60).normalize().multiplyScalar(dist));
+  return dist;
+}
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  const d = computeHome();
+  if (controls.ref) { controls.ref.minDistance = d * 0.5; controls.ref.maxDistance = d * 1.35; }
+}
+
+/* ---------- Pointer interaction (registered before OrbitControls so it can veto orbiting) ---------- */
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+const pagePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -PAGE_Y);
+function setRay(e) { const r = canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(ndc, camera); }
+function pageHit() { const p = new THREE.Vector3(); return ray.ray.intersectPlane(pagePlane, p) ? new THREE.Vector2(p.x, p.z) : null; }
+function centroid() { return new THREE.Vector2((S.tri[0].x + S.tri[1].x + S.tri[2].x) / 3, (S.tri[0].y + S.tri[1].y + S.tri[2].y) / 3); }
+function act(name) { S.lastAction = name; S.actionTime = performance.now(); }
+
+canvas.addEventListener('pointerdown', e => {
+  setRay(e);
+  const hits = ray.intersectObjects([original.mesh, knobHit, swHit], false);
+  if (!hits.length) return;
+  const o = hits[0].object;
+  if (o === swHit) { S.foldOn = !S.foldOn; act('fold'); if (controls.ref) controls.ref.enabled = false; S.drag = 'switch'; }
+  else if (o === knobHit) { S.drag = 'knob'; }
+  else if (o === original.mesh && S.phi < 1) { const p = pageHit(); if (!p) return; S.drag = 'shape'; S.dragOff.copy(centroid()).sub(p); }
+  else return;
+  if (controls.ref) controls.ref.enabled = false;
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!S.drag || S.drag === 'switch') return;
+  setRay(e); const p = pageHit(); if (!p) return;
+  if (S.drag === 'knob') {
+    const x = THREE.MathUtils.clamp(p.x, TRACK.x0, TRACK.x1);
+    S.theta = Math.round(((x - TRACK.x0) / (TRACK.x1 - TRACK.x0) * 2 - 1) * THETA_MAX);
+    act('axis');
+  } else {
+    const target = p.clone().add(S.dragOff), c = centroid();
+    let dx = target.x - c.x, dz = target.y - c.y;
+    // keep the whole triangle inside the experiment area
+    const xs = S.tri.map(v => v.x), zs = S.tri.map(v => v.y), m = 0.3;
+    dx = THREE.MathUtils.clamp(dx, RECT.x0 + m - Math.min(...xs), RECT.x1 - m - Math.max(...xs));
+    dz = THREE.MathUtils.clamp(dz, RECT.z0 + m - Math.min(...zs), RECT.z1 - m - Math.max(...zs));
+    S.tri.forEach(v => { v.x += dx; v.y += dz; });
+    act('shape');
+  }
+});
+function endDrag(e) { if (S.drag) { S.drag = null; if (controls.ref) controls.ref.enabled = true; try { canvas.releasePointerCapture(e.pointerId); } catch (_) {} } }
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+
+const orbit = new OrbitControls(camera, canvas);
+controls.ref = orbit;
+orbit.enablePan = false; orbit.enableDamping = true; orbit.dampingFactor = 0.08;
+orbit.minPolarAngle = 0.12; orbit.maxPolarAngle = 1.12;
+orbit.minAzimuthAngle = -0.75; orbit.maxAzimuthAngle = 0.75;
+orbit.rotateSpeed = 0.6;
+
+/* ---------- Intro camera move ---------- */
+let intro = null;
+function startIntro() {
+  computeHome();
+  const from = home.target.clone().add(new THREE.Vector3(-0.35, 1.2, 1.1).normalize().multiplyScalar(home.pos.distanceTo(home.target) * 1.9));
+  intro = { t0: performance.now(), dur: 3000, from };
+  orbit.enabled = false; orbit.target.copy(home.target);
+  camera.position.copy(from); camera.lookAt(home.target);
+}
+
+document.getElementById('reset').addEventListener('click', () => {
+  S.tri = START_TRI.map(p => new THREE.Vector2(p[0], p[1]));
+  S.theta = 0; S.foldOn = false; S.phi = 0; S.lastAction = 'idle';
+  clearTrail(trailA); clearTrail(trailB);
+  startIntro();
+});
+
+/* ---------- HUD ---------- */
+const el = id => document.getElementById(id);
+const vAH = el('vAH'), vAH2 = el('vAH2'), vAng = el('vAng'), vFold = el('vFold'), notice = el('notice');
+const fmt = (x, d = 1) => x.toFixed(d).replace('.', ',');
+let lastNotice = '';
+function setNotice(t) { if (t !== lastNotice) { notice.textContent = t; lastNotice = t; } }
+
+/* ---------- Frame loop: everything recomputed from the equations ---------- */
+const clock = new THREE.Clock();
+function frame() {
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const now = performance.now();
+
+  // intro
+  if (intro) {
+    const k = Math.min(1, (now - intro.t0) / intro.dur), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    camera.position.lerpVectors(intro.from, home.pos, e); camera.lookAt(home.target);
+    if (k >= 1) { intro = null; orbit.enabled = true; orbit.target.copy(home.target); orbit.update(); }
+  } else orbit.update();
+
+  // fold angle moves at 90 °/s toward 0 or 180
+  const goal = S.foldOn ? 180 : 0;
+  S.phi += Math.sign(goal - S.phi) * Math.min(Math.abs(goal - S.phi), 90 * dt);
+
+  const u = axisDir();
+  const k3 = new THREE.Vector3(u.x, 0, u.y);
+  // choose fold direction so the flap lifts upward
+  const sA = Math.sign(side(centroid(), u)) || 1;
+  const probe = new THREE.Vector3(P0.x + (-u.y) * sA, YA, P0.y + u.x * sA);
+  const sgnRot = rotHinge(probe, k3, Math.PI / 2).y > YA ? 1 : -1;
+  const phiR = THREE.MathUtils.degToRad(S.phi) * sgnRot;
+
+  // axis strip
+  const [t0, t1] = clipAxis(u);
+  const a0 = new THREE.Vector2(P0.x + u.x * t0, P0.y + u.y * t0), a1 = new THREE.Vector2(P0.x + u.x * t1, P0.y + u.y * t1);
+  axisMesh.scale.set(a0.distanceTo(a1), 1, 1);
+  axisMesh.position.set((a0.x + a1.x) / 2, PAGE_Y + 0.006, (a0.y + a1.y) / 2);
+  axisMesh.rotation.set(-Math.PI / 2, 0, -Math.atan2(u.y, u.x));
+  const top = u.y < 0 ? a1 : a0; // end nearer the top of the page
+  axisLabel.position.set(top.x + 0.9, PAGE_Y + 0.8, top.y + 0.6);
+
+  // original (possibly folded) and its image
+  const img2 = S.tri.map(v => reflect(v, u));
+  const ob = S.tri.map(v => rotHinge(new THREE.Vector3(v.x, Y0, v.y), k3, phiR));
+  const ot = S.tri.map(v => rotHinge(new THREE.Vector3(v.x, Y0 + H_SHAPE, v.y), k3, phiR));
+  setPrism(original, ob, ot);
+  setPrism(image, img2.map(v => new THREE.Vector3(v.x, Y0 + 0.02, v.y)), img2.map(v => new THREE.Vector3(v.x, Y0 + H_SHAPE - 0.02, v.y)));
+
+  // tracing flap: the half of the area on the triangle's side
+  const hr = halfRect(u, sA);
+  const fp = flap.geometry.attributes.position, fe = flapEdge.geometry.attributes.position;
+  const hr3 = hr.map(v => rotHinge(new THREE.Vector3(v.x, Y0 - 0.004, v.y), k3, phiR));
+  let n = 0;
+  for (let i = 1; i < hr3.length - 1; i++) for (const v of [hr3[0], hr3[i], hr3[i + 1]]) fp.setXYZ(n++, v.x, v.y, v.z);
+  flap.geometry.setDrawRange(0, n); fp.needsUpdate = true; flap.geometry.computeVertexNormals();
+  hr3.forEach((v, i) => fe.setXYZ(i, v.x, v.y, v.z)); flapEdge.geometry.setDrawRange(0, hr3.length); fe.needsUpdate = true;
+  flap.visible = flapEdge.visible = S.phi > 0.5;
+
+  // measurements for A (index 0), from the equations
+  const A = S.tri[0], A2 = img2[0], H = project(A, u);
+  const AH = A.distanceTo(H), A2H = A2.distanceTo(H);
+  const w = new THREE.Vector2().subVectors(A2, A);
+  const ang = w.length() > 1e-6 ? THREE.MathUtils.radToDeg(Math.acos(THREE.MathUtils.clamp(Math.abs(w.dot(u)) / w.length(), 0, 1))) : NaN;
+
+  // segment AA', point H, right-angle mark
+  const yL = PAGE_Y + 0.04;
+  const showSeg = AH > 0.05 && S.phi < 1;
+  seg.visible = rightMark.visible = showSeg; hDot.visible = hLabel.visible = S.phi < 1;
+  const sp = seg.geometry.attributes.position; sp.setXYZ(0, A.x, yL, A.y); sp.setXYZ(1, A2.x, yL, A2.y); sp.needsUpdate = true; seg.computeLineDistances();
+  if (showSeg) {
+    const nrm = new THREE.Vector2().subVectors(A, H).normalize(), s = 0.55;
+    const r = rightMark.geometry.attributes.position;
+    r.setXYZ(0, H.x + u.x * s, yL, H.y + u.y * s); r.setXYZ(1, H.x + u.x * s + nrm.x * s, yL, H.y + u.y * s + nrm.y * s); r.setXYZ(2, H.x + nrm.x * s, yL, H.y + nrm.y * s); r.needsUpdate = true;
+  }
+  hDot.position.set(H.x, yL, H.y); hLabel.position.set(H.x + 0.7, PAGE_Y + 0.7, H.y + 0.7);
+
+  // vertex labels
+  const c2 = centroid(), ci = img2.reduce((s, v) => s.add(v), new THREE.Vector2()).multiplyScalar(1 / 3);
+  S.tri.forEach((v, i) => {
+    const out = new THREE.Vector2().subVectors(v, c2).normalize().multiplyScalar(0.9);
+    const p = rotHinge(new THREE.Vector3(v.x + out.x, Y0 + H_SHAPE + 0.6, v.y + out.y), k3, phiR);
+    labO[i].position.copy(p);
+    const vi = img2[i], oi = new THREE.Vector2().subVectors(vi, ci).normalize().multiplyScalar(0.9);
+    labI[i].position.set(vi.x + oi.x, Y0 + H_SHAPE + 0.6, vi.y + oi.y);
+    labI[i].visible = S.phi < 170;
+  });
+
+  // trails
+  if (S.drag === 'shape' || S.drag === 'knob') { pushTrail(trailA, new THREE.Vector3(A.x, PAGE_Y + 0.03, A.y)); pushTrail(trailB, new THREE.Vector3(A2.x, PAGE_Y + 0.03, A2.y)); }
+
+  // slider knob and switch
+  const kx = TRACK.x0 + (S.theta / THETA_MAX + 1) / 2 * (TRACK.x1 - TRACK.x0);
+  knob.position.set(kx, PAGE_Y + 0.47, TRACK.z); knobHit.position.copy(knob.position);
+  thetaLabel.position.set(kx, PAGE_Y + 1.8, TRACK.z - 0.4);
+  const tl = (S.theta > 0 ? '+' : '') + S.theta + '°'; if (thetaLabel.userData.t !== tl) { thetaLabel.userData.draw(tl); thetaLabel.userData.t = tl; }
+  swX += ((S.foldOn ? SW.x + 0.8 : SW.x - 0.8) - swX) * Math.min(1, dt * 12);
+  swKnob.position.set(swX, PAGE_Y + 0.55, SW.z);
+  swKnob.material.color.set(S.foldOn ? 0xd1153f : 0xbdbdc4);
+
+  // value cards
+  vAH.innerHTML = fmt(AH, 2) + '<i>cm</i>';
+  vAH2.innerHTML = fmt(A2H, 2) + '<i>cm</i>';
+  vAng.innerHTML = (isNaN(ang) ? '—' : fmt(ang, 1)) + '<i>°</i>';
+  vFold.innerHTML = fmt(S.phi, 0) + '<i>°</i>';
+
+  // what to notice, from the current state
+  const xsides = S.tri.map(v => Math.sign(side(v, u)));
+  const crosses = xsides.some(s => s > 0) && xsides.some(s => s < 0);
+  const recent = now - S.actionTime < 2500;
+  if (S.phi > 0.5 && S.phi < 179.5) setNotice('أثناء الطي تدور كل نقطة حول المحور (d)، ونقط المحور لا تتحرك.');
+  else if (S.phi >= 179.5) setNotice('بعد الطي ينطبق المثلث ABC تمامًا على صورته A\'B\'C\'.');
+  else if (S.drag === 'knob' || (recent && S.lastAction === 'axis')) setNotice('مهما كان ميل المحور، يبقى (AA\') عموديًا على (d) والزاوية ' + (isNaN(ang) ? '90' : fmt(ang, 0)) + '°.');
+  else if (crosses) setNotice('المثلث يقطع المحور: النقط الواقعة على (d) هي مماثلات نفسها.');
+  else if (AH < 0.3) setNotice('A قريبة من المحور، فصورتها A\' قريبة منها أيضًا.');
+  else if (S.drag === 'shape' || (recent && S.lastAction === 'shape')) setNotice('كلما ابتعدت A عن المحور ابتعدت A\' بنفس المسافة: AH = A\'H = ' + fmt(AH, 1) + ' cm.');
+  else if (recent && S.lastAction === 'fold') setNotice('أعدنا الورقة: الصورة الزرقاء بقيت في مكانها.');
+  else setNotice('اسحب المثلث أو غيّر ميل المحور، ثم اطوِ الورقة بالمفتاح.');
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener('resize', resize);
+resize();
+startIntro();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
