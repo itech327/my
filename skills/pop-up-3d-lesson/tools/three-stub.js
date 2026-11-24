@@ -2,7 +2,7 @@ export class Vector2{constructor(x=0,y=0){this.x=x;this.y=y}set(x,y){this.x=x;th
 add(v){this.x+=v.x;this.y+=v.y;return this}sub(v){this.x-=v.x;this.y-=v.y;return this}multiplyScalar(s){this.x*=s;this.y*=s;return this}dot(v){return this.x*v.x+this.y*v.y}
 length(){return Math.hypot(this.x,this.y)}lengthSq(){return this.x*this.x+this.y*this.y}normalize(){const l=this.length()||1;return this.multiplyScalar(1/l)}distanceTo(v){return Math.hypot(this.x-v.x,this.y-v.y)}}
 export class Vector3{constructor(x=0,y=0,z=0){this.x=x;this.y=y;this.z=z}set(x,y,z){this.x=x;this.y=y;this.z=z;return this}copy(v){this.x=v.x;this.y=v.y;this.z=v.z;return this}clone(){return new Vector3(this.x,this.y,this.z)}
-add(v){this.x+=v.x;this.y+=v.y;this.z+=v.z;return this}addScaledVector(v,s){this.x+=v.x*s;this.y+=v.y*s;this.z+=v.z*s;return this}subVectors(a,b){this.x=a.x-b.x;this.y=a.y-b.y;this.z=a.z-b.z;return this}
+add(v){this.x+=v.x;this.y+=v.y;this.z+=v.z;return this}sub(v){this.x-=v.x;this.y-=v.y;this.z-=v.z;return this}addScaledVector(v,s){this.x+=v.x*s;this.y+=v.y*s;this.z+=v.z*s;return this}subVectors(a,b){this.x=a.x-b.x;this.y=a.y-b.y;this.z=a.z-b.z;return this}
 crossVectors(a,b){const x=a.y*b.z-a.z*b.y,y=a.z*b.x-a.x*b.z,z=a.x*b.y-a.y*b.x;return this.set(x,y,z)}dot(v){return this.x*v.x+this.y*v.y+this.z*v.z}length(){return Math.hypot(this.x,this.y,this.z)}
 multiplyScalar(s){this.x*=s;this.y*=s;this.z*=s;return this}normalize(){return this.multiplyScalar(1/(this.length()||1))}lerpVectors(a,b,t){return this.set(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,a.z+(b.z-a.z)*t)}
 project(){this.x=0;this.y=0;return this}distanceTo(v){return Math.hypot(this.x-v.x,this.y-v.y,this.z-v.z)}setScalar(s){return this.set(s,s,s)}}

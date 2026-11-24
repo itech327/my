@@ -108,6 +108,17 @@ function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
           if (t === 0) { poly(g, [[x - W * .05, y], [x + W * .05, y], [x + W * .015, y - H * .2], [x + W * .015, y - H * .3], [x - W * .015, y - H * .3], [x - W * .015, y - H * .2]], 'rgba(255,255,255,.6)'); poly(g, [[x - W * .045, y - 2], [x + W * .045, y - 2], [x + W * .025, y - H * .1], [x - W * .025, y - H * .1]], c, null); }
           else if (t === 1) { rect(g, x - W * .04, y - H * .26, W * .08, H * .26, 'rgba(255,255,255,.6)'); rect(g, x - W * .04, y - H * .13, W * .08, H * .13, c, null); }
           else { disc(g, x, y - H * .1, W * .05, c); rect(g, x - W * .012, y - H * .3, W * .024, H * .12, 'rgba(255,255,255,.7)'); } } } },
+    crane(g, W, H) { const col = '#d9a63c', x = W * .3;
+      rect(g, x - W * .05, H * .95, W * .1, H * .05, '#7d7d84');
+      for (let y = H * .95; y > H * .12; y -= W * .1) { rect(g, x - W * .04, y - W * .1, W * .08, W * .1, null, col, 4); g.strokeStyle = col; g.lineWidth = 3; g.beginPath(); g.moveTo(x - W * .04, y); g.lineTo(x + W * .04, y - W * .1); g.stroke(); }
+      rect(g, W * .05, H * .08, W * .9, H * .04, col); for (let k = 0; k < 14; k++) { g.strokeStyle = col; g.lineWidth = 3; g.beginPath(); g.moveTo(W * (.05 + k * .064), H * .12); g.lineTo(W * (.08 + k * .064), H * .08); g.stroke(); }
+      rect(g, W * .05, H * .12, W * .12, H * .06, '#7d7d84'); g.strokeStyle = INK; g.lineWidth = 2; g.beginPath(); g.moveTo(W * .8, H * .12); g.lineTo(W * .8, H * .5); g.stroke(); rect(g, W * .77, H * .5, W * .06, H * .05, '#c9b48a'); },
+    scaffold(g, W, H) { const pole = '#8e959e', plank = '#b88b55';
+      for (let x = W * .05; x < W; x += W * .3) rect(g, x, 0, W * .03, H, pole, INK, 1.5);
+      for (let y = H * .3; y < H; y += H * .33) { rect(g, 0, y, W, H * .05, plank); g.strokeStyle = pole; g.lineWidth = 4; for (let x = W * .05; x < W * .9; x += W * .3) { g.beginPath(); g.moveTo(x, y); g.lineTo(x + W * .3, y - H * .3); g.stroke(); } }
+      rect(g, W * .15, H * .3 - H * .2, W * .6, H * .2, '#d7cbb7', INK, 1.5); for (let y = H * .14; y < H * .3; y += H * .04) { g.strokeStyle = 'rgba(120,90,60,.5)'; g.beginPath(); g.moveTo(W * .15, y); g.lineTo(W * .75, y); g.stroke(); } },
+    bricks(g, W, H) { const bw = W / 6, bh = H / 7;
+      for (let r = 0; r < 7; r++) { const n = 6 - Math.floor(r / 2); for (let k = 0; k < n; k++) { const x = (W - n * bw) / 2 + k * bw + (r % 2) * bw / 4; rect(g, x, H - (r + 1) * bh, bw - 3, bh - 3, mix('#b5643e', '#c98252', rnd())); } } },
   };
 
   /* ---------- ground and support textures ---------- */
@@ -129,11 +140,12 @@ function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
       g.fillStyle = 'rgba(224,180,110,.55)'; for (let x = 32; x < 512; x += 64) for (let y = 0; y < 512; y += 64) { g.beginPath(); g.moveTo(x, y + 14); g.lineTo(x + 10, y + 32); g.lineTo(x, y + 50); g.lineTo(x - 10, y + 32); g.fill(); }
       g.strokeStyle = '#4a3a34'; g.lineWidth = 22; g.strokeRect(11, 11, 490, 490); return c; },
     playmat() { const [c, g] = cnv(512, 512); g.fillStyle = '#9db59a'; g.fillRect(0, 0, 512, 512); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3; for (let i = 0; i <= 512; i += 64) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 512); g.moveTo(0, i); g.lineTo(512, i); g.stroke(); } return c; },
+    dirt() { const [c, g] = cnv(512, 512); g.fillStyle = '#b59a78'; g.fillRect(0, 0, 512, 512); noise(g, 512, 512, 7000, '90,70,50', .18); for (let i = 0; i < 60; i++) disc(g, rnd() * 512, rnd() * 512, 2 + rnd() * 4, 'rgba(120,110,100,.5)', null); return c; },
     labTop() { const [c, g] = cnv(512, 512); g.fillStyle = '#e9edf0'; g.fillRect(0, 0, 512, 512); noise(g, 512, 512, 3000, '90,100,110', .07); return c; },
   };
   const texCache = {}; const getTex = (name, rep) => (texCache[name + rep] ||= tx(T[name](), rep));
   // world size of one texture tile, so bricks, planks and tiles keep a real size
-  const GROUND_REP = { sand: 30, bejmat: 8, floorPlanks: 12, grass: 40, darkGrass: 40, tiles: 4, lino: 30 };
+  const GROUND_REP = { dirt: 30, sand: 30, bejmat: 8, floorPlanks: 12, grass: 40, darkGrass: 40, tiles: 4, lino: 30 };
 
   /* ---------- the decors: choose by the real-life context of each mode ---------- */
   const DECORS = {
@@ -149,6 +161,8 @@ function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
       cards: [['hills', 150, 26, 0, 130], ['tree', 24, 30, -30, 72], ['tree', 20, 25, 35, 78], ['bush', 16, 8, -58, 48], ['fence', 60, 9, 50, 52], ['tree', 15, 20, 62, 60]] },
     labo: { back: ['labShelf'], sky: ['#dfe6ea', '#eef2f4', '#cfd8dd'], fog: '#e3e9ec', ground: 'lino', support: { kind: 'bench', tex: 'labTop', h: 14 }, light: ['#ffffff', '#7d8890', 1.15, '#f4f8ff', 1.4],
       cards: [['labShelf', 50, 32, -10, 60], ['windowDay', 30, 32, 45, 62], ['labShelf', 36, 28, -58, 52]] },
+    chantier: { back: ['scaffold', 'bricks@.85,.4,.2'], sky: ['#a9c8e0', '#e4ecef', '#d8cfc0'], fog: '#e2e0d8', ground: 'dirt', support: { kind: 'table', tex: 'wood', h: 12 }, light: ['#ffffff', '#8c7a60', 1.1, '#fff4e0', 1.6],
+      cards: [['crane', 40, 46, -20, 110], ['scaffold', 40, 26, 30, 70], ['bricks', 14, 12, -50, 46], ['bricks', 10, 8, 55, 44]] },
     nuit: { back: ['hills#night', 'tree@.2,.7,.25'], sky: ['#0d1630', '#24365e', '#3b4a6a'], stars: true, moon: true, fog: '#2a3858', ground: 'darkGrass', support: { kind: 'table', tex: 'wood', h: 12 }, light: ['#b8c8ff', '#2a3040', .75, '#dfe8ff', 1.1],
       cards: [['hills', 150, 24, 0, 130, { colors: ['#22304f', '#1b2742', '#141d33'] }], ['tree', 20, 25, -45, 72], ['tree', 15, 20, 52, 68]] },
   };
