@@ -3,29 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>L'énergie cinétique · Le concept en main</title>
+<title>L'énergie cinétique et la distance d'arrêt · Le concept en main</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* Leçon « Le concept en main » : 7 moments, modèle léger SVG, FR + AR. */
+/* STYLE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson */
 :root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
 .wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px)}
 h1,h2,h3,.hand{font-family:Kalam,"Comic Sans MS",cursive;font-weight:700;line-height:1.1;margin:0}
-h1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:10px 0 6px}
+h1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:12px 0 6px}
 p{margin:6px 0}
 .ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
 .num{font:700 15px Kalam,cursive;color:var(--soft)}
+.note{font-size:13px;color:var(--soft)}
 header{padding:20px 0 6px}
 .steps{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}
 .steps .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
-.steps button{flex:none;min-height:36px;min-width:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px "Atkinson Hyperlegible",sans-serif;padding:0 10px;cursor:pointer}
+.steps button{flex:none;min-height:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px "Atkinson Hyperlegible",sans-serif;padding:0 10px;cursor:pointer}
 .steps button.done{border-color:var(--ok);color:var(--ok)}
 .steps button.cur{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .steps button:disabled{opacity:.45;cursor:default}
-section.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0}
+section.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;scroll-margin-top:60px}
 section.moment[hidden]{display:none}
 button.b{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
 button.b.primary{background:var(--ink);color:var(--bg)}
@@ -37,14 +38,14 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}
 .opts button:disabled{cursor:default}
 .q{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
-.q:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.q:first-child{border-top:0;margin-top:0;padding-top:0}
 .fig{width:100%;display:block}
 .ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
 .card{border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center}
 .card small{display:block;color:var(--soft);font-size:13px}
 .card b{font:700 20px Kalam,cursive;white-space:nowrap}
-.ctl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 20px}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}
 label{display:block;font-weight:700}
 label span{font-weight:400;color:var(--soft);white-space:nowrap}
 input[type=range]{width:100%;height:40px;accent-color:var(--blue)}
@@ -63,7 +64,7 @@ th:first-child,td:first-child{text-align:left}
 .missions li::before{content:"";position:absolute;left:0;top:7px;width:18px;height:18px;border:2px solid var(--line);border-radius:5px}
 .missions li.ok::before{border-color:var(--ok);background:var(--ok)}
 .rule{border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:8px 0}
-.formula{font:700 clamp(26px,6vw,36px) Kalam,cursive;margin:4px 0}
+.formula{font:700 clamp(24px,6vw,34px) Kalam,cursive;margin:4px 0}
 .flapw{position:relative;margin-top:8px;border-radius:12px;overflow:hidden;min-height:140px}
 .proof{padding:12px;border:1.5px dashed var(--line);border-radius:12px}
 .flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive;color:var(--ink);cursor:pointer}
@@ -71,7 +72,6 @@ th:first-child,td:first-child{text-align:left}
 .verdict{border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}
 .verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent)}
 .verdict.no{background:color-mix(in srgb,var(--bad) 12%,transparent)}
-.tabs{display:flex;gap:6px;margin:6px 0}
 .ex{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-top:8px}
 .ex input{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;width:9em;background:var(--card);color:var(--ink)}
 .fb{min-height:1.4em;margin-top:6px;font-weight:700}
@@ -79,349 +79,367 @@ th:first-child,td:first-child{text-align:left}
 .report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
 .report .card b{font-size:26px}
 select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
-.note{font-size:13px;color:var(--soft)}
+#problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
 footer{padding:20px 0 40px}
-@media(max-width:560px){.readout{grid-template-columns:repeat(2,minmax(0,1fr))}.ctl{grid-template-columns:minmax(0,1fr)}.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* STYLE:END */
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <div class="num">Physique-Chimie · 3e année collège · Le concept en main</div>
-  <h1>L'énergie cinétique et la distance d'arrêt</h1>
-  <p class="ar">الطاقة الحركية ومسافة التوقف</p>
-</div></header>
+<header><div class="wrap" id="hd"></div></header>
 <nav class="steps" aria-label="Moments de la leçon"><div class="wrap" id="steps"></div></nav>
-
-<main class="wrap">
-
-<section class="moment" id="m1">
-  <div class="num">1 · La question</div>
-  <h2>Deux fois plus vite… deux fois plus loin ?</h2>
-  <svg class="fig" viewBox="0 0 640 200" role="img" aria-label="Deux voitures à 50 et 100 km/h devant un ballon">
-    <line class="ink" x1="0" y1="80" x2="640" y2="80" style="stroke-width:1.6;opacity:.5"/>
-    <line class="ink" x1="0" y1="180" x2="640" y2="180" style="stroke-width:1.6;opacity:.5"/>
-    <line class="ink" x1="0" y1="130" x2="640" y2="130" style="stroke-dasharray:14 12;stroke-width:1.6;opacity:.4"/>
-    <g id="carA" transform="translate(150 0)"></g><g id="carB" transform="translate(150 110)"></g>
-    <circle cx="560" cy="110" r="16" fill="var(--card)" class="ink"/><path class="ink" d="M546 104 Q560 112 574 104 M552 122 Q560 112 568 122" style="stroke-width:1.6"/>
-    <text x="172" y="48" font-family="Kalam" font-weight="700" font-size="22" fill="var(--blue)">50 km/h</text>
-    <text x="172" y="158" font-family="Kalam" font-weight="700" font-size="22" fill="var(--heat)">100 km/h</text>
-  </svg>
-  <p>Un ballon roule sur la route. Deux voitures identiques freinent au même endroit : l'une roule à 50 km/h, l'autre à 100 km/h. La seconde va deux fois plus vite. A-t-elle besoin de deux fois plus de distance pour s'arrêter ?</p>
-  <p class="ar">كرة تتدحرج على الطريق. سيارتان متماثلتان تكبحان في نفس المكان، الأولى بسرعة 50 km/h والثانية بسرعة 100 km/h. هل تحتاج الثانية إلى ضعف المسافة لتتوقف؟</p>
-  <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div>
-</section>
-
-<section class="moment" id="m2" hidden>
-  <div class="num">2 · Je prédis</div>
-  <h2>Avant toute explication, choisis</h2>
-  <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>
-  <div class="q" id="p1"></div>
-  <div class="q" id="p2"></div>
-  <div class="row"><button class="b primary" data-next="3" id="go3" disabled>Je teste au banc d'essai</button></div>
-</section>
-
-<section class="moment" id="m3" hidden>
-  <div class="num">3 · Je teste</div>
-  <h2>Le banc d'essai</h2>
-  <p>Règle la voiture, puis appuie sur « Freiner ». Chaque essai s'ajoute au carnet.</p>
-  <svg class="fig" id="bench" viewBox="0 0 800 240" role="img" aria-label="Voiture sur une route avec distance de réaction et de freinage">
-    <defs><radialGradient id="g"><stop offset="0" stop-color="#f5a300" stop-opacity=".75"/><stop offset=".55" stop-color="#f5a300" stop-opacity=".25"/><stop offset="1" stop-color="#f5a300" stop-opacity="0"/></radialGradient></defs>
-    <path class="ink" style="stroke-width:1.3;opacity:.4" d="M0 110 Q90 74 180 102 T380 94 Q480 70 560 100 T800 92"/>
-    <line class="ink" x1="0" y1="171" x2="800" y2="171"/><line class="ink" x1="0" y1="212" x2="800" y2="212"/>
-    <line class="ink" x1="0" y1="192" x2="800" y2="192" style="stroke-width:2;stroke-dasharray:16 14;opacity:.5"/>
-    <rect id="wet" x="0" y="172" width="800" height="39" fill="var(--blue)" opacity="0"/>
-    <rect id="mr" y="220" height="8" rx="4" fill="var(--blue)" width="0"/><rect id="mf" y="220" height="8" rx="4" fill="var(--heat)" width="0"/>
-    <g id="sign" style="opacity:0"><line class="ink" id="pole" x1="0" y1="170" x2="0" y2="104"/><path id="tri" fill="var(--bg)" class="ink" d=""/><text id="ex" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="26" fill="var(--heat)">!</text></g>
-    <g id="car"><circle id="glow" cx="-36" cy="138" r="40" fill="url(#g)"/><g id="lines" class="ink" style="stroke-width:2"><path d="M-84 120 h-26 M-90 135 h-34 M-84 150 h-22"/></g><g id="carbody"></g></g>
-  </svg>
-  <div class="readout">
-    <div class="card"><small>Énergie cinétique</small><b id="ec" style="color:var(--glow)"></b></div>
-    <div class="card"><small>Distance de réaction</small><b id="dr" style="color:var(--blue)"></b></div>
-    <div class="card"><small>Distance de freinage</small><b id="df" style="color:var(--heat)"></b></div>
-    <div class="card"><small>Distance d'arrêt</small><b id="da"></b></div>
-  </div>
-  <div class="bars"><span>Énergie cinétique de la voiture</span><div class="bar"><i id="bk" style="background:var(--glow);width:100%"></i></div><span>Énergie thermique dans les freins</span><div class="bar"><i id="bh" style="background:var(--heat);width:0"></i></div></div>
-  <div class="ctl" style="margin-top:10px">
-    <div><label for="m">Masse <span id="mo"></span></label><input id="m" type="range" min="500" max="2000" step="100" value="1000"></div>
-    <div><label for="v">Vitesse <span id="vo"></span></label><input id="v" type="range" min="10" max="130" step="10" value="50"></div>
-    <div><label>Route</label><div class="seg" id="road"><button data-a="7" class="on">sèche</button><button data-a="5">mouillée</button></div></div>
-    <div><label>Conducteur</label><div class="seg" id="drv"><button data-t="1" class="on">attentif · 1 s</button><button data-t="2">distrait · 2 s</button></div></div>
-  </div>
-  <div class="row"><button class="b primary" id="go">Danger ! Freiner</button></div>
-  <h3>Mes missions</h3>
-  <ul class="missions">
-    <li id="k1">Freiner à 50 km/h puis à 100 km/h, avec la même masse.</li>
-    <li id="k2">Freiner deux fois à la même vitesse, la seconde avec une masse double.</li>
-    <li id="k3">Comparer route sèche et route mouillée à la même vitesse.</li>
-  </ul>
-  <h3>Mon carnet d'essais</h3>
-  <div class="scroll"><table><thead><tr><th>Essai</th><th>m (kg)</th><th>v (km/h)</th><th>Route</th><th>E<sub>c</sub> (kJ)</th><th>D<sub>F</sub> (m)</th><th>D<sub>A</sub> (m)</th></tr></thead><tbody id="log"><tr><td colspan="7" class="note">Aucun essai pour l'instant.</td></tr></tbody></table></div>
-  <p class="note">Modèle : décélération constante de 7 m/s² sur route sèche et 5 m/s² sur route mouillée. Les valeurs réelles dépendent des pneus, des freins et du véhicule.</p>
-  <div class="row"><button class="b primary" data-next="4" id="go4" disabled>J'ai observé, je nomme la règle</button><span class="note" id="go4n">Termine au moins la première mission.</span></div>
-</section>
-
-<section class="moment" id="m4" hidden>
-  <div class="num">4 · Je nomme la règle</div>
-  <h2>La règle</h2>
-  <div class="rule">
-    <div class="formula">E<sub>c</sub> = ½ · m · v²</div>
-    <p>E<sub>c</sub> en joules (J), m en kilogrammes (kg), v en mètres par seconde (m/s). Pour convertir : v (m/s) = v (km/h) ÷ 3,6.</p>
-    <p class="ar">الطاقة الحركية تساوي نصف جداء الكتلة في مربع السرعة. نحوّل السرعة إلى m/s بالقسمة على 3,6.</p>
-  </div>
-  <div class="rule">
-    <div class="formula" style="font-size:clamp(20px,4.5vw,28px)">D<sub>A</sub> = D<sub>R</sub> + D<sub>F</sub></div>
-    <p>La distance d'arrêt est la somme de la distance parcourue pendant le temps de réaction et de la distance de freinage.</p>
-    <p class="ar">مسافة التوقف = مسافة رد الفعل + مسافة الكبح.</p>
-  </div>
-  <p><b>Ce que tu as vu au banc :</b> masse double, E<sub>c</sub> double. Vitesse double, E<sub>c</sub> quadruple, et la distance de freinage aussi. Route mouillée ou conducteur distrait : la distance d'arrêt s'allonge.</p>
-  <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div>
-</section>
-
-<section class="moment" id="m5" hidden>
-  <div class="num">5 · Je comprends pourquoi</div>
-  <h2>Pourquoi « × 4 » ?</h2>
-  <div class="flapw"><div class="proof">
-    <p class="hand" style="font-size:20px">½ · m · (2v)² = ½ · m · 4v² = 4 × E<sub>c</sub></p>
-    <p>La vitesse est <b>au carré</b> dans la formule : doubler la vitesse multiplie l'énergie par 2 × 2 = 4.</p>
-    <p>Pour s'arrêter, les freins transforment toute l'énergie cinétique en énergie thermique. Ils en absorbent à peu près la même quantité à chaque mètre. Quatre fois plus d'énergie demande donc environ quatre fois plus de mètres : 14 m à 50 km/h, environ 55 m à 100 km/h.</p>
-    <p class="ar">السرعة مرفوعة إلى المربع، فمضاعفتها تضرب الطاقة الحركية في 4. الفرامل تحوّل هذه الطاقة إلى حرارة بقدر متقارب في كل متر، لذلك تتضاعف مسافة الكبح أربع مرات تقريبًا.</p>
-  </div><button class="flap" id="flap">Soulever le rabat</button></div>
-  <h3>Et ma prédiction ?</h3>
-  <div id="pv"></div>
-  <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div>
-</section>
-
-<section class="moment" id="m6" hidden>
-  <div class="num">6 · Je m'entraîne</div>
-  <h2>Trois niveaux, exercices sans fin</h2>
-  <p class="ar">ثلاثة مستويات، وكل تمرين جديد بأعداد مختلفة.</p>
-  <div class="tabs seg" id="lv"><button data-l="1" class="on">Niveau 1</button><button data-l="2">Niveau 2</button><button data-l="3">Niveau 3</button></div>
-  <div class="ex">
-    <p id="exq"></p>
-    <div class="row"><input id="exa" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><span id="exu" class="hand" style="font-size:20px"></span><button class="b" id="exc">Vérifier</button><button class="b" id="exn">Nouvel exercice</button></div>
-    <div class="fb" id="exf" aria-live="polite"></div>
-  </div>
-  <p class="note" id="exs"></p>
-  <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div>
-</section>
-
-<section class="moment" id="m7" hidden>
-  <div class="num">7 · Je vérifie</div>
-  <h2>Deux questions pour finir</h2>
-  <div class="q" id="c1"></div>
-  <div class="q" id="c2"></div>
-  <div id="rep" hidden>
-    <h3>Mon bilan</h3>
-    <div class="report">
-      <div class="card"><small>Prédictions justes</small><b id="r1"></b></div>
-      <div class="card"><small>Vérifications justes</small><b id="r2"></b></div>
-      <div class="card"><small>Exercices réussis</small><b id="r3"></b></div>
-    </div>
-    <div id="r4"></div>
-    <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option><option>3APIC-1</option><option>3APIC-2</option><option>3APIC-3</option></select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
-    <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p>
-  </div>
-</section>
-</main>
-
-<footer><div class="wrap note">Prototype « Le concept en main » pour taalim.men, hors production. Textes et valeurs originaux. Non relu par un professeur de physique.</div></footer>
+<main class="wrap" id="main"></main>
+<footer><div class="wrap note" id="ft"></div></footer>
 
 <script>
-{
-const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-const nf = (x, d = 1) => x.toLocaleString('fr-FR', { maximumFractionDigits: d });
+/* LESSON:BEGIN · Physique-Chimie 3AC · L'énergie cinétique et la distance d'arrêt */
+const CAR = `<path class="ink" fill="var(--card)" d="M-84 154 L-84 134 Q-83 127 -74 126 L-62 126 L-52 109 Q-49 104 -42 104 L-26 104 Q-19 104 -15 111 L-8 126 Q0 127 0 136 L0 154 Z"/><path class="ink" style="stroke-width:1.8" d="M-58 126 L-50 112 L-38 112 L-38 126 Z M-34 126 L-34 112 L-22 112 L-16 126 Z"/><circle class="ink" fill="var(--card)" cx="-62" cy="158" r="11"/><circle class="ink" fill="var(--card)" cx="-14" cy="158" r="11"/>`;
+const LESSON = {
+  meta: {
+    kicker: 'Physique-Chimie · 3e année collège · Le concept en main',
+    title: "L'énergie cinétique et la distance d'arrêt",
+    titleAr: 'الطاقة الحركية ومسافة التوقف',
+    short: 'Énergie cinétique',
+    classes: ['3APIC-1', '3APIC-2', '3APIC-3'],
+    footer: 'Prototype « Le concept en main » pour taalim.men, hors production. Textes et valeurs originaux. Non relu par un professeur de physique.'
+  },
+
+  misconceptions: {
+    lineaire: { fr: "Tu as pensé que tout est proportionnel : doubler la vitesse double l'énergie. Mais la vitesse est au carré.", ar: 'اعتبرت أن كل شيء متناسب، لكن السرعة مرفوعة إلى المربع.' },
+    constante: { fr: "Tu as pensé que l'énergie ou la distance ne dépend pas de la vitesse. Elle en dépend, et fortement.", ar: 'اعتبرت أن الطاقة أو المسافة لا تتعلق بالسرعة، وهي تتعلق بها بقوة.' },
+    demi: { fr: 'Oubli du ½ dans Ec = ½·m·v².', ar: 'نسيت المعامل ½.' },
+    carre: { fr: "La vitesse n'a pas été élevée au carré.", ar: 'لم ترفع السرعة إلى المربع.' },
+    conversion: { fr: "La vitesse n'a pas été convertie de km/h en m/s (÷ 3,6).", ar: 'لم تحوّل السرعة إلى m/s.' },
+    conv36: { fr: 'La conversion a été faite dans le mauvais sens : il faut diviser par 3,6, pas multiplier.', ar: 'التحويل في الاتجاه الخاطئ: نقسم على 3,6.' },
+    unite: { fr: "Bonne démarche, mais l'unité ne correspond pas : vérifie J ou kJ.", ar: 'انتبه إلى الوحدة: J أو kJ.' },
+    racine: { fr: 'Il manque la racine carrée : on trouve v² et non v.', ar: 'تنقص الجذر المربع.' },
+    reaction: { fr: 'La distance de réaction a été oubliée : DA = DR + DF.', ar: 'نسيت مسافة رد الفعل.' }
+  },
+
+  hook: {
+    title: 'Deux fois plus vite… deux fois plus loin ?',
+    svg: `<svg class="fig" viewBox="0 0 640 220" role="img" aria-label="Deux voitures à 50 et 100 km/h devant un ballon">
+      <line class="ink" x1="0" y1="40" x2="640" y2="40" style="stroke-width:1.6;opacity:.5"/><line class="ink" x1="0" y1="212" x2="640" y2="212" style="stroke-width:1.6;opacity:.5"/>
+      <line class="ink" x1="0" y1="128" x2="640" y2="128" style="stroke-dasharray:14 12;stroke-width:1.6;opacity:.4"/>
+      <g transform="translate(150 -45)">${CAR}</g><path class="ink" d="M54 75 h-20 M50 89 h-28" style="stroke-width:2"/>
+      <g transform="translate(150 40)">${CAR}</g><path class="ink" d="M54 160 h-40 M50 174 h-56 M54 188 h-36" style="stroke-width:2;stroke:var(--heat)"/>
+      <circle cx="560" cy="128" r="16" fill="var(--card)" class="ink"/>
+      <text x="172" y="98" font-family="Kalam" font-weight="700" font-size="22" fill="var(--blue)">50 km/h</text>
+      <text x="172" y="184" font-family="Kalam" font-weight="700" font-size="22" fill="var(--heat)">100 km/h</text></svg>`,
+    text: "Un ballon roule sur la route. Deux voitures identiques freinent au même endroit : l'une roule à 50 km/h, l'autre à 100 km/h. La seconde va deux fois plus vite. A-t-elle besoin de deux fois plus de distance pour s'arrêter ?",
+    ar: 'كرة تتدحرج على الطريق. سيارتان متماثلتان تكبحان في نفس المكان، الأولى بسرعة 50 km/h والثانية بسرعة 100 km/h. هل تحتاج الثانية إلى ضعف المسافة لتتوقف؟'
+  },
+
+  predict: [
+    { q: 'La voiture passe de 50 km/h à 100 km/h. Son énergie cinétique est multipliée par :', ar: 'السرعة تتضاعف من 50 إلى 100 km/h. الطاقة الحركية تُضرب في:',
+      options: [['× 2', 'lineaire'], ['× 4', ''], ['elle ne change pas', 'constante']] },
+    { q: 'À 50 km/h, elle freine sur 14 m. À 100 km/h, sa distance de freinage devient environ :', ar: 'عند 50 km/h مسافة الكبح 14 m. عند 100 km/h تصبح تقريبا:',
+      options: [['28 m', 'lineaire'], ['55 m', ''], ['14 m, la même', 'constante']] }
+  ],
+
+  experiment: {
+    title: "Le banc d'essai",
+    intro: 'Règle la voiture, puis appuie sur « Freiner ». Chaque essai s’ajoute au carnet.',
+    html: `<svg class="fig" viewBox="0 0 800 240" role="img" aria-label="Voiture sur une route avec distance de réaction et de freinage">
+      <defs><radialGradient id="g"><stop offset="0" stop-color="#f5a300" stop-opacity=".75"/><stop offset=".55" stop-color="#f5a300" stop-opacity=".25"/><stop offset="1" stop-color="#f5a300" stop-opacity="0"/></radialGradient></defs>
+      <path class="ink" style="stroke-width:1.3;opacity:.4" d="M0 110 Q90 74 180 102 T380 94 Q480 70 560 100 T800 92"/>
+      <line class="ink" x1="0" y1="171" x2="800" y2="171"/><line class="ink" x1="0" y1="212" x2="800" y2="212"/>
+      <line class="ink" x1="0" y1="192" x2="800" y2="192" style="stroke-width:2;stroke-dasharray:16 14;opacity:.5"/>
+      <rect id="wet" x="0" y="172" width="800" height="39" fill="var(--blue)" opacity="0"/>
+      <rect id="mr" y="220" height="8" rx="4" fill="var(--blue)" width="0"/><rect id="mf" y="220" height="8" rx="4" fill="var(--heat)" width="0"/>
+      <g id="sign" style="opacity:0"><line class="ink" id="pole" x1="0" y1="170" x2="0" y2="104"/><path id="tri" fill="var(--bg)" class="ink" d=""/><text id="ex" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="26" fill="var(--heat)">!</text></g>
+      <g id="car"><circle id="glow" cx="-36" cy="138" r="40" fill="url(#g)"/><g id="lines" class="ink" style="stroke-width:2"><path d="M-84 120 h-26 M-90 135 h-34 M-84 150 h-22"/></g>${CAR}<circle class="brk" cx="-62" cy="158" r="6" fill="var(--heat)" opacity="0"/><circle class="brk" cx="-14" cy="158" r="6" fill="var(--heat)" opacity="0"/></g></svg>
+    <div class="readout">
+      <div class="card"><small>Énergie cinétique</small><b id="ec" style="color:var(--glow)"></b></div>
+      <div class="card"><small>Distance de réaction</small><b id="dr" style="color:var(--blue)"></b></div>
+      <div class="card"><small>Distance de freinage</small><b id="df" style="color:var(--heat)"></b></div>
+      <div class="card"><small>Distance d'arrêt</small><b id="da"></b></div></div>
+    <div class="bars"><span>Énergie cinétique de la voiture</span><div class="bar"><i id="bk" style="background:var(--glow);width:100%"></i></div><span>Énergie thermique dans les freins</span><div class="bar"><i id="bh" style="background:var(--heat);width:0"></i></div></div>
+    <div class="ctl" style="margin-top:10px">
+      <div><label for="m">Masse <span id="mo"></span></label><input id="m" type="range" min="500" max="2000" step="100" value="1000"></div>
+      <div><label for="v">Vitesse <span id="vo"></span></label><input id="v" type="range" min="10" max="130" step="10" value="50"></div>
+      <div><label>Route</label><div class="seg" id="road"><button data-a="7" class="on">sèche</button><button data-a="5">mouillée</button></div></div>
+      <div><label>Conducteur</label><div class="seg" id="drv"><button data-t="1" class="on">attentif · 1 s</button><button data-t="2">distrait · 2 s</button></div></div></div>
+    <div class="row"><button class="b primary" id="go">Danger ! Freiner</button></div>
+    <h3>Mon carnet d'essais</h3>
+    <div class="scroll"><table><thead><tr><th>Essai</th><th>m (kg)</th><th>v (km/h)</th><th>Route</th><th>Ec (kJ)</th><th>DF (m)</th><th>DA (m)</th></tr></thead><tbody id="log"><tr><td colspan="7" class="note">Aucun essai pour l'instant.</td></tr></tbody></table></div>`,
+    missions: [
+      { id: 'v', text: 'Freiner à 50 km/h puis à 100 km/h, avec la même masse et la même route.' },
+      { id: 'm', text: 'Freiner deux fois à la même vitesse, la seconde avec une masse double.' },
+      { id: 'route', text: 'Comparer route sèche et route mouillée à la même vitesse.' }
+    ],
+    required: ['v'],
+    note: 'Modèle : décélération constante de 7 m/s² sur route sèche et 5 m/s² sur route mouillée. Les valeurs réelles dépendent des pneus, des freins et du véhicule.',
+    mount(root, api) {
+      const $ = s => root.querySelector(s), $$ = s => [...root.querySelectorAll(s)], nf = api.nf;
+      const ms = k => k / 3.6, EC = (m, k) => .5 * m * ms(k) ** 2, EMAX = EC(2000, 130), START = -14, RATE = 1.4;
+      const X = d => 20 + (d + 25) * 4.75;
+      let A = 7, TR = 1, busy = false; const runs = [];
+      const cur = () => { const m = +$('#m').value, v = +$('#v').value, s = ms(v); return { m, v, s, a: A, tr: TR, e: EC(m, v), dr: s * TR, df: s * s / (2 * A) }; };
+      const setCar = (d, vf, hf) => { $('#car').setAttribute('transform', `translate(${X(d).toFixed(1)} 0)`); $('#lines').style.opacity = vf; $$('.brk').forEach(b => b.setAttribute('opacity', hf.toFixed(2))); };
+      const setGlow = e => $('#glow').setAttribute('r', (18 + 72 * Math.sqrt(e / EMAX)).toFixed(1));
+      const marks = (r, a, b) => { const x0 = X(0), x1 = X(r.dr); $('#mr').setAttribute('x', x0); $('#mr').setAttribute('width', Math.max(0, X(a) - x0)); $('#mf').setAttribute('x', x1); $('#mf').setAttribute('width', Math.max(0, X(r.dr + b) - x1)); };
+      const x = X(0); $('#pole').setAttribute('x1', x); $('#pole').setAttribute('x2', x); $('#tri').setAttribute('d', `M${x} 66 L${x + 24} 104 L${x - 24} 104 Z`); $('#ex').setAttribute('x', x); $('#ex').setAttribute('y', 100);
+      const update = () => {
+        const r = cur();
+        $('#mo').textContent = '= ' + nf(r.m, 0) + ' kg'; $('#vo').textContent = `= ${r.v} km/h (${nf(r.s)} m/s)`;
+        $('#ec').textContent = nf(r.e / 1000) + ' kJ'; $('#dr').textContent = nf(r.dr, 0) + ' m'; $('#df').textContent = nf(r.df, 0) + ' m'; $('#da').textContent = nf(r.dr + r.df, 0) + ' m';
+        setCar(START, 1, 0); setGlow(r.e); marks(r, 0, 0); $('#sign').style.opacity = 0; $('#bk').style.width = '100%'; $('#bh').style.width = '0'; $('#wet').setAttribute('opacity', A === 5 ? .12 : 0);
+      };
+      const lock = b => { busy = b; $('#m').disabled = $('#v').disabled = $('#go').disabled = b; $$('#road button,#drv button').forEach(x => x.disabled = b); };
+      const missions = () => {
+        const has = f => runs.some((a, i) => runs.some((b, j) => i !== j && f(a, b)));
+        if (has((a, b) => a.m === b.m && a.a === b.a && a.v === 50 && b.v === 100)) api.done('v');
+        if (has((a, b) => a.v === b.v && a.a === b.a && b.m === 2 * a.m)) api.done('m');
+        if (has((a, b) => a.v === b.v && a.a === 7 && b.a === 5)) api.done('route');
+      };
+      const logRun = r => {
+        runs.push(r);
+        $('#log').innerHTML = runs.slice(-8).map((x, i, arr) => `<tr><td>${runs.length - arr.length + i + 1}</td><td>${nf(x.m, 0)}</td><td>${x.v}</td><td>${x.a === 7 ? 'sèche' : 'mouillée'}</td><td>${nf(x.e / 1000)}</td><td>${nf(x.df, 0)}</td><td>${nf(x.dr + x.df, 0)}</td></tr>`).join('');
+        missions();
+      };
+      const run = () => {
+        if (busy) return; update(); lock(true);
+        const r = cur(), s = r.s, tA = -START / s, tB = tA + r.tr, tC = tB + s / r.a; let t0 = null;
+        const step = now => {
+          if (t0 === null) t0 = now;
+          let t = api.reduce ? tC : (now - t0) / 1000 * RATE; if (t > tC) t = tC;
+          let d, vc; if (t < tB) { d = START + s * t; vc = s; } else { const tb = t - tB; vc = Math.max(0, s - r.a * tb); d = START + s * tB + s * tb - .5 * r.a * tb * tb; }
+          const ef = (vc / s) ** 2;
+          setCar(d, vc / s, t >= tB ? 1 - ef : 0); setGlow(r.e * ef); $('#sign').style.opacity = t >= tA ? 1 : 0;
+          marks(r, Math.min(Math.max(d, 0), r.dr), Math.max(0, d - r.dr));
+          $('#bk').style.width = ef * 100 + '%'; $('#bh').style.width = (1 - ef) * 100 + '%'; $('#ec').textContent = nf(r.e * ef / 1000) + ' kJ';
+          if (t < tC) requestAnimationFrame(step); else { lock(false); logRun(r); }
+        };
+        requestAnimationFrame(step);
+      };
+      $('#m').oninput = $('#v').oninput = update; $('#go').onclick = run;
+      $$('#road button').forEach(b => b.onclick = () => { A = +b.dataset.a; $$('#road button').forEach(x => x.classList.toggle('on', x === b)); update(); });
+      $$('#drv button').forEach(b => b.onclick = () => { TR = +b.dataset.t; $$('#drv button').forEach(x => x.classList.toggle('on', x === b)); update(); });
+      update();
+    }
+  },
+
+  rule: {
+    blocks: [
+      { formula: 'E<sub>c</sub> = ½ · m · v²', text: 'Ec en joules (J), m en kilogrammes (kg), v en mètres par seconde (m/s). Pour convertir : v (m/s) = v (km/h) ÷ 3,6.', ar: 'الطاقة الحركية تساوي نصف جداء الكتلة في مربع السرعة. نحوّل السرعة إلى m/s بالقسمة على 3,6.' },
+      { formula: 'D<sub>A</sub> = D<sub>R</sub> + D<sub>F</sub>', text: "La distance d'arrêt est la somme de la distance parcourue pendant le temps de réaction et de la distance de freinage.", ar: 'مسافة التوقف = مسافة رد الفعل + مسافة الكبح.' }
+    ],
+    seen: 'masse double, Ec double. Vitesse double, Ec quadruple, et la distance de freinage aussi. Route mouillée ou conducteur distrait : la distance d’arrêt s’allonge.'
+  },
+
+  proof: {
+    title: 'Pourquoi « × 4 » ?',
+    html: `<p class="hand" style="font-size:20px">½ · m · (2v)² = ½ · m · 4v² = 4 × E<sub>c</sub></p>
+      <p>La vitesse est <b>au carré</b> dans la formule : doubler la vitesse multiplie l'énergie par 2 × 2 = 4.</p>
+      <p>Pour s'arrêter, les freins transforment toute l'énergie cinétique en énergie thermique. Ils en absorbent à peu près la même quantité à chaque mètre. Quatre fois plus d'énergie demande donc environ quatre fois plus de mètres : 14 m à 50 km/h, environ 55 m à 100 km/h.</p>`,
+    ar: 'السرعة مرفوعة إلى المربع، فمضاعفتها تضرب الطاقة الحركية في 4. الفرامل تحوّل هذه الطاقة إلى حرارة بقدر متقارب في كل متر، لذلك تتضاعف مسافة الكبح أربع مرات تقريبا.'
+  },
+
+  exercises: {
+    levels: [
+      { label: 'Niveau 1', make(R) { const m = R.int(500, 2000, 100), v = R.int(5, 30), E = .5 * m * v * v;
+        return { q: `Une voiture de masse m = ${R.nf(m, 0)} kg roule à v = ${v} m/s. Calcule son énergie cinétique.`, unit: 'J', ans: E, digits: 0,
+          traps: [[2 * E, 'demi'], [.5 * m * v, 'carre'], [E / 1000, 'unite']] }; } },
+      { label: 'Niveau 2', make(R) { const m = R.int(600, 2000, 100), k = R.pick([36, 54, 72, 90, 108]), v = k / 3.6, E = .5 * m * v * v / 1000;
+        return { q: `Une voiture de masse ${R.nf(m, 0)} kg roule à ${k} km/h. Calcule son énergie cinétique en kilojoules.`, unit: 'kJ', ans: E, digits: 2,
+          traps: [[.5 * m * k * k / 1000, 'conversion'], [.5 * m * (k * 3.6) ** 2 / 1000, 'conv36'], [m * v * v / 1000, 'demi'], [E * 1000, 'unite'], [.5 * m * v / 1000, 'carre']] }; } },
+      { label: 'Niveau 3', make(R) {
+        if (Math.random() < .5) { const k = R.pick([36, 54, 72, 90]), v = k / 3.6, tr = R.pick([1, 1.5, 2]), df = Math.round(v * v / 14);
+          return { q: `Un conducteur roule à ${k} km/h. Son temps de réaction est ${R.nf(tr)} s et la distance de freinage est ${df} m. Calcule la distance d'arrêt.`, unit: 'm', ans: v * tr + df, digits: 1,
+            traps: [[df, 'reaction'], [k * tr + df, 'conversion']] }; }
+        const m = R.int(5, 20) * 100, v = R.int(6, 30), E = .5 * m * v * v;
+        return { q: `Un véhicule de masse ${R.nf(m, 0)} kg possède une énergie cinétique de ${R.nf(E, 0)} J. Calcule sa vitesse en m/s.`, unit: 'm/s', ans: v, digits: 1,
+          traps: [[v * v, 'racine'], [Math.sqrt(E / m), 'demi']] }; } }
+    ]
+  },
+
+  check: [
+    { q: 'Un scooter passe de 20 km/h à 60 km/h : sa vitesse est multipliée par 3. Son énergie cinétique est multipliée par :', ar: 'سرعة دراجة نارية تُضرب في 3. الطاقة الحركية تُضرب في:',
+      options: [['× 3', 'lineaire'], ['× 6', 'lineaire'], ['× 9', '']] },
+    { q: "Sur route sèche, à 30 km/h, la distance de freinage est d'environ 5 m. À 60 km/h, elle est d'environ :", ar: 'عند 30 km/h مسافة الكبح حوالي 5 m. عند 60 km/h تصبح حوالي:',
+      options: [['10 m', 'lineaire'], ['20 m', ''], ['5 m', 'constante']] }
+  ]
+};
+/* LESSON:END */
+</script>
+
+<script>
+/* ENGINE:BEGIN · Le concept en main · engine v1 · do not edit in a lesson; update it with tools/update_engine.py */
+(() => {
+const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });
+// Arabic text: keep each Latin or numeric expression left-to-right
+const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => '⁦' + m + '⁩');
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };
+const MIS = L.misconceptions || {};
+const STEPS = (L.meta.steps || ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie']);
+const S = { open: 1, pred: {}, check: {}, ex: {}, errs: {}, missions: new Set(), cur: null, lvl: 0 };
+const near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);
 
-/* ---------- state ---------- */
-const S = { open: 1, pred: {}, check: {}, runs: [], ex: { 1: [0, 0], 2: [0, 0], 3: [0, 0] }, errs: {} };
-const MIS = {
-  lineaire: "Tu as pensé que tout est proportionnel : doubler la vitesse double l'énergie. Mais la vitesse est au carré.",
-  constante: "Tu as pensé que l'énergie ou la distance ne dépend pas de la vitesse. Elle en dépend, et fortement.",
-  demi: "Oubli du ½ dans E<sub>c</sub> = ½·m·v².",
-  carre: "La vitesse n'a pas été élevée au carré.",
-  conversion: "La vitesse n'a pas été convertie de km/h en m/s (÷ 3,6).",
-  conv36: "La conversion a été faite dans le mauvais sens : il faut diviser par 3,6, pas multiplier.",
-  unite: "Bonne démarche, mais l'unité ne correspond pas : vérifie J ou kJ.",
-  racine: "Il manque la racine carrée : on trouve v² et non v.",
-  reaction: "La distance de réaction a été oubliée : D<sub>A</sub> = D<sub>R</sub> + D<sub>F</sub>."
-};
-const MIS_AR = {
-  lineaire: 'اعتبرت أن كل شيء متناسب، لكن السرعة مرفوعة إلى المربع.',
-  constante: 'اعتبرت أن الطاقة أو المسافة لا تتعلق بالسرعة، وهي تتعلق بها بقوة.',
-  demi: 'نسيت المعامل ½.', carre: 'لم ترفع السرعة إلى المربع.', conversion: 'لم تحوّل السرعة إلى m/s.',
-  conv36: 'التحويل في الاتجاه الخاطئ: نقسم على 3,6.', unite: 'انتبه إلى الوحدة: J أو kJ.', racine: 'تنقص الجذر المربع.', reaction: 'نسيت مسافة رد الفعل.'
-};
-// Arabic text: keep Latin expressions left-to-right
-const iso = t => t.replace(/[A-Za-z0-9][A-Za-z0-9'/²·=+,. ]*[A-Za-z0-9'²]/g, m => '⁦' + m + '⁩');
-$$('.ar').forEach(p => p.textContent = iso(p.textContent));
+/* validation: shown to the author, caught by the flow test */
+function validate() {
+  const P = [], codeOk = c => c === '' || (MIS[c] && MIS[c].fr && MIS[c].ar);
+  ['kicker', 'title', 'titleAr'].forEach(k => { if (!L.meta || !L.meta[k]) P.push(`meta.${k} manquant`); });
+  for (const [set, name] of [[L.predict, 'predict'], [L.check, 'check']]) {
+    if (!set || !set.length) P.push(`${name} vide`);
+    (set || []).forEach((q, i) => {
+      if (!q.q || !q.ar) P.push(`${name}[${i}] : texte ou arabe manquant`);
+      const good = q.options.filter(o => o[1] === '').length; if (good !== 1) P.push(`${name}[${i}] : ${good} bonnes réponses au lieu d'une`);
+      q.options.forEach(o => { if (!codeOk(o[1])) P.push(`${name}[${i}] : code « ${o[1]} » absent de misconceptions`); });
+    });
+  }
+  const ex = L.experiment;
+  if (!ex || !ex.missions || !ex.missions.length) P.push('experiment.missions vide');
+  else (ex.required || [ex.missions[0].id]).forEach(id => { if (!ex.missions.some(m => m.id === id)) P.push(`mission requise « ${id} » inconnue`); });
+  (L.exercises && L.exercises.levels || []).forEach((lv, l) => {
+    for (let k = 0; k < 300; k++) {
+      let e; try { e = lv.make(R); } catch (err) { P.push(`niveau ${l + 1} : ${err.message}`); break; }
+      if (!e.q || !e.unit || !isFinite(e.ans)) { P.push(`niveau ${l + 1} : question, unité ou réponse invalide`); break; }
+      for (const [v, c] of e.traps || []) {
+        if (!codeOk(c) || !c) { P.push(`niveau ${l + 1} : code de piège « ${c} » inconnu`); return; }
+        if (!isFinite(v)) { P.push(`niveau ${l + 1} : piège ${c} non fini`); return; }
+        if (near(v, e.ans)) { P.push(`niveau ${l + 1} : le piège ${c} donne la bonne réponse pour « ${e.q} »`); return; }
+      }
+      const T = e.traps || [];
+      for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++)
+        if (T[i][1] !== T[j][1] && near(T[i][0], T[j][0])) { P.push(`niveau ${l + 1} : les pièges ${T[i][1]} et ${T[j][1]} donnent la même valeur pour « ${e.q} »`); return; }
+    }
+  });
+  if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
+  return P;
+}
 
-/* ---------- steps ---------- */
-const NAMES = ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie'];
+/* rendering */
+function qBlock(arr, prefix) { return arr.map((q, i) => `<div class="q" id="${prefix}${i}"></div>`).join(''); }
+function render() {
+  const m = L.meta, h = L.hook, x = L.experiment, r = L.rule, p = L.proof;
+  document.title = `${m.title} · Le concept en main`;
+  $('#hd').innerHTML = `<div class="num">${m.kicker}</div><h1>${m.title}</h1><p class="ar">${iso(esc(m.titleAr))}</p>`;
+  $('#ft').textContent = m.footer || '';
+  $('#main').innerHTML = `
+  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>
+    <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div></section>
+  <section class="moment" id="m2" hidden><div class="num">2 · Je prédis</div><h2>Avant toute explication, choisis</h2>
+    <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>${qBlock(L.predict, 'p')}
+    <div class="row"><button class="b primary" data-next="3" id="next2" disabled>Je teste</button></div></section>
+  <section class="moment" id="m3" hidden><div class="num">3 · Je teste</div><h2>${x.title}</h2><p>${x.intro || ''}</p><div id="exp">${x.html}</div>
+    <h3>Mes missions</h3><ul class="missions">${x.missions.map(mi => `<li data-m="${mi.id}">${mi.text}</li>`).join('')}</ul>
+    ${x.note ? `<p class="note">${x.note}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="4" id="next3" disabled>J'ai observé, je nomme la règle</button><span class="note" id="next3n">Termine les missions marquées comme nécessaires.</span></div></section>
+  <section class="moment" id="m4" hidden><div class="num">4 · Je nomme la règle</div><h2>La règle</h2>
+    ${r.blocks.map(b => `<div class="rule"><div class="formula">${b.formula}</div><p>${b.text || ''}</p>${b.ar ? `<p class="ar">${iso(esc(b.ar))}</p>` : ''}</div>`).join('')}
+    ${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
+  <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
+    <div class="flapw"><div class="proof">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
+    <h3>Et ma prédiction ?</h3><div id="pv"></div>
+    <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div></section>
+  <section class="moment" id="m6" hidden><div class="num">6 · Je m'entraîne</div><h2>Exercices sans fin</h2>
+    <p class="ar">${iso('كل تمرين جديد بأعداد مختلفة.')}</p>
+    <div class="seg" id="lv">${L.exercises.levels.map((lv, i) => `<button data-l="${i}" class="${i ? '' : 'on'}">${lv.label}</button>`).join('')}</div>
+    <div class="ex"><p id="exq"></p><div class="row"><input id="exa" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><span id="exu" class="hand" style="font-size:20px"></span><button class="b" id="exc">Vérifier</button><button class="b" id="exn">Nouvel exercice</button></div><div class="fb" id="exf" aria-live="polite"></div></div>
+    <p class="note" id="exs"></p>
+    <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div></section>
+  <section class="moment" id="m7" hidden><div class="num">7 · Je vérifie</div><h2>Pour finir</h2>${qBlock(L.check, 'c')}
+    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices réussis</small><b id="r3"></b></div></div>
+    <div id="r4"></div>
+    <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option>${(m.classes || []).map(c => `<option>${esc(c)}</option>`).join('')}</select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
+    <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p></div></section>`;
+}
+
+/* steps */
 function steps() {
-  $('#steps').innerHTML = NAMES.map((n, i) => `<button data-s="${i + 1}" class="${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}</button>`).join('');
-  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  $('#steps').innerHTML = STEPS.map((n, i) => `<button data-s="${i + 1}" class="${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}</button>`).join('');
+  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));
 }
 function openStep(n) {
   if (n > S.open) S.open = n;
   for (let i = 1; i <= S.open; i++) $('#m' + i).hidden = false;
-  steps();
-  if (n === 5) showVerdicts();
-  if (n === 6 && !EX.cur) newEx();
+  steps(); if (n === 5) verdicts(); if (n === 6 && !S.cur) newEx();
   $('#m' + n).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
 }
-$$('[data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
 
-/* ---------- questions (prediction and check) ---------- */
-const QS = {
-  p1: { q: "La voiture passe de 50 km/h à 100 km/h. Son énergie cinétique est multipliée par :", ar: 'السرعة تتضاعف من 50 إلى 100 km/h. الطاقة الحركية تُضرب في:', o: [['× 2', 'lineaire'], ['× 4', ''], ['elle ne change pas', 'constante']] },
-  p2: { q: "À 50 km/h, elle freine sur 14 m. À 100 km/h, sa distance de freinage devient environ :", ar: 'عند 50 km/h مسافة الكبح 14 m. عند 100 km/h تصبح تقريبا:', o: [['28 m', 'lineaire'], ['55 m', ''], ['14 m, la même', 'constante']] },
-  c1: { q: "Un scooter passe de 20 km/h à 60 km/h : sa vitesse est multipliée par 3. Son énergie cinétique est multipliée par :", ar: 'سرعة دراجة نارية تُضرب في 3. الطاقة الحركية تُضرب في:', o: [['× 3', 'lineaire'], ['× 6', 'lineaire'], ['× 9', '']] },
-  c2: { q: "Sur route sèche, à 30 km/h, la distance de freinage est d'environ 5 m. À 60 km/h, elle est d'environ :", ar: 'عند 30 km/h مسافة الكبح حوالي 5 m. عند 60 km/h تصبح حوالي:', o: [['10 m', 'lineaire'], ['20 m', ''], ['5 m', 'constante']] }
-};
-function renderQ(id, store, onDone) {
-  const q = QS[id], el = $('#' + id);
-  el.innerHTML = `<p><b>${q.q}</b></p><p class="ar">${iso(q.ar)}</p><div class="opts">${q.o.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}</div><div class="fbq"></div>`;
+/* questions */
+function question(q, el, store, key, onDone) {
+  el.innerHTML = `<p><b>${q.q}</b></p><p class="ar">${iso(esc(q.ar))}</p><div class="opts">${q.options.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}</div>`;
   el.querySelectorAll('button').forEach(b => b.onclick = () => {
-    if (store[id] !== undefined) return;
-    const i = +b.dataset.i; store[id] = { i, ok: q.o[i][1] === '', code: q.o[i][1] };
-    b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b);
-    onDone && onDone(id);
+    if (store[key]) return; const i = +b.dataset.i, code = q.options[i][1];
+    store[key] = { i, ok: code === '', code }; b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b); onDone();
   });
 }
-renderQ('p1', S.pred, () => $('#go3').disabled = !(S.pred.p1 && S.pred.p2));
-renderQ('p2', S.pred, () => $('#go3').disabled = !(S.pred.p1 && S.pred.p2));
-function showVerdicts() {
-  $('#pv').innerHTML = ['p1', 'p2'].map(id => {
-    const a = S.pred[id], q = QS[id]; if (!a) return '';
-    const right = q.o.find(o => o[1] === '')[0];
-    return `<div class="verdict ${a.ok ? 'ok' : 'no'}"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :</b> tu avais choisi « ${q.o[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code] + `<div class="ar">${iso(MIS_AR[a.code])}</div>`}</div>`;
+function verdicts() {
+  $('#pv').innerHTML = L.predict.map((q, k) => {
+    const a = S.pred[k]; if (!a) return ''; const right = q.options.find(o => o[1] === '')[0];
+    return `<div class="verdict ${a.ok ? 'ok' : 'no'}"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :</b> tu avais choisi « ${q.options[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code].fr + `<div class="ar">${iso(esc(MIS[a.code].ar))}</div>`}</div>`;
   }).join('');
 }
-$('#flap').onclick = () => $('#flap').classList.add('open');
 
-/* ---------- car drawing ---------- */
-const CAR = `<path class="ink" fill="var(--card)" d="M-84 154 L-84 134 Q-83 127 -74 126 L-62 126 L-52 109 Q-49 104 -42 104 L-26 104 Q-19 104 -15 111 L-8 126 Q0 127 0 136 L0 154 Z"/><path class="ink" style="stroke-width:1.8" d="M-58 126 L-50 112 L-38 112 L-38 126 Z M-34 126 L-34 112 L-22 112 L-16 126 Z"/><circle class="ink" fill="var(--card)" cx="-62" cy="158" r="11"/><circle class="ink" fill="var(--card)" cx="-14" cy="158" r="11"/>`;
-$('#carbody').innerHTML = CAR + `<circle class="brk" cx="-62" cy="158" r="6" fill="var(--heat)" opacity="0"/><circle class="brk" cx="-14" cy="158" r="6" fill="var(--heat)" opacity="0"/>`;
-// simple separate cars for the hook drawing
-const smallCar = dy => `<g transform="translate(0 ${dy})">${CAR}</g>`;
-$('#carA').innerHTML = smallCar(-100); $('#carB').innerHTML = smallCar(-100);
-$('#carA').insertAdjacentHTML('beforeend', `<path class="ink" d="M-96 20 h-20 M-100 34 h-28" style="stroke-width:2"/>`);
-$('#carB').insertAdjacentHTML('beforeend', `<path class="ink" d="M-96 20 h-40 M-100 34 h-56 M-96 48 h-36" style="stroke-width:2;stroke:var(--heat)"/>`);
+/* experiment */
+function done(id) {
+  if (S.missions.has(id)) return; S.missions.add(id);
+  const li = $(`.missions li[data-m="${id}"]`); if (li) li.classList.add('ok');
+  const req = L.experiment.required || [L.experiment.missions[0].id], ok = req.every(r => S.missions.has(r));
+  $('#next3').disabled = !ok;
+  $('#next3n').textContent = !ok ? 'Termine les missions marquées comme nécessaires.' : S.missions.size === L.experiment.missions.length ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.';
+}
 
-/* ---------- bench physics ---------- */
-const ms = k => k / 3.6, EC = (m, k) => .5 * m * ms(k) ** 2;
-const EMAX = EC(2000, 130), START = -14, RATE = 1.4;
-const X = d => 20 + (d + 25) * 4.75;
-let A = 7, TR = 1, busy = false;
-const mS = $('#m'), vS = $('#v');
-function cur() { const m = +mS.value, v = +vS.value, s = ms(v); return { m, v, s, a: A, tr: TR, e: EC(m, v), dr: s * TR, df: s * s / (2 * A) }; }
-function setCar(d, vf, hf) { $('#car').setAttribute('transform', `translate(${X(d).toFixed(1)} 0)`); $('#lines').style.opacity = vf; $$('.brk').forEach(b => b.setAttribute('opacity', hf.toFixed(2))); }
-function setGlow(e) { $('#glow').setAttribute('r', (18 + 72 * Math.sqrt(e / EMAX)).toFixed(1)); }
-function marks(r, a, b) { const x0 = X(0), x1 = X(r.dr); $('#mr').setAttribute('x', x0); $('#mr').setAttribute('width', Math.max(0, X(a) - x0)); $('#mf').setAttribute('x', x1); $('#mf').setAttribute('width', Math.max(0, X(r.dr + b) - x1)); }
-function sign() { const x = X(0); $('#pole').setAttribute('x1', x); $('#pole').setAttribute('x2', x); $('#tri').setAttribute('d', `M${x} 66 L${x + 24} 104 L${x - 24} 104 Z`); $('#ex').setAttribute('x', x); $('#ex').setAttribute('y', 100); }
-function update() {
-  const r = cur();
-  $('#mo').textContent = '= ' + nf(r.m, 0) + ' kg'; $('#vo').textContent = `= ${r.v} km/h (${nf(r.s)} m/s)`;
-  $('#ec').textContent = nf(r.e / 1000) + ' kJ'; $('#dr').textContent = nf(r.dr, 0) + ' m'; $('#df').textContent = nf(r.df, 0) + ' m'; $('#da').textContent = nf(r.dr + r.df, 0) + ' m';
-  setCar(START, 1, 0); setGlow(r.e); marks(r, 0, 0); $('#sign').style.opacity = 0;
-  $('#bk').style.width = '100%'; $('#bh').style.width = '0';
-  $('#wet').setAttribute('opacity', A === 5 ? .12 : 0);
+/* exercises */
+function newEx() {
+  const lv = L.exercises.levels[S.lvl]; S.cur = lv.make(R);
+  $('#exq').textContent = S.cur.q; $('#exu').textContent = S.cur.unit; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false;
 }
-function lock(b) { busy = b; mS.disabled = vS.disabled = $('#go').disabled = b; $$('#road button,#drv button').forEach(x => x.disabled = b); }
-function run() {
-  if (busy) return; update(); lock(true);
-  const r = cur(), s = r.s, tA = -START / s, tB = tA + r.tr, tC = tB + s / r.a; let t0 = null;
-  const step = now => {
-    if (t0 === null) t0 = now;
-    let t = reduce ? tC : (now - t0) / 1000 * RATE; if (t > tC) t = tC;
-    let d, vc; if (t < tB) { d = START + s * t; vc = s; } else { const tb = t - tB; vc = Math.max(0, s - r.a * tb); d = START + s * tB + s * tb - .5 * r.a * tb * tb; }
-    const ef = (vc / s) ** 2;
-    setCar(d, vc / s, t >= tB ? 1 - ef : 0); setGlow(r.e * ef); $('#sign').style.opacity = t >= tA ? 1 : 0;
-    marks(r, Math.min(Math.max(d, 0), r.dr), Math.max(0, d - r.dr));
-    $('#bk').style.width = ef * 100 + '%'; $('#bh').style.width = (1 - ef) * 100 + '%'; $('#ec').textContent = nf(r.e * ef / 1000) + ' kJ';
-    if (t < tC) requestAnimationFrame(step); else { lock(false); logRun(r); }
-  };
-  requestAnimationFrame(step);
-}
-function logRun(r) {
-  S.runs.push(r);
-  $('#log').innerHTML = S.runs.slice(-8).map((x, i, arr) => `<tr><td>${S.runs.length - arr.length + i + 1}</td><td>${nf(x.m, 0)}</td><td>${x.v}</td><td>${x.a === 7 ? 'sèche' : 'mouillée'}</td><td>${nf(x.e / 1000)}</td><td>${nf(x.df, 0)}</td><td>${nf(x.dr + x.df, 0)}</td></tr>`).join('');
-  missions();
-}
-function missions() {
-  const R = S.runs, has = f => R.some((a, i) => R.some((b, j) => i !== j && f(a, b)));
-  const k1 = has((a, b) => a.m === b.m && a.a === b.a && a.v === 50 && b.v === 100);
-  const k2 = has((a, b) => a.v === b.v && a.a === b.a && b.m === 2 * a.m);
-  const k3 = has((a, b) => a.v === b.v && a.a === 7 && b.a === 5);
-  $('#k1').classList.toggle('ok', k1); $('#k2').classList.toggle('ok', k2); $('#k3').classList.toggle('ok', k3);
-  $('#go4').disabled = !k1; $('#go4n').textContent = k1 ? (k2 && k3 ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.') : 'Termine au moins la première mission.';
-}
-mS.oninput = vS.oninput = update;
-$('#go').onclick = run;
-$$('#road button').forEach(b => b.onclick = () => { A = +b.dataset.a; $$('#road button').forEach(x => x.classList.toggle('on', x === b)); update(); });
-$$('#drv button').forEach(b => b.onclick = () => { TR = +b.dataset.t; $$('#drv button').forEach(x => x.classList.toggle('on', x === b)); update(); });
-sign(); update();
-
-/* ---------- exercise generator with error diagnosis ---------- */
-const rnd = (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1));
-const EX = { lvl: 1, cur: null };
-function make(l) {
-  if (l === 1) { const m = rnd(500, 2000, 100), v = rnd(5, 30); const E = .5 * m * v * v;
-    return { q: `Une voiture de masse m = ${nf(m, 0)} kg roule à v = ${v} m/s. Calcule son énergie cinétique.`, u: 'J', ans: E,
-      traps: [[2 * E, 'demi'], [.5 * m * v, 'carre'], [E / 1000, 'unite']] }; }
-  if (l === 2) { const m = rnd(600, 2000, 100), k = [36, 54, 72, 90, 108][rnd(0, 4)], v = k / 3.6; const E = .5 * m * v * v / 1000;
-    return { q: `Une voiture de masse ${nf(m, 0)} kg roule à ${k} km/h. Calcule son énergie cinétique en kilojoules.`, u: 'kJ', ans: E,
-      traps: [[.5 * m * k * k / 1000, 'conversion'], [.5 * m * (k * 3.6) ** 2 / 1000, 'conv36'], [m * v * v / 1000, 'demi'], [E * 1000, 'unite'], [.5 * m * v / 1000, 'carre']] }; }
-  if (Math.random() < .5) { const k = [36, 54, 72, 90][rnd(0, 3)], v = k / 3.6, tr = [1, 1.5, 2][rnd(0, 2)], df = Math.round(v * v / 14);
-    return { q: `Un conducteur roule à ${k} km/h. Son temps de réaction est ${nf(tr)} s et la distance de freinage est ${df} m. Calcule la distance d'arrêt.`, u: 'm', ans: v * tr + df,
-      traps: [[df, 'reaction'], [k * tr + df, 'conversion']] }; }
-  const m = rnd(5, 20, 1) * 100, v = rnd(6, 30), E = .5 * m * v * v;
-  return { q: `Un véhicule de masse ${nf(m, 0)} kg possède une énergie cinétique de ${nf(E, 0)} J. Calcule sa vitesse en m/s.`, u: 'm/s', ans: v,
-    traps: [[v * v, 'racine'], [Math.sqrt(E / m), 'demi'], [2 * E / m, 'racine']] };
-}
-function newEx() { EX.cur = make(EX.lvl); $('#exq').textContent = EX.cur.q; $('#exu').textContent = EX.cur.u; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false; }
-const near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);
 function checkEx() {
-  const raw = $('#exa').value.replace(/\s/g, '').replace(',', '.'); const x = parseFloat(raw); const c = EX.cur;
+  const x = parseFloat($('#exa').value.replace(/[\s ]/g, '').replace(',', '.')), c = S.cur;
   if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }
-  const st = S.ex[EX.lvl]; st[1]++;
-  if (near(x, c.ans)) { st[0]++; $('#exf').innerHTML = `Juste : ${nf(c.ans, 2)} ${c.u}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
-  else { const t = c.traps.find(tp => near(x, tp[0]));
-    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]] + ` <div class="ar">${iso(MIS_AR[t[1]])}</div>`; }
+  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0]); st[1]++;
+  if (near(x, c.ans)) { st[0]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
+  else {
+    const t = (c.traps || []).find(tp => near(x, tp[0]));
+    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class="ar">${iso(esc(MIS[t[1]].ar))}</div>`; }
     else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';
-    $('#exf').className = 'fb no'; }
-  $('#exs').textContent = [1, 2, 3].map(l => `Niveau ${l} : ${S.ex[l][0]} réussi${S.ex[l][0] > 1 ? 's' : ''} sur ${S.ex[l][1]} essai${S.ex[l][1] > 1 ? 's' : ''}`).join(' · ');
+    $('#exf').className = 'fb no';
+  }
+  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0]; return `${lv.label} : ${s[0]} réussi${s[0] > 1 ? 's' : ''} sur ${s[1]}`; }).join(' · ');
 }
-$('#exc').onclick = checkEx; $('#exn').onclick = newEx;
-$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
-$$('#lv button').forEach(b => b.onclick = () => { EX.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
 
-/* ---------- final check and report ---------- */
-const doneCheck = () => { if (S.check.c1 && S.check.c2) report(); };
-renderQ('c1', S.check, doneCheck); renderQ('c2', S.check, doneCheck);
+/* report */
 function report() {
-  const p = ['p1', 'p2'].filter(k => S.pred[k] && S.pred[k].ok).length, c = ['c1', 'c2'].filter(k => S.check[k].ok).length;
-  const ok = [1, 2, 3].reduce((s, l) => s + S.ex[l][0], 0), tries = [1, 2, 3].reduce((s, l) => s + S.ex[l][1], 0);
-  $('#r1').textContent = p + ' / 2'; $('#r2').textContent = c + ' / 2'; $('#r3').textContent = ok + ' / ' + tries;
-  const codes = {}; ['p1', 'p2', 'c1', 'c2'].forEach(k => { const a = S.pred[k] || S.check[k]; if (a && a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
+  const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;
+  const ok = Object.values(S.ex).reduce((s, v) => s + v[0], 0), tries = Object.values(S.ex).reduce((s, v) => s + v[1], 0);
+  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${ok} / ${tries}`;
+  const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
   Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);
   const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);
-  const gain = c - p;
-  $('#r4').innerHTML = `<div class="verdict ${c === 2 ? 'ok' : 'no'}">${gain > 0 ? `Tu as progressé : ${gain} réponse${gain > 1 ? 's' : ''} juste${gain > 1 ? 's' : ''} de plus qu'au début.` : c === 2 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au banc d’essai : compare 30 et 60 km/h, puis 20 et 60 km/h.'}</div>`
-    + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k]} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
-  $('#rep').hidden = false;
-  S.summary = { classe: '', prediction: p, verification: c, exercices: ok + '/' + tries, erreurs: Object.fromEntries(list) };
-  $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  const pr = p / L.predict.length, cr = c / L.check.length;
+  $('#r4').innerHTML = `<div class="verdict ${cr === 1 ? 'ok' : 'no'}">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au moment « Je teste » et refais les missions.'}</div>`
+    + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
+  S.summary = { p, c, ex: `${ok}/${tries}`, errs: list };
+  $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
 }
+
+/* start */
+render(); steps();
+$$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
+L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
+L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));
+$('#flap').onclick = () => $('#flap').classList.add('open');
+$('#exc').onclick = checkEx; $('#exn').onclick = newEx;
+$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
+$$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
 $('#copy').onclick = async () => {
-  S.summary.classe = $('#cls').value || 'non indiquée';
-  const t = `Énergie cinétique · classe ${S.summary.classe} · prédictions ${S.summary.prediction}/2 · vérification ${S.summary.verification}/2 · exercices ${S.summary.exercices} · erreurs ${Object.entries(S.summary.erreurs).map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
+  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices ${s.ex} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
   try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }
 };
-
-steps();
-}
+L.experiment.mount($('#exp'), { done, nf, iso, reduce });
+const problems = validate(), testMode = /[?&]test\b/.test(location.search);
+if (problems.length) { console.error('Leçon invalide :\n' + problems.join('\n')); $('#main').insertAdjacentHTML('afterbegin', `<div id="problems"><b>À corriger avant publication :</b><ul>${problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`); }
+if (testMode) window.__fikra = { S, L, done, openStep, problems, newEx };
+})();
+/* ENGINE:END */
 </script>
 </body>
 </html>
