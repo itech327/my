@@ -96,7 +96,7 @@ async def main():
                 await ctx.route(host, lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
             await page.goto(base + 'examen/')
             await page.locator('.eleve input.txt').first.fill('Élève Test')
-            await page.locator('.eleve select').select_option('2APIC1')
+            await page.locator('.eleve select').select_option('2APIC')
             await page.locator('.eleve input[type=checkbox]').check()
             await page.get_by_role('button', name='Enregistrer').click()
             errs = []
@@ -189,6 +189,8 @@ async def main():
         ls = [x for x in lsent if '"series"' in x]
         if len(ls) != 1 or 'Leçon' not in ls[0]:
             fail('leçon : alerte enseignant absente ou en double (%d)' % len(ls))
+        elif '"cls":"2APIC"' not in ls[0]:
+            fail('leçon : ancien code 2APIC1 non ramené au niveau 2APIC')
         else:
             print('alerte leçon :', ls[0][:160])
         if SHOTS:

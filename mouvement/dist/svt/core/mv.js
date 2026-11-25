@@ -154,9 +154,10 @@
     var v; try { v = sessionStorage.getItem('mv_sid'); if (!v) { v = 'mv' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem('mv_sid', v); } } catch (_) { v = ''; }
     return v;
   }
-  // classes reconnues par le relais (variable CLASSES du Worker) : les notes des autres ne sont pas gardées au tableau de bord
-  var CLASSES = ['1APIC1', '1APIC2', '1APIC3', '2APIC1', '2APIC2', '2APIC3', '3APIC1', '3APIC2', '3APIC3'];
-  function eleve() { try { return JSON.parse(store.get('mv_eleve') || 'null'); } catch (_) { return null; } }
+  // niveaux reconnus par le relais (variable CLASSES du Worker) : un ancien code 2APIC1 devient 2APIC
+  var CLASSES = ['1APIC', '2APIC', '3APIC'], CLS_LBL = { '1APIC': '1AC · الأولى', '2APIC': '2AC · الثانية', '3APIC': '3AC · الثالثة' };
+  function niveau(v) { var m = /^([123])(?:APIC|AC)\d*$/.exec(String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '')); return m ? m[1] + 'APIC' : ''; }
+  function eleve() { try { var e = JSON.parse(store.get('mv_eleve') || 'null'); if (e) e.cls = niveau(e.cls); return e; } catch (_) { return null; } }
   /* Turnstile (phase 2) : laissez-passer demandé une fois par session, seulement pour les notes nommées.
      Sans clé de site dans notify-config.js, rien n'est chargé. */
   var passWait = null;
@@ -203,7 +204,8 @@
   }
   (function () { // code de classe dans le lien : ?c=CODE
     var m = location.search.match(/[?&]c=([A-Za-z0-9]{3,12})/), e = eleve();
-    if (m && e) { e.cls = m[1].toUpperCase(); store.set('mv_eleve', JSON.stringify(e)); } else if (m) store.set('mv_cls', m[1].toUpperCase());
+    var k = m && niveau(m[1]); if (!k) return;
+    if (e) { e.cls = k; store.set('mv_eleve', JSON.stringify(e)); } else store.set('mv_cls', k);
   })();
   // carte « Envoyer mes résultats à mon enseignant » ; onSave est appelé après l'enregistrement
   function eleveCard(parent, onSave) {
@@ -211,9 +213,9 @@
     function vue() {
       var e = eleve();
       if (e && e.consent) {
-        c.innerHTML = '<div class="eyebrow">Mon enseignant</div><p class="small">Mes notes sont envoyées à mon enseignant au nom de <b></b>' + (e.cls ? ', classe <b class="mono"></b>' : '') + '.</p>' +
+        c.innerHTML = '<div class="eyebrow">Mon enseignant</div><p class="small">Mes notes sont envoyées à mon enseignant au nom de <b></b>' + (e.cls ? ', niveau <b></b>' : '') + '.</p>' +
           '<div class="ar">تُرسل نقطي إلى أستاذي.</div>';
-        var b = c.querySelectorAll('b'); b[0].textContent = e.name; if (b[1]) b[1].textContent = e.cls;
+        var b = c.querySelectorAll('b'); b[0].textContent = e.name; if (b[1]) b[1].textContent = CLS_LBL[e.cls] || e.cls;
         var row = H('div', 'row', '', c);
         H('button', 'btn', 'Modifier', row).onclick = form;
         H('button', 'btn', 'Ne plus envoyer', row).onclick = function () { store.set('mv_eleve', JSON.stringify({ name: e.name, cls: e.cls, consent: false })); vue(); };
@@ -223,12 +225,12 @@
       var e = eleve() || {};
       c.innerHTML = '<div class="eyebrow">Envoyer mes notes à mon enseignant</div>' +
         '<div class="ar">إرسال نقطي إلى أستاذي (اختياري)</div>' +
-        '<div class="row"><input class="num txt" maxlength="40" aria-label="Prénom et nom" placeholder="Prénom et nom"><select class="num txt cls" aria-label="Classe"><option value="">Classe · القسم</option>' +
-        CLASSES.map(function (k) { return '<option>' + k + '</option>'; }).join('') + '</select></div>' +
-        '<p class="small">Choisis ta classe : sans elle, l’alerte arrive mais tes notes ne sont pas gardées. · اختر قسمك، وإلا لا تُحفظ نقطك.</p>' +
+        '<div class="row"><input class="num txt" maxlength="40" aria-label="Prénom et nom" placeholder="Prénom et nom"><select class="num txt cls" aria-label="Niveau"><option value="">Niveau · المستوى</option>' +
+        CLASSES.map(function (k) { return '<option value="' + k + '">' + CLS_LBL[k] + '</option>'; }).join('') + '</select></div>' +
+        '<p class="small">Choisis ton niveau : sans lui, l’alerte arrive mais tes notes ne sont pas gardées. · اختر مستواك، وإلا لا تُحفظ نقطك.</p>' +
         '<label class="small chk"><input type="checkbox"> J’accepte d’envoyer mon nom et mes notes à mon enseignant.</label>' +
         '<div class="fb"></div>';
-      var ins = c.querySelectorAll('input'), sel = c.querySelector('select'), fb = c.querySelector('.fb'), k0 = e.cls || store.get('mv_cls') || '';
+      var ins = c.querySelectorAll('input'), sel = c.querySelector('select'), fb = c.querySelector('.fb'), k0 = e.cls || niveau(store.get('mv_cls')) || '';
       ins[0].value = e.name || ''; if (CLASSES.indexOf(k0) >= 0) sel.value = k0;
       var row = H('div', 'row', '', c);
       H('button', 'btn pri', 'Enregistrer', row).onclick = function () {
