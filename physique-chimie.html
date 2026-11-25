@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!--gen:head-->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-FKVjsH9X9ZTIFM3VkofZNZrNw1lNShUJRapPpz8tSPE=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-oVYzUI28r/sEE3ulI6qD5yOfIR4WFXim+hsHLiiryOU=' 'sha256-TDhLLaAoyK8csqN3uEMabgBPzrWGMCI+HnRpkLrMBEI=' 'sha256-PVZ6WSjlR9PZQI6KkTidaly887/OUvifsewT7aCbl9M=' 'sha256-uvFn6mVqn11ziNOM9DuQ1L3gz/Q9dHJBfRLOhY8mt8w=' 'sha256-8ZnQbroxM3tv9pMoXeT2AS5A4QyQoG3AdxEarW7V/M0=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-iW8h82t55A1VFLGHYsxUA2Rn22n1GtUZelL/iU/upRw=' 'sha256-5OEfrD9FSheeTI7+6Yqn1NtFEq7eGMHNW1UQ3S9Q6rU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests; frame-src https://challenges.cloudflare.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com 'sha256-/o2CJsPq5b1f5l9mUixals3tgov4eAqIVHrWzn1EsdI=' 'sha256-ACHygGkmXjxd3Avd6yaTRGjuhPAhVod15oP9LAsNWqE=' 'sha256-Bm+mMG94nDR/FHD9HOanoFaEZNp7zoT1c6oL+i2zvgY=' 'sha256-oVYzUI28r/sEE3ulI6qD5yOfIR4WFXim+hsHLiiryOU=' 'sha256-TDhLLaAoyK8csqN3uEMabgBPzrWGMCI+HnRpkLrMBEI=' 'sha256-PVZ6WSjlR9PZQI6KkTidaly887/OUvifsewT7aCbl9M=' 'sha256-uvFn6mVqn11ziNOM9DuQ1L3gz/Q9dHJBfRLOhY8mt8w=' 'sha256-8ZnQbroxM3tv9pMoXeT2AS5A4QyQoG3AdxEarW7V/M0=' 'sha256-oKmqBdfYOB0oHYi5DFTnczBBYKeoHOrCIomdGxgl5xo=' 'sha256-p950/njuGhO/Hq0RBi4Gbr6wEVEV5wiRApBJGfZMYH4=' 'sha256-Qx2l2bm2lsCDUDf85ADxymlLTxr39YAm2ZGN9XrIVTQ=' 'sha256-iW8h82t55A1VFLGHYsxUA2Rn22n1GtUZelL/iU/upRw=' 'sha256-5OEfrD9FSheeTI7+6Yqn1NtFEq7eGMHNW1UQ3S9Q6rU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://relay.taalim.men https://cloudflareinsights.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests; frame-src https://challenges.cloudflare.com">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="description" content="دروس الفيزياء والكيمياء للسنوات الأولى والثانية والثالثة إعدادي بمحاكاة متحركة وملخصات بالعربية وتمارين حسب المستوى. Physique-chimie du collège (1re, 2e et 3e année) avec simulations animées, résumés en arabe et exercices par niveaux.">
 <link rel="canonical" href="https://taalim.men/physique-chimie">
@@ -960,11 +960,17 @@ document.addEventListener('click',function(e){
   var K_CUR = 'lab_cur', K_HIST = 'lab_hist', K_PROG = 'lab_prog', K_NAME = 'lab_name', K_CLS = 'lab_cls';
   /* code de classe : 3 à 12 lettres ou chiffres, fourni par l'enseignant (lien ?c=CODE ou saisie) */
   /* classes reconnues par le relais (variable CLASSES du Worker) : les résultats des autres ne sont pas gardés au tableau de bord */
-  var CLASSES = ['1APIC1', '1APIC2', '1APIC3', '2APIC1', '2APIC2', '2APIC3', '3APIC1', '3APIC2', '3APIC3'];
+  /* niveaux seulement (1APIC, 2APIC, 3APIC) : un ancien code de classe 2APIC1 devient 2APIC */
+  var CLASSES = ['1APIC', '2APIC', '3APIC'];
+  var CLS_LBL = { '1APIC': '1AC · الأولى', '2APIC': '2AC · الثانية', '3APIC': '3AC · الثالثة' };
   function clsSelect(cur) {
-    return '<select id="lab-cls"><option value="">Choisis ta classe · اختر قسمك</option>' + CLASSES.map(function (c) { return '<option value="' + c + '"' + (c === cur ? ' selected' : '') + '>' + c + '</option>'; }).join('') + '<option value="AUTRE"' + (cur && CLASSES.indexOf(cur) < 0 ? ' selected' : '') + '>Autre · قسم آخر</option></select>';
+    return '<select id="lab-cls"><option value="">Choisis ton niveau · اختر مستواك</option>' + CLASSES.map(function (c) { return '<option value="' + c + '"' + (c === cur ? ' selected' : '') + '>' + CLS_LBL[c] + '</option>'; }).join('') + '</select>';
   }
-  function clsClean(v) { v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); return v.length >= 3 ? v : ''; }
+  function clsClean(v) {
+    v = String(v == null ? '' : v).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+    var m = /^([123])(?:APIC|AC)\d*$/.exec(v); if (m) return m[1] + 'APIC';
+    return v.length >= 3 ? v : '';
+  }
   try { var mc = /[?&]c=([^&#]*)/.exec(location.search); if (mc && clsClean(decodeURIComponent(mc[1]))) store.set(K_CLS, clsClean(decodeURIComponent(mc[1]))); } catch (_) {}
   var Sess = (Lab.Session = {});
   var listeners = [];
@@ -1493,8 +1499,8 @@ document.addEventListener('click',function(e){
     modal.innerHTML =
       '<div class="lab-card"><h3>Ma session · جلستي</h3>' +
       '<label class="f" for="lab-name">Nom · الاسم</label><input id="lab-name" type="text" maxlength="60" autocomplete="name" value="' + esc(last) + '">' +
-      (Notify.enabled() ? '<label class="f" for="lab-cls">Classe · القسم</label>' + clsSelect(store.get(K_CLS, '')) +
-        '<p class="lab-note">Sans une classe de la liste, l’enseignant reçoit l’alerte mais ne garde pas tes résultats. · بدون قسم من القائمة لا تُحفظ نتائجك عند الأستاذ.</p>' : '') +
+      (Notify.enabled() ? '<label class="f" for="lab-cls">Niveau · المستوى</label>' + clsSelect(store.get(K_CLS, '')) +
+        '<p class="lab-note">Sans niveau choisi, l’enseignant reçoit l’alerte mais ne garde pas tes résultats. · بدون اختيار المستوى لا تُحفظ نتائجك عند الأستاذ.</p>' : '') +
       (Notify.enabled()
         ? '<label class="lab-chk"><input id="lab-cons" type="checkbox"><span>J’accepte que mon nom, mon appareil et ma ville approximative (déduite du fuseau horaire) soient envoyés à mon enseignant.<span class="lab-ar" dir="rtl" lang="ar">أوافق على إرسال اسمي وجهازي ومدينتي التقريبية (من المنطقة الزمنية) إلى أستاذي.</span></span></label>' +
           '<p class="lab-note">Une visite anonyme (page, heure, pays) est aussi signalée. <a href="confidentialite.html" target="_blank" rel="noopener">Confidentialité · الخصوصية</a></p>'
@@ -1511,7 +1517,6 @@ document.addEventListener('click',function(e){
       var okc = $('#lab-cons', modal).checked;
       if (Notify.enabled() && !okc) { $('#lab-err', modal).textContent = 'Coche la case pour continuer, ou choisis « Sans session ». · وافق للمتابعة أو اختر «Sans session»'; return; }
       var ce = $('#lab-cls', modal), cv = ce ? ce.value : '';
-      if (cv === 'AUTRE') cv = store.get(K_CLS, '') && CLASSES.indexOf(store.get(K_CLS, '')) < 0 ? store.get(K_CLS, '') : '';
       Sess.start(n, okc, cv); closeModal();
     });
     nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#lab-go', modal).click(); });
