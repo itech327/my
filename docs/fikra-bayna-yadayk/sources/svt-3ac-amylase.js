@@ -31,9 +31,9 @@ const LESSON = {
       <path class="ink" fill="var(--card)" d="M90 150 Q80 80 150 70 Q230 60 250 110 Q262 150 240 160 L110 168 Q92 166 90 150 Z"/>
       <path class="ink" d="M120 110 q10 -8 20 0 M160 100 q10 -8 20 0 M200 112 q10 -8 20 0" style="stroke-width:1.6;opacity:.6"/>
       <path class="ink" d="M280 115 h60 M330 105 l12 10 l-12 10" />
-      <text x="420" y="104" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="24" fill="var(--glow)">sucré ?</text>
+      <text x="420" y="104" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="24" fill="var(--glow-text)">sucré ?</text>
       <text x="420" y="140" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--ink)">après 2 à 3 min de mastication</text>
-      <text x="420" y="190" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--heat)">et si la bouche était à 80 °C ?</text></svg>`,
+      <text x="420" y="190" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--heat-text)">et si la bouche était à 80 °C ?</text></svg>`,
     text: "Mâche longtemps un morceau de pain sans l'avaler : il finit par avoir un goût légèrement sucré. Le pain contient de l'amidon, qui n'est pas sucré. Que se passe-t-il dans la bouche ? Et est-ce que ça marcherait mieux si la bouche était beaucoup plus chaude ?",
     ar: 'امضغ قطعة خبز مدة طويلة دون أن تبلعها: يصبح طعمها حلوا قليلا. الخبز يحتوي على النشا وهو غير حلو. ماذا يحدث في الفم؟ وهل يكون ذلك أسرع لو كان الفم أكثر حرارة؟'
   },
@@ -53,7 +53,7 @@ const LESSON = {
       <rect x="110" y="40" width="40" height="180" rx="20" class="ink" fill="var(--card)"/><rect id="liq" x="114" y="120" width="32" height="96" rx="16" fill="#f3ead2"/>
       <text id="tub" x="130" y="30" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="16" fill="var(--ink)"></text>
       <g transform="translate(190 60)"><rect x="-6" y="0" width="12" height="150" rx="6" class="ink" fill="var(--card)"/><rect id="th" x="-3" y="140" width="6" height="8" rx="3" fill="var(--heat)"/><circle cy="156" r="10" fill="var(--heat)"/></g>
-      <text id="tt" x="190" y="248" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="18" fill="var(--heat)"></text>
+      <text id="tt" x="190" y="248" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="18" fill="var(--heat-text)"></text>
       <rect x="270" y="90" width="350" height="150" rx="16" class="ink" fill="var(--card)"/>
       <g id="wells"></g>
       <text x="445" y="80" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="16" fill="var(--ink)">eau iodée, minute par minute</text>

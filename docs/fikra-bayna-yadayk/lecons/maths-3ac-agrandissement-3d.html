@@ -689,7 +689,8 @@ const MODES = {
       setPrism(prFoot, circ(C, PAGE_Y + 0.01, 2.6), circ(C, PAGE_Y + 0.25, 2.6));
       stem.visible = true;
       setPrism(prGlass, rep(apex, 48), circ(C, y0 + GLASS.H, GLASS.R));
-      if (k > 0.001) setPrism(prWater, rep(apex, 48), circ(C, y0 + k * GLASS.H, k * GLASS.R));
+      const ring = circ(C, y0 + k * GLASS.H, k * GLASS.R); if (k > 0.001) setPrism(prWater, rep(apex, 48), ring);
+      S.geo = { mode: 'verre', k, apex, ring };
       // heights drawn on the side
       const xs = C.x + GLASS.R + 1.2;
       drawSegs([[xs - .3, C.y, xs + .3, C.y]], INK, .08, y0); drawSegs([[xs - .3, C.y, xs + .3, C.y]], INK, .08, y0 + GLASS.H);
@@ -723,10 +724,11 @@ const MODES = {
     draw(now, dt) {
       const { a, H } = PYR, k = S.coupe.k, c = S.coupe;
       c.t += Math.sign((c.sep ? 1 : 0) - c.t) * Math.min(Math.abs((c.sep ? 1 : 0) - c.t), dt / 1.2);
-      const e = ease(c.t), ys = PAGE_Y + (1 - k) * H, apex = V3(C.x, PAGE_Y + H, C.y);
-      const off = V3(7 * e, (PAGE_Y + 0.01 - ys) * e + Math.sin(Math.PI * e) * 3, 0);
-      setPrism(prPaper, sq(C, PAGE_Y + 0.01, a), sq(C, ys, k * a));
-      setPrism(prSmall, sq(C, ys, k * a, off), rep(apex.clone().add(off), 4));
+      const e = ease(c.t), y0 = PAGE_Y + 0.01, ys = y0 + (1 - k) * H, apex = V3(C.x, y0 + H, C.y);   // base, section and apex on one exact height scale
+      const off = V3(7 * e, (y0 - ys) * e + Math.sin(Math.PI * e) * 3, 0);
+      const base = sq(C, y0, a), sect = sq(C, ys, k * a), small = sq(C, ys, k * a, off), apexS = apex.clone().add(off);
+      setPrism(prPaper, base, sect); setPrism(prSmall, small, rep(apexS, 4));
+      S.geo = { mode: 'coupe', k, apex, base, sect, small, apexS };
       cutPlane.visible = c.t < 0.02; cutPlane.position.set(C.x, ys, C.y);
       drawSegs(squareSegs(C, k * a), RED, .16, ys + 0.02);
       // vertex names
@@ -774,7 +776,8 @@ const MODES = {
       }
       f = Math.min(1, f);
       const r = M.levelRatio(f);
-      if (r > 0.001) setPrism(prWater, rep(apex, 4), sq(C, PAGE_Y + lift + r * H, r * a));
+      const wtop = sq(C, PAGE_Y + lift + r * H, r * a); if (r > 0.001) setPrism(prWater, rep(apex, 4), wtop);
+      S.geo = { mode: 'verser', f, apex, wtop, a, H, k, n: v.n, anim: !!v.anim };
       // the measure: a reduction of ratio k, full while it waits, emptying while it pours
       const ka = k * a, kH = k * H;
       setPrism(prMeasure, sq(V(mPos.x, mPos.z), mPos.y, ka), rep(V3(mPos.x, mPos.y + kH, mPos.z), 4));
@@ -806,6 +809,7 @@ const MODES = {
       for (let y = 0; y < k; y++) for (let z = 0; z < k; z++) for (let x = 0; x < k; x++) {
         const m = cubes[i]; m.visible = i < shown; m.position.set(x0 + (x + .5) * CUBE, PAGE_Y + (y + .5) * CUBE, z0 + (z + .5) * CUBE); i++;
       }
+      S.geo = { mode: 'cubes', k, visible: cubes.filter(c => c.visible).length, done: shown === n, n };
       drawLabel('×1', ORANGE, 3.5, PAGE_Y + CUBE + 1, C.y);
       drawLabel('×' + k, BLUE, x0 + k * CUBE / 2, PAGE_Y + k * CUBE + 1.2, C.y);
       card(0, tr('الحرف', 'Arête'), `${k * CUBE}` + unit('cm') + ` <i>(× ${k})</i>`);
@@ -848,7 +852,29 @@ function frame() {
   renderer.render(scene, camera);
   requestAnimationFrame(frame);
 }
-window.__lesson = { M, S, MODES };
+/* geometry kernel: checks computed from the geometry the frame drew (S.geo), run by tools/smoke_test.py */
+function invariants() {
+  const g = S.geo, out = [], ok = (name, cond, detail = '') => out.push([name, !!cond, detail]), eq = (x, y, e = 1e-6) => Math.abs(x - y) <= e * Math.max(1, Math.abs(y));
+  if (!g || g.mode !== S.mode) return out;
+  if (g.mode === 'verre' && g.k > .001) {
+    const r = Math.hypot(g.ring[0].x - C.x, g.ring[0].z - C.y), h = g.ring[0].y - g.apex.y, ratio = r * r * h / (GLASS.R * GLASS.R * GLASS.H);
+    ok('water is a reduction of the glass (same r ÷ h)', eq(r / h, GLASS.R / GLASS.H), r / h); ok('water volume ÷ glass volume = k³', eq(ratio, g.k ** 3), ratio);
+  }
+  if (g.mode === 'coupe') {
+    const SA = g.apex.distanceTo(g.base[3]), SA1 = g.apex.distanceTo(g.sect[3]); ok("SA' ÷ SA = k", eq(SA1 / SA, g.k), SA1 / SA);
+    ok("section side = k × base side", eq(g.sect[0].distanceTo(g.sect[1]) / g.base[0].distanceTo(g.base[1]), g.k));
+    ok('section parallel to the base', g.sect.every(p => eq(p.y, g.sect[0].y)));
+    ok('separated pyramid keeps its edges', eq(g.apexS.distanceTo(g.small[3]), SA1), g.apexS.distanceTo(g.small[3]));
+  }
+  if (g.mode === 'verser' && g.f > 1e-6) {
+    const h = g.wtop[0].y - g.apex.y, side = g.wtop[0].distanceTo(g.wtop[1]);
+    ok('water is a reduction of the container', eq(side / g.a, h / g.H), side / g.a); ok('(h ÷ H)³ = filled fraction', eq((h / g.H) ** 3, g.f), (h / g.H) ** 3);
+    if (!g.anim) ok('fraction = pours × k³', eq(g.f, Math.min(1, g.n * g.k ** 3)), g.f);
+  }
+  if (g.mode === 'cubes' && g.done) ok('k³ unit cubes drawn', g.visible === g.k ** 3, g.visible);
+  return out;
+}
+window.__lesson = { M, S, MODES, invariants, slider: () => slider() };
 window.addEventListener('resize', resize);
 decor.use(DECOR);
 resize(); buildHUD(); startIntro(); requestAnimationFrame(frame);

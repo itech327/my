@@ -691,7 +691,7 @@ const MODES = {
       const q = ease(e.t), phi = q * Math.PI / 2, el = q * Math.atan2(h, a);
       const F = V3(WALL_X - a * SM, PAGE_Y + .14, LADDER_Z), dir = V3(Math.cos(el) * Math.sin(phi), Math.sin(el), Math.cos(el) * Math.cos(phi)), L = c * SM;
       const side = V3(-dir.z, 0, dir.x).normalize().multiplyScalar(.55), top = F.clone().addScaledVector(dir, L);
-      wall.visible = true;
+      wall.visible = true; S.geo = { mode: 'echelle', F: F.clone(), top: top.clone(), L, a, c, h, t: e.t };
       for (const s of [1, -1]) drawCyl(F.clone().addScaledVector(side, s), top.clone().addScaledVector(side, s), .11, WOOD);
       for (let d = .45; d < L - .2; d += .6) { const m = F.clone().addScaledVector(dir, d); drawCyl(m.clone().add(side), m.clone().sub(side), .06, WOOD); }
       // the ground segment BC and the guess mark on the wall
@@ -734,6 +734,7 @@ const MODES = {
       const ratio = (a * a + b * b) / (c * c), big = Math.min(1, ratio * e);
       [[sqB, 1 - e], [sqA, 1 - e], [sqC, big]].forEach(([sq, f], k) => { setPrism(prTray[k], ...flat(sq, y0, D)); if (f > .002) setPrism(prWat[k], ...flat(sq, y0 + .02, D * f)); });
       setPrism(prTri, ...flat([A, B, C], y0, .3));
+      S.geo = { mode: 'carres', A, B, C, sq: [sqB, sqA, sqC], lv: [1 - e, 1 - e, big].map(f => f * D), D, a, b, angle: s.angle, ratio };
       if (s.angle === 90) rightMark(C, V(1, 0), V(0, -1), .55, RED, PAGE_Y + .33);
       for (const [n, p, off] of [['A', A, V(-.5, -.7)], ['B', B, V(.7, .2)], ['C', C, V(-.6, .7)]]) drawLabel(n, INK, p.x + off.x, PAGE_Y + 1.1, p.y + off.y);
       for (const [t, sq] of [['BC²', sqB], ['AC²', sqA], ['AB²', sqC]]) { const m = centre(sq); drawLabel(t, t === 'AB²' ? BLUE : ORANGE, m.x, PAGE_Y + 2, m.y, 1.1); }
@@ -760,8 +761,9 @@ const MODES = {
       p.t += Math.sign(p.goal - p.t) * Math.min(Math.abs(p.goal - p.t), dt / 1.6); const e = ease(p.t);
       // [right-angle vertex in arrangement 1, in arrangement 2, leg-a direction] : pure translations
       const T = [[V(x0, z0), V(x0, za), V(1, 0)], [V(x1, z0), V(x1, z0), V(0, 1)], [V(x1, z1), V(xa, z1), V(-1, 0)], [V(x0, z1), V(xa, za), V(0, -1)]];
+      const tris = []; S.geo = { mode: 'preuve', tris, a, b, s, e, box: [x0, z0, x1, z1] };
       T.forEach(([R1, R2, u], k) => { const R = V(R1.x + (R2.x - R1.x) * e, R1.y + (R2.y - R1.y) * e), v = V(-u.y, u.x), lift = Math.sin(Math.PI * e) * (1.5 + k * .3);
-        setPrism(prPiece[k], ...flat([R, V(R.x + a * u.x, R.y + a * u.y), V(R.x + b * v.x, R.y + b * v.y)], y0 + lift, .3)); });
+        const tri = [R, V(R.x + a * u.x, R.y + a * u.y), V(R.x + b * v.x, R.y + b * v.y)]; tris.push(tri); setPrism(prPiece[k], ...flat(tri, y0 + lift, .3)); });
       drawSegs([[x0, z0, x1, z0], [x1, z0, x1, z1], [x1, z1, x0, z1], [x0, z1, x0, z0]], INK, .12, YL + .01);
       if (e < .02) { const q = [V(x0 + a, z0), V(x1, z0 + a), V(x1 - a, z1), V(x0, z1 - a)]; setPrism(prBlue[0], ...flat(q, y0, .05)); drawLabel('c²', BLUE, (x0 + x1) / 2, PAGE_Y + 1.2, (z0 + z1) / 2); }
       if (e > .98) { setPrism(prBlue[0], ...flat([V(x0, z0), V(xa, z0), V(xa, za), V(x0, za)], y0, .05)); setPrism(prBlue[1], ...flat([V(xa, za), V(x1, za), V(x1, z1), V(xa, z1)], y0, .05));
@@ -783,7 +785,7 @@ const MODES = {
     draw() {
       const [p, q, r] = ROPES[S.corde.r], u = 1.6, P0 = V(4.5, 0), P1 = V(P0.x + p * u, P0.y);
       const cosA = (p * p + r * r - q * q) / (2 * p * r), sinA = Math.sqrt(Math.max(0, 1 - cosA * cosA)), P2 = V(P0.x + r * u * cosA, P0.y - r * u * sinA);
-      const yR = PAGE_Y + .25, sides = [[P0, P1, p], [P1, P2, q], [P2, P0, r]];
+      const yR = PAGE_Y + .25, sides = [[P0, P1, p], [P1, P2, q], [P2, P0, r]]; S.geo = { mode: 'corde', sides, u };
       drawSegs(sides.map(([X, Y]) => [X.x, X.y, Y.x, Y.y]), '#a8865a', .2, yR);
       for (const [X, Y, n] of sides) for (let k = 0; k < n; k++) drawDot(V3(X.x + (Y.x - X.x) * k / n, yR + .05, X.y + (Y.y - X.y) * k / n), INK, .22);
       for (const P of [P0, P1, P2]) drawCyl(V3(P.x, PAGE_Y, P.y), V3(P.x, PAGE_Y + 2.2, P.y), .14, WOOD);
@@ -810,7 +812,7 @@ const MODES = {
     draw() {
       const [L, l, h] = BOXES[S.boite.b], k = .5, Lw = L * k, lw = l * k, hw = h * k, x0 = 10.5 - Lw / 2, x1 = x0 + Lw, z0 = -4 - lw / 2, z1 = z0 + lw, y0 = PAGE_Y + .01, y1 = y0 + hw;
       setPrism(prBox, [V3(x0, y0, z0), V3(x1, y0, z0), V3(x1, y0, z1), V3(x0, y0, z1)], [V3(x0, y1, z0), V3(x1, y1, z0), V3(x1, y1, z1), V3(x0, y1, z1)]);
-      const A = V3(x0, y0, z1), B = V3(x1, y0, z1), C = V3(x1, y0, z0), G = V3(x1, y1, z0);
+      const A = V3(x0, y0, z1), B = V3(x1, y0, z1), C = V3(x1, y0, z0), G = V3(x1, y1, z0); S.geo = { mode: 'boite', A, B, C, G, L, l, h, k };
       setPrism(prFace[0], [A, B, C], [A, B, C].map(p => p.clone().add(V3(0, .02, 0))));
       setPrism(prFace[1], [A, C, G], [A, C, G].map(p => p.clone().add(V3(-.02, 0, -.02))));
       drawCyl(A, B, .07, ORANGE); drawCyl(B, C, .07, ORANGE); drawCyl(C, G, .07, ORANGE); drawCyl(A, C, .08, RED); drawCyl(A, G, .09, BLUE);
@@ -858,7 +860,31 @@ function frame() {
   renderer.render(scene, camera);
   requestAnimationFrame(frame);
 }
-window.__lesson = { M, S, MODES };
+/* geometry kernel: checks computed from the geometry the frame drew (S.geo), run by tools/smoke_test.py */
+const area = P => Math.abs(P.reduce((s, p, i) => { const q = P[(i + 1) % P.length]; return s + p.x * q.y - q.x * p.y; }, 0)) / 2;
+const d2 = (P, Q) => (P.x - Q.x) ** 2 + (P.y - Q.y) ** 2;
+function invariants() {
+  const g = S.geo, out = [], ok = (name, cond, detail = '') => out.push([name, !!cond, detail]), eq = (x, y, e = 1e-6) => Math.abs(x - y) <= e * Math.max(1, Math.abs(y));
+  if (!g || g.mode !== S.mode) return out;
+  if (g.mode === 'echelle') {
+    const len = g.top.distanceTo(g.F); ok('ladder keeps its length', eq(len, g.L), `${len} vs ${g.L}`);
+    if (g.t >= 1) { ok('top on the wall', eq(g.top.x, WALL_X), g.top.x); ok('height = √(c² − a²)', eq((g.top.y - g.F.y) / SM, g.h), (g.top.y - g.F.y) / SM); }
+  }
+  if (g.mode === 'carres') {
+    g.sq.forEach((q, i) => ok(`tray ${i} is a square on its side`, eq(area(q), d2(q[0], q[1])), area(q)));
+    if (g.angle === 90) { const u = V(g.A.x - g.C.x, g.A.y - g.C.y), v = V(g.B.x - g.C.x, g.B.y - g.C.y); ok('angle C is right', eq(u.dot(v), 0), u.dot(v)); ok('AB² = AC² + BC²', eq(d2(g.A, g.B), d2(g.A, g.C) + d2(g.B, g.C)), d2(g.A, g.B)); }
+    if (g.ratio <= 1 || g.lv[2] < g.D - 1e-9) { const vol = g.sq.reduce((s, q, i) => s + area(q) * g.lv[i], 0); ok('water volume conserved', eq(vol, (g.a * g.a + g.b * g.b) * g.D, 1e-9), vol); }
+  }
+  if (g.mode === 'preuve') {
+    const sum = g.tris.reduce((s, t) => s + area(t), 0); ok('four triangles = 2ab', eq(sum, 2 * g.a * g.b), sum);
+    g.tris.forEach((t, i) => { const u = V(t[1].x - t[0].x, t[1].y - t[0].y), v = V(t[2].x - t[0].x, t[2].y - t[0].y); ok(`triangle ${i} right-angled with legs a, b`, eq(u.dot(v), 0) && eq(u.length(), g.a) && eq(v.length(), g.b)); });
+    if (g.e === 0 || g.e === 1) { const [x0, z0, x1, z1] = g.box; ok('triangles inside the big square', g.tris.flat().every(p => p.x >= x0 - 1e-9 && p.x <= x1 + 1e-9 && p.y >= z0 - 1e-9 && p.y <= z1 + 1e-9)); ok('blue area = a² + b²', eq(g.s * g.s - sum, g.a * g.a + g.b * g.b)); }
+  }
+  if (g.mode === 'corde') g.sides.forEach(([X, Y, n], i) => ok(`rope side ${i} = ${n} knots`, eq(Math.sqrt(d2(X, Y)), n * g.u), Math.sqrt(d2(X, Y))));
+  if (g.mode === 'boite') { ok('space diagonal AG drawn = √(L² + l² + h²)', eq(g.A.distanceTo(g.G), Math.hypot(g.L, g.l, g.h) * g.k), g.A.distanceTo(g.G)); }
+  return out;
+}
+window.__lesson = { M, S, MODES, invariants, slider: () => slider() };
 window.addEventListener('resize', resize);
 decor.use(DECOR);
 resize(); buildHUD(); startIntro(); requestAnimationFrame(frame);

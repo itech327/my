@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* STYLE:BEGIN · Le concept en main · engine v1.2 · do not edit in a lesson */
-:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
+/* STYLE:BEGIN · Le concept en main · engine v1.3 · do not edit in a lesson */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--glow-text:light-dark(#9a5800,#f5a300);--heat-text:light-dark(#c42a12,#ff6b4b);--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
@@ -315,7 +315,7 @@ const LESSON = {
 </script>
 
 <script>
-/* ENGINE:BEGIN · Le concept en main · engine v1.2 · do not edit in a lesson; update it with tools/update_engine.py */
+/* ENGINE:BEGIN · Le concept en main · engine v1.3 · do not edit in a lesson; update it with tools/build_lesson.py sync */
 (() => {
 const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -405,7 +405,7 @@ function render() {
     ${voice(r)}${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
     <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
   <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
-    <div class="flapw"><div class="proof">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
+    <div class="flapw"><div class="proof" id="proof" inert aria-hidden="true">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
     <h3>Et ma prédiction ?</h3><div id="pv"></div>
     <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div></section>
   <section class="moment" id="m6" hidden><div class="num">6 · Je m'entraîne</div><h2>Exercices sans fin</h2>
@@ -415,7 +415,7 @@ function render() {
     <p class="note" id="exs"></p>
     <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div></section>
   <section class="moment" id="m7" hidden><div class="num">7 · Je vérifie</div><h2>Pour finir</h2>${qBlock(L.check, 'c')}
-    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices réussis</small><b id="r3"></b></div></div>
+    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices du premier coup</small><b id="r3"></b></div></div>
     <div id="r4"></div>
     <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option>${(m.classes || []).map(c => `<option>${esc(c)}</option>`).join('')}</select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
     <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p></div></section>`;
@@ -465,29 +465,32 @@ function newEx() {
 function checkEx() {
   const x = parseFloat($('#exa').value.replace(/[\s ]/g, '').replace(',', '.')), c = S.cur;
   if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }
-  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0]); st[1]++;
-  if (near(x, c.ans)) { st[0]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
+  // st = [solved, tries, solved on the first try, exercises tried]: only first tries count as unassisted,
+  // because a wrong try shows the misconception message, which is help
+  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0, 0, 0]); st[1]++; c.att = (c.att || 0) + 1; if (c.att === 1) st[3]++;
+  if (near(x, c.ans)) { st[0]++; if (c.att === 1) st[2]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
   else {
     const t = (c.traps || []).find(tp => near(x, tp[0]));
     if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class="ar">${iso(esc(MIS[t[1]].ar))}</div>`; }
     else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';
     $('#exf').className = 'fb no';
   }
-  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0]; return `${lv.label} : ${s[0]} réussi${s[0] > 1 ? 's' : ''} sur ${s[1]}`; }).join(' · ');
+  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0, 0, 0]; return `${lv.label} : ${s[2]} du premier coup sur ${s[3]}`; }).join(' · ');
 }
 
 /* report */
 function report() {
   const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;
-  const ok = Object.values(S.ex).reduce((s, v) => s + v[0], 0), tries = Object.values(S.ex).reduce((s, v) => s + v[1], 0);
-  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${ok} / ${tries}`;
+  const sum = i => Object.values(S.ex).reduce((s, v) => s + v[i], 0), ok = sum(0), first = sum(2), tried = sum(3);
+  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${first} / ${tried}`;
   const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
   Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);
   const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);
   const pr = p / L.predict.length, cr = c / L.check.length;
   $('#r4').innerHTML = `<div class="verdict ${cr === 1 ? 'ok' : 'no'}">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au moment « Je teste » et refais les missions.'}</div>`
+    + (ok > first ? `<p class="note">${ok - first} exercice${ok - first > 1 ? 's' : ''} réussi${ok - first > 1 ? 's' : ''} après une aide : ils ne comptent pas dans « du premier coup ».</p>` : '')
     + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
-  S.summary = { p, c, ex: `${ok}/${tries}`, errs: list };
+  S.summary = { p, c, ex: `${first}/${tried}`, exAfterHelp: ok - first, errs: list };
   $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
 }
 
@@ -496,12 +499,12 @@ render(); steps(); bindVoice();
 $$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
 L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
 L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));
-$('#flap').onclick = () => $('#flap').classList.add('open');
+$('#flap').onclick = () => { $('#flap').classList.add('open'); $('#proof').inert = false; $('#proof').removeAttribute('aria-hidden'); };
 $('#exc').onclick = checkEx; $('#exn').onclick = newEx;
 $('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
 $$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
 $('#copy').onclick = async () => {
-  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices ${s.ex} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
+  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices du premier coup ${s.ex}, après aide ${s.exAfterHelp} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
   try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }
 };
 L.experiment.mount($('#exp'), { done, nf, iso, reduce });
