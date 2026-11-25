@@ -85,6 +85,9 @@ The engine validates the lesson at load and shows a red box listing problems. Th
 - a gate that opens too early or never, a proof flap that does not open, a wrong prediction without its misconception text;
 - a trap value not diagnosed as its own misconception, a right answer refused;
 - no report after the checks, any page error, horizontal overflow at 420 px, a file over 150 KB.
+- an answer given away before its time: a verdict or misconception on screen before the prediction, the proof readable by a screen reader or visible around the flap before it is lifted, an exercise answer printed in its own question;
+- a report that counts an answer given after a misconception message as unassisted: only first tries count « du premier coup »;
+- any text below 4.5:1 contrast (3:1 for large text), in light AND dark mode. Coloured text uses the text-safe variables `--glow-text` and `--heat-text`, never `--glow` or `--heat`, which are for fills.
 
 Also write a short Node script that recomputes the experiment's key numbers (for example 96,5 kJ and 385,8 kJ for 1000 kg at 50 and 100 km/h) and compare them with the screenshots.
 

@@ -58,7 +58,7 @@ const LESSON = {
       <g id="sign" style="opacity:0"><line class="ink" id="pole" x1="0" y1="170" x2="0" y2="104"/><path id="tri" fill="var(--bg)" class="ink" d=""/><text id="ex" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="26" fill="var(--heat)">!</text></g>
       <g id="car"><circle id="glow" cx="-36" cy="138" r="40" fill="url(#g)"/><g id="lines" class="ink" style="stroke-width:2"><path d="M-84 120 h-26 M-90 135 h-34 M-84 150 h-22"/></g>${CAR}<circle class="brk" cx="-62" cy="158" r="6" fill="var(--heat)" opacity="0"/><circle class="brk" cx="-14" cy="158" r="6" fill="var(--heat)" opacity="0"/></g></svg>
     <div class="readout">
-      <div class="card"><small>Énergie cinétique</small><b id="ec" style="color:var(--glow)"></b></div>
+      <div class="card"><small>Énergie cinétique</small><b id="ec" style="color:var(--glow-text)"></b></div>
       <div class="card"><small>Distance de réaction</small><b id="dr" style="color:var(--blue)"></b></div>
       <div class="card"><small>Distance de freinage</small><b id="df" style="color:var(--heat)"></b></div>
       <div class="card"><small>Distance d'arrêt</small><b id="da"></b></div></div>
