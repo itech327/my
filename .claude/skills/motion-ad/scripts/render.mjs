@@ -9,7 +9,8 @@
 //   --scale  2 = 4K (3840x2160) from a 1920x1080 page that reads ?scale=
 //   --root   folder to serve (default: the page's own folder; use the project root if the page loads ../ files)
 //   --alpha  ProRes 4444 .mov with transparency (the page must leave its background clear)
-// Needs: Node 18+, ffmpeg on PATH, Google Chrome or Chromium (set CHROME=/path if it isn't found).
+// Needs: Node 18+, ffmpeg on PATH, Google Chrome or Chromium (set CHROME=/path if it isn't found;
+// CHROME_ARGS='--no-sandbox' adds Chrome flags, needed when running as root, e.g. in a cloud container).
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from 'node:fs';
@@ -38,7 +39,7 @@ const server = createServer((req, res) => {   // a tiny static server, so fonts 
 await new Promise(r => server.listen(0, '127.0.0.1', r)); const HTTP = `http://127.0.0.1:${server.address().port}`;
 
 const port = 9300 + (process.pid % 600), prof = join(tmpdir(), `smad-chrome-${port}`);
-const chrome = spawn(CHROME, ['--headless=new', ...(GPU ? ['--enable-gpu', ...(process.platform === 'darwin' ? ['--use-angle=metal'] : [])] : ['--disable-gpu']), '--hide-scrollbars',
+const chrome = spawn(CHROME, ['--headless=new', ...(GPU ? ['--enable-gpu', ...(process.platform === 'darwin' ? ['--use-angle=metal'] : [])] : ['--disable-gpu']), '--hide-scrollbars', ...(process.env.CHROME_ARGS ? process.env.CHROME_ARGS.split(' ') : []),
   `--remote-debugging-port=${port}`, `--user-data-dir=${prof}`, '--window-size=1920,1080', 'about:blank'], { stdio: 'ignore' });
 let tg; for (let i = 0; i < 160 && !tg; i++) { try { tg = (await (await fetch(`http://127.0.0.1:${port}/json`)).json()).find(t => t.type === 'page'); } catch { await wait(250); } }
 if (!tg) { console.error('Chrome did not start'); process.exit(1); }

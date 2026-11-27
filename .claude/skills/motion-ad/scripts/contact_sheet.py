@@ -6,5 +6,5 @@ d, out = sys.argv[1], sys.argv[2]; cols = int(sys.argv[sys.argv.index('--cols') 
 fs = sorted(glob.glob(os.path.join(d, '[0-9]*.jpg')), key=lambda f: float(os.path.basename(f)[:-4]))
 W, H = 640, 360; im = Image.new('RGB', (W * cols, H * ((len(fs) + cols - 1) // cols)))
 for i, f in enumerate(fs):
-    t = Image.open(f).resize((W, H)); ImageDraw.Draw(t).text((10, 10), os.path.basename(f)[:-4] + 's', fill='white'); im.paste(t, ((i % cols) * W, (i // cols) * H))
+    t = Image.open(f).resize((W, H)); d = ImageDraw.Draw(t); d.rectangle([0, 0, 64, 22], fill='black'); d.text((8, 5), os.path.basename(f)[:-4] + 's', fill='white'); im.paste(t, ((i % cols) * W, (i // cols) * H))
 im.save(out, quality=85); print(out, len(fs), 'frames')

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>صدى · إعلان 15 ثانية</title>
+<style>
+  html,body{margin:0;background:#000;height:100%} body{display:flex;align-items:center;justify-content:center}
+  canvas{width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9;display:block}
+</style></head><body><canvas id="c"></canvas>
+<script>
+// Sada ad, 16.5 s, 16:9 (1.5 s longer than the storyboard so the phrase and the address can be read). Pure 2D canvas, deterministic: renderAt(t) draws one frame.
+// Page contract: canvas #c, renderAt(t), TOTAL, ready, EVENTS, ?t= for a still, ?scale=2 for 4K.
+// Every beat time lives in the block below, so re-timing is a one-line change.
+const END = 16.5, W = 1920, H = 1080, q = new URLSearchParams(location.search), SCALE = parseFloat(q.get('scale') || '1');
+const B = {
+  waveCollapse: [1.15, 1.75],   // wave bars shrink to the centre line
+  cardGrow: [1.5, 2.2],         // the line becomes the white card
+  head2: 1.95, words2: 2.35, words2Step: 0.16, head2Out: 3.2,
+  editorGrow: [3.3, 4.0],       // the card becomes the editor (mask grows)
+  push: [4.0, 8.3],             // one continuous camera move, never reverses
+  head4: 6.3, head4b: 7.55, head4Out: 8.0,
+  ringIn: 6.3, ringMove: [6.8, 7.6],
+  toCircle: [8.0, 8.8],         // the Yunus card becomes the play circle
+  head5: 8.9, play: 9.0, playEnd: 10.7,
+  squash: [10.5, 10.8], flood: [10.8, 11.5],
+  bars6: 11.4, words6: 11.7, words6Step: 0.2, words6Out: 13.7,
+  toEnd: [13.6, 14.2], box: [13.9, 14.4], type: 14.5, typeStep: 0.06, wordmark: 15.2,
+};
+const URLTEXT = 'voice.taalim.men';
+const INK = '#111827', LIGHT = '#fafafa', GRAY = '#4b5563';
+const cv = document.getElementById('c'); cv.width = W * SCALE; cv.height = H * SCALE; const g = cv.getContext('2d');
+const clamp01 = v => Math.max(0, Math.min(1, v)), lerp = (a, b, k) => a + (b - a) * k, prog = (t, a, b) => clamp01((t - a) / (b - a));
+const outCubic = k => 1 - Math.pow(1 - clamp01(k), 3), outExpo = k => (k = clamp01(k)) >= 1 ? 1 : 1 - Math.pow(2, -10 * k);
+const inOutCubic = k => { k = clamp01(k); return k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; }, sine = k => 0.5 - 0.5 * Math.cos(Math.PI * clamp01(k));
+
+// events for sound design: name + time (seconds)
+window.EVENTS = [
+  { name: 'wave.pulse', t: 0.0 }, { name: 'wave.collapse', t: B.waveCollapse[0] }, { name: 'card.grow', t: B.cardGrow[0] },
+  ...[0, 1, 2].map(i => ({ name: 'word.card.' + (i + 1), t: B.words2 + i * B.words2Step })),
+  { name: 'editor.grow', t: B.editorGrow[0] }, { name: 'push.start', t: B.push[0] }, { name: 'ring.move', t: B.ringMove[0] },
+  { name: 'circle.form', t: B.toCircle[0] }, { name: 'play.press', t: B.play }, { name: 'squash', t: B.squash[0] }, { name: 'flood', t: B.flood[0] },
+  { name: 'bars.in', t: B.bars6 }, ...[0, 1, 2, 3].map(i => ({ name: 'word.tag.' + (i + 1), t: B.words6 + i * B.words6Step })),
+  { name: 'to.end', t: B.toEnd[0] }, { name: 'box.in', t: B.box[0] },
+  ...[...URLTEXT].map((_, i) => ({ name: 'key.' + (i + 1), t: B.type + i * B.typeStep })), { name: 'wordmark', t: B.wordmark },
+];
+
+const IMG = new Image(); IMG.src = 'assets/shots/editor.png';
+const AR = 'U+0600-06FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE80-FEFC';
+const LA = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+const FACES = [['400', 'arabic', AR], ['700', 'arabic', AR], ['400', 'latin', LA], ['700', 'latin', LA]].map(([w, s, r]) =>
+  new FontFace('Brand', `url(assets/fonts/PlexArabic-${w}-${s}.woff2)`, { weight: w, unicodeRange: r }));
+
+function rr(x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, Math.min(r, w / 2, h / 2)); }
+function bars(cx, cy, s, col, grow = 1) {   // the logo: three rounded bars (heights 8, 16, 10 in a 28 box)
+  g.fillStyle = col; [[-5.5, 8], [0, 16], [5.5, 10]].forEach(([dx, h]) => { const hh = h * s * grow; rr(cx + dx * s - 1.5 * s, cy - hh / 2, 3 * s, hh, 1.5 * s); g.fill(); });
+}
+function drawWords(list, { cx, y, size, color, t, t0, step, out = null, dur = 0.6 }) {   // each word fades up from blur, leaves the same way
+  g.font = `700 ${size}px Brand`; g.direction = 'rtl'; g.textAlign = 'right'; g.textBaseline = 'alphabetic';
+  const sp = g.measureText(' ').width, ws = list.map(w => g.measureText(w).width), total = ws.reduce((a, b) => a + b, 0) + sp * (list.length - 1);
+  let x = cx + total / 2;
+  list.forEach((w, i) => {
+    const k = outCubic(prog(t, t0 + i * step, t0 + i * step + dur)), o = out == null ? 1 : 1 - outCubic(prog(t, out + i * 0.05, out + i * 0.05 + 0.4)), a = k * o;
+    if (a > 0.003) { g.save(); g.globalAlpha = a; g.filter = `blur(${((1 - k) * 14 + (1 - o) * 14) * SCALE}px)`; g.fillStyle = color; g.fillText(w, x, y + (1 - k) * size * 0.3 - (1 - o) * size * 0.3); g.restore(); }
+    x -= ws[i] + sp;
+  });
+}
+const cam = t => { const k = sine(prog(t, B.push[0], B.push[1])), p = sine(prog(t, 4.4, B.push[1]));
+  return { z: Math.exp(lerp(0, Math.log(2.4), k)), fx: lerp(0.5, 0.28, p), fy: lerp(0.5, 0.38, p) }; };
+const scr = (ox, oy, c) => [960 + (ox - c.fx * 2880) * c.z * 0.5, 540 + (oy - c.fy * 2000) * c.z * 0.5];   // screenshot pixel -> screen
+const NOUR = [65, 425, 559, 129], YOUNES = [65, 572, 559, 131];
+
+function render(t) {
+  g.setTransform(SCALE, 0, 0, SCALE, 0, 0); g.globalAlpha = 1; g.filter = 'none'; g.shadowColor = 'transparent';
+  const light = t >= B.flood[1] - 0.05;
+  g.fillStyle = light ? LIGHT : INK; g.fillRect(0, 0, W, H);
+
+  // shot 1: the wave, then it collapses into the line that becomes the card
+  if (t < B.cardGrow[1] + 0.1) {
+    const c = inOutCubic(prog(t, ...B.waveCollapse));
+    for (let i = -14; i <= 14; i++) {
+      const base = 22 + 220 * Math.abs(Math.sin(i * 0.55)) * (1 - Math.abs(i) / 18), h = base * (0.55 + 0.45 * Math.sin(t * 7 + i * 0.7)) * (1 - c);
+      if (h > 0.5) { g.fillStyle = GRAY; rr(960 + i * 34 - 6, 540 - h / 2, 12, h, 6); g.fill(); }
+    }
+    bars(960, 540, 22 * (1 + 0.07 * Math.sin(t * 9)), '#fff', 1 - c);
+  }
+
+  // shots 2-3: the card, then the editor revealed through the growing card
+  const grow = inOutCubic(prog(t, ...B.cardGrow)), egrow = inOutCubic(prog(t, ...B.editorGrow));
+  if (t >= B.cardGrow[0] && t < B.toCircle[1]) {
+    const cw = lerp(lerp(40, 1040, grow), 1440, egrow), ch = lerp(lerp(6, 440, grow), 1000, egrow), r = lerp(lerp(3, 28, grow), 14, egrow);
+    const c = cam(t), full = t >= B.push[0];
+    g.save(); if (!full) { rr(960 - cw / 2, 540 - ch / 2, cw, ch, r); g.fillStyle = '#fff'; g.fill(); g.clip(); }
+    if (t >= B.editorGrow[0]) {
+      g.globalAlpha = prog(t, 3.5, 3.9);
+      g.save(); g.translate(960, 540); g.scale(c.z * 0.5, c.z * 0.5); g.translate(-c.fx * 2880, -c.fy * 2000); g.drawImage(IMG, 0, 0);
+      // the selection ring moves from Nour to Yunus (drawn in screenshot space so it stays glued to the cards)
+      const ringA = prog(t, B.ringIn, B.ringIn + 0.35), mv = inOutCubic(prog(t, ...B.ringMove));
+      if (t < B.ringMove[1]) { g.strokeStyle = '#fff'; g.lineWidth = 16; rr(YOUNES[0], YOUNES[1], YOUNES[2], YOUNES[3], 26); g.stroke(); }
+      if (ringA > 0 && t < B.toCircle[0] + 0.01) { const y = lerp(NOUR[1], YOUNES[1], mv); g.globalAlpha = ringA; g.fillStyle = 'rgba(17,24,39,0.07)'; rr(NOUR[0], y, NOUR[2], NOUR[3], 26); g.fill(); g.strokeStyle = INK; g.lineWidth = 10; g.stroke(); }
+      g.restore();
+    }
+    g.restore();
+    if (t < 3.7) {   // text on the card: its words leave one by one before the screenshot appears
+      drawWords(['الكسور', 'والنسب', 'المئوية'], { cx: 960, y: 580, size: 92, color: INK, t, t0: B.words2, step: B.words2Step, out: 3.0 });
+    }
+  }
+  // dark band behind the headline over the white screenshot, and the dark flood into shot 5
+  const band = prog(t, 6.0, 6.3) * (1 - prog(t, 8.0, 8.6));
+  if (band > 0) { const gr = g.createLinearGradient(0, 0, 0, 260); gr.addColorStop(0, `rgba(17,24,39,${0.95 * band})`); gr.addColorStop(1, 'rgba(17,24,39,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, 260); }
+  const dark = prog(t, B.toCircle[0], B.toCircle[0] + 0.7);
+  if (dark > 0 && t < B.toCircle[1] + 1) { g.globalAlpha = dark; g.fillStyle = INK; g.fillRect(0, 0, W, H); g.globalAlpha = 1; }
+
+  // headlines
+  if (t < B.head2Out + 0.8) drawWords(['اكتب', 'نصك.'], { cx: 960, y: 215, size: 70, color: '#fff', t, t0: B.head2, step: 0.2, out: B.head2Out });
+  if (t >= B.head4 && t < B.head4Out + 0.8) {
+    drawWords(['اختر', 'الصوت.'], { cx: 960, y: 150, size: 66, color: '#fff', t, t0: B.head4, step: 0.2, out: B.head4b - 0.1 });
+    drawWords(['دارجة', 'أو', 'فصحى.'], { cx: 960, y: 150, size: 66, color: '#fff', t, t0: B.head4b, step: 0.2, out: B.head4Out });
+  }
+
+  // shot 4 -> 5: the Yunus card becomes the play circle
+  if (t >= B.toCircle[0] && t < B.squash[1] + 0.01) {
+    const m = inOutCubic(prog(t, ...B.toCircle)), c0 = cam(B.toCircle[0]);
+    const [sx, sy] = scr(YOUNES[0], YOUNES[1], c0), sw = YOUNES[2] * c0.z * 0.5, sh = YOUNES[3] * c0.z * 0.5;
+    const sq = t >= B.squash[0] ? 1 - 0.08 * Math.sin(Math.PI * prog(t, ...B.squash)) : 1;
+    const w = lerp(sw, 180, m) * sq, h = lerp(sh, 180, m) * sq, cx = lerp(sx + sw / 2, 960, m), cy = lerp(sy + sh / 2, 540, m);
+    const ph = t - B.play;
+    if (ph > 0) for (let i = 0; i < 3; i++) { const k = ((ph / 0.9) + i / 3) % 1; if (t < B.playEnd) { g.strokeStyle = `rgba(255,255,255,${0.22 * (1 - k)})`; g.lineWidth = 3; g.beginPath(); g.arc(960, 540, 100 + k * 220, 0, Math.PI * 2); g.stroke(); } }
+    g.save(); g.shadowColor = 'rgba(0,0,0,0.35)'; g.shadowBlur = 40 * SCALE; g.shadowOffsetY = 12 * SCALE; rr(cx - w / 2, cy - h / 2, w, h, lerp(26, 90, m) * sq); g.fillStyle = '#fff'; g.fill(); g.restore();
+    const tri = prog(t, 8.55, 9.0) * (1 - prog(t, B.squash[0], B.squash[1]));
+    if (tri > 0) { g.globalAlpha = tri; g.fillStyle = INK; g.beginPath(); g.moveTo(940, 505); g.lineTo(940, 575); g.lineTo(1000, 540); g.closePath(); g.fill(); g.globalAlpha = 1; }
+    const pr = prog(t, B.play, B.playEnd - 0.3), pa = prog(t, B.play, B.play + 0.2) * (1 - prog(t, B.playEnd - 0.3, B.playEnd));
+    if (pa > 0) { g.globalAlpha = pa; g.lineWidth = 7; g.lineCap = 'round'; g.strokeStyle = 'rgba(255,255,255,0.18)'; g.beginPath(); g.arc(960, 540, 124, 0, Math.PI * 2); g.stroke();
+      g.strokeStyle = '#fff'; g.beginPath(); g.arc(960, 540, 124, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pr); g.stroke(); g.globalAlpha = 1; }
+    if (t >= B.head5 && t < B.squash[1]) drawWords(['واستمع.'], { cx: 960, y: 215, size: 70, color: '#fff', t, t0: B.head5, step: 0.2, out: 10.4 });
+  }
+  // the circle grows and floods the frame with the next shot's background
+  if (t >= B.flood[0] && t < B.flood[1] + 0.05) {
+    const k = inOutCubic(prog(t, ...B.flood)), r = lerp(90 * 0.92, 1300, k);
+    g.fillStyle = k < 1 ? `rgb(${lerp(255, 250, k)},${lerp(255, 250, k)},${lerp(255, 250, k)})` : LIGHT; g.beginPath(); g.arc(960, 540, r, 0, Math.PI * 2); g.fill();
+  }
+
+  // shot 6: the logo bars, then the phrase; shot 7: bars move up, search box types the address
+  if (t >= B.bars6) {
+    const e = inOutCubic(prog(t, ...B.toEnd)), grow6 = outExpo(prog(t, B.bars6, B.bars6 + 0.7)), s = lerp(15, 6, e), cy = lerp(430, 200, e);
+    const pulse = 1 + 0.05 * Math.sin(Math.PI * prog(t, B.bars6 + 0.6, B.bars6 + 1.2));
+    bars(960, cy, s * pulse, INK, grow6);
+    drawWords(['صوت', 'مغربي', 'من', 'نصك.'], { cx: 960, y: 745, size: 92, color: INK, t, t0: B.words6, step: B.words6Step, out: B.words6Out });
+    const bw = lerp(60, 780, outExpo(prog(t, ...B.box))), ba = prog(t, B.box[0], B.box[0] + 0.25);
+    if (ba > 0) {
+      g.save(); g.globalAlpha = ba; g.shadowColor = 'rgba(17,24,39,0.12)'; g.shadowBlur = 40 * SCALE; g.shadowOffsetY = 12 * SCALE; rr(960 - bw / 2, 492, bw, 96, 48); g.fillStyle = '#fff'; g.fill(); g.restore();
+      g.save(); g.globalAlpha = ba; rr(960 - bw / 2, 492, bw, 96, 48); g.lineWidth = 2; g.strokeStyle = '#e5e7eb'; g.stroke(); g.restore();
+      const n = Math.max(0, Math.min(URLTEXT.length, Math.floor((t - B.type) / B.typeStep) + 1)), typing = t >= B.type;
+      g.font = '700 44px Brand'; g.direction = 'ltr'; g.textAlign = 'left'; g.fillStyle = INK;
+      const full = g.measureText(URLTEXT).width, x0 = 960 - full / 2, shown = URLTEXT.slice(0, n);
+      if (typing) g.fillText(shown, x0, 553);
+      const caretOn = !typing || n < URLTEXT.length || Math.floor(t * 2) % 2 === 0;
+      if (ba > 0.9 && caretOn) { const cx = typing ? x0 + g.measureText(shown).width + 6 : x0 - 6; g.fillStyle = INK; g.fillRect(cx, 520, 3, 40); }
+    }
+    const wa = prog(t, B.wordmark, B.wordmark + 0.6);
+    if (wa > 0) { g.save(); g.globalAlpha = wa; g.filter = `blur(${(1 - wa) * 10 * SCALE}px)`; g.font = '700 58px Brand'; g.direction = 'rtl'; g.textAlign = 'center'; g.fillStyle = INK; g.fillText('صدى', 960, 740 + (1 - wa) * 14); g.restore(); }
+  }
+}
+window.TOTAL = END; window.renderAt = t => render(t);
+window.ready = Promise.all([...FACES.map(f => f.load().then(x => document.fonts.add(x))), IMG.decode()]).catch(e => console.error('asset load failed', e)).then(() => {
+  if (q.has('t')) render(parseFloat(q.get('t'))); else (function tick(n) { render((n / 1000) % END); requestAnimationFrame(tick); })(0);
+  return true;
+});
+</script></body></html>
