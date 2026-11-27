@@ -37,6 +37,7 @@ window.EVENTS = [
   { name: 'editor.grow', t: B.editorGrow[0] }, { name: 'push.start', t: B.push[0] }, { name: 'ring.move', t: B.ringMove[0] },
   { name: 'circle.form', t: B.toCircle[0] }, { name: 'play.press', t: B.play }, { name: 'squash', t: B.squash[0] }, { name: 'flood', t: B.flood[0] },
   { name: 'bars.in', t: B.bars6 }, ...[0, 1, 2, 3].map(i => ({ name: 'word.tag.' + (i + 1), t: B.words6 + i * B.words6Step })),
+  { name: 'vo.1', t: B.push[0] + 0.1 }, { name: 'vo.2', t: B.play - 0.05 },
   { name: 'to.end', t: B.toEnd[0] }, { name: 'box.in', t: B.box[0] },
   ...[...URLTEXT].map((_, i) => ({ name: 'key.' + (i + 1), t: B.type + i * B.typeStep })), { name: 'wordmark', t: B.wordmark },
 ];

@@ -117,5 +117,17 @@
   "file": "Soft Hit",
   "db": -24,
   "pitch": 1.6
+ },
+ {
+  "event": "vo.1",
+  "file": "vo-1",
+  "db": -14,
+  "align": "start"
+ },
+ {
+  "event": "vo.2",
+  "file": "vo-2",
+  "db": -14,
+  "align": "start"
  }
 ]
