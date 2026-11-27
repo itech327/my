@@ -38,7 +38,7 @@
 ### المنصة الحية
 - آخر دمج 25 نوفمبر: التلميذ يختار المستوى فقط (PR 37 و38). Turnstile مفعّل، «Défis par chapitre»، SVT 2AC (5 دروس جيولوجيا).
 - التكنولوجيا مخفية (`TECH_VISIBLE = False`).
-- **Search Console (فحص 27 نوفمبر):** خرائط الموقع سليمة ومنشورة: `taalim.men/sitemap.xml` (5 روابط) و`maths` (49) و`pc` (46) و`svt` (31)، و`robots.txt` في كل نطاق يشير إليها. Cloudflare: لا قواعد جدار مخصصة، Bot Fight Mode مفعّل، مستوى الأمان medium. **العائق في جهة Google:** يلزم صاحب المشروع حذف كل خريطة وإعادة إرسالها في Search Console، وفحص رابط بـ URL Inspection. Supermetrics متصل لكن مصدر Search Console فيه غير مسجّل الدخول (رابط الدخول من `data_source_discovery` بـ `GW`).
+- **Search Console (27 نوفمبر، عبر Supermetrics، مصدر `GW` مربوط بـ ntech327@gmail.com):** الموقع مفهرس ويظهر في Google رغم مشكلة الخرائط. آخر 90 يوماً: 488 ظهوراً و14 نقرة (svt 169/4، pc 137/7، maths 73/2، tech 67/1، taalim.men 43/0). أكثر الصفحات ظهوراً: الصفحة الرئيسية (الترتيب نحو 8)، tech `3ac-systemes`، الصفحة الرئيسية لـ svt. أغلب صفحات الدروس بين الترتيب 25 و75. **تقرير الخرائط فارغ:** لا خريطة مسجّلة الآن في الخاصية، فيجب إضافة الأربع (`taalim.men` و`maths` و`pc` و`svt`) `/sitemap.xml`. الخرائط نفسها سليمة.
 - صفحة بيع Pass 3AC: لم تبدأ.
 
 ### «الفكرة بين يديك» (Pro، خارج الإنتاج)
