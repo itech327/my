@@ -41,7 +41,6 @@ h1{font:700 clamp(46px,7vw,84px)/.95 "Bricolage Grotesque",sans-serif;letter-spa
 .lib{margin:64px 0 40px;display:grid;grid-template-columns:220px 1fr;gap:40px}
 .lib-head h2{font:700 28px/1.1 "Bricolage Grotesque",sans-serif;letter-spacing:-.02em;margin:0 0 10px}
 .lib-head p{margin:0;color:var(--mute);font-size:15px}
-.lib-head .count{font:700 64px/1 "Bricolage Grotesque",sans-serif;letter-spacing:-.04em;margin:26px 0 4px;font-variant-numeric:tabular-nums}
 section.subject{margin:0 0 34px}
 section.subject h3{display:flex;align-items:baseline;justify-content:space-between;font:600 15px/1 "IBM Plex Sans",sans-serif;margin:0 0 6px;padding-bottom:10px;border-bottom:2px solid var(--c)}
 section.subject h3 span[lang=ar]{font:500 16px/1 "IBM Plex Sans Arabic",sans-serif;color:var(--mute)}
@@ -63,7 +62,6 @@ section.subject h3 span[lang=ar]{font:500 16px/1 "IBM Plex Sans Arabic",sans-ser
   .hero-text{padding:32px 24px 20px;background:var(--panel)}
   .plot{height:300px;border-top:1px solid var(--grid)}
   .lib{grid-template-columns:1fr;gap:16px;margin-top:40px}
-  .lib-head .count,.lib-head .count-l{display:none}
 }
 @media (max-width:520px){
   .row{grid-template-columns:4px 1fr}
@@ -96,8 +94,6 @@ section.subject h3 span[lang=ar]{font:500 16px/1 "IBM Plex Sans Arabic",sans-ser
     <div class="lib-head">
       <h2>Bibliothèque</h2>
       <p>Environ 15 minutes par leçon, sur téléphone ou ordinateur. Voix en darija au début et à la règle.</p>
-      <div class="count" id="count">9</div>
-      <p class="count-l">leçons ouvertes au pilote</p>
     </div>
     <div id="list"></div>
   </div>
@@ -123,7 +119,6 @@ const LESSONS = [
 ];
 const SUBJECTS = { maths: ['Mathématiques', 'الرياضيات'], pc: ['Physique-chimie', 'الفيزياء والكيمياء'], svt: ['Sciences de la vie et de la Terre', 'علوم الحياة والأرض'] };
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-document.getElementById('count').textContent = LESSONS.length;
 document.getElementById('list').innerHTML = Object.keys(SUBJECTS).map(s => {
   const rows = LESSONS.filter(l => l.s === s).map(l => `
     <a class="row ${s}" href="lecons/${l.f}">
