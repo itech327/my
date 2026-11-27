@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La fonction affine · Le concept en main</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* STYLE:BEGIN · Le concept en main · engine v1.3 · do not edit in a lesson */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--glow-text:light-dark(#9a5800,#f5a300);--heat-text:light-dark(#c42a12,#ff6b4b);--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px)}
+h1,h2,h3,.hand{font-family:Kalam,"Comic Sans MS",cursive;font-weight:700;line-height:1.1;margin:0}
+h1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:12px 0 6px}
+p{margin:6px 0}
+.ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
+.num{font:700 15px Kalam,cursive;color:var(--soft)}
+.note{font-size:13px;color:var(--soft)}
+header{padding:20px 0 6px}
+.steps{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}
+.steps .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
+.steps button{flex:none;min-height:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px "Atkinson Hyperlegible",sans-serif;padding:0 10px;cursor:pointer}
+.steps button.done{border-color:var(--ok);color:var(--ok)}
+.steps button.cur{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.steps button:disabled{opacity:.45;cursor:default}
+section.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;scroll-margin-top:60px}
+section.moment[hidden]{display:none}
+button.b{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button.b.primary{background:var(--ink);color:var(--bg)}
+button.b:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.opts button{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}
+.opts button:disabled{cursor:default}
+.q{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+.q:first-child{border-top:0;margin-top:0;padding-top:0}
+.fig{width:100%;display:block}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
+.card{border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center}
+.card small{display:block;color:var(--soft);font-size:13px}
+.card b{font:700 20px Kalam,cursive;white-space:nowrap}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}
+label{display:block;font-weight:700}
+label span{font-weight:400;color:var(--soft);white-space:nowrap}
+input[type=range]{width:100%;height:40px;accent-color:var(--blue)}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.seg button{min-height:40px;padding:4px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 14px "Atkinson Hyperlegible",sans-serif;cursor:pointer}
+.seg button.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.bars{display:grid;gap:4px;margin-top:6px;font-size:14px}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.scroll{overflow-x:auto}
+.missions{list-style:none;padding:0;margin:8px 0}
+.missions li{padding:4px 0 4px 30px;position:relative}
+.missions li::before{content:"";position:absolute;left:0;top:7px;width:18px;height:18px;border:2px solid var(--line);border-radius:5px}
+.missions li.ok::before{border-color:var(--ok);background:var(--ok)}
+.rule{border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:8px 0}
+.formula{font:700 clamp(24px,6vw,34px) Kalam,cursive;margin:4px 0}
+.flapw{position:relative;margin-top:8px;border-radius:12px;overflow:hidden;min-height:140px}
+.proof{padding:12px;border:1.5px dashed var(--line);border-radius:12px}
+.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive;color:var(--ink);cursor:pointer}
+.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}
+.verdict{border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}
+.verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.verdict.no{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.ex{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-top:8px}
+.ex input{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;width:9em;background:var(--card);color:var(--ink)}
+.fb{min-height:1.4em;margin-top:6px;font-weight:700}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.report .card b{font-size:26px}
+select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
+.lt{white-space:nowrap}
+.voice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.voice button{font:700 15px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 14px;border-radius:22px;border:2px solid var(--blue);background:var(--card);color:var(--blue);cursor:pointer}
+.voice button.on{background:var(--blue);color:var(--bg)}
+.voice details{font-size:14px;color:var(--soft);flex-basis:100%}
+#problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+footer{padding:20px 0 40px}
+@media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* STYLE:END */
+</style>
+</head>
+<body>
+<header><div class="wrap" id="hd"></div></header>
+<nav class="steps" aria-label="Moments de la leçon"><div class="wrap" id="steps"></div></nav>
+<main class="wrap" id="main"></main>
+<footer><div class="wrap note" id="ft"></div></footer>
+
+<script>
+/* LESSON:BEGIN · built from a JSON spec by tools/build_spec.py. Edit the spec, not this block. */
+/* fikra-spec v0 · turns a lesson SPEC (pure JSON, no code) into the LESSON object the engine expects.
+   A SPEC can come from a teacher form or from an AI proposal: it never contains JavaScript or HTML.
+   Every text is escaped, every formula goes through a small safe expression parser (no eval),
+   and the experiment is one widget from a closed library. Exposes one global: FikraSpec. */
+var FikraSpec = (function () {
+  'use strict';
+  const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  /* ---------- safe expressions: + - * / ^, comparisons, && ||, ( ), functions, variables ---------- */
+  const FN = { sqrt: Math.sqrt, abs: Math.abs, floor: Math.floor, ceil: Math.ceil, min: Math.min, max: Math.max, pow: Math.pow,
+    round: (x, d = 0) => Math.round(x * 10 ** d) / 10 ** d };
+  const CONST = { pi: Math.PI };
+  function tokenize(src) {
+    const out = [], re = /\s*(?:(\d+(?:\.\d+)?)|([A-Za-z_]\w*)|(<=|>=|==|!=|&&|\|\||[-+*/^(),<>!]))/y;
+    let m; re.lastIndex = 0;
+    while (re.lastIndex < src.length) {
+      const at = re.lastIndex; m = re.exec(src);
+      if (!m) { if (/^\s*$/.test(src.slice(at))) break; throw new Error(`symbole inattendu dans « ${src} » à la position ${at + 1}`); }
+      out.push(m[1] ? { t: 'n', v: +m[1] } : m[2] ? { t: 'id', v: m[2] } : { t: 'op', v: m[3] });
+    }
+    return out;
+  }
+  function parse(src, known) {
+    const tk = tokenize(String(src)); let i = 0;
+    const peek = () => tk[i], eat = v => { if (tk[i] && tk[i].v === v) { i++; return true; } return false; };
+    const need = v => { if (!eat(v)) throw new Error(`« ${v} » attendu dans « ${src} »`); };
+    const bin = (next, ops) => () => { let a = next(); for (;;) { const p = peek(); if (p && p.t === 'op' && ops.includes(p.v)) { i++; a = { op: p.v, a, b: next() }; } else return a; } };
+    let or;
+    const atom = () => {
+      const p = tk[i++]; if (!p) throw new Error(`expression incomplète : « ${src} »`);
+      if (p.t === 'n') return { n: p.v };
+      if (p.t === 'op' && p.v === '(') { const e = or(); need(')'); return e; }
+      if (p.t === 'op' && (p.v === '-' || p.v === '!')) return { op: 'u' + p.v, a: unary() };
+      if (p.t === 'id') {
+        if (eat('(')) { if (!FN[p.v]) throw new Error(`fonction inconnue « ${p.v} »`); const args = []; if (!eat(')')) { do args.push(or()); while (eat(',')); need(')'); } return { f: p.v, args }; }
+        if (p.v in CONST) return { n: CONST[p.v] };
+        if (known && !known.includes(p.v)) throw new Error(`variable inconnue « ${p.v} » dans « ${src} »`);
+        return { v: p.v };
+      }
+      throw new Error(`symbole « ${p.v} » mal placé dans « ${src} »`);
+    };
+    const unary = atom;
+    const pow = () => { const a = unary(); return eat('^') ? { op: '^', a, b: pow() } : a; };
+    const mul = bin(pow, ['*', '/']), add = bin(mul, ['+', '-']), cmp = bin(add, ['<', '>', '<=', '>=', '==', '!=']), and = bin(cmp, ['&&']);
+    or = bin(and, ['||']);
+    const e = or(); if (i < tk.length) throw new Error(`fin inattendue dans « ${src} »`); return e;
+  }
+  function ev(e, env) {
+    if ('n' in e) return e.n;
+    if ('v' in e) { if (!(e.v in env)) throw new Error(`variable « ${e.v} » sans valeur`); return env[e.v]; }
+    if (e.f) return FN[e.f](...e.args.map(a => ev(a, env)));
+    const a = ev(e.a, env);
+    switch (e.op) {
+      case 'u-': return -a; case 'u!': return a ? 0 : 1;
+      case '&&': return a && ev(e.b, env) ? 1 : 0; case '||': return a || ev(e.b, env) ? 1 : 0;
+    }
+    const b = ev(e.b, env);
+    switch (e.op) {
+      case '+': return a + b; case '-': return a - b; case '*': return a * b; case '/': return a / b; case '^': return a ** b;
+      case '<': return +(a < b); case '>': return +(a > b); case '<=': return +(a <= b); case '>=': return +(a >= b);
+      case '==': return +(Math.abs(a - b) < 1e-9); case '!=': return +(Math.abs(a - b) >= 1e-9);
+    }
+  }
+  const compile = (src, known) => { const ast = parse(src, known); return env => ev(ast, env); };
+
+  /* ---------- text templates: {x} or {x:2} ---------- */
+  const fill = (tpl, env, nf) => esc(tpl).replace(/\{(\w+)(?::(\d))?\}/g, (m, k, d) => {
+    if (!(k in env)) throw new Error(`{${k}} sans valeur dans « ${tpl} »`); return nf(env[k], d == null ? 2 : +d);
+  });
+
+  /* ---------- widgets ---------- */
+  const WIDGETS = {};
+  function sliders(ins) {
+    return ins.map(s => `<label for="w-${s.id}">${esc(s.label)} <span id="w-${s.id}-o"></span></label>
+      <input id="w-${s.id}" type="range" min="${+s.min}" max="${+s.max}" step="${+(s.step || 1)}" value="${+(s.value ?? s.min)}">`).join('');
+  }
+  function cards(outs) {
+    return `<div class="readout">${outs.map(o => `<div class="card"><small>${esc(o.label)}</small><b id="w-${o.id}"></b></div>`).join('')}</div>`;
+  }
+  const carnet = (ins, outs) => `<div class="row"><button type="button" class="b" id="w-note">Noter dans mon carnet</button></div>
+    <div class="scroll"><table><thead><tr>${ins.concat(outs).map(c => `<th>${esc(c.label)}${c.unit ? ` (${esc(c.unit)})` : ''}</th>`).join('')}</tr></thead><tbody id="w-log"></tbody></table></div>`;
+
+  function core(p, extraDraw) {
+    const ins = p.inputs || [], outs = p.outputs || [], names = ins.map(s => s.id);
+    const fx = []; outs.forEach(o => { fx.push([o, compile(o.expr, names.concat(fx.map(f => f[0].id)))]); });
+    return { ins, outs, names: names.concat(outs.map(o => o.id)), mount(root, api, missions) {
+      const $ = s => root.querySelector(s);
+      const read = () => { const env = {}; ins.forEach(s => env[s.id] = +$('#w-' + s.id).value); fx.forEach(([o, f]) => env[o.id] = f(env)); return env; };
+      const unit = u => u ? ' ' + esc(u) : '';
+      const draw = () => {
+        const env = read();
+        ins.forEach(s => $(`#w-${s.id}-o`).textContent = '= ' + api.nf(env[s.id], 2) + (s.unit ? ' ' + s.unit : ''));
+        outs.forEach(o => $('#w-' + o.id).innerHTML = (isFinite(env[o.id]) ? api.nf(env[o.id], o.digits ?? 2) : '—') + unit(o.unit));
+        if (extraDraw) extraDraw(root, env, api);
+        missions.forEach(m => m.step(env));
+      };
+      ins.forEach(s => $('#w-' + s.id).addEventListener('input', draw));
+      $('#w-note').addEventListener('click', () => {
+        const env = read(), tr = document.createElement('tr');
+        tr.innerHTML = ins.concat(outs).map(c => `<td>${api.nf(env[c.id], c.digits ?? 2)}</td>`).join(''); $('#w-log').prepend(tr);
+        if (extraDraw && extraDraw.note) extraDraw.note(root, env);
+      });
+      draw();
+    } };
+  }
+
+  /* curseurs: sliders, computed values, optional bars, a carnet */
+  WIDGETS.curseurs = p => {
+    const c = core(p, (root, env) => (p.bars || []).forEach(b => {
+      const el = root.querySelector('#w-bar-' + b.id); el.style.width = Math.max(0, Math.min(100, 100 * env[b.id] / b.max)) + '%';
+    }));
+    const bars = (p.bars || []).map(b => `<div class="wbar"><small>${esc(b.label || b.id)}</small><div><i id="w-bar-${b.id}"></i></div></div>`).join('');
+    return { names: c.names, mount: c.mount,
+      html: `<style>.wbar{margin:6px 0}.wbar div{height:14px;border:1.5px solid var(--ink);border-radius:8px;overflow:hidden;background:var(--card)}.wbar i{display:block;height:100%;width:0;background:var(--blue);transition:width .2s}</style>`
+        + cards(c.outs) + bars + sliders(c.ins) + carnet(c.ins, c.outs) };
+  };
+
+  /* graphe: a curve y = f(var) drawn with the current slider values, a moving point, ghost curves when noted */
+  WIDGETS.graphe = p => {
+    const g = p.curve, W = 400, H = 300, m = 34;
+    const names = (p.inputs || []).map(s => s.id);
+    const f = compile(g.expr, names);
+    const X = x => m + (x - g.xmin) / (g.xmax - g.xmin) * (W - 2 * m), Y = y => H - m - (y - g.ymin) / (g.ymax - g.ymin) * (H - 2 * m);
+    const clampY = y => Math.max(g.ymin - 1e3, Math.min(g.ymax + 1e3, y));
+    const path = env => { let d = ''; for (let k = 0; k <= 120; k++) { const x = g.xmin + (g.xmax - g.xmin) * k / 120, y = f({ ...env, [g.var]: x }); if (isFinite(y)) d += (d ? 'L' : 'M') + X(x).toFixed(1) + ' ' + Y(clampY(y)).toFixed(1); } return d; };
+    const draw = (root, env) => {
+      root.querySelector('#w-curve').setAttribute('d', path(env));
+      const x = env[g.var], y = f(env), pt = root.querySelector('#w-pt'), inside = y >= g.ymin && y <= g.ymax;
+      pt.setAttribute('cx', X(x)); pt.setAttribute('cy', Y(Math.max(g.ymin, Math.min(g.ymax, y)))); pt.style.opacity = inside ? 1 : .3;
+      root.querySelector('#w-px').setAttribute('d', `M${X(x)} ${Y(0)}V${Y(Math.max(g.ymin, Math.min(g.ymax, y)))}H${X(0)}`);
+    };
+    draw.note = (root, env) => { const gh = document.createElementNS('http://www.w3.org/2000/svg', 'path'); gh.setAttribute('d', path(env)); gh.setAttribute('class', 'ghost'); root.querySelector('#w-ghosts').appendChild(gh); };
+    const c = core(p, draw);
+    let grid = '';
+    const step = (a, b) => { const r = b - a; return r <= 12 ? 1 : r <= 30 ? 2 : r <= 60 ? 5 : r <= 120 ? 10 : Math.pow(10, Math.floor(Math.log10(r / 6))); };
+    const sx = step(g.xmin, g.xmax), sy = step(g.ymin, g.ymax);
+    for (let x = Math.ceil(g.xmin / sx) * sx; x <= g.xmax; x += sx) grid += `<path d="M${X(x)} ${m}V${H - m}"/>` + (x ? `<text x="${X(x)}" y="${Y(0) + 14 > H - 4 ? H - 4 : Y(0) + 14}" text-anchor="middle">${x}</text>` : '');
+    for (let y = Math.ceil(g.ymin / sy) * sy; y <= g.ymax; y += sy) grid += `<path d="M${m} ${Y(y)}H${W - m}"/>` + (y ? `<text x="${X(0) - 5}" y="${Y(y) + 4}" text-anchor="end">${y}</text>` : '');
+    const svg = `<svg class="fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(g.label || 'Représentation graphique')}">
+      <style>.wg path{stroke:var(--line,#ccc);stroke-width:1}.wg text{font:11px sans-serif;fill:var(--ink)}.ghost{fill:none;stroke:#999;stroke-width:1.5;stroke-dasharray:4 4}</style>
+      <g class="wg">${grid}</g><path d="M${m} ${Y(0)}H${W - m}M${X(0)} ${m}V${H - m}" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="${W - m + 4}" y="${Y(0) - 6}" font-size="13" font-family="sans-serif" fill="var(--ink)">${esc(g.xlabel || g.var)}</text>
+      <text x="${X(0) + 6}" y="${m - 8}" font-size="13" font-family="sans-serif" fill="var(--ink)">${esc(g.ylabel || 'y')}</text>
+      <g id="w-ghosts"></g><path id="w-curve" fill="none" stroke="var(--blue)" stroke-width="3"/>
+      <path id="w-px" fill="none" stroke="var(--heat)" stroke-width="1.5" stroke-dasharray="5 4"/><circle id="w-pt" r="7" fill="var(--heat)"/></svg>`;
+    return { names: c.names, mount: c.mount, html: svg + cards(c.outs) + sliders(c.ins) + carnet(c.ins, c.outs) };
+  };
+
+  /* ---------- missions: « valeurs » (each listed value of one input seen, optionally while a condition holds) or « condition » ---------- */
+  function missionRunners(list, names, api) {
+    return list.map(ms => {
+      if (ms.type === 'valeurs') {
+        const when = ms.when ? compile(ms.when, names) : () => 1, seen = new Set();
+        return { step(env) { if (!when(env)) return; ms.values.forEach(v => { if (Math.abs(env[ms.input] - v) < 1e-9) seen.add(v); }); if (seen.size === ms.values.length) api.done(ms.id); } };
+      }
+      if (ms.type === 'condition') { const c = compile(ms.expr, names); return { step(env) { if (c(env)) api.done(ms.id); } }; }
+      throw new Error(`mission « ${ms.id} » : type inconnu « ${ms.type} »`);
+    });
+  }
+
+  /* ---------- exercises: vars, then question template, answer and traps as expressions ---------- */
+  function level(lv) {
+    const names = [], gens = (lv.vars || []).map(([k, def]) => {
+      const d = String(def).trim(), w = d.split(/\s+/); let g;
+      if (w[0] === 'int') { const [a, b, s] = w.slice(1).map(Number); g = R => R.int(a, b, s || 1); }
+      else if (w[0] === 'pick') { const list = w.slice(1).map(Number); if (list.some(isNaN)) throw new Error(`liste invalide pour ${k}`); g = R => R.pick(list); }
+      else { const f = compile(d, names.slice()); g = (R, env) => f(env); }
+      names.push(k); return [k, g];
+    });
+    const ans = compile(lv.answer, names), traps = (lv.traps || []).map(([e, c]) => [compile(e, names), c]);
+    return { label: lv.label, make(R) {
+      const env = {}; gens.forEach(([k, g]) => env[k] = g(R, env));
+      return { q: fill(lv.q, env, R.nf).replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+        unit: lv.unit || ' ', ans: ans(env), digits: lv.digits ?? 2, traps: traps.map(([f, c]) => [f(env), c]) };
+    } };
+  }
+
+  /* ---------- the whole lesson ---------- */
+  function lessonFromSpec(S) {
+    const need = (o, k, where) => { if (o == null || o[k] == null || o[k] === '') throw new Error(`${where}.${k} manquant`); return o[k]; };
+    ['meta', 'misconceptions', 'hook', 'predict', 'experiment', 'rule', 'proof', 'exercises', 'check'].forEach(k => need(S, k, 'spec'));
+    const x = S.experiment, mk = WIDGETS[x.widget];
+    if (!mk) throw new Error(`widget inconnu « ${x.widget} ». Disponibles : ${Object.keys(WIDGETS).join(', ')}`);
+    const w = mk(x.params || {});
+    (x.missions || []).forEach(m => { if (m.type === 'valeurs' && !w.names.includes(m.input)) throw new Error(`mission « ${m.id} » : curseur « ${m.input} » inconnu`); });
+    const q = arr => arr.map(it => ({ q: esc(it.q), ar: String(it.ar || ''), options: it.options.map(([l, c]) => [esc(l), String(c)]) }));
+    const mis = {}; Object.entries(S.misconceptions).forEach(([k, v]) => mis[k] = { fr: esc(v.fr), ar: String(v.ar || '') });
+    const voice = o => o.audio ? { audio: String(o.audio), audioText: String(o.audioText || '') } : {};
+    const levels = S.exercises.levels.map(level);
+    return {
+      meta: { kicker: esc(S.meta.kicker), title: esc(need(S.meta, 'title', 'meta')), titleAr: String(S.meta.titleAr || ''), short: esc(S.meta.short || S.meta.title), classes: (S.meta.classes || []).map(String), footer: String(S.meta.footer || '') },
+      misconceptions: mis,
+      hook: { title: esc(S.hook.title), svg: '', text: esc(S.hook.text), ar: String(S.hook.ar || ''), ...voice(S.hook) },
+      predict: q(S.predict),
+      experiment: { title: esc(x.title), intro: esc(x.intro || ''), html: w.html,
+        missions: (x.missions || []).map(m => ({ id: String(m.id), text: esc(m.text) })), required: x.required && x.required.length ? x.required.map(String) : undefined, note: esc(x.note || ''),
+        mount(root, api) { w.mount(root, api, missionRunners(x.missions || [], w.names, api)); } },
+      rule: { blocks: S.rule.blocks.map(b => ({ formula: esc(b.formula), text: esc(b.text || ''), ar: String(b.ar || '') })), seen: esc(S.rule.seen || ''), ...voice(S.rule) },
+      proof: { title: esc(S.proof.title), html: (S.proof.paras || []).map((p, i) => `<p${i === 0 && S.proof.firstIsFormula ? ' class="hand" style="font-size:20px"' : ''}>${esc(p)}</p>`).join(''), ar: String(S.proof.ar || '') },
+      exercises: { levels },
+      check: q(S.check)
+    };
+  }
+
+  return { lessonFromSpec, compile, widgets: () => Object.keys(WIDGETS), version: 'v0' };
+})();
+
+const SPEC = {
+ "meta": {
+  "kicker": "Mathématiques · 3e année collège · Le concept en main",
+  "title": "La fonction affine",
+  "titleAr": "الدالة التآلفية",
+  "short": "Fonction affine",
+  "classes": [
+   "3APIC-1",
+   "3APIC-2",
+   "3APIC-3"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON, modifiable dans l'atelier sans code. Textes et valeurs originaux. Non relue par un professeur de mathématiques."
+ },
+ "misconceptions": {
+  "proportion": {
+   "fr": "Avec f(x) = ax + b et b ≠ 0, f(x) n'est pas proportionnel à x : doubler x ne double pas f(x), à cause du nombre b ajouté une seule fois.",
+   "ar": "إذا كان b مختلفا عن 0 فإن f(x) لا يتناسب مع x: مضاعفة x لا تضاعف f(x)."
+  },
+  "origine": {
+   "fr": "Le nombre b a été oublié : la droite d'une fonction affine coupe l'axe des ordonnées en (0 ; b), pas forcément en (0 ; 0).",
+   "ar": "نسيت العدد b: مستقيم الدالة التآلفية يقطع محور الأراتيب في (0 ; b)."
+  },
+  "confond": {
+   "fr": "a et b ont été confondus : a est le coefficient (la pente), b est l'ordonnée à l'origine, f(0) = b.",
+   "ar": "خلطت بين a و b: a هو المعامل و b هو الأرتوب عند الأصل."
+  },
+  "ordre": {
+   "fr": "On multiplie d'abord x par a, puis on ajoute b : ax + b, et non a × (x + b).",
+   "ar": "نضرب x في a أولا ثم نضيف b، وليس a × (x + b)."
+  },
+  "signe": {
+   "fr": "Erreur de signe : pour trouver x dans ax + b = y, on enlève b des deux côtés, donc x = (y − b) ÷ a.",
+   "ar": "خطأ في الإشارة: x = (y − b) ÷ a."
+  },
+  "inverse": {
+   "fr": "Le coefficient se calcule en divisant la variation de f(x) par la variation de x, pas l'inverse.",
+   "ar": "المعامل هو تغير f(x) مقسوما على تغير x، وليس العكس."
+  },
+  "divise": {
+   "fr": "Il manque la division par la variation de x : a = (f(x₂) − f(x₁)) ÷ (x₂ − x₁).",
+   "ar": "تنقص القسمة على تغير x."
+  },
+  "constante": {
+   "fr": "f(x) change quand x change, sauf si a = 0.",
+   "ar": "f(x) تتغير مع x إلا إذا كان a = 0."
+  }
+ },
+ "hook": {
+  "title": "Le compteur du taxi",
+  "text": "Un taxi affiche 7 DH au départ, puis ajoute 3 DH par kilomètre. Une course de 4 km coûte 7 + 3 × 4 = 19 DH. Une course deux fois plus longue, 8 km, coûte-t-elle deux fois plus, 38 DH ?",
+  "ar": "عداد طاكسي يبدأ بـ 7 دراهم ثم يضيف 3 دراهم لكل كيلومتر. رحلة 4 km تكلف 19 درهما. هل تكلف رحلة 8 km ضعف ذلك أي 38 درهما؟",
+  "audio": "audio/maths-3ac-fonction-affine-question.mp3",
+  "audioText": "الطاكسي كيبدا العداد ديالو بسبعة دراهم، ومن بعد كيزيد تلاتة دراهم فكل كيلومتر. ربعة كيلومتر كتجي بتسعطاش درهم. دابا إلا مشيتي جوج مرات كثر، يعني تمنية كيلومتر، واش غادي تخلص جوج مرات كثر، تمنية وتلاتين درهم؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Le taxi : f(x) = 3x + 7, où x est la distance en km. Une course de 8 km coûte :",
+   "ar": "الطاكسي: f(x) = 3x + 7. رحلة 8 km تكلف:",
+   "options": [
+    [
+     "38 DH, le double de 19",
+     "proportion"
+    ],
+    [
+     "31 DH",
+     ""
+    ],
+    [
+     "24 DH",
+     "origine"
+    ]
+   ]
+  },
+  {
+   "q": "La droite de f(x) = 2x + 3 coupe l'axe des ordonnées au point :",
+   "ar": "مستقيم الدالة f(x) = 2x + 3 يقطع محور الأراتيب في النقطة:",
+   "options": [
+    [
+     "(0 ; 3)",
+     ""
+    ],
+    [
+     "(0 ; 0)",
+     "origine"
+    ],
+    [
+     "(0 ; 2)",
+     "confond"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "La droite qui glisse",
+  "intro": "Règle a et b, puis déplace x. Le point est (x ; f(x)) avec f(x) = ax + b.",
+  "widget": "graphe",
+  "params": {
+   "inputs": [
+    {
+     "id": "a",
+     "label": "Coefficient a",
+     "min": -3,
+     "max": 3,
+     "step": 0.5,
+     "value": 2
+    },
+    {
+     "id": "b",
+     "label": "Ordonnée à l'origine b",
+     "min": -5,
+     "max": 5,
+     "step": 1,
+     "value": 3
+    },
+    {
+     "id": "x",
+     "label": "Nombre x",
+     "min": -5,
+     "max": 5,
+     "step": 1,
+     "value": 1
+    }
+   ],
+   "outputs": [
+    {
+     "id": "y",
+     "label": "Image f(x)",
+     "expr": "a*x+b",
+     "digits": 1
+    },
+    {
+     "id": "f0",
+     "label": "f(0)",
+     "expr": "b",
+     "digits": 0
+    }
+   ],
+   "curve": {
+    "var": "x",
+    "expr": "a*x+b",
+    "xmin": -5,
+    "xmax": 5,
+    "ymin": -12,
+    "ymax": 12,
+    "xlabel": "x",
+    "ylabel": "f(x)",
+    "label": "Droite de la fonction f(x) = a·x + b"
+   }
+  },
+  "missions": [
+   {
+    "id": "double",
+    "type": "valeurs",
+    "input": "x",
+    "values": [
+     1,
+     2,
+     4
+    ],
+    "when": "a == 2 && b == 3",
+    "text": "Avec a = 2 et b = 3, mets x = 1, puis x = 2, puis x = 4. Quand x double, f(x) double-t-il ?"
+   },
+   {
+    "id": "lineaire",
+    "type": "condition",
+    "expr": "b == 0",
+    "text": "Trouve le réglage de b qui fait passer la droite par l'origine."
+   },
+   {
+    "id": "plate",
+    "type": "condition",
+    "expr": "a == 0",
+    "text": "Trouve le réglage de a qui rend la droite horizontale."
+   }
+  ],
+  "required": [
+   "double"
+  ],
+  "note": "f(x) = a × x + b est recalculé à chaque mouvement. La droite coupe toujours l'axe des ordonnées au point (0 ; b)."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "f(x) = a · x + b",
+    "text": "Une fonction affine associe à x le nombre a × x + b. Le nombre b est l'image de 0 : f(0) = b.",
+    "ar": "الدالة التآلفية تربط x بالعدد a × x + b، و b هو صورة 0."
+   },
+   {
+    "formula": "a = (f(x₂) − f(x₁)) ÷ (x₂ − x₁)",
+    "text": "Le coefficient a est l'augmentation de f(x) quand x augmente de 1. Il se calcule avec deux points de la droite.",
+    "ar": "المعامل a هو تزايد f(x) عندما يزداد x بواحد، ويُحسب بنقطتين من المستقيم."
+   },
+   {
+    "formula": "droite qui passe par (0 ; b)",
+    "text": "La représentation graphique est une droite. b = 0 : fonction linéaire, droite par l'origine. a = 0 : fonction constante, droite horizontale.",
+    "ar": "التمثيل المبياني مستقيم يمر من (0 ; b). إذا كان b = 0 فهي خطية، وإذا كان a = 0 فهي ثابتة."
+   }
+  ],
+  "seen": "Avec b = 3, doubler x ne double pas f(x) : 5, puis 7, puis 11. Chaque fois que x augmente de 1, f(x) augmente de a. Le nombre b fixe le point de départ sur l'axe vertical.",
+  "audio": "audio/maths-3ac-fonction-affine-regle.mp3",
+  "audioText": "القاعدة هي: الدالة التآلفية كتضرب إكس فالمعامل آ، ومن بعد كتزيد العدد بي. بي هو الصورة ديال الصفر، يعني فين كيقطع المستقيم المحور العمودي. وكل مرة كيزيد إكس بواحد، الصورة كتزيد بآ. ولكن رد البال: إلا كان بي ماشي صفر، ملي كتضاعف إكس، الصورة ما كتضاعفش، حيت بي كيتزاد غير مرة وحدة."
+ },
+ "proof": {
+  "title": "Pourquoi doubler x ne double pas f(x) ?",
+  "firstIsFormula": true,
+  "paras": [
+   "f(2x) = a × 2x + b, mais 2 × f(x) = 2ax + 2b",
+   "Les deux diffèrent de b : le nombre b n'est ajouté qu'une fois. Seule une fonction linéaire (b = 0) est proportionnelle. Et f(x₂) − f(x₁) = a(x₂ − x₁) : b disparaît dans la différence, c'est pourquoi deux points suffisent pour trouver a."
+  ],
+  "ar": "f(2x) = 2ax + b بينما 2f(x) = 2ax + 2b، فالفرق هو b. وفي الفرق f(x₂) − f(x₁) يختفي b، لذلك تكفي نقطتان لحساب a."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Image",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 4 -2 -3"
+     ],
+     [
+      "b",
+      "pick -5 -1 1 5 6 7"
+     ],
+     [
+      "x",
+      "int 2 7"
+     ]
+    ],
+    "q": "f(x) = {a:0}x + ({b:0}). Calcule f({x:0}).",
+    "unit": " ",
+    "answer": "a*x+b",
+    "digits": 0,
+    "traps": [
+     [
+      "a*x",
+      "origine"
+     ],
+     [
+      "a*(x+b)",
+      "ordre"
+     ]
+    ]
+   },
+   {
+    "label": "Antécédent",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 4 5 -2 -3"
+     ],
+     [
+      "b",
+      "pick -6 -4 -1 1 3 5"
+     ],
+     [
+      "x0",
+      "int -4 6"
+     ],
+     [
+      "y",
+      "a*x0+b"
+     ]
+    ],
+    "q": "f(x) = {a:0}x + ({b:0}). Trouve le nombre x tel que f(x) = {y:0}.",
+    "unit": " ",
+    "answer": "(y-b)/a",
+    "digits": 2,
+    "traps": [
+     [
+      "(y+b)/a",
+      "signe"
+     ],
+     [
+      "y/a",
+      "origine"
+     ]
+    ]
+   },
+   {
+    "label": "Coefficient",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 -2 -1.5 1.5 2.5"
+     ],
+     [
+      "b",
+      "int -4 4"
+     ],
+     [
+      "x1",
+      "int -3 2"
+     ],
+     [
+      "d",
+      "pick 2 3 4"
+     ],
+     [
+      "x2",
+      "x1+d"
+     ],
+     [
+      "y1",
+      "a*x1+b"
+     ],
+     [
+      "y2",
+      "a*x2+b"
+     ]
+    ],
+    "q": "La droite d'une fonction affine passe par ({x1:0} ; {y1:1}) et ({x2:0} ; {y2:1}). Calcule son coefficient a.",
+    "unit": " ",
+    "answer": "(y2-y1)/(x2-x1)",
+    "digits": 2,
+    "traps": [
+     [
+      "(x2-x1)/(y2-y1)",
+      "inverse"
+     ],
+     [
+      "y2-y1",
+      "divise"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "g(x) = −2x + 5. g(0) est égal à :",
+   "ar": "g(x) = −2x + 5. g(0) يساوي:",
+   "options": [
+    [
+     "5",
+     ""
+    ],
+    [
+     "0",
+     "origine"
+    ],
+    [
+     "−2",
+     "confond"
+    ]
+   ]
+  },
+  {
+   "q": "f(x) = 4x + 1. Si x double, f(x) :",
+   "ar": "f(x) = 4x + 1. إذا تضاعف x فإن f(x):",
+   "options": [
+    [
+     "ne double pas",
+     ""
+    ],
+    [
+     "double aussi",
+     "proportion"
+    ],
+    [
+     "ne change pas",
+     "constante"
+    ]
+   ]
+  },
+  {
+   "q": "Une droite passe par (1 ; 5) et (3 ; 9). Son coefficient a est :",
+   "ar": "مستقيم يمر من (1 ; 5) و (3 ; 9). معامله a هو:",
+   "options": [
+    [
+     "2",
+     ""
+    ],
+    [
+     "0,5",
+     "inverse"
+    ],
+    [
+     "4",
+     "divise"
+    ]
+   ]
+  }
+ ]
+};
+const LESSON = FikraSpec.lessonFromSpec(SPEC);
+/* LESSON:END */
+</script>
+
+<script>
+/* ENGINE:BEGIN · Le concept en main · engine v1.3 · do not edit in a lesson; update it with tools/build_lesson.py sync */
+(() => {
+const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });
+// Arabic text: keep each Latin or numeric expression left-to-right and on one line (returns HTML)
+const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => `<bdi dir="ltr" class="lt">${m}</bdi>`);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };
+const MIS = L.misconceptions || {};
+const STEPS = (L.meta.steps || ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie']);
+const S = { open: 1, pred: {}, check: {}, ex: {}, errs: {}, missions: new Set(), cur: null, lvl: 0 };
+const near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);
+
+/* validation: shown to the author, caught by the flow test */
+function validate() {
+  const P = [], codeOk = c => c === '' || (MIS[c] && MIS[c].fr && MIS[c].ar);
+  ['kicker', 'title', 'titleAr'].forEach(k => { if (!L.meta || !L.meta[k]) P.push(`meta.${k} manquant`); });
+  for (const [set, name] of [[L.predict, 'predict'], [L.check, 'check']]) {
+    if (!set || !set.length) P.push(`${name} vide`);
+    (set || []).forEach((q, i) => {
+      if (!q.q || !q.ar) P.push(`${name}[${i}] : texte ou arabe manquant`);
+      const good = q.options.filter(o => o[1] === '').length; if (good !== 1) P.push(`${name}[${i}] : ${good} bonnes réponses au lieu d'une`);
+      q.options.forEach(o => { if (!codeOk(o[1])) P.push(`${name}[${i}] : code « ${o[1]} » absent de misconceptions`); });
+    });
+  }
+  const ex = L.experiment;
+  if (!ex || !ex.missions || !ex.missions.length) P.push('experiment.missions vide');
+  else (ex.required || [ex.missions[0].id]).forEach(id => { if (!ex.missions.some(m => m.id === id)) P.push(`mission requise « ${id} » inconnue`); });
+  (L.exercises && L.exercises.levels || []).forEach((lv, l) => {
+    for (let k = 0; k < 300; k++) {
+      let e; try { e = lv.make(R); } catch (err) { P.push(`niveau ${l + 1} : ${err.message}`); break; }
+      if (!e.q || !e.unit || !isFinite(e.ans)) { P.push(`niveau ${l + 1} : question, unité ou réponse invalide`); break; }
+      for (const [v, c] of e.traps || []) {
+        if (!codeOk(c) || !c) { P.push(`niveau ${l + 1} : code de piège « ${c} » inconnu`); return; }
+        if (!isFinite(v)) { P.push(`niveau ${l + 1} : piège ${c} non fini`); return; }
+        if (near(v, e.ans)) { P.push(`niveau ${l + 1} : le piège ${c} donne la bonne réponse pour « ${e.q} »`); return; }
+      }
+      const T = e.traps || [];
+      for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++)
+        if (T[i][1] !== T[j][1] && near(T[i][0], T[j][0])) { P.push(`niveau ${l + 1} : les pièges ${T[i][1]} et ${T[j][1]} donnent la même valeur pour « ${e.q} »`); return; }
+    }
+  });
+  if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
+  [['hook', L.hook], ['rule', L.rule]].forEach(([k, o]) => { if (o && o.audio && !/^([\w./-]+\.(mp3|ogg|m4a)|data:audio\/[\w-]+;base64,[\w+/=]+)$/.test(o.audio)) P.push(`${k}.audio : chemin invalide « ${o.audio} »`); });
+  return P;
+}
+
+/* optional Darija voice: { audio: 'audio/file.mp3', audioText: 'texte en darija' } */
+function voice(o) {
+  if (!o || !o.audio) return '';
+  return `<div class="voice"><button type="button" data-audio="${esc(o.audio)}" aria-label="Écouter l'explication en darija">▶ Écouter en darija · <span lang="ar">استمع بالدارجة</span></button>`
+    + (o.audioText ? `<details><summary>Texte de l'audio</summary><p class="ar">${iso(esc(o.audioText))}</p></details>` : '') + '</div>';
+}
+let player = null;
+function bindVoice() {
+  $$('[data-audio]').forEach(b => b.onclick = () => {
+    if (player && player.src.endsWith(b.dataset.audio) && !player.paused) { player.pause(); return; }
+    if (player) player.pause();
+    $$('[data-audio]').forEach(x => x.classList.remove('on'));
+    player = new Audio(b.dataset.audio); b.classList.add('on');
+    const box = b.parentNode, warn = msg => { b.classList.remove('on'); let w = box.querySelector('.vwarn'); if (!w) { w = document.createElement('p'); w.className = 'vwarn note'; box.appendChild(w); } w.textContent = msg; };
+    player.onended = player.onpause = () => b.classList.remove('on');
+    player.onerror = () => warn("Fichier audio introuvable : ouvre la leçon avec son dossier audio/. · الملف الصوتي غير موجود.");
+    player.play().catch(e => { if (e && e.name === 'NotAllowedError') warn('Lecture bloquée par le navigateur : touche de nouveau le bouton. · اضغط مرة أخرى.'); else b.classList.remove('on'); });
+  });
+}
+
+/* rendering */
+function qBlock(arr, prefix) { return arr.map((q, i) => `<div class="q" id="${prefix}${i}"></div>`).join(''); }
+function render() {
+  const m = L.meta, h = L.hook, x = L.experiment, r = L.rule, p = L.proof;
+  document.title = `${m.title} · Le concept en main`;
+  $('#hd').innerHTML = `<div class="num">${m.kicker}</div><h1>${m.title}</h1><p class="ar">${iso(esc(m.titleAr))}</p>`;
+  $('#ft').textContent = m.footer || '';
+  $('#main').innerHTML = `
+  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>${voice(h)}
+    <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div></section>
+  <section class="moment" id="m2" hidden><div class="num">2 · Je prédis</div><h2>Avant toute explication, choisis</h2>
+    <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>${qBlock(L.predict, 'p')}
+    <div class="row"><button class="b primary" data-next="3" id="next2" disabled>Je teste</button></div></section>
+  <section class="moment" id="m3" hidden><div class="num">3 · Je teste</div><h2>${x.title}</h2><p>${x.intro || ''}</p><div id="exp">${x.html}</div>
+    <h3>Mes missions</h3><ul class="missions">${x.missions.map(mi => `<li data-m="${mi.id}">${mi.text}</li>`).join('')}</ul>
+    ${x.note ? `<p class="note">${x.note}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="4" id="next3" disabled>J'ai observé, je nomme la règle</button><span class="note" id="next3n">Termine les missions marquées comme nécessaires.</span></div></section>
+  <section class="moment" id="m4" hidden><div class="num">4 · Je nomme la règle</div><h2>La règle</h2>
+    ${r.blocks.map(b => `<div class="rule"><div class="formula">${b.formula}</div><p>${b.text || ''}</p>${b.ar ? `<p class="ar">${iso(esc(b.ar))}</p>` : ''}</div>`).join('')}
+    ${voice(r)}${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
+  <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
+    <div class="flapw"><div class="proof" id="proof" inert aria-hidden="true">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
+    <h3>Et ma prédiction ?</h3><div id="pv"></div>
+    <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div></section>
+  <section class="moment" id="m6" hidden><div class="num">6 · Je m'entraîne</div><h2>Exercices sans fin</h2>
+    <p class="ar">${iso('كل تمرين جديد بأعداد مختلفة.')}</p>
+    <div class="seg" id="lv">${L.exercises.levels.map((lv, i) => `<button data-l="${i}" class="${i ? '' : 'on'}">${lv.label}</button>`).join('')}</div>
+    <div class="ex"><p id="exq"></p><div class="row"><input id="exa" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><span id="exu" class="hand" style="font-size:20px"></span><button class="b" id="exc">Vérifier</button><button class="b" id="exn">Nouvel exercice</button></div><div class="fb" id="exf" aria-live="polite"></div></div>
+    <p class="note" id="exs"></p>
+    <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div></section>
+  <section class="moment" id="m7" hidden><div class="num">7 · Je vérifie</div><h2>Pour finir</h2>${qBlock(L.check, 'c')}
+    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices du premier coup</small><b id="r3"></b></div></div>
+    <div id="r4"></div>
+    <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option>${(m.classes || []).map(c => `<option>${esc(c)}</option>`).join('')}</select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
+    <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p></div></section>`;
+}
+
+/* steps */
+function steps() {
+  $('#steps').innerHTML = STEPS.map((n, i) => `<button data-s="${i + 1}" class="${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}</button>`).join('');
+  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));
+}
+function openStep(n) {
+  if (n > S.open) S.open = n;
+  for (let i = 1; i <= S.open; i++) $('#m' + i).hidden = false;
+  steps(); if (n === 5) verdicts(); if (n === 6 && !S.cur) newEx();
+  $('#m' + n).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* questions */
+function question(q, el, store, key, onDone) {
+  el.innerHTML = `<p><b>${q.q}</b></p><p class="ar">${iso(esc(q.ar))}</p><div class="opts">${q.options.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}</div>`;
+  el.querySelectorAll('button').forEach(b => b.onclick = () => {
+    if (store[key]) return; const i = +b.dataset.i, code = q.options[i][1];
+    store[key] = { i, ok: code === '', code }; b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b); onDone();
+  });
+}
+function verdicts() {
+  $('#pv').innerHTML = L.predict.map((q, k) => {
+    const a = S.pred[k]; if (!a) return ''; const right = q.options.find(o => o[1] === '')[0];
+    return `<div class="verdict ${a.ok ? 'ok' : 'no'}"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :</b> tu avais choisi « ${q.options[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code].fr + `<div class="ar">${iso(esc(MIS[a.code].ar))}</div>`}</div>`;
+  }).join('');
+}
+
+/* experiment */
+function done(id) {
+  if (S.missions.has(id)) return; S.missions.add(id);
+  const li = $(`.missions li[data-m="${id}"]`); if (li) li.classList.add('ok');
+  const req = L.experiment.required || [L.experiment.missions[0].id], ok = req.every(r => S.missions.has(r));
+  $('#next3').disabled = !ok;
+  $('#next3n').textContent = !ok ? 'Termine les missions marquées comme nécessaires.' : S.missions.size === L.experiment.missions.length ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.';
+}
+
+/* exercises */
+function newEx() {
+  const lv = L.exercises.levels[S.lvl]; S.cur = lv.make(R);
+  $('#exq').textContent = S.cur.q; $('#exu').textContent = S.cur.unit; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false;
+}
+function checkEx() {
+  const x = parseFloat($('#exa').value.replace(/[\s ]/g, '').replace(',', '.')), c = S.cur;
+  if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }
+  // st = [solved, tries, solved on the first try, exercises tried]: only first tries count as unassisted,
+  // because a wrong try shows the misconception message, which is help
+  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0, 0, 0]); st[1]++; c.att = (c.att || 0) + 1; if (c.att === 1) st[3]++;
+  if (near(x, c.ans)) { st[0]++; if (c.att === 1) st[2]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
+  else {
+    const t = (c.traps || []).find(tp => near(x, tp[0]));
+    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class="ar">${iso(esc(MIS[t[1]].ar))}</div>`; }
+    else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';
+    $('#exf').className = 'fb no';
+  }
+  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0, 0, 0]; return `${lv.label} : ${s[2]} du premier coup sur ${s[3]}`; }).join(' · ');
+}
+
+/* report */
+function report() {
+  const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;
+  const sum = i => Object.values(S.ex).reduce((s, v) => s + v[i], 0), ok = sum(0), first = sum(2), tried = sum(3);
+  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${first} / ${tried}`;
+  const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
+  Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);
+  const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);
+  const pr = p / L.predict.length, cr = c / L.check.length;
+  $('#r4').innerHTML = `<div class="verdict ${cr === 1 ? 'ok' : 'no'}">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au moment « Je teste » et refais les missions.'}</div>`
+    + (ok > first ? `<p class="note">${ok - first} exercice${ok - first > 1 ? 's' : ''} réussi${ok - first > 1 ? 's' : ''} après une aide : ils ne comptent pas dans « du premier coup ».</p>` : '')
+    + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
+  S.summary = { p, c, ex: `${first}/${tried}`, exAfterHelp: ok - first, errs: list };
+  $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* start */
+render(); steps(); bindVoice();
+$$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
+L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
+L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));
+$('#flap').onclick = () => { $('#flap').classList.add('open'); $('#proof').inert = false; $('#proof').removeAttribute('aria-hidden'); };
+$('#exc').onclick = checkEx; $('#exn').onclick = newEx;
+$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
+$$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
+$('#copy').onclick = async () => {
+  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices du premier coup ${s.ex}, après aide ${s.exAfterHelp} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
+  try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }
+};
+L.experiment.mount($('#exp'), { done, nf, iso, reduce });
+const problems = validate(), testMode = /[?&]test\b/.test(location.search);
+if (problems.length) { console.error('Leçon invalide :\n' + problems.join('\n')); $('#main').insertAdjacentHTML('afterbegin', `<div id="problems"><b>À corriger avant publication :</b><ul>${problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`); }
+if (testMode) window.__fikra = { S, L, done, openStep, problems, newEx };
+})();
+/* ENGINE:END */
+</script>
+</body>
+</html>
