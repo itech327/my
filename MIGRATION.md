@@ -66,7 +66,12 @@ These are unaffected by the move:
    - It stays here and does not move.
    - In the new account, ask Claude to run `library/generate.mts` once a day until the pilot is done.
    - Then delete the old task here, or let it run once.
-5. **Local machine data:** the cloud container's downloaded models and Python environment are not in the repo.
+5. **Setup script.** The personal environment has a setup script that installs `scipy` and `opencv-python-headless` (needed by `motion-ad`) and the app's npm packages in every fresh container. Add the same two lines in the new account's environment:
+   ```
+   python3 -m pip install --quiet --disable-pip-version-check scipy opencv-python-headless
+   if [ -d my/app ] && [ ! -d my/app/node_modules ]; then (cd my/app && npm install --silent --no-audit --no-fund); fi
+   ```
+6. **Local machine data:** the cloud container's downloaded models and Python environment are not in the repo.
    - Rebuild with `.claude/skills/darija-voice/scripts/setup.sh`.
    - For F5, follow `MAC.md` or `voice-server/Dockerfile`.
 
