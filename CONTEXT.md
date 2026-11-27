@@ -3,14 +3,14 @@
 Give this file to Claude to continue. Last updated 2026-11-23: new Gemini key, app running on the owner's Intel Mac.
 Repository `itech327/my`, branch `claude/new-session-thirii`. Not merged to `main`.
 
-## Update 2026-11-23: state at the end of the session
+## Update 2026-11-27: current state
 
 - **Decision:** open engines (F5, Piper, DarijaTTS, neutts) are paused. Only Gemini TTS gives a good voice. Restart that work later, with a GPU and recordings we own.
 - **Gemini key:** new key from the paid project, billing **Tier 1**, limit 100 requests a day per model. Four designed voices and Akram were recreated in that project (ids in `designed-voices.json`). The same key must be set in Cloudflare as `GEMINI_API_KEY`: done by the owner.
 - **Voices:** نور, يونس (Darija and Fusha) and أكرم (young, light voice, one voice for both modes). Fusha uses the radio style, never the chatty one. Google blocks voice prompts for children or minors.
 - **Text front end:** `ناقص` for minus (never `سالب`), `5x6` read "5 في 6" in Darija and "5 مضروبة في 6" in Fusha, `الجديد` respelled `جّديد`.
-- **Library:** 18 of 20 items approved. `num-fusha-05` and `num-darija-07` were rewritten (ناقص, في) and wait for regeneration.
-- **Scheduled for 2026-11-24 about 08:30 UTC** (quota reset): the 15-sentence evaluation of the three voices, and the regeneration of the two library items.
+- **Library:** all 20 pilot items approved by the owner, including `num-fusha-05` and `num-darija-07` after the rewrite (ناقص, في).
+- **Still to run:** the 15-sentence evaluation of the three voices with `connector_eval.py`. No result is recorded yet.
 - **Evaluation tool:** `.claude/skills/darija-voice/scripts/connector_eval.py` measures the live connector with the Darija recognizer `boumehdi/wav2vec2-large-xlsr-moroccan-darija` (CER, WER). Test set `data/test_sentences_15.txt`. In the cloud session it needs `huggingface.co` and `us.aws.cdn.hf.co` allowed, `HF_HUB_DISABLE_XET=1` and a CPU `torch`.
 - **Web app on Cloudflare:** OpenNext adapter, `wrangler.jsonc` (Worker `sada-app`, D1 `DB`, KV `AUDIO`), data layer picked per request (D1 on Cloudflare, memory elsewhere). Built and previewed locally, signup wrote a user to D1. Not deployed: needs the Workers Paid plan. Payments not started.
 - **Open engines tested:** `DarijaTTS-v0.1-500M` CER 0.451 (poor). `neutts-air-darija` not run: needs a reference voice, a missing phonemizer file and conflicting packages. F5 is the best open voice but slow on a CPU.
@@ -51,7 +51,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Limits to know
 
-- **The Gemini key is on Google's Free Tier:** 10 voice requests per day. Switch to the paid tier before real users.
+- **The Gemini key is on billing Tier 1:** about 100 voice requests a day per model. The free tier allowed 10.
 - **Don't rotate several Google accounts** to get around the limit. It breaks Google's terms.
 - **Darija isn't an official language** for Gemini TTS. Keep checking quality by ear.
 - **Free backup:** the app switches to a free voice when Google refuses for any reason (quota, overload, key or network). It says so, and logs the reason as `[tts] ... failed, using ...`.
@@ -160,7 +160,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Still open
 
-1. **Paid tier:** switch the Gemini key to paid.
+1. **Connector access code:** rotate `MCP_ACCESS_KEY`, which was pasted in chat. Update Cloudflare, claude.ai and the session secret.
 2. **Full app on Cloudflare:**
    - Database layer done and tested: `app/src/lib/data/d1.ts`, schema `app/migrations/0001_init.sql`, `npm run test:d1` with 28 checks on a local D1 and KV.
    - Covers accounts, hashed sessions, the trial once per email, credit lots, atomic reserve and release, free regeneration once, and no overdraft under concurrent requests.
