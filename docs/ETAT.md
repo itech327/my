@@ -70,26 +70,26 @@
 - فشل tech فقط (222 في layout، 7 في mouvement_test): مورد خارجي محجوب في بيئة الاختبار (`ERR_TUNNEL_CONNECTION_FAILED`)، لا عيب في الموقع. tech لا يُلمس.
 - **لا تشغّل اختبارين في الوقت نفسه:** يستعملان المنافذ نفسها (8811 فما فوق) فيفشل الثاني بـ `Address already in use`. `mouvement_test` كاملاً نحو 12 دقيقة، و`layout_test` أطول.
 
-### تنظيف مقترح (ينتظر موافقة صاحب المشروع، لم يُحذف شيء)
-- **ملفات غريبة في فروع الإنتاج:** `qwer` و`tyui` و`asdf1234` (سكربتات bash لجهاز Mac شخصي، لا علاقة لها بالموقع) في `mouvement` و`main`؛ `benchmark-results.xlsx` (نتائج صدى) و`skills-lock.json` في جذر `lessons-site` و`mouvement` و`main`، فهي منشورة للعموم على الأرجح.
-- **فروع مدموجة يمكن حذفها (44):** كل الفروع التي دخلت `lessons-site` أو `mouvement`، ومنها `claude/niveau-seul` و`claude/niveau-seul-mv` و`claude/classique-footer` (دُمجت بالضغط).
-- **فروع قديمة غير مدموجة تحتاج قراراً:** `matiere-isolee` (15 نوفمبر)، `pilot/pythagore-modele` (20 نوفمبر)، `seo-fixes` (عوّضتها فروع `seo/*`)، `claude/happy-archimedes-7cxb6o`، `claude/fervent-pascal-01imne` (مخرجات graphify، 7,5 م.ب)، `claude/great-hamilton-4myybs` (صدى)، `claude/relay-sync`.
+### التنظيف (2026-11-27)
+- **تمّ:** حُذفت `qwer` و`tyui` و`asdf1234` و`benchmark-results.xlsx` و`skills-lock.json` من `lessons-site` (9e5b3e3) و`mouvement` (4d4eb97) و`main` (1a405bd)، بموافقة صاحب المشروع. لا مرجع لها في الشيفرة؛ `seo_test` و`pwa_test` ناجحان بعده. ما زالت `qwer` و`tyui` و`asdf1234` في `claude/new-session-thirii` (لم تُلمس، لأن أي دفع هناك يعيد نشر موصل صدى).
+- **لم يتمّ:** حذف الفروع الـ 43 المدموجة. وافق صاحب المشروع، لكن أداة الجلسة رفضت الحذف. يحذفها صاحب المشروع من GitHub (صفحة Branches) أو في جلسة أخرى. القائمة: كل فرع دخل `lessons-site` أو `mouvement` أو `main`، ومعها `claude/niveau-seul` و`claude/niveau-seul-mv` و`claude/classique-footer`.
+- **تبقى بانتظار قرار:** `matiere-isolee`، `pilot/pythagore-modele`، `seo-fixes`، `claude/happy-archimedes-7cxb6o`، `claude/fervent-pascal-01imne`، `claude/great-hamilton-4myybs`، `claude/relay-sync`.
 - **لا تُحذف:** `lessons-site`، `mouvement`، `main`، `plan/modeles-pro`، `skills`، `claude/new-session-thirii`، `claude/club-revision`، `claude/taalim-video-lab`.
 
 ### توفير التوكنز
 - **هذا الدفتر نفسه** هو أكبر توفير: لا تقرأ الملفات الطويلة ولا كل الفروع، ابدأ منه.
 - **مهارتان مفعّلتان في الحساب B:** `ultracave` (ردود مضغوطة جداً، تُشغَّل بـ «ultracave mode» وتُطفأ بـ «normal mode») و`md-first` (تحويل PDF وWord وExcel إلى Markdown قبل القراءة).
-- **graphify** (مفتوح المصدر): يبني خريطة معرفية للمستودع (`graphify-out/GRAPH_REPORT.md`) يقرؤها Claude بدل إعادة قراءة الملفات. جُرّب في فرع `claude/fervent-pascal-01imne` (25 نوفمبر). يناسب Claude Code على الحاسوب أكثر من جلسات الهاتف.
+- **graphify** (Apache-2.0): `pip install -q --break-system-packages graphifyy` ثم `graphify update .` في الفرع المستنسخ: خريطة الشيفرة في 5 ثوانٍ، **دون LLM ودون توكنز**، وتقرير `graphify-out/GRAPH_REPORT.md` نحو 13 ك.ب. ثم `graphify explain` و`path` و`affected`. لا تُستعمل `/graphify` الكاملة ولا `graphify install` (مهارة 50 ك.ب تُستدعى مع كل سؤال، عكس المطلوب). لا يُدفع `graphify-out/`. مهارة مختصرة `repo-map` اقتُرحت للحساب B.
 - **عادات:** clone بـ `--depth 1` لفرع واحد؛ `git grep` بدل قراءة ملفات كاملة؛ لا تُعِد قراءة ما في الدفتر.
 
 ## قرارات تنتظر صاحب المشروع
 1. عتبة النجاح في تجربة «الفكرة بين يديك»، والمراجعون العلميون.
 2. أولوية النادي: أي محتوى لـ 2AC أولاً.
 3. «الباب الموالي»: تنبيه Telegram الفردي يتعارض مع قاعدة «بلا أسماء». البديل: تنبيه على مستوى القسم.
-4. التنظيف: الملفات الغريبة والفروع (قسم «تنظيف مقترح»).
+4. التنظيف: حذف الفروع الـ 43 المدموجة يدوياً، والقرار في الفروع السبعة (قسم «التنظيف»).
 
 ## آخر جلسة
-- **2026-11-27، الحساب B:** مراجعة شاملة للمستودع (58 فرعاً)؛ تشخيص رفض موصل صدى بعد تغيير المفتاح وإصلاحه؛ اختبار أكرم («راك هنا»)؛ إنشاء هذا الدفتر؛ نقل «الباب الموالي» كاملة إلى `docs/bab-mowali/` ومقطع صندوق جديد يطابق الصفحة؛ تشغيل كل اختبارات المنصة (ناجحة)؛ قائمة تنظيف مقترحة؛ مهارات توفير التوكنز.
+- **2026-11-27، الحساب B:** مراجعة شاملة للمستودع (58 فرعاً)؛ تشخيص رفض موصل صدى بعد تغيير المفتاح وإصلاحه؛ اختبار أكرم («راك هنا»)؛ إنشاء هذا الدفتر؛ نقل «الباب الموالي» كاملة إلى `docs/bab-mowali/` ومقطع صندوق جديد يطابق الصفحة؛ تشغيل كل اختبارات المنصة (ناجحة)؛ حذف الملفات الغريبة من فروع الإنتاج؛ تجربة graphify دون LLM ومهارة `repo-map`.
 
 ## الخطوة الموالية
 1. صاحب المشروع يستمع إلى مقطع الصندوق الجديد.
