@@ -73,8 +73,9 @@
 ### التنظيف (2026-11-27)
 - **تمّ:** حُذفت `qwer` و`tyui` و`asdf1234` و`benchmark-results.xlsx` و`skills-lock.json` من `lessons-site` (9e5b3e3) و`mouvement` (4d4eb97) و`main` (1a405bd)، بموافقة صاحب المشروع. لا مرجع لها في الشيفرة؛ `seo_test` و`pwa_test` ناجحان بعده. ما زالت `qwer` و`tyui` و`asdf1234` في `claude/new-session-thirii` (لم تُلمس، لأن أي دفع هناك يعيد نشر موصل صدى).
 - **لم يتمّ:** حذف الفروع الـ 43 المدموجة. وافق صاحب المشروع، لكن أداة الجلسة رفضت الحذف. يحذفها صاحب المشروع من GitHub (صفحة Branches) أو في جلسة أخرى. القائمة: كل فرع دخل `lessons-site` أو `mouvement` أو `main`، ومعها `claude/niveau-seul` و`claude/niveau-seul-mv` و`claude/classique-footer`.
-- **تبقى بانتظار قرار:** `matiere-isolee`، `pilot/pythagore-modele`، `seo-fixes`، `claude/happy-archimedes-7cxb6o`، `claude/fervent-pascal-01imne`، `claude/great-hamilton-4myybs`، `claude/relay-sync`.
-- **لا تُحذف:** `lessons-site`، `mouvement`، `main`، `plan/modeles-pro`، `skills`، `claude/new-session-thirii`، `claude/club-revision`، `claude/taalim-video-lab`.
+- **تبقى بانتظار قرار:** `pilot/pythagore-modele`، `seo-fixes`، `claude/happy-archimedes-7cxb6o`، `claude/fervent-pascal-01imne`، `claude/great-hamilton-4myybs`، `claude/relay-sync`.
+- **لا تُحذف:** `lessons-site`، `mouvement`، `main`، `plan/modeles-pro`، `skills`، `claude/new-session-thirii`، `claude/club-revision`، `claude/taalim-video-lab`، و**`matiere-isolee`: فرع إنتاج `technologie.taalim.men`** (مشروع Cloudflare Pages `technologie`).
+- **النشر (Cloudflare Pages):** `lessons-site` ← taalim.men؛ `mouvement` ← maths وpc وsvt وtech.taalim.men؛ `matiere-isolee` ← technologie.taalim.men.
 
 ### توفير التوكنز
 - **هذا الدفتر نفسه** هو أكبر توفير: لا تقرأ الملفات الطويلة ولا كل الفروع، ابدأ منه.
