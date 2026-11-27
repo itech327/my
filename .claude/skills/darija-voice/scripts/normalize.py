@@ -295,6 +295,7 @@ TESTS = [
     ('أصلا ما عرفتش', 'اصلا ما عرفتش'),
     ('ara chi bttikha nakloha m3a ssbah', 'ارا شي بطّيخة ناكلوها مع الصباح'),
     ('كأنني فعلا فلاح والفلاحة', 'كأنني فعلا فلّاح والفلّاحة'),  # native listener: farmer, not success
+    ('صدى: كيهضر', 'صَدى: كيهضر'),  # native listener: the app name is Sada (fatha), not Sda
     ('ddar dyalna', 'الدار ديالنا'),
     ('aji t9ra o faaboor', 'اجي تقرا و فابور'),
     ("3afak sift lia l'adresse f message", 'عافاك صيفط ليا لادريس ف ميساج'),
