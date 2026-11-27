@@ -1,0 +1,121 @@
+[
+ {
+  "type": "bed",
+  "event": "wave.pulse",
+  "to": 16.5,
+  "file": "Air Bed",
+  "db": -27,
+  "fade_in": 1.0,
+  "fade_out": 1.5,
+  "hp": 300,
+  "env": [
+   [
+    "flood",
+    0
+   ],
+   [
+    "bars.in",
+    4
+   ]
+  ]
+ },
+ {
+  "event": "wave.pulse",
+  "file": "Soft Hit",
+  "db": -22,
+  "align": "start"
+ },
+ {
+  "event": "wave.collapse",
+  "file": "Pop",
+  "db": -15,
+  "pitch": 0.9
+ },
+ {
+  "event": "card.grow",
+  "file": "Pop",
+  "db": -13,
+  "pitch": 1.1
+ },
+ {
+  "event": "editor.grow",
+  "file": "Pop",
+  "db": -12,
+  "pitch": 1.2
+ },
+ {
+  "event": "push.start",
+  "file": "Whoosh 3",
+  "db": -24,
+  "align": "start",
+  "lp": 6000
+ },
+ {
+  "event": "ring.move",
+  "file": "Tick",
+  "db": -18
+ },
+ {
+  "at": 5.4,
+  "file": "Whoosh 2",
+  "db": -30,
+  "align": "start",
+  "pitch": 0.9,
+  "lp": 5000
+ },
+ {
+  "event": "circle.form",
+  "file": "Pop",
+  "db": -12,
+  "pitch": 1.3
+ },
+ {
+  "event": "play.press",
+  "file": "Soft Hit",
+  "db": -19
+ },
+ {
+  "event": "play.press",
+  "file": "Pop",
+  "db": -14,
+  "pitch": 1.5,
+  "offset": 0.05
+ },
+ {
+  "event": "flood",
+  "file": "Whoosh 1",
+  "db": -28,
+  "align": "start"
+ },
+ {
+  "event": "bars.in",
+  "file": "Soft Hit",
+  "db": -18,
+  "pitch": 1.2
+ },
+ {
+  "event": "bars.in",
+  "file": "Pop",
+  "db": -14,
+  "pitch": 1.6,
+  "offset": 0.08
+ },
+ {
+  "event": "to.end",
+  "file": "Whoosh 2",
+  "db": -26,
+  "align": "start"
+ },
+ {
+  "event": "box.in",
+  "file": "Pop",
+  "db": -13,
+  "pitch": 1.4
+ },
+ {
+  "event": "wordmark",
+  "file": "Soft Hit",
+  "db": -24,
+  "pitch": 1.6
+ }
+]
