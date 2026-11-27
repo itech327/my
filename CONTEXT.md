@@ -174,6 +174,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 
 ## Rules kept so far
 
+- **Name:** write the brand in Latin letters as `Sada`, never `sda`. In Arabic it is `صدى`.
 - **Keys:** never in chat or in code. Network secrets or host secrets only.
 - **Voices:** no cloning of real people's voices without consent. Other platforms are used only for comparison.
 - **Official APIs only.** No private endpoints of other sites.
