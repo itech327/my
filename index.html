@@ -112,6 +112,7 @@ const LESSONS = [
   { s: 'maths', f: 'maths-3ac-pythagore-3d', t: 'Pythagore sur le chantier', ar: 'مبرهنة فيثاغورس في الورش', lv: '3AC', k: '3D' },
   { s: 'maths', f: 'maths-3ac-fonction-lineaire', t: 'La fonction linéaire', ar: 'الدالة الخطية', lv: '3AC', k: 'Léger' },
   { s: 'maths', f: 'maths-3ac-agrandissement-3d', t: 'Agrandissement et réduction', ar: 'التكبير والتصغير', lv: '3AC', k: '3D' },
+  { s: 'maths', href: 'labo/carre-qui-triche/', t: 'Le carré qui triche : (a + b)²', ar: 'المربّع المخادع: المتطابقات الهامة', lv: '3AC', k: 'Labo', mute: true },
   { s: 'maths', f: 'maths-2ac-symetrie-axiale-3d', t: 'La symétrie axiale', ar: 'التماثل المحوري', lv: '2AC', k: '3D', mute: true },
   { s: 'pc', f: 'pc-3ac-energie-cinetique', t: "L'énergie cinétique et la distance d'arrêt", ar: 'الطاقة الحركية ومسافة التوقف', lv: '3AC', k: 'Léger' },
   { s: 'pc', f: 'pc-3ac-energie-electrique', t: "L'énergie électrique consommée", ar: 'الطاقة الكهربائية المستهلكة', lv: '3AC', k: 'Léger' },
@@ -121,7 +122,7 @@ const SUBJECTS = { maths: ['Mathématiques', 'الرياضيات'], pc: ['Physiq
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 document.getElementById('list').innerHTML = Object.keys(SUBJECTS).map(s => {
   const rows = LESSONS.filter(l => l.s === s).map(l => `
-    <a class="row ${s}" href="lecons/${l.f}">
+    <a class="row ${s}" href="${l.href || 'lecons/' + l.f}">
       <span><span class="t">${esc(l.t)}</span><span class="t-ar" lang="ar" dir="rtl">${esc(l.ar)}</span></span>
       <span class="meta"><span class="tag lvl">${l.lv}</span><span class="tag">${l.k}</span>${l.mute ? '' : '<span class="tag">Voix</span>'}</span>
     </a>`).join('');

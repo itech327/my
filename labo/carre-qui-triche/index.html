@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ar" dir="ltr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>المربّع المخادع | Le carré qui triche</title>
+<link rel="stylesheet" href="katex.min.css">
+<style>
+@font-face{font-family:Readex;src:url(readex-ar.woff2);font-weight:160 700;unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F,U+25CC}
+@font-face{font-family:Readex;src:url(readex-lat.woff2);font-weight:160 700;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{--vi:#a58bff;--or:#ffa24a;--te:#4fe3c1;--rd:#ff5c7a;--gr:#3ddc97;--ink:#f4f1ff;--mut:#a9a3c9;--bg:#07060f}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);overflow:hidden;font-family:Readex,system-ui,sans-serif;color:var(--ink)}
+#fit{position:absolute;left:50%;top:50%;width:720px;height:1280px;transform-origin:0 0}
+#app{position:absolute;inset:0;overflow:hidden;background:radial-gradient(120% 70% at 50% 0%,#17112e 0%,#07060f 62%)}
+.blob{position:absolute;width:560px;height:560px;border-radius:50%;filter:blur(120px);opacity:.42}
+#dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.3px);background-size:28px 28px;mask-image:linear-gradient(#000,transparent 70%)}
+.abs{position:absolute}
+/* barre du haut */
+#top{position:absolute;left:34px;right:34px;top:30px;height:64px;display:flex;align-items:center;justify-content:space-between;direction:ltr}
+#brand{display:flex;align-items:center;gap:12px}
+#mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--vi),var(--or));position:relative;box-shadow:0 8px 24px rgba(165,139,255,.4)}
+#mark:before{content:"";position:absolute;inset:9px 9px 9px 9px;border-radius:5px;background:#0b0820}#mark:after{content:"";position:absolute;left:16px;top:16px;width:12px;height:12px;border-radius:3px;background:linear-gradient(135deg,var(--vi),var(--or))}
+#brand b{display:block;font-size:19px;letter-spacing:.14em;font-weight:650}#brand i{display:block;font-style:normal;font-size:15px;color:var(--mut);direction:rtl;text-align:left}
+#tabs{display:flex;gap:6px;padding:5px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+.tab{border:0;background:transparent;color:var(--mut);font:600 16px Readex;padding:9px 18px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.tab[aria-selected=true]{background:#f4f1ff;color:#120d2b}.tab:focus-visible{outline:2px solid var(--vi);outline-offset:2px}
+/* zone de visualisation */
+#viz{position:absolute;left:34px;top:112px;width:652px;height:500px;border-radius:34px;background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1.5px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.16);overflow:hidden}
+.duel{position:absolute;left:0;top:0;width:652px;height:500px;opacity:0;pointer-events:none}
+.dcard{position:absolute;top:128px;width:276px;height:236px;border-radius:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px solid var(--c);background:linear-gradient(150deg,color-mix(in srgb,var(--c) 34%,transparent),color-mix(in srgb,var(--c) 8%,transparent));box-shadow:0 20px 60px color-mix(in srgb,var(--c) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.25)}
+.dcard .big{font-size:96px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}.dcard .st{font-size:21px;color:var(--mut)}
+#dgap{position:absolute;left:326px;top:416px;transform:translate(-50%,-50%);height:74px;padding:0 30px;border-radius:37px;background:linear-gradient(120deg,#ff5c7a,#d93557);display:flex;align-items:center;gap:14px;box-shadow:0 14px 44px rgba(255,92,122,.45),inset 0 1px 0 rgba(255,255,255,.35);white-space:nowrap}
+.corner{position:absolute;width:22px;height:22px;border:2px solid rgba(255,255,255,.28)}
+#q{position:absolute;left:0;right:0;top:18px;text-align:center;opacity:1}
+#q .sub{margin-top:6px;font-size:17px;color:var(--mut);font-weight:500}
+.el{position:absolute;transform:translate(-50%,-50%);white-space:nowrap}
+.tile{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;overflow:hidden;will-change:transform}
+.tile .num{font-weight:600;opacity:.85;line-height:1;margin-top:.15em}
+.glass{border-radius:26px;background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border:1.5px solid rgba(255,255,255,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+/* barres + lectures */
+#bars{position:absolute;left:34px;top:626px;width:652px;height:290px}
+.seg{position:absolute;border-radius:10px}
+#ghost{position:absolute;border-radius:12px;border:2px dashed rgba(255,162,74,.8);display:flex;align-items:center;justify-content:center;color:var(--or);font-weight:700;cursor:pointer;transition:background .25s,border-color .25s}
+#ghost:focus-visible{outline:2px solid var(--or);outline-offset:3px}
+.row{position:absolute;left:330px;right:0;display:flex;align-items:center;gap:12px;direction:ltr;white-space:nowrap}
+.val{font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.gradtxt{background:linear-gradient(180deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#gap{height:62px;padding:0 20px;border-radius:31px;background:linear-gradient(120deg,#ff5c7a,#d93557);display:flex;align-items:center;gap:12px;box-shadow:0 12px 36px rgba(255,92,122,.4),inset 0 1px 0 rgba(255,255,255,.35)}
+/* commandes */
+#ctrl{position:absolute;left:34px;right:34px;top:930px;height:306px}
+.sl{display:flex;align-items:center;gap:16px;height:62px;direction:ltr}
+.sl .lab{width:64px;font-size:30px;display:flex;justify-content:center}
+.sl .v{width:50px;text-align:center;font-weight:700;font-size:30px;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--c) var(--p),rgba(255,255,255,.12) var(--p))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;margin-top:-14px;border-radius:50%;background:#fff;border:6px solid var(--c);box-shadow:0 6px 20px color-mix(in srgb,var(--c) 60%,transparent)}
+input[type=range]:focus-visible::-webkit-slider-thumb{outline:3px solid #fff;outline-offset:3px}
+#hint{margin-top:12px;border-radius:26px;padding:16px 22px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+#hint .ar{font-size:30px;font-weight:600;direction:rtl;line-height:1.5}#hint .fr{font-size:18px;color:var(--mut);direction:ltr}
+#cap{position:absolute;left:34px;right:34px;top:1062px;height:176px;border-radius:30px;padding:14px 26px;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border:1.5px solid rgba(255,255,255,.14);box-shadow:0 20px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+#cap .ar{direction:rtl;font-size:38px;font-weight:600;line-height:1.5}#cap .fr{font-size:19px;color:var(--mut);direction:ltr}
+[data-mode=cinema] #cap{display:flex}[data-mode=cinema] #hint{display:none}
+/* défi */
+#chal{display:none}
+[data-mode=chal] #ctrl{top:905px;height:360px}[data-mode=chal] #sliders{display:none}[data-mode=chal] #hint{display:none}[data-mode=chal] #chal{display:block}
+.chead{display:flex;align-items:center;justify-content:space-between;direction:ltr;height:30px;font-size:17px;color:var(--mut);font-weight:600}
+.pips{display:flex;gap:7px}.pip{width:26px;height:8px;border-radius:4px;background:rgba(255,255,255,.14)}.pip.on{background:var(--gr)}.pip.bad{background:var(--rd)}.pip.cur{background:#fff}
+.xp{display:flex;align-items:center;gap:8px;color:#ffe08a;font-weight:700}
+#cq{margin:4px 0 8px;text-align:center}#cq .ar{font-size:26px;font-weight:600;direction:rtl;line-height:1.45}#cq .fr{font-size:17px;color:var(--mut);margin-top:3px}
+#choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ch{height:56px;border-radius:20px;border:1.5px solid rgba(255,255,255,.18);background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03));color:var(--ink);font:700 28px Readex;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .12s,border-color .2s,background .2s}
+.ch:hover{border-color:#fff}.ch:active{transform:scale(.97)}.ch:focus-visible{outline:3px solid var(--vi);outline-offset:2px}
+.ch small{font:500 15px Readex;color:var(--mut)}
+.ch.ok{border-color:var(--gr);background:linear-gradient(150deg,rgba(61,220,151,.35),rgba(61,220,151,.1))}.ch.no{border-color:var(--rd);background:linear-gradient(150deg,rgba(255,92,122,.35),rgba(255,92,122,.1))}
+#cfb{margin-top:8px;min-height:56px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+#cfb .ar{font-size:23px;font-weight:600;direction:rtl}#cfb .fr{font-size:16px;color:var(--mut)}
+#cnext{margin-top:4px;height:46px;padding:0 28px;border-radius:25px;border:0;background:#f4f1ff;color:#120d2b;font:700 19px Readex;cursor:pointer;display:none}
+#cnext:focus-visible{outline:3px solid var(--vi);outline-offset:3px}
+#res{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(7,6,15,.78);backdrop-filter:blur(8px);z-index:20}
+#res .card{width:560px;padding:36px;border-radius:34px;text-align:center;background:linear-gradient(150deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:1.5px solid rgba(255,255,255,.2);box-shadow:0 40px 100px rgba(0,0,0,.6)}
+#res .rank{font-size:46px;font-weight:700;margin:6px 0}#res .sc{font-size:20px;color:var(--mut)}
+#res .btns{display:flex;gap:12px;justify-content:center;margin-top:24px}#res button{height:50px;padding:0 24px;border-radius:25px;border:0;font:700 18px Readex;cursor:pointer}
+/* cinéma : titre et CTA */
+#intro{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:15;background:radial-gradient(90% 60% at 50% 45%,rgba(7,6,15,.2),rgba(7,6,15,.96));text-align:center}
+#intro .t1{font-size:84px;font-weight:700;line-height:1.1;direction:rtl}#intro .t2{font-size:30px;letter-spacing:.3em;color:var(--mut);font-weight:500}#intro .t3{font-size:40px;margin-top:18px}
+#frm{position:absolute;left:34px;top:626px;width:652px;height:290px;opacity:0;pointer-events:none}
+.ftile{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;border-radius:22px;border:1.5px solid var(--c);background:linear-gradient(150deg,color-mix(in srgb,var(--c) 38%,transparent),color-mix(in srgb,var(--c) 10%,transparent));box-shadow:0 14px 40px color-mix(in srgb,var(--c) 30%,transparent),inset 0 1px 0 rgba(255,255,255,.28)}
+html.render *{transition:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div id="fit"><div id="app" data-mode="explore">
+  <div id="bgl"><div class="blob" id="b1" style="background:#6d4dff"></div><div class="blob" id="b2" style="background:#ff8a2a"></div><div class="blob" id="b3" style="background:#16c7a5"></div><div id="dots"></div></div>
+  <header id="top"><div id="brand"><div id="mark"></div><div><b>LE CARRÉ QUI TRICHE</b><i>المربّع المخادع · 3AC</i></div></div>
+    <div id="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" id="tabE">Explorer · استكشف</button><button class="tab" role="tab" aria-selected="false" id="tabC">Défi · تحدٍّ</button></div></header>
+  <section id="viz" aria-label="Visualisation du carré de côté a plus b">
+    <div class="corner" style="left:14px;top:14px;border-right:0;border-bottom:0"></div><div class="corner" style="right:14px;top:14px;border-left:0;border-bottom:0"></div><div class="corner" style="left:14px;bottom:14px;border-right:0;border-top:0"></div><div class="corner" style="right:14px;bottom:14px;border-left:0;border-top:0"></div>
+    <div id="q"></div><div class="duel" id="duel"><div class="dcard" id="dc1" style="left:34px;--c:#a58bff"><div id="dc1t"></div><div class="big" id="dc1n">25</div><div class="st" id="dc1s"></div></div><div class="dcard" id="dc2" style="left:342px;--c:#ffa24a"><div id="dc2t"></div><div class="big" id="dc2n">13</div><div class="st" id="dc2s"></div></div><div id="dgap"><span style="font-size:22px;font-weight:600;direction:rtl">الفرق · Écart</span><span style="font-size:46px;font-weight:700">12</span><span style="font-size:42px;font-weight:700">؟</span></div></div><svg id="svg" width="652" height="500" style="position:absolute;left:0;top:0;overflow:visible"></svg>
+  </section>
+  <section id="bars"></section><div id="frm"></div>
+  <section id="ctrl"><div id="sliders">
+      <div class="sl" style="--c:var(--vi)"><div class="lab" id="la"></div><input id="ra" type="range" min="1" max="9" step="1" value="3" aria-label="a"><div class="v" id="va" style="color:var(--vi)">3</div></div>
+      <div class="sl" style="--c:var(--te)"><div class="lab" id="lb"></div><input id="rb" type="range" min="1" max="9" step="1" value="2" aria-label="b"><div class="v" id="vb" style="color:var(--te)">2</div></div>
+    </div>
+    <div id="hint" class="glass"><div class="ar" id="hAr"></div><div class="fr" id="hFr"></div></div>
+    <div id="chal"></div></section>
+  <div id="cap"><div class="ar" id="cAr"></div><div class="fr" id="cFr"></div></div>
+  <div id="intro"><div class="t1">المربّع المخادع</div><div class="t2">LE CARRÉ QUI TRICHE</div><div class="t3" id="t3"></div></div>
+  <div id="res"></div>
+</div></div>
+<script src="katex.min.js"></script>
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const easeOut = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const easeIO = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const back = (x) => { x = clamp(x); const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const prog = (t, t0, d = .5) => clamp((t - t0) / d);
+const VI = '#a58bff', OR = '#ffa24a', TE = '#4fe3c1', RD = '#ff5c7a', GR = '#3ddc97';
+const RENDER = /[?&]render=1/.test(location.search); if (RENDER) document.documentElement.classList.add('render');
+const tex = (s, size, color) => { const d = document.createElement('span'); d.style.cssText = `font-size:${size}px;${color ? 'color:' + color : ''}`; d.innerHTML = katex.renderToString(s, { throwOnError: false }); return d; };
+const texs = (s) => katex.renderToString(s, { throwOnError: false });
+const isoAr = (str) => str.replace(/[A-Za-z0-9²+=×()−]+(?:\s*[=+×−]\s*[A-Za-z0-9²()]+)*/g, (m) => `<span dir="ltr" style="unicode-bidi:isolate;display:inline-block">${m}</span>`);
+const safe = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) { } } };
+
+// ---------- mise à l'échelle ----------
+function fit() { const s = RENDER ? 1 : Math.min(innerWidth / 720, innerHeight / 1280); const f = $('fit'); f.style.transform = `scale(${s}) translate(-50%,-50%)`; f.style.transformOrigin = '0 0'; f.style.left = '50%'; f.style.top = '50%'; f.style.transform = `translate(${-360 * s}px,${-640 * s}px) scale(${s})`; }
+addEventListener('resize', fit); fit();
+
+// ---------- état ----------
+const S = { A: 3, B: 2, a: 3, b: 2, mode: 'explore', ghost: 0, ghostT: 0, spot: 0, cinema: false };
+const RV = { tiles: [1, 1, 1, 1], braces: 1, outline: 1, bars: 1, rows: [1, 1, 1], q: 1, ctrl: 1, formula: 0, ghostFill: 0 };
+
+// ---------- construction ----------
+const viz = $('viz'), svg = $('svg');
+const NS = 'http://www.w3.org/2000/svg';
+const sv = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+$('q').innerHTML = '<div style="font-size:46px">' + texs('(a+b)^2\\;\\overset{?}{=}\\;a^2+b^2') + '</div><div class="sub" id="qsub"></div>';
+$('la').appendChild(tex('a', 34, VI)); $('lb').appendChild(tex('b', 34, TE));
+const outline = sv('rect', { fill: 'none', stroke: 'rgba(255,255,255,.55)', 'stroke-width': 2.2, 'stroke-dasharray': '9 8', rx: 18 });
+const braces = [sv('path', { fill: 'none', stroke: VI, 'stroke-width': 3, 'stroke-linecap': 'round' }), sv('path', { fill: 'none', stroke: TE, 'stroke-width': 3, 'stroke-linecap': 'round' }), sv('path', { fill: 'none', stroke: VI, 'stroke-width': 3, 'stroke-linecap': 'round' }), sv('path', { fill: 'none', stroke: TE, 'stroke-width': 3, 'stroke-linecap': 'round' })];
+const bl = {}; ['a', 'b', 'a2', 'b2', 'ab'].forEach((k) => { }); // étiquettes de côtés
+function lbl(txt, color, size) { const d = document.createElement('div'); d.className = 'el'; d.appendChild(tex(txt, size, color)); viz.appendChild(d); return d; }
+const L = { top_a: lbl('a', VI, 30), top_b: lbl('b', TE, 30), left_a: lbl('a', VI, 30), left_b: lbl('b', TE, 30) };
+const PIECES = [
+  { k: 'a2', c: VI, sym: 'a^2', fx: -180, fy: -60, dark: false }, { k: 'b2', c: TE, sym: 'b^2', fx: 170, fy: 160, dark: true },
+  { k: 'ab1', c: OR, sym: 'ab', fx: 180, fy: -110, dark: true }, { k: 'ab2', c: OR, sym: 'ab', fx: -180, fy: 130, dark: true }];
+PIECES.forEach((p) => { const d = document.createElement('div'); d.className = 'tile'; d.innerHTML = '<div class="sym"></div><div class="num"></div>'; d.firstChild.appendChild(tex(p.sym, 40, p.dark ? '#1a0d00' : '#fff')); d.style.color = p.dark ? '#1a0d00' : '#fff'; viz.appendChild(d); p.el = d; p.sy = d.firstChild; p.nm = d.lastChild; });
+PIECES[1].el.style.color = '#032a22';
+
+// barres
+const bars = $('bars');
+const mkSeg = (c) => { const d = document.createElement('div'); d.className = 'seg'; d.style.background = `linear-gradient(180deg,color-mix(in srgb,${c} 100%,#fff 14%),color-mix(in srgb,${c} 80%,#000))`; d.style.boxShadow = `0 8px 24px color-mix(in srgb,${c} 30%,transparent),inset 0 1px 0 rgba(255,255,255,.35)`; bars.appendChild(d); return d; };
+const B1 = { a2: mkSeg(VI), ab: mkSeg(OR), b2: mkSeg(TE) }, B2 = { a2: mkSeg(VI), b2: mkSeg(TE) };
+const ghost = document.createElement('div'); ghost.id = 'ghost'; ghost.tabIndex = 0; ghost.setAttribute('role', 'button'); ghost.setAttribute('aria-label', 'Révéler ce qui manque'); ghost.textContent = '؟'; bars.appendChild(ghost);
+const bl1 = document.createElement('div'); bl1.className = 'el'; bl1.appendChild(tex('(a+b)^2', 24, '#fff')); bars.appendChild(bl1); const bl2 = document.createElement('div'); bl2.className = 'el'; bl2.appendChild(tex('a^2+b^2', 24, '#fff')); bars.appendChild(bl2);
+const v1 = document.createElement('div'); v1.className = 'el val'; v1.style.fontSize = '22px'; bars.appendChild(v1); const v2 = document.createElement('div'); v2.className = 'el val'; v2.style.fontSize = '22px'; bars.appendChild(v2);
+function row(top) { const d = document.createElement('div'); d.className = 'row'; d.style.top = top + 'px'; bars.appendChild(d); return d; }
+const R1 = row(40), R2 = row(120), R3 = row(206);
+R1.innerHTML = '<span>' + texs('(a+b)^2=') .replace(/^/, '') + '</span><span class="val gradtxt" id="n1" style="font-size:60px;--g1:#d9ccff;--g2:#8d6dff"></span>';
+R2.innerHTML = '<span>' + texs('a^2+b^2=') + '</span><span class="val gradtxt" id="n2" style="font-size:60px;--g1:#ffe0b8;--g2:#ff8a2a"></span>';
+R3.innerHTML = '<div id="gap"><span style="font-weight:600;font-size:19px">Écart · الفرق</span><span class="val" id="n3" style="font-size:38px"></span><span id="n3f" style="font-size:20px;color:#ffe0c8"></span></div>';
+R1.firstChild.style.fontSize = R2.firstChild.style.fontSize = '30px';
+$('dc1t').appendChild(tex('(a+b)^2', 40, '#e2d9ff')); $('dc2t').appendChild(tex('a^2+b^2', 40, '#ffe0b8'));
+$('dc1s').innerHTML = texs('(3+2)^2=5^2'); $('dc2s').innerHTML = texs('3^2+2^2=9+4');
+const frm = $('frm');
+function ftile(x, y, w, h, c, node) { const d = document.createElement('div'); d.className = 'ftile'; d.style.cssText += `left:${x}px;top:${y}px;width:${w}px;height:${h}px;--c:${c}`; d.appendChild(node); frm.appendChild(d); return d; }
+const FT = { r1: Object.assign(document.createElement('div'), {}), };
+const f_t = document.createElement('div'); f_t.className = 'el'; f_t.style.cssText = 'left:326px;top:50px'; f_t.appendChild(tex('(a+b)^2', 82, '#e2d9ff')); frm.appendChild(f_t);
+const f_eq = document.createElement('div'); f_eq.className = 'el'; f_eq.style.cssText = 'left:40px;top:170px'; f_eq.appendChild(tex('=', 56, '#fff')); frm.appendChild(f_eq);
+const f_a = ftile(150, 170, 124, 104, VI, tex('a^2', 60, '#fff')), f_p1 = Object.assign(document.createElement('div'), { className: 'el' }), f_b = ftile(334, 170, 170, 104, OR, tex('2ab', 60, '#fff')), f_p2 = Object.assign(document.createElement('div'), { className: 'el' }), f_c = ftile(530, 170, 124, 104, TE, tex('b^2', 60, '#fff'));
+f_p1.style.cssText = 'left:243px;top:170px'; f_p1.appendChild(tex('+', 52, '#fff')); f_p2.style.cssText = 'left:440px;top:170px'; f_p2.appendChild(tex('+', 52, '#fff')); frm.appendChild(f_p1); frm.appendChild(f_p2);
+const f_lab = document.createElement('div'); f_lab.className = 'el'; f_lab.style.cssText = 'left:334px;top:262px;text-align:center'; f_lab.innerHTML = '<div style="font-size:34px;font-weight:650;color:#ffa24a;direction:rtl">الجداء المضاعف</div><div style="font-size:19px;color:#a9a3c9">le double produit</div>'; frm.appendChild(f_lab);
+
+// ---------- peinture ----------
+function paint() {
+  const A = S.A, Bv = S.B, n = A + Bv, U = 276 / Math.max(n, 7), side = n * U, X0 = 326 - side / 2 + 14, Y0 = 200 + (276 - side) / 2;
+  const ia = Math.round(A), ib = Math.round(Bv);
+  const geo = { a2: [X0, Y0, A * U, A * U], b2: [X0 + A * U, Y0 + A * U, Bv * U, Bv * U], ab1: [X0 + A * U, Y0, Bv * U, A * U], ab2: [X0, Y0 + A * U, A * U, Bv * U] };
+  const G = Math.min(4, U * .12);
+  PIECES.forEach((p, i) => {
+    const [x, y, w, h] = geo[p.k], r = RV.tiles[i], e = back(r), d = p.el, m = Math.min(w, h);
+    d.style.left = (x + G) + 'px'; d.style.top = (y + G) + 'px'; d.style.width = Math.max(0, w - 2 * G) + 'px'; d.style.height = Math.max(0, h - 2 * G) + 'px';
+    d.style.borderRadius = Math.min(18, m * .2) + 'px'; d.style.opacity = clamp(r * 3);
+    const spot = (p.k === 'ab1' || p.k === 'ab2') ? S.spot : 0; const gl = 0.5 + 0.5 * Math.sin(spot * 18 + (S.t || 0) * 7);
+    d.style.transform = `translate(${(1 - e) * p.fx}px,${(1 - e) * p.fy}px) rotate(${(1 - e) * (p.fx > 0 ? 12 : -12)}deg) scale(${.82 + .18 * e})`;
+    d.style.background = `linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px) 0 0/${U}px ${U}px,linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px) 0 0/${U}px ${U}px,linear-gradient(150deg,color-mix(in srgb,${p.c} 100%,#fff 20%),color-mix(in srgb,${p.c} 78%,#000))`;
+    d.style.boxShadow = spot > 0 ? `0 0 ${20 + 26 * gl}px ${4 + 7 * gl}px rgba(255,162,74,${.35 + .4 * gl}),inset 0 1px 0 rgba(255,255,255,.4)` : `0 10px 28px color-mix(in srgb,${p.c} 32%,transparent),inset 0 1px 0 rgba(255,255,255,.4)`;
+    p.sy.style.fontSize = clamp(m * .4, 12, 54) + 'px'; p.sy.style.transform = 'none'; const area = p.k === 'a2' ? ia * ia : p.k === 'b2' ? ib * ib : ia * ib; p.nm.textContent = (m > 56 && !(S.mode === 'chal' && !C.done)) ? area : ''; p.nm.style.fontSize = clamp(m * .2, 10, 22) + 'px';
+    p.sy.firstChild.style.fontSize = clamp(m * .4, 12, 54) + 'px';
+  });
+  const ro = clamp(RV.outline); outline.setAttribute('x', X0 - 7); outline.setAttribute('y', Y0 - 7); outline.setAttribute('width', side + 14); outline.setAttribute('height', side + 14); outline.setAttribute('stroke-dasharray', `${ro * (side + 14) * 4} 9999`); outline.setAttribute('opacity', ro);
+  const bp = (x1, x2, y, v) => v ? `M ${y} ${x1} q -9 0 -9 9 V ${x2 - 9} q 0 9 9 9` : `M ${x1} ${y} q 0 -9 9 -9 H ${x2 - 9} q 9 0 9 9`;
+  braces[0].setAttribute('d', bp(X0, X0 + A * U, Y0 - 24, 0)); braces[1].setAttribute('d', bp(X0 + A * U, X0 + n * U, Y0 - 24, 0)); braces[2].setAttribute('d', bp(Y0, Y0 + A * U, X0 - 24, 1)); braces[3].setAttribute('d', bp(Y0 + A * U, Y0 + n * U, X0 - 24, 1));
+  braces.forEach((b) => b.setAttribute('opacity', RV.braces));
+  const place = (d, x, y, o) => { d.style.left = x + 'px'; d.style.top = y + 'px'; d.style.opacity = o; };
+  place(L.top_a, X0 + A * U / 2, Y0 - 46, RV.braces); place(L.top_b, X0 + A * U + Bv * U / 2, Y0 - 46, RV.braces); place(L.left_a, X0 - 50, Y0 + A * U / 2, RV.braces); place(L.left_b, X0 - 50, Y0 + A * U + Bv * U / 2, RV.braces);
+  $('q').style.opacity = RV.q;
+  // barres
+  const T = n * n, Q = A * A + Bv * Bv, sc = 196 / Math.max(T, 36), base = 250, bw = 96, x1 = 84, x2 = 214;
+  const seg = (d, x, yb, h, show) => { d.style.left = x + 'px'; d.style.width = bw + 'px'; d.style.top = (yb - h) + 'px'; d.style.height = Math.max(0, h) + 'px'; d.style.opacity = show; };
+  const ha = A * A * sc, hab = 2 * A * Bv * sc, hb = Bv * Bv * sc, g = 3, rb = clamp(RV.bars);
+  seg(B1.a2, x1, base, ha - g, rb); seg(B1.ab, x1, base - ha, hab - g, rb); seg(B1.b2, x1, base - ha - hab, hb - g, rb);
+  seg(B2.a2, x2, base, ha - g, rb); seg(B2.b2, x2, base - ha, hb - g, rb);
+  const gf = Math.max(RV.ghostFill, S.ghost);
+  ghost.style.left = x2 + 'px'; ghost.style.width = bw + 'px'; ghost.style.top = (base - ha - hb - hab) + 'px'; ghost.style.height = Math.max(0, hab - g) + 'px'; ghost.style.opacity = rb;
+  ghost.style.background = `rgba(255,162,74,${.04 + .85 * gf})`; ghost.style.borderColor = gf > .5 ? 'transparent' : 'rgba(255,162,74,.8)'; ghost.style.color = gf > .5 ? '#1a0d00' : OR; ghost.style.fontSize = '26px';
+  ghost.innerHTML = gf > .5 ? '<span style="font-size:20px;font-weight:700">2ab</span>' : '؟'; ghost.style.boxShadow = gf > .5 ? '0 8px 24px rgba(255,162,74,.35),inset 0 1px 0 rgba(255,255,255,.35)' : 'none';
+  place(bl1, x1 + bw / 2, base + 26, rb); place(bl2, x2 + bw / 2, base + 26, rb);
+  const ti = Math.round(T), qi = ia * ia + ib * ib, gi = 2 * ia * ib;
+  v1.style.display = v2.style.display = 'none';
+  $('n1').textContent = (ia + ib) * (ia + ib); $('n2').textContent = qi; $('n3').textContent = gi; $('n3f').textContent = `= 2×${ia}×${ib}`;
+  const hide = S.mode === 'chal' && !C.done; R1.style.opacity = hide ? 0 : RV.rows[0]; R2.style.opacity = hide ? 0 : RV.rows[1]; R3.style.opacity = hide ? 0 : RV.rows[2];
+  R1.style.transform = `translateY(${(1 - RV.rows[0]) * 12}px)`; R2.style.transform = `translateY(${(1 - RV.rows[1]) * 12}px)`; R3.style.transform = `translateY(${(1 - RV.rows[2]) * 12}px) scale(${1 + .04 * Math.sin((S.t || 0) * 6) * (S.spot > 0 ? 1 : 0)})`;
+  // sliders
+  for (const [id, v] of [['ra', ia], ['rb', ib]]) { const r = $(id); r.value = v; r.style.setProperty('--p', ((v - 1) / 8 * 100) + '%'); } $('va').textContent = ia; $('vb').textContent = ib;
+  $('ctrl').style.opacity = RV.ctrl;
+  // formule (cinéma)
+  frm.style.opacity = RV.formula; bars.style.opacity = 1 - RV.formula;
+}
+
+// ---------- interaction : explorer ----------
+const HINTS = [['اسحب a وb: الفرق بين (a+b)² وa²+b² هو دائمًا 2ab.', 'Glisse a et b : l’écart vaut toujours 2ab.'], ['المس المربّع المنقّط لتكتشف ما ينقص.', 'Touche le vide pointillé pour voir ce qui manque.']];
+function setHint(i) { $('hAr').innerHTML = isoAr(HINTS[i][0]); $('hFr').textContent = HINTS[i][1]; } setHint(0);
+$('qsub').textContent = 'جرّب بنفسك · Teste avec tes propres nombres';
+$('ra').addEventListener('input', (e) => { S.a = +e.target.value; S.ghost = 0; }); $('rb').addEventListener('input', (e) => { S.b = +e.target.value; S.ghost = 0; });
+function toggleGhost() { S.ghostT = S.ghostT ? 0 : 1; setHint(S.ghostT ? 0 : 1); S.spotT = S.ghostT ? 1 : 0; }
+ghost.addEventListener('click', toggleGhost); ghost.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGhost(); } });
+let last = performance.now();
+function loop(now) { const dt = Math.min(.05, (now - last) / 1000); last = now; if (!S.cinema) { const k = 1 - Math.exp(-dt * 11); S.A += (S.a - S.A) * k; S.B += (S.b - S.B) * k; S.ghost += ((S.ghostT || 0) - S.ghost) * (1 - Math.exp(-dt * 9)); S.spot += ((S.spotT || 0) - S.spot) * (1 - Math.exp(-dt * 9)); S.t = now / 1000; paint(); } requestAnimationFrame(loop); }
+if (!RENDER) requestAnimationFrame(loop);
+BLOB(); function BLOB() { const BL = [[$('b1'), -120, 60], [$('b2'), 330, 760], [$('b3'), 40, 1040]]; const f = () => { const t = performance.now() / 1000; BL.forEach(([e, x, y], i) => { e.style.transform = `translate(${x + 60 * Math.sin(t * .3 + i * 2)}px,${y + 50 * Math.cos(t * .25 + i * 2)}px)`; }); if (!RENDER) requestAnimationFrame(f); }; f(); window.__blob = (t) => { BL.forEach(([e, x, y], i) => { e.style.transform = `translate(${x + 60 * Math.sin(t * .3 + i * 2)}px,${y + 50 * Math.cos(t * .25 + i * 2)}px)`; }); }; }
+
+// ---------- onglets ----------
+function setMode(m) { S.mode = m; $('app').dataset.mode = m; $('tabE').setAttribute('aria-selected', m === 'explore'); $('tabC').setAttribute('aria-selected', m === 'chal'); if (m === 'chal') startChal(); else { RV.tiles = [1, 1, 1, 1]; S.spotT = 0; S.ghostT = 0; } }
+$('tabE').onclick = () => setMode('explore'); $('tabC').onclick = () => setMode('chal');
+
+// ---------- défi ----------
+var C = { n: 0, ok: 0, xp: 0, streak: 0, done: false, hist: [], q: null };
+const RANKS = [['Légende', 'أسطورة', GR], ['Pro', 'محترف', '#4fd0ff'], ['Challenger', 'منافس', OR], ['Rookie', 'مبتدئ', VI]];
+function startChal() { Object.assign(C, { n: 0, ok: 0, xp: 0, streak: 0, done: false, hist: [] }); $('res').style.display = 'none'; nextQ(); }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function nextQ() {
+  if (C.n >= 5) return finish();
+  let a, b; do { a = 2 + Math.floor(Math.random() * 8); b = 2 + Math.floor(Math.random() * 8); } while (a === b && Math.random() < .7);
+  const g = 2 * a * b, opts = new Set([g, a * b, Math.abs(a * a - b * b) || a + b, 2 * (a + b), a * a + b * b]); opts.delete(0); let arr = [...opts]; if (!arr.includes(g)) arr[0] = g; arr = shuffle(arr.slice(0, 4)); if (!arr.includes(g)) arr[0] = g;
+  const labels = { [g]: '2ab', [a * b]: 'ab' };
+  C.q = { a, b, g, arr }; S.a = a; S.b = b; RV.tiles = [1, 1, 1, 1]; S.spotT = 0; S.ghostT = 0;
+  const pips = [0, 1, 2, 3, 4].map((i) => `<div class="pip ${i < C.hist.length ? (C.hist[i] ? 'on' : 'bad') : i === C.n ? 'cur' : ''}"></div>`).join('');
+  $('chal').innerHTML = `<div class="chead"><div class="pips">${pips}</div><div class="xp"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ffd36b"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg><span>${C.xp} XP</span>${C.streak > 1 ? '<span style="color:#ff9d4d">×' + (1 + .25 * (C.streak - 1)).toFixed(2).replace(/\.?0+$/, '') + '</span>' : ''}</div></div>
+   <div id="cq"><div class="ar">${isoAr(`لـ a = ${a} و b = ${b}: بكم يزيد (a+b)² على a²+b² ؟`)}</div><div class="fr">Pour a = ${a} et b = ${b} : de combien (a+b)² dépasse-t-il a²+b² ?</div></div>
+   <div id="choices">${arr.map((v) => `<button class="ch" data-v="${v}">${v}</button>`).join('')}</div><div id="cfb"></div><button id="cnext">Suivant · التالي</button>`;
+  document.querySelectorAll('.ch').forEach((b) => b.onclick = () => answer(+b.dataset.v, b));
+  $('qsub').textContent = `السؤال ${C.n + 1} من 5 · Question ${C.n + 1}/5`;
+}
+function answer(v, btn) {
+  if (C.done) return; C.done = true; const ok = v === C.q.g; C.hist.push(ok); C.n++; if (ok) { C.ok++; C.streak++; C.xp += Math.round(100 * (1 + .25 * (C.streak - 1))); } else C.streak = 0;
+  document.querySelectorAll('.ch').forEach((b) => { b.disabled = true; if (+b.dataset.v === C.q.g) b.classList.add('ok'); else if (b === btn) b.classList.add('no'); });
+  S.spotT = 1; S.ghostT = 1;
+  const { a, b } = C.q; $('cfb').innerHTML = `<div class="ar">${ok ? 'أحسنت! ' : 'قريب! '}${isoAr(`الفرق = 2ab = 2×${a}×${b} = ${C.q.g}`)}</div><div class="fr">${ok ? 'Bien joué.' : 'Presque.'} L’écart, c’est le double produit : 2×${a}×${b} = ${C.q.g}.</div>`;
+  const nx = $('cnext'); nx.style.display = 'inline-block'; nx.onclick = () => { C.done = false; nextQ(); }; nx.focus({ preventScroll: true });
+}
+function finish() {
+  const r = C.ok === 5 ? 0 : C.ok === 4 ? 1 : C.ok === 3 ? 2 : 3, [fr, ar, col] = RANKS[r]; const best = Math.max(+safe.get('carre-best') || 0, C.xp); safe.set('carre-best', best);
+  $('res').style.display = 'flex'; $('res').innerHTML = `<div class="card"><div class="sc">النتيجة · Score ${C.ok}/5 · ${C.xp} XP</div><div class="rank" style="color:${col}">${fr}</div><div style="font-size:30px;font-weight:600;direction:rtl;color:${col}">${ar}</div><div class="sc" style="margin-top:14px">${C.ok >= 4 ? isoAr('الفرق دائمًا 2ab: ') + texs('(a+b)^2=a^2+2ab+b^2') : 'تلميح: افتح «استكشف» وانظر للمستطيلين البرتقاليين، ثم أعد المحاولة.'}</div><div class="sc" style="margin-top:8px">Meilleur score local : ${best} XP</div><div class="btns"><button id="rA" style="background:#f4f1ff;color:#120d2b">Rejouer · أعد</button><button id="rB" style="background:rgba(255,255,255,.12);color:#fff">Explorer · استكشف</button></div></div>`;
+  $('rA').onclick = startChal; $('rB').onclick = () => { $('res').style.display = 'none'; setMode('explore'); }; $('rA').focus({ preventScroll: true });
+}
+
+// ---------- mode cinéma : même moteur, scénario déterministe ----------
+const CAP = [
+  ['(a+b)² وa²+b²: يبدوان متطابقين… فلنختبر.', 'Mêmes lettres, même allure… on teste ?', 3.0, 8.2],
+  ['a = 3 وb = 2: 25 مقابل 13. الفرق 12. أين ذهبت؟', 'a = 3, b = 2 : 25 contre 13. Il manque 12.', 8.2, 13.0],
+  ['ارسم مربّعًا ضلعه a + b…', 'Un carré de côté a + b…', 13.0, 15.8],
+  ['فيه مربّعان a² وb²، ومستطيلان مساحة كلٍّ منهما ab.', 'a², b², et deux rectangles de surface ab.', 15.8, 20.6],
+  ['المستطيلان هما الـ12 المفقودة: 2ab!', 'Les 12 manquants, ce sont eux : 2ab !', 20.6, 25.2],
+  ['(a+b)² = a² + 2ab + b²', 'L’identité remarquable', 25.2, 30.0],
+  ['غيّر a وb: الفرق دائمًا 2ab.', 'Change a et b : l’écart vaut toujours 2ab.', 30.0, 36.0],
+  ['دورك الآن: خمسة تحديات. هل تتوقع الفرق؟', 'À toi : 5 défis. Prédis l’écart.', 36.0, 41.5]];
+const CIN_END = 41.5;
+let capIdx = -1;
+let ANCH = null;
+window.setTimings = (tm) => { // tm: [{start,end}] x8 (même ordre que CAP) -> recale tout le scénario
+  const P = [[0, 0]]; tm.forEach((x, i) => { P.push([x.start, CAP[i][2]]); P.push([x.end, CAP[i][3]]); });
+  const last = tm[tm.length - 1].end; P.push([last + (CIN_END - CAP[CAP.length - 1][3]), CIN_END]); ANCH = P; window.__cinemaDuration = P[P.length - 1][0]; return window.__cinemaDuration; };
+function warpT(t) { if (!ANCH) return t; for (let i = 0; i < ANCH.length - 1; i++) { const [c0, n0] = ANCH[i], [c1, n1] = ANCH[i + 1]; if (t >= c0 && t < c1) return c1 === c0 ? n1 : n0 + (n1 - n0) * (t - c0) / (c1 - c0); } return t >= ANCH[ANCH.length - 1][0] ? CIN_END : 0; }
+function cinema(t) {
+  t = warpT(t); S.cinema = true; S.t = t; if (S.mode !== 'cinema') { S.mode = 'cinema'; $('app').dataset.mode = 'cinema'; $('tabE').setAttribute('aria-selected', 'false'); }
+  const sw = (t) => { // balayage a,b entre 30 et 36 s
+    const K = [[30.0, 3, 2], [31.4, 5, 2], [32.8, 4, 4], [34.2, 7, 3], [35.4, 3, 2]]; for (let i = 0; i < K.length - 1; i++) { if (t >= K[i][0] && t < K[i + 1][0]) { const u = easeIO((t - K[i][0]) / (K[i + 1][0] - K[i][0])); return [K[i][1] + (K[i + 1][1] - K[i][1]) * u, K[i][2] + (K[i + 1][2] - K[i][2]) * u]; } } return t >= 35.4 ? [3, 2] : [3, 2]; };
+  let A = 3, B = 2; if (t >= 30 && t < 35.4) [A, B] = sw(t);
+  if (t >= 36) { A = 4; B = 1; }
+  // CTA 36+ : a=4, b=1 -> (4+1)^2 vs 4^2+1^2
+  S.A = A; S.B = B; S.a = Math.round(A); S.b = Math.round(B);
+  const intro = t < 3.4 ? (t < 2.8 ? 1 : 1 - (t - 2.8) / .6) : 0; $('intro').style.display = intro > .01 ? 'flex' : 'none'; $('intro').style.opacity = intro;
+  $('intro').firstChild.style.transform = `translateY(${(1 - easeOut(t / .8)) * 24}px) scale(${.96 + .04 * easeOut(t / .8)})`; $('intro').firstChild.style.opacity = easeOut(t / .7);
+  $('t3').innerHTML = texs('(a+b)^2\\overset{?}{=}a^2+b^2'); $('t3').style.opacity = easeOut((t - 1.0) / .6);
+  RV.q = easeOut((t - 3.2) / .6);
+  RV.rows = [easeOut((t - 13.4) / .5), easeOut((t - 13.9) / .5), easeOut((t - 14.4) / .5)];
+  RV.bars = easeOut((t - 6.0) / .7);
+  RV.tiles = [prog(t, 14.6, .75), prog(t, 15.4, .75), prog(t, 17.0, .75), prog(t, 17.9, .75)];
+  if (t >= 36) RV.tiles = [1, 1, 1, 1]; if (t >= 36) RV.tiles = RV.tiles.map(() => prog(t, 36.2, .6));
+  RV.outline = easeOut((t - 13.2) / 1.4); RV.braces = easeOut((t - 13.8) / .6);
+  S.spot = t >= 18.8 && t < 28 ? easeOut((t - 18.8) / .5) : (t >= 30 && t < 35.5 ? .7 : 0); if (S.spot > 0) S.spot = Math.max(S.spot, .0001);
+  RV.ghostFill = t >= 21.6 && t < 28 ? easeOut((t - 21.6) / .6) : (t >= 30 && t < 36 ? 1 : 0); S.ghost = 0;
+  RV.formula = easeOut((t - 25.6) / .6) * (1 - easeOut((t - 29.4) / .5));
+  RV.ctrl = 1; RV.q = RV.q;
+  const k = (x) => easeOut(x); // éléments de formule
+  f_t.style.opacity = k((t - 25.8) / .5); f_eq.style.opacity = k((t - 26.4) / .4); f_a.style.opacity = k((t - 26.8) / .4); f_p1.style.opacity = k((t - 27.2) / .3); f_b.style.opacity = k((t - 27.6) / .4); f_p2.style.opacity = k((t - 28.0) / .3); f_c.style.opacity = k((t - 28.3) / .4); f_lab.style.opacity = k((t - 28.5) / .5);
+  [f_a, f_b, f_c].forEach((d, i) => { d.style.transform = `translate(-50%,-50%) scale(${.7 + .3 * back(prog(t, [26.8, 27.6, 28.3][i], .5))})`; });
+  const ci = CAP.findIndex((c) => t >= c[2] && t < c[3]); if (ci !== capIdx) { capIdx = ci; if (ci >= 0) { $('cAr').innerHTML = CAP[ci][0].replace(/([A-Za-z0-9²+=×()]+(?:\s*[A-Za-z0-9²+=×()]+)*)/g, '<span dir="ltr" style="unicode-bidi:isolate;display:inline-block">$1</span>'); $('cFr').textContent = CAP[ci][1]; } }
+  if (ci >= 0) { const c = CAP[ci], e = easeOut((t - c[2]) / .45), x = easeOut((t - c[3] + .35) / .35); $('cap').style.opacity = e * (1 - x); $('cap').style.transform = `translateY(${(1 - e) * 14}px)`; } else $('cap').style.opacity = 0;
+  // défi preview
+  if (t >= 36) { $('qsub').textContent = ''; $('q').firstChild.innerHTML = texs('(4+1)^2\\;\\overset{?}{=}\\;4^2+1^2'); } else { $('q').firstChild.innerHTML = texs('(a+b)^2\\;\\overset{?}{=}\\;a^2+b^2'); $('qsub').textContent = ''; }
+  const tabC = $('tabC'); tabC.style.background = t >= 36.4 ? `rgba(165,139,255,${.25 + .25 * Math.sin(t * 6)})` : ''; tabC.style.color = t >= 36.4 ? '#fff' : '';
+  const du = (t < 12.8 ? 1 : 1 - easeOut((t - 12.8) / .5)) * easeOut((t - 4.0) / .4);
+  $('duel').style.opacity = du; $('duel').style.display = du > .005 ? 'block' : 'none';
+  const d1 = back((t - 4.2) / .6), d2 = back((t - 5.8) / .6), dg = back((t - 8.4) / .5);
+  $('dc1').style.opacity = clamp((t - 4.2) * 4); $('dc1').style.transform = `translateY(${(1 - d1) * 40}px)`;
+  $('dc2').style.opacity = clamp((t - 5.8) * 4); $('dc2').style.transform = `translateY(${(1 - d2) * 40}px)`;
+  $('dgap').style.opacity = clamp((t - 8.4) * 4); $('dgap').style.transform = `translate(-50%,-50%) scale(${(.6 + .4 * dg) * (t > 9.4 && t < 12.6 ? 1 + .035 * Math.sin((t - 9.4) * 7) : 1)})`;
+  window.__blob(t); paint();
+}
+window.render = cinema; window.CIN_END = CIN_END; window.__cinemaDuration = CIN_END;
+window.__cinema = cinema;
+paint();
+</script></body></html>
