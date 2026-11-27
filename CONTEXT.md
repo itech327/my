@@ -70,6 +70,7 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 | `.claude/skills/darija-voice/` | The skill: normalizer, respellings, scripts, results log |
 | `replica/CONTEXT.md` | Longer project history and decisions |
 | `library/` | Reference audio library for teaching. Pilot: middle school, numbers and operations, 20 items. See its README |
+| `motion/` | Motion graphics projects made with the `motion-ad` skill |
 | `MIGRATION.md` | Moving the project to another Claude account: what moves, what to set up again |
 | `MAC.md` | Run the app and the free voices on the owner's MacBook Pro |
 

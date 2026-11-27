@@ -16,6 +16,7 @@ branch, and these load automatically:
 | `darija-voice` | Built in this project. Moroccan Darija voices: text front end, Gemini voice design, open F5 and Piper voices, recognizer tests, results log |
 | `replica-recon`, `replica-architect`, `replica-design`, `replica-build`, `replica-backend`, `replica-test`, `replica-diff`, `replica-entrepreneur`, `replica-brand`, `replica-launch`, `replica-deploy` | The Replica pack (MIT, Jakeschincariol/replica-skill), used to clone ArabyVoice's features |
 | `convert-documents-to-markdown`, `md-first`, `find-skills` | Helpers added to the repo |
+| `motion-ad` | Motion graphics ads as code, rendered to 4K with headless Chrome and ffmpeg. Installed from the owner's Motion Design zip. Projects go in `motion/<Brand>/` |
 
 **Plugins** listed in `.claude/settings.json`:
 
