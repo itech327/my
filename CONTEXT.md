@@ -135,6 +135,13 @@ A Moroccan text-to-speech platform. Two jobs matter to the owner:
 - After the key change, generation needs the **new** key. In the cloud session, update the network secret for `generativelanguage.googleapis.com` to the new key. With the old key, the new voice ids answer 404.
 - The 4 approved items were made with the old project's نور Fusha voice. Remaking them would change their sound, so keep the files.
 
+## Sada ad (motion/Sada)
+
+- 16.5 s, 4K, 16:9, made with the `motion-ad` skill. Final file: `motion/Sada/out/Sada ad - 4K (voice + SFX).mp4`. Silent master: `Sada ad - 4K.mp4`. Mix: `Sada ad - mix.wav`. The `out/` folder is not in git.
+- Rebuild: `node scripts/render.mjs video page.html "out/Sada ad - 4K.mp4" --fps 25 --scale 2` from `motion/Sada`, with `CHROME` set and, as root, `CHROME_ARGS='--no-sandbox'`. Then `scripts/mix.py cues.json ... --lib sounds --events events.json --len 16.5 --gain 8` and mux with ffmpeg.
+- Voiceover: two Younes lines in `sounds/vo-1.wav` and `vo-2.wav`, made with the Sada connector. The app name is said صَدى, approved by the owner.
+- **Before publishing:** the end card types `voice.taalim.men`, which answers 404 until the web app is online. Change `URLTEXT` in `page.html` if the address changes, then re-render.
+
 ## Connector tools
 
 - `speak_moroccan`:

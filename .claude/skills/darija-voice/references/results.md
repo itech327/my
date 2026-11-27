@@ -313,3 +313,4 @@ naturalness; the recognizer only guards against swallowed words.
 - Old ids (previous project) are replaced in `designed-voices.json`. The new darija-female uses the general Darija prompt, not the drifted Fusha voice the owner liked: needs a new ear test.
 - Owner's Intel Mac, Piper fallback, template "تقديم شركة": CER 0.187, owner: "not good". Same sentence on F5 M1 (cloud CPU, 52 s): CER 0.013 (`idriss-f5-company.wav`).
 - PyTorch has no Intel-macOS wheels after torch 2.2.2 (checked on PyPI), so F5 on an Intel Mac runs best inside Docker (voice-server/Dockerfile, CPU).
+- Ear verdict: the app name must be said with a fatha, صَدى. The respelling صدى → صَدى fixed it: owner "نعم". Ad voiceover line 2 regenerated.
