@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مبرهنة فيثاغورس · Le théorème de Pythagore</title>
+<style>
+  :root{--paper:#fbfaf6;--ink:#2a2a2e;--blue:#2f5bd3;--orange:#e8710a;--red:#d1153f}
+  *{box-sizing:border-box;min-width:0}
+  html,body{margin:0;height:100%;background:#5c4029;overflow:hidden;font-family:"Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;color:var(--ink)}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+  .top{position:fixed;top:0;left:0;right:0;padding:calc(8px + env(safe-area-inset-top)) 10px 0;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+  .row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;pointer-events:auto;padding-bottom:2px}
+  .row::-webkit-scrollbar{display:none}
+  .chip,.btn{flex:none;font:700 15px "Noto Naskh Arabic","Geeza Pro",Arial,sans-serif;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:10px;padding:6px 12px;min-height:40px;box-shadow:2px 2px 0 rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
+  .chip.on{background:var(--ink);color:var(--paper)}
+  .chip.voice.on{background:var(--blue);border-color:var(--blue)}
+  .sub .chip{font-size:14px;min-height:36px;padding:4px 10px;border-width:1.5px}
+  .btn.acc{background:var(--red);border-color:var(--red);color:#fff}
+  .btn.big{font:700 20px "Comic Sans MS","Chalkboard SE",cursive;min-width:58px}
+  .chip:focus-visible,.btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  .hud{position:fixed;left:0;right:0;bottom:0;padding:8px 10px calc(10px + env(safe-area-inset-bottom));pointer-events:none;display:flex;flex-direction:column;gap:7px;align-items:center}
+  .acts{display:flex;gap:8px;pointer-events:auto;flex-wrap:wrap;justify-content:center}
+  .cards{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+  .card{background:var(--paper);border:1.5px solid #3a3a40;border-radius:4px;padding:4px 9px 3px;box-shadow:2px 3px 0 rgba(0,0,0,.25);min-width:80px;text-align:center;transform:rotate(var(--r,0deg))}
+  .card[hidden]{display:none}
+  .card small{display:block;font-size:13px;color:#555;unicode-bidi:plaintext}
+  .card b{font:700 20px/1.15 "Comic Sans MS","Chalkboard SE","Marker Felt",cursive;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+  .card b i{font-style:normal;font-size:14px;color:#555;margin-left:3px}
+  #notice{background:rgba(251,250,246,.95);border-radius:8px;padding:6px 14px;font-size:15px;max-width:660px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.2);min-height:3.2em;display:flex;align-items:center;justify-content:center}
+  #notice b{color:var(--red)}
+  #err{position:fixed;top:110px;left:12px;right:12px;background:#fff;border:2px solid var(--red);padding:10px;display:none;font-size:14px;direction:ltr;z-index:9}
+  @media (orientation:landscape) and (max-height:600px){
+    .cards{position:fixed;left:calc(8px + env(safe-area-inset-left));flex-direction:column;align-items:stretch;gap:5px;pointer-events:none}
+    .card{min-width:0;padding:2px 8px;transform:none}.card b{font-size:15px}.card small{font-size:11px}
+    .hud{padding-left:calc(170px + env(safe-area-inset-left));gap:5px}
+    #notice{font-size:13px;min-height:2.6em;padding:4px 12px}
+    .chip,.btn{min-height:36px;padding:4px 10px;font-size:14px}
+  }
+  @media (max-width:520px){.card{min-width:68px;padding:3px 6px}.card b{font-size:16px}.card small{font-size:12px}#notice{font-size:13.5px}}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<canvas id="c" aria-label="Théorème de Pythagore en 3D"></canvas>
+<div class="top">
+  <div class="row" id="modes"></div>
+  <div class="row sub" id="subs"></div>
+</div>
+<div class="hud">
+  <div class="acts" id="acts"></div>
+  <div class="cards">
+    <div class="card" id="k0" style="--r:-2deg"><small></small><b></b></div>
+    <div class="card" id="k1" style="--r:1.5deg"><small></small><b></b></div>
+    <div class="card" id="k2" style="--r:-1deg"><small></small><b></b></div>
+    <div class="card" id="k3" style="--r:2deg"><small></small><b></b></div>
+  </div>
+  <div id="notice"></div>
+</div>
+<div id="err"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+window.addEventListener('error', e => { const el = document.getElementById('err'); el.style.display = 'block'; el.textContent = 'Error: ' + e.message; });
+
+/* =========================================================
+   Le théorème de Pythagore et sa réciproque · 3e année collège (3AC).
+   Units: 1 world unit = 1 cm. Page plane: x to the right, z toward the reader, y up.
+   Every volume, area and length is computed from k each frame.
+   ========================================================= */
+const PAGE_Y = 1.2, YL = PAGE_Y + 0.035;
+const TRACK = { x0: 3.5, x1: 13.5, z: 9 };
+const VOICE = { q: { audio: 'audio/maths-3ac-pythagore-3d-question.mp3' }, r: { audio: 'audio/maths-3ac-pythagore-3d-regle.mp3' } };
+const SM = 1.6;                                        // échelle: 1 m = 1,6 cm on the page
+const WALL_X = 16.9, LADDER_Z = -6;
+
+/* ---------- pure maths, also checked by a Node script ---------- */
+const M = {
+  hyp: (a, b) => Math.hypot(a, b),                     // AB² = AC² + BC²
+  leg: (c, a) => Math.sqrt(c * c - a * a),             // AC² = AB² − BC²
+  third: (a, b, angleDeg) => Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(angleDeg * Math.PI / 180)), // used only to draw a non-right triangle
+  angleOpp: (p, q, r) => Math.acos(Math.max(-1, Math.min(1, (p * p + q * q - r * r) / (2 * p * q)))) * 180 / Math.PI,
+};
+const LADDERS = [[3, 5], [1.5, 4], [2, 6], [2.5, 6.5], [1.8, 3], [2.4, 5], [1.2, 3.5], [3.5, 6]];   // [foot distance, ladder length] in m
+const BOXES = [[20, 15, 10], [30, 20, 12], [16, 12, 15]];                                            // L × l × h in cm (page scale ÷ 2)
+const ROPES = [[3, 4, 5], [4, 4, 4], [2, 5, 5], [3, 3, 6]];                                          // knot intervals on a 12-knot rope
+
+/* ---------- State ---------- */
+const S = { lang: 'ar', mode: 'echelle', drag: null, handles: [], lastAction: 'idle', actionTime: 0 };
+function initState() {
+  S.echelle = { i: 0, guess: 3, checked: false, t: 0, score: 0, tries: 0 };
+  S.carres = { angle: 90, pour: null, poured: 0 };
+  S.preuve = { a: 5, t: 0, goal: 0 };
+  S.corde = { r: 0 };
+  S.boite = { b: 0, stick: 26 };
+}
+initState();
+const isoLatin = t => t.replace(/[\[(A-Za-z0-9√][A-Za-z0-9'()\[\]=·×÷²³√+−%,. ]*[A-Za-z0-9')\]²³%]/g, m => '⁦' + m + '⁩');
+const tr = (ar, fr) => S.lang === 'ar' ? isoLatin(ar) : fr;
+const V = (x, z) => new THREE.Vector2(x, z);
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+const fmt = (x, d = 1) => (Math.round(x * 10 ** d) / 10 ** d).toFixed(d).replace('.', ',');
+const act = n => { S.lastAction = n; S.actionTime = performance.now(); };
+const recent = (n, ms = 2500) => S.lastAction === n && performance.now() - S.actionTime < ms;
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+/* ---------- Renderer ---------- */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x5c4029);
+const camera = new THREE.PerspectiveCamera(40, 1, 1, 600);
+const hemi = new THREE.HemisphereLight(0xfffaf0, 0x6b4a2f, 1.1); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.6);
+sun.position.set(-30, 60, 25); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -35, right: 35, top: 30, bottom: -30, near: 10, far: 150 }); sun.shadow.bias = -0.0008;
+scene.add(sun);
+
+/* ---------- Decor: one world around the book, chosen from the context of the lesson ---------- */
+/* DECOR:BEGIN · pop-up decor kit v1 · source: skills/pop-up-3d-lesson/template/decor-kit.js
+   Do not edit inside a lesson: edit the kit, then run tools/inject_decor.py on the lesson.
+
+   The book stays; the world around it changes with the context of each mode.
+   A decor = sky + ground + the support under the book + light + up to 8 paper cut-out cards.
+   Cards stand behind and beside the book (never between the camera and the book) and pop up
+   like a pop-up book when the decor changes. Every drawing is original canvas art, no image file.
+
+   usage:  const decor = makeDecorKit({ THREE, scene, renderer, hemi, sun });
+           // optional: a pop-up backdrop standing at the back edge of the experiment page,
+           // so the context shows behind the experiment even in portrait
+           makeDecorKit({ ..., backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 13 } });
+           decor.use('desert');            // once, at start: one decor for the whole lesson
+           decor.update(dt);               // every frame
+           decor.names                     // available decors                                   */
+function makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop }) {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cnv = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; };
+  const tx = (c, rep) => { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    if (rep) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep, rep); } return t; };
+  const rnd = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();   // seeded: same decor every visit
+  const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+  const mix = (a, b, t) => '#' + hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * t).toString(16).padStart(2, '0')).join('');
+  const INK = '#3b3640';
+
+  /* ---------- 2D helpers ---------- */
+  const poly = (g, pts, fill, stroke = INK, lw = 2) => { g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw; g.stroke(); } };
+  const rect = (g, x, y, w, h, fill, stroke = INK, lw = 2) => poly(g, [[x, y], [x + w, y], [x + w, y + h], [x, y + h]], fill, stroke, lw);
+  const disc = (g, x, y, r, fill, stroke = INK, lw = 2) => { g.beginPath(); g.arc(x, y, r, 0, 2 * Math.PI); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw; g.stroke(); } };
+  const ell = (g, x, y, rx, ry, fill, stroke = INK, lw = 2) => { g.beginPath(); g.ellipse(x, y, rx, ry, 0, 0, 2 * Math.PI); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw; g.stroke(); } };
+  const noise = (g, W, H, n, col, a) => { for (let i = 0; i < n; i++) { g.fillStyle = `rgba(${col},${rnd() * a})`; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 2, 2 + rnd() * 2); } };
+  // horseshoe arch (Moroccan door or window), returns nothing, fills the opening
+  const arch = (g, cx, base, w, h, fill, stroke = INK) => {
+    const r = w / 2, cy = base - h + r * 1.05; g.beginPath(); g.moveTo(cx - r * .86, base); g.lineTo(cx - r * .86, cy + r * .5);
+    g.arc(cx, cy, r, Math.PI * .83, Math.PI * 2.17); g.lineTo(cx + r * .86, base); g.closePath(); g.fillStyle = fill; g.fill(); g.strokeStyle = stroke; g.lineWidth = 3; g.stroke();
+  };
+  const star8 = (g, x, y, r, fill) => { g.beginPath(); for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8, rr = i % 2 ? r * .62 : r; g.lineTo(x + rr * Math.cos(a), y + rr * Math.sin(a)); } g.closePath(); g.fillStyle = fill; g.fill(); };
+  function cube(g, x, y, s, col) { // isometric toy block, (x,y) = bottom centre
+    const h = s * .5; poly(g, [[x, y], [x - s * .87, y - h], [x - s * .87, y - h - s], [x, y - s]], mix(col, '#000000', .18));
+    poly(g, [[x, y], [x + s * .87, y - h], [x + s * .87, y - h - s], [x, y - s]], mix(col, '#000000', .32));
+    poly(g, [[x, y - s], [x - s * .87, y - h - s], [x, y - 2 * h - s], [x + s * .87, y - h - s]], col);
+  }
+  function leaf(g, x, y, a, L, wd, col) { const tx_ = x + L * Math.cos(a), ty = y + L * Math.sin(a), nx = -Math.sin(a) * wd, ny = Math.cos(a) * wd, mx = (x + tx_) / 2, my = (y + ty) / 2 - L * .18;
+    g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(mx + nx, my + ny, tx_, ty); g.quadraticCurveTo(mx - nx, my - ny, x, y); g.fillStyle = col; g.fill(); g.strokeStyle = mix(col, '#000000', .35); g.lineWidth = 2; g.stroke(); }
+
+  /* ---------- painters: one card each, (g, W, H) in pixels ---------- */
+  const P = {
+    pyramids(g, W, H) { const b = H * .97;
+      for (const [cx, h, hw] of [[.84, .4, .13], [.63, .62, .21], [.3, .94, .3]]) { const X = cx * W, A = [X, b - h * H], s = X + hw * W * .25;
+        poly(g, [[X - hw * W, b], A, [s, b]], '#dcb67c'); poly(g, [[s, b], A, [X + hw * W, b]], '#b88b55');
+        for (let k = 1; k < 7; k++) { const t = k / 7; g.strokeStyle = 'rgba(90,60,30,.25)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(X - hw * W * t, b - h * H * (1 - t)); g.lineTo(X + hw * W * t, b - h * H * (1 - t)); g.stroke(); } } },
+    dunes(g, W, H) { ['#e9c991', '#dfb87d', '#d2a66a'].forEach((c, i) => { g.beginPath(); g.moveTo(0, H); for (let x = 0; x <= W; x += 8) g.lineTo(x, H * (.25 + .22 * i) + Math.sin(x / W * Math.PI * (2 + i) + i) * H * .12); g.lineTo(W, H); g.closePath(); g.fillStyle = c; g.fill(); g.strokeStyle = mix(c, '#000000', .2); g.lineWidth = 2; g.stroke(); }); },
+    palm(g, W, H) { const T = [W * .55, H * .28];
+      poly(g, [[W * .44, H], [W * .53, H], [T[0] + W * .03, T[1]], [T[0] - W * .03, T[1]]], '#8b6a43');
+      for (let y = H * .35; y < H; y += H * .06) { g.strokeStyle = 'rgba(60,40,20,.45)'; g.lineWidth = 2; g.beginPath(); g.moveTo(W * .45 + (H - y) * .002, y); g.lineTo(W * .53, y - 3); g.stroke(); }
+      [-2.9, -2.5, -2.0, -1.4, -.9, -.4, -.1].forEach((a, i) => leaf(g, T[0], T[1], a, W * (.42 + (i % 2) * .06), W * .07, i % 2 ? '#5d8a48' : '#6f9b55'));
+      [[-.04, .05], [.03, .06], [0, .09]].forEach(([dx, dy]) => disc(g, T[0] + dx * W, T[1] + dy * H, W * .03, '#8a5a2b')); },
+    kasbah(g, W, H) { const wall = '#c98b5a', shade = '#a9704a', b = H;
+      const tower = (x, w, h) => { poly(g, [[x, b], [x + w, b], [x + w * .94, b - h], [x + w * .06, b - h]], wall); for (let k = 0; k < 4; k++) rect(g, x + w * .06 + k * w * .25, b - h - H * .05, w * .14, H * .05, wall, INK, 1.5); rect(g, x + w * .4, b - h * .7, w * .2, h * .1, '#5a3a28', INK, 1); };
+      poly(g, [[W * .2, b], [W * .8, b], [W * .78, b - H * .55], [W * .22, b - H * .55]], wall);
+      poly(g, [[W * .62, b], [W * .8, b], [W * .78, b - H * .55], [W * .62, b - H * .55]], shade, null);
+      for (let k = 0; k < 9; k++) rect(g, W * (.23 + k * .062), b - H * .6, W * .035, H * .05, wall, INK, 1.5);
+      tower(W * .05, W * .2, H * .82); tower(W * .75, W * .2, H * .82);
+      arch(g, W * .5, b, W * .14, H * .3, '#5a3a28');
+      for (const x of [.33, .42, .58, .67]) rect(g, W * x - 6, b - H * .42, 12, H * .07, '#5a3a28', INK, 1); },
+    zelligeWall(g, W, H) { const split = H * .55;
+      rect(g, 0, 0, W, split, '#efe4d2', null); noise(g, W, split, 900, '120,100,80', .06);
+      for (const x of [.22, .78]) { arch(g, W * x, split - H * .08, W * .12, H * .38, '#9fc3d6'); g.save(); g.clip(); g.strokeStyle = 'rgba(80,55,35,.8)'; g.lineWidth = 3; for (let k = -20; k < 20; k++) { g.beginPath(); g.moveTo(W * x + k * 14, split); g.lineTo(W * x + k * 14 + 200, split - 200); g.moveTo(W * x + k * 14, split); g.lineTo(W * x + k * 14 - 200, split - 200); g.stroke(); } g.restore(); }
+      rect(g, 0, split, W, H * .05, '#7a5232'); const s = H * .1, cols = ['#3f7d6b', '#2e5b8a', '#c8963e', '#f3efe6'];
+      rect(g, 0, split + H * .05, W, H - split - H * .05, '#26323a', null);
+      for (let y = split + H * .05 + s / 2, r = 0; y < H + s; y += s, r++) for (let x = (r % 2) * s / 2; x < W + s; x += s) star8(g, x, y, s * .46, cols[(Math.floor(x / s) + r) % cols.length]); },
+    archDoor(g, W, H) { rect(g, 0, 0, W, H, '#ece0cc', null); noise(g, W, H, 400, '120,100,80', .06); arch(g, W * .5, H, W * .62, H * .86, '#7a4a2a');
+      for (let x = W * .25; x < W * .78; x += W * .09) for (let y = H * .3; y < H; y += H * .09) disc(g, x, y, 3, '#d9b46a', null);
+      g.strokeStyle = '#c8963e'; g.lineWidth = 6; g.beginPath(); g.moveTo(W * .5, H * .22); g.lineTo(W * .5, H); g.stroke(); },
+    teaTray(g, W, H) { ell(g, W * .5, H * .86, W * .46, H * .1, '#c99a3e'); ell(g, W * .5, H * .84, W * .4, H * .07, '#dcb55a', null);
+      const tp = [W * .38, H * .6]; ell(g, tp[0], tp[1], W * .13, H * .2, '#c7c9cf'); poly(g, [[tp[0] - W * .08, H * .8], [tp[0] + W * .08, H * .8], [tp[0] + W * .06, H * .75], [tp[0] - W * .06, H * .75]], '#aeb1b8');
+      poly(g, [[tp[0] + W * .1, H * .62], [tp[0] + W * .26, H * .36], [tp[0] + W * .27, H * .38], [tp[0] + W * .12, H * .68]], '#aeb1b8');
+      g.strokeStyle = INK; g.lineWidth = 5; g.beginPath(); g.arc(tp[0] - W * .14, tp[1], H * .12, Math.PI * .6, Math.PI * 1.4); g.stroke();
+      poly(g, [[tp[0] - W * .05, H * .42], [tp[0] + W * .05, H * .42], [tp[0], H * .3]], '#aeb1b8'); disc(g, tp[0], H * .28, W * .015, '#aeb1b8');
+      for (const x of [.64, .74, .84]) { poly(g, [[W * x - W * .035, H * .82], [W * x + W * .035, H * .82], [W * x + W * .045, H * .56], [W * x - W * .045, H * .56]], 'rgba(210,140,60,.85)'); rect(g, W * x - W * .043, H * .6, W * .086, H * .05, '#d9b46a', INK, 1); } },
+    pot(g, W, H) { poly(g, [[W * .3, H * .62], [W * .7, H * .62], [W * .62, H], [W * .38, H]], '#b5643e'); rect(g, W * .27, H * .58, W * .46, H * .07, '#9c5233');
+      for (let i = 0; i < 9; i++) leaf(g, W * .5, H * .6, -Math.PI / 2 + (i - 4) * .28, H * (.38 + (i % 3) * .1), W * .06, i % 2 ? '#4f7d43' : '#679a55'); },
+    shelves(g, W, H) { rect(g, W * .04, 0, W * .92, H, '#a8794d'); const cols = ['#d0583d', '#3f78b8', '#e0b13c', '#5a9a5a', '#8a5aa8'];
+      for (let r = 0; r < 3; r++) { const y = H * (.32 + r * .32); rect(g, W * .04, y, W * .92, H * .04, '#7a5232'); rect(g, W * .08, y - H * .26, W * .84, H * .26, '#e9dcc6', null);
+        let x = W * .14; while (x < W * .84) { const kind = Math.floor(rnd() * 3), c = cols[Math.floor(rnd() * cols.length)];
+          if (kind === 0) { cube(g, x + W * .04, y, H * .1, c); x += W * .12; } else if (kind === 1) { disc(g, x + W * .04, y - H * .08, H * .08, c); x += W * .11; } else { for (let k = 0; k < 4; k++) rect(g, x + k * W * .022, y - H * .2, W * .02, H * .2, cols[(k + r) % 5], INK, 1.5); x += W * .12; } } } },
+    blocks(g, W, H) { const cols = ['#d0583d', '#3f78b8', '#e0b13c', '#5a9a5a']; const s = W * .2;
+      [[.3, 1, 0], [.7, 1, 1], [.5, 1 - .22, 2], [.3, 1 - .44, 3], [.7, 1 - .44, 0], [.5, 1 - .66, 1]].forEach(([x, y, c]) => cube(g, W * x, H * y - 4, s, cols[c])); },
+    windowDay(g, W, H) { rect(g, 0, 0, W, H, '#e7eef3', null); const x = W * .2, y = H * .15, w = W * .6, h = H * .6;
+      const gr = g.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, '#9cc8e8'); gr.addColorStop(1, '#d9ecf6'); rect(g, x, y, w, h, gr);
+      ell(g, x + w * .3, y + h * .3, w * .12, h * .06, '#ffffff', null); ell(g, x + w * .42, y + h * .28, w * .1, h * .07, '#ffffff', null);
+      rect(g, x + w / 2 - 4, y, 8, h, '#ffffff'); rect(g, x, y + h / 2 - 4, w, 8, '#ffffff'); rect(g, x - 10, y + h, w + 20, 14, '#d6d0c4');
+      poly(g, [[x - W * .12, y - 10], [x + w * .08, y - 10], [x - W * .02, y + h + 10], [x - W * .14, y + h + 10]], '#c8b28a'); poly(g, [[x + w * .92, y - 10], [x + w + W * .12, y - 10], [x + w + W * .14, y + h + 10], [x + w + W * .02, y + h + 10]], '#c8b28a'); },
+    blackboard(g, W, H) { rect(g, 0, 0, W, H, '#ede6d6', null); rect(g, W * .06, H * .12, W * .88, H * .66, '#7a5232'); rect(g, W * .08, H * .15, W * .84, H * .6, '#2f4a3c', null);
+      g.strokeStyle = 'rgba(240,240,230,.75)'; g.lineWidth = 4; g.beginPath(); g.moveTo(W * .15, H * .65); g.lineTo(W * .3, H * .25); g.lineTo(W * .42, H * .65); g.closePath(); g.stroke();
+      g.beginPath(); g.arc(W * .6, H * .45, H * .15, 0, 7); g.stroke(); g.beginPath(); g.moveTo(W * .72, H * .66); g.lineTo(W * .88, H * .66); g.moveTo(W * .74, H * .68); g.lineTo(W * .74, H * .24); g.stroke();
+      g.beginPath(); g.moveTo(W * .74, H * .6); g.quadraticCurveTo(W * .8, H * .2, W * .87, H * .3); g.stroke(); rect(g, W * .06, H * .78, W * .88, H * .04, '#7a5232'); },
+    desks(g, W, H) { for (const x of [.08, .38, .68]) { rect(g, W * x, H * .45, W * .26, H * .08, '#b88b55'); rect(g, W * x + 8, H * .53, 10, H * .47, '#5b5b62', null); rect(g, W * (x + .26) - 18, H * .53, 10, H * .47, '#5b5b62', null);
+      rect(g, W * (x + .08), H * .62, W * .1, H * .06, '#3f78b8'); rect(g, W * (x + .08) + 4, H * .68, 8, H * .32, '#5b5b62', null); } },
+    tree(g, W, H) { poly(g, [[W * .45, H], [W * .55, H], [W * .53, H * .45], [W * .47, H * .45]], '#7a5a3a');
+      [[.5, .3, .3, '#5f8f4a'], [.3, .42, .22, '#6f9e55'], [.7, .42, .22, '#557f42'], [.5, .5, .24, '#6a9a50'], [.38, .2, .18, '#79a85e']].forEach(([x, y, r, c]) => disc(g, W * x, H * y, W * r, c)); },
+    bush(g, W, H) { [[.25, .7, .25, '#5f8f4a'], [.5, .55, .3, '#6f9e55'], [.75, .7, .25, '#557f42']].forEach(([x, y, r, c]) => disc(g, W * x, H * y, Math.min(W, H) * r * 1.4, c)); rect(g, 0, H * .92, W, H * .08, '#557f42', null); },
+    fence(g, W, H) { for (let x = W * .02; x < W; x += W * .08) poly(g, [[x, H], [x + W * .05, H], [x + W * .05, H * .2], [x + W * .025, H * .08], [x, H * .2]], '#d9c4a0'); rect(g, 0, H * .35, W, H * .07, '#c4ab83'); rect(g, 0, H * .7, W, H * .07, '#c4ab83'); },
+    hills(g, W, H, o) { const c = (o && o.colors) || ['#8fb56e', '#79a35c', '#638f4b']; c.forEach((col, i) => { g.beginPath(); g.moveTo(0, H); for (let x = 0; x <= W; x += 8) g.lineTo(x, H * (.3 + .2 * i) - Math.sin(x / W * Math.PI * (1.3 + i * .7) + i * 2) * H * .18); g.lineTo(W, H); g.closePath(); g.fillStyle = col; g.fill(); }); },
+    labShelf(g, W, H) { rect(g, W * .04, 0, W * .92, H, '#cfd4da'); const liq = ['#6a9fd0', '#7fbf7f', '#e0a84a', '#c46a8a'];
+      for (let r = 0; r < 2; r++) { const y = H * (.47 + r * .47); rect(g, W * .04, y, W * .92, H * .04, '#8e959e'); rect(g, W * .08, y - H * .4, W * .84, H * .4, '#eef1f4', null);
+        for (let k = 0; k < 5; k++) { const x = W * (.16 + k * .17), c = liq[(k + r) % 4], t = (k + r) % 3;
+          if (t === 0) { poly(g, [[x - W * .05, y], [x + W * .05, y], [x + W * .015, y - H * .2], [x + W * .015, y - H * .3], [x - W * .015, y - H * .3], [x - W * .015, y - H * .2]], 'rgba(255,255,255,.6)'); poly(g, [[x - W * .045, y - 2], [x + W * .045, y - 2], [x + W * .025, y - H * .1], [x - W * .025, y - H * .1]], c, null); }
+          else if (t === 1) { rect(g, x - W * .04, y - H * .26, W * .08, H * .26, 'rgba(255,255,255,.6)'); rect(g, x - W * .04, y - H * .13, W * .08, H * .13, c, null); }
+          else { disc(g, x, y - H * .1, W * .05, c); rect(g, x - W * .012, y - H * .3, W * .024, H * .12, 'rgba(255,255,255,.7)'); } } } },
+    crane(g, W, H) { const col = '#d9a63c', x = W * .3;
+      rect(g, x - W * .05, H * .95, W * .1, H * .05, '#7d7d84');
+      for (let y = H * .95; y > H * .12; y -= W * .1) { rect(g, x - W * .04, y - W * .1, W * .08, W * .1, null, col, 4); g.strokeStyle = col; g.lineWidth = 3; g.beginPath(); g.moveTo(x - W * .04, y); g.lineTo(x + W * .04, y - W * .1); g.stroke(); }
+      rect(g, W * .05, H * .08, W * .9, H * .04, col); for (let k = 0; k < 14; k++) { g.strokeStyle = col; g.lineWidth = 3; g.beginPath(); g.moveTo(W * (.05 + k * .064), H * .12); g.lineTo(W * (.08 + k * .064), H * .08); g.stroke(); }
+      rect(g, W * .05, H * .12, W * .12, H * .06, '#7d7d84'); g.strokeStyle = INK; g.lineWidth = 2; g.beginPath(); g.moveTo(W * .8, H * .12); g.lineTo(W * .8, H * .5); g.stroke(); rect(g, W * .77, H * .5, W * .06, H * .05, '#c9b48a'); },
+    scaffold(g, W, H) { const pole = '#8e959e', plank = '#b88b55';
+      for (let x = W * .05; x < W; x += W * .3) rect(g, x, 0, W * .03, H, pole, INK, 1.5);
+      for (let y = H * .3; y < H; y += H * .33) { rect(g, 0, y, W, H * .05, plank); g.strokeStyle = pole; g.lineWidth = 4; for (let x = W * .05; x < W * .9; x += W * .3) { g.beginPath(); g.moveTo(x, y); g.lineTo(x + W * .3, y - H * .3); g.stroke(); } }
+      rect(g, W * .15, H * .3 - H * .2, W * .6, H * .2, '#d7cbb7', INK, 1.5); for (let y = H * .14; y < H * .3; y += H * .04) { g.strokeStyle = 'rgba(120,90,60,.5)'; g.beginPath(); g.moveTo(W * .15, y); g.lineTo(W * .75, y); g.stroke(); } },
+    bricks(g, W, H) { const bw = W / 6, bh = H / 7;
+      for (let r = 0; r < 7; r++) { const n = 6 - Math.floor(r / 2); for (let k = 0; k < n; k++) { const x = (W - n * bw) / 2 + k * bw + (r % 2) * bw / 4; rect(g, x, H - (r + 1) * bh, bw - 3, bh - 3, mix('#b5643e', '#c98252', rnd())); } } },
+  };
+
+  /* ---------- ground and support textures ---------- */
+  const T = {
+    sand() { const [c, g] = cnv(512, 512); g.fillStyle = '#e1c28b'; g.fillRect(0, 0, 512, 512); noise(g, 512, 512, 5000, '140,100,50', .12);
+      g.strokeStyle = 'rgba(160,115,60,.25)'; g.lineWidth = 3; for (let y = 0; y < 512; y += 26) { g.beginPath(); for (let x = 0; x <= 512; x += 16) g.lineTo(x, y + Math.sin(x / 40 + y) * 6); g.stroke(); } return c; },
+    bejmat() { const [c, g] = cnv(512, 512); g.fillStyle = '#6e3b26'; g.fillRect(0, 0, 512, 512); const w = 64, h = 21;
+      for (let r = 0; r < 512 / h + 1; r++) for (let x = -(r % 2) * w / 2; x < 512; x += w) { g.fillStyle = mix('#b5643e', '#c98252', rnd()); g.fillRect(x + 2, r * h + 2, w - 4, h - 4); } return c; },
+    wood() { const [c, g] = cnv(512, 512); g.fillStyle = '#9a6a40'; g.fillRect(0, 0, 512, 512);
+      for (let i = 0; i < 160; i++) { const y = rnd() * 512; g.strokeStyle = rnd() < .5 ? `rgba(60,35,18,${.05 + rnd() * .1})` : `rgba(200,150,100,${.05 + rnd() * .1})`; g.lineWidth = 1 + rnd() * 3; g.beginPath(); g.moveTo(0, y); for (let x = 0; x <= 512; x += 32) g.lineTo(x, y + Math.sin(x / 90 + i) * 5); g.stroke(); }
+      g.strokeStyle = 'rgba(50,30,15,.5)'; g.lineWidth = 2; for (let y = 0; y < 512; y += 64) { g.beginPath(); g.moveTo(0, y); g.lineTo(512, y); g.stroke(); } return c; },
+    floorPlanks() { const c = T.wood(), g = c.getContext('2d'); g.fillStyle = 'rgba(255,240,220,.15)'; g.fillRect(0, 0, 512, 512); return c; },
+    grass() { const [c, g] = cnv(512, 512); g.fillStyle = '#7aa458'; g.fillRect(0, 0, 512, 512); for (let i = 0; i < 6000; i++) { g.strokeStyle = rnd() < .5 ? 'rgba(60,110,40,.35)' : 'rgba(150,190,100,.35)'; g.lineWidth = 1.5; const x = rnd() * 512, y = rnd() * 512; g.beginPath(); g.moveTo(x, y); g.lineTo(x + rnd() * 4 - 2, y - 6 - rnd() * 6); g.stroke(); } return c; },
+    darkGrass() { const c = T.grass(), g = c.getContext('2d'); g.fillStyle = 'rgba(10,20,40,.7)'; g.fillRect(0, 0, 512, 512); return c; },
+    tiles() { const [c, g] = cnv(512, 512); for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) { g.fillStyle = (x + y) % 2 ? '#d8d6cf' : '#c4c2bb'; g.fillRect(x * 64, y * 64, 64, 64); } noise(g, 512, 512, 2500, '80,80,80', .08); return c; },
+    lino() { const [c, g] = cnv(512, 512); g.fillStyle = '#b9c4c9'; g.fillRect(0, 0, 512, 512); noise(g, 512, 512, 6000, '60,70,80', .15); return c; },
+    rug() { const [c, g] = cnv(512, 512); g.fillStyle = '#9a5a46'; g.fillRect(0, 0, 512, 512); g.strokeStyle = 'rgba(239,228,210,.45)'; g.lineWidth = 5;
+      for (let x = -512; x < 1024; x += 64) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x + 512, 512); g.moveTo(x + 512, 0); g.lineTo(x, 512); g.stroke(); }
+      g.fillStyle = 'rgba(224,180,110,.55)'; for (let x = 32; x < 512; x += 64) for (let y = 0; y < 512; y += 64) { g.beginPath(); g.moveTo(x, y + 14); g.lineTo(x + 10, y + 32); g.lineTo(x, y + 50); g.lineTo(x - 10, y + 32); g.fill(); }
+      g.strokeStyle = '#4a3a34'; g.lineWidth = 22; g.strokeRect(11, 11, 490, 490); return c; },
+    playmat() { const [c, g] = cnv(512, 512); g.fillStyle = '#9db59a'; g.fillRect(0, 0, 512, 512); g.strokeStyle = 'rgba(255,255,255,.35)'; g.lineWidth = 3; for (let i = 0; i <= 512; i += 64) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 512); g.moveTo(0, i); g.lineTo(512, i); g.stroke(); } return c; },
+    dirt() { const [c, g] = cnv(512, 512); g.fillStyle = '#b59a78'; g.fillRect(0, 0, 512, 512); noise(g, 512, 512, 7000, '90,70,50', .18); for (let i = 0; i < 60; i++) disc(g, rnd() * 512, rnd() * 512, 2 + rnd() * 4, 'rgba(120,110,100,.5)', null); return c; },
+    labTop() { const [c, g] = cnv(512, 512); g.fillStyle = '#e9edf0'; g.fillRect(0, 0, 512, 512); noise(g, 512, 512, 3000, '90,100,110', .07); return c; },
+  };
+  const texCache = {}; const getTex = (name, rep) => (texCache[name + rep] ||= tx(T[name](), rep));
+  // world size of one texture tile, so bricks, planks and tiles keep a real size
+  const GROUND_REP = { dirt: 30, sand: 30, bejmat: 8, floorPlanks: 12, grass: 40, darkGrass: 40, tiles: 4, lino: 30 };
+
+  /* ---------- the decors: choose by the real-life context of each mode ---------- */
+  const DECORS = {
+    desert: { back: ['dunes', 'pyramids', 'palm@.08,.55,.16', 'palm@.9,.62,.13'], sky: ['#f6b66b', '#fbe1b0', '#f3d29b'], sun: '#ffefc2', fog: '#f1d3a0', ground: 'sand', support: { kind: 'rug', tex: 'rug' }, light: ['#fff2dc', '#b98a55', 1.05, '#ffd9a0', 1.7],
+      cards: [['pyramids', 90, 34, 0, 115], ['dunes', 120, 16, -48, 120], ['dunes', 120, 16, 48, 120], ['kasbah', 28, 21, -30, 78], ['palm', 14, 22, -60, 50], ['palm', 11, 17, -46, 62], ['palm', 14, 23, 56, 52]] },
+    maison: { back: ['zelligeWall'], sky: ['#e8d8bd', '#efe3cf', '#d9c4a2'], fog: '#e3d2b6', ground: 'bejmat', support: { kind: 'mida', tex: 'wood', h: 9 }, light: ['#fff1de', '#8a6040', 1.05, '#ffe2b8', 1.45],
+      cards: [['zelligeWall', 110, 38, 0, 58], ['archDoor', 34, 38, -60, 56], ['zelligeWall', 70, 38, 60, 58], ['teaTray', 18, 12, 38, 42], ['pot', 11, 18, -38, 44]] },
+    jeux: { back: ['shelves'], sky: ['#cfe3ef', '#e7f0f4', '#d5dfe3'], fog: '#e2ebef', ground: 'floorPlanks', support: { kind: 'table', tex: 'playmat', h: 14 }, light: ['#ffffff', '#9a8a70', 1.15, '#fff6e6', 1.4],
+      cards: [['shelves', 46, 34, -18, 60], ['windowDay', 34, 34, 30, 62], ['blocks', 15, 17, -52, 46], ['shelves', 40, 30, 60, 56]] },
+    classe: { back: ['blackboard'], sky: ['#e6e1d4', '#eeebe2', '#d8d2c2'], fog: '#e6e1d6', ground: 'tiles', support: { kind: 'table', tex: 'wood', h: 14 }, light: ['#ffffff', '#8c8270', 1.1, '#fffaf0', 1.45],
+      cards: [['blackboard', 70, 34, 0, 62], ['windowDay', 30, 32, -55, 60], ['windowDay', 30, 32, 55, 60], ['desks', 50, 15, -30, 46]] },
+    jardin: { back: ['hills', 'tree@.15,.75,.28', 'tree@.85,.8,.24', 'fence@.5,.25,1'], sky: ['#7fb8e6', '#cfe7f6', '#e3f0f7'], clouds: true, fog: '#d8e9f2', ground: 'grass', support: { kind: 'table', tex: 'wood', h: 12 }, light: ['#ffffff', '#6d8f4a', 1.1, '#fff7e0', 1.6],
+      cards: [['hills', 150, 26, 0, 130], ['tree', 24, 30, -30, 72], ['tree', 20, 25, 35, 78], ['bush', 16, 8, -58, 48], ['fence', 60, 9, 50, 52], ['tree', 15, 20, 62, 60]] },
+    labo: { back: ['labShelf'], sky: ['#dfe6ea', '#eef2f4', '#cfd8dd'], fog: '#e3e9ec', ground: 'lino', support: { kind: 'bench', tex: 'labTop', h: 14 }, light: ['#ffffff', '#7d8890', 1.15, '#f4f8ff', 1.4],
+      cards: [['labShelf', 50, 32, -10, 60], ['windowDay', 30, 32, 45, 62], ['labShelf', 36, 28, -58, 52]] },
+    chantier: { back: ['scaffold', 'bricks@.85,.4,.2'], sky: ['#a9c8e0', '#e4ecef', '#d8cfc0'], fog: '#e2e0d8', ground: 'dirt', support: { kind: 'table', tex: 'wood', h: 12 }, light: ['#ffffff', '#8c7a60', 1.1, '#fff4e0', 1.6],
+      cards: [['crane', 40, 46, -20, 110], ['scaffold', 40, 26, 30, 70], ['bricks', 14, 12, -50, 46], ['bricks', 10, 8, 55, 44]] },
+    nuit: { back: ['hills#night', 'tree@.2,.7,.25'], sky: ['#0d1630', '#24365e', '#3b4a6a'], stars: true, moon: true, fog: '#2a3858', ground: 'darkGrass', support: { kind: 'table', tex: 'wood', h: 12 }, light: ['#b8c8ff', '#2a3040', .75, '#dfe8ff', 1.1],
+      cards: [['hills', 150, 24, 0, 130, { colors: ['#22304f', '#1b2742', '#141d33'] }], ['tree', 20, 25, -45, 72], ['tree', 15, 20, 52, 68]] },
+  };
+
+  /* ---------- the backdrop: one calm card at the back of the experiment page ----------
+     layers: 'painter' fills the card; 'painter@x,h,w' draws it in a sub-box (x centre, height, width as fractions) standing on the bottom edge */
+  let back = null, backKey = '';
+  function paintBackdrop(d) {
+    const B = backdrop, w = B.x1 - B.x0, sc = 1024 / w, [c, g] = cnv(1024, Math.round(B.h * sc)), W = c.width, H = c.height;
+    const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, d.sky[0]); gr.addColorStop(1, d.sky[1]); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    if (d.sun) disc(g, W * .78, H * .3, H * .1, d.sun, null);
+    if (d.stars) for (let i = 0; i < 120; i++) { g.fillStyle = 'rgba(255,255,255,.8)'; g.fillRect(rnd() * W, rnd() * H * .5, 2, 2); }
+    for (const layer of d.back) { const [name, box] = layer.split('@'), [pn, flag] = name.split('#'), o = flag === 'night' ? { colors: ['#22304f', '#1b2742', '#141d33'] } : undefined;
+      if (!box) { P[pn](g, W, H, o); continue; }
+      const [x, h, wf] = box.split(',').map(Number), bw = W * wf, bh = H * h; g.save(); g.translate(W * x - bw / 2, H - bh); P[pn](g, bw, bh, o); g.restore(); }
+    // calm: wash toward the page paper, so the experiment in front keeps the contrast
+    g.fillStyle = 'rgba(251,250,246,.38)'; g.fillRect(0, 0, W, H);
+    g.strokeStyle = 'rgba(60,55,60,.6)'; g.lineWidth = 6; g.strokeRect(3, 3, W - 6, H - 6);
+    return tx(c);
+  }
+  function setBackdrop(name) {
+    if (!backdrop) return; const d = DECORS[name];
+    if (!back) { const B = backdrop, plane = new THREE.Mesh(new THREE.PlaneGeometry(B.x1 - B.x0, B.h), new THREE.MeshStandardMaterial({ roughness: 1, side: THREE.DoubleSide }));
+      plane.position.y = B.h / 2; plane.castShadow = true; back = new THREE.Group(); back.add(plane); back.position.set((B.x0 + B.x1) / 2, B.y, B.z); back.rotation.order = 'YXZ';
+      back.userData = { p: 0, goal: 0, delay: 0, plane, maps: {} }; scene.add(back); all.push(back); }
+    const u = back.userData; u.next = name; u.goal = 0; u.delay = 0;
+  }
+
+  /* ---------- scene objects ---------- */
+  const dome = () => { const m = new THREE.Mesh(new THREE.SphereGeometry(420, 48, 24), new THREE.MeshBasicMaterial({ side: THREE.BackSide, fog: false, transparent: true, depthWrite: false }));
+    m.renderOrder = -10; scene.add(m); return m; };
+  const skyA = dome(), skyB = dome();
+  function skyTexture(d) { const [c, g] = cnv(1024, 512), gr = g.createLinearGradient(0, 0, 0, 512);
+    gr.addColorStop(0, d.sky[0]); gr.addColorStop(.48, d.sky[1]); gr.addColorStop(.52, d.fog); gr.addColorStop(1, d.sky[2]); g.fillStyle = gr; g.fillRect(0, 0, 1024, 512);
+    if (d.sun) { const sg = g.createRadialGradient(768, 228, 4, 768, 228, 90); sg.addColorStop(0, d.sun); sg.addColorStop(.25, d.sun); sg.addColorStop(1, 'rgba(255,220,160,0)'); g.fillStyle = sg; g.fillRect(600, 100, 340, 260); }
+    if (d.stars) for (let i = 0; i < 500; i++) { g.fillStyle = `rgba(255,255,255,${.3 + rnd() * .7})`; g.fillRect(rnd() * 1024, rnd() * 240, 1.5, 1.5); }
+    if (d.moon) { disc(g, 700, 120, 22, '#f2f0e6', null); disc(g, 710, 114, 20, d.sky[0], null); }
+    if (d.clouds) for (let i = 0; i < 14; i++) { const x = rnd() * 1024, y = 90 + rnd() * 120; for (let k = 0; k < 4; k++) ell(g, x + k * 22, y + (k % 2) * 6, 30, 12, 'rgba(255,255,255,.8)', null); }
+    return tx(c); }
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(900, 900), new THREE.MeshStandardMaterial({ roughness: 1 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+  const support = new THREE.Group(); scene.add(support);
+  const supMat = new THREE.MeshStandardMaterial({ roughness: .85 }), legMat = new THREE.MeshStandardMaterial({ color: 0x6b4a2f, roughness: .8 });
+  function buildSupport(s) {
+    while (support.children.length) { const c = support.children.pop(); c.geometry && c.geometry.dispose && c.geometry.dispose(); }
+    supMat.map = getTex(s.tex, s.kind === 'rug' ? 1 : 2); supMat.needsUpdate = true; const h = s.h || 0;
+    const add = (geo, m, x, y, z) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.castShadow = o.receiveShadow = true; support.add(o); return o; };
+    if (s.kind === 'rug') add(new THREE.BoxGeometry(66, .3, 46), supMat, 0, -.15, 0);
+    else if (s.kind === 'mida') { add(new THREE.CylinderGeometry(31, 31, 1.6, 64), supMat, 0, -.8, 0); add(new THREE.CylinderGeometry(28, 28, 3, 64, 1, true), legMat, 0, -3, 0);
+      for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; add(new THREE.BoxGeometry(2, h - 1.6, 2), legMat, 26 * Math.cos(a), -1.6 - (h - 1.6) / 2, 26 * Math.sin(a)); } }
+    else if (s.kind === 'bench') { add(new THREE.BoxGeometry(70, 2, 48), supMat, 0, -1, 0); add(new THREE.BoxGeometry(64, h - 2, 42), new THREE.MeshStandardMaterial({ color: 0x5d6b78, roughness: .7 }), 0, -2 - (h - 2) / 2, 0); }
+    else { add(new THREE.BoxGeometry(66, 1.6, 46), supMat, 0, -.8, 0); for (const [x, z] of [[-30, -20], [30, -20], [-30, 20], [30, 20]]) add(new THREE.BoxGeometry(2.2, h - 1.6, 2.2), legMat, x, -1.6 - (h - 1.6) / 2, z); }
+    ground.position.y = -(s.kind === 'rug' ? .3 : h);
+  }
+
+  // cards: [painter, width, height (world cm), angle (deg, 0 = behind the book, + = right), distance, options]
+  const built = {}, all = [];
+  function buildCards(name) {
+    if (built[name]) return built[name];
+    const d = DECORS[name], wash = d.fog;
+    built[name] = d.cards.map(([p, w, h, a, dist, o]) => {
+      const sc = 512 / Math.max(w, h), [c, g] = cnv(Math.round(w * sc), Math.round(h * sc));
+      P[p](g, c.width, c.height, o);
+      g.globalCompositeOperation = 'source-atop'; g.fillStyle = wash; g.globalAlpha = .14; g.fillRect(0, 0, c.width, c.height); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+      const plane = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: tx(c), alphaTest: .5, transparent: false, side: THREE.DoubleSide, roughness: 1 }));
+      plane.position.y = h / 2;
+      const pivot = new THREE.Group(), r = THREE.MathUtils.degToRad(a); pivot.add(plane);
+      pivot.rotation.order = 'YXZ'; pivot.rotation.y = -r; pivot.position.set(Math.sin(r) * dist, 0, -Math.cos(r) * dist);
+      pivot.userData = { p: 0, goal: 0, delay: 0 }; pivot.visible = false; scene.add(pivot); all.push(pivot); return pivot;
+    });
+    return built[name];
+  }
+
+  let current = null, fade = 1, lightFrom = null, lightTo = null, lightT = 1;
+  const lightNow = () => [hemi.color.getHexString ? '#' + hemi.color.getHexString() : '#ffffff', hemi.groundColor && hemi.groundColor.getHexString ? '#' + hemi.groundColor.getHexString() : '#888888', hemi.intensity, sun.color.getHexString ? '#' + sun.color.getHexString() : '#ffffff', sun.intensity];
+  function use(name) {
+    if (!DECORS[name] || name === current) return;
+    const d = DECORS[name], old = current; current = name;
+    all.forEach(c => { c.userData.goal = 0; c.userData.delay = 0; }); setBackdrop(name);
+    buildCards(name).forEach((c, i) => { c.userData.goal = 1; c.userData.delay = (old ? .35 : .2) + i * .08; });
+    if (old) { skyB.material.map = skyTexture(d); skyB.material.needsUpdate = true; skyB.material.opacity = 0; fade = 0; }
+    else { skyA.material.map = skyTexture(d); skyA.material.needsUpdate = true; skyA.material.opacity = 1; fade = 1; }
+    ground.material.map = getTex(d.ground, GROUND_REP[d.ground] || 20); ground.material.needsUpdate = true;
+    buildSupport(d.support);
+    scene.fog = new THREE.Fog(d.fog, 90, 330); scene.background = new THREE.Color(d.fog);
+    lightFrom = lightNow(); lightTo = d.light; lightT = 0;
+    if (reduce) { all.forEach(c => { c.userData.p = c.userData.goal; c.userData.delay = 0; }); if (back) back.userData.p = 0; fade = 1; lightT = 1; }
+  }
+  function update(dt) {
+    if (fade < 1) { fade = Math.min(1, fade + dt / .8); skyB.material.opacity = fade; skyA.material.opacity = 1 - fade;
+      if (fade >= 1) { const m = skyA.material.map; skyA.material.map = skyB.material.map; skyB.material.map = m || null; skyA.material.opacity = 1; skyB.material.opacity = 0; skyA.material.needsUpdate = skyB.material.needsUpdate = true; } }
+    if (lightT < 1 && lightTo) { lightT = Math.min(1, lightT + dt / .8); const t = lightT;
+      hemi.color.set(mix(lightFrom[0], lightTo[0], t)); hemi.groundColor && hemi.groundColor.set && hemi.groundColor.set(mix(lightFrom[1], lightTo[1], t));
+      hemi.intensity = lightFrom[2] + (lightTo[2] - lightFrom[2]) * t; sun.color.set(mix(lightFrom[3], lightTo[3], t)); sun.intensity = lightFrom[4] + (lightTo[4] - lightFrom[4]) * t; }
+    if (back && back.userData.next && back.userData.p <= 0.001) { const u = back.userData, n = u.next;
+      u.plane.material.map = u.maps[n] ||= paintBackdrop(DECORS[n]); u.plane.material.needsUpdate = true; u.next = null; u.goal = 1; u.delay = .15; }
+    for (const c of all) { const u = c.userData;
+      if (u.delay > 0) { u.delay -= dt; continue; }
+      if (reduce) u.p = u.goal;
+      if (u.p !== u.goal) u.p += Math.sign(u.goal - u.p) * Math.min(Math.abs(u.goal - u.p), dt / .45);
+      c.visible = u.p > .001;
+      const e = u.p < .5 ? 2 * u.p * u.p : 1 - Math.pow(-2 * u.p + 2, 2) / 2, over = Math.sin(Math.PI * u.p) * .12 * (u.goal ? 1 : 0);
+      c.rotation.x = -(1 - e) * Math.PI / 2 + over;
+    }
+  }
+  skyA.material.opacity = 1; skyB.material.opacity = 0;
+  return { use, update, names: Object.keys(DECORS), painters: P, textures: T, decors: DECORS, get current() { return current; } };
+}
+/* DECOR:END */
+const decor = makeDecorKit({ THREE, scene, renderer, hemi, sun, backdrop: { x0: 0.5, x1: 20.5, z: -12.8, y: PAGE_Y, h: 13 } });
+const DECOR = 'chantier';   // one decor for the whole lesson: builders: the ladder, the 12-knot rope, right angles
+
+/* ---------- Canvas textures ---------- */
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
+function tex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; }
+const AR_FONT = '"Noto Naskh Arabic","Geeza Pro",Arial,serif', HAND = '"Comic Sans MS","Chalkboard SE","Marker Felt",cursive';
+function paperBase(g, w, h, spineRight) {
+  g.fillStyle = '#fbfaf6'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 3000; i++) { g.fillStyle = `rgba(120,110,90,${Math.random() * .05})`; g.fillRect(Math.random() * w, Math.random() * h, 2, 2); }
+  g.strokeStyle = 'rgba(80,80,90,.10)'; g.lineWidth = 1.2;
+  for (let i = -h; i < h; i += 7) { const x0 = spineRight ? w - 60 : 0; g.beginPath(); g.moveTo(x0, i); g.lineTo(x0 + 60, i + 60); g.stroke(); }
+}
+function leftPageTexture() {
+  const W = 1000, H = 1300, [c, g] = makeCanvas(W, H); paperBase(g, W, H, true);
+  const ar = S.lang === 'ar', X = ar ? W - 90 : 90, setDir = () => { g.direction = ar ? 'rtl' : 'ltr'; g.textAlign = ar ? 'right' : 'left'; };
+  setDir(); g.fillStyle = '#26262b';
+  g.font = `700 ${ar ? 76 : 64}px ${AR_FONT}`; g.fillText(tr('مبرهنة فيثاغورس', 'Le théorème de Pythagore'), X, 180);
+  g.strokeStyle = '#d1153f'; g.lineWidth = 4; g.beginPath(); g.moveTo(X, 212); g.lineTo(ar ? X - 470 : X + 470, 216); g.stroke();
+  g.font = `700 ${ar ? 44 : 38}px ${AR_FONT}`;
+  g.fillText(tr('ABC مثلث قائم الزاوية في C:', 'ABC est rectangle en C :'), X, 320);
+  g.direction = 'ltr'; g.textAlign = 'center'; g.font = `700 66px ${HAND}`; g.fillStyle = '#2f5bd3'; g.fillText('AB² = AC² + BC²', W / 2, 430);
+  setDir(); g.fillStyle = '#26262b'; g.font = `700 ${ar ? 44 : 38}px ${AR_FONT}`;
+  g.fillText(tr('المبرهنة العكسية: إذا كان AB² = AC² + BC²', 'Réciproque : si AB² = AC² + BC²,'), X, 560);
+  g.fillText(tr('فإن المثلث ABC قائم الزاوية في C.', 'alors ABC est rectangle en C.'), X, 625);
+  g.font = `${ar ? 40 : 34}px ${AR_FONT}`;
+  const lines = ar ? ['الوتر AB هو أكبر ضلع، ويقابل الزاوية القائمة.', 'لحساب ضلع من ضلعي الزاوية القائمة نطرح:', 'AC² = AB² − BC²، ثم نأخذ الجذر.'] : ["L'hypoténuse AB est le plus grand côté, face à l'angle droit.", "Pour un côté de l'angle droit, on soustrait :", 'AC² = AB² − BC², puis la racine carrée.'];
+  lines.forEach((l, i) => g.fillText(ar ? isoLatin(l) : l, X, 780 + i * 80));
+  g.font = `${ar ? 32 : 28}px ${AR_FONT}`; g.fillStyle = '#6a6a72';
+  g.fillText(tr('حرّك المؤشر أو استعمل الزرين − و +. اسحب الفراغ لتدوير الكتاب.', 'Déplace le curseur ou utilise − et +. Glisse dans le vide pour tourner.'), X, 1200);
+  return tex(c);
+}
+const PX = 48;
+function rightPageTexture() {
+  const W = 20 * PX, H = 26 * PX, [c, g] = makeCanvas(W, H); paperBase(g, W, H, false);
+  const X = x => (x - 0.5) * PX, Z = z => (z + 13) * PX;
+  g.strokeStyle = 'rgba(70,90,130,.14)'; g.lineWidth = 1;
+  for (let x = 2; x <= 19; x++) { g.beginPath(); g.moveTo(X(x), Z(-11.5)); g.lineTo(X(x), Z(5.5)); g.stroke(); }
+  for (let z = -11.5; z <= 5.5; z++) { g.beginPath(); g.moveTo(X(2), Z(z)); g.lineTo(X(19), Z(z)); g.stroke(); }
+  return tex(c);
+}
+
+/* ---------- Desk and book ---------- */
+const pencil = new THREE.LineBasicMaterial({ color: 0x4a4a52 });
+function withEdges(mesh, thr = 20) { mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, thr), pencil)); return mesh; }
+const cover = new THREE.Mesh(new THREE.BoxGeometry(43, 0.35, 28.4), new THREE.MeshStandardMaterial({ color: 0x7b2d26, roughness: .8 }));
+cover.position.set(0, 0.175, 0); cover.castShadow = cover.receiveShadow = true; scene.add(cover);
+const edgeMat = new THREE.MeshStandardMaterial({ color: 0xf1ede2, roughness: .95 });
+const rightTop = new THREE.MeshStandardMaterial({ map: rightPageTexture(), roughness: .95 });
+const leftTop = new THREE.MeshStandardMaterial({ map: leftPageTexture(), roughness: .95 });
+const rightPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), [edgeMat, edgeMat, rightTop, edgeMat, edgeMat, edgeMat]));
+rightPage.position.set(10.5, 0.35 + (PAGE_Y - 0.35) / 2, 0); rightPage.receiveShadow = rightPage.castShadow = true; scene.add(rightPage);
+const leftPage = withEdges(new THREE.Mesh(new THREE.BoxGeometry(20, PAGE_Y - 0.35, 26), [edgeMat, edgeMat, leftTop, edgeMat, edgeMat, edgeMat]));
+leftPage.position.set(-10.5, 0.35 + (PAGE_Y - 0.35) / 2 + 0.25, 0); leftPage.rotation.z = 0.025; leftPage.receiveShadow = leftPage.castShadow = true; scene.add(leftPage);
+function refreshPages() { leftTop.map.dispose(); leftTop.map = leftPageTexture(); leftTop.needsUpdate = true; panelKey = ''; }
+
+/* the slider's label and ticks live on their own panel, hidden with the slider */
+function makePanel(x0, x1, z0, z1) {
+  const [c, g] = makeCanvas(Math.round((x1 - x0) * PX), Math.round((z1 - z0) * PX)), t = tex(c);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2; m.position.set((x0 + x1) / 2, PAGE_Y + 0.003, (z0 + z1) / 2); m.renderOrder = 1; scene.add(m);
+  return { m, g, t, X: x => (x - x0) * PX, Z: z => (z - z0) * PX, W: c.width, H: c.height };
+}
+const sliderPanel = makePanel(TRACK.x0 - 1.5, TRACK.x1 + 1.5, TRACK.z - 2.2, TRACK.z + 2.2);
+let panelKey = '';
+function drawPanel(title, k0, k1) {
+  const key = S.lang + title + k0 + k1; if (key === panelKey) return; panelKey = key;
+  const P = sliderPanel, g = P.g; g.clearRect(0, 0, P.W, P.H);
+  g.fillStyle = '#26262b'; g.direction = S.lang === 'ar' ? 'rtl' : 'ltr'; g.textAlign = 'center'; g.font = `700 32px ${AR_FONT}`;
+  g.fillText(title, P.X((TRACK.x0 + TRACK.x1) / 2), P.Z(TRACK.z - 1.3));
+  g.direction = 'ltr'; g.font = `26px ${HAND}`; g.fillStyle = '#555';
+  const dg = Number.isInteger(k0) && Number.isInteger(k1) ? 0 : 1; g.fillText(fmt(k0, dg), P.X(TRACK.x0), P.Z(TRACK.z + 1.6)); g.fillText(fmt(k1, dg), P.X(TRACK.x1), P.Z(TRACK.z + 1.6));
+  g.strokeStyle = '#444'; g.lineWidth = 2;
+  for (let i = 0; i <= 10; i++) { const x = P.X(TRACK.x0 + (TRACK.x1 - TRACK.x0) * i / 10); g.beginPath(); g.moveTo(x, P.Z(TRACK.z + .55)); g.lineTo(x, P.Z(TRACK.z + (i % 5 ? .8 : 1))); g.stroke(); }
+  P.t.needsUpdate = true;
+}
+
+/* ---------- Immediate-mode pools ---------- */
+function makeSegEntry(max) {
+  const geo = new THREE.BufferGeometry(), attr = new THREE.BufferAttribute(new Float32Array(max * 18), 3);
+  geo.setAttribute('position', attr);
+  const mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0, transparent: true, side: THREE.DoubleSide, depthWrite: false }));
+  mesh.frustumCulled = false; mesh.renderOrder = 2; mesh.visible = false; scene.add(mesh);
+  return { mesh, geo, attr, max };
+}
+const segPool = Array.from({ length: 20 }, () => makeSegEntry(64)); let segUsed = 0;
+// flat ribbons at height y: segs = [[x1,z1,x2,z2], ...]
+function drawSegs(segs, color, w = 0.12, y = YL, opacity = 1) {
+  const e = segPool[segUsed++]; if (!e) return;
+  const A = e.attr.array, n = Math.min(segs.length, e.max); let k = 0;
+  for (let i = 0; i < n; i++) {
+    const [x1, z1, x2, z2] = segs[i], dx = x2 - x1, dz = z2 - z1, L = Math.hypot(dx, dz); if (L < 1e-6) continue;
+    const nx = -dz / L * w / 2, nz = dx / L * w / 2, q = [x1 + nx, z1 + nz, x1 - nx, z1 - nz, x2 - nx, z2 - nz, x2 + nx, z2 + nz];
+    for (const j of [0, 1, 2, 0, 2, 3]) { A[k++] = q[2 * j]; A[k++] = y; A[k++] = q[2 * j + 1]; }
+  }
+  e.geo.setDrawRange(0, k / 3); e.attr.needsUpdate = true; e.mesh.material.color.set(color); e.mesh.material.opacity = opacity; e.mesh.visible = true;
+}
+const squareSegs = (c, s) => { const h = s / 2, p = [[c.x - h, c.y - h], [c.x + h, c.y - h], [c.x + h, c.y + h], [c.x - h, c.y + h]]; return p.map((a, i) => [a[0], a[1], p[(i + 1) % 4][0], p[(i + 1) % 4][1]]); };
+
+const labPool = Array.from({ length: 14 }, () => {
+  const [c, g] = makeCanvas(192, 96), t = tex(c);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthTest: false }));
+  s.renderOrder = 10; s.visible = false; s.userData = { g, t, key: '' }; scene.add(s); return s;
+});
+let labUsed = 0;
+function drawLabel(text, color, x, y, z, size = 1.3) {
+  const s = labPool[labUsed++]; if (!s) return; const key = text + color;
+  if (s.userData.key !== key) { const g = s.userData.g; g.clearRect(0, 0, 192, 96); g.font = `700 ${text.length > 4 ? 44 : 60}px ${HAND}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 8; g.strokeStyle = 'rgba(251,250,246,.95)'; g.strokeText(text, 96, 50); g.fillStyle = color; g.fillText(text, 96, 50); s.userData.t.needsUpdate = true; s.userData.key = key; }
+  s.scale.set(size * 2, size, 1); s.position.set(x, y, z); s.visible = true;
+}
+
+// prisms between two polygons (same vertex count, up to 48): pyramids, frustums, cones, discs
+function makePrism(material, edgeColor) {
+  const N = 48, geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array((4 * N - 4) * 9), 3));
+  const mesh = new THREE.Mesh(geo, material); mesh.castShadow = true; mesh.frustumCulled = false; mesh.visible = false;
+  const eg = new THREE.BufferGeometry(); eg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3 * N * 6), 3));
+  const edges = new THREE.LineSegments(eg, new THREE.LineBasicMaterial({ color: edgeColor })); edges.frustumCulled = false; edges.visible = false;
+  scene.add(mesh, edges); return { mesh, edges };
+}
+function setPrism(pr, bot, top) {
+  const n = bot.length, P = pr.mesh.geometry.attributes.position, E = pr.edges.geometry.attributes.position; let k = 0;
+  const put = v => P.setXYZ(k++, v.x, v.y, v.z);
+  for (let i = 1; i < n - 1; i++) { put(top[0]); put(top[i]); put(top[i + 1]); put(bot[0]); put(bot[i + 1]); put(bot[i]); }
+  for (let i = 0; i < n; i++) { const j = (i + 1) % n; put(bot[i]); put(bot[j]); put(top[j]); put(bot[i]); put(top[j]); put(top[i]); }
+  pr.mesh.geometry.setDrawRange(0, k); P.needsUpdate = true; pr.mesh.geometry.computeVertexNormals(); pr.mesh.geometry.computeBoundingSphere();
+  k = 0; const putE = (a, b) => { E.setXYZ(k++, a.x, a.y, a.z); E.setXYZ(k++, b.x, b.y, b.z); };
+  for (let i = 0; i < n; i++) { const j = (i + 1) % n; putE(bot[i], bot[j]); putE(top[i], top[j]); if (n <= 8) putE(bot[i], top[i]); }
+  pr.edges.geometry.setDrawRange(0, k); E.needsUpdate = true;
+  pr.mesh.visible = pr.edges.visible = true;
+}
+const sq = (c, y, s, off = V3(0, 0, 0)) => { const h = s / 2; return [[-h, -h], [h, -h], [h, h], [-h, h]].map(([dx, dz]) => V3(c.x + dx + off.x, y + off.y, c.y + dz + off.z)); };
+const circ = (c, y, r, n = 48) => Array.from({ length: n }, (_, i) => V3(c.x + r * Math.cos(2 * Math.PI * i / n), y, c.y + r * Math.sin(2 * Math.PI * i / n)));
+const rep = (p, n) => Array.from({ length: n }, () => p.clone());
+
+const mat = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: .85, side: THREE.DoubleSide, ...o });
+const glassMat = o => mat(0xe9eef6, { transparent: true, opacity: .3, roughness: .25, depthWrite: false, ...o });
+const waterMat = () => mat(0x2f5bd3, { transparent: true, opacity: .62, roughness: .3, depthWrite: false });
+const prTray = [0, 1, 2].map(() => makePrism(glassMat(), 0x55607a)), prWat = [0, 1, 2].map(() => makePrism(waterMat(), 0x1d3d99));
+const prTri = makePrism(mat(0xfdfcf7), 0x303036);
+const prPiece = [0, 1, 2, 3].map(() => makePrism(mat(0xe8710a, { roughness: .7 }), 0x8a4106));
+const prBlue = [0, 1].map(() => makePrism(mat(0x2f5bd3, { transparent: true, opacity: .55, depthWrite: false }), 0x1d3d99));
+const prBox = makePrism(glassMat({ opacity: .22 }), 0x55607a);
+const prFace = [0, 1].map(() => makePrism(mat(0x2f5bd3, { transparent: true, opacity: .25, depthWrite: false }), 0x1d3d99));
+[...prTray, ...prWat, ...prBlue, prBox, ...prFace].forEach(p => p.mesh.castShadow = false);
+// thin cylinders for the ladder, stakes, edges and diagonals in space
+const cylPool = Array.from({ length: 40 }, () => { const m = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 10), new THREE.MeshStandardMaterial({ color: 0x8a6a45, roughness: .7 })); m.castShadow = true; m.visible = false; scene.add(m); return m; });
+let cylUsed = 0;
+function placeCyl(m, a, b, r) { const d = new THREE.Vector3().subVectors(b, a), L = d.length(); m.position.copy(a).addScaledVector(d, .5); m.scale.set(r, L, r); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize()); }
+function drawCyl(a, b, r, color) { const m = cylPool[cylUsed++]; if (!m || a.distanceTo(b) < 1e-4) return; placeCyl(m, a, b, r); m.material.color.set(color); m.visible = true; }
+const dotPool = Array.from({ length: 20 }, () => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 14, 10), new THREE.MeshStandardMaterial({ color: 0, roughness: .5 })); m.castShadow = true; m.visible = false; scene.add(m); return m; });
+let dotUsed = 0;
+function drawDot(p, color, r = .2) { const m = dotPool[dotUsed++]; if (!m) return; m.position.copy(p); m.scale.setScalar(r); m.material.color.set(color); m.visible = true; }
+// the wall of the house for the ladder
+const wall = withEdges(new THREE.Mesh(new THREE.BoxGeometry(1.4, 11.5, 9), new THREE.MeshStandardMaterial({ color: 0xe9dcc4, roughness: .95 })));
+wall.position.set(WALL_X + .7, PAGE_Y + 11.5 / 2, LADDER_Z); wall.castShadow = wall.receiveShadow = true; scene.add(wall);
+
+// slider on the page
+const trackMesh = withEdges(new THREE.Mesh(new THREE.BoxGeometry(TRACK.x1 - TRACK.x0, 0.12, 0.35), new THREE.MeshStandardMaterial({ color: 0xe4e0d4 })));
+trackMesh.position.set((TRACK.x0 + TRACK.x1) / 2, PAGE_Y + 0.06, TRACK.z); scene.add(trackMesh);
+const knob = withEdges(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.7, 24), new THREE.MeshStandardMaterial({ color: 0xfdfcf7, roughness: .8 })), 30);
+knob.castShadow = true; scene.add(knob);
+const knobHit = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 1.4, 12), new THREE.MeshBasicMaterial({ visible: false })); scene.add(knobHit);
+
+/* ---------- Camera ---------- */
+const home = { pos: new THREE.Vector3(), target: new THREE.Vector3(), dist: 60 };
+const view = { W: 1, H: 1, Fw: 1, Fh: 1, freeW: 1, freeH: 1 };
+function measureFree() {
+  const W = innerWidth, H = innerHeight;
+  const cardsEl = document.querySelector('.cards'), column = getComputedStyle(cardsEl).position === 'fixed';
+  const topB = document.querySelector('.top').getBoundingClientRect().bottom;
+  cardsEl.style.top = column ? (topB + 8) + 'px' : '';
+  let hudTop = H;
+  for (const el of [document.getElementById('acts'), document.getElementById('notice'), column ? null : cardsEl]) {
+    if (!el) continue; const r = el.getBoundingClientRect(); if (r.height > 0) hudTop = Math.min(hudTop, r.top);
+  }
+  const left = column ? cardsEl.getBoundingClientRect().right + 8 : 0;
+  const top = topB + 6, bottom = Math.max(top + 80, hudTop - 6);
+  return { W, H, left, right: W, top, bottom };
+}
+function computeHome() {
+  const f = measureFree(), W = f.W, H = f.H, cx = (f.left + f.right) / 2, cy = (f.top + f.bottom) / 2;
+  const Fw = 2 * Math.max(cx, W - cx), Fh = 2 * Math.max(cy, H - cy);
+  Object.assign(view, { W, H, Fw, Fh, freeW: f.right - f.left, freeH: f.bottom - f.top });
+  camera.aspect = Fw / Fh; camera.setViewOffset(Fw, Fh, Fw / 2 - cx, Fh / 2 - cy, W, H);
+  const portrait = view.freeW / view.freeH < 0.9, fitW = portrait ? 24 : 46, fitH = portrait ? 30 : 32;
+  const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  home.dist = Math.max(fitW * Fh / (2 * view.freeW * tv), fitH * Fh / (2 * view.freeH * tv)) * 1.04;
+  home.target.set(portrait ? 9.5 : 0, 3, 0.5);
+  home.pos.copy(home.target).add(new THREE.Vector3(0.08, 0.42, 0.9).normalize().multiplyScalar(home.dist));
+}
+let orbit = null, intro = null;
+function resize(rehome = true) {
+  renderer.setSize(innerWidth, innerHeight, false); computeHome();
+  if (orbit) { orbit.minDistance = home.dist * .5; orbit.maxDistance = home.dist * 1.35;
+    if (rehome && !intro) { camera.position.copy(home.pos); orbit.target.copy(home.target); orbit.update(); } }
+}
+
+/* ---------- Pointer: the slider knob (registered before OrbitControls) ---------- */
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), sliderPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -PAGE_Y);
+function setRay(e) { const r = canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(ndc, camera); }
+function pageHit() { const p = new THREE.Vector3(); return ray.ray.intersectPlane(sliderPlane, p) ? V(p.x, p.z) : null; }
+canvas.addEventListener('pointerdown', e => {
+  setRay(e); const sl = slider(); if (!sl) return;
+  const r = canvas.getBoundingClientRect(), v = knob.position.clone().project(camera);
+  const near = Math.hypot((v.x + 1) / 2 * r.width - (e.clientX - r.left), (1 - v.y) / 2 * r.height - (e.clientY - r.top)) < 40;
+  if (!near && !ray.intersectObjects([knobHit], false).length) return;
+  S.drag = { type: 'knob' }; orbit.enabled = false; canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!S.drag) return; setRay(e); const p = pageHit(), sl = slider(); if (!p || !sl) return;
+  const t = THREE.MathUtils.clamp((p.x - TRACK.x0) / (TRACK.x1 - TRACK.x0), 0, 1);
+  sl.set(Math.round((sl.min + t * (sl.max - sl.min)) / sl.step) * sl.step);
+});
+function endDrag(e) { if (S.drag) { S.drag = null; if (!intro) orbit.enabled = true; try { canvas.releasePointerCapture(e.pointerId); } catch (_) {} } }
+canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+orbit = new OrbitControls(camera, canvas);
+Object.assign(orbit, { enablePan: false, enableDamping: true, dampingFactor: .08, minPolarAngle: .15, maxPolarAngle: 1.3, minAzimuthAngle: -.85, maxAzimuthAngle: .85, rotateSpeed: .6 });
+function startIntro() { computeHome(); const from = home.target.clone().add(new THREE.Vector3(-.35, 1.2, 1.1).normalize().multiplyScalar(home.dist * 1.9));
+  intro = { t0: performance.now(), dur: matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 3000, from }; orbit.enabled = false; orbit.target.copy(home.target); camera.position.copy(from); camera.lookAt(home.target); }
+
+/* ---------- HUD ---------- */
+const cards = [0, 1, 2, 3].map(i => { const el = document.getElementById('k' + i); return { el, s: el.querySelector('small'), b: el.querySelector('b'), key: '' }; });
+function card(i, label, val) { const c = cards[i], key = label + '|' + val; if (c.key === key) return; c.key = key; if (val === null) { c.el.hidden = true; return; } c.el.hidden = false; c.s.textContent = label; c.b.innerHTML = val; }
+const unit = u => `<i>${u}</i>`;
+const noticeEl = document.getElementById('notice'); let lastNotice = '';
+function notice(t) { const h = `<b>${tr('لاحظ: ', 'Observe : ')}</b>` + t; if (h !== lastNotice) { noticeEl.innerHTML = h; lastNotice = h; } }
+const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/* Darija voice: one clip for the question (l'échelle), one for the rule (other modes) */
+let player = null;
+function playVoice() {
+  const b = document.getElementById('voice'), src = (S.mode === 'echelle' ? VOICE.q : VOICE.r).audio;
+  if (player && !player.paused) { player.pause(); return; }
+  player = new Audio(src); b.classList.add('on');
+  player.onended = player.onpause = () => b.classList.remove('on');
+  player.onerror = () => { b.classList.remove('on'); notice(tr('الملف الصوتي غير موجود بجانب الصفحة.', 'Fichier audio introuvable à côté de la page.')); };
+  player.play().catch(() => b.classList.remove('on'));
+}
+
+const MODE_LIST = [['echelle', 'السلّم', "L'échelle"], ['carres', 'المربعات', 'Les carrés'], ['preuve', 'البرهان', 'La preuve'], ['corde', 'الحبل', 'La corde'], ['boite', 'العلبة', 'La boîte']];
+const SUBS = {
+  corde: { list: ROPES.map((r, i) => [String(i), r.join('·'), r.join('·')]), cur: () => String(S.corde.r), set: k => { S.corde.r = +k; } },
+  boite: { list: BOXES.map((b, i) => [String(i), b.join('×'), b.join('×')]), cur: () => String(S.boite.b), set: k => { S.boite.b = +k; } },
+};
+function buildHUD() {
+  document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === 'ar' ? 'rtl' : 'ltr';
+  const modes = document.getElementById('modes');
+  modes.innerHTML = MODE_LIST.map(([k, a, f]) => `<button class="chip${S.mode === k ? ' on' : ''}" data-m="${k}">${esc(tr(a, f))}</button>`).join('')
+    + `<button class="chip voice" id="voice" aria-label="${tr('استمع بالدارجة', 'Écouter en darija')}">🔊 ${tr('استمع', 'Écouter')}</button>`
+    + `<button class="chip" id="lang">${S.lang === 'ar' ? 'Français' : 'العربية'}</button><button class="chip" id="reset">${tr('إعادة', 'Réinitialiser')}</button>`;
+  modes.querySelectorAll('[data-m]').forEach(b => b.onclick = () => setMode(b.dataset.m));
+  document.getElementById('voice').onclick = playVoice;
+  document.getElementById('lang').onclick = () => { S.lang = S.lang === 'ar' ? 'fr' : 'ar'; refreshPages(); buildHUD(); cards.forEach(c => c.key = ''); lastNotice = ''; };
+  document.getElementById('reset').onclick = () => { const m = S.mode; initState(); S.mode = m; MODES[m].enter && MODES[m].enter(); buildHUD(); startIntro(); };
+  const subs = document.getElementById('subs'), sb = SUBS[S.mode];
+  subs.innerHTML = sb ? sb.list.map(([k, a, f]) => `<button class="chip${sb.cur() === k ? ' on' : ''}" data-k="${k}">${esc(tr(a, f))}</button>`).join('') : '';
+  subs.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { sb.set(b.dataset.k); act('kind'); buildHUD(); });
+  const acts = document.getElementById('acts');
+  acts.innerHTML = (MODES[S.mode].actions ? MODES[S.mode].actions() : []).map(([id, label, cls]) => `<button class="btn${cls ? ' ' + cls : ''}" data-a="${id}">${esc(label)}</button>`).join('');
+  acts.querySelectorAll('[data-a]').forEach(b => b.onclick = () => { MODES[S.mode].action(b.dataset.a); buildHUD(); });
+  requestAnimationFrame(() => resize(false));
+}
+function setMode(m) { S.mode = m; if (player) player.pause(); act('mode'); MODES[m].enter && MODES[m].enter(); buildHUD(); }
+function slider() { const m = MODES[S.mode]; return m.slider ? m.slider() : null; }
+const stepper = (sl, d) => sl.set(Math.round((sl.get() + d * sl.step) / sl.step) * sl.step);
+const near = (x, y, e = .1) => Math.abs(x - y) < e;
+
+/* =========================================================
+   Modes
+   ========================================================= */
+const ORANGE = '#e8710a', BLUE = '#2f5bd3', RED = '#d1153f', INK = '#26262b', WOOD = '#9a7046';
+const P3 = (p, y) => V3(p.x, y, p.y);
+const sqOut = (P, Q, away) => { const d = V(Q.x - P.x, Q.y - P.y), n = V(-d.y, d.x); if ((away.x - P.x) * n.x + (away.y - P.y) * n.y > 0) n.multiplyScalar(-1); return [P, Q, V(Q.x + n.x, Q.y + n.y), V(P.x + n.x, P.y + n.y)]; };
+const flat = (pts, y, h) => [pts.map(p => P3(p, y)), pts.map(p => P3(p, y + h))];
+const centre = pts => V(pts.reduce((s, p) => s + p.x, 0) / pts.length, pts.reduce((s, p) => s + p.y, 0) / pts.length);
+const rightMark = (C, u, v, s, color, y = YL + .02) => { const p1 = V(C.x + u.x * s, C.y + u.y * s), p3 = V(C.x + v.x * s, C.y + v.y * s), p2 = V(p1.x + v.x * s, p1.y + v.y * s); drawSegs([[p1.x, p1.y, p2.x, p2.y], [p2.x, p2.y, p3.x, p3.y]], color, .07, y); };
+
+const MODES = {
+  /* 1 · prediction: how high does the ladder reach on the wall? */
+  echelle: {
+    enter() { if (!S.echelle.ready) this.next(); },
+    next() { const e = S.echelle; let i; do i = Math.floor(Math.random() * LADDERS.length); while (i === e.i && LADDERS.length > 1 && e.ready);
+      Object.assign(e, { i, ready: true, checked: false, t: 0, guess: Math.round(LADDERS[i][1] * 5) / 10 }); },
+    slider: () => S.echelle.checked ? null : { min: .5, max: 7, step: .1, title: tr('العلو AC بالمتر', 'Hauteur AC (m)'), get: () => S.echelle.guess, set: v => { S.echelle.guess = Math.round(THREE.MathUtils.clamp(v, .5, 7) * 10) / 10; act('guess'); } },
+    actions: () => S.echelle.checked ? [['new', tr('سلّم آخر', 'Autre échelle'), 'acc']] : [['minus', '−', 'big'], ['plus', '+', 'big'], ['check', tr('تحقّق', 'Vérifier'), 'acc']],
+    action(id) { const e = S.echelle;
+      if (id === 'check') { const [a, c] = LADDERS[e.i]; e.checked = true; e.tries++; if (near(e.guess, M.leg(c, a))) e.score++; act('check'); }
+      else if (id === 'new') { this.next(); act('new'); } else stepper(this.slider(), id === 'plus' ? 1 : -1); },
+    draw(now, dt) {
+      const e = S.echelle, [a, c] = LADDERS[e.i], h = M.leg(c, a);
+      e.t += Math.sign((e.checked ? 1 : 0) - e.t) * Math.min(Math.abs((e.checked ? 1 : 0) - e.t), dt / 1.6);
+      const q = ease(e.t), phi = q * Math.PI / 2, el = q * Math.atan2(h, a);
+      const F = V3(WALL_X - a * SM, PAGE_Y + .14, LADDER_Z), dir = V3(Math.cos(el) * Math.sin(phi), Math.sin(el), Math.cos(el) * Math.cos(phi)), L = c * SM;
+      const side = V3(-dir.z, 0, dir.x).normalize().multiplyScalar(.55), top = F.clone().addScaledVector(dir, L);
+      wall.visible = true; S.geo = { mode: 'echelle', F: F.clone(), top: top.clone(), L, a, c, h, t: e.t };
+      for (const s of [1, -1]) drawCyl(F.clone().addScaledVector(side, s), top.clone().addScaledVector(side, s), .11, WOOD);
+      for (let d = .45; d < L - .2; d += .6) { const m = F.clone().addScaledVector(dir, d); drawCyl(m.clone().add(side), m.clone().sub(side), .06, WOOD); }
+      // the ground segment BC and the guess mark on the wall
+      const Cw = V3(WALL_X, PAGE_Y, LADDER_Z);
+      drawSegs([[F.x, LADDER_Z, WALL_X, LADDER_Z]], ORANGE, .14, YL + .02);
+      drawLabel('B', INK, F.x - .9, PAGE_Y + .8, LADDER_Z + .6); drawLabel('C', INK, WALL_X - .7, PAGE_Y + .8, LADDER_Z + 1.2);
+      drawLabel(fmt(a, 1) + ' m', ORANGE, (F.x + WALL_X) / 2, PAGE_Y + .9, LADDER_Z + 1.4, 1.1);
+      const gy = PAGE_Y + e.guess * SM; drawCyl(V3(WALL_X - .06, gy, LADDER_Z - 1.3), V3(WALL_X - .06, gy, LADDER_Z + 1.3), .1, RED);
+      drawLabel(e.checked ? tr('توقّعي', 'moi') : '?', RED, WALL_X - 1.4, gy + .5, LADDER_Z + 1.6, 1.1);
+      if (e.t > .98) { drawDot(top, BLUE, .28); drawLabel('A', BLUE, top.x - 1, top.y + .6, top.z); drawCyl(Cw, V3(WALL_X - .05, PAGE_Y + h * SM, LADDER_Z), .09, BLUE); }
+      else drawLabel(fmt(c, 1) + ' m', WOOD, F.x - 1.2, PAGE_Y + .9, LADDER_Z + L / 2, 1.1);
+      card(0, tr('السلّم AB', 'Échelle AB'), fmt(c, 1) + unit('m'));
+      card(1, tr('البعد BC', 'Pied BC'), fmt(a, 1) + unit('m'));
+      card(2, tr('توقّعك', 'Ton estimation'), fmt(e.guess, 1) + unit('m'));
+      card(3, 'AC', e.checked ? fmt(h, 2) + unit('m') : '?');
+      if (!e.checked) { notice(tr(`السلّم AB طوله ${fmt(c, 1)} m، ورجله B تبعد ${fmt(a, 1)} m عن الحائط. على أي علو A سيلمس الحائط؟ ضع العلامة الحمراء ثم تحقّق.`, `L'échelle AB mesure ${fmt(c, 1)} m et son pied B est à ${fmt(a, 1)} m du mur. À quelle hauteur A touchera-t-elle le mur ? Place la marque rouge, puis vérifie.`)); return; }
+      const g = e.guess, calc = tr(`AC² = ${fmt(c, 1)}² − ${fmt(a, 1)}² = ${fmt(c * c - a * a, 2)}، إذن AC ≈ ${fmt(h, 2)} m.`, `AC² = ${fmt(c, 1)}² − ${fmt(a, 1)}² = ${fmt(c * c - a * a, 2)}, donc AC ≈ ${fmt(h, 2)} m.`);
+      if (near(g, h)) notice(tr('ممتاز! ', 'Bravo ! ') + calc);
+      else if (near(g, c * c - a * a)) notice(tr('نسيتَ الجذر المربع في الأخير. ', "Tu as oublié la racine carrée à la fin. ") + calc);
+      else if (g >= c) notice(tr('مستحيل: AC ضلع للزاوية القائمة، فهو أقصر من الوتر AB. ', "Impossible : AC est un côté de l'angle droit, plus court que l'hypoténuse AB. ") + calc);
+      else if (near(g, c - a)) notice(tr('طرحتَ الأطوال، والصحيح أن نطرح المربعات. ', 'Tu as soustrait les longueurs ; il faut soustraire les carrés. ') + calc);
+      else notice(tr(`${g > h ? 'أعلى' : 'أخفض'} من الصحيح بـ ${fmt(Math.abs(g - h), 2)} m. `, `Trop ${g > h ? 'haut' : 'bas'} de ${fmt(Math.abs(g - h), 2)} m. `) + calc);
+    }
+  },
+
+  /* 2 · the squares as water trays: does the water of the two small squares fill the big one exactly? */
+  carres: {
+    slider: () => ({ min: 60, max: 120, step: 5, title: tr('الزاوية C بالدرجة', 'Angle C (°)'), get: () => S.carres.angle, set: v => { S.carres.angle = THREE.MathUtils.clamp(v, 60, 120); S.carres.pour = null; S.carres.poured = 0; act('angle'); } }),
+    actions: () => [['minus', '−', 'big'], ['plus', '+', 'big'], S.carres.poured || S.carres.pour ? ['refill', tr('املأ من جديد', 'Remplir à nouveau')] : ['pour', tr('اسكب في المربع الكبير', 'Verser dans le grand carré'), 'acc']],
+    action(id) { const s = S.carres;
+      if (id === 'pour') { s.pour = { t0: performance.now() }; act('pour'); }
+      else if (id === 'refill') { s.pour = null; s.poured = 0; act('refill'); } else stepper(this.slider(), id === 'plus' ? 1 : -1); },
+    draw(now) {
+      const s = S.carres, a = 5.2, b = 3.9, th = s.angle * Math.PI / 180, D = .8, y0 = PAGE_Y + .01;
+      const C = V(7.5, -1.5), B = V(C.x + a, C.y), A = V(C.x + b * Math.cos(th), C.y - b * Math.sin(th)), c = A.distanceTo(B);
+      const sqB = sqOut(C, B, A), sqA = sqOut(A, C, B), sqC = sqOut(B, A, C);
+      let e = s.poured ? 1 : 0;
+      if (s.pour) { e = Math.min(1, (now - s.pour.t0) / 2000); if (e >= 1) { s.poured = 1; s.pour = null; act('poured'); buildHUD(); } }
+      e = ease(e);
+      const ratio = (a * a + b * b) / (c * c), big = Math.min(1, ratio * e);
+      [[sqB, 1 - e], [sqA, 1 - e], [sqC, big]].forEach(([sq, f], k) => { setPrism(prTray[k], ...flat(sq, y0, D)); if (f > .002) setPrism(prWat[k], ...flat(sq, y0 + .02, D * f)); });
+      setPrism(prTri, ...flat([A, B, C], y0, .3));
+      S.geo = { mode: 'carres', A, B, C, sq: [sqB, sqA, sqC], lv: [1 - e, 1 - e, big].map(f => f * D), D, a, b, angle: s.angle, ratio };
+      if (s.angle === 90) rightMark(C, V(1, 0), V(0, -1), .55, RED, PAGE_Y + .33);
+      for (const [n, p, off] of [['A', A, V(-.5, -.7)], ['B', B, V(.7, .2)], ['C', C, V(-.6, .7)]]) drawLabel(n, INK, p.x + off.x, PAGE_Y + 1.1, p.y + off.y);
+      for (const [t, sq] of [['BC²', sqB], ['AC²', sqA], ['AB²', sqC]]) { const m = centre(sq); drawLabel(t, t === 'AB²' ? BLUE : ORANGE, m.x, PAGE_Y + 2, m.y, 1.1); }
+      const sum = a * a + b * b;
+      card(0, tr('الزاوية C', 'Angle C'), `${s.angle}°`);
+      card(1, 'AC² + BC²', fmt(sum, 2) + unit('cm²'));
+      card(2, 'AB²', fmt(c * c, 2) + unit('cm²'));
+      card(3, tr('امتلاء المربع الكبير', 'Grand carré rempli'), s.poured || s.pour ? fmt(100 * Math.min(ratio, 9) * e, 0) + unit('%') : '0' + unit('%'));
+      if (!s.poured && !s.pour) notice(tr('الحوضان الصغيران ممتلئان بنفس العمق. إذا سكبنا ماءهما في الحوض الكبير، هل سيمتلئ بالضبط؟', "Les deux petits bassins sont pleins, à la même profondeur. Si on verse leur eau dans le grand, sera-t-il juste plein ?"));
+      else if (s.pour) notice(tr('نسكب...', 'On verse…'));
+      else if (s.angle === 90) notice(tr(`امتلأ بالضبط: AC² + BC² = AB² = ${fmt(c * c, 2)} cm² لأن الزاوية C قائمة.`, `Juste plein : AC² + BC² = AB² = ${fmt(c * c, 2)} cm², car l'angle C est droit.`));
+      else if (ratio > 1) notice(tr(`فاض الماء: الزاوية C حادة، و AB² = ${fmt(c * c, 1)} أصغر من AC² + BC² = ${fmt(sum, 1)}.`, `Ça déborde : l'angle C est aigu et AB² = ${fmt(c * c, 1)} est plus petit que AC² + BC² = ${fmt(sum, 1)}.`));
+      else notice(tr(`لم يمتلئ: الزاوية C منفرجة، و AB² = ${fmt(c * c, 1)} أكبر من AC² + BC² = ${fmt(sum, 1)}.`, `Pas plein : l'angle C est obtus et AB² = ${fmt(c * c, 1)} est plus grand que AC² + BC² = ${fmt(sum, 1)}.`));
+    }
+  },
+
+  /* 3 · proof by rearrangement: the same four triangles leave c², then a² + b² */
+  preuve: {
+    slider: () => ({ min: 1.5, max: 6.5, step: .5, title: tr('الضلع a', 'Côté a'), get: () => S.preuve.a, set: v => { S.preuve.a = THREE.MathUtils.clamp(v, 1.5, 6.5); act('a'); } }),
+    actions: () => [['minus', '−', 'big'], ['plus', '+', 'big'], ['swap', S.preuve.goal ? tr('رجّع المثلثات', 'Remettre les triangles') : tr('حرّك المثلثات', 'Déplacer les triangles'), 'acc']],
+    action(id) { if (id === 'swap') { S.preuve.goal = 1 - S.preuve.goal; act('swap'); } else stepper(this.slider(), id === 'plus' ? 1 : -1); },
+    draw(now, dt) {
+      const p = S.preuve, s = 8, a = p.a, b = s - a, x0 = 6.5, z0 = -8.5, x1 = x0 + s, z1 = z0 + s, xa = x0 + a, za = z0 + a, y0 = PAGE_Y + .01;
+      p.t += Math.sign(p.goal - p.t) * Math.min(Math.abs(p.goal - p.t), dt / 1.6); const e = ease(p.t);
+      // [right-angle vertex in arrangement 1, in arrangement 2, leg-a direction] : pure translations
+      const T = [[V(x0, z0), V(x0, za), V(1, 0)], [V(x1, z0), V(x1, z0), V(0, 1)], [V(x1, z1), V(xa, z1), V(-1, 0)], [V(x0, z1), V(xa, za), V(0, -1)]];
+      const tris = []; S.geo = { mode: 'preuve', tris, a, b, s, e, box: [x0, z0, x1, z1] };
+      T.forEach(([R1, R2, u], k) => { const R = V(R1.x + (R2.x - R1.x) * e, R1.y + (R2.y - R1.y) * e), v = V(-u.y, u.x), lift = Math.sin(Math.PI * e) * (1.5 + k * .3);
+        const tri = [R, V(R.x + a * u.x, R.y + a * u.y), V(R.x + b * v.x, R.y + b * v.y)]; tris.push(tri); setPrism(prPiece[k], ...flat(tri, y0 + lift, .3)); });
+      drawSegs([[x0, z0, x1, z0], [x1, z0, x1, z1], [x1, z1, x0, z1], [x0, z1, x0, z0]], INK, .12, YL + .01);
+      if (e < .02) { const q = [V(x0 + a, z0), V(x1, z0 + a), V(x1 - a, z1), V(x0, z1 - a)]; setPrism(prBlue[0], ...flat(q, y0, .05)); drawLabel('c²', BLUE, (x0 + x1) / 2, PAGE_Y + 1.2, (z0 + z1) / 2); }
+      if (e > .98) { setPrism(prBlue[0], ...flat([V(x0, z0), V(xa, z0), V(xa, za), V(x0, za)], y0, .05)); setPrism(prBlue[1], ...flat([V(xa, za), V(x1, za), V(x1, z1), V(xa, z1)], y0, .05));
+        drawLabel('a²', BLUE, x0 + a / 2, PAGE_Y + 1.2, z0 + a / 2); drawLabel('b²', BLUE, xa + b / 2, PAGE_Y + 1.2, za + b / 2); }
+      drawLabel('a + b', INK, (x0 + x1) / 2, PAGE_Y + .9, z1 + 1, 1.1);
+      const c2 = a * a + b * b;
+      card(0, tr('المربع الكبير', 'Grand carré'), `(${fmt(a, 1)} + ${fmt(b, 1)})² = ${fmt(s * s, 0)}` + unit('cm²'));
+      card(1, tr('4 مثلثات', '4 triangles'), `2ab = ${fmt(2 * a * b, 1)}` + unit('cm²'));
+      card(2, tr('الباقي بالأزرق', 'Reste en bleu'), (e > .98 ? 'a² + b²' : 'c²') + ` = ${fmt(c2, 2)}` + unit('cm²'));
+      card(3, null, null);
+      if (e < .02) notice(tr('نفس المربع الكبير ناقص أربعة مثلثات قائمة يترك مربعا مائلا مساحته c².', "Le grand carré moins quatre triangles rectangles laisse un carré penché d'aire c²."));
+      else if (e > .98) notice(tr('نفس المثلثات الأربعة بعد تحريكها تترك a² و b². المساحة الباقية لم تتغير، إذن c² = a² + b².', "Les mêmes quatre triangles, déplacés, laissent a² et b². L'aire restante n'a pas changé : c² = a² + b²."));
+      else notice(tr('المثلثات تتحرك دون أن تتغير مساحتها.', 'Les triangles bougent sans changer d\'aire.'));
+    }
+  },
+
+  /* 4 · converse: the 12-knot rope of the builders */
+  corde: {
+    draw() {
+      const [p, q, r] = ROPES[S.corde.r], u = 1.6, P0 = V(4.5, 0), P1 = V(P0.x + p * u, P0.y);
+      const cosA = (p * p + r * r - q * q) / (2 * p * r), sinA = Math.sqrt(Math.max(0, 1 - cosA * cosA)), P2 = V(P0.x + r * u * cosA, P0.y - r * u * sinA);
+      const yR = PAGE_Y + .25, sides = [[P0, P1, p], [P1, P2, q], [P2, P0, r]]; S.geo = { mode: 'corde', sides, u };
+      drawSegs(sides.map(([X, Y]) => [X.x, X.y, Y.x, Y.y]), '#a8865a', .2, yR);
+      for (const [X, Y, n] of sides) for (let k = 0; k < n; k++) drawDot(V3(X.x + (Y.x - X.x) * k / n, yR + .05, X.y + (Y.y - X.y) * k / n), INK, .22);
+      for (const P of [P0, P1, P2]) drawCyl(V3(P.x, PAGE_Y, P.y), V3(P.x, PAGE_Y + 2.2, P.y), .14, WOOD);
+      for (const [X, Y, n] of sides) drawLabel(n + ' m', ORANGE, (X.x + Y.x) / 2, PAGE_Y + 1.1, (X.y + Y.y) / 2 + (Y === P1 ? .9 : 0), 1.1);
+      const sorted = [p, q, r].slice().sort((x, y) => x - y), [m1, m2, L] = sorted, eq = m1 * m1 + m2 * m2 === L * L, flat0 = m1 + m2 === L;
+      const opp = flat0 ? 180 : M.angleOpp(m1, m2, L);
+      if (eq) { const idx = [p, q, r].indexOf(L), V0 = [P2, P0, P1][idx];
+        const others = [P0, P1, P2].filter(P => P !== V0), u1 = V(others[0].x - V0.x, others[0].y - V0.y).normalize(), u2 = V(others[1].x - V0.x, others[1].y - V0.y).normalize(); rightMark(V0, u1, u2, .6, RED, yR + .02); }
+      card(0, tr('الأضلاع', 'Côtés'), `${p} ; ${q} ; ${r}` + unit('m'));
+      card(1, tr('مربع أكبر ضلع', 'Plus grand côté²'), `${L}² = ${L * L}`);
+      card(2, tr('مجموع مربعي الضلعين الآخرين', 'Somme des deux autres²'), `${m1}² + ${m2}² = ${m1 * m1 + m2 * m2}`);
+      card(3, tr('الزاوية المقابلة', 'Angle opposé'), fmt(opp, 1) + '°');
+      if (flat0) notice(tr(`${m1} + ${m2} = ${L}: الحبل ممدود على خط واحد، لا يوجد مثلث.`, `${m1} + ${m2} = ${L} : la corde est à plat sur une ligne, il n'y a pas de triangle.`));
+      else if (eq) notice(tr(`${L}² = ${m1}² + ${m2}²، إذن المثلث قائم (المبرهنة العكسية). هكذا يرسم البناؤون زاوية قائمة بحبل فيه 12 عقدة.`, `${L}² = ${m1}² + ${m2}², donc le triangle est rectangle (réciproque). C'est ainsi que les bâtisseurs tracent un angle droit avec une corde à 12 nœuds.`));
+      else notice(tr(`${L * L} ≠ ${m1 * m1 + m2 * m2}، إذن المثلث ليس قائما: الزاوية المقابلة ${fmt(opp, 0)}° وليست 90°.`, `${L * L} ≠ ${m1 * m1 + m2 * m2}, donc le triangle n'est pas rectangle : l'angle opposé vaut ${fmt(opp, 0)}°, pas 90°.`));
+    }
+  },
+
+  /* 5 · Pythagoras twice in a box: does the stick fit? */
+  boite: {
+    slider: () => ({ min: 10, max: 45, step: 1, title: tr('طول العصا بالسنتيمتر', 'Baguette (cm)'), get: () => S.boite.stick, set: v => { S.boite.stick = Math.round(THREE.MathUtils.clamp(v, 10, 45)); act('stick'); } }),
+    actions: () => [['minus', '−', 'big'], ['plus', '+', 'big']],
+    action(id) { stepper(this.slider(), id === 'plus' ? 1 : -1); },
+    draw() {
+      const [L, l, h] = BOXES[S.boite.b], k = .5, Lw = L * k, lw = l * k, hw = h * k, x0 = 10.5 - Lw / 2, x1 = x0 + Lw, z0 = -4 - lw / 2, z1 = z0 + lw, y0 = PAGE_Y + .01, y1 = y0 + hw;
+      setPrism(prBox, [V3(x0, y0, z0), V3(x1, y0, z0), V3(x1, y0, z1), V3(x0, y0, z1)], [V3(x0, y1, z0), V3(x1, y1, z0), V3(x1, y1, z1), V3(x0, y1, z1)]);
+      const A = V3(x0, y0, z1), B = V3(x1, y0, z1), C = V3(x1, y0, z0), G = V3(x1, y1, z0); S.geo = { mode: 'boite', A, B, C, G, L, l, h, k };
+      setPrism(prFace[0], [A, B, C], [A, B, C].map(p => p.clone().add(V3(0, .02, 0))));
+      setPrism(prFace[1], [A, C, G], [A, C, G].map(p => p.clone().add(V3(-.02, 0, -.02))));
+      drawCyl(A, B, .07, ORANGE); drawCyl(B, C, .07, ORANGE); drawCyl(C, G, .07, ORANGE); drawCyl(A, C, .08, RED); drawCyl(A, G, .09, BLUE);
+      const AC = M.hyp(L, l), AG = M.hyp(AC, h), st = S.boite.stick, dir = V3(G.x - A.x, G.y - A.y, G.z - A.z).normalize(), off = V3(.25, .15, 0);
+      const inside = Math.min(st, AG) * k, endIn = A.clone().addScaledVector(dir, inside).add(off);
+      drawCyl(A.clone().add(off), endIn, .16, WOOD); if (st > AG) drawCyl(endIn, A.clone().addScaledVector(dir, st * k).add(off), .17, RED);
+      for (const [n, p, o] of [['A', A, V3(-.8, .3, .6)], ['B', B, V3(.7, .3, .6)], ['C', C, V3(.8, .3, -.4)], ['G', G, V3(.6, .8, -.4)]]) drawLabel(n, INK, p.x + o.x, p.y + o.y, p.z + o.z);
+      card(0, tr('العلبة', 'Boîte'), `${L}×${l}×${h}` + unit('cm'));
+      card(1, 'AC = √(AB² + BC²)', fmt(AC, 1) + unit('cm'));
+      card(2, 'AG = √(AC² + CG²)', fmt(AG, 1) + unit('cm'));
+      card(3, tr('العصا', 'Baguette'), `${st}` + unit('cm') + (st <= AG ? ' ✓' : ' ✗'));
+      notice(tr(`نطبق فيثاغورس مرتين: في القاعدة AC² = ${L}² + ${l}²، ثم في المثلث ACG القائم في C: AG² = AC² + ${h}². أطول عصا تدخل: ${fmt(AG, 1)} cm. ${st <= AG ? 'هذه العصا تدخل.' : 'هذه العصا لا تدخل.'}`,
+        `Pythagore deux fois : sur le fond AC² = ${L}² + ${l}², puis dans ACG rectangle en C : AG² = AC² + ${h}². La plus longue baguette qui entre : ${fmt(AG, 1)} cm. ${st <= AG ? 'Celle-ci entre.' : "Celle-ci n'entre pas."}`));
+    }
+  }
+};
+
+/* ---------- Frame loop ---------- */
+const clock = new THREE.Clock();
+function frame() {
+  const dt = Math.min(clock.getDelta(), 0.05), now = performance.now();
+  decor.update(dt);
+  if (intro) { const q = Math.min(1, (now - intro.t0) / intro.dur), e = ease(q);
+    camera.position.lerpVectors(intro.from, home.pos, e); camera.lookAt(home.target);
+    if (q >= 1) { intro = null; orbit.enabled = true; orbit.target.copy(home.target); orbit.update(); } } else orbit.update();
+
+  segUsed = labUsed = 0;
+  for (const p of [...prTray, ...prWat, prTri, ...prPiece, ...prBlue, prBox, ...prFace]) p.mesh.visible = p.edges.visible = false;
+  cylUsed = dotUsed = 0; wall.visible = false;
+
+  MODES[S.mode].draw(now, dt);
+
+  const sl = slider(), on = !!sl;
+  knob.visible = trackMesh.visible = sliderPanel.m.visible = on;
+  if (on) {
+    const t = (sl.get() - sl.min) / (sl.max - sl.min), kx = TRACK.x0 + t * (TRACK.x1 - TRACK.x0);
+    drawPanel(sl.title, sl.min, sl.max);
+    knob.position.set(kx, PAGE_Y + 0.47, TRACK.z); knobHit.position.copy(knob.position);
+    drawLabel(fmt(sl.get(), sl.step < 1 ? 1 : 0), RED, kx, PAGE_Y + 1.8, TRACK.z - 0.4);
+  }
+  for (let i = segUsed; i < segPool.length; i++) segPool[i].mesh.visible = false;
+  for (let i = cylUsed; i < cylPool.length; i++) cylPool[i].visible = false;
+  for (let i = dotUsed; i < dotPool.length; i++) dotPool[i].visible = false;
+  for (let i = labUsed; i < labPool.length; i++) labPool[i].visible = false;
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+/* geometry kernel: checks computed from the geometry the frame drew (S.geo), run by tools/smoke_test.py */
+const area = P => Math.abs(P.reduce((s, p, i) => { const q = P[(i + 1) % P.length]; return s + p.x * q.y - q.x * p.y; }, 0)) / 2;
+const d2 = (P, Q) => (P.x - Q.x) ** 2 + (P.y - Q.y) ** 2;
+function invariants() {
+  const g = S.geo, out = [], ok = (name, cond, detail = '') => out.push([name, !!cond, detail]), eq = (x, y, e = 1e-6) => Math.abs(x - y) <= e * Math.max(1, Math.abs(y));
+  if (!g || g.mode !== S.mode) return out;
+  if (g.mode === 'echelle') {
+    const len = g.top.distanceTo(g.F); ok('ladder keeps its length', eq(len, g.L), `${len} vs ${g.L}`);
+    if (g.t >= 1) { ok('top on the wall', eq(g.top.x, WALL_X), g.top.x); ok('height = √(c² − a²)', eq((g.top.y - g.F.y) / SM, g.h), (g.top.y - g.F.y) / SM); }
+  }
+  if (g.mode === 'carres') {
+    g.sq.forEach((q, i) => ok(`tray ${i} is a square on its side`, eq(area(q), d2(q[0], q[1])), area(q)));
+    if (g.angle === 90) { const u = V(g.A.x - g.C.x, g.A.y - g.C.y), v = V(g.B.x - g.C.x, g.B.y - g.C.y); ok('angle C is right', eq(u.dot(v), 0), u.dot(v)); ok('AB² = AC² + BC²', eq(d2(g.A, g.B), d2(g.A, g.C) + d2(g.B, g.C)), d2(g.A, g.B)); }
+    if (g.ratio <= 1 || g.lv[2] < g.D - 1e-9) { const vol = g.sq.reduce((s, q, i) => s + area(q) * g.lv[i], 0); ok('water volume conserved', eq(vol, (g.a * g.a + g.b * g.b) * g.D, 1e-9), vol); }
+  }
+  if (g.mode === 'preuve') {
+    const sum = g.tris.reduce((s, t) => s + area(t), 0); ok('four triangles = 2ab', eq(sum, 2 * g.a * g.b), sum);
+    g.tris.forEach((t, i) => { const u = V(t[1].x - t[0].x, t[1].y - t[0].y), v = V(t[2].x - t[0].x, t[2].y - t[0].y); ok(`triangle ${i} right-angled with legs a, b`, eq(u.dot(v), 0) && eq(u.length(), g.a) && eq(v.length(), g.b)); });
+    if (g.e === 0 || g.e === 1) { const [x0, z0, x1, z1] = g.box; ok('triangles inside the big square', g.tris.flat().every(p => p.x >= x0 - 1e-9 && p.x <= x1 + 1e-9 && p.y >= z0 - 1e-9 && p.y <= z1 + 1e-9)); ok('blue area = a² + b²', eq(g.s * g.s - sum, g.a * g.a + g.b * g.b)); }
+  }
+  if (g.mode === 'corde') g.sides.forEach(([X, Y, n], i) => ok(`rope side ${i} = ${n} knots`, eq(Math.sqrt(d2(X, Y)), n * g.u), Math.sqrt(d2(X, Y))));
+  if (g.mode === 'boite') { ok('space diagonal AG drawn = √(L² + l² + h²)', eq(g.A.distanceTo(g.G), Math.hypot(g.L, g.l, g.h) * g.k), g.A.distanceTo(g.G)); }
+  return out;
+}
+window.__lesson = { M, S, MODES, invariants, slider: () => slider() };
+window.addEventListener('resize', resize);
+decor.use(DECOR);
+resize(); buildHUD(); startIntro(); requestAnimationFrame(frame);
+</script>
+</body>
+</html>
