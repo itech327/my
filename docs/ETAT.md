@@ -32,6 +32,7 @@
 | `claude/new-session-thirii` | صدى: الموصل والتطبيق والمكتبة الصوتية. مرجعه `CONTEXT.md` في جذره |
 | `claude/club-revision` | أرشيف: حزمة نادي المراجعة (أُلغي) |
 | `claude/taalim-video-lab` | الفيديو وأداة `tools-predire` |
+| `pro-site` | **فضاء التجربة `pro.taalim.men`** (مشروع Pages `pro`، بلا بناء): مكتبة الدروس التسعة، مغلقة برمز الدخول `PRO_CODE` (سرّ في Cloudflare). بلا السرّ يبقى الموقع مغلقاً. إضافة درس: سطر في `LESSONS` في `index.html` + الملف في `lecons/` |
 | **`itech327/taalim-pro`** (مستودع **خاص** منفصل، الفرع `main`) | المحتوى المدفوع: `banques/` و`correcteurs/` و`generateurs/` و`examens/` و`revue/`. لا أسرار ولا معطيات شخصية (انظر `README.md` فيه). أُنشئ 27 نوفمبر. يُضاف للجلسة بـ `add_repo` (push) |
 
 ## الحالة في 2026-11-27
@@ -81,7 +82,7 @@
   - 43 فرعاً مدموجاً: كل فرع دخل `lessons-site` أو `mouvement` أو `main`، ومعها `claude/niveau-seul` و`claude/niveau-seul-mv` و`claude/classique-footer` (دُمجت بالضغط).
   - 6 فروع متجاوزة (فُحصت 27 نوفمبر): `pilot/pythagore-modele` (عوّضه `claude/club-revision`)، `seo-fixes` (عوّضته `seo/*`)، `claude/happy-archimedes-7cxb6o` (دُمج في `main`، PR 14)، `claude/fervent-pascal-01imne` (مخرجات graphify، تُعاد في 5 ثوانٍ)، `claude/great-hamilton-4myybs` (موجود كاملاً في `claude/new-session-thirii`)، `claude/relay-sync` (**قديم وخطر:** دمجه يحذف حماية F-1 وTurnstile من العامل؛ العامل المنشور `taalim-relay` مطابق لنسخة `lessons-site`).
 - **لا تُحذف:** `lessons-site`، `mouvement`، `main`، `plan/modeles-pro`، `skills`، `claude/new-session-thirii`، `claude/club-revision`، `claude/taalim-video-lab`، و**`matiere-isolee`: فرع إنتاج `technologie.taalim.men`** (مشروع Cloudflare Pages `technologie`).
-- **النشر (Cloudflare Pages):** `lessons-site` ← taalim.men؛ `mouvement` ← maths وpc وsvt وtech.taalim.men؛ `matiere-isolee` ← technologie.taalim.men.
+- **النشر (Cloudflare Pages):** `pro-site` ← pro.taalim.men (مغلق برمز)؛ `lessons-site` ← taalim.men؛ `mouvement` ← maths وpc وsvt وtech.taalim.men؛ `matiere-isolee` ← technologie.taalim.men.
 
 ### توفير التوكنز
 - **هذا الدفتر نفسه** هو أكبر توفير: لا تقرأ الملفات الطويلة ولا كل الفروع، ابدأ منه.
@@ -98,6 +99,7 @@
 - **2026-11-27، الحساب B:** مراجعة شاملة للمستودع (58 فرعاً)؛ تشخيص رفض موصل صدى بعد تغيير المفتاح وإصلاحه؛ اختبار أكرم («راك هنا»)؛ إنشاء هذا الدفتر؛ نقل «الباب الموالي» كاملة إلى `docs/bab-mowali/` ومقطع صندوق جديد يطابق الصفحة؛ تشغيل كل اختبارات المنصة (ناجحة)؛ حذف الملفات الغريبة من فروع الإنتاج؛ تجربة graphify دون LLM ومهارة `repo-map`.
 
 ## الخطوة الموالية
+0. **صاحب المشروع يضع `PRO_CODE`** في Cloudflare (Pages → pro → Settings → Variables and Secrets، نوع Secret، 12 حرفاً على الأقل) ثم يعيد النشر، ويجرّب `pro.taalim.men`.
 1. صاحب المشروع يستمع إلى صوتي درس نظمة المعادلتين، ثم مراجعة أستاذ رياضيات.
 2. Search Console: إضافة الخرائط الأربع.
 3. حسم القرارات المفتوحة أعلاه.
