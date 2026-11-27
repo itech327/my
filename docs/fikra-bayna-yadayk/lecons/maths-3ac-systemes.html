@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Les systèmes de deux équations à deux inconnues · Le concept en main</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* STYLE:BEGIN · Le concept en main · engine v1.3 · do not edit in a lesson */
+:root{color-scheme:light dark;--bg:light-dark(#FBFAF6,#11151e);--ink:light-dark(#1b2440,#ebe7db);--soft:light-dark(#5d647a,#a3a9bb);--card:light-dark(#fff,#191e2a);--line:light-dark(#dcd8cb,#2c3243);--glow:#f5a300;--glow-text:light-dark(#9a5800,#f5a300);--heat-text:light-dark(#c42a12,#ff6b4b);--heat:#ff4b2b;--blue:light-dark(#2f5bd3,#86a8ff);--ok:light-dark(#1f7a4d,#5fd39a);--bad:light-dark(#c0392b,#ff7b6b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:860px;margin:0 auto;padding:0 max(4vw,14px)}
+h1,h2,h3,.hand{font-family:Kalam,"Comic Sans MS",cursive;font-weight:700;line-height:1.1;margin:0}
+h1{font-size:clamp(30px,6vw,44px)}h2{font-size:26px;margin:2px 0 8px}h3{font-size:20px;margin:12px 0 6px}
+p{margin:6px 0}
+.ar{font-family:"Noto Naskh Arabic",serif;direction:rtl;text-align:right;color:var(--soft);font-size:17px;margin:4px 0}
+.num{font:700 15px Kalam,cursive;color:var(--soft)}
+.note{font-size:13px;color:var(--soft)}
+header{padding:20px 0 6px}
+.steps{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--line)}
+.steps .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none}
+.steps button{flex:none;min-height:36px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--soft);font:700 14px "Atkinson Hyperlegible",sans-serif;padding:0 10px;cursor:pointer}
+.steps button.done{border-color:var(--ok);color:var(--ok)}
+.steps button.cur{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.steps button:disabled{opacity:.45;cursor:default}
+section.moment{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:16px 0;scroll-margin-top:60px}
+section.moment[hidden]{display:none}
+button.b{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 16px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button.b.primary{background:var(--ink);color:var(--bg)}
+button.b:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.opts button{font:700 16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:8px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.opts button.pick{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 14%,var(--card))}
+.opts button:disabled{cursor:default}
+.q{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+.q:first-child{border-top:0;margin-top:0;padding-top:0}
+.fig{width:100%;display:block}
+.ink{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
+.card{border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center}
+.card small{display:block;color:var(--soft);font-size:13px}
+.card b{font:700 20px Kalam,cursive;white-space:nowrap}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 20px}
+label{display:block;font-weight:700}
+label span{font-weight:400;color:var(--soft);white-space:nowrap}
+input[type=range]{width:100%;height:40px;accent-color:var(--blue)}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.seg button{min-height:40px;padding:4px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 14px "Atkinson Hyperlegible",sans-serif;cursor:pointer}
+.seg button.on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.bars{display:grid;gap:4px;margin-top:6px;font-size:14px}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+.scroll{overflow-x:auto}
+.missions{list-style:none;padding:0;margin:8px 0}
+.missions li{padding:4px 0 4px 30px;position:relative}
+.missions li::before{content:"";position:absolute;left:0;top:7px;width:18px;height:18px;border:2px solid var(--line);border-radius:5px}
+.missions li.ok::before{border-color:var(--ok);background:var(--ok)}
+.rule{border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:8px 0}
+.formula{font:700 clamp(24px,6vw,34px) Kalam,cursive;margin:4px 0}
+.flapw{position:relative;margin-top:8px;border-radius:12px;overflow:hidden;min-height:140px}
+.proof{padding:12px;border:1.5px dashed var(--line);border-radius:12px}
+.flap{position:absolute;inset:0;width:100%;border-radius:12px;border:2px solid var(--ink);background:repeating-linear-gradient(135deg,var(--card) 0 10px,color-mix(in srgb,var(--line) 70%,var(--card)) 10px 12px);transform-origin:top;transition:transform .7s,opacity .7s;font:700 19px Kalam,cursive;color:var(--ink);cursor:pointer}
+.flap.open{transform:rotateX(-100deg);opacity:0;pointer-events:none}
+.verdict{border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}
+.verdict.ok{background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.verdict.no{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.ex{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-top:8px}
+.ex input{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;width:9em;background:var(--card);color:var(--ink)}
+.fb{min-height:1.4em;margin-top:6px;font-weight:700}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.report{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.report .card b{font-size:26px}
+select{font:16px "Atkinson Hyperlegible",sans-serif;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:4px 8px}
+.lt{white-space:nowrap}
+.voice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.voice button{font:700 15px "Atkinson Hyperlegible",sans-serif;min-height:44px;padding:6px 14px;border-radius:22px;border:2px solid var(--blue);background:var(--card);color:var(--blue);cursor:pointer}
+.voice button.on{background:var(--blue);color:var(--bg)}
+.voice details{font-size:14px;color:var(--soft);flex-basis:100%}
+#problems{border:2px solid var(--bad);border-radius:12px;padding:10px;margin:12px 0;font-size:14px}
+footer{padding:20px 0 40px}
+@media(max-width:560px){.report{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+/* STYLE:END */
+</style>
+</head>
+<body>
+<header><div class="wrap" id="hd"></div></header>
+<nav class="steps" aria-label="Moments de la leçon"><div class="wrap" id="steps"></div></nav>
+<main class="wrap" id="main"></main>
+<footer><div class="wrap note" id="ft"></div></footer>
+
+<script>
+/* LESSON:BEGIN · Mathématiques 3AC · Systèmes de deux équations du premier degré à deux inconnues */
+const LESSON = {
+  meta: {
+    kicker: 'Mathématiques · 3e année collège · Le concept en main',
+    title: 'Les systèmes de deux équations à deux inconnues',
+    titleAr: 'نظمة معادلتين من الدرجة الأولى بمجهولين',
+    short: 'Systèmes 2×2',
+    classes: ['3APIC-1', '3APIC-2', '3APIC-3'],
+    footer: 'Prototype « Le concept en main » pour taalim.men, hors production. Textes et valeurs originaux. Non relu par un professeur de mathématiques.'
+  },
+
+  misconceptions: {
+    unique: { fr: "Une seule équation à deux inconnues ne suffit pas : beaucoup de couples (x ; y) la vérifient. Il en faut une deuxième.", ar: 'معادلة واحدة بمجهولين لا تكفي: أزواج كثيرة تحققها، ونحتاج معادلة ثانية.' },
+    aucun: { fr: "Une équation à deux inconnues a toujours des solutions : choisis une valeur de x, tu trouves la valeur de y qui va avec.", ar: 'المعادلة بمجهولين لها دائما حلول: اختر قيمة لـ x تجد قيمة y المناسبة.' },
+    toujours: { fr: "Un système n'a pas toujours une solution : si les deux droites sont parallèles, elles ne se coupent jamais.", ar: 'النظمة ليس لها دائما حل: إذا كان المستقيمان متوازيين فإنهما لا يتقاطعان أبدا.' },
+    confondues: { fr: "Une infinité de solutions, seulement si les deux équations décrivent la même droite. Ici les droites sont différentes.", ar: 'ما لا نهاية من الحلول فقط إذا مثّلت المعادلتان نفس المستقيم.' },
+    partiel: { fr: "Tu as donné l'autre inconnue. Relis la question : on demande celle-ci.", ar: 'أعطيت المجهول الآخر. أعد قراءة السؤال.' },
+    ordre: { fr: "x et y ont été inversés : dans (3 ; −1), la première valeur est x, la seconde est y.", ar: 'بدّلت x و y: القيمة الأولى هي x والثانية هي y.' },
+    divise: { fr: "Il manque la dernière division : après avoir éliminé une inconnue, divise par son coefficient.", ar: 'تنقص القسمة الأخيرة على معامل المجهول.' },
+    signe: { fr: "Erreur de signe en passant un terme de l'autre côté ou en soustrayant les équations.", ar: 'خطأ في الإشارة عند نقل حدّ أو عند طرح المعادلتين.' },
+    combinaison: { fr: "Tu as soustrait les équations sans égaliser d'abord les coefficients : une inconnue reste mélangée à l'autre.", ar: 'طرحت المعادلتين دون توحيد المعاملات أولا، فبقي المجهولان معا.' }
+  },
+
+  hook: {
+    title: 'Deux tickets de caisse',
+    svg: `<svg class="fig" viewBox="0 0 640 210" role="img" aria-label="Deux tickets de caisse : 3 cahiers et 2 stylos pour 24 DH, 1 cahier et 2 stylos pour 12 DH">
+      <rect class="ink" x="70" y="20" width="210" height="170" rx="6" fill="var(--card)"/>
+      <rect class="ink" x="360" y="20" width="210" height="170" rx="6" fill="var(--card)"/>
+      <text x="175" y="52" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--ink)">Ticket 1</text>
+      <text x="465" y="52" text-anchor="middle" font-family="Kalam" font-weight="700" font-size="20" fill="var(--ink)">Ticket 2</text>
+      <text x="90" y="95" font-family="Kalam" font-size="20" fill="var(--blue)">3 cahiers</text><text x="90" y="125" font-family="Kalam" font-size="20" fill="var(--heat-text)">2 stylos</text>
+      <text x="380" y="95" font-family="Kalam" font-size="20" fill="var(--blue)">1 cahier</text><text x="380" y="125" font-family="Kalam" font-size="20" fill="var(--heat-text)">2 stylos</text>
+      <line class="ink" x1="90" y1="142" x2="260" y2="142" style="stroke-dasharray:6 6;opacity:.5"/><line class="ink" x1="380" y1="142" x2="550" y2="142" style="stroke-dasharray:6 6;opacity:.5"/>
+      <text x="260" y="174" text-anchor="end" font-family="Kalam" font-weight="700" font-size="22" fill="var(--ink)">24 DH</text>
+      <text x="550" y="174" text-anchor="end" font-family="Kalam" font-weight="700" font-size="22" fill="var(--ink)">12 DH</text></svg>`,
+    text: "Deux élèves achètent les mêmes cahiers et les mêmes stylos dans la même librairie. Les tickets ne donnent que les totaux. Avec un seul ticket, peut-on trouver le prix d'un cahier ? Et avec les deux ?",
+    ar: 'تلميذان يشتريان نفس الدفاتر ونفس الأقلام من نفس المكتبة. الوصلان لا يعطيان إلا المجموع. هل يمكن إيجاد ثمن دفتر بوصل واحد؟ وبالوصلين معا؟'
+  },
+
+  predict: [
+    { q: 'Le ticket 1 seul donne 3x + 2y = 24 (x : prix d’un cahier, y : prix d’un stylo). Combien de couples (x ; y) vérifient cette équation ?', ar: 'الوصل الأول وحده يعطي 3x + 2y = 24. كم زوجا (x ; y) يحقق هذه المعادلة؟',
+      options: [['un seul couple', 'unique'], ['une infinité de couples', ''], ['aucun couple', 'aucun']] },
+    { q: 'Les deux droites d’un système sont parallèles et distinctes. Le système a :', ar: 'مستقيما نظمة متوازيان ومختلفان. للنظمة:',
+      options: [['une seule solution', 'toujours'], ['aucune solution', ''], ['une infinité de solutions', 'confondues']] }
+  ],
+
+  experiment: {
+    title: 'Deux droites, un point commun ?',
+    intro: 'La droite bleue est fixe : x + y = 6. Règle la droite orange y = m·x + p et observe où elles se coupent.',
+    html: `<svg class="fig" id="plot" viewBox="0 0 420 330" role="img" aria-label="Repère avec deux droites et leur point d'intersection">
+      <defs><clipPath id="box"><rect x="20" y="10" width="380" height="300"/></clipPath></defs>
+      <g id="grid"></g>
+      <g clip-path="url(#box)"><line id="l1" class="ink" style="stroke:var(--blue);stroke-width:3"/><line id="l2" class="ink" style="stroke:var(--heat);stroke-width:3"/>
+      <circle id="pt" r="7" fill="var(--glow)" class="ink" style="display:none"/></g>
+      <text id="ptl" font-family="Kalam" font-weight="700" font-size="18" fill="var(--ink)"></text></svg>
+    <div class="readout">
+      <div class="card"><small>Droite orange</small><b id="eq2" style="color:var(--heat-text)"></b></div>
+      <div class="card"><small>Solution (x ; y)</small><b id="sol" style="color:var(--glow-text)"></b></div>
+      <div class="card"><small>Vérif. x + y</small><b id="v1" style="color:var(--blue)"></b></div>
+      <div class="card"><small>Nombre de solutions</small><b id="nb"></b></div></div>
+    <div class="ctl" style="margin-top:10px">
+      <div><label for="m">Pente m <span id="mo"></span></label><input id="m" type="range" min="-3" max="3" step="0.5" value="2"></div>
+      <div><label for="p">Ordonnée à l'origine p <span id="po"></span></label><input id="p" type="range" min="-4" max="8" step="1" value="-3"></div></div>`,
+    missions: [
+      { id: 'sol', text: 'Règle la droite orange pour que la solution du système soit x = 2 et y = 4.' },
+      { id: 'aucune', text: 'Trouve un réglage où le système n’a aucune solution.' },
+      { id: 'infini', text: 'Trouve un réglage où le système a une infinité de solutions.' }
+    ],
+    required: ['sol'],
+    note: 'Le point commun est calculé à chaque mouvement : x = (6 − p) ÷ (1 + m) et y = m·x + p, sauf si m = −1 (droites parallèles ou confondues).',
+    mount(root, api) {
+      const $ = s => root.querySelector(s), nf = api.nf;
+      const X0 = -2, X1 = 8, Y0 = -4, Y1 = 10, L = 20, T = 10, W = 380, H = 300;
+      const sx = x => L + (x - X0) / (X1 - X0) * W, sy = y => T + (Y1 - y) / (Y1 - Y0) * H;
+      let g = '';
+      for (let x = X0; x <= X1; x++) g += `<line x1="${sx(x)}" y1="${T}" x2="${sx(x)}" y2="${T + H}" stroke="var(--line)" stroke-width="${x === 0 ? 2 : 1}" opacity="${x === 0 ? .9 : .45}"/>`;
+      for (let y = Y0; y <= Y1; y++) g += `<line x1="${L}" y1="${sy(y)}" x2="${L + W}" y2="${sy(y)}" stroke="var(--line)" stroke-width="${y === 0 ? 2 : 1}" opacity="${y === 0 ? .9 : .45}"/>`;
+      for (let x = X0; x <= X1; x += 2) if (x) g += `<text x="${sx(x)}" y="${sy(0) + 16}" text-anchor="middle" font-size="12" fill="var(--ink)">${x}</text>`;
+      for (let y = Y0 + 2; y < Y1; y += 2) if (y) g += `<text x="${sx(0) - 6}" y="${sy(y) + 4}" text-anchor="end" font-size="12" fill="var(--ink)">${y}</text>`;
+      $('#grid').innerHTML = g;
+      const seg = (el, f) => { el.setAttribute('x1', sx(X0)); el.setAttribute('y1', sy(f(X0))); el.setAttribute('x2', sx(X1)); el.setAttribute('y2', sy(f(X1))); };
+      seg($('#l1'), x => 6 - x);
+      const term = (k, s) => k === 0 ? '' : (k === 1 ? s : k === -1 ? '−' + s : nf(k, 1).replace('-', '−') + s);
+      const eqText = (m, p) => { const a = term(m, 'x'); const b = p === 0 ? '' : (p > 0 ? (a ? ' + ' : '') + p : (a ? ' − ' : '−') + (-p)); return 'y = ' + ((a + b) || '0'); };
+      const near = (a, b) => Math.abs(a - b) < 1e-9;
+      const draw = () => {
+        const m = +$('#m').value, p = +$('#p').value;
+        $('#mo').textContent = '= ' + nf(m, 1).replace('-', '−'); $('#po').textContent = '= ' + String(p).replace('-', '−');
+        seg($('#l2'), x => m * x + p); $('#eq2').textContent = eqText(m, p);
+        const pt = $('#pt'), lab = $('#ptl');
+        if (near(m, -1)) {
+          pt.style.display = 'none'; lab.textContent = '';
+          if (near(p, 6)) { $('#sol').textContent = 'tous les points de la droite'; $('#nb').textContent = 'une infinité'; $('#v1').textContent = 'toujours 6'; api.done('infini'); }
+          else { $('#sol').textContent = 'aucun point commun'; $('#nb').textContent = 'aucune'; $('#v1').textContent = '—'; api.done('aucune'); }
+          return;
+        }
+        const x = (6 - p) / (1 + m), y = m * x + p;
+        $('#sol').textContent = `(${nf(x, 2).replace('-', '−')} ; ${nf(y, 2).replace('-', '−')})`;
+        $('#v1').textContent = nf(x + y, 2).replace('-', '−'); $('#nb').textContent = 'une seule';
+        const inView = x >= X0 && x <= X1 && y >= Y0 && y <= Y1;
+        pt.style.display = inView ? '' : 'none';
+        if (inView) { pt.setAttribute('cx', sx(x)); pt.setAttribute('cy', sy(y)); lab.setAttribute('x', Math.min(sx(x) + 10, L + W - 70)); lab.setAttribute('y', Math.max(sy(y) - 10, T + 18)); lab.textContent = `(${nf(x, 1).replace('-', '−')} ; ${nf(y, 1).replace('-', '−')})`; }
+        else lab.textContent = '';
+        if (near(x, 2) && near(y, 4)) api.done('sol');
+      };
+      $('#m').addEventListener('input', draw); $('#p').addEventListener('input', draw); draw();
+    }
+  },
+
+  rule: {
+    blocks: [
+      { formula: '{ a·x + b·y = c ; a′·x + b′·y = c′ }', text: "Résoudre le système, c'est trouver le couple (x ; y) qui vérifie les deux équations en même temps. Graphiquement, c'est le point commun des deux droites.", ar: 'حلّ النظمة هو إيجاد الزوج (x ; y) الذي يحقق المعادلتين معا. مبيانيا، هو نقطة تقاطع المستقيمين.' },
+      { formula: 'Combinaison : égaliser, puis soustraire', text: "On multiplie une équation pour que les coefficients d'une inconnue soient égaux, puis on soustrait : cette inconnue disparaît. On trouve l'autre, puis on remplace.", ar: 'طريقة التأليفة الخطية: نضرب معادلة لنوحّد معاملي مجهول، ثم نطرح فيختفي، ونجد الآخر ثم نعوّض.' },
+      { formula: 'Substitution : isoler, puis remplacer', text: "On écrit une inconnue en fonction de l'autre dans une équation (par exemple y = 6 − x), puis on remplace dans l'autre équation.", ar: 'طريقة التعويض: نعبّر عن مجهول بدلالة الآخر في معادلة، ثم نعوّض في المعادلة الأخرى.' },
+      { formula: 'APPRO · sécantes, parallèles, confondues', text: 'Droites sécantes : une seule solution. Parallèles et distinctes : aucune. Confondues : une infinité.', ar: 'تعمّق: مستقيمان متقاطعان: حل وحيد. متوازيان ومختلفان: لا حل. منطبقان: ما لا نهاية من الحلول.' }
+    ],
+    seen: 'Une seule équation laisse une infinité de couples : toute une droite. La deuxième équation est une deuxième droite ; leur point commun est la solution. Pente égale : aucun point commun, ou la même droite.'
+  },
+
+  proof: {
+    title: 'Pourquoi le point commun, et pourquoi soustraire ?',
+    html: `<p>Un point de la droite bleue vérifie la première équation. Un point de la droite orange vérifie la seconde. Seul le point commun vérifie les deux à la fois : c'est la solution.</p>
+      <p class="hand" style="font-size:20px">(3x + 2y) − (x + 2y) = 24 − 12, donc 2x = 12 et x = 6</p>
+      <p>Les deux tickets ont le même nombre de stylos : en soustrayant, les stylos disparaissent. Il reste 2 cahiers pour 12 DH, donc un cahier coûte 6 DH. Puis 6 + 2y = 12 donne y = 3 : un stylo coûte 3 DH.</p>`,
+    ar: 'نقطة من المستقيم الأزرق تحقق المعادلة الأولى، ونقطة من البرتقالي تحقق الثانية، والنقطة المشتركة وحدها تحققهما معا. في الوصلين نفس عدد الأقلام، فبالطرح تختفي الأقلام ويبقى دفتران بـ 12 درهما، أي أن الدفتر بـ 6 دراهم والقلم بـ 3 دراهم.'
+  },
+
+  exercises: {
+    levels: [
+      { label: 'Niveau 1 · combinaison directe', make(R) {
+        const x = R.int(3, 12), y = R.int(1, x - 1), S = x + y, D = x - y;
+        return { q: `Résous le système { x + y = ${S} ; x − y = ${D} }. Donne la valeur de x.`, unit: '(x)', ans: x, digits: 0,
+          traps: [[y, 'partiel'], [S + D, 'divise']] }; } },
+      { label: 'Niveau 2 · substitution', make(R) {
+        for (let k = 0; k < 60; k++) {
+          const x0 = R.int(1, 6), a = R.int(2, 4), b = R.pick([-3, -2, -1, 1, 2, 3, 4, 5]), y0 = a * x0 + b, S = x0 + y0;
+          const xs = (S + b) / (1 + a), ys = a * xs + b, xd = S - b, yd = a * xd + b;
+          const vals = [y0, x0, ys, yd];
+          if (new Set(vals.map(v => Math.round(v * 100))).size < 4) continue;
+          const bt = b > 0 ? `+ ${b}` : `− ${-b}`;
+          return { q: `Résous le système { y = ${a}x ${bt} ; x + y = ${S} } par substitution. Donne la valeur de y.`, unit: '(y)', ans: y0, digits: 2,
+            traps: [[x0, 'partiel'], [ys, 'signe'], [yd, 'divise']] };
+        }
+        return { q: 'Résous le système { y = 2x + 1 ; x + y = 7 } par substitution. Donne la valeur de y.', unit: '(y)', ans: 5, digits: 2, traps: [[2, 'partiel'], [7, 'divise']] }; } },
+      { label: 'Niveau 3 · problème', make(R) {
+        for (let k = 0; k < 60; k++) {
+          const t = R.pick([4, 5, 6, 7, 8, 9]), p = R.pick([3, 4, 5, 6]);
+          if (t === p) continue;
+          const A = 2 * t + 3 * p, B = t + 2 * p, tc = A - B, ts = 5 * B - 2 * A;
+          if (new Set([t, p, tc, ts]).size < 4) continue;
+          return { q: `Au marché, 2 kg de tomates et 3 kg de pommes de terre coûtent ${A} DH. 1 kg de tomates et 2 kg de pommes de terre coûtent ${B} DH. Quel est le prix d'un kilogramme de tomates ?`, unit: 'DH', ans: t, digits: 2,
+            traps: [[p, 'partiel'], [tc, 'combinaison'], [ts, 'signe']] };
+        }
+        return { q: "Au marché, 2 kg de tomates et 3 kg de pommes de terre coûtent 24 DH. 1 kg de tomates et 2 kg de pommes de terre coûtent 14 DH. Quel est le prix d'un kilogramme de tomates ?", unit: 'DH', ans: 6, digits: 2, traps: [[4, 'partiel'], [10, 'combinaison']] }; } }
+    ]
+  },
+
+  check: [
+    { q: "L'équation 2x − y = 5, seule, est vérifiée par :", ar: 'المعادلة 2x − y = 5 وحدها يحققها:',
+      options: [['un seul couple (x ; y)', 'unique'], ['une infinité de couples (x ; y)', ''], ['aucun couple', 'aucun']] },
+    { q: 'Les deux droites d’un système se coupent au point (3 ; −1). La solution du système est :', ar: 'مستقيما نظمة يتقاطعان في النقطة (3 ; −1). حل النظمة هو:',
+      options: [['x = 3 et y = −1', ''], ['x = −1 et y = 3', 'ordre'], ['une infinité de solutions', 'confondues']] },
+    { q: 'Les droites y = 2x + 1 et y = 2x − 3 forment un système. Il a :', ar: 'المستقيمان y = 2x + 1 و y = 2x − 3 يكوّنان نظمة. لها:',
+      options: [['une seule solution', 'toujours'], ['aucune solution', ''], ['une infinité de solutions', 'confondues']] }
+  ]
+};
+/* LESSON:END */
+</script>
+
+<script>
+/* ENGINE:BEGIN · Le concept en main · engine v1.3 · do not edit in a lesson; update it with tools/build_lesson.py sync */
+(() => {
+const L = LESSON, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const nf = (x, d = 1) => Number(x).toLocaleString('fr-FR', { maximumFractionDigits: d });
+// Arabic text: keep each Latin or numeric expression left-to-right and on one line (returns HTML)
+const iso = t => String(t).replace(/[A-Za-z0-9][A-Za-z0-9'/²³·=+,.() ]*[A-Za-z0-9'²³)]/g, m => `<bdi dir="ltr" class="lt">${m}</bdi>`);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const R = { int: (a, b, st = 1) => a + st * Math.floor(Math.random() * ((b - a) / st + 1)), pick: a => a[Math.floor(Math.random() * a.length)], nf };
+const MIS = L.misconceptions || {};
+const STEPS = (L.meta.steps || ['Question', 'Je prédis', 'Je teste', 'La règle', 'Pourquoi', 'Entraînement', 'Je vérifie']);
+const S = { open: 1, pred: {}, check: {}, ex: {}, errs: {}, missions: new Set(), cur: null, lvl: 0 };
+const near = (x, y) => Math.abs(x - y) <= Math.max(.02 * Math.abs(y), .05);
+
+/* validation: shown to the author, caught by the flow test */
+function validate() {
+  const P = [], codeOk = c => c === '' || (MIS[c] && MIS[c].fr && MIS[c].ar);
+  ['kicker', 'title', 'titleAr'].forEach(k => { if (!L.meta || !L.meta[k]) P.push(`meta.${k} manquant`); });
+  for (const [set, name] of [[L.predict, 'predict'], [L.check, 'check']]) {
+    if (!set || !set.length) P.push(`${name} vide`);
+    (set || []).forEach((q, i) => {
+      if (!q.q || !q.ar) P.push(`${name}[${i}] : texte ou arabe manquant`);
+      const good = q.options.filter(o => o[1] === '').length; if (good !== 1) P.push(`${name}[${i}] : ${good} bonnes réponses au lieu d'une`);
+      q.options.forEach(o => { if (!codeOk(o[1])) P.push(`${name}[${i}] : code « ${o[1]} » absent de misconceptions`); });
+    });
+  }
+  const ex = L.experiment;
+  if (!ex || !ex.missions || !ex.missions.length) P.push('experiment.missions vide');
+  else (ex.required || [ex.missions[0].id]).forEach(id => { if (!ex.missions.some(m => m.id === id)) P.push(`mission requise « ${id} » inconnue`); });
+  (L.exercises && L.exercises.levels || []).forEach((lv, l) => {
+    for (let k = 0; k < 300; k++) {
+      let e; try { e = lv.make(R); } catch (err) { P.push(`niveau ${l + 1} : ${err.message}`); break; }
+      if (!e.q || !e.unit || !isFinite(e.ans)) { P.push(`niveau ${l + 1} : question, unité ou réponse invalide`); break; }
+      for (const [v, c] of e.traps || []) {
+        if (!codeOk(c) || !c) { P.push(`niveau ${l + 1} : code de piège « ${c} » inconnu`); return; }
+        if (!isFinite(v)) { P.push(`niveau ${l + 1} : piège ${c} non fini`); return; }
+        if (near(v, e.ans)) { P.push(`niveau ${l + 1} : le piège ${c} donne la bonne réponse pour « ${e.q} »`); return; }
+      }
+      const T = e.traps || [];
+      for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++)
+        if (T[i][1] !== T[j][1] && near(T[i][0], T[j][0])) { P.push(`niveau ${l + 1} : les pièges ${T[i][1]} et ${T[j][1]} donnent la même valeur pour « ${e.q} »`); return; }
+    }
+  });
+  if (!L.exercises || !L.exercises.levels || !L.exercises.levels.length) P.push('exercises.levels vide');
+  [['hook', L.hook], ['rule', L.rule]].forEach(([k, o]) => { if (o && o.audio && !/^([\w./-]+\.(mp3|ogg|m4a)|data:audio\/[\w-]+;base64,[\w+/=]+)$/.test(o.audio)) P.push(`${k}.audio : chemin invalide « ${o.audio} »`); });
+  return P;
+}
+
+/* optional Darija voice: { audio: 'audio/file.mp3', audioText: 'texte en darija' } */
+function voice(o) {
+  if (!o || !o.audio) return '';
+  return `<div class="voice"><button type="button" data-audio="${esc(o.audio)}" aria-label="Écouter l'explication en darija">▶ Écouter en darija · <span lang="ar">استمع بالدارجة</span></button>`
+    + (o.audioText ? `<details><summary>Texte de l'audio</summary><p class="ar">${iso(esc(o.audioText))}</p></details>` : '') + '</div>';
+}
+let player = null;
+function bindVoice() {
+  $$('[data-audio]').forEach(b => b.onclick = () => {
+    if (player && player.src.endsWith(b.dataset.audio) && !player.paused) { player.pause(); return; }
+    if (player) player.pause();
+    $$('[data-audio]').forEach(x => x.classList.remove('on'));
+    player = new Audio(b.dataset.audio); b.classList.add('on');
+    const box = b.parentNode, warn = msg => { b.classList.remove('on'); let w = box.querySelector('.vwarn'); if (!w) { w = document.createElement('p'); w.className = 'vwarn note'; box.appendChild(w); } w.textContent = msg; };
+    player.onended = player.onpause = () => b.classList.remove('on');
+    player.onerror = () => warn("Fichier audio introuvable : ouvre la leçon avec son dossier audio/. · الملف الصوتي غير موجود.");
+    player.play().catch(e => { if (e && e.name === 'NotAllowedError') warn('Lecture bloquée par le navigateur : touche de nouveau le bouton. · اضغط مرة أخرى.'); else b.classList.remove('on'); });
+  });
+}
+
+/* rendering */
+function qBlock(arr, prefix) { return arr.map((q, i) => `<div class="q" id="${prefix}${i}"></div>`).join(''); }
+function render() {
+  const m = L.meta, h = L.hook, x = L.experiment, r = L.rule, p = L.proof;
+  document.title = `${m.title} · Le concept en main`;
+  $('#hd').innerHTML = `<div class="num">${m.kicker}</div><h1>${m.title}</h1><p class="ar">${iso(esc(m.titleAr))}</p>`;
+  $('#ft').textContent = m.footer || '';
+  $('#main').innerHTML = `
+  <section class="moment" id="m1"><div class="num">1 · La question</div><h2>${h.title}</h2>${h.svg || ''}<p>${h.text}</p><p class="ar">${iso(esc(h.ar))}</p>${voice(h)}
+    <div class="row"><button class="b primary" data-next="2">Je fais ma prédiction</button></div></section>
+  <section class="moment" id="m2" hidden><div class="num">2 · Je prédis</div><h2>Avant toute explication, choisis</h2>
+    <p class="note">Il n'y a pas de piège : ta prédiction sert à voir ce que tu penses maintenant.</p>${qBlock(L.predict, 'p')}
+    <div class="row"><button class="b primary" data-next="3" id="next2" disabled>Je teste</button></div></section>
+  <section class="moment" id="m3" hidden><div class="num">3 · Je teste</div><h2>${x.title}</h2><p>${x.intro || ''}</p><div id="exp">${x.html}</div>
+    <h3>Mes missions</h3><ul class="missions">${x.missions.map(mi => `<li data-m="${mi.id}">${mi.text}</li>`).join('')}</ul>
+    ${x.note ? `<p class="note">${x.note}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="4" id="next3" disabled>J'ai observé, je nomme la règle</button><span class="note" id="next3n">Termine les missions marquées comme nécessaires.</span></div></section>
+  <section class="moment" id="m4" hidden><div class="num">4 · Je nomme la règle</div><h2>La règle</h2>
+    ${r.blocks.map(b => `<div class="rule"><div class="formula">${b.formula}</div><p>${b.text || ''}</p>${b.ar ? `<p class="ar">${iso(esc(b.ar))}</p>` : ''}</div>`).join('')}
+    ${voice(r)}${r.seen ? `<p><b>Ce que tu as vu :</b> ${r.seen}</p>` : ''}
+    <div class="row"><button class="b primary" data-next="5">Je comprends pourquoi</button></div></section>
+  <section class="moment" id="m5" hidden><div class="num">5 · Je comprends pourquoi</div><h2>${p.title}</h2>
+    <div class="flapw"><div class="proof" id="proof" inert aria-hidden="true">${p.html}${p.ar ? `<p class="ar">${iso(esc(p.ar))}</p>` : ''}</div><button class="flap" id="flap">Soulever le rabat</button></div>
+    <h3>Et ma prédiction ?</h3><div id="pv"></div>
+    <div class="row"><button class="b primary" data-next="6">Je m'entraîne</button></div></section>
+  <section class="moment" id="m6" hidden><div class="num">6 · Je m'entraîne</div><h2>Exercices sans fin</h2>
+    <p class="ar">${iso('كل تمرين جديد بأعداد مختلفة.')}</p>
+    <div class="seg" id="lv">${L.exercises.levels.map((lv, i) => `<button data-l="${i}" class="${i ? '' : 'on'}">${lv.label}</button>`).join('')}</div>
+    <div class="ex"><p id="exq"></p><div class="row"><input id="exa" inputmode="decimal" autocomplete="off" aria-label="Ta réponse"><span id="exu" class="hand" style="font-size:20px"></span><button class="b" id="exc">Vérifier</button><button class="b" id="exn">Nouvel exercice</button></div><div class="fb" id="exf" aria-live="polite"></div></div>
+    <p class="note" id="exs"></p>
+    <div class="row"><button class="b primary" data-next="7">Je vérifie ce que j'ai compris</button></div></section>
+  <section class="moment" id="m7" hidden><div class="num">7 · Je vérifie</div><h2>Pour finir</h2>${qBlock(L.check, 'c')}
+    <div id="rep" hidden><h3>Mon bilan</h3><div class="report"><div class="card"><small>Prédictions justes</small><b id="r1"></b></div><div class="card"><small>Vérifications justes</small><b id="r2"></b></div><div class="card"><small>Exercices du premier coup</small><b id="r3"></b></div></div>
+    <div id="r4"></div>
+    <div class="row"><label for="cls" style="font-weight:400">Ma classe</label><select id="cls"><option value="">non indiquée</option>${(m.classes || []).map(c => `<option>${esc(c)}</option>`).join('')}</select><button class="b" id="copy">Copier le bilan</button><span class="note" id="cpn"></span></div>
+    <p class="note">Le bilan ne contient aucun nom. Il reste sur cet appareil.</p></div></section>`;
+}
+
+/* steps */
+function steps() {
+  $('#steps').innerHTML = STEPS.map((n, i) => `<button data-s="${i + 1}" class="${i + 1 < S.open ? 'done' : ''} ${i + 1 === S.open ? 'cur' : ''}" ${i + 1 > S.open ? 'disabled' : ''}>${i + 1} · ${n}</button>`).join('');
+  $$('#steps button').forEach(b => b.onclick = () => $('#m' + b.dataset.s).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));
+}
+function openStep(n) {
+  if (n > S.open) S.open = n;
+  for (let i = 1; i <= S.open; i++) $('#m' + i).hidden = false;
+  steps(); if (n === 5) verdicts(); if (n === 6 && !S.cur) newEx();
+  $('#m' + n).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* questions */
+function question(q, el, store, key, onDone) {
+  el.innerHTML = `<p><b>${q.q}</b></p><p class="ar">${iso(esc(q.ar))}</p><div class="opts">${q.options.map((o, i) => `<button data-i="${i}">${o[0]}</button>`).join('')}</div>`;
+  el.querySelectorAll('button').forEach(b => b.onclick = () => {
+    if (store[key]) return; const i = +b.dataset.i, code = q.options[i][1];
+    store[key] = { i, ok: code === '', code }; b.classList.add('pick'); el.querySelectorAll('button').forEach(x => x.disabled = x !== b); onDone();
+  });
+}
+function verdicts() {
+  $('#pv').innerHTML = L.predict.map((q, k) => {
+    const a = S.pred[k]; if (!a) return ''; const right = q.options.find(o => o[1] === '')[0];
+    return `<div class="verdict ${a.ok ? 'ok' : 'no'}"><b>${a.ok ? 'Prédiction juste' : 'Prédiction à corriger'} :</b> tu avais choisi « ${q.options[a.i][0]} », la réponse est « ${right} ».${a.ok ? '' : ' ' + MIS[a.code].fr + `<div class="ar">${iso(esc(MIS[a.code].ar))}</div>`}</div>`;
+  }).join('');
+}
+
+/* experiment */
+function done(id) {
+  if (S.missions.has(id)) return; S.missions.add(id);
+  const li = $(`.missions li[data-m="${id}"]`); if (li) li.classList.add('ok');
+  const req = L.experiment.required || [L.experiment.missions[0].id], ok = req.every(r => S.missions.has(r));
+  $('#next3').disabled = !ok;
+  $('#next3n').textContent = !ok ? 'Termine les missions marquées comme nécessaires.' : S.missions.size === L.experiment.missions.length ? 'Toutes les missions sont faites.' : 'Tu peux continuer, ou finir les autres missions.';
+}
+
+/* exercises */
+function newEx() {
+  const lv = L.exercises.levels[S.lvl]; S.cur = lv.make(R);
+  $('#exq').textContent = S.cur.q; $('#exu').textContent = S.cur.unit; $('#exa').value = ''; $('#exf').textContent = ''; $('#exf').className = 'fb'; $('#exc').disabled = false;
+}
+function checkEx() {
+  const x = parseFloat($('#exa').value.replace(/[\s ]/g, '').replace(',', '.')), c = S.cur;
+  if (!isFinite(x)) { $('#exf').textContent = 'Écris un nombre.'; $('#exf').className = 'fb no'; return; }
+  // st = [solved, tries, solved on the first try, exercises tried]: only first tries count as unassisted,
+  // because a wrong try shows the misconception message, which is help
+  const st = S.ex[S.lvl] || (S.ex[S.lvl] = [0, 0, 0, 0]); st[1]++; c.att = (c.att || 0) + 1; if (c.att === 1) st[3]++;
+  if (near(x, c.ans)) { st[0]++; if (c.att === 1) st[2]++; $('#exf').textContent = `Juste : ${nf(c.ans, c.digits ?? 2)} ${c.unit}.`; $('#exf').className = 'fb ok'; $('#exc').disabled = true; }
+  else {
+    const t = (c.traps || []).find(tp => near(x, tp[0]));
+    if (t) { S.errs[t[1]] = (S.errs[t[1]] || 0) + 1; $('#exf').innerHTML = MIS[t[1]].fr + `<div class="ar">${iso(esc(MIS[t[1]].ar))}</div>`; }
+    else $('#exf').textContent = 'Pas encore. Reprends le calcul étape par étape.';
+    $('#exf').className = 'fb no';
+  }
+  $('#exs').textContent = L.exercises.levels.map((lv, l) => { const s = S.ex[l] || [0, 0, 0, 0]; return `${lv.label} : ${s[2]} du premier coup sur ${s[3]}`; }).join(' · ');
+}
+
+/* report */
+function report() {
+  const p = L.predict.filter((q, k) => S.pred[k] && S.pred[k].ok).length, c = L.check.filter((q, k) => S.check[k].ok).length;
+  const sum = i => Object.values(S.ex).reduce((s, v) => s + v[i], 0), ok = sum(0), first = sum(2), tried = sum(3);
+  $('#r1').textContent = `${p} / ${L.predict.length}`; $('#r2').textContent = `${c} / ${L.check.length}`; $('#r3').textContent = `${first} / ${tried}`;
+  const codes = {}; [...Object.values(S.pred), ...Object.values(S.check)].forEach(a => { if (a.code) codes[a.code] = (codes[a.code] || 0) + 1; });
+  Object.entries(S.errs).forEach(([k, n]) => codes[k] = (codes[k] || 0) + n);
+  const list = Object.entries(codes).sort((a, b) => b[1] - a[1]);
+  const pr = p / L.predict.length, cr = c / L.check.length;
+  $('#r4').innerHTML = `<div class="verdict ${cr === 1 ? 'ok' : 'no'}">${cr > pr ? 'Tu as progressé depuis ta prédiction.' : cr === 1 ? "Tu avais déjà la bonne idée, et tu l'as confirmée." : 'Reviens au moment « Je teste » et refais les missions.'}</div>`
+    + (ok > first ? `<p class="note">${ok - first} exercice${ok - first > 1 ? 's' : ''} réussi${ok - first > 1 ? 's' : ''} après une aide : ils ne comptent pas dans « du premier coup ».</p>` : '')
+    + (list.length ? `<p><b>À retravailler :</b></p><ul>${list.map(([k, n]) => `<li>${MIS[k].fr} <span class="note">(${n} fois)</span></li>`).join('')}</ul>` : '<p>Aucune erreur type repérée.</p>');
+  S.summary = { p, c, ex: `${first}/${tried}`, exAfterHelp: ok - first, errs: list };
+  $('#rep').hidden = false; $('#rep').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* start */
+render(); steps(); bindVoice();
+$$('#main [data-next]').forEach(b => b.addEventListener('click', () => openStep(+b.dataset.next)));
+L.predict.forEach((q, k) => question(q, $('#p' + k), S.pred, k, () => { $('#next2').disabled = L.predict.some((x, j) => !S.pred[j]); }));
+L.check.forEach((q, k) => question(q, $('#c' + k), S.check, k, () => { if (L.check.every((x, j) => S.check[j])) report(); }));
+$('#flap').onclick = () => { $('#flap').classList.add('open'); $('#proof').inert = false; $('#proof').removeAttribute('aria-hidden'); };
+$('#exc').onclick = checkEx; $('#exn').onclick = newEx;
+$('#exa').addEventListener('keydown', e => { if (e.key === 'Enter') checkEx(); });
+$$('#lv button').forEach(b => b.onclick = () => { S.lvl = +b.dataset.l; $$('#lv button').forEach(x => x.classList.toggle('on', x === b)); newEx(); });
+$('#copy').onclick = async () => {
+  const s = S.summary, t = `${L.meta.short || L.meta.title} · classe ${$('#cls').value || 'non indiquée'} · prédictions ${s.p}/${L.predict.length} · vérification ${s.c}/${L.check.length} · exercices du premier coup ${s.ex}, après aide ${s.exAfterHelp} · erreurs ${s.errs.map(([k, n]) => k + '×' + n).join(', ') || 'aucune'}`;
+  try { await navigator.clipboard.writeText(t); $('#cpn').textContent = 'Copié.'; } catch (e) { $('#cpn').textContent = t; }
+};
+L.experiment.mount($('#exp'), { done, nf, iso, reduce });
+const problems = validate(), testMode = /[?&]test\b/.test(location.search);
+if (problems.length) { console.error('Leçon invalide :\n' + problems.join('\n')); $('#main').insertAdjacentHTML('afterbegin', `<div id="problems"><b>À corriger avant publication :</b><ul>${problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`); }
+if (testMode) window.__fikra = { S, L, done, openStep, problems, newEx };
+})();
+/* ENGINE:END */
+</script>
+</body>
+</html>
