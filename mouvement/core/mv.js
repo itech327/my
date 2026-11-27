@@ -345,7 +345,7 @@
     var c1 = H('div', 'card', '<div class="eyebrow">Je me prépare · vrai ou faux ?</div>', secs[1]), left = def.prepare.length;
     var go2 = nextBtn(c1, 'Je regarde ▶', 2); go2.style.display = 'none';
     def.prepare.forEach(function (p, i) {
-      var d = H('div', '', '<div class="q">' + (i + 1) + '. ' + p[0] + '</div><div class="tf"><button class="btn">Vrai</button><button class="btn">Faux</button></div><div class="fb" aria-live="polite"></div>');
+      var d = H('div', '', '<div class="q"><span class="qn">' + (i + 1) + '</span>' + p[0] + '</div><div class="tf"><button class="btn">Vrai</button><button class="btn">Faux</button></div><div class="fb" aria-live="polite"></div>');
       c1.insertBefore(d, go2);
       var bs = d.querySelectorAll('button'), fb = d.querySelector('.fb');
       function ans(x) {

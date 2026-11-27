@@ -54,6 +54,8 @@ h2{font-size:18px;margin:18px 0 8px}
 .tf{display:flex;gap:8px;margin-top:8px}
 .tf button{flex:1}
 .q{margin:12px 0 4px;font-weight:600}
+/* Numéro de question dans une pastille : « 2 » ne se lit plus comme une valeur de l'énoncé (« 2. −3 »). */
+.qn{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.7em;padding:0 .35em;margin-inline-end:.55em;border-radius:999px;border:1px solid var(--line);background:var(--acc-bg);color:var(--acc-t);font-size:.78em;font-weight:700;vertical-align:.12em}
 .fb{min-height:22px;font-size:14px;margin-top:6px}
 .fb.ok{color:var(--ok)}.fb.ko{color:var(--bad)}
 input.num{width:96px;background:#111214;border:1px solid var(--line);color:#fff;border-radius:8px;padding:8px;font:17px ui-monospace,Menlo,monospace}

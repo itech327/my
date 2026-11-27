@@ -144,7 +144,7 @@
     qs.forEach(function (q, k) {
       var g = right(q, ans[k]), mine = ans[k] == null ? 'sans réponse' : q.o ? q.o[ans[k]] : ans[k] + (q.unit ? ' ' + q.unit : '');
       var good = q.o ? q.o[q.a] : num(q.a) + (q.unit ? ' ' + q.unit : '');
-      H('div', 'corr ' + (g ? 'ok' : 'ko'), '<div class="q">' + (k + 1) + '. ' + q.q + '</div>' +
+      H('div', 'corr ' + (g ? 'ok' : 'ko'), '<div class="q"><span class="qn">' + (k + 1) + '</span>' + q.q + '</div>' +
         '<div>' + (g ? '✓ Juste : ' + good : '✗ Ta réponse : ' + mine + '<br>Bonne réponse : <b>' + good + '</b>') + '</div>' +
         (q.e ? '<div class="small">' + q.e + '</div>' : '') + '<div class="small">Leçon : <a href="../' + q.L.id + '/">' + q.L.title + '</a></div>', cor);
     });
