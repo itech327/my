@@ -32,7 +32,7 @@
 | `claude/new-session-thirii` | صدى: الموصل والتطبيق والمكتبة الصوتية. مرجعه `CONTEXT.md` في جذره |
 | `claude/club-revision` | أرشيف: حزمة نادي المراجعة (أُلغي) |
 | `claude/taalim-video-lab` | الفيديو وأداة `tools-predire` |
-| `pro-site` | **فضاء التجربة `pro.taalim.men`** (مشروع Pages `pro`، بلا بناء): مكتبة الدروس التسعة، مغلقة برمز الدخول `PRO_CODE` (سرّ في Cloudflare، وُضع 27 نوفمبر، النطاق نشط). بلا السرّ يبقى الموقع مغلقاً. تغيير الرمز: Pages → pro → Settings → Variables and Secrets ثم إعادة النشر. إضافة درس: سطر في `LESSONS` في `index.html` + الملف في `lecons/` |
+| `pro-site` | **فضاء التجربة `pro.taalim.men`** (مشروع Pages `pro`، بلا بناء): مكتبة الدروس التسعة ومختبر «المربّع المخادع» (`labo/`)، مغلقة برمز الدخول `PRO_CODE` (سرّ في Cloudflare، وُضع 27 نوفمبر، النطاق نشط). بلا السرّ يبقى الموقع مغلقاً. تغيير الرمز: Pages → pro → Settings → Variables and Secrets ثم إعادة النشر. إضافة درس: سطر في `LESSONS` في `index.html` + الملف في `lecons/` |
 | **`itech327/taalim-pro`** (مستودع **خاص** منفصل، الفرع `main`) | المحتوى المدفوع: `banques/` و`correcteurs/` و`generateurs/` و`examens/` و`revue/`. لا أسرار ولا معطيات شخصية (انظر `README.md` فيه). أُنشئ 27 نوفمبر. يُضاف للجلسة بـ `add_repo` (push) |
 
 ## الحالة في 2026-11-27
@@ -89,6 +89,8 @@
 - **مهارتان مفعّلتان في الحساب B:** `ultracave` (ردود مضغوطة جداً، تُشغَّل بـ «ultracave mode» وتُطفأ بـ «normal mode») و`md-first` (تحويل PDF وWord وExcel إلى Markdown قبل القراءة).
 - **graphify** (Apache-2.0): `pip install -q --break-system-packages graphifyy` ثم `graphify update .` في الفرع المستنسخ: خريطة الشيفرة في 5 ثوانٍ، **دون LLM ودون توكنز**، وتقرير `graphify-out/GRAPH_REPORT.md` نحو 13 ك.ب. ثم `graphify explain` و`path` و`affected`. لا تُستعمل `/graphify` الكاملة ولا `graphify install` (مهارة 50 ك.ب تُستدعى مع كل سؤال، عكس المطلوب). لا يُدفع `graphify-out/`. مهارة مختصرة `repo-map` اقتُرحت للحساب B.
 - **عادات:** clone بـ `--depth 1` لفرع واحد؛ `git grep` بدل قراءة ملفات كاملة؛ لا تُعِد قراءة ما في الدفتر.
+
+**خطة الأشكال والمهارات حسب نوع الدرس، والترتيب التالي: `docs/plan-competences-lecons.md`.**
 
 ## قرارات تنتظر صاحب المشروع
 1. عتبة النجاح في تجربة «الفكرة بين يديك»، والمراجعون العلميون.
