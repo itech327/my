@@ -38,7 +38,7 @@
 ### المنصة الحية
 - آخر دمج 25 نوفمبر: التلميذ يختار المستوى فقط (PR 37 و38). Turnstile مفعّل، «Défis par chapitre»، SVT 2AC (5 دروس جيولوجيا).
 - التكنولوجيا مخفية (`TECH_VISIBLE = False`).
-- **Search Console:** خرائط الموقع «Couldn't fetch». المراجعة المقررة 26 نوفمبر لم تُنجز.
+- **Search Console (فحص 27 نوفمبر):** خرائط الموقع سليمة ومنشورة: `taalim.men/sitemap.xml` (5 روابط) و`maths` (49) و`pc` (46) و`svt` (31)، و`robots.txt` في كل نطاق يشير إليها. Cloudflare: لا قواعد جدار مخصصة، Bot Fight Mode مفعّل، مستوى الأمان medium. **العائق في جهة Google:** يلزم صاحب المشروع حذف كل خريطة وإعادة إرسالها في Search Console، وفحص رابط بـ URL Inspection. Supermetrics متصل لكن مصدر Search Console فيه غير مسجّل الدخول (رابط الدخول من `data_source_discovery` بـ `GW`).
 - صفحة بيع Pass 3AC: لم تبدأ.
 
 ### «الفكرة بين يديك» (Pro، خارج الإنتاج)
