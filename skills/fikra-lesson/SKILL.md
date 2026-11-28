@@ -35,7 +35,7 @@ Copy `template/lesson-template.html`'s LESSON block into a `.js` file and replac
 
 ```
 const LESSON = {
-  meta: { kicker, title, titleAr, short, classes: ['3APIC-1', …], footer },
+  meta: { kicker, title, titleAr, short, classes: ['3APIC'], footer },
   misconceptions: { code: { fr, ar }, … },
   hook: { title, svg, text, ar },                // 1 · the puzzling question
   predict: [ { q, ar, options: [[label, code], …] } ],   // 2 · code '' = the right option
