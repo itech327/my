@@ -1,0 +1,446 @@
+{
+ "meta": {
+  "kicker": "Physique-chimie · 2e année collège · Le concept en main",
+  "title": "Les combustions",
+  "titleAr": "الاحتراقات",
+  "short": "Combustions",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier (widget tubes). Modèle qualitatif simplifié ; textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "disparait": {
+   "fr": "Le combustible ne disparaît pas : il est transformé en nouveaux corps, le dioxyde de carbone et l'eau.",
+   "ar": "المادة المحترقة لا تختفي بل تتحول إلى أجسام جديدة."
+  },
+  "air_inutile": {
+   "fr": "Une combustion a besoin de dioxygène, le comburant : sans air, elle s'arrête ou devient incomplète.",
+   "ar": "الاحتراق يحتاج إلى الأكسجين: بدونه يتوقف أو يصير غير كامل."
+  },
+  "jaune_chaude": {
+   "fr": "La flamme jaune n'est pas la meilleure : elle signale un manque d'air, une combustion incomplète qui noircit les récipients.",
+   "ar": "اللهب الأصفر يدل على نقص الهواء واحتراق غير كامل."
+  },
+  "co_sans_danger": {
+   "fr": "La combustion incomplète produit du monoxyde de carbone (CO), un gaz toxique, sans couleur et sans odeur : il faut aérer.",
+   "ar": "الاحتراق غير الكامل ينتج أحادي أكسيد الكربون، وهو غاز سام بلا لون ولا رائحة."
+  },
+  "fumee_eau": {
+   "fr": "L'eau vient du butane : il contient de l'hydrogène, qui s'unit au dioxygène. Le tube témoin, avec de l'air seul, ne donne pas d'eau.",
+   "ar": "الماء ناتج عن احتراق البوتان لأنه يحتوي على الهيدروجين."
+  },
+  "oubli_o2": {
+   "fr": "La masse des produits compte aussi le dioxygène consommé : m(CO₂) = m(carbone) + m(dioxygène).",
+   "ar": "كتلة النواتج تساوي مجموع كتلتي الكربون والأكسجين."
+  },
+  "soustraction": {
+   "fr": "Les masses des réactifs s'additionnent, elles ne se soustraient pas.",
+   "ar": "كتل المتفاعلات تجمع ولا تطرح."
+  },
+  "inverse": {
+   "fr": "12 g de carbone demandent 32 g de dioxygène : pour m g, on multiplie m par 32 puis on divise par 12.",
+   "ar": "12 g من الكربون تحتاج 32 g من الأكسجين، فنضرب في 32 ونقسم على 12."
+  },
+  "air_o2": {
+   "fr": "L'air n'est pas que du dioxygène : il en contient environ 21 %. Il faut donc beaucoup plus d'air que de dioxygène.",
+   "ar": "الهواء يحتوي على 21 % فقط من الأكسجين."
+  }
+ },
+ "hook": {
+  "title": "La flamme qui change de couleur",
+  "text": "Sur la gazinière, la flamme est bleue. Quand le brûleur s'encrasse, elle devient jaune et noircit la théière. Pourquoi la couleur change-t-elle ? Est-ce seulement une question de couleur, ou y a-t-il un danger ?",
+  "ar": "لهب موقد الغاز أزرق، وحين يتسخ الموقد يصير أصفر ويسوّد البراد. لماذا؟ وهل في ذلك خطر؟",
+  "audio": "audio/pc-2ac-combustions-question.mp3",
+  "audioText": "فالبوطة، العافية كتكون زرقا. ولكن ملي كيتوسّخ البرولور، كتولي صفرا وكتكحّل البراد. علاش تبدّل اللون؟ وواش هادي غير مسألة ديال اللون، ولا فيها شي خطر؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "On brûle du charbon dans un flacon de dioxygène, puis on y verse de l'eau de chaux. Elle :",
+   "ar": "نحرق الفحم في قارورة أكسجين ثم نصب فيها ماء الجير. فإنه:",
+   "options": [
+    [
+     "se trouble : du dioxyde de carbone s'est formé",
+     ""
+    ],
+    [
+     "reste limpide : le charbon a simplement disparu",
+     "disparait"
+    ],
+    [
+     "reste limpide : une combustion n'utilise pas l'air du flacon",
+     "air_inutile"
+    ]
+   ]
+  },
+  {
+   "q": "Sur la gazinière, une flamme jaune qui noircit la casserole indique :",
+   "ar": "لهب أصفر يسوّد القدر يدل على:",
+   "options": [
+    [
+     "un manque d'air : une combustion incomplète",
+     ""
+    ],
+    [
+     "la flamme la plus chaude et la meilleure",
+     "jaune_chaude"
+    ],
+    [
+     "une combustion sans aucun danger",
+     "co_sans_danger"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Trois flacons et quatre tests",
+  "intro": "Règle l'arrivée d'air du brûleur (la virole), puis teste les produits de chaque flacon : eau de chaux (dioxyde de carbone), sulfate de cuivre anhydre (eau : blanc → bleu), soucoupe froide (dépôt noir de carbone) et couleur de la flamme.",
+  "widget": "tubes",
+  "params": {
+   "label": "Trois flacons de combustion",
+   "inputs": [
+    {
+     "id": "a",
+     "label": "Air admis par la virole",
+     "unit": "%",
+     "min": 0,
+     "max": 100,
+     "step": 25,
+     "value": 100
+    }
+   ],
+   "tubes": [
+    {
+     "id": "A",
+     "short": "A",
+     "label": "charbon brûlant dans le dioxygène",
+     "vars": {
+      "f": 1,
+      "c": 1
+     }
+    },
+    {
+     "id": "B",
+     "short": "B",
+     "label": "butane du brûleur",
+     "vars": {
+      "f": 1,
+      "c": 1,
+      "h": 1,
+      "bu": 1
+     }
+    },
+    {
+     "id": "C",
+     "short": "C",
+     "label": "air seul, sans combustible (témoin)",
+     "vars": {}
+    }
+   ],
+   "reagents": [
+    {
+     "id": "chaux",
+     "label": "Eau de chaux",
+     "expr": "c*((1-bu)+bu*(0.4+0.6*a/100))",
+     "colors": [
+      [
+       0.5,
+       "trouble : dioxyde de carbone",
+       "#a8a196"
+      ],
+      [
+       0.1,
+       "légèrement trouble",
+       "#d3cdc0"
+      ],
+      [
+       0,
+       "limpide",
+       "#cfe6f5"
+      ]
+     ]
+    },
+    {
+     "id": "sulfate",
+     "label": "Sulfate de cuivre",
+     "expr": "h",
+     "colors": [
+      [
+       0.3,
+       "bleu : eau formée",
+       "#2f6fd0"
+      ],
+      [
+       0,
+       "reste blanc : pas d'eau",
+       "#f1f1ee"
+      ]
+     ]
+    },
+    {
+     "id": "noir",
+     "label": "Soucoupe froide",
+     "expr": "c*bu*(1-a/100)",
+     "colors": [
+      [
+       0.3,
+       "dépôt noir de carbone",
+       "#2b2b2b"
+      ],
+      [
+       0.05,
+       "léger dépôt noir",
+       "#7d7d7d"
+      ],
+      [
+       0,
+       "pas de dépôt",
+       "#eef2f4"
+      ]
+     ]
+    },
+    {
+     "id": "flamme",
+     "label": "Flamme",
+     "expr": "f*(bu*a/100+(1-bu)*2)-(1-f)",
+     "colors": [
+      [
+       1.5,
+       "rougeoiement du charbon",
+       "#c2410c"
+      ],
+      [
+       0.75,
+       "flamme bleue",
+       "#2f5bd3"
+      ],
+      [
+       0.25,
+       "flamme bleue et jaune",
+       "#8a7a2a"
+      ],
+      [
+       0,
+       "flamme jaune éclairante",
+       "#e3a21a"
+      ],
+      [
+       -5,
+       "rien ne brûle",
+       "#e8eef5"
+      ]
+     ]
+    }
+   ],
+   "plate": {
+    "tube": "B",
+    "reagent": "noir",
+    "var": "a",
+    "values": [
+     0,
+     25,
+     50,
+     75,
+     100
+    ],
+    "unit": "%",
+    "label": "Soucoupes tenues au-dessus de la flamme du butane, selon l'air admis"
+   }
+  },
+  "missions": [
+   {
+    "id": "carbone",
+    "type": "condition",
+    "expr": "a == 100 && reactif == 1",
+    "text": "Air à 100 % : teste les trois flacons à l'eau de chaux. Lesquels contiennent du dioxyde de carbone ?"
+   },
+   {
+    "id": "eau",
+    "type": "condition",
+    "expr": "reactif == 2",
+    "text": "Teste au sulfate de cuivre anhydre. Quelle combustion produit de l'eau ?"
+   },
+   {
+    "id": "flamme",
+    "type": "valeurs",
+    "input": "a",
+    "values": [
+     0,
+     50,
+     100
+    ],
+    "when": "reactif == 4",
+    "text": "Observe la flamme du butane avec 0 %, 50 % et 100 % d'air."
+   }
+  ],
+  "required": [
+   "carbone",
+   "flamme"
+  ],
+  "note": "Modèle qualitatif : plus la virole laisse entrer d'air, plus la combustion du butane est complète (flamme bleue, pas de carbone). Avec peu d'air, flamme jaune, dépôt noir et monoxyde de carbone."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "combustible + dioxygène → produits",
+    "text": "Une combustion a besoin d'un combustible, d'un comburant (le dioxygène de l'air) et d'une source de chaleur. Le combustible ne disparaît pas : il se transforme.",
+    "ar": "الاحتراق يحتاج إلى مادة محترقة وأكسجين وحرارة، والمادة تتحول ولا تختفي."
+   },
+   {
+    "formula": "carbone + dioxygène → dioxyde de carbone",
+    "text": "Le dioxyde de carbone trouble l'eau de chaux. Le butane, qui contient du carbone et de l'hydrogène, donne en brûlant du dioxyde de carbone et de l'eau.",
+    "ar": "الكربون يعطي ثنائي أكسيد الكربون، والبوتان يعطي ثنائي أكسيد الكربون والماء."
+   },
+   {
+    "formula": "manque d'air → combustion incomplète",
+    "text": "Avec assez d'air, la flamme est bleue : la combustion est complète. Sans assez d'air, elle devient jaune, dépose du carbone noir et produit du monoxyde de carbone, gaz toxique. Il faut aérer.",
+    "ar": "نقص الهواء يجعل الاحتراق غير كامل: لهب أصفر، كربون أسود، وأحادي أكسيد الكربون السام."
+   }
+  ],
+  "seen": "Avec 100 % d'air, l'eau de chaux se trouble pour le charbon et le butane, pas pour le témoin ; seul le butane bleuit le sulfate de cuivre. En fermant la virole, la flamme du butane passe du bleu au jaune et la soucoupe se couvre de noir.",
+  "audio": "audio/pc-2ac-combustions-regle.mp3",
+  "audioText": "القاعدة هي: باش تشعل العافية خاصك ثلاثة ديال الحوايج: مادة كتشعل، والأوكسجين ديال الهوا، والسخانة. الفحم ملي كيتحرق كيعطي ثنائي أكسيد الكاربون، وهو اللي كيعكّر ماء الجير. والبوطان كيعطي ثنائي أكسيد الكاربون والما. إلا كان الهوا كافي، العافية كتكون زرقا والاحتراق كامل. وإلا نقص الهوا، كتولي صفرا وكتخلي واحد السواد، وكتطلع أحادي أكسيد الكاربون. هادا غاز سام ما عندو ريحة، داكشي علاش خاص ديما التهوية."
+ },
+ "proof": {
+  "title": "D'où vient l'eau ?",
+  "firstIsFormula": true,
+  "paras": [
+   "butane (carbone + hydrogène) + dioxygène → dioxyde de carbone + eau",
+   "Le flacon témoin contient le même air, sans combustible : le sulfate de cuivre y reste blanc. L'eau ne vient donc pas de l'air. Elle apparaît seulement quand le butane brûle : son hydrogène s'unit au dioxygène. Le charbon, fait de carbone seul, ne donne pas d'eau."
+  ],
+  "ar": "الشاهد لا يعطي الماء، إذن الماء ناتج عن هيدروجين البوتان المتحد مع الأكسجين."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "c",
+      "pick 3 6 12 24"
+     ],
+     [
+      "o",
+      "2.6667*c"
+     ]
+    ],
+    "q": "{c:0} g de carbone brûlent complètement avec {o:0} g de dioxygène. Quelle masse de dioxyde de carbone se forme-t-il, en g ?",
+    "unit": "g",
+    "answer": "c+round(o)",
+    "digits": 0,
+    "traps": [
+     [
+      "c",
+      "oubli_o2"
+     ],
+     [
+      "round(o)-c",
+      "soustraction"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "m",
+      "pick 3 6 9 18 30"
+     ]
+    ],
+    "q": "12 g de carbone brûlent avec 32 g de dioxygène. Quelle masse de dioxygène faut-il pour brûler {m:0} g de carbone ?",
+    "unit": "g",
+    "answer": "m*32/12",
+    "digits": 0,
+    "traps": [
+     [
+      "m*12/32",
+      "inverse"
+     ],
+     [
+      "m+20",
+      "soustraction"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "V",
+      "pick 21 42 63 105"
+     ]
+    ],
+    "q": "Une combustion consomme {V:0} L de dioxygène. L'air contient 21 % de dioxygène. Quel volume d'air faut-il, en L ?",
+    "unit": "L",
+    "answer": "V*100/21",
+    "digits": 0,
+    "traps": [
+     [
+      "V",
+      "air_o2"
+     ],
+     [
+      "V*21/100",
+      "inverse"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Le sulfate de cuivre anhydre bleuit au-dessus de la flamme du butane. Cela montre que :",
+   "ar": "كبريتات النحاس اللامائية تزرق فوق لهب البوتان. هذا يدل على أن:",
+   "options": [
+    [
+     "la combustion du butane produit de l'eau",
+     ""
+    ],
+    [
+     "l'eau vient de l'humidité de l'air",
+     "fumee_eau"
+    ],
+    [
+     "du butane liquide s'est échappé",
+     "fumee_eau"
+    ]
+   ]
+  },
+  {
+   "q": "Un chauffe-eau à gaz dans une salle de bain fermée est dangereux car :",
+   "ar": "سخان غاز في حمام مغلق خطير لأن:",
+   "options": [
+    [
+     "la combustion devient incomplète et produit du monoxyde de carbone, toxique",
+     ""
+    ],
+    [
+     "le dioxyde de carbone a une odeur forte qui prévient",
+     "co_sans_danger"
+    ],
+    [
+     "une flamme n'a pas besoin d'air",
+     "air_inutile"
+    ]
+   ]
+  },
+  {
+   "q": "12 g de carbone brûlent avec 32 g de dioxygène. La masse de dioxyde de carbone formée est :",
+   "ar": "تحترق 12 g من الكربون مع 32 g من الأكسجين. كتلة ثنائي أكسيد الكربون الناتجة:",
+   "options": [
+    [
+     "44 g",
+     ""
+    ],
+    [
+     "12 g",
+     "oubli_o2"
+    ],
+    [
+     "20 g",
+     "soustraction"
+    ]
+   ]
+  }
+ ]
+}
