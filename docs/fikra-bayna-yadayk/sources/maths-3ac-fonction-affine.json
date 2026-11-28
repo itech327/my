@@ -4,11 +4,7 @@
   "title": "La fonction affine",
   "titleAr": "الدالة التآلفية",
   "short": "Fonction affine",
-  "classes": [
-   "3APIC-1",
-   "3APIC-2",
-   "3APIC-3"
-  ],
+  "classes": ["3APIC"],
   "footer": "Leçon construite depuis une fiche JSON, modifiable dans l'atelier sans code. Textes et valeurs originaux. Non relue par un professeur de mathématiques."
  },
  "misconceptions": {

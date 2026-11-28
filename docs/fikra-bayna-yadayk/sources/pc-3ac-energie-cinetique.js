@@ -6,7 +6,7 @@ const LESSON = {
     title: "L'énergie cinétique et la distance d'arrêt",
     titleAr: 'الطاقة الحركية ومسافة التوقف',
     short: 'Énergie cinétique',
-    classes: ['3APIC-1', '3APIC-2', '3APIC-3'],
+    classes: ['3APIC'],
     footer: 'Prototype « Le concept en main » pour taalim.men, hors production. Textes et valeurs originaux. Non relu par un professeur de physique.'
   },
 
