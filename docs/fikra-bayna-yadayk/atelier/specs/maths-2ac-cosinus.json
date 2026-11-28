@@ -1,0 +1,357 @@
+{
+ "meta": {
+  "kicker": "Mathématiques · 2e année collège · Le concept en main",
+  "title": "Le cosinus d'un angle aigu",
+  "titleAr": "جيب تمام زاوية حادة",
+  "short": "Cosinus",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. ABC rectangle en C, α est l'angle en B. Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "oppose": {
+   "fr": "Le cosinus utilise le côté adjacent, celui qui touche l'angle, et non le côté opposé.",
+   "ar": "جيب التمام يستعمل الضلع المجاور للزاوية لا المقابل لها."
+  },
+  "inverse_rapport": {
+   "fr": "cos α = adjacent ÷ hypoténuse, pas hypoténuse ÷ adjacent : un cosinus est toujours plus petit que 1.",
+   "ar": "cos α = المجاور ÷ الوتر، وهو دائما أصغر من 1."
+  },
+  "taille": {
+   "fr": "Le cosinus ne dépend que de l'angle : agrandir le triangle ne le change pas.",
+   "ar": "جيب التمام يتعلق بالزاوية فقط، لا بحجم المثلث."
+  },
+  "proportionnel": {
+   "fr": "Le cosinus n'est pas proportionnel à l'angle : cos 60° = 0,5, mais cos 30° ≈ 0,87, et non 1.",
+   "ar": "جيب التمام لا يتناسب مع الزاوية."
+  },
+  "multiplie_div": {
+   "fr": "Si BC = AB × cos α, alors AB = BC ÷ cos α : on divise pour retrouver l'hypoténuse.",
+   "ar": "لإيجاد الوتر نقسم المجاور على cos α."
+  },
+  "complement": {
+   "fr": "C'est l'autre angle aigu (90° − α) : α est l'angle formé avec le côté adjacent.",
+   "ar": "هذه هي الزاوية الحادة الأخرى."
+  },
+  "degres": {
+   "fr": "cos α n'est pas l'angle : pour trouver α en degrés, on utilise la touche cos⁻¹ (arccos) de la calculatrice.",
+   "ar": "cos α ليس الزاوية: نستعمل الزر cos⁻¹ في الآلة الحاسبة لإيجادها بالدرجات."
+  }
+ },
+ "hook": {
+  "title": "L'escalator du centre commercial",
+  "text": "Un escalator long de 12 m monte en faisant un angle de 30° avec le sol. Quelle longueur occupe-t-il au sol ? Peut-on la calculer sans mesurer ?",
+  "ar": "سلم كهربائي طوله 12 m يميل على الأرض بزاوية 30°. ما الطول الذي يشغله على الأرض؟",
+  "audio": "audio/maths-2ac-cosinus-question.mp3",
+  "audioText": "فالمول، السلم الكهربائي طولو اثناش ميترو، ومايل على الأرض بزاوية تلاتين درجة. شحال من بلاصة كياخد فالأرض؟ واش تقدر تحسبها بلا ما تقيس؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Deux escalators font le même angle de 30° avec le sol, l'un de 12 m, l'autre de 24 m. Le rapport longueur au sol ÷ longueur de l'escalator est :",
+   "ar": "سلمان يميلان بنفس الزاوية 30°، أحدهما 12 m والآخر 24 m. النسبة: الطول على الأرض ÷ طول السلم:",
+   "options": [
+    [
+     "le même pour les deux",
+     ""
+    ],
+    [
+     "deux fois plus grand pour le plus long",
+     "taille"
+    ],
+    [
+     "deux fois plus petit pour le plus long",
+     "taille"
+    ]
+   ]
+  },
+  {
+   "q": "cos 60° = 0,5. Alors cos 30° vaut :",
+   "ar": "cos 60° = 0,5. إذن cos 30° يساوي:",
+   "options": [
+    [
+     "environ 0,87",
+     ""
+    ],
+    [
+     "1, car 30° est la moitié de 60°",
+     "proportionnel"
+    ],
+    [
+     "0,25, la moitié de 0,5",
+     "proportionnel"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Le triangle de l'escalator",
+  "intro": "AB est l'escalator (l'hypoténuse), BC sa longueur au sol (côté adjacent à l'angle α en B). Change l'angle et la longueur AB.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "a",
+     "label": "Angle α",
+     "unit": "°",
+     "min": 5,
+     "max": 85,
+     "step": 5,
+     "value": 30
+    },
+    {
+     "id": "L",
+     "label": "Hypoténuse AB",
+     "unit": "m",
+     "min": 2,
+     "max": 24,
+     "step": 2,
+     "value": 12
+    }
+   ],
+   "outputs": [
+    {
+     "id": "BC",
+     "label": "Côté adjacent BC = AB × cos α",
+     "unit": "m",
+     "expr": "L*cosd(a)",
+     "digits": 2
+    },
+    {
+     "id": "R",
+     "label": "BC ÷ AB",
+     "unit": "",
+     "expr": "BC/L",
+     "digits": 3
+    },
+    {
+     "id": "C",
+     "label": "cos α",
+     "unit": "",
+     "expr": "cosd(a)",
+     "digits": 3
+    }
+   ],
+   "bars": [
+    {
+     "id": "BC",
+     "label": "BC au sol",
+     "max": 24
+    },
+    {
+     "id": "L",
+     "label": "AB, l'escalator",
+     "max": 24
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "taille",
+    "type": "valeurs",
+    "input": "L",
+    "values": [
+     6,
+     12,
+     24
+    ],
+    "when": "a == 30",
+    "text": "Angle 30° : essaie AB = 6, 12 et 24 m. Que devient le rapport BC ÷ AB ?"
+   },
+   {
+    "id": "angle",
+    "type": "valeurs",
+    "input": "a",
+    "values": [
+     30,
+     45,
+     60
+    ],
+    "text": "Compare les angles 30°, 45° et 60°. Le cosinus diminue-t-il de moitié quand l'angle double ?"
+   },
+   {
+    "id": "soixante",
+    "type": "condition",
+    "expr": "a == 60 && L == 12",
+    "text": "60° et AB = 12 m : lis BC. Que remarques-tu ?"
+   }
+  ],
+  "required": [
+   "taille",
+   "angle"
+  ],
+  "note": "BC = AB × cos α et BC ÷ AB sont recalculés à chaque mouvement."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "cos α = côté adjacent ÷ hypoténuse = BC ÷ AB",
+    "text": "Dans un triangle rectangle, le cosinus d'un angle aigu est le quotient du côté adjacent à cet angle par l'hypoténuse.",
+    "ar": "في المثلث القائم، جيب تمام زاوية حادة هو خارج الضلع المجاور على الوتر."
+   },
+   {
+    "formula": "0 < cos α < 1",
+    "text": "Le cosinus ne dépend que de l'angle, pas de la taille du triangle. Il est plus petit que 1, car l'hypoténuse est le plus long côté, et il diminue quand l'angle grandit.",
+    "ar": "جيب التمام يتعلق بالزاوية فقط، وهو أصغر من 1."
+   },
+   {
+    "formula": "BC = AB × cos α    AB = BC ÷ cos α",
+    "text": "On calcule une longueur avec cos, et un angle avec la touche cos⁻¹ de la calculatrice.",
+    "ar": "نحسب الطول بـ cos والزاوية بالزر cos⁻¹."
+   }
+  ],
+  "seen": "À 30°, BC ÷ AB vaut toujours 0,866 que AB mesure 6, 12 ou 24 m : l'escalator de 12 m occupe 10,39 m au sol. cos 30° ≈ 0,87, cos 45° ≈ 0,71, cos 60° = 0,5 : le cosinus n'est pas proportionnel à l'angle. À 60°, BC est exactement la moitié de AB.",
+  "audio": "audio/maths-2ac-cosinus-regle.mp3",
+  "audioText": "القاعدة هي: فالمثلث القائم، الكوزينوس ديال الزاوية كيساوي الضلع المجاور تقسيم الوتر. الضلع المجاور هو اللي كيقيس الزاوية، والوتر هو أطول ضلع، مقابل للزاوية القائمة. الكوزينوس ما كيتبدلش ملي كيكبر ولا كيصغر المثلث، وديما صغير من واحد. وباش تلقى الزاوية من الكوزينوس، كتستعمل الزر كوزينوس ناقص واحد فالآلة الحاسبة."
+ },
+ "proof": {
+  "title": "Pourquoi le rapport ne dépend pas de la taille ?",
+  "firstIsFormula": true,
+  "paras": [
+   "deux triangles rectangles avec le même angle α ont la même forme",
+   "Agrandir un triangle multiplie toutes ses longueurs par le même nombre k : BC devient k × BC et AB devient k × AB. Le quotient (k × BC) ÷ (k × AB) reste BC ÷ AB. Le rapport ne dépend donc que de l'angle : c'est lui qu'on appelle cos α."
+  ],
+  "ar": "تكبير المثلث يضرب كل الأطوال في نفس العدد، فتبقى النسبة نفسها."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "h",
+      "pick 4 6 8 10 12"
+     ],
+     [
+      "a",
+      "pick 30 40 50 60 70"
+     ]
+    ],
+    "q": "ABC est rectangle en C, AB = {h:0} cm et l'angle B mesure {a:0}°. Calcule BC, en cm.",
+    "unit": "cm",
+    "answer": "h*cosd(a)",
+    "digits": 2,
+    "traps": [
+     [
+      "h/cosd(a)",
+      "multiplie_div"
+     ],
+     [
+      "h*sind(a)",
+      "oppose"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "c",
+      "pick 3 4 5 6 8"
+     ],
+     [
+      "a",
+      "pick 25 35 50 65"
+     ]
+    ],
+    "q": "ABC est rectangle en C, BC = {c:0} cm et l'angle B mesure {a:0}°. Calcule l'hypoténuse AB, en cm.",
+    "unit": "cm",
+    "answer": "c/cosd(a)",
+    "digits": 2,
+    "traps": [
+     [
+      "c*cosd(a)",
+      "multiplie_div"
+     ],
+     [
+      "c/sind(a)",
+      "oppose"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "c",
+      "pick 3 4 5"
+     ],
+     [
+      "h",
+      "pick 6 7 8 10"
+     ]
+    ],
+    "q": "ABC est rectangle en C, BC = {c:0} cm et AB = {h:0} cm. Calcule l'angle B en degrés, au dixième.",
+    "unit": "°",
+    "answer": "acosd(c/h)",
+    "digits": 1,
+    "traps": [
+     [
+      "90-acosd(c/h)",
+      "complement"
+     ],
+     [
+      "c/h",
+      "degres"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Dans ABC rectangle en C, cos B est égal à :",
+   "ar": "في المثلث ABC القائم في C، cos B يساوي:",
+   "options": [
+    [
+     "BC ÷ AB",
+     ""
+    ],
+    [
+     "AC ÷ AB",
+     "oppose"
+    ],
+    [
+     "AB ÷ BC",
+     "inverse_rapport"
+    ]
+   ]
+  },
+  {
+   "q": "Un élève trouve cos α = 1,25. Que penser ?",
+   "ar": "وجد تلميذ cos α = 1,25. ماذا تستنتج؟",
+   "options": [
+    [
+     "c'est impossible : un cosinus est plus petit que 1",
+     ""
+    ],
+    [
+     "c'est possible si le triangle est grand",
+     "taille"
+    ],
+    [
+     "c'est possible si l'angle est grand",
+     "proportionnel"
+    ]
+   ]
+  },
+  {
+   "q": "On sait que cos α = 0,6. Pour trouver α en degrés :",
+   "ar": "نعلم أن cos α = 0,6. لإيجاد α بالدرجات:",
+   "options": [
+    [
+     "on utilise la touche cos⁻¹ de la calculatrice",
+     ""
+    ],
+    [
+     "α = 0,6°",
+     "degres"
+    ],
+    [
+     "α = 0,6 × 90 = 54°",
+     "proportionnel"
+    ]
+   ]
+  }
+ ]
+}

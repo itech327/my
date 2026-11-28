@@ -20,7 +20,7 @@ Règles de forme :
 
 1. Aucun HTML, aucun JavaScript, aucun lien. Seulement du texte.
 2. `experiment.widget` est l'un de : `curseurs`, `graphe`, `tubes`. Rien d'autre. `tubes` (SVT, chimie) : `params.inputs` (curseurs communs), `tubes` [{id, short, label, vars}], `reagents` [{id, label, expr, colors: [[seuil, nom, couleur]]}], `plate` facultatif {tube, reagent, var, values, unit, label}. Dans les missions : les curseurs, `reactif` (numéro du réactif appliqué, 0 avant) et `<tube>_<réactif>`.
-3. Les calculs (`expr`, `answer`, pièges, `when`) utilisent seulement : nombres, noms de variables déclarés, `+ - * / ^`, parenthèses, comparaisons, `&&`, `||`, et `sqrt abs round floor ceil min max pow pi`.
+3. Les calculs (`expr`, `answer`, pièges, `when`) utilisent seulement : nombres, noms de variables déclarés, `+ - * / ^`, parenthèses, comparaisons, `&&`, `||`, et `sqrt abs round floor ceil min max pow pi`, plus la trigonométrie en degrés `cosd sind tand acosd asind atand`.
 4. Chaque piège `[calcul, code]` donne la valeur qu'obtient un élève qui fait cette erreur. Il ne doit jamais égaler la bonne réponse, ni un autre piège, pour aucune valeur tirée. Choisis les listes `pick` en conséquence.
 5. Au moins une mission dans `required`.
 
