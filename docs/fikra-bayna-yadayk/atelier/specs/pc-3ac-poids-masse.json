@@ -1,0 +1,344 @@
+{
+ "meta": {
+  "kicker": "Physique-chimie · 3e année collège · Le concept en main",
+  "title": "Le poids et la masse",
+  "titleAr": "الوزن والكتلة",
+  "short": "Poids et masse",
+  "classes": [
+   "3APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "confond": {
+   "fr": "La masse et le poids sont deux grandeurs différentes : la masse en kilogrammes (kg), le poids est une force en newtons (N).",
+   "ar": "الكتلة والوزن مقداران مختلفان: الكتلة بالكيلوغرام والوزن قوة بالنيوتن."
+  },
+  "lune_masse": {
+   "fr": "La masse ne change pas d'un astre à l'autre : c'est la quantité de matière. Seul le poids change.",
+   "ar": "الكتلة لا تتغير من كوكب إلى آخر، الوزن وحده يتغير."
+  },
+  "nul": {
+   "fr": "Sur la Lune le poids n'est pas nul : il est environ 6 fois plus petit que sur Terre.",
+   "ar": "وزن الجسم على القمر ليس منعدما، بل أصغر بحوالي 6 مرات."
+  },
+  "addition": {
+   "fr": "On multiplie la masse par g, on ne les additionne pas : P = m × g.",
+   "ar": "نضرب الكتلة في g ولا نجمعهما."
+  },
+  "divise": {
+   "fr": "P = m × g : on multiplie par g, on ne divise pas.",
+   "ar": "نضرب في g ولا نقسم عليه."
+  },
+  "grammes": {
+   "fr": "Dans P = m × g, la masse doit être en kilogrammes : divise les grammes par 1000.",
+   "ar": "الكتلة يجب أن تكون بالكيلوغرام: نقسم الغرامات على 1000."
+  },
+  "inverse": {
+   "fr": "Pour retrouver la masse, on divise le poids par g : m = P ÷ g.",
+   "ar": "لإيجاد الكتلة نقسم الوزن على g."
+  },
+  "direction": {
+   "fr": "Le poids est toujours vertical et vers le bas, même sur une pente ou pendant un mouvement.",
+   "ar": "الوزن دائما رأسي ونحو الأسفل، حتى على منحدر أو أثناء الحركة."
+  }
+ },
+ "hook": {
+  "title": "L'astronaute a-t-il maigri ?",
+  "text": "Un astronaute de 80 kg marche sur la Lune : il saute sans effort, comme s'il était devenu léger. A-t-il perdu des kilos, ou autre chose a-t-il changé ?",
+  "ar": "رائد فضاء كتلته 80 kg يقفز على القمر دون جهد. هل نقصت كتلته، أم تغيّر شيء آخر؟",
+  "audio": "audio/pc-3ac-poids-masse-question.mp3",
+  "audioText": "رائد فضاء، الكتلة ديالو ثمانين كيلو هنا فالأرض. ملي طلع للقمر، ولّا كينقز بحال إلا ما فيه والو. واش نقص ليه الوزن، ولا نقصات ليه الكتلة، ولا بجوج؟ دير التوقع ديالك قبل ما تجرّب."
+ },
+ "predict": [
+  {
+   "q": "Sur Terre, l'astronaute a une masse de 80 kg. Sur la Lune, sa masse est :",
+   "ar": "كتلة رائد الفضاء على الأرض 80 kg. كتلته على القمر:",
+   "options": [
+    [
+     "80 kg",
+     ""
+    ],
+    [
+     "environ 13 kg",
+     "lune_masse"
+    ],
+    [
+     "0 kg",
+     "nul"
+    ]
+   ]
+  },
+  {
+   "q": "Sur Terre, un sac de 2 kg pèse 19,6 N. Un sac de 4 kg pèse :",
+   "ar": "على الأرض، كيس كتلته 2 kg وزنه 19,6 N. كيس كتلته 4 kg وزنه:",
+   "options": [
+    [
+     "39,2 N",
+     ""
+    ],
+    [
+     "21,6 N",
+     "addition"
+    ],
+    [
+     "4 N",
+     "confond"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Le dynamomètre de voyage",
+  "intro": "Choisis la masse de l'objet et l'astre où tu le pèses (g, l'intensité de la pesanteur). Note tes essais dans le carnet.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "m",
+     "label": "Masse",
+     "unit": "kg",
+     "min": 0.5,
+     "max": 100,
+     "step": 0.5,
+     "value": 10
+    },
+    {
+     "id": "g",
+     "label": "Intensité de pesanteur g",
+     "unit": "N/kg",
+     "min": 1.6,
+     "max": 24.8,
+     "step": 0.1,
+     "value": 9.8
+    }
+   ],
+   "outputs": [
+    {
+     "id": "P",
+     "label": "Poids",
+     "unit": "N",
+     "expr": "m*g",
+     "digits": 1
+    },
+    {
+     "id": "M",
+     "label": "Masse",
+     "unit": "kg",
+     "expr": "m",
+     "digits": 1
+    }
+   ],
+   "bars": [
+    {
+     "id": "P",
+     "label": "Poids, jusqu'à 2500 N",
+     "max": 2500
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "prop",
+    "type": "valeurs",
+    "input": "m",
+    "values": [
+     1,
+     2,
+     4
+    ],
+    "when": "g == 9.8",
+    "text": "Sur Terre (g = 9,8 N/kg), compare m = 1 kg, 2 kg et 4 kg."
+   },
+   {
+    "id": "lune",
+    "type": "condition",
+    "expr": "m == 80 && g == 1.6",
+    "text": "Pèse l'astronaute de 80 kg sur la Lune (g = 1,6 N/kg). Que deviennent sa masse et son poids ?"
+   },
+   {
+    "id": "jupiter",
+    "type": "condition",
+    "expr": "m == 80 && g == 24.8",
+    "text": "Même astronaute sur Jupiter (g = 24,8 N/kg)."
+   }
+  ],
+  "required": [
+   "prop",
+   "lune"
+  ],
+  "note": "P = m × g est recalculé à chaque mouvement. Valeurs de g : Terre 9,8 · Mars 3,7 · Lune 1,6 · Jupiter 24,8 N/kg."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "P = m × g",
+    "text": "Le poids P (en newtons, N) est égal à la masse m (en kilogrammes) multipliée par l'intensité de la pesanteur g (en N/kg). Sur Terre g ≈ 9,8 N/kg, souvent arrondi à 10 ; sur la Lune g ≈ 1,6 N/kg.",
+    "ar": "الوزن يساوي الكتلة مضروبة في شدة الثقالة g."
+   },
+   {
+    "formula": "masse ≠ poids",
+    "text": "La masse se mesure avec une balance et ne dépend pas du lieu. Le poids est une force, il se mesure avec un dynamomètre et dépend du lieu.",
+    "ar": "الكتلة تقاس بالميزان ولا تتعلق بالمكان، والوزن قوة تقاس بالدينامومتر وتتعلق بالمكان."
+   },
+   {
+    "formula": "G · vertical · vers le bas",
+    "text": "Le poids est une force à distance : point d'application, le centre de gravité G ; direction, la verticale ; sens, vers le bas ; intensité, P = m × g.",
+    "ar": "مميزات الوزن: نقطة التأثير مركز الثقل G، الاتجاه رأسي، المنحى نحو الأسفل، والشدة P = m × g."
+   }
+  ],
+  "seen": "Sur Terre, masse double, poids double. Sur la Lune, l'astronaute garde ses 80 kg, mais son poids passe de 784 N à 128 N : c'est pour cela qu'il saute si facilement.",
+  "audio": "audio/pc-3ac-poids-masse-regle.mp3",
+  "audioText": "القاعدة هي: الوزن كيساوي الكتلة ضرب شدة الثقالة. الكتلة بالكيلوغرام، كتقيسها بالميزان، وما كتبدلش فين ما مشيتي. الوزن قوة، كيتقاس بالنيوتن بالدينامومتر، وكيتبدل من بلاصة لبلاصة. فالأرض شدة الثقالة تقريبا عشرة نيوتن فالكيلو، وفالقمر غير واحد فاصلة ستة. والوزن ديما عمودي ونازل لتحت."
+ },
+ "proof": {
+  "title": "Pourquoi multiplier ?",
+  "firstIsFormula": true,
+  "paras": [
+   "2 kg = 1 kg + 1 kg, donc P = 9,8 N + 9,8 N = 19,6 N",
+   "Sur Terre, chaque kilogramme est attiré avec la même force, 9,8 N : c'est le sens de g. Accroche deux masses de 1 kg au dynamomètre, il indique deux fois plus. Pour m kilogrammes, on ajoute m fois g : P = m × g. Sur la Lune chaque kilogramme est attiré avec 1,6 N seulement."
+  ],
+  "ar": "كل كيلوغرام ينجذب بنفس القوة g، لذلك نضرب الكتلة في g."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "m",
+      "pick 2 5 12 40 65 3.5"
+     ]
+    ],
+    "q": "Un objet a une masse de {m:1} kg. Calcule son poids sur Terre (on prend g = 10 N/kg).",
+    "unit": "N",
+    "answer": "m*10",
+    "digits": 0,
+    "traps": [
+     [
+      "m+10",
+      "addition"
+     ],
+     [
+      "m/10",
+      "divise"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "mg",
+      "pick 200 250 500 750 1500"
+     ],
+     [
+      "g",
+      "pick 9.8 1.6 3.7"
+     ]
+    ],
+    "q": "Un objet de {mg:0} g est pesé sur un astre où g = {g:1} N/kg. Calcule son poids en N.",
+    "unit": "N",
+    "answer": "mg/1000*g",
+    "digits": 2,
+    "traps": [
+     [
+      "mg*g",
+      "grammes"
+     ],
+     [
+      "mg/1000/g",
+      "divise"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "m",
+      "pick 3 5 8 12 20 50"
+     ],
+     [
+      "g",
+      "pick 9.8 1.6 3.7"
+     ],
+     [
+      "P",
+      "m*g"
+     ]
+    ],
+    "q": "Un dynamomètre indique {P:1} N sur un astre où g = {g:1} N/kg. Calcule la masse de l'objet en kg.",
+    "unit": "kg",
+    "answer": "P/g",
+    "digits": 1,
+    "traps": [
+     [
+      "P*g",
+      "inverse"
+     ],
+     [
+      "P",
+      "confond"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Un sac de 3 kg sur la Lune (g = 1,6 N/kg) a un poids de :",
+   "ar": "كيس كتلته 3 kg على القمر (g = 1,6 N/kg) وزنه:",
+   "options": [
+    [
+     "4,8 N",
+     ""
+    ],
+    [
+     "3 kg",
+     "confond"
+    ],
+    [
+     "4,6 N",
+     "addition"
+    ]
+   ]
+  },
+  {
+   "q": "Un objet pèse 50 N sur Terre (g = 10 N/kg). Sur la Lune, sa masse est :",
+   "ar": "جسم وزنه 50 N على الأرض (g = 10 N/kg). كتلته على القمر:",
+   "options": [
+    [
+     "5 kg",
+     ""
+    ],
+    [
+     "0,8 kg",
+     "lune_masse"
+    ],
+    [
+     "50 kg",
+     "confond"
+    ]
+   ]
+  },
+  {
+   "q": "Une valise glisse sur une rampe inclinée. La direction de son poids est :",
+   "ar": "حقيبة تنزلق على منحدر مائل. اتجاه وزنها:",
+   "options": [
+    [
+     "verticale, vers le bas",
+     ""
+    ],
+    [
+     "perpendiculaire à la rampe",
+     "direction"
+    ],
+    [
+     "dans le sens du mouvement",
+     "direction"
+    ]
+   ]
+  }
+ ]
+}
