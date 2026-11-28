@@ -1,0 +1,440 @@
+{
+ "meta": {
+  "kicker": "SVT · 3e année collège · Le concept en main",
+  "title": "La digestion : des aliments aux nutriments",
+  "titleAr": "الهضم: من الأغذية إلى المغذيات",
+  "short": "Digestion",
+  "classes": [
+   "3APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier (widget tubes). Modèle d'activité simplifié ; textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "disparait": {
+   "fr": "L'amidon ne disparaît pas : il est transformé en sucres plus petits. La liqueur de Fehling le montre (rouge brique).",
+   "ar": "النشا لا يختفي بل يتحول إلى سكريات صغيرة، ويدل على ذلك محلول فهلنغ."
+  },
+  "eau": {
+   "fr": "L'eau seule ne digère rien : sans enzyme, l'amidon et les protéines restent intacts (tube témoin).",
+   "ar": "الماء وحده لا يهضم شيئا: بدون أنزيم يبقى الغذاء كما هو."
+  },
+  "toutes": {
+   "fr": "Chaque enzyme est spécifique : l'amylase agit sur l'amidon, la pepsine sur les protéines.",
+   "ar": "كل أنزيم نوعي: الأميلاز يؤثر في النشا، والببسين في البروتينات."
+  },
+  "mecanique": {
+   "fr": "Mâcher découpe les aliments mais ne les transforme pas chimiquement : ce sont les enzymes qui le font.",
+   "ar": "المضغ يقطع الغذاء فقط، أما التحويل الكيميائي فتقوم به الأنزيمات."
+  },
+  "ph": {
+   "fr": "Une enzyme agit dans des conditions précises : la pepsine en milieu acide (estomac, pH ≈ 2), l'amylase salivaire en milieu presque neutre (pH ≈ 7).",
+   "ar": "لكل أنزيم ظروفه: الببسين في وسط حمضي، والأميلاز في وسط قريب من المحايد."
+  },
+  "lieu": {
+   "fr": "Les nutriments sont absorbés dans l'intestin grêle : ils traversent sa paroi et passent dans le sang.",
+   "ar": "تمتص المغذيات في المعي الدقيق وتنتقل إلى الدم."
+  },
+  "reste": {
+   "fr": "Ce qui reste = 100 % − ce qui a été digéré.",
+   "ar": "ما تبقى = 100 % ناقص ما تم هضمه."
+  },
+  "vitesse": {
+   "fr": "La quantité digérée = vitesse (en % par minute) × durée.",
+   "ar": "الكمية المهضومة = السرعة × المدة."
+  },
+  "pourcent": {
+   "fr": "d % de m se calcule m × d ÷ 100.",
+   "ar": "نسبة d من m تحسب m × d ÷ 100."
+  },
+  "inverse": {
+   "fr": "Une enzyme k fois plus lente met k fois plus de temps : on multiplie la durée par k.",
+   "ar": "إذا كان الأنزيم أبطأ k مرة فإنه يستغرق وقتا أطول k مرة."
+  }
+ },
+ "hook": {
+  "title": "Le pain qui devient sucré",
+  "text": "Garde un morceau de pain dans la bouche trois minutes sans l'avaler : il prend un goût sucré. D'où vient ce sucre ? Et pourquoi la viande ne devient-elle pas sucrée ?",
+  "ar": "نترك قطعة خبز في الفم ثلاث دقائق فتصير حلوة. من أين يأتي السكر؟ ولماذا لا يصير اللحم حلوا؟",
+  "audio": "audio/svt-3ac-digestion-question.mp3",
+  "audioText": "خلّي طرف ديال الخبز فالفم ديالك شي ثلاث دقايق بلا ما تبلعو. غادي تحس بيه ولّا حلو. منين جات هاد الحلاوة؟ وعلاش اللحم ما كيوليش حلو؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "On mélange de l'amidon et de la salive à 37 °C. Après 20 min, l'eau iodée ne bleuit plus. L'amidon :",
+   "ar": "نمزج النشا واللعاب في 37 °C. بعد 20 دقيقة لم يعد ماء اليود يزرق. النشا:",
+   "options": [
+    [
+     "a été transformé en sucres",
+     ""
+    ],
+    [
+     "a simplement disparu",
+     "disparait"
+    ],
+    [
+     "a été dissous par l'eau de la salive",
+     "eau"
+    ]
+   ]
+  },
+  {
+   "q": "Le suc gastrique digère le blanc d'œuf. Digère-t-il aussi l'amidon ?",
+   "ar": "العصارة المعدية تهضم بياض البيض. هل تهضم النشا أيضا؟",
+   "options": [
+    [
+     "Non, chaque enzyme agit sur un aliment précis",
+     ""
+    ],
+    [
+     "Oui, un suc digestif digère tout",
+     "toutes"
+    ],
+    [
+     "Oui, à condition que l'aliment soit bien mâché",
+     "mecanique"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Quatre tubes à 37 °C",
+  "intro": "Règle la durée et le pH du milieu, puis teste les tubes : eau iodée (amidon), liqueur de Fehling chauffée (sucres) ou observation des flocons de blanc d'œuf (protéines).",
+  "widget": "tubes",
+  "params": {
+   "label": "Quatre tubes à essai au bain-marie",
+   "inputs": [
+    {
+     "id": "t",
+     "label": "Durée",
+     "unit": "min",
+     "min": 0,
+     "max": 40,
+     "step": 5,
+     "value": 0
+    },
+    {
+     "id": "pH",
+     "label": "pH du milieu",
+     "unit": "",
+     "min": 1,
+     "max": 8,
+     "step": 1,
+     "value": 7
+    }
+   ],
+   "tubes": [
+    {
+     "id": "A",
+     "short": "A",
+     "label": "amidon + salive (amylase)",
+     "vars": {
+      "s": 1,
+      "am": 1
+     }
+    },
+    {
+     "id": "B",
+     "short": "B",
+     "label": "amidon + eau (témoin)",
+     "vars": {
+      "s": 1
+     }
+    },
+    {
+     "id": "C",
+     "short": "C",
+     "label": "blanc d'œuf + suc gastrique (pepsine)",
+     "vars": {
+      "p": 1,
+      "pe": 1
+     }
+    },
+    {
+     "id": "D",
+     "short": "D",
+     "label": "blanc d'œuf + salive",
+     "vars": {
+      "p": 1,
+      "am": 1
+     }
+    }
+   ],
+   "reagents": [
+    {
+     "id": "iode",
+     "label": "Eau iodée",
+     "expr": "s*max(0,1-am*max(0,1-abs(pH-7)/3)*t/20)",
+     "colors": [
+      [
+       0.3,
+       "bleu-noir : amidon",
+       "#22285a"
+      ],
+      [
+       0.05,
+       "brun-violet : un peu d'amidon",
+       "#6b4a5e"
+      ],
+      [
+       0,
+       "jaune-orangé : plus d'amidon",
+       "#d9a43a"
+      ]
+     ]
+    },
+    {
+     "id": "fehling",
+     "label": "Fehling",
+     "expr": "s*min(1,am*max(0,1-abs(pH-7)/3)*t/20)",
+     "colors": [
+      [
+       0.3,
+       "rouge brique : sucres",
+       "#b5442a"
+      ],
+      [
+       0.05,
+       "orangé : un peu de sucres",
+       "#cf7a3a"
+      ],
+      [
+       0,
+       "bleu : pas de sucres",
+       "#3a6cd0"
+      ]
+     ]
+    },
+    {
+     "id": "flocons",
+     "label": "Flocons",
+     "expr": "p*max(0,1-pe*max(0,1-abs(pH-2)/3)*t/30)",
+     "colors": [
+      [
+       0.3,
+       "flocons blancs : protéines",
+       "#ece6d6"
+      ],
+      [
+       0.05,
+       "quelques flocons",
+       "#dde3e6"
+      ],
+      [
+       0,
+       "limpide : protéines digérées",
+       "#cfe6f5"
+      ]
+     ]
+    }
+   ],
+   "plate": {
+    "tube": "A",
+    "reagent": "iode",
+    "var": "t",
+    "values": [
+     0,
+     5,
+     10,
+     15,
+     20,
+     25
+    ],
+    "unit": "min",
+    "label": "Plaque à godets : eau iodée sur des prélèvements du tube A, au pH choisi"
+   }
+  },
+  "missions": [
+   {
+    "id": "salive",
+    "type": "condition",
+    "expr": "t == 20 && pH == 7 && reactif == 1",
+    "text": "pH 7, 20 min : teste à l'eau iodée. Compare A et B."
+   },
+   {
+    "id": "sucre",
+    "type": "condition",
+    "expr": "t == 20 && pH == 7 && reactif == 2",
+    "text": "Même réglage, teste à la liqueur de Fehling. Où sont apparus des sucres ?"
+   },
+   {
+    "id": "estomac",
+    "type": "condition",
+    "expr": "t >= 30 && pH == 2 && reactif == 3",
+    "text": "Règle le pH à 2 comme dans l'estomac, attends 30 min et observe les flocons de C et D."
+   }
+  ],
+  "required": [
+   "salive",
+   "estomac"
+  ],
+  "note": "Modèle simplifié, recalculé à chaque mouvement : l'amylase agit le mieux vers pH 7, la pepsine vers pH 2 ; à leur optimum, l'amidon est digéré en 20 min et le blanc d'œuf en 30 min."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "aliment + enzyme → nutriments",
+    "text": "La digestion transforme les grosses molécules des aliments en petites molécules, les nutriments, grâce aux enzymes des sucs digestifs : amidon → sucres, protéines → acides aminés.",
+    "ar": "الهضم يحول الجزيئات الكبيرة للأغذية إلى جزيئات صغيرة هي المغذيات بفضل الأنزيمات."
+   },
+   {
+    "formula": "une enzyme, un aliment",
+    "text": "Chaque enzyme est spécifique : l'amylase salivaire agit sur l'amidon, pas sur les protéines ; la pepsine agit sur les protéines.",
+    "ar": "كل أنزيم نوعي يؤثر في غذاء معين."
+   },
+   {
+    "formula": "conditions : pH, 37 °C",
+    "text": "Chaque enzyme a ses conditions : la pepsine en milieu acide (estomac), l'amylase salivaire en milieu presque neutre (bouche). Les nutriments sont ensuite absorbés dans l'intestin grêle et passent dans le sang.",
+    "ar": "لكل أنزيم ظروف نشاطه، ثم تمتص المغذيات في المعي الدقيق."
+   }
+  ],
+  "seen": "À pH 7, le tube A ne contient plus d'amidon après 20 min et la liqueur de Fehling y devient rouge brique ; le témoin B reste bleu-noir. À pH 2, seule la pepsine du tube C fait disparaître les flocons ; la salive du tube D n'y touche pas, et elle ne digère plus l'amidon non plus.",
+  "audio": "audio/svt-3ac-digestion-regle.mp3",
+  "audioText": "القاعدة هي: الهضم كيقطّع الجزيئات الكبار ديال الماكلة لجزيئات صغار، سميتهم المغذيات. هادشي كتديرو الأنزيمات اللي فالعصارات الهضمية. كل أنزيم كيخدم على ماكلة وحدة: الأميلاز ديال الريق كيحوّل النشا لسكر، والببسين ديال المعدة كيهضم البروتينات. وكل أنزيم عندو الظروف ديالو: الببسين كيبغي الحموضة ديال المعدة، والأميلاز كيبغي وسط قريب من المحايد. ومن بعد، المغذيات كيدوزو للدم فالمعي الدقيق."
+ },
+ "proof": {
+  "title": "Transformé ou seulement disparu ?",
+  "firstIsFormula": true,
+  "paras": [
+   "eau iodée négative + Fehling positive = l'amidon est devenu du sucre",
+   "Si l'amidon avait seulement disparu, aucun sucre n'apparaîtrait. Or la liqueur de Fehling devient rouge brique dans le tube A, alors qu'elle reste bleue dans le témoin B, qui contient le même amidon sans salive. Le sucre ne peut venir que de l'amidon, transformé par l'enzyme de la salive."
+  ],
+  "ar": "اختفاء النشا مع ظهور السكر في الأنبوب A وعدمه في الشاهد B يثبت أن الأنزيم حول النشا إلى سكر."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "t",
+      "pick 4 6 8 12 15"
+     ]
+    ],
+    "q": "L'amylase digère 5 % de l'amidon par minute. Quel pourcentage d'amidon reste-t-il après {t:0} min ?",
+    "unit": "%",
+    "answer": "100-5*t",
+    "digits": 0,
+    "traps": [
+     [
+      "5*t",
+      "reste"
+     ],
+     [
+      "100-t",
+      "vitesse"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "m",
+      "pick 2 4 5 8 10"
+     ],
+     [
+      "d",
+      "pick 20 40 60 75"
+     ]
+    ],
+    "q": "Un tube contient {m:0} g d'amidon ; {d:0} % ont été digérés. Quelle masse d'amidon a été transformée en sucres, en g ?",
+    "unit": "g",
+    "answer": "m*d/100",
+    "digits": 1,
+    "traps": [
+     [
+      "m*(100-d)/100",
+      "reste"
+     ],
+     [
+      "m*d",
+      "pourcent"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "r",
+      "pick 4 5 10"
+     ],
+     [
+      "k",
+      "pick 2 3 4"
+     ]
+    ],
+    "q": "À pH 7, l'amylase digère {r:0} % de l'amidon par minute. Dans un milieu plus acide, elle est {k:0} fois plus lente. Combien de minutes faut-il pour digérer tout l'amidon dans ce milieu ?",
+    "unit": "min",
+    "answer": "100/r*k",
+    "digits": 1,
+    "traps": [
+     [
+      "100/r/k",
+      "inverse"
+     ],
+     [
+      "100/r",
+      "ph"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Le tube « amidon + eau » sert à :",
+   "ar": "الأنبوب «نشا + ماء» يستعمل من أجل:",
+   "options": [
+    [
+     "montrer que, sans enzyme, l'amidon n'est pas digéré",
+     ""
+    ],
+    [
+     "digérer l'amidon plus lentement",
+     "eau"
+    ],
+    [
+     "dissoudre les sucres",
+     "eau"
+    ]
+   ]
+  },
+  {
+   "q": "La pepsine de l'estomac agit le mieux :",
+   "ar": "يكون نشاط الببسين أفضل:",
+   "options": [
+    [
+     "en milieu acide (pH ≈ 2)",
+     ""
+    ],
+    [
+     "en milieu neutre, comme la salive",
+     "ph"
+    ],
+    [
+     "à n'importe quel pH",
+     "ph"
+    ]
+   ]
+  },
+  {
+   "q": "À la fin de la digestion, les nutriments :",
+   "ar": "في نهاية الهضم، المغذيات:",
+   "options": [
+    [
+     "traversent la paroi de l'intestin grêle et passent dans le sang",
+     ""
+    ],
+    [
+     "restent dans l'estomac",
+     "lieu"
+    ],
+    [
+     "sont tous rejetés dans les selles",
+     "lieu"
+    ]
+   ]
+  }
+ ]
+}
