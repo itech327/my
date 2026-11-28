@@ -1,0 +1,355 @@
+{
+ "meta": {
+  "kicker": "SVT · 2e année collège · Le concept en main",
+  "title": "Les séismes",
+  "titleAr": "الزلازل",
+  "short": "Séismes",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. Vitesses moyennes arrondies (P ≈ 6 km/s, S ≈ 3,5 km/s) ; textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "meme_vitesse": {
+   "fr": "Les ondes P sont plus rapides que les ondes S : elles arrivent toujours en premier à la station.",
+   "ar": "الموجات P أسرع من الموجات S فتصل أولا."
+  },
+  "retard_constant": {
+   "fr": "Plus la station est loin, plus l'écart entre l'arrivée des ondes P et S est grand.",
+   "ar": "الفرق بين وصول الموجتين يكبر مع المسافة."
+  },
+  "difference_vitesses": {
+   "fr": "On ne divise pas par la différence des vitesses : Δt = d ÷ vS − d ÷ vP, soit d ≈ 8,4 × Δt.",
+   "ar": "لا نقسم على فرق السرعتين: Δt = d ÷ vS − d ÷ vP."
+  },
+  "inverse": {
+   "fr": "Durée = distance ÷ vitesse, et distance = 8,4 × écart : on ne renverse pas le calcul.",
+   "ar": "المدة = المسافة ÷ السرعة، والمسافة = 8,4 × الفرق."
+  },
+  "soustraction": {
+   "fr": "L'écart est la différence tS − tP, pas la somme des deux durées.",
+   "ar": "الفرق هو tS − tP وليس مجموع المدتين."
+  },
+  "epicentre_foyer": {
+   "fr": "Le foyer est le point en profondeur où la rupture commence ; l'épicentre est le point de la surface juste au-dessus.",
+   "ar": "البؤرة نقطة في العمق، والمركز السطحي نقطة على السطح فوقها مباشرة."
+  },
+  "magnitude_lineaire": {
+   "fr": "Un degré de magnitude en plus multiplie l'amplitude des ondes par 10 : ce n'est pas « un peu plus ».",
+   "ar": "كل درجة إضافية في القدر تضاعف سعة الموجات 10 مرات."
+  },
+  "intensite": {
+   "fr": "La magnitude mesure le séisme lui-même (une seule valeur) ; l'intensité décrit les effets en un lieu et diminue en s'éloignant.",
+   "ar": "القدر قيمة واحدة للزلزال، أما الشدة فتصف الآثار وتختلف حسب المكان."
+  }
+ },
+ "hook": {
+  "title": "Deux stations, un séisme",
+  "text": "Deux stations enregistrent le même séisme. À la première, les ondes S arrivent 12 s après les ondes P ; à la seconde, 40 s après. Laquelle est la plus proche de l'épicentre ? Et à quelle distance ?",
+  "ar": "محطتان تسجلان نفس الزلزال: في الأولى تصل الموجات S بعد 12 ثانية من P، وفي الثانية بعد 40 ثانية. أيهما أقرب إلى المركز السطحي؟",
+  "audio": "audio/svt-2ac-seismes-question.mp3",
+  "audioText": "جوج ديال المحطات كيسجلو نفس الزلزال. فالأولى، الموجات إس كيوصلو اثناش ثانية من بعد الموجات بي. وفالتانية، كيوصلو ربعين ثانية من بعد. شكون فيهم اللي قريبة للمركز، وشحال بعيدة؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Lors d'un séisme, une station sismique enregistre :",
+   "ar": "أثناء الزلزال تسجل المحطة:",
+   "options": [
+    [
+     "d'abord les ondes P, puis les ondes S",
+     ""
+    ],
+    [
+     "les ondes P et S en même temps",
+     "meme_vitesse"
+    ],
+    [
+     "d'abord les ondes S, puis les ondes P",
+     "meme_vitesse"
+    ]
+   ]
+  },
+  {
+   "q": "Une station est à 100 km de l'épicentre, une autre à 400 km. L'écart entre l'arrivée des ondes P et S est :",
+   "ar": "محطة على بعد 100 km وأخرى على بعد 400 km. الفرق بين وصول الموجتين:",
+   "options": [
+    [
+     "plus grand à 400 km",
+     ""
+    ],
+    [
+     "le même pour les deux stations",
+     "retard_constant"
+    ],
+    [
+     "plus grand à 100 km",
+     "retard_constant"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Le sismographe de la station",
+  "intro": "Déplace la station loin de l'épicentre et lis l'heure d'arrivée des ondes P (≈ 6 km/s) et S (≈ 3,5 km/s). Change aussi la magnitude du séisme.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "d",
+     "label": "Distance à l'épicentre",
+     "unit": "km",
+     "min": 0,
+     "max": 600,
+     "step": 10,
+     "value": 100
+    },
+    {
+     "id": "M",
+     "label": "Magnitude",
+     "unit": "",
+     "min": 3,
+     "max": 8,
+     "step": 1,
+     "value": 5
+    }
+   ],
+   "outputs": [
+    {
+     "id": "tP",
+     "label": "Arrivée des ondes P",
+     "unit": "s",
+     "expr": "d/6",
+     "digits": 1
+    },
+    {
+     "id": "tS",
+     "label": "Arrivée des ondes S",
+     "unit": "s",
+     "expr": "d/3.5",
+     "digits": 1
+    },
+    {
+     "id": "dt",
+     "label": "Écart S − P",
+     "unit": "s",
+     "expr": "d/3.5-d/6",
+     "digits": 1
+    },
+    {
+     "id": "A",
+     "label": "Amplitude comparée à une magnitude 3",
+     "unit": "fois",
+     "expr": "10^(M-3)",
+     "digits": 0
+    }
+   ],
+   "bars": [
+    {
+     "id": "tP",
+     "label": "Ondes P",
+     "max": 180
+    },
+    {
+     "id": "tS",
+     "label": "Ondes S",
+     "max": 180
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "loin",
+    "type": "valeurs",
+    "input": "d",
+    "values": [
+     100,
+     200,
+     400
+    ],
+    "text": "Compare d = 100, 200 et 400 km. Comment varie l'écart S − P ?"
+   },
+   {
+    "id": "station",
+    "type": "condition",
+    "expr": "d == 210",
+    "text": "Une station mesure un écart de 25 s. Trouve sa distance à l'épicentre avec le curseur."
+   },
+   {
+    "id": "magnitude",
+    "type": "valeurs",
+    "input": "M",
+    "values": [
+     5,
+     6,
+     7
+    ],
+    "text": "Compare les magnitudes 5, 6 et 7 : par combien l'amplitude est-elle multipliée à chaque degré ?"
+   }
+  ],
+  "required": [
+   "loin",
+   "station"
+  ],
+  "note": "Temps et écart recalculés à chaque mouvement : tP = d ÷ 6, tS = d ÷ 3,5. Vitesses moyennes simplifiées."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "t = d ÷ v    vP ≈ 6 km/s, vS ≈ 3,5 km/s",
+    "text": "Le séisme naît au foyer, en profondeur, et ses ondes se propagent dans toutes les directions. Les ondes P, plus rapides, arrivent avant les ondes S.",
+    "ar": "تنطلق الموجات من البؤرة، والموجات P أسرع فتصل قبل S."
+   },
+   {
+    "formula": "d ≈ 8,4 × Δt",
+    "text": "L'écart Δt entre les ondes S et P grandit avec la distance. Il donne la distance de la station à l'épicentre ; avec trois stations, on localise l'épicentre.",
+    "ar": "الفرق Δt يكبر مع المسافة ويعطي بعد المحطة عن المركز السطحي، وبثلاث محطات نحدد موقعه."
+   },
+   {
+    "formula": "magnitude +1  →  amplitude × 10",
+    "text": "La magnitude mesure le séisme lui-même. L'intensité décrit ses effets en un lieu : elle diminue quand on s'éloigne de l'épicentre, point de la surface situé au-dessus du foyer.",
+    "ar": "القدر يقيس الزلزال نفسه، والشدة تصف آثاره في مكان معين وتنقص بالابتعاد عن المركز السطحي."
+   }
+  ],
+  "seen": "À 100, 200 puis 400 km, l'écart S − P passe d'environ 11,9 s à 23,8 s puis 47,6 s : il double quand la distance double. Un écart de 25 s correspond à 210 km. Chaque degré de magnitude multiplie l'amplitude par 10.",
+  "audio": "audio/svt-2ac-seismes-regle.mp3",
+  "audioText": "القاعدة هي: فالزلزال، الموجات بي أسرع، كيمشيو تقريبا ستة كيلومترات فالثانية، والموجات إس غير ثلاثة ونص. داكشي علاش بي كيوصلو الأولين. وكلما بعدات المحطة، كيكبر الفرق بين الوصول ديالهم. المسافة كتساوي تقريبا ثمانية فاصلة ربعة ضرب هاد الفرق بالثواني. وفالقوة ديال الزلزال، كل درجة زايدة كتخلي الموجات أكبر بعشر مرات."
+ },
+ "proof": {
+  "title": "D'où vient le 8,4 ?",
+  "firstIsFormula": true,
+  "paras": [
+   "Δt = d ÷ 3,5 − d ÷ 6 = d × (6 − 3,5) ÷ (6 × 3,5) = d × 2,5 ÷ 21",
+   "Les deux ondes parcourent la même distance d, à des vitesses différentes. Leur écart est la différence de leurs durées de trajet. En isolant d : d = 21 ÷ 2,5 × Δt = 8,4 × Δt. Plus d est grand, plus l'écart est grand, dans la même proportion."
+  ],
+  "ar": "نطرح مدتي الموجتين ثم نعزل d فنجد d = 8,4 × Δt."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "d",
+      "pick 60 120 180 240 300"
+     ]
+    ],
+    "q": "Une station est à {d:0} km de l'épicentre. Les ondes P vont à 6 km/s. Au bout de combien de secondes arrivent-elles ?",
+    "unit": "s",
+    "answer": "d/6",
+    "digits": 1,
+    "traps": [
+     [
+      "d*6",
+      "inverse"
+     ],
+     [
+      "d/3.5",
+      "meme_vitesse"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "d",
+      "pick 84 168 252 420"
+     ]
+    ],
+    "q": "Une station est à {d:0} km de l'épicentre (vP = 6 km/s, vS = 3,5 km/s). Quel est l'écart entre l'arrivée des ondes S et celle des ondes P, en s ?",
+    "unit": "s",
+    "answer": "d/3.5-d/6",
+    "digits": 1,
+    "traps": [
+     [
+      "d/3.5+d/6",
+      "soustraction"
+     ],
+     [
+      "d/2.5",
+      "difference_vitesses"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "t",
+      "pick 10 15 25 40"
+     ]
+    ],
+    "q": "Une station mesure un écart de {t:0} s entre les ondes S et P. Sachant que d ≈ 8,4 × écart, à quelle distance de l'épicentre est-elle, en km ?",
+    "unit": "km",
+    "answer": "t*8.4",
+    "digits": 0,
+    "traps": [
+     [
+      "t*2.5",
+      "difference_vitesses"
+     ],
+     [
+      "t/8.4",
+      "inverse"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Le point de la surface situé juste au-dessus du foyer s'appelle :",
+   "ar": "النقطة من السطح الموجودة فوق البؤرة مباشرة تسمى:",
+   "options": [
+    [
+     "l'épicentre",
+     ""
+    ],
+    [
+     "le foyer",
+     "epicentre_foyer"
+    ],
+    [
+     "la faille",
+     "epicentre_foyer"
+    ]
+   ]
+  },
+  {
+   "q": "Un séisme de magnitude 6 comparé à un séisme de magnitude 5 : l'amplitude des ondes est :",
+   "ar": "زلزال قدره 6 مقارنة بزلزال قدره 5: سعة الموجات:",
+   "options": [
+    [
+     "environ 10 fois plus grande",
+     ""
+    ],
+    [
+     "à peine plus grande",
+     "magnitude_lineaire"
+    ],
+    [
+     "2 fois plus grande",
+     "magnitude_lineaire"
+    ]
+   ]
+  },
+  {
+   "q": "Deux villes ressentent le même séisme, l'une près de l'épicentre, l'autre loin. Elles ont :",
+   "ar": "مدينتان تحسان بنفس الزلزال، إحداهما قريبة من المركز السطحي والأخرى بعيدة. لهما:",
+   "options": [
+    [
+     "la même magnitude, mais des intensités différentes",
+     ""
+    ],
+    [
+     "des magnitudes différentes",
+     "intensite"
+    ],
+    [
+     "la même intensité",
+     "intensite"
+    ]
+   ]
+  }
+ ]
+}
