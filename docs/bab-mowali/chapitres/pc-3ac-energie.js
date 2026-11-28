@@ -10,7 +10,7 @@ window.BAB_CHAPTER = {
   levelLabel: 'Les 3APIC ensemble', levelLabelAr: 'تلاميذ الثالثة إعدادي معا',
   courseBase: 'https://pro.taalim.men/lecons/',
   chestCourse: '',
-  endpoint: '',
+  endpoint: 'https://relay.taalim.men/api/bab',  /* actif seulement depuis une origine autorisée (pro.taalim.men…) avec ?cls=3APIC */
   sim: { donePct: [76, 48, 22], stuck: [1, 3, 0] },
   bonusAt: 70, alertMin: 3,
   ill: (function(){ var W='viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg"',

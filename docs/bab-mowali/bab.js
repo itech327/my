@@ -199,6 +199,9 @@ var SID=(function(){try{var s=localStorage.getItem('bab_sid');if(!s){s=Math.rand
 var CLS=(function(){var m=/[?&]cls=([\w-]{1,20})/.exec(location.search);try{if(m)localStorage.setItem('bab_cls',m[1]);return m?m[1]:(localStorage.getItem('bab_cls')||'')}catch(e){return m?m[1]:''}})();
 function send(ev,door){if(!C.endpoint)return;try{fetch(C.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
   body:JSON.stringify({app:'bab',chapter:C.id,cls:CLS,sid:SID,type:ev,door:door})}).catch(function(){})}catch(e){}}
+/* Progression réelle de la classe (production) : remplace les valeurs simulées si le Worker répond. */
+function loadProgress(){if(!C.endpoint||!CLS)return;try{fetch(C.endpoint+'/progress?cls='+encodeURIComponent(CLS)+'&chapter='+encodeURIComponent(C.id))
+  .then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&Array.isArray(j.donePct)&&j.donePct.length===3){SIM.donePct=j.donePct.map(function(x){return Math.max(0,Math.min(100,Number(x)||0))});renderMap()}}).catch(function(){})}catch(e){}}
 
 var $=function(s){return document.querySelector(s)};
 function h(tag,attrs,html){var e=document.createElement(tag);if(attrs)for(var k in attrs){if(k==='on')for(var ev in attrs.on)e.addEventListener(ev,attrs.on[ev]);else e.setAttribute(k,attrs[k])}if(html!=null)e.innerHTML=html;return e}
@@ -396,5 +399,5 @@ window.__track=track;
 $('#bBack').onclick=function(){show('map');renderMap()};
 $('#bTeacher').onclick=function(){var t=$('#teacher');t.hidden=!t.hidden;this.textContent=t.hidden?'Vue professeur':'Vue élève';renderTeacher()};
 $('#bReset').onclick=function(){st=blank();save();renderMap()};
-renderMap();
+renderMap();loadProgress();
 })();
