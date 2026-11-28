@@ -1,0 +1,146 @@
+{
+ "note": "Cartes du jeu à publier sur pro.taalim.men/jeu/. Généré pour outils/copier-vers-pro.sh. La carte PC 1AC (index.html) reste un prototype, hors Pro.",
+ "moteur": "bab.js",
+ "cartes": [
+  {
+   "id": "pc-3ac-energie",
+   "niveau": "PC 3AC",
+   "titre": "L’énergie",
+   "page": "pc-3ac-energie.html",
+   "carte": "chapitres/pc-3ac-energie.js",
+   "audio": [
+    "audio/pc3ac-bab1.mp3",
+    "audio/pc3ac-bab2.mp3",
+    "audio/pc3ac-bab3.mp3",
+    "audio/pc3ac-sandouq.mp3"
+   ],
+   "lien": "jeu/pc-3ac-energie.html?cls=3APIC",
+   "portes": [
+    "https://pro.taalim.men/lecons/pc-3ac-energie-cinetique",
+    "https://pro.taalim.men/lecons/pc-3ac-puissance-electrique",
+    "https://pro.taalim.men/lecons/pc-3ac-energie-electrique",
+    "(coffre sans lien : problème corrigé en classe)"
+   ]
+  },
+  {
+   "id": "maths-3ac-fonctions",
+   "niveau": "Maths 3AC",
+   "titre": "Les fonctions",
+   "page": "maths-3ac-fonctions.html",
+   "carte": "chapitres/maths-3ac-fonctions.js",
+   "audio": [
+    "audio/m3ac-bab1.mp3",
+    "audio/m3ac-bab2.mp3",
+    "audio/m3ac-bab3.mp3",
+    "audio/m3ac-sandouq.mp3"
+   ],
+   "lien": "jeu/maths-3ac-fonctions.html?cls=3APIC",
+   "portes": [
+    "https://pro.taalim.men/lecons/maths-3ac-fonction-lineaire",
+    "https://pro.taalim.men/lecons/maths-3ac-fonction-affine",
+    "https://pro.taalim.men/lecons/maths-3ac-systemes",
+    "(coffre sans lien : problème corrigé en classe)"
+   ]
+  },
+  {
+   "id": "maths-3ac-geometrie",
+   "niveau": "Maths 3AC",
+   "titre": "La géométrie",
+   "page": "maths-3ac-geometrie.html",
+   "carte": "chapitres/maths-3ac-geometrie.js",
+   "audio": [
+    "audio/g3ac-bab1.mp3",
+    "audio/g3ac-bab2.mp3",
+    "audio/g3ac-bab3.mp3",
+    "audio/g3ac-sandouq.mp3"
+   ],
+   "lien": "jeu/maths-3ac-geometrie.html?cls=3APIC",
+   "portes": [
+    "https://pro.taalim.men/lecons/maths-3ac-pythagore",
+    "https://pro.taalim.men/lecons/maths-3ac-trigonometrie-3d",
+    "https://pro.taalim.men/lecons/maths-3ac-agrandissement-3d",
+    "(coffre sans lien : problème corrigé en classe)"
+   ]
+  },
+  {
+   "id": "svt-3ac-nutrition",
+   "niveau": "SVT 3AC",
+   "titre": "Digestion et respiration",
+   "page": "svt-3ac-nutrition.html",
+   "carte": "chapitres/svt-3ac-nutrition.js",
+   "audio": [
+    "audio/s3ac-bab1.mp3",
+    "audio/s3ac-bab2.mp3",
+    "audio/s3ac-bab3.mp3",
+    "audio/s3ac-sandouq.mp3"
+   ],
+   "lien": "jeu/svt-3ac-nutrition.html?cls=3APIC",
+   "portes": [
+    "https://pro.taalim.men/lecons/svt-3ac-amylase",
+    "https://pro.taalim.men/lecons/svt-3ac-digestion",
+    "https://pro.taalim.men/lecons/svt-3ac-echanges-gazeux",
+    "(coffre sans lien : problème corrigé en classe)"
+   ]
+  },
+  {
+   "id": "pc-2ac-reactions",
+   "niveau": "PC 2AC",
+   "titre": "Les réactions chimiques",
+   "page": "pc-2ac-reactions.html",
+   "carte": "chapitres/pc-2ac-reactions.js",
+   "audio": [
+    "audio/p2ac-bab1.mp3",
+    "audio/p2ac-bab2.mp3",
+    "audio/p2ac-bab3.mp3",
+    "audio/p2ac-sandouq.mp3"
+   ],
+   "lien": "jeu/pc-2ac-reactions.html?cls=2APIC",
+   "portes": [
+    "https://pc.taalim.men/2ac-molecules/",
+    "https://pro.taalim.men/lecons/pc-2ac-combustions",
+    "https://pro.taalim.men/lecons/pc-2ac-conservation-masse",
+    "https://pc.taalim.men/2ac-pollution-air/"
+   ]
+  },
+  {
+   "id": "maths-2ac-calcul",
+   "niveau": "Maths 2AC",
+   "titre": "Le calcul",
+   "page": "maths-2ac-calcul.html",
+   "carte": "chapitres/maths-2ac-calcul.js",
+   "audio": [
+    "audio/m2ac-bab1.mp3",
+    "audio/m2ac-bab2.mp3",
+    "audio/m2ac-bab3.mp3",
+    "audio/m2ac-sandouq.mp3"
+   ],
+   "lien": "jeu/maths-2ac-calcul.html?cls=2APIC",
+   "portes": [
+    "https://pro.taalim.men/lecons/maths-2ac-puissances",
+    "https://maths.taalim.men/2ac-calcul-litteral/",
+    "https://pro.taalim.men/lecons/maths-2ac-equations",
+    "https://maths.taalim.men/2ac-proportionnalite/"
+   ]
+  },
+  {
+   "id": "svt-2ac-geologie",
+   "niveau": "SVT 2AC",
+   "titre": "La géologie",
+   "page": "svt-2ac-geologie.html",
+   "carte": "chapitres/svt-2ac-geologie.js",
+   "audio": [
+    "audio/s2ac-bab1.mp3",
+    "audio/s2ac-bab2.mp3",
+    "audio/s2ac-bab3.mp3",
+    "audio/s2ac-sandouq.mp3"
+   ],
+   "lien": "jeu/svt-2ac-geologie.html?cls=2APIC",
+   "portes": [
+    "https://svt.taalim.men/2ac-tectonique/",
+    "https://pro.taalim.men/lecons/svt-2ac-seismes",
+    "https://svt.taalim.men/2ac-deformations/",
+    "https://svt.taalim.men/2ac-chaines-montagnes/"
+   ]
+  }
+ ]
+}
