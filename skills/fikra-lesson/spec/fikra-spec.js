@@ -146,6 +146,54 @@ var FikraSpec = (function () {
     return { names: c.names, mount: c.mount, html: svg + cards(c.outs) + sliders(c.ins) + carnet(c.ins, c.outs) };
   };
 
+  /* tubes: lab tubes (each with its own constants), shared sliders, reagents that colour each tube from an expression,
+     optional plaque à godets (one tube, one reagent, a variable stepped over the wells). Mission names: the inputs,
+     <tube>_<reagent> (the computed value), reactif (1-based index of the reagent applied, 0 before any). */
+  WIDGETS.tubes = p => {
+    const ins = p.inputs || [], tubes = p.tubes || [], rs = p.reagents || [], plate = p.plate, inNames = ins.map(s => s.id);
+    if (!tubes.length || !rs.length) throw new Error('tubes : il faut au moins un tube et un réactif');
+    const tv = [...new Set(tubes.flatMap(t => Object.keys(t.vars || {})))], base = inNames.concat(tv);
+    const R = rs.map(r => ({ ...r, f: compile(r.expr, base), sc: (r.colors || []).slice().sort((a, b) => b[0] - a[0]) }));
+    const colourOf = (r, v) => { for (const c of r.sc) if (v >= c[0]) return c; return r.sc[r.sc.length - 1] || [0, '', '#ccc']; };
+    const names = inNames.concat(['reactif'], tubes.flatMap(t => rs.map(r => `${t.id}_${r.id}`)));
+    const pr = plate ? { tube: tubes.find(t => t.id === plate.tube), r: R.find(r => r.id === plate.reagent) } : null;
+    if (plate && (!pr.tube || !pr.r)) throw new Error('tubes : plaque, tube ou réactif inconnu');
+    const TW = 54, gap = 18, W = Math.max(320, tubes.length * (TW + gap) + gap), H = 230;
+    const tubeSvg = tubes.map((t, i) => { const x = gap + i * (TW + gap);
+      return `<g><path d="M${x} 20V170a${TW / 2} ${TW / 2} 0 0 0 ${TW} 0V20" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+        <path id="w-liq-${esc(t.id)}" d="M${x + 3} 80V170a${TW / 2 - 3} ${TW / 2 - 3} 0 0 0 ${TW - 6} 0V80Z" fill="#e8eef5"/>
+        <text x="${x + TW / 2}" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">${esc(t.short || String(i + 1))}</text></g>`; }).join('');
+    const legend = tubes.map((t, i) => `<li><b>${esc(t.short || String(i + 1))}</b> · ${esc(t.label)} <span class="tres" id="w-res-${esc(t.id)}"></span></li>`).join('');
+    const btns = rs.map((r, i) => `<button type="button" class="b" data-r="${i}">${esc(r.label)}</button>`).join(' ');
+    const wells = plate ? plate.values.map((v, k) => `<div class="well"><i id="w-well-${k}"></i><small>${esc(String(v).replace('.', ','))}${plate.unit ? ' ' + esc(plate.unit) : ''}</small></div>`).join('') : '';
+    const html = `<style>.wtl{list-style:none;padding:0;margin:6px 0}.wtl li{margin:4px 0}.tres{font-weight:700}.wplate{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.well{display:flex;flex-direction:column;align-items:center;gap:2px}.well i{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:#f4f4f2}</style>
+      <svg class="fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.label || 'Tubes à essai')}">${tubeSvg}</svg>
+      <ul class="wtl">${legend}</ul><div class="row">${btns}</div>
+      ${plate ? `<p class="note" style="margin-bottom:0">${esc(plate.label || 'Plaque à godets')}</p><div class="wplate">${wells}</div>` : ''}`
+      + sliders(ins);
+    return { names, html, mount(root, api, missions) {
+      const $ = s => root.querySelector(s); let cur = -1;
+      const envOf = () => { const e = {}; ins.forEach(s => e[s.id] = +$('#w-' + s.id).value); return e; };
+      const draw = () => {
+        const g = envOf(), env = { ...g, reactif: cur + 1 };
+        ins.forEach(s => $(`#w-${s.id}-o`).textContent = '= ' + api.nf(g[s.id], 2) + (s.unit ? ' ' + s.unit : ''));
+        tubes.forEach(t => {
+          const te = { ...g }; tv.forEach(k => te[k] = (t.vars || {})[k] ?? 0);
+          R.forEach(r => env[`${t.id}_${r.id}`] = r.f(te));
+          const liq = $('#w-liq-' + t.id), res = $('#w-res-' + t.id);
+          if (cur < 0) { liq.setAttribute('fill', '#e8eef5'); res.textContent = ''; }
+          else { const c = colourOf(R[cur], env[`${t.id}_${R[cur].id}`]); liq.setAttribute('fill', c[2]); res.textContent = '→ ' + c[1]; }
+        });
+        if (pr) plate.values.forEach((v, k) => { const te = { ...g, [plate.var]: v }; tv.forEach(n => te[n] = (pr.tube.vars || {})[n] ?? 0);
+          $('#w-well-' + k).style.background = colourOf(pr.r, pr.r.f(te))[2]; });
+        missions.forEach(m => m.step(env));
+      };
+      ins.forEach(s => $('#w-' + s.id).addEventListener('input', draw));
+      root.querySelectorAll('[data-r]').forEach(b => b.addEventListener('click', () => { cur = +b.dataset.r; root.querySelectorAll('[data-r]').forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); }));
+      draw();
+    } };
+  };
+
   /* ---------- missions: « valeurs » (each listed value of one input seen, optionally while a condition holds) or « condition » ---------- */
   function missionRunners(list, names, api) {
     return list.map(ms => {
@@ -202,5 +250,5 @@ var FikraSpec = (function () {
     };
   }
 
-  return { lessonFromSpec, compile, widgets: () => Object.keys(WIDGETS), version: 'v0' };
+  return { lessonFromSpec, compile, widgets: () => Object.keys(WIDGETS), version: 'v1' };
 })();

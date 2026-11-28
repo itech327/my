@@ -58,16 +58,16 @@ const LESSON = {
 
 ## 2b. Or write a JSON spec, when a library widget fits
 
-Prefer this route when the experiment is sliders with computed values (`curseurs`) or a curve with a moving point (`graphe`). It is faster, it contains no code, and a teacher can edit it in the atelier.
+Prefer this route when the experiment is sliders with computed values (`curseurs`) or a curve with a moving point (`graphe`), or lab tubes coloured by reagents with an optional plaque à godets (`tubes`, example `examples/specs/svt-3ac-echanges-gazeux.json`). It is faster, it contains no code, and a teacher can edit it in the atelier.
 
 - Copy one of `examples/specs/*.json` and replace everything. Same seven moments, same rules as section 1.
-- `experiment.widget` and its `params`: `inputs` (sliders), `outputs` (computed with `expr`), `bars` for `curseurs`, `curve` for `graphe`.
+- `experiment.widget` and its `params`: `inputs` (sliders), `outputs` (computed with `expr`), `bars` for `curseurs`, `curve` for `graphe`; `tubes`, `reagents` and `plate` for `tubes` (mission names: the inputs, `reactif`, `<tube>_<reagent>`).
 - Missions: `{ type: 'valeurs', input, values, when? }` or `{ type: 'condition', expr }`.
 - Exercises: `vars` as `[name, 'int a b step' | 'pick v1 v2 …' | expression]`, `q` with `{x}` or `{x:0}`, `answer` and `traps` as expressions.
 - Expressions accept numbers, declared names, `+ - * / ^`, comparisons, `&& ||`, and `sqrt abs round floor ceil min max pow pi`. No `**`, no code: the adapter refuses it.
 - Texts are plain, never HTML; the adapter escapes them. `hook.svg` is not available on this route.
 - Build: `python3 tools/build_spec.py my-spec.json my-lesson.html`, then the same flow test.
-- A widget that is missing (tubes and reagent plate, moving geometric figure, circuit) goes into `spec/fikra-spec.js`, tested, before any lesson uses it. Otherwise use section 2.
+- A widget that is missing (moving geometric figure, circuit) goes into `spec/fikra-spec.js`, tested, before any lesson uses it. Otherwise use section 2.
 - Teacher atelier: `python3 tools/build_atelier.py atelier.html [SPECS_DIR] [AUDIO_BASE_DIR]`. The service endpoints `AI_ENDPOINT` and `VOICE_ENDPOINT` stay empty until the platform server exists; `spec/prompt-ia.md` holds the instructions for that service.
 
 ## 3. Build and test
