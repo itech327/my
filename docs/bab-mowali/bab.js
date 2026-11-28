@@ -150,13 +150,15 @@ document.title=C.title+' · '+C.titleAr;
 document.getElementById('bTitle').innerHTML=C.title+'<small>'+C.titleAr+'</small>';
 document.getElementById('bKick').textContent=C.kicker;document.getElementById('bKickAr').textContent=C.kickerAr;
 /* Texte arabe : chaque suite latine ou numérique (50 km/h, P = U × I, 0,05 h) est isolée en LTR pour garder son ordre. */
-var ISO=/[0-9A-Za-z½(][0-9A-Za-z½²³,.\/()×÷=+·\- ]*[0-9A-Za-z²³)]|[0-9A-Za-z]/g;
+var ISO=/[0-9A-Za-z½(][0-9A-Za-z½²³₀-₉,.\/()×÷=+·→\- ]*[0-9A-Za-z²³₀-₉)]|[0-9A-Za-z]/g;
 function isoText(el){[].slice.call(el.childNodes).forEach(function(n){
   if(n.nodeType===3){if(!ISO.test(n.data)){ISO.lastIndex=0;return}ISO.lastIndex=0;var f=document.createDocumentFragment(),last=0,m;
     n.data.replace(ISO,function(t,at){if(at>last)f.appendChild(document.createTextNode(n.data.slice(last,at)));var b=document.createElement('bdi');b.dir='ltr';b.textContent=t;f.appendChild(b);last=at+t.length;return t});
     if(last<n.data.length)f.appendChild(document.createTextNode(n.data.slice(last)));n.parentNode.replaceChild(f,n)}
   else if(n.nodeType===1&&n.tagName!=='BDI')isoText(n)})}
 new MutationObserver(function(){[].forEach.call(document.querySelectorAll('.ar:not([data-iso])'),function(el){el.setAttribute('data-iso','');isoText(el)})}).observe(document.body,{childList:true,subtree:true});
+/* Lien du cours d'une porte : d.url (adresse complète, par ex. une leçon du site public) sinon courseBase + id. */
+function courseUrl(d){return d.url||(C.courseBase+d.id)}
 var ILL=C.ill,DOORS=C.doors,AUD=C.audio,BONUS_AT=C.bonusAt||70,ALERT_MIN=C.alertMin||3,SIM=C.sim||{donePct:[0,0,0],stuck:[0,0,0]};
 var LANTERN='<svg viewBox="0 0 46 56"><path d="M15 9 h16 l-3 -6 h-10 z" fill="#9b92dc"/><circle cx="23" cy="3" r="2.5" fill="none" stroke="#9b92dc" stroke-width="1.6"/>'+
  '<path d="M11 13 h24 l3 30 h-30 z" fill="#ffcf5c" fill-opacity=".9"/><path d="M11 13 h24 l3 30 h-30 z" fill="none" stroke="#9b92dc" stroke-width="2"/>'+
@@ -291,7 +293,7 @@ var cur=-1;
 function show(v){stopSound();$('#vMap').hidden=v!=='map';$('#vDoor').hidden=v!=='door';window.scrollTo(0,0)}
 function openDoor(i){
   var s=state(i);
-  if(s==='locked'){modal('<p style="margin:0 0 4px;font-weight:700">Cette porte est encore fermée.</p><p style="margin:0;color:var(--muted)">Termine la porte '+i+' pour découvrir son énigme. Le cours, lui, reste ouvert :</p><p><a class="course" href="'+C.courseBase+DOORS[i].id+'" target="_blank" rel="noopener">Ouvrir le cours «'+DOORS[i].title+'»</a></p><button class="btn full" onclick="document.getElementById(\'modal\').classList.remove(\'show\')">Compris</button>');return}
+  if(s==='locked'){modal('<p style="margin:0 0 4px;font-weight:700">Cette porte est encore fermée.</p><p style="margin:0;color:var(--muted)">Termine la porte '+i+' pour découvrir son énigme. Le cours, lui, reste ouvert :</p><p><a class="course" href="'+courseUrl(DOORS[i])+'" target="_blank" rel="noopener">Ouvrir le cours «'+DOORS[i].title+'»</a></p><button class="btn full" onclick="document.getElementById(\'modal\').classList.remove(\'show\')">Compris</button>');return}
   if(!st.pass[i]){askKey(i);return}
   cur=i;
   if(i<3&&!st.start[i]){st.start[i]=now();track('start',i)}
@@ -309,7 +311,7 @@ function renderStep(n){
     var m=h('div');mentor(m,'Une énigme pour commencer. Ne cherche pas encore la réponse : garde-la en tête.','لغز للبداية. لا تبحث عن الجواب الآن، احتفظ به في ذهنك.');b.appendChild(m);
     var c=h('div',{'class':'card'});c.innerHTML=ILL[d.ill]+'<p class="hook">'+d.hook+'</p><div class="ar">'+d.hookAr+'</div>'+listen(i);b.appendChild(c);
     b.appendChild(h('button',{'class':'btn full',on:{click:function(){st._seenHook=st._seenHook||{};st._seenHook[i]=1;save();renderStep(1)}}},'Chercher les 3 fragments'));
-    b.appendChild(h('p',{style:'text-align:center;margin:12px 0 0'},'<a class="course" href="'+C.courseBase+d.id+'" target="_blank" rel="noopener">Ouvrir le cours complet</a>'));
+    b.appendChild(h('p',{style:'text-align:center;margin:12px 0 0'},'<a class="course" href="'+courseUrl(d)+'" target="_blank" rel="noopener">Ouvrir le cours complet</a>'));
     return;
   }
   if(n===4){renderReveal();return}
@@ -389,7 +391,7 @@ function renderChest(){
   if(!st._chest){st._chest=1;track('chest',3);save()}
   var m=h('div');mentor(m,'Bravo, tu as ouvert le coffre ! Voici l’énigme du prochain chapitre. Ton professeur te la fera résoudre.','أحسنت، فتحت الصندوق! هذا لغز الفصل الموالي، وسيساعدك أستاذك على حله.');b.appendChild(m);
   var c=h('div',{'class':'card'});c.innerHTML=ILL[d.ill]+'<p class="hook">'+d.hook+'</p><div class="ar">'+d.hookAr+'</div>'+listen(3)+
-   (C.chestCourse?'<p style="margin:12px 0 0"><a class="course" href="'+C.courseBase+d.id+'" target="_blank" rel="noopener">Jeter un œil au cours «'+C.chestCourse+'»</a></p>':'');
+   (C.chestCourse?'<p style="margin:12px 0 0"><a class="course" href="'+courseUrl(d)+'" target="_blank" rel="noopener">Jeter un œil au cours «'+C.chestCourse+'»</a></p>':'');
   b.appendChild(c);
   b.appendChild(h('button',{'class':'btn ghost full',on:{click:function(){show('map');renderMap()}}},'Retour à la carte'));
 }
