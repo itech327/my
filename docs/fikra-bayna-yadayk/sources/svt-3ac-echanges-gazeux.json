@@ -1,0 +1,390 @@
+{
+ "meta": {
+  "kicker": "SVT · 3e année collège · Le concept en main",
+  "title": "Les échanges gazeux respiratoires",
+  "titleAr": "التبادلات الغازية التنفسية",
+  "short": "Échanges gazeux",
+  "classes": [
+   "3APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier (widget tubes). Textes et valeurs originaux ; compositions de l'air arrondies."
+ },
+ "misconceptions": {
+  "meme_air": {
+   "fr": "L'air expiré n'a pas la même composition que l'air inspiré : il contient plus de CO₂ et moins de O₂.",
+   "ar": "الهواء المزفور يختلف عن الهواء المستنشق: فيه CO2 أكثر و O2 أقل."
+  },
+  "tout_o2": {
+   "fr": "Le dioxygène n'est pas entièrement absorbé : l'air expiré en contient encore environ 16 %.",
+   "ar": "لا يُمتص كل الأكسجين: يبقى في الهواء المزفور حوالي 16 %."
+  },
+  "transforme": {
+   "fr": "Les poumons ne transforment pas O₂ en CO₂ : ils échangent. Ce sont les cellules des organes qui consomment O₂ et produisent CO₂.",
+   "ar": "الرئتان لا تحولان O2 إلى CO2، بل تبادلان الغازات؛ الخلايا هي التي تستهلك O2 وتنتج CO2."
+  },
+  "vide": {
+   "fr": "L'air expiré n'est pas fait de CO₂ : il contient surtout du diazote (environ 78 %), puis 16 % de O₂ et 4 % de CO₂.",
+   "ar": "الهواء المزفور ليس CO2 فقط: أغلبه ثنائي الآزوت."
+  },
+  "lieu": {
+   "fr": "Les échanges gazeux se font dans les alvéoles pulmonaires, à travers une paroi très fine entourée de capillaires.",
+   "ar": "التبادلات الغازية تتم في الأسناخ الرئوية عبر جدار رقيق جدا."
+  },
+  "pourcent": {
+   "fr": "4 % signifie 4 pour 100 : on multiplie le volume par 4 puis on divise par 100.",
+   "ar": "4 % تعني 4 من 100: نضرب في 4 ثم نقسم على 100."
+  },
+  "inspire": {
+   "fr": "Utilise la composition de l'air expiré, ou la différence entre expiré et inspiré, pas celle de l'air inspiré.",
+   "ar": "استعمل تركيب الهواء المزفور أو الفرق بينه وبين المستنشق."
+  },
+  "total": {
+   "fr": "Le dioxygène retenu est la différence : 21 % − 16 % = 5 % du volume d'air.",
+   "ar": "الأكسجين الممتص هو الفرق: 21 % ناقص 16 %."
+  },
+  "addition": {
+   "fr": "Le volume par minute est le nombre de respirations multiplié par le volume d'une respiration.",
+   "ar": "الحجم في الدقيقة يساوي عدد التنفسات مضروبا في حجم التنفس الواحد."
+  }
+ },
+ "hook": {
+  "title": "Ce que nos poumons ajoutent à l'air",
+  "text": "Souffle avec une paille dans de l'eau de chaux : elle devient laiteuse. Fais passer l'air de la salle avec une pompe à vélo : rien ne change. Qu'est-ce que nos poumons ajoutent à l'air, et qu'est-ce qu'ils lui prennent ?",
+  "ar": "ننفخ في ماء الجير فيتعكر، ونمرر هواء القاعة بمضخة فلا يتغير. ماذا تضيف الرئتان إلى الهواء وماذا تأخذان منه؟",
+  "audio": "audio/svt-3ac-echanges-gazeux-question.mp3",
+  "audioText": "نفخ بواحد القصبة فالما ديال الجير، كيولي بحال الحليب. ولكن ملي كندخلو فيه هوا البيت بالبومبة، ما كيتبدل والو. شنو اللي كتزيد الرئة للهوا اللي كنخرجو، وشنو اللي كتاخد منو؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "On fait barboter de l'air expiré dans l'eau de chaux. Elle :",
+   "ar": "نمرر الهواء المزفور في ماء الجير. فإنه:",
+   "options": [
+    [
+     "se trouble",
+     ""
+    ],
+    [
+     "reste limpide : on rejette le même air",
+     "meme_air"
+    ],
+    [
+     "se trouble autant qu'avec l'air de la salle",
+     "meme_air"
+    ]
+   ]
+  },
+  {
+   "q": "L'air expiré contient environ :",
+   "ar": "يحتوي الهواء المزفور تقريبا على:",
+   "options": [
+    [
+     "16 % de dioxygène",
+     ""
+    ],
+    [
+     "0 % de dioxygène : tout a été utilisé",
+     "tout_o2"
+    ],
+    [
+     "21 % de dioxygène, comme l'air inspiré",
+     "meme_air"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Trois tubes d'eau de chaux et une plaque",
+  "intro": "Choisis le volume d'air que tu fais barboter dans chaque tube, puis teste avec l'eau de chaux ou avec le BBT (bleu de bromothymol : bleu, puis vert, puis jaune quand il y a de plus en plus de CO₂).",
+  "widget": "tubes",
+  "params": {
+   "label": "Trois tubes à essai",
+   "inputs": [
+    {
+     "id": "V",
+     "label": "Volume d'air barboté",
+     "unit": "L",
+     "min": 0,
+     "max": 5,
+     "step": 0.5,
+     "value": 0.5
+    }
+   ],
+   "tubes": [
+    {
+     "id": "A",
+     "short": "A",
+     "label": "air de la salle (air inspiré), 0,04 % de CO₂",
+     "vars": {
+      "co2": 0.04
+     }
+    },
+    {
+     "id": "B",
+     "short": "B",
+     "label": "air expiré au repos, 4 % de CO₂",
+     "vars": {
+      "co2": 4
+     }
+    },
+    {
+     "id": "C",
+     "short": "C",
+     "label": "air expiré après un effort, 5 % de CO₂",
+     "vars": {
+      "co2": 5
+     }
+    }
+   ],
+   "reagents": [
+    {
+     "id": "chaux",
+     "label": "Eau de chaux",
+     "expr": "V*co2*10",
+     "colors": [
+      [
+       20,
+       "trouble, laiteuse",
+       "#a8a196"
+      ],
+      [
+       5,
+       "légèrement trouble",
+       "#d3cdc0"
+      ],
+      [
+       0,
+       "limpide",
+       "#cfe6f5"
+      ]
+     ]
+    },
+    {
+     "id": "bbt",
+     "label": "BBT",
+     "expr": "V*co2*10",
+     "colors": [
+      [
+       20,
+       "jaune",
+       "#e3bd2a"
+      ],
+      [
+       5,
+       "vert",
+       "#4f9c63"
+      ],
+      [
+       0,
+       "bleu",
+       "#3a6cd0"
+      ]
+     ]
+    }
+   ],
+   "plate": {
+    "tube": "B",
+    "reagent": "bbt",
+    "var": "V",
+    "values": [
+     0,
+     0.1,
+     0.25,
+     0.5,
+     1,
+     2
+    ],
+    "unit": "L",
+    "label": "Plaque à godets : BBT après différents volumes d'air expiré au repos"
+   }
+  },
+  "missions": [
+   {
+    "id": "compare",
+    "type": "condition",
+    "expr": "V == 2 && reactif == 1",
+    "text": "Fais barboter 2 L dans chaque tube et teste à l'eau de chaux. Compare A, B et C."
+   },
+   {
+    "id": "salle",
+    "type": "condition",
+    "expr": "V == 5 && reactif == 1",
+    "text": "Même avec 5 L, l'air de la salle trouble-t-il l'eau de chaux ?"
+   },
+   {
+    "id": "bbt",
+    "type": "condition",
+    "expr": "V == 0.5 && reactif == 2",
+    "text": "Avec 0,5 L seulement, teste au BBT. Lis aussi la plaque."
+   }
+  ],
+  "required": [
+   "compare",
+   "salle"
+  ],
+  "note": "Volume de CO₂ barboté (mL) = V × pourcentage × 10, recalculé à chaque mouvement. L'eau de chaux se trouble nettement au-delà d'environ 20 mL de CO₂ dans ce modèle."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "CO₂ : 0,04 % → 4 %",
+    "text": "L'air expiré est beaucoup plus riche en dioxyde de carbone que l'air inspiré : c'est lui qui trouble l'eau de chaux.",
+    "ar": "الهواء المزفور أغنى بكثير بثنائي أكسيد الكربون من الهواء المستنشق."
+   },
+   {
+    "formula": "O₂ : 21 % → 16 %",
+    "text": "L'air expiré est plus pauvre en dioxygène, mais il en contient encore : seule une partie est retenue.",
+    "ar": "الهواء المزفور أفقر بالأكسجين، لكنه ما زال يحتوي عليه."
+   },
+   {
+    "formula": "alvéoles : O₂ → sang, CO₂ → air",
+    "text": "Les échanges gazeux se font dans les alvéoles pulmonaires. Le sang emporte O₂ vers les cellules, qui le consomment et produisent CO₂ ; le sang ramène CO₂ aux poumons.",
+    "ar": "تتم التبادلات الغازية في الأسناخ الرئوية: O2 من الهواء إلى الدم، و CO2 من الدم إلى الهواء."
+   }
+  ],
+  "seen": "Avec 2 L, l'air de la salle apporte 0,8 mL de CO₂ : l'eau de chaux reste limpide. L'air expiré en apporte 80 mL au repos et 100 mL après l'effort : elle se trouble. Même 5 L d'air de la salle (2 mL) ne la troublent pas.",
+  "audio": "audio/svt-3ac-echanges-gazeux-regle.mp3",
+  "audioText": "القاعدة هي: الهوا اللي كنخرجو فيه بزاف ديال ثنائي أكسيد الكاربون، تقريبا أربعة فالمية. أما الهوا اللي كندخلو، فيه غير شوية صغيرة بزاف. والهوا اللي كنخرجو فيه أقل ديال الأوكسجين، تقريبا ستاش فالمية بلاصة واحد وعشرين. التبادل كيوقع فالحويصلات الرئوية: الأوكسجين كيدوز من الهوا للدم، وثنائي أكسيد الكاربون كيدوز من الدم للهوا. والخلايا هوما اللي كيستهلكو الأوكسجين وكيطلعو ثنائي أكسيد الكاربون."
+ },
+ "proof": {
+  "title": "Pourquoi les gaz changent-ils de côté ?",
+  "firstIsFormula": true,
+  "paras": [
+   "air alvéolaire riche en O₂  ⇄  sang pauvre en O₂ et riche en CO₂",
+   "Le sang qui arrive aux poumons revient des organes : leurs cellules ont consommé du O₂ et rejeté du CO₂. La paroi des alvéoles et des capillaires est très fine, et chaque gaz la traverse du côté où il est le plus abondant vers celui où il l'est le moins : O₂ entre dans le sang, CO₂ en sort."
+  ],
+  "ar": "الدم القادم من الأعضاء فقير بـ O2 وغني بـ CO2، وكل غاز يعبر الجدار الرقيق من حيث يكثر إلى حيث يقل."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "V",
+      "pick 2 5 8 10 15"
+     ]
+    ],
+    "q": "On expire {V:0} L d'air contenant 4 % de CO₂. Quel volume de CO₂ rejette-t-on, en L ?",
+    "unit": "L",
+    "answer": "V*4/100",
+    "digits": 2,
+    "traps": [
+     [
+      "V*4",
+      "pourcent"
+     ],
+     [
+      "V*0.04/100",
+      "inspire"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "V",
+      "pick 6 8 10 12 20"
+     ]
+    ],
+    "q": "On respire {V:0} L d'air : il entre à 21 % de O₂ et ressort à 16 %. Quel volume de O₂ a été retenu par l'organisme, en L ?",
+    "unit": "L",
+    "answer": "V*(21-16)/100",
+    "digits": 2,
+    "traps": [
+     [
+      "V*21/100",
+      "total"
+     ],
+     [
+      "V*16/100",
+      "total"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "f",
+      "pick 12 15 16 20"
+     ],
+     [
+      "v",
+      "pick 0.4 0.5 0.6"
+     ]
+    ],
+    "q": "Au repos, on fait {f:0} respirations par minute de {v:1} L chacune. L'air inspiré contient 0,04 % de CO₂ et l'air expiré 4 %. Quel volume de CO₂ rejette-t-on par minute, en L ?",
+    "unit": "L",
+    "answer": "f*v*(4-0.04)/100",
+    "digits": 3,
+    "traps": [
+     [
+      "(f+v)*(4-0.04)/100",
+      "addition"
+     ],
+     [
+      "f*v*0.04/100",
+      "inspire"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "La proportion de CO₂ dans l'air expiré est d'environ :",
+   "ar": "نسبة CO2 في الهواء المزفور تقريبا:",
+   "options": [
+    [
+     "4 %",
+     ""
+    ],
+    [
+     "0,04 %",
+     "inspire"
+    ],
+    [
+     "presque 100 %",
+     "vide"
+    ]
+   ]
+  },
+  {
+   "q": "Où le dioxygène passe-t-il de l'air au sang ?",
+   "ar": "أين ينتقل الأكسجين من الهواء إلى الدم؟",
+   "options": [
+    [
+     "dans les alvéoles pulmonaires",
+     ""
+    ],
+    [
+     "dans la trachée",
+     "lieu"
+    ],
+    [
+     "dans le cœur",
+     "lieu"
+    ]
+   ]
+  },
+  {
+   "q": "Dans les poumons, le dioxygène :",
+   "ar": "في الرئتين، الأكسجين:",
+   "options": [
+    [
+     "passe dans le sang, qui le porte aux cellules",
+     ""
+    ],
+    [
+     "est transformé sur place en CO₂",
+     "transforme"
+    ],
+    [
+     "est entièrement absorbé",
+     "tout_o2"
+    ]
+   ]
+  }
+ ]
+}

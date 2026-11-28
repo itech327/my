@@ -153,15 +153,17 @@ const KIND = {
     const c = p.curve || {};
     const curve = gridOf([['var', field('Variable en abscisse', c.var)], ['expr', field('Courbe y =', c.expr)], ['xmin', field('x min', c.xmin)], ['xmax', field('x max', c.xmax)],
       ['ymin', field('y min', c.ymin)], ['ymax', field('y max', c.ymax)], ['xlabel', field('Nom de l\'axe x', c.xlabel)], ['ylabel', field('Nom de l\'axe y', c.ylabel)], ['label', field('Description pour lecteur d\'écran', c.label)]]);
+    const labo = field('Tubes, réactifs et plaque (widget tubes, JSON) : {"tubes": [...], "reagents": [...], "plate": {...}}', p.tubes ? JSON.stringify({ label: p.label, tubes: p.tubes, reagents: p.reagents, plate: p.plate }, null, 1) : '', 'area');
     const missions = repeat('mission', v.missions, m => gridOf([['id', field('Nom', m.id)], ['type', field('Type', m.type, 'select', { options: ['valeurs', 'condition'] })],
       ['input', field('Curseur (valeurs)', m.input)], ['values', field('Valeurs, séparées par des espaces', (m.values || []).join(' '))], ['when', field('Seulement si (valeurs)', m.when)],
       ['expr', field('Condition', m.expr)], ['text', field('Consigne pour l\'élève', m.text, 'area')]]), () => ({}));
     const g = group([['title', field('Titre', v.title)], ['intro', field('Introduction', v.intro, 'area')],
-      ['widget', field('Widget', v.widget, 'select', { options: FikraSpec.widgets() })], ['inputs', inputs], ['outputs', outputs], ['bars', bars], ['curve', curve],
+      ['widget', field('Widget', v.widget, 'select', { options: FikraSpec.widgets() })], ['inputs', inputs], ['outputs', outputs], ['bars', bars], ['curve', curve], ['labo', labo],
       ['missions', missions], ['required', field('Missions nécessaires pour continuer, séparées par des virgules', (v.required || []).join(', '))], ['note', field('Note sous les missions', v.note, 'area')]]);
     const r = g.read; g.read = () => { const x = r(), n = o => { ['min', 'max', 'step', 'value', 'digits'].forEach(k => { if (k in o) o[k] = num(o[k]); }); return o; };
       const params = { inputs: (x.inputs || []).map(n), outputs: (x.outputs || []).map(n) };
       if (x.widget === 'curseurs') params.bars = lines(x.bars).map(l => { const [id, label, max] = semi(l); return { id, label, max: +max }; });
+      if (x.widget === 'tubes') { let j; try { j = JSON.parse(x.labo || '{}'); } catch (e) { throw new Error('Tubes : JSON invalide (' + e.message + ')'); } Object.assign(params, j); delete params.outputs; }
       if (x.widget === 'graphe') { const cv = x.curve || {}; ['xmin', 'xmax', 'ymin', 'ymax'].forEach(k => cv[k] = num(cv[k])); params.curve = cv; }
       const out = { title: x.title, intro: x.intro, widget: x.widget, params,
         missions: (x.missions || []).map(m => { const o = { id: m.id, type: m.type, text: m.text };
