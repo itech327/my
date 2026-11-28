@@ -1,0 +1,351 @@
+{
+ "meta": {
+  "kicker": "Physique-chimie · 2e année collège · Le concept en main",
+  "title": "Les lentilles minces",
+  "titleAr": "العدسات الرقيقة",
+  "short": "Lentilles",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. La distance de l'image est calculée avec la relation de conjugaison (APPRO). Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "bords": {
+   "fr": "Une lentille convergente a des bords minces et un centre épais ; une lentille divergente a des bords épais.",
+   "ar": "العدسة المجمعة حافتاها رقيقتان ووسطها سميك، والمفرقة عكس ذلك."
+  },
+  "foyer": {
+   "fr": "Les rayons du Soleil, parallèles à l'axe, se concentrent au foyer F, à une distance précise : la distance focale f.",
+   "ar": "أشعة الشمس الموازية للمحور تتجمع في البؤرة F على مسافة محددة هي المسافة البؤرية."
+  },
+  "cm": {
+   "fr": "Dans C = 1 ÷ f, la distance focale doit être en mètres : f = 20 cm = 0,2 m donne C = 5 δ.",
+   "ar": "في C = 1 ÷ f يجب أن تكون المسافة البؤرية بالمتر."
+  },
+  "vergence": {
+   "fr": "C = 1 ÷ f, et non f ÷ 1 ou f × … : la vergence est l'inverse de la distance focale.",
+   "ar": "التقارب هو مقلوب المسافة البؤرية."
+  },
+  "plus_forte": {
+   "fr": "Plus la vergence est grande, plus la distance focale est courte : la lentille est plus convergente.",
+   "ar": "كلما كبر التقارب قصرت المسافة البؤرية."
+  },
+  "toujours_image": {
+   "fr": "Si l'objet est entre la lentille et le foyer, aucune image ne se forme sur l'écran : la lentille sert de loupe.",
+   "ar": "إذا كان الجسم بين العدسة والبؤرة فلا تتكون صورة على الشاشة، وتعمل العدسة كمكبرة."
+  },
+  "addition_f": {
+   "fr": "Pour des lentilles accolées, ce sont les vergences qui s'additionnent, pas les distances focales.",
+   "ar": "في العدسات الملتصقة تجمع التقاربات لا المسافات البؤرية."
+  }
+ },
+ "hook": {
+  "title": "La loupe et le soleil",
+  "text": "Au soleil, une loupe tenue au-dessus d'un papier peut l'enflammer, mais seulement à une distance bien précise. Pourquoi cette distance ? Et qu'est-ce qui se concentre en ce point ?",
+  "ar": "عدسة مكبرة فوق ورقة في الشمس قد تشعلها، لكن على مسافة محددة فقط. لماذا؟",
+  "audio": "audio/pc-2ac-lentilles-question.mp3",
+  "audioText": "فالشمس، إلا حطيتي عدسة مكبّرة فوق ورقة، تقدر تشعلها. ولكن غير إلا كانت العدسة على واحد البعد مضبوط. علاش هاد البعد بالضبط، وشنو اللي كيتجمع فداك النقطة؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Au soleil, pour enflammer un papier avec une loupe, on la tient :",
+   "ar": "لإشعال ورقة بعدسة مكبرة في الشمس نضعها:",
+   "options": [
+    [
+     "à une distance précise, le papier au foyer",
+     ""
+    ],
+    [
+     "le plus près possible du papier",
+     "foyer"
+    ],
+    [
+     "le plus loin possible du papier",
+     "foyer"
+    ]
+   ]
+  },
+  {
+   "q": "Une lentille de 10 δ et une lentille de 2 δ. Celle qui a la distance focale la plus courte est :",
+   "ar": "عدسة تقاربها 10 δ وأخرى 2 δ. التي مسافتها البؤرية أقصر هي:",
+   "options": [
+    [
+     "celle de 10 δ",
+     ""
+    ],
+    [
+     "celle de 2 δ",
+     "plus_forte"
+    ],
+    [
+     "elles ont la même",
+     "plus_forte"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Le banc d'optique",
+  "intro": "Une lentille convergente de distance focale f. Place l'objet à la distance d devant elle et regarde si une image se forme sur l'écran (1 = oui, 0 = non).",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "d",
+     "label": "Distance objet – lentille",
+     "unit": "cm",
+     "min": 5,
+     "max": 100,
+     "step": 5,
+     "value": 60
+    },
+    {
+     "id": "f",
+     "label": "Distance focale f",
+     "unit": "cm",
+     "min": 5,
+     "max": 30,
+     "step": 5,
+     "value": 20
+    }
+   ],
+   "outputs": [
+    {
+     "id": "C",
+     "label": "Vergence C = 1 ÷ f",
+     "unit": "δ",
+     "expr": "100/f",
+     "digits": 1
+    },
+    {
+     "id": "R",
+     "label": "Image sur l'écran",
+     "unit": "",
+     "expr": "d>f",
+     "digits": 0
+    },
+    {
+     "id": "Dp",
+     "label": "Distance lentille – écran (APPRO)",
+     "unit": "cm",
+     "expr": "(d>f)*d*f/max(d-f,0.001)",
+     "digits": 1
+    },
+    {
+     "id": "G",
+     "label": "Taille image ÷ taille objet",
+     "unit": "",
+     "expr": "Dp/d",
+     "digits": 2
+    }
+   ],
+   "bars": [
+    {
+     "id": "Dp",
+     "label": "Écran",
+     "max": 220
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "loin",
+    "type": "valeurs",
+    "input": "d",
+    "values": [
+     40,
+     60,
+     100
+    ],
+    "when": "f == 20",
+    "text": "f = 20 cm : place l'objet à 40, 60 puis 100 cm. L'écran se rapproche-t-il du foyer ?"
+   },
+   {
+    "id": "loupe",
+    "type": "condition",
+    "expr": "d < f",
+    "text": "Approche l'objet plus près que le foyer. Une image se forme-t-elle encore sur l'écran ?"
+   },
+   {
+    "id": "vergence",
+    "type": "valeurs",
+    "input": "f",
+    "values": [
+     10,
+     20,
+     25
+    ],
+    "text": "Compare les distances focales 10, 20 et 25 cm : quelle vergence pour chacune ?"
+   }
+  ],
+  "required": [
+   "loin",
+   "loupe"
+  ],
+  "note": "Vergence C = 100 ÷ f (f en cm), et distance de l'image par la relation de conjugaison 1/d' = 1/f − 1/d (APPRO), recalculées à chaque mouvement."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "convergente : bords minces · divergente : bords épais",
+    "text": "Une lentille convergente fait converger les rayons parallèles à son axe en un point, le foyer F. La distance de la lentille au foyer est la distance focale f.",
+    "ar": "العدسة المجمعة تجمع الأشعة الموازية لمحورها في البؤرة F، والمسافة بينهما هي المسافة البؤرية f."
+   },
+   {
+    "formula": "C = 1 ÷ f   (f en m, C en dioptries δ)",
+    "text": "La vergence mesure la puissance d'une lentille : plus elle est grande, plus la distance focale est courte.",
+    "ar": "التقارب يقيس قوة العدسة: كلما كبر قصرت المسافة البؤرية."
+   },
+   {
+    "formula": "objet au-delà de F → image sur l'écran · objet entre la lentille et F → loupe",
+    "text": "Plus l'objet est loin, plus son image se forme près du foyer. Quand l'objet est plus près que le foyer, aucune image ne se forme sur l'écran : on regarde à travers la lentille une image agrandie.",
+    "ar": "إذا كان الجسم أبعد من البؤرة تتكون صورة على الشاشة، وإذا كان أقرب منها تعمل العدسة كمكبرة."
+   }
+  ],
+  "seen": "Avec f = 20 cm, l'objet à 40 cm donne une image à 40 cm, à 60 cm une image à 30 cm, à 100 cm une image à 25 cm : elle se rapproche du foyer. Plus près que 20 cm, plus d'image sur l'écran. f = 10 cm donne 10 δ, 20 cm donne 5 δ, 25 cm donne 4 δ.",
+  "audio": "audio/pc-2ac-lentilles-regle.mp3",
+  "audioText": "القاعدة هي: العدسة المجمّعة، الجناب ديالها رقاق والوسط غليظ. الأشعة اللي جاية من الشمس كتجمع فواحد النقطة سميتها البؤرة، والمسافة بينها وبين العدسة سميتها المسافة البؤرية. التقارب ديال العدسة كيساوي واحد تقسيم المسافة البؤرية بالميترو، وكيتقاس بالديوبتري. إلا كان الشيء أبعد من البؤرة، العدسة كتعطي صورة فالشاشة. وإلا قرّبتيه أكثر من البؤرة، ما كاين حتى صورة فالشاشة، والعدسة كتخدم بحال المكبّر."
+ },
+ "proof": {
+  "title": "Pourquoi le papier brûle au foyer ?",
+  "firstIsFormula": true,
+  "paras": [
+   "Soleil très loin → rayons parallèles → tous concentrés au foyer",
+   "Le Soleil est si loin que ses rayons arrivent parallèles à l'axe de la lentille. Une lentille convergente les dévie tous vers le même point, le foyer. Toute l'énergie lumineuse reçue par la lentille est concentrée sur une petite tache : c'est là que le papier chauffe assez pour brûler. Ailleurs, la tache est plus large et l'énergie dispersée."
+  ],
+  "ar": "أشعة الشمس متوازية فتتجمع كلها في البؤرة، فتتركز الطاقة في بقعة صغيرة."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "f",
+      "pick 20 25 40 50"
+     ]
+    ],
+    "q": "Une lentille a une distance focale de {f:0} cm. Calcule sa vergence, en dioptries.",
+    "unit": "δ",
+    "answer": "100/f",
+    "digits": 2,
+    "traps": [
+     [
+      "1/f",
+      "cm"
+     ],
+     [
+      "f/100",
+      "vergence"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "c",
+      "pick 2 4 5 8 10"
+     ]
+    ],
+    "q": "Une loupe a une vergence de {c:0} δ. À quelle distance du papier faut-il la tenir pour concentrer la lumière du Soleil au foyer, en cm ?",
+    "unit": "cm",
+    "answer": "100/c",
+    "digits": 1,
+    "traps": [
+     [
+      "1/c",
+      "cm"
+     ],
+     [
+      "c*100",
+      "vergence"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3 · APPRO",
+    "vars": [
+     [
+      "f1",
+      "pick 20 25 50"
+     ],
+     [
+      "f2",
+      "pick 10 40 100"
+     ]
+    ],
+    "q": "On accole deux lentilles convergentes de distances focales {f1:0} cm et {f2:0} cm. Quelle est la vergence de l'ensemble, en δ ?",
+    "unit": "δ",
+    "answer": "100/f1+100/f2",
+    "digits": 2,
+    "traps": [
+     [
+      "100/(f1+f2)",
+      "addition_f"
+     ],
+     [
+      "1/f1+1/f2",
+      "cm"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Une lentille à bords épais et centre mince est :",
+   "ar": "عدسة حافتاها سميكتان ووسطها رقيق هي:",
+   "options": [
+    [
+     "divergente",
+     ""
+    ],
+    [
+     "convergente",
+     "bords"
+    ],
+    [
+     "convergente si on la retourne",
+     "bords"
+    ]
+   ]
+  },
+  {
+   "q": "Une lentille a une distance focale de 25 cm. Sa vergence est :",
+   "ar": "عدسة مسافتها البؤرية 25 cm. تقاربها:",
+   "options": [
+    [
+     "4 δ",
+     ""
+    ],
+    [
+     "0,04 δ",
+     "cm"
+    ],
+    [
+     "25 δ",
+     "vergence"
+    ]
+   ]
+  },
+  {
+   "q": "Avec une lentille de f = 10 cm, on place un objet à 6 cm. Sur l'écran :",
+   "ar": "عدسة f = 10 cm وجسم على بعد 6 cm. على الشاشة:",
+   "options": [
+    [
+     "aucune image : la lentille sert de loupe",
+     ""
+    ],
+    [
+     "une image nette, plus petite",
+     "toujours_image"
+    ],
+    [
+     "une image nette, à 6 cm",
+     "toujours_image"
+    ]
+   ]
+  }
+ ]
+}
