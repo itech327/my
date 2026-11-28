@@ -93,6 +93,14 @@ a.card .ar{font-size:15px;color:var(--lav)}
 .links{text-align:center;color:var(--muted);font-size:14px;margin:26px 0 0}
 .links a{color:var(--muted)}
 .links.classique{margin-top:18px;font-size:13px}
+.atelier h2+.h2ar{margin:-4px 0 8px;font-size:15px;color:var(--lav)}
+.atelier .alt{margin:12px 0 0;font-size:13px}
+.atelier .alt+.alt{margin-top:2px}
+.atelier .alt a,.foot a{white-space:nowrap;color:var(--fg);text-decoration-color:var(--line);text-underline-offset:3px}
+.atelier .alt a:hover,.foot a:hover{text-decoration-color:currentColor}
+.foot{margin:28px 0 0;text-align:center;font-size:14px;color:var(--muted)}
+.foot p{margin:0;line-height:1.9}
+.foot p[dir=rtl]{font-family:var(--f-ar);text-align:center}
 </style>
 </head>
 <body>
@@ -134,18 +142,23 @@ a.card .ar{font-size:15px;color:var(--lav)}
     <a class="card" style="--c:var(--coral)" href="https://technologie.taalim.men/"><i class="glyph" aria-hidden="true">⚙</i><strong>Technologie en mouvement</strong><span>3<sup>e</sup> année · systèmes techniques, chaîne d’information, chaîne d’énergie, dessin technique</span><span class="ar" lang="ar" dir="rtl">التكنولوجيا</span></a>
   -->
   <section class="atelier" aria-labelledby="atelier-t">
-    <h2 id="atelier-t">Défis par chapitre · <span lang="ar" dir="rtl">تحديات</span></h2>
+    <h2 id="atelier-t">Défis par chapitre</h2>
+    <p class="ar h2ar" lang="ar" dir="rtl">تحديات حسب الفصل</p>
     <p>Des séries qui changent à chaque fois, quatre niveaux, un défi chronométré et le défi de la semaine.</p>
     <p class="ar" lang="ar" dir="rtl">سلاسل تتجدد في كل مرة، بأربعة مستويات، مع تحدٍّ بمؤقت وتحدي الأسبوع.</p>
     <p class="row"><a class="btn sm ghost" href="https://maths.taalim.men/defis/">Maths</a><a class="btn sm ghost" href="https://pc.taalim.men/defis/">Physique-Chimie</a><a class="btn sm ghost" href="https://svt.taalim.men/defis/">SVT</a></p>
+    <p class="alt">Version simple, une page par matière : <a href="maths.html">Maths</a> · <a href="physique-chimie.html">Physique-Chimie</a> · <a href="svt.html">SVT</a></p>
+    <p class="alt ar" lang="ar" dir="rtl">النسخة البسيطة، صفحة لكل مادة: <a href="maths.html">الرياضيات</a> · <a href="physique-chimie.html">الفيزياء والكيمياء</a> · <a href="svt.html">علوم الحياة والأرض</a></p>
   </section>
   <div class="box" id="pwa" hidden>
     <p><b>Installer l’application.</b> <span id="pwa-ios" hidden>Sur iPhone : bouton Partager, puis « Sur l’écran d’accueil ». </span>Elle s’ouvre en plein écran et marche sans connexion.</p>
     <p class="ar" lang="ar" dir="rtl">ثبّت التطبيق على هاتفك. يفتح بملء الشاشة ويعمل بدون إنترنت.</p>
     <div class="row"><button class="btn" id="pwa-btn" type="button" hidden>Installer · تثبيت</button></div>
   </div>
-  <p class="links classique"><span lang="ar" dir="rtl">تمارين وتحديات · الصفحات الكلاسيكية</span> : <a href="maths.html">Maths</a> · <a href="physique-chimie.html">Physique-Chimie</a> · <a href="svt.html">SVT</a></p>
-  <p class="links"><a href="confidentialite.html">Confidentialité · الخصوصية</a> · <a href="a-propos.html">À propos · من نحن</a></p>
+  <footer class="foot">
+    <p><a href="confidentialite.html">Confidentialité</a> · <a href="a-propos.html">À propos</a></p>
+    <p lang="ar" dir="rtl"><a href="confidentialite.html">الخصوصية</a> · <a href="a-propos.html">من نحن</a></p>
+  </footer>
 </div>
 <script>window.LAB_CONFIG={app:'portal',appName:'Cours en mouvement',map:{},gen:function(){return null}};</script>
 <script src="lab/notify-config.js"></script>
