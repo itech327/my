@@ -1,0 +1,378 @@
+{
+ "meta": {
+  "kicker": "Mathématiques · 2e année collège · Le concept en main",
+  "title": "Les puissances",
+  "titleAr": "القوى",
+  "short": "Puissances",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "multiplie": {
+   "fr": "aⁿ n'est pas a × n : c'est a multiplié par lui-même n fois. 2¹⁰ = 1024, pas 20.",
+   "ar": "a^n ليست a × n، بل a مضروب في نفسه n مرة."
+  },
+  "compte": {
+   "fr": "aⁿ contient exactement n facteurs égaux à a : 2⁴ = 2 × 2 × 2 × 2.",
+   "ar": "a^n فيها بالضبط n عوامل كلها a."
+  },
+  "produit_exp": {
+   "fr": "aᵐ × aⁿ = aᵐ⁺ⁿ : on additionne les exposants, on ne les multiplie pas.",
+   "ar": "عند ضرب قوتين لنفس العدد نجمع الأسس."
+  },
+  "base": {
+   "fr": "On garde la même base : 2³ × 2⁴ = 2⁷, et non 4⁷.",
+   "ar": "نحافظ على نفس الأساس ولا نضرب الأساسات."
+  },
+  "puissance_puissance": {
+   "fr": "(aᵐ)ⁿ = aᵐˣⁿ : pour une puissance de puissance, on multiplie les exposants.",
+   "ar": "في قوة القوة نضرب الأسس."
+  },
+  "quotient": {
+   "fr": "aᵐ ÷ aⁿ = aᵐ⁻ⁿ : on soustrait les exposants.",
+   "ar": "عند القسمة نطرح الأسس."
+  },
+  "zero": {
+   "fr": "a⁰ = 1 pour tout a non nul : c'est le cas où il ne reste aucun facteur, comme 2³ ÷ 2³.",
+   "ar": "a أس 0 يساوي 1 لكل عدد غير منعدم."
+  }
+ },
+ "hook": {
+  "title": "La feuille pliée dix fois",
+  "text": "On plie une feuille en deux, puis encore en deux, et ainsi de suite, dix fois. Combien d'épaisseurs de papier obtient-on ? Vingt ? Cent ? Plus ?",
+  "ar": "نطوي ورقة إلى نصفين عشر مرات متتالية. كم طبقة نحصل عليها؟",
+  "audio": "audio/maths-2ac-puissances-question.mp3",
+  "audioText": "خود ورقة وطويها على جوج. عاود طويها على جوج، وهكذا عشر مرات. شحال من طبقة غادي تولي عندك: عشرين، ولا مية، ولا كثر؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "On plie une feuille en deux, dix fois de suite. Le nombre d'épaisseurs est :",
+   "ar": "نطوي ورقة إلى نصفين عشر مرات. عدد الطبقات:",
+   "options": [
+    [
+     "2¹⁰ = 1024",
+     ""
+    ],
+    [
+     "2 × 10 = 20",
+     "multiplie"
+    ],
+    [
+     "10² = 100",
+     "multiplie"
+    ]
+   ]
+  },
+  {
+   "q": "2³ × 2⁴ est égal à :",
+   "ar": "2^3 × 2^4 يساوي:",
+   "options": [
+    [
+     "2⁷",
+     ""
+    ],
+    [
+     "2¹²",
+     "produit_exp"
+    ],
+    [
+     "4⁷",
+     "base"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "La machine à puissances",
+  "intro": "Choisis la base a et deux exposants m et n. La machine calcule aᵐ × aⁿ et le compare à aᵐ⁺ⁿ. Les barres montrent les deux exposants possibles : m + n et m × n.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "a",
+     "label": "Base a",
+     "unit": "",
+     "min": 2,
+     "max": 10,
+     "step": 1,
+     "value": 2
+    },
+    {
+     "id": "m",
+     "label": "Exposant m",
+     "unit": "",
+     "min": 0,
+     "max": 6,
+     "step": 1,
+     "value": 2
+    },
+    {
+     "id": "n",
+     "label": "Exposant n",
+     "unit": "",
+     "min": 0,
+     "max": 6,
+     "step": 1,
+     "value": 1
+    }
+   ],
+   "outputs": [
+    {
+     "id": "P",
+     "label": "aᵐ × aⁿ",
+     "unit": "",
+     "expr": "a^m*a^n",
+     "digits": 0
+    },
+    {
+     "id": "S",
+     "label": "aᵐ⁺ⁿ",
+     "unit": "",
+     "expr": "a^(m+n)",
+     "digits": 0
+    },
+    {
+     "id": "E1",
+     "label": "Exposant m + n",
+     "unit": "",
+     "expr": "m+n",
+     "digits": 0
+    },
+    {
+     "id": "E2",
+     "label": "Exposant m × n (piège)",
+     "unit": "",
+     "expr": "m*n",
+     "digits": 0
+    }
+   ],
+   "bars": [
+    {
+     "id": "E1",
+     "label": "m + n",
+     "max": 36
+    },
+    {
+     "id": "E2",
+     "label": "m × n",
+     "max": 36
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "ajoute",
+    "type": "valeurs",
+    "input": "n",
+    "values": [
+     1,
+     2,
+     3
+    ],
+    "when": "m == 2",
+    "text": "Avec m = 2, essaie n = 1, 2 puis 3. Par combien le résultat est-il multiplié à chaque fois ?"
+   },
+   {
+    "id": "piege",
+    "type": "condition",
+    "expr": "m == 2 && n == 3",
+    "text": "m = 2, n = 3 : l'exposant du produit est-il 5 ou 6 ?"
+   },
+   {
+    "id": "zero",
+    "type": "condition",
+    "expr": "n == 0",
+    "text": "Mets n = 0. Que vaut aᵐ × a⁰ comparé à aᵐ ? Qu'en déduis-tu pour a⁰ ?"
+   },
+   {
+    "id": "dix",
+    "type": "condition",
+    "expr": "a == 10 && m == 3 && n == 2",
+    "text": "Base 10 : calcule 10³ × 10². Compte les zéros."
+   }
+  ],
+  "required": [
+   "piege",
+   "zero"
+  ],
+  "note": "Les deux résultats sont recalculés à chaque mouvement : aᵐ × aⁿ et aᵐ⁺ⁿ sont toujours égaux."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "aⁿ = a × a × … × a (n facteurs)",
+    "text": "a¹ = a et, pour a non nul, a⁰ = 1. Attention : aⁿ n'est pas a × n.",
+    "ar": "a^n هو a مضروب في نفسه n مرة، و a^0 = 1."
+   },
+   {
+    "formula": "aᵐ × aⁿ = aᵐ⁺ⁿ    aᵐ ÷ aⁿ = aᵐ⁻ⁿ",
+    "text": "Pour multiplier deux puissances d'un même nombre, on additionne les exposants ; pour diviser, on les soustrait.",
+    "ar": "عند الضرب نجمع الأسس، وعند القسمة نطرحها."
+   },
+   {
+    "formula": "(aᵐ)ⁿ = aᵐˣⁿ    10ⁿ = 1 suivi de n zéros",
+    "text": "Pour une puissance de puissance, on multiplie les exposants. 10³ × 10² = 10⁵ = 100 000.",
+    "ar": "في قوة القوة نضرب الأسس، و 10^n هو 1 متبوع بـ n صفرا."
+   }
+  ],
+  "seen": "Avec a = 2 : 2² × 2³ = 4 × 8 = 32 = 2⁵, et non 2⁶ = 64. Chaque fois que n augmente de 1, le résultat est multiplié par a. Avec n = 0, le produit reste aᵐ : a⁰ vaut donc 1.",
+  "audio": "audio/maths-2ac-puissances-regle.mp3",
+  "audioText": "القاعدة هي: آ أس إن هو آ مضروب فراسو إن مرة، ماشي آ ضرب إن. ملي كنضربو جوج ديال القوى ديال نفس العدد، كنجمعو الأسس. وملي كنقسمو، كننقصو الأسس. وملي كنرفعو قوة لقوة، كنضربو الأسس. وأي عدد ماشي صفر، أس صفر ديالو كيساوي واحد."
+ },
+ "proof": {
+  "title": "Compter les facteurs",
+  "firstIsFormula": true,
+  "paras": [
+   "2³ × 2⁴ = (2 × 2 × 2) × (2 × 2 × 2 × 2) = 2⁷",
+   "On écrit chaque puissance comme un produit de facteurs égaux. En les mettant bout à bout, on obtient 3 + 4 = 7 facteurs : on additionne les exposants. Dans (2³)⁴, on écrit 4 fois le bloc 2 × 2 × 2 : cela fait 3 × 4 = 12 facteurs."
+  ],
+  "ar": "نكتب كل قوة كجداء عوامل ونعدها: 3 + 4 = 7 عوامل."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "a",
+      "pick 2 3 5"
+     ],
+     [
+      "n",
+      "pick 3 4 5"
+     ]
+    ],
+    "q": "Calcule {a:0}^{n:0}.",
+    "unit": " ",
+    "answer": "a^n",
+    "digits": 0,
+    "traps": [
+     [
+      "a*n",
+      "multiplie"
+     ],
+     [
+      "a^(n+1)",
+      "compte"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "m",
+      "pick 3 4 5"
+     ],
+     [
+      "n",
+      "pick 2 6 7"
+     ]
+    ],
+    "q": "Écris 3^{m:0} × 3^{n:0} sous la forme 3^p. Donne p.",
+    "unit": "(p)",
+    "answer": "m+n",
+    "digits": 0,
+    "traps": [
+     [
+      "m*n",
+      "produit_exp"
+     ],
+     [
+      "m-n",
+      "quotient"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "m",
+      "pick 2 3 4"
+     ],
+     [
+      "n",
+      "pick 3 4 5"
+     ],
+     [
+      "k",
+      "pick 1 2 3"
+     ]
+    ],
+    "q": "Écris (2^{m:0})^{n:0} ÷ 2^{k:0} sous la forme 2^p. Donne p.",
+    "unit": "(p)",
+    "answer": "m*n-k",
+    "digits": 0,
+    "traps": [
+     [
+      "m+n-k",
+      "puissance_puissance"
+     ],
+     [
+      "m*n+k",
+      "quotient"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "5⁰ vaut :",
+   "ar": "5 أس 0 يساوي:",
+   "options": [
+    [
+     "1",
+     ""
+    ],
+    [
+     "0",
+     "zero"
+    ],
+    [
+     "5",
+     "zero"
+    ]
+   ]
+  },
+  {
+   "q": "(10²)³ est égal à :",
+   "ar": "(10^2)^3 يساوي:",
+   "options": [
+    [
+     "10⁶",
+     ""
+    ],
+    [
+     "10⁵",
+     "puissance_puissance"
+    ],
+    [
+     "10⁸",
+     "puissance_puissance"
+    ]
+   ]
+  },
+  {
+   "q": "10⁵ ÷ 10² est égal à :",
+   "ar": "10^5 ÷ 10^2 يساوي:",
+   "options": [
+    [
+     "10³",
+     ""
+    ],
+    [
+     "10⁷",
+     "quotient"
+    ],
+    [
+     "10²,⁵",
+     "quotient"
+    ]
+   ]
+  }
+ ]
+}
