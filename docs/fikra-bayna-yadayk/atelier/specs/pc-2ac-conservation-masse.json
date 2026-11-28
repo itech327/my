@@ -1,0 +1,348 @@
+{
+ "meta": {
+  "kicker": "Physique-chimie · 2e année collège · Le concept en main",
+  "title": "La conservation de la masse",
+  "titleAr": "انحفاظ الكتلة",
+  "short": "Conservation de la masse",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. Vinaigre à 6 % d'acide ; textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "disparait": {
+   "fr": "Pendant une réaction, la matière ne disparaît pas : les atomes se réarrangent et la masse totale se conserve.",
+   "ar": "المادة لا تختفي في التفاعل: الذرات تعيد ترتيبها والكتلة الكلية تنحفظ."
+  },
+  "cree": {
+   "fr": "Rien n'est créé non plus : la masse ne peut pas augmenter pendant la réaction.",
+   "ar": "لا شيء يُخلق: الكتلة لا تزداد أثناء التفاعل."
+  },
+  "gaz_rien": {
+   "fr": "Un gaz a une masse : quand il s'échappe d'un récipient ouvert, la balance baisse.",
+   "ar": "للغاز كتلة: عندما يخرج من إناء مفتوح تنقص الكتلة."
+  },
+  "soustraction": {
+   "fr": "La masse des produits est la somme des masses des réactifs, pas leur différence.",
+   "ar": "كتلة النواتج تساوي مجموع كتل المتفاعلات لا الفرق بينها."
+  },
+  "proportion": {
+   "fr": "Les réactifs réagissent dans des proportions fixes : si l'on double un réactif (l'autre suffisant), on double le produit.",
+   "ar": "تتفاعل المتفاعلات بنسب ثابتة: مضاعفة أحدها تضاعف الناتج."
+  },
+  "inverse": {
+   "fr": "7 g de fer pour 4 g de soufre : pour m g de fer, il faut m × 4 ÷ 7 g de soufre.",
+   "ar": "7 g من الحديد مقابل 4 g من الكبريت: نضرب في 4 ونقسم على 7."
+  }
+ },
+ "hook": {
+  "title": "La balance qui baisse",
+  "text": "Sur une balance, un flacon de vinaigre et un sachet de bicarbonate. On verse le bicarbonate : ça mousse, et la balance perd quelques grammes. La matière a-t-elle disparu ? Ou est-elle partie quelque part ?",
+  "ar": "خل وبيكربونات فوق ميزان. نخلطهما فيفور الخليط وتنقص الكتلة ببضع غرامات. هل اختفت المادة أم ذهبت إلى مكان ما؟",
+  "audio": "audio/pc-2ac-conservation-masse-question.mp3",
+  "audioText": "حطّينا الخل والبيكاربونات فوق الميزان. ملي خلطناهم، بدا كيفور، والميزان نقص شي غرامات. واش المادة تفنات، ولا مشات لشي بلاصة؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Dans un flacon bouché, on fait réagir du vinaigre et du bicarbonate : des bulles apparaissent. La masse du flacon :",
+   "ar": "في قارورة مسدودة نفاعل الخل والبيكربونات فتظهر فقاعات. كتلة القارورة:",
+   "options": [
+    [
+     "reste la même",
+     ""
+    ],
+    [
+     "diminue : une partie de la matière a disparu",
+     "disparait"
+    ],
+    [
+     "augmente : un gaz s'est formé",
+     "cree"
+    ]
+   ]
+  },
+  {
+   "q": "On refait l'expérience avec le flacon ouvert. La masse :",
+   "ar": "نعيد التجربة والقارورة مفتوحة. الكتلة:",
+   "options": [
+    [
+     "diminue, car le gaz qui s'échappe a une masse",
+     ""
+    ],
+    [
+     "reste la même : un gaz ne pèse rien",
+     "gaz_rien"
+    ],
+    [
+     "augmente",
+     "cree"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Le flacon sur la balance",
+  "intro": "Le flacon vide pèse 150 g. Choisis la masse de vinaigre et de bicarbonate, bouche ou non le flacon (0 = ouvert, 1 = bouché), et compare la masse avant et après la réaction.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "v",
+     "label": "Vinaigre",
+     "unit": "g",
+     "min": 50,
+     "max": 200,
+     "step": 25,
+     "value": 100
+    },
+    {
+     "id": "b",
+     "label": "Bicarbonate",
+     "unit": "g",
+     "min": 0,
+     "max": 10,
+     "step": 1,
+     "value": 2
+    },
+    {
+     "id": "f",
+     "label": "Flacon bouché",
+     "unit": "",
+     "min": 0,
+     "max": 1,
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "outputs": [
+    {
+     "id": "A",
+     "label": "Masse avant",
+     "unit": "g",
+     "expr": "150+v+b",
+     "digits": 2
+    },
+    {
+     "id": "C",
+     "label": "Gaz formé (dioxyde de carbone)",
+     "unit": "g",
+     "expr": "min(b*44/84,0.044*v)",
+     "digits": 2
+    },
+    {
+     "id": "P",
+     "label": "Masse après",
+     "unit": "g",
+     "expr": "150+v+b-(1-f)*C",
+     "digits": 2
+    }
+   ],
+   "bars": [
+    {
+     "id": "C",
+     "label": "Gaz formé, jusqu'à 6 g",
+     "max": 6
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "ferme",
+    "type": "condition",
+    "expr": "f == 1 && b >= 4",
+    "text": "Flacon bouché, au moins 4 g de bicarbonate : compare la masse avant et après."
+   },
+   {
+    "id": "ouvert",
+    "type": "condition",
+    "expr": "f == 0 && b >= 4",
+    "text": "Même mélange, flacon ouvert. De combien la balance baisse-t-elle ?"
+   },
+   {
+    "id": "dose",
+    "type": "valeurs",
+    "input": "b",
+    "values": [
+     2,
+     4,
+     6
+    ],
+    "when": "f == 0 && v == 100",
+    "text": "Flacon ouvert, 100 g de vinaigre : compare 2, 4 et 6 g de bicarbonate. Puis essaie 10 g."
+   }
+  ],
+  "required": [
+   "ferme",
+   "ouvert"
+  ],
+  "note": "Modèle : 84 g de bicarbonate donnent 44 g de dioxyde de carbone ; 100 g de vinaigre à 6 % en libèrent au plus 4,4 g. Le premier réactif épuisé arrête la réaction (APPRO)."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "masse des réactifs = masse des produits",
+    "text": "Lors d'une réaction chimique, la masse totale se conserve : les atomes ne disparaissent pas et ne sont pas créés, ils se réarrangent en nouvelles molécules.",
+    "ar": "خلال التفاعل الكيميائي تنحفظ الكتلة الكلية: الذرات لا تختفي ولا تُخلق."
+   },
+   {
+    "formula": "un gaz a une masse",
+    "text": "Dans un flacon bouché, la balance ne bouge pas. Dans un flacon ouvert, le gaz formé s'échappe et emporte sa masse : la balance baisse.",
+    "ar": "في قارورة مسدودة لا تتغير الكتلة، وفي قارورة مفتوحة يخرج الغاز بكتلته."
+   },
+   {
+    "formula": "7 g de fer + 4 g de soufre → 11 g de sulfure de fer",
+    "text": "Les réactifs réagissent dans des proportions fixes. Un réactif en excès reste après la réaction.",
+    "ar": "تتفاعل المتفاعلات بنسب ثابتة، والمتفاعل الزائد يبقى."
+   }
+  ],
+  "seen": "Flacon bouché : avant et après, la balance indique la même masse. Flacon ouvert avec 100 g de vinaigre : 2 g de bicarbonate font perdre 1,05 g, 4 g en font perdre 2,1 g, 6 g 3,14 g ; avec 10 g, le vinaigre s'épuise et la perte plafonne à 4,4 g.",
+  "audio": "audio/pc-2ac-conservation-masse-regle.mp3",
+  "audioText": "القاعدة هي: فالتفاعل الكيميائي، الكتلة ما كتضيعش وما كتزادش. الذرات ما كتختفيش، غير كتبدّل البلاصة ديالها وكتكوّن أجسام جديدة. إلا كانت القرعة مسدودة، الميزان ما كيتحركش. وإلا كانت محلولة، الغاز كيخرج، والغاز عندو كتلة، داكشي علاش الميزان كينقص. والمتفاعلات كيتفاعلو بنسب ثابتة: سبعة غرامات ديال الحديد مع ربعة ديال الكبريت."
+ },
+ "proof": {
+  "title": "Compter les atomes",
+  "firstIsFormula": true,
+  "paras": [
+   "C + O₂ → CO₂ : 1 atome de carbone et 2 atomes d'oxygène avant, et après",
+   "Chaque atome garde sa propre masse pendant la réaction. Les atomes changent seulement de partenaires : on retrouve exactement les mêmes atomes avant et après. La somme de leurs masses ne peut donc pas changer, seul l'arrangement change."
+  ],
+  "ar": "نجد نفس الذرات قبل التفاعل وبعده، ولكل ذرة كتلتها، فلا تتغير الكتلة الكلية."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "fe",
+      "pick 7 14 21 28 35"
+     ],
+     [
+      "s",
+      "fe*4/7"
+     ]
+    ],
+    "q": "{fe:0} g de fer réagissent complètement avec {s:0} g de soufre. Quelle masse de sulfure de fer obtient-on, en g ?",
+    "unit": "g",
+    "answer": "fe+s",
+    "digits": 0,
+    "traps": [
+     [
+      "fe",
+      "disparait"
+     ],
+     [
+      "fe-s",
+      "soustraction"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "mg",
+      "pick 1.2 2.4 3.6 6"
+     ],
+     [
+      "ox",
+      "mg*40/24"
+     ]
+    ],
+    "q": "En brûlant {mg:1} g de magnésium dans le dioxygène, on obtient {ox:1} g d'oxyde de magnésium. Quelle masse de dioxygène a été consommée, en g ?",
+    "unit": "g",
+    "answer": "ox-mg",
+    "digits": 1,
+    "traps": [
+     [
+      "ox+mg",
+      "soustraction"
+     ],
+     [
+      "ox",
+      "gaz_rien"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "fe",
+      "pick 14 21 35 42 56"
+     ]
+    ],
+    "q": "7 g de fer réagissent exactement avec 4 g de soufre. Quelle masse de soufre faut-il pour {fe:0} g de fer, en g ?",
+    "unit": "g",
+    "answer": "fe*4/7",
+    "digits": 0,
+    "traps": [
+     [
+      "fe*7/4",
+      "inverse"
+     ],
+     [
+      "fe-3",
+      "proportion"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Une bougie brûle sur une balance, à l'air libre : la masse affichée diminue car :",
+   "ar": "شمعة تحترق فوق ميزان في الهواء الطلق: تنقص الكتلة لأن:",
+   "options": [
+    [
+     "les gaz formés partent dans l'air",
+     ""
+    ],
+    [
+     "la matière de la cire est détruite",
+     "disparait"
+    ],
+    [
+     "les gaz formés ne pèsent rien",
+     "gaz_rien"
+    ]
+   ]
+  },
+  {
+   "q": "56 g de fer réagissent complètement avec 32 g de soufre. Le sulfure de fer obtenu a une masse de :",
+   "ar": "56 g من الحديد تتفاعل كليا مع 32 g من الكبريت. كتلة كبريتور الحديد الناتج:",
+   "options": [
+    [
+     "88 g",
+     ""
+    ],
+    [
+     "56 g",
+     "disparait"
+    ],
+    [
+     "24 g",
+     "soustraction"
+    ]
+   ]
+  },
+  {
+   "q": "Si on double la masse de fer, avec assez de soufre, la masse de sulfure de fer obtenue :",
+   "ar": "إذا ضاعفنا كتلة الحديد مع كمية كافية من الكبريت، فإن كتلة كبريتور الحديد الناتج:",
+   "options": [
+    [
+     "double",
+     ""
+    ],
+    [
+     "reste la même",
+     "proportion"
+    ],
+    [
+     "est divisée par deux",
+     "proportion"
+    ]
+   ]
+  }
+ ]
+}
