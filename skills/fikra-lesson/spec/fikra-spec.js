@@ -8,7 +8,10 @@ var FikraSpec = (function () {
 
   /* ---------- safe expressions: + - * / ^, comparisons, && ||, ( ), functions, variables ---------- */
   const FN = { sqrt: Math.sqrt, abs: Math.abs, floor: Math.floor, ceil: Math.ceil, min: Math.min, max: Math.max, pow: Math.pow,
-    round: (x, d = 0) => Math.round(x * 10 ** d) / 10 ** d };
+    round: (x, d = 0) => Math.round(x * 10 ** d) / 10 ** d,
+    // trigonometry in degrees, as in the collège programme
+    cosd: x => Math.cos(x * Math.PI / 180), sind: x => Math.sin(x * Math.PI / 180), tand: x => Math.tan(x * Math.PI / 180),
+    acosd: x => Math.acos(x) * 180 / Math.PI, asind: x => Math.asin(x) * 180 / Math.PI, atand: x => Math.atan(x) * 180 / Math.PI };
   const CONST = { pi: Math.PI };
   function tokenize(src) {
     const out = [], re = /\s*(?:(\d+(?:\.\d+)?)|([A-Za-z_]\w*)|(<=|>=|==|!=|&&|\|\||[-+*/^(),<>!]))/y;
@@ -250,5 +253,5 @@ var FikraSpec = (function () {
     };
   }
 
-  return { lessonFromSpec, compile, widgets: () => Object.keys(WIDGETS), version: 'v1' };
+  return { lessonFromSpec, compile, widgets: () => Object.keys(WIDGETS), version: 'v1.1' };
 })();

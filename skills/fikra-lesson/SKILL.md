@@ -64,7 +64,7 @@ Prefer this route when the experiment is sliders with computed values (`curseurs
 - `experiment.widget` and its `params`: `inputs` (sliders), `outputs` (computed with `expr`), `bars` for `curseurs`, `curve` for `graphe`; `tubes`, `reagents` and `plate` for `tubes` (mission names: the inputs, `reactif`, `<tube>_<reagent>`).
 - Missions: `{ type: 'valeurs', input, values, when? }` or `{ type: 'condition', expr }`.
 - Exercises: `vars` as `[name, 'int a b step' | 'pick v1 v2 …' | expression]`, `q` with `{x}` or `{x:0}`, `answer` and `traps` as expressions.
-- Expressions accept numbers, declared names, `+ - * / ^`, comparisons, `&& ||`, and `sqrt abs round floor ceil min max pow pi`. No `**`, no code: the adapter refuses it.
+- Expressions accept numbers, declared names, `+ - * / ^`, comparisons, `&& ||`, and `sqrt abs round floor ceil min max pow pi`, plus trigonometry in degrees: `cosd sind tand acosd asind atand`. No `**`, no code: the adapter refuses it.
 - Texts are plain, never HTML; the adapter escapes them. `hook.svg` is not available on this route.
 - Build: `python3 tools/build_spec.py my-spec.json my-lesson.html`, then the same flow test.
 - A widget that is missing (moving geometric figure, circuit) goes into `spec/fikra-spec.js`, tested, before any lesson uses it. Otherwise use section 2.
