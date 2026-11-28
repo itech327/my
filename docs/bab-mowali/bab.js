@@ -116,7 +116,7 @@ input.num{width:100%;font:inherit;font-size:1.2rem;padding:11px 13px;border-radi
 .player.err .tm{display:none}
 .proto{font-size:.75rem;color:var(--muted);text-align:center;margin-top:18px}
 [hidden]{display:none!important}`;
-var st0=document.createElement('style');st0.textContent=CSS;document.head.appendChild(st0);
+var st0=document.createElement('style');st0.textContent=CSS+'.ar bdi{white-space:nowrap}';document.head.appendChild(st0);
 document.body.innerHTML=`<header>
   <h1 id="bTitle"></h1>
   <div class="keys" title="Fragments"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="3" y="3" width="8" height="8" rx="2" transform="rotate(45 7 7)" fill="#ffcf5c"/></svg><span id="nFrag">0</span></div>
@@ -149,6 +149,14 @@ document.body.innerHTML=`<header>
 document.title=C.title+' · '+C.titleAr;
 document.getElementById('bTitle').innerHTML=C.title+'<small>'+C.titleAr+'</small>';
 document.getElementById('bKick').textContent=C.kicker;document.getElementById('bKickAr').textContent=C.kickerAr;
+/* Texte arabe : chaque suite latine ou numérique (50 km/h, P = U × I, 0,05 h) est isolée en LTR pour garder son ordre. */
+var ISO=/[0-9A-Za-z½(][0-9A-Za-z½²³,.\/()×÷=+·\- ]*[0-9A-Za-z²³)]|[0-9A-Za-z]/g;
+function isoText(el){[].slice.call(el.childNodes).forEach(function(n){
+  if(n.nodeType===3){if(!ISO.test(n.data)){ISO.lastIndex=0;return}ISO.lastIndex=0;var f=document.createDocumentFragment(),last=0,m;
+    n.data.replace(ISO,function(t,at){if(at>last)f.appendChild(document.createTextNode(n.data.slice(last,at)));var b=document.createElement('bdi');b.dir='ltr';b.textContent=t;f.appendChild(b);last=at+t.length;return t});
+    if(last<n.data.length)f.appendChild(document.createTextNode(n.data.slice(last)));n.parentNode.replaceChild(f,n)}
+  else if(n.nodeType===1&&n.tagName!=='BDI')isoText(n)})}
+new MutationObserver(function(){[].forEach.call(document.querySelectorAll('.ar:not([data-iso])'),function(el){el.setAttribute('data-iso','');isoText(el)})}).observe(document.body,{childList:true,subtree:true});
 var ILL=C.ill,DOORS=C.doors,AUD=C.audio,BONUS_AT=C.bonusAt||70,ALERT_MIN=C.alertMin||3,SIM=C.sim||{donePct:[0,0,0],stuck:[0,0,0]};
 var LANTERN='<svg viewBox="0 0 46 56"><path d="M15 9 h16 l-3 -6 h-10 z" fill="#9b92dc"/><circle cx="23" cy="3" r="2.5" fill="none" stroke="#9b92dc" stroke-width="1.6"/>'+
  '<path d="M11 13 h24 l3 30 h-30 z" fill="#ffcf5c" fill-opacity=".9"/><path d="M11 13 h24 l3 30 h-30 z" fill="none" stroke="#9b92dc" stroke-width="2"/>'+
@@ -341,14 +349,14 @@ function renderStep(n){
     var sel=null,left2=f.items.length,chips2=h('div',{'class':'chips'}),bins=h('div',{'class':'bins'});
     f.items.forEach(function(it){var ch=h('button',{'class':'chip',on:{click:function(){[].forEach.call(chips2.children,function(x){x.classList.remove('sel')});ch.classList.add('sel');sel={it:it,el:ch}}}},it[0]);chips2.appendChild(ch)});
     f.bins.forEach(function(name,k){var bn=h('button',{'class':'bin',on:{click:function(){
-      if(!sel){miss('Touche d’abord une matière.');return}
+      if(!sel){miss('Touche d’abord un élément.');return}
       if(sel.it[1]===k){bn.appendChild(h('small',null,sel.it[0]));sel.el.classList.add('used');sel.el.classList.remove('sel');sel=null;if(--left2===0)win()}
       else{bn.style.animation='none';void bn.offsetWidth;bn.style.animation='shake .35s';miss(f.h)}
     }}},'<b>'+name+'</b>');bins.appendChild(bn)});
     c.appendChild(chips2);c.appendChild(bins);
   }else if(f.t==='num'){
     c.appendChild(h('p',{style:'margin:6px 0;font-weight:700'},f.q));
-    var inp=h('input',{'class':'num',inputmode:'decimal',placeholder:'ρ en '+f.unit,'aria-label':'Réponse'});
+    var inp=h('input',{'class':'num',inputmode:'decimal',placeholder:f.ph||('Réponse en '+f.unit),'aria-label':'Réponse'});
     c.appendChild(inp);
     c.appendChild(h('button',{'class':'btn ghost full',style:'margin-top:8px',on:{click:function(){
       var v=parseFloat(String(inp.value).replace(',','.'));
@@ -378,7 +386,7 @@ function renderChest(){
   if(!st._chest){st._chest=1;track('chest',3);save()}
   var m=h('div');mentor(m,'Bravo, tu as ouvert le coffre ! Voici l’énigme du prochain chapitre. Ton professeur te la fera résoudre.','أحسنت، فتحت الصندوق! هذا لغز الفصل الموالي، وسيساعدك أستاذك على حله.');b.appendChild(m);
   var c=h('div',{'class':'card'});c.innerHTML=ILL[d.ill]+'<p class="hook">'+d.hook+'</p><div class="ar">'+d.hookAr+'</div>'+listen(3)+
-   '<p style="margin:12px 0 0"><a class="course" href="'+C.courseBase+d.id+'" target="_blank" rel="noopener">Jeter un œil au cours «'+C.chestCourse+'»</a></p>';
+   (C.chestCourse?'<p style="margin:12px 0 0"><a class="course" href="'+C.courseBase+d.id+'" target="_blank" rel="noopener">Jeter un œil au cours «'+C.chestCourse+'»</a></p>':'');
   b.appendChild(c);
   b.appendChild(h('button',{'class':'btn ghost full',on:{click:function(){show('map');renderMap()}}},'Retour à la carte'));
 }

@@ -1,7 +1,8 @@
 /* Carte de chapitre pour le moteur « الباب الموالي » (bab.js).
    Un chapitre = 3 portes + 1 coffre qui ouvre le chapitre suivant. Aucun code ici : seulement des données.
    Champs d'une porte : id, title, ar, ill, hook, hookAr, frags[3], reveal, revealAr, cliff, cliffAr, key (sauf porte 1).
-   Types de fragments : vf (vrai/faux), qcm, order (4 étapes), sort (classer dans 2-3 bacs), num (calcul). */
+   Types de fragments : vf (vrai/faux), qcm, order (4 étapes), sort (classer dans 2-3 bacs), num (calcul : ans, tol, unit, ph = texte du champ).
+   chestCourse vide : pas de lien de cours dans le coffre. */
 window.BAB_CHAPTER = {
   id: 'pc-1ac-matiere',
   storageKey: 'bab_mowali_pc1ac_v0',
@@ -90,7 +91,7 @@ window.BAB_CHAPTER = {
    {s:'On mesure une masse avec une éprouvette graduée.',v:false,h:'L’éprouvette mesure un volume. La masse se mesure avec une balance.'},
    {s:'1 L = 1000 mL.',v:true,h:'Le préfixe milli veut dire un millième.'}]},
   {t:'num',title:'Exercice',q:'100 mL d’huile ont une masse de 92 g. Calcule sa masse volumique ρ = m / V en g/mL.',
-   ans:0.92,tol:0.005,unit:'g/mL',h:'Divise la masse par le volume : 92 ÷ 100.'},
+   ans:0.92,tol:0.005,unit:'g/mL',ph:'ρ en g/mL',h:'Divise la masse par le volume : 92 ÷ 100.'},
   {t:'qcm',title:'Je fais seul',q:'ρ de l’eau = 1 g/mL et ρ de l’huile = 0,92 g/mL. Pour 1 L de chacun :',
    o:['l’huile est plus légère','l’eau est plus légère','ils ont la même masse'],a:0,h:'Calcule m = ρ × V avec V = 1000 mL pour chacun.'}],
  reveal:'1 L d’eau a une masse de 1000 g, 1 L d’huile seulement 920 g. Même volume, masses différentes : c’est la masse volumique. Voilà pourquoi l’huile flotte sur l’eau.',
