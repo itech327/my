@@ -1,0 +1,384 @@
+{
+ "meta": {
+  "kicker": "Mathématiques · 2e année collège · Le concept en main",
+  "title": "Les équations du premier degré",
+  "titleAr": "المعادلات من الدرجة الأولى",
+  "short": "Équations",
+  "classes": [
+   "2APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "un_cote": {
+   "fr": "On fait toujours la même opération sur les deux membres ; sinon l'égalité n'est plus vraie.",
+   "ar": "نجري نفس العملية على الطرفين، وإلا لم تعد المتساوية صحيحة."
+  },
+  "signe": {
+   "fr": "Pour enlever + b, on retranche b des deux membres : c − b, et non c + b.",
+   "ar": "لإزالة + b نطرح b من الطرفين."
+  },
+  "divise": {
+   "fr": "ax = k donne x = k ÷ a : on divise par a, on ne le retranche pas.",
+   "ar": "ax = k يعطي x = k ÷ a: نقسم على a ولا نطرحه."
+  },
+  "neg": {
+   "fr": "Diviser par un nombre négatif : le signe compte. −2x = 10 donne x = 10 ÷ (−2) = −5.",
+   "ar": "عند القسمة على عدد سالب، الإشارة مهمة."
+  },
+  "x_droite": {
+   "fr": "Pour rassembler les x, on retranche cx des deux membres : ax − cx = (a − c)x, pas (a + c)x.",
+   "ar": "لتجميع المجاهيل نطرح cx من الطرفين."
+  },
+  "verif": {
+   "fr": "Pour vérifier, on remplace x par la valeur : 2x veut dire 2 × x.",
+   "ar": "للتحقق نعوض x بالقيمة: 2x تعني 2 × x."
+  }
+ },
+ "hook": {
+  "title": "La balance des billes",
+  "text": "Sur un plateau d'une balance : 3 sacs identiques et 5 billes. Sur l'autre : 20 billes. La balance est en équilibre. Combien de billes y a-t-il dans chaque sac ? Peut-on le trouver sans essayer au hasard ?",
+  "ar": "في كفة ميزان 3 أكياس متماثلة و5 كريات، وفي الأخرى 20 كرية، والميزان متوازن. كم كرية في كل كيس؟",
+  "audio": "audio/maths-2ac-equations-question.mp3",
+  "audioText": "فالميزان، فواحد الكفة كاينين ثلاثة ديال الشكارات بحال بحال وخمسة ديال البلي. فالكفة الأخرى كاينين عشرين بلية، والميزان معادل. شحال من بلية فكل شكارة؟ واش تقدر تلقاها بلا ما تبقى تجرب؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Pour résoudre 3x + 5 = 20, la première étape la plus simple est :",
+   "ar": "لحل 3x + 5 = 20، أبسط خطوة أولى هي:",
+   "options": [
+    [
+     "retrancher 5 des deux membres",
+     ""
+    ],
+    [
+     "diviser seulement le membre de gauche par 3",
+     "un_cote"
+    ],
+    [
+     "ajouter 5 aux deux membres",
+     "signe"
+    ]
+   ]
+  },
+  {
+   "q": "La solution de 4x = 12 est :",
+   "ar": "حل المعادلة 4x = 12 هو:",
+   "options": [
+    [
+     "3",
+     ""
+    ],
+    [
+     "8",
+     "divise"
+    ],
+    [
+     "48",
+     "divise"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "La balance de 3x + 5 = 20",
+  "intro": "Le plateau de gauche porte 3 sacs de x billes et 5 billes, celui de droite 20 billes. Choisis x, puis retire le même nombre de billes des deux plateaux.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "x",
+     "label": "Billes par sac x",
+     "unit": "",
+     "min": 0,
+     "max": 10,
+     "step": 0.5,
+     "value": 2
+    },
+    {
+     "id": "s",
+     "label": "Billes retirées des deux plateaux",
+     "unit": "",
+     "min": 0,
+     "max": 5,
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "outputs": [
+    {
+     "id": "G",
+     "label": "Plateau gauche 3x + 5 − retirées",
+     "unit": "",
+     "expr": "3*x+5-s",
+     "digits": 1
+    },
+    {
+     "id": "D",
+     "label": "Plateau droit 20 − retirées",
+     "unit": "",
+     "expr": "20-s",
+     "digits": 1
+    },
+    {
+     "id": "E",
+     "label": "Écart gauche − droite",
+     "unit": "",
+     "expr": "3*x+5-20",
+     "digits": 1
+    }
+   ],
+   "bars": [
+    {
+     "id": "G",
+     "label": "Plateau gauche",
+     "max": 35
+    },
+    {
+     "id": "D",
+     "label": "Plateau droit",
+     "max": 35
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "essai",
+    "type": "valeurs",
+    "input": "x",
+    "values": [
+     2,
+     4,
+     6
+    ],
+    "when": "s == 0",
+    "text": "Essaie x = 2, 4 et 6. Le plateau gauche est-il trop léger ou trop lourd ?"
+   },
+   {
+    "id": "equilibre",
+    "type": "condition",
+    "expr": "3*x+5 == 20 && s == 0",
+    "text": "Trouve x pour lequel la balance est en équilibre."
+   },
+   {
+    "id": "retire",
+    "type": "condition",
+    "expr": "3*x+5 == 20 && s == 5",
+    "text": "Garde l'équilibre et retire 5 billes des deux plateaux. Que reste-t-il de chaque côté ?"
+   }
+  ],
+  "required": [
+   "equilibre",
+   "retire"
+  ],
+  "note": "Les deux plateaux sont recalculés à chaque mouvement. Retirer le même nombre des deux côtés ne change pas l'écart."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "si A = B, alors A − c = B − c",
+    "text": "On peut ajouter ou retrancher un même nombre aux deux membres d'une égalité : elle reste vraie.",
+    "ar": "يمكن إضافة أو طرح نفس العدد من طرفي متساوية."
+   },
+   {
+    "formula": "si A = B et c ≠ 0, alors A ÷ c = B ÷ c",
+    "text": "On peut multiplier ou diviser les deux membres par un même nombre non nul.",
+    "ar": "يمكن ضرب أو قسمة الطرفين على نفس العدد غير المنعدم."
+   },
+   {
+    "formula": "ax + b = c  →  x = (c − b) ÷ a",
+    "text": "Méthode : on retranche b des deux membres, puis on divise par a. On vérifie en remplaçant x dans l'équation.",
+    "ar": "نطرح b من الطرفين ثم نقسم على a، ونتحقق بالتعويض."
+   }
+  ],
+  "seen": "Avec x = 5, les deux plateaux pèsent 20. En retirant 5 billes de chaque côté, il reste 3 sacs à gauche et 15 billes à droite : 3x = 15, donc x = 5.",
+  "audio": "audio/maths-2ac-equations-regle.mp3",
+  "audioText": "القاعدة هي: المعادلة بحال الميزان المعادل. إلا نقصتي نفس العدد من الجهتين، كيبقى معادل. وإلا قسمتي الجهتين على نفس العدد، اللي ماشي صفر، كيبقى معادل. باش تحل آ إكس زائد بي كيساوي سي، كتنقص بي من الجهتين، ومن بعد كتقسم على آ. وفالأخير، رجّع الحل فالمعادلة باش تتأكد."
+ },
+ "proof": {
+  "title": "Pourquoi l'équilibre reste-t-il ?",
+  "firstIsFormula": true,
+  "paras": [
+   "3x + 5 = 20  →  3x = 15  →  x = 5",
+   "Une égalité est une balance en équilibre. Retirer 5 billes des deux plateaux enlève le même poids de chaque côté : l'équilibre reste, et il ne reste que les 3 sacs face à 15 billes. Partager chaque plateau en 3 parts égales garde aussi l'équilibre : un sac face à 5 billes."
+  ],
+  "ar": "المتساوية ميزان متوازن: نزع نفس الكمية من الكفتين أو قسمتهما إلى نفس عدد الأجزاء يحافظ على التوازن."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "a",
+      "pick 3 4 5"
+     ],
+     [
+      "x",
+      "int 3 9"
+     ],
+     [
+      "m",
+      "int 1 3"
+     ],
+     [
+      "b",
+      "a*m"
+     ],
+     [
+      "c",
+      "a*x+b"
+     ]
+    ],
+    "q": "Résous l'équation {a:0}x + {b:0} = {c:0}.",
+    "unit": "(x)",
+    "answer": "x",
+    "digits": 0,
+    "traps": [
+     [
+      "(c+b)/a",
+      "signe"
+     ],
+     [
+      "c-b-a",
+      "divise"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "a",
+      "pick -2 -3 -4 -5"
+     ],
+     [
+      "x",
+      "pick -6 -4 -3 -2 4 5 6"
+     ],
+     [
+      "m",
+      "int 1 3"
+     ],
+     [
+      "b",
+      "-a*m"
+     ],
+     [
+      "c",
+      "a*x+b"
+     ]
+    ],
+    "q": "Résous l'équation {a:0}x + {b:0} = {c:0}.",
+    "unit": "(x)",
+    "answer": "x",
+    "digits": 0,
+    "traps": [
+     [
+      "-(c-b)/a",
+      "neg"
+     ],
+     [
+      "(c+b)/a",
+      "signe"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "a",
+      "pick 5 6 7"
+     ],
+     [
+      "k",
+      "pick 2 3"
+     ],
+     [
+      "x",
+      "int 1 8"
+     ],
+     [
+      "b",
+      "int 1 9"
+     ],
+     [
+      "d",
+      "(a-k)*x+b"
+     ]
+    ],
+    "q": "Résous l'équation {a:0}x + {b:0} = {k:0}x + {d:0}.",
+    "unit": "(x)",
+    "answer": "x",
+    "digits": 2,
+    "traps": [
+     [
+      "(d-b)/(a+k)",
+      "x_droite"
+     ],
+     [
+      "(d+b)/(a-k)",
+      "signe"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "x = 4 est-il solution de 2x + 3 = 11 ?",
+   "ar": "هل x = 4 حل للمعادلة 2x + 3 = 11؟",
+   "options": [
+    [
+     "oui, car 2 × 4 + 3 = 11",
+     ""
+    ],
+    [
+     "non, car 24 + 3 n'est pas égal à 11",
+     "verif"
+    ],
+    [
+     "non, car 4 + 3 n'est pas égal à 11",
+     "verif"
+    ]
+   ]
+  },
+  {
+   "q": "La solution de 5x − 4 = 2x + 8 est :",
+   "ar": "حل المعادلة 5x − 4 = 2x + 8 هو:",
+   "options": [
+    [
+     "4",
+     ""
+    ],
+    [
+     "12 ÷ 7, environ 1,7",
+     "x_droite"
+    ],
+    [
+     "4 ÷ 3, environ 1,3",
+     "signe"
+    ]
+   ]
+  },
+  {
+   "q": "Résoudre −2x = 10 donne :",
+   "ar": "حل المعادلة −2x = 10 يعطي:",
+   "options": [
+    [
+     "x = −5",
+     ""
+    ],
+    [
+     "x = 5",
+     "neg"
+    ],
+    [
+     "x = 8",
+     "divise"
+    ]
+   ]
+  }
+ ]
+}
