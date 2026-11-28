@@ -103,6 +103,26 @@
    ]
   },
   {
+   "id": "pc-2ac-lumiere",
+   "niveau": "PC 2AC",
+   "titre": "La lumière",
+   "page": "pc-2ac-lumiere.html",
+   "carte": "chapitres/pc-2ac-lumiere.js",
+   "audio": [
+    "audio/l2ac-bab1.mp3",
+    "audio/l2ac-bab2.mp3",
+    "audio/l2ac-bab3.mp3",
+    "audio/l2ac-sandouq.mp3"
+   ],
+   "lien": "jeu/pc-2ac-lumiere.html?cls=2APIC",
+   "portes": [
+    "https://pc.taalim.men/2ac-propagation/",
+    "https://pro.taalim.men/lecons/pc-2ac-lentilles",
+    "https://pc.taalim.men/2ac-loupe-oeil/",
+    "https://pc.taalim.men/2ac-courant-alternatif/"
+   ]
+  },
+  {
    "id": "maths-2ac-calcul",
    "niveau": "Maths 2AC",
    "titre": "Le calcul",
