@@ -1,0 +1,346 @@
+{
+ "meta": {
+  "kicker": "Physique-chimie · 3e année collège · Le concept en main",
+  "title": "La puissance électrique",
+  "titleAr": "القدرة الكهربائية",
+  "short": "Puissance électrique",
+  "classes": [
+   "3APIC"
+  ],
+  "footer": "Leçon construite depuis une fiche JSON dans l'atelier. Textes et valeurs originaux."
+ },
+ "misconceptions": {
+  "addition": {
+   "fr": "On multiplie la tension par l'intensité, on ne les additionne pas : P = U × I.",
+   "ar": "نضرب التوتر في الشدة ولا نجمعهما."
+  },
+  "divise": {
+   "fr": "P = U × I : on multiplie, on ne divise pas.",
+   "ar": "نضرب التوتر في الشدة ولا نقسم."
+  },
+  "inverse": {
+   "fr": "Pour trouver l'intensité, on divise la puissance par la tension : I = P ÷ U, et non U ÷ P.",
+   "ar": "لإيجاد الشدة نقسم القدرة على التوتر."
+  },
+  "multiplie": {
+   "fr": "Pour trouver I, on divise P par U ; multiplier donne un nombre énorme.",
+   "ar": "لإيجاد الشدة نقسم القدرة على التوتر ولا نضرب."
+  },
+  "somme": {
+   "fr": "Les appareils branchés ensemble ajoutent leurs puissances : la puissance totale est la somme, et l'intensité totale aussi.",
+   "ar": "الأجهزة المشغلة معا تجمع قدراتها، فتكبر الشدة الكلية."
+  }
+ },
+ "hook": {
+  "title": "Pourquoi tout s'est éteint ?",
+  "text": "Dans la cuisine, la bouilloire chauffe et le radiateur fonctionne. On allume le four : d'un coup, toute la maison est dans le noir. Le four est-il en panne, ou y a-t-il une autre raison ?",
+  "ar": "الغلاية والمدفأة تشتغلان، ثم نشغل الفرن: فينقطع التيار في المنزل كله. هل الفرن معطل أم هناك سبب آخر؟",
+  "audio": "audio/pc-3ac-puissance-electrique-question.mp3",
+  "audioText": "كنتي فالكوزينة، الغلّاية د الما شاعلة والشوفاج خدام، ومن بعد شعلتي الفرن. فجأة طفا الضو فالدار كاملة. علاش وقع هادشي؟ واش الفرن خاسر، ولا كاين شي سبب آخر؟ دير التوقع ديالك."
+ },
+ "predict": [
+  {
+   "q": "Une bouilloire porte l'indication 220 V – 2000 W. L'intensité qui la traverse est environ :",
+   "ar": "غلاية تحمل الإشارة 220 V – 2000 W. شدة التيار الذي يمر فيها تقريبا:",
+   "options": [
+    [
+     "9,1 A",
+     ""
+    ],
+    [
+     "2220 A",
+     "addition"
+    ],
+    [
+     "0,11 A",
+     "inverse"
+    ]
+   ]
+  },
+  {
+   "q": "On fait fonctionner ensemble une bouilloire de 2000 W et un radiateur de 1500 W. La puissance totale est :",
+   "ar": "نشغل معا غلاية 2000 W ومدفأة 1500 W. القدرة الكلية:",
+   "options": [
+    [
+     "3500 W",
+     ""
+    ],
+    [
+     "2000 W, la plus grande",
+     "somme"
+    ],
+    [
+     "500 W, la différence",
+     "somme"
+    ]
+   ]
+  }
+ ],
+ "experiment": {
+  "title": "Le tableau électrique de la maison",
+  "intro": "La maison est alimentée sous 220 V et protégée par un disjoncteur de 16 A. Allume les appareils (0 = éteint, 1 = allumé) et regarde la puissance totale et l'intensité.",
+  "widget": "curseurs",
+  "params": {
+   "inputs": [
+    {
+     "id": "n",
+     "label": "Lampes de 60 W",
+     "unit": "",
+     "min": 0,
+     "max": 10,
+     "step": 1,
+     "value": 2
+    },
+    {
+     "id": "b",
+     "label": "Bouilloire 2000 W",
+     "unit": "",
+     "min": 0,
+     "max": 1,
+     "step": 1,
+     "value": 0
+    },
+    {
+     "id": "r",
+     "label": "Radiateurs de 1500 W",
+     "unit": "",
+     "min": 0,
+     "max": 2,
+     "step": 1,
+     "value": 0
+    },
+    {
+     "id": "f",
+     "label": "Four 2400 W",
+     "unit": "",
+     "min": 0,
+     "max": 1,
+     "step": 1,
+     "value": 0
+    }
+   ],
+   "outputs": [
+    {
+     "id": "P",
+     "label": "Puissance totale",
+     "unit": "W",
+     "expr": "60*n+2000*b+1500*r+2400*f",
+     "digits": 0
+    },
+    {
+     "id": "I",
+     "label": "Intensité totale",
+     "unit": "A",
+     "expr": "P/220",
+     "digits": 1
+    }
+   ],
+   "bars": [
+    {
+     "id": "I",
+     "label": "Intensité, le disjoncteur coupe au-delà de 16 A",
+     "max": 16
+    }
+   ]
+  },
+  "missions": [
+   {
+    "id": "seule",
+    "type": "condition",
+    "expr": "b == 1 && n == 0 && r == 0 && f == 0",
+    "text": "N'allume que la bouilloire (220 V – 2000 W). Lis P et I : I = 2000 ÷ 220."
+   },
+   {
+    "id": "ajout",
+    "type": "valeurs",
+    "input": "r",
+    "values": [
+     0,
+     1,
+     2
+    ],
+    "when": "b == 0 && n == 0 && f == 0",
+    "text": "Sans autre appareil, compare 0, 1 et 2 radiateurs."
+   },
+   {
+    "id": "coupe",
+    "type": "condition",
+    "expr": "60*n+2000*b+1500*r+2400*f > 3520",
+    "text": "Refais la cuisine de l'accroche : bouilloire, radiateur, puis four. L'intensité dépasse-t-elle 16 A ?"
+   }
+  ],
+  "required": [
+   "seule",
+   "ajout"
+  ],
+  "note": "P = 60 n + 2000 b + 1500 r + 2400 f, puis I = P ÷ 220, recalculés à chaque mouvement. Au-delà de 16 A, soit 3520 W, le disjoncteur coupe."
+ },
+ "rule": {
+  "blocks": [
+   {
+    "formula": "P = U × I",
+    "text": "La puissance électrique P (en watts, W) reçue par un appareil de chauffage ou une lampe est égale à la tension U (en volts) multipliée par l'intensité I (en ampères).",
+    "ar": "القدرة الكهربائية تساوي التوتر مضروبا في الشدة."
+   },
+   {
+    "formula": "I = P ÷ U",
+    "text": "Les indications d'un appareil, par exemple 220 V – 2000 W, sont ses valeurs nominales. Branché sous 220 V, il est traversé par I = 2000 ÷ 220 ≈ 9,1 A.",
+    "ar": "الإشارتان على الجهاز هما القيمتان الاسميتان، ومنهما نحسب الشدة I = P ÷ U."
+   },
+   {
+    "formula": "P totale = P₁ + P₂ + …",
+    "text": "Les appareils de la maison sont en dérivation : leurs puissances s'additionnent. Le disjoncteur coupe le courant quand l'intensité totale dépasse sa valeur, par exemple 16 A, soit 3520 W sous 220 V.",
+    "ar": "قدرات الأجهزة المشغلة معا تجمع، والقاطع يقطع التيار إذا تجاوزت الشدة الكلية قيمته."
+   }
+  ],
+  "seen": "La bouilloire seule demande 9,1 A. Chaque radiateur ajoute 1500 W, soit 6,8 A. Bouilloire, radiateur et four ensemble : 5900 W, soit 26,8 A, bien au-delà de 16 A. Le four n'était pas en panne : le disjoncteur a protégé l'installation.",
+  "audio": "audio/pc-3ac-puissance-electrique-regle.mp3",
+  "audioText": "القاعدة هي: القدرة كتساوي التوتر ضرب الشدة. القدرة بالواط، التوتر بالفولط، والشدة بالأمبير. فالدار التوتر ديما مئتين وعشرين فولط، إذن الشدة كتساوي القدرة تقسيم مئتين وعشرين. وملي كتشعل بزاف ديال الأجهزة فنفس الوقت، القدرات كتجمع والشدة كتطلع. إلا فاتت الشدة اللي كيتحملها الديسجونكتور، كيقطع الضو باش يحمي الدار."
+ },
+ "proof": {
+  "title": "Pourquoi les puissances s'additionnent ?",
+  "firstIsFormula": true,
+  "paras": [
+   "I = I₁ + I₂, donc U × I = U × I₁ + U × I₂, soit P = P₁ + P₂",
+   "Les appareils sont en dérivation : chacun reçoit la même tension de 220 V. D'après la loi des nœuds, l'intensité dans le fil principal est la somme des intensités des branches. En multipliant par la même tension U, on obtient la somme des puissances."
+  ],
+  "ar": "الأجهزة على التفرع تأخذ نفس التوتر، والشدة الرئيسية مجموع شدات الفروع، فنضرب في نفس التوتر ونحصل على مجموع القدرات."
+ },
+ "exercises": {
+  "levels": [
+   {
+    "label": "Niveau 1",
+    "vars": [
+     [
+      "U",
+      "pick 6 12 220"
+     ],
+     [
+      "I",
+      "pick 0.5 2 3 4.5"
+     ]
+    ],
+    "q": "Un appareil fonctionne sous {U:0} V et il est traversé par un courant de {I:1} A. Calcule sa puissance.",
+    "unit": "W",
+    "answer": "U*I",
+    "digits": 1,
+    "traps": [
+     [
+      "U+I",
+      "addition"
+     ],
+     [
+      "U/I",
+      "divise"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 2",
+    "vars": [
+     [
+      "P",
+      "pick 60 100 1100 1500 2000 2200"
+     ]
+    ],
+    "q": "Un appareil porte l'indication 220 V – {P:0} W. Calcule l'intensité du courant qui le traverse quand il fonctionne normalement.",
+    "unit": "A",
+    "answer": "P/220",
+    "digits": 2,
+    "traps": [
+     [
+      "220/P",
+      "inverse"
+     ],
+     [
+      "P*220",
+      "multiplie"
+     ]
+    ]
+   },
+   {
+    "label": "Niveau 3",
+    "vars": [
+     [
+      "n",
+      "pick 2 3 4 5 6"
+     ],
+     [
+      "F",
+      "pick 1000 1200 1800 2400"
+     ]
+    ],
+    "q": "Sous 220 V, on allume ensemble {n:0} lampes de 60 W, une bouilloire de 2000 W et un appareil de {F:0} W. Calcule l'intensité totale.",
+    "unit": "A",
+    "answer": "(60*n+2000+F)/220",
+    "digits": 1,
+    "traps": [
+     [
+      "2000/220",
+      "somme"
+     ],
+     [
+      "220/(60*n+2000+F)",
+      "inverse"
+     ]
+    ]
+   }
+  ]
+ },
+ "check": [
+  {
+   "q": "Un fer à repasser 220 V – 1100 W est traversé par un courant de :",
+   "ar": "مكواة 220 V – 1100 W يمر فيها تيار شدته:",
+   "options": [
+    [
+     "5 A",
+     ""
+    ],
+    [
+     "0,2 A",
+     "inverse"
+    ],
+    [
+     "1320 A",
+     "addition"
+    ]
+   ]
+  },
+  {
+   "q": "Un appareil sous 12 V est traversé par 2 A. Sa puissance est :",
+   "ar": "جهاز تحت توتر 12 V تمر فيه شدة 2 A. قدرته:",
+   "options": [
+    [
+     "24 W",
+     ""
+    ],
+    [
+     "6 W",
+     "divise"
+    ],
+    [
+     "14 W",
+     "addition"
+    ]
+   ]
+  },
+  {
+   "q": "Disjoncteur de 16 A, tension 220 V. Peut-on faire fonctionner ensemble deux radiateurs de 1500 W et une bouilloire de 2000 W ?",
+   "ar": "قاطع 16 A وتوتر 220 V. هل يمكن تشغيل مدفأتين 1500 W وغلاية 2000 W معا؟",
+   "options": [
+    [
+     "Non : 5000 W, soit environ 22,7 A",
+     ""
+    ],
+    [
+     "Oui : chaque appareil reste sous 16 A",
+     "somme"
+    ],
+    [
+     "Oui : ils reçoivent tous 220 V",
+     "somme"
+    ]
+   ]
+  }
+ ]
+}
