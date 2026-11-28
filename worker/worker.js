@@ -106,6 +106,88 @@ async function store(env, row) {
   } catch (_) { /* le stockage ne doit jamais bloquer l'alerte */ }
 }
 
+
+/* ---- Jeu « الباب الموالي » : événements ANONYMES (aucun nom), progression de classe, alerte Telegram de classe ----
+   POST /api/bab           { chapter, cls, sid, type, door }  → 204. Classe connue obligatoire, sinon 400, rien stocké.
+   GET  /api/bab/progress?cls=&chapter=  → { n, donePct:[p0,p1,p2] } ; donePct = null sous BAB_MIN_N appareils.
+   Cron quotidien : par classe, chapitre et porte, si BAB_ALERT_MIN appareils ou plus sont bloqués
+   (« start » sans « done », dernier « start » > 2 jours, activité < 14 jours), un seul message Telegram, sans nom. */
+const BAB_TYPES = ['listen', 'start', 'frag', 'miss', 'key', 'done', 'chest'];
+const BAB_LIMIT_IP = 120;     // événements par minute et par IP (une classe entière sort souvent par la même IP)
+const BAB_LIMIT_SID = 200;    // événements par heure et par appareil
+const BAB_MIN_N = 3;          // pas de pourcentage publié sous 3 appareils
+const BAB_ALERT_MIN = 3;      // pas d'alerte sous 3 élèves bloqués
+const BAB_STUCK_MS = 2 * 864e5, BAB_ACTIVE_MS = 14 * 864e5;
+export function babRow(p, now, env) {
+  if (!p || typeof p !== 'object') return null;
+  const type = String(p.type || ''), chapter = String(p.chapter || ''), sid = String(p.sid || ''), door = Number(p.door);
+  if (BAB_TYPES.indexOf(type) < 0) return null;
+  if (!/^[a-z0-9-]{3,40}$/.test(chapter) || !/^[a-z0-9]{6,20}$/.test(sid)) return null;
+  if (!Number.isInteger(door) || door < 0 || door > 3) return null;
+  const cls = clsClean(p.cls); if (!cls || classes(env).indexOf(cls) < 0) return null;
+  return { ts: now, cls, sid, chapter, type, door };
+}
+function babLog(o) { try { console.log(JSON.stringify(Object.assign({ evt: 'bab' }, o))); } catch (_) { /* rien */ } }
+async function bab(request, env, url, cors) {
+  const H = Object.assign({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }, cors);
+  const out = (o, st) => new Response(o == null ? null : JSON.stringify(o), { status: st, headers: H });
+  if (!env.DB) return out({ error: 'db' }, 503);
+  const now = Date.now(), ip = request.headers.get('CF-Connecting-IP') || '';
+  if (url.pathname === '/api/bab' && request.method === 'POST') {
+    if (limited('bab-ip:' + ip, BAB_LIMIT_IP, 60000, now)) return out({ error: 'rate' }, 429);
+    const raw = await request.text(); if (raw.length > 600) return out({ error: 'size' }, 413);
+    let p; try { p = JSON.parse(raw); } catch (_) { return out({ error: 'json' }, 400); }
+    const row = babRow(p, now, env); if (!row) return out({ error: 'invalid' }, 400);
+    if (limited('bab-sid:' + row.sid, BAB_LIMIT_SID, 3600000, now)) return out({ error: 'rate' }, 429);
+    try {
+      await env.DB.prepare('INSERT INTO bab_events (ts, cls, sid, chapter, type, door) VALUES (?, ?, ?, ?, ?, ?)').bind(row.ts, row.cls, row.sid, row.chapter, row.type, row.door).run();
+      if (Math.random() < 0.01) await env.DB.prepare('DELETE FROM bab_events WHERE ts < ?').bind(now - RETENTION_DAYS * 864e5).run();
+    } catch (e) { babLog({ op: 'insert', error: String(e && e.message || e).slice(0, 200) }); return out({ error: 'db' }, 503); }
+    return out(null, 204);
+  }
+  if (url.pathname === '/api/bab/progress' && request.method === 'GET') {
+    const cls = clsClean(url.searchParams.get('cls')), chapter = String(url.searchParams.get('chapter') || '');
+    if (!cls || classes(env).indexOf(cls) < 0 || !/^[a-z0-9-]{3,40}$/.test(chapter)) return out({ error: 'invalid' }, 400);
+    if (limited('bab-ip:' + ip, BAB_LIMIT_IP, 60000, now)) return out({ error: 'rate' }, 429);
+    try { return out(await babProgress(env, cls, chapter, now), 200); }
+    catch (e) { babLog({ op: 'progress', error: String(e && e.message || e).slice(0, 200) }); return out({ error: 'db' }, 503); }
+  }
+  return out({ error: 'route' }, 404);
+}
+export async function babProgress(env, cls, chapter, now) {
+  const since = now - RETENTION_DAYS * 864e5;
+  const { results } = await env.DB.prepare(
+    "SELECT COUNT(DISTINCT sid) AS n, COUNT(DISTINCT CASE WHEN type = 'done' AND door = 0 THEN sid END) AS d0, " +
+    "COUNT(DISTINCT CASE WHEN type = 'done' AND door = 1 THEN sid END) AS d1, COUNT(DISTINCT CASE WHEN type = 'done' AND door = 2 THEN sid END) AS d2 " +
+    'FROM bab_events WHERE cls = ? AND chapter = ? AND ts >= ?').bind(cls, chapter, since).all();
+  const r = (results && results[0]) || {}, n = Number(r.n) || 0;
+  return { n, donePct: n < BAB_MIN_N ? null : [r.d0, r.d1, r.d2].map((x) => Math.round(100 * (Number(x) || 0) / n)) };
+}
+export async function babStuck(env, now) {
+  const { results } = await env.DB.prepare(
+    'SELECT cls, chapter, door, COUNT(*) AS n FROM (' +
+    "SELECT cls, chapter, sid, door, MAX(CASE WHEN type = 'start' THEN ts END) AS s, MAX(CASE WHEN type = 'done' THEN 1 ELSE 0 END) AS dn " +
+    'FROM bab_events WHERE ts >= ? AND door BETWEEN 0 AND 2 GROUP BY cls, chapter, sid, door' +
+    ') WHERE dn = 0 AND s IS NOT NULL AND s < ? GROUP BY cls, chapter, door HAVING COUNT(*) >= ? ORDER BY cls, chapter, door')
+    .bind(now - BAB_ACTIVE_MS, now - BAB_STUCK_MS, BAB_ALERT_MIN).all();
+  return results || [];
+}
+export function babAlertText(list) {
+  return ['🚪 لعبة «الباب الموالي»: تلاميذ عالقون منذ أكثر من يومين'].concat(list.map((x) =>
+    '• القسم ' + clsClean(x.cls) + ' · ' + String(x.chapter).slice(0, 40) + ' · الباب ' + (Number(x.door) + 1) + ': ' + Number(x.n) + ' تلاميذ')).join('\n');
+}
+export async function babCron(env, now) {
+  const t0 = Date.now();
+  if (!env.DB || !env.BOT_TOKEN || !env.CHAT_ID) { babLog({ op: 'cron', error: 'config' }); return { sent: 0 }; }
+  let list = [];
+  try { list = await babStuck(env, now); } catch (e) { babLog({ op: 'cron', error: String(e && e.message || e).slice(0, 200) }); return { sent: 0 }; }
+  if (!list.length) { babLog({ op: 'cron', groups: 0, ms: Date.now() - t0 }); return { sent: 0 }; }
+  const r = await fetch('https://api.telegram.org/bot' + env.BOT_TOKEN + '/sendMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: env.CHAT_ID, text: babAlertText(list).slice(0, 3900), disable_web_page_preview: true }) }).catch(() => null);
+  babLog({ op: 'cron', groups: list.length, telegram: r ? r.status : 'network', ms: Date.now() - t0 });
+  return { sent: r && r.ok ? 1 : 0, groups: list.length };
+}
+
 const J = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
 
 /* API enseignant : protégée par une clé (secret TEACHER_KEY, 12 caractères au moins), jamais écrite dans le dépôt.
@@ -190,6 +272,12 @@ export default {
     const origin = request.headers.get('Origin') || '';
     const allowed = (origin && list.indexOf(origin) >= 0) ? origin : allowed0;
     const cors = { 'Access-Control-Allow-Origin': allowed || 'null', 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
+    if (url.pathname === '/api/bab' || url.pathname === '/api/bab/progress') {
+      cors['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+      if (!origin || list.indexOf(origin) < 0) return new Response('origin', { status: 403, headers: cors });
+      return bab(request, env, url, cors);
+    }
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (request.method !== 'POST') return new Response('method', { status: 405, headers: cors });
     if (!origin || list.indexOf(origin) < 0) return new Response('origin', { status: 403, headers: cors });
@@ -217,5 +305,6 @@ export default {
       body: JSON.stringify({ chat_id: env.CHAT_ID, text: text.slice(0, 3900), disable_web_page_preview: true })
     });
     return new Response(r.ok ? 'ok' : 'telegram', { status: r.ok ? 200 : 502, headers: cors });
-  }
+  },
+  async scheduled(event, env, ctx) { ctx.waitUntil(babCron(env, Date.now())); }
 };

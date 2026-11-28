@@ -9,5 +9,9 @@ compatibility_date = "2024-09-23"
 keep_vars = true
 
 [vars]
-ALLOWED_ORIGIN = "https://taalim.men,https://maths.taalim.men,https://pc.taalim.men,https://svt.taalim.men,https://tech.taalim.men,https://technologie.taalim.men"
+ALLOWED_ORIGIN = "https://taalim.men,https://pro.taalim.men,https://maths.taalim.men,https://pc.taalim.men,https://svt.taalim.men,https://tech.taalim.men,https://technologie.taalim.men"
 CLASSES = "1APIC,1APIC1,1APIC2,1APIC3,2APIC,2APIC1,2APIC2,2APIC3,3APIC,3APIC1,3APIC2,3APIC3"
+
+# Jeu « الباب الموالي » : alerte Telegram de classe, chaque jour à 18:07 (heure du Maroc = UTC).
+[triggers]
+crons = ["7 18 * * *"]

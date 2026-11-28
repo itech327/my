@@ -59,3 +59,12 @@ Option plus tard : Cloudflare Access (Zero Trust) devant `/teacher`, si le compt
 Le relais est servi sur un domaine de taalim.men, pas sur un sous-domaine workers.dev d'un compte personnel.
 Dans Cloudflare : Workers & Pages > taalim-relay > Settings > Domains & Routes > Add > Custom domain > `relay.taalim.men`.
 Ensuite `lab/notify-config.js` contient `https://relay.taalim.men`. Garder l'ancienne adresse workers.dev active quelques jours, le temps que les pages en cache passent à la nouvelle.
+
+## Jeu « الباب الموالي » (28/11/2026)
+- **Anonyme par construction :** table `bab_events (ts, cls, sid, chapter, type, door)`, sans colonne de nom, d'IP ni d'appareil. `sid` est un identifiant aléatoire de l'appareil. Un nom envoyé par erreur est ignoré.
+- `POST /api/bab` reçoit `{ chapter, cls, sid, type, door }` et répond 204. La classe doit être connue (`CLASSES`), sinon 400 et rien n'est stocké. Limites : 120 événements par minute et par IP (une classe sort souvent par la même IP) et 200 par heure et par appareil.
+- `GET /api/bab/progress?cls=&chapter=` renvoie `{ n, donePct }`, le pourcentage d'appareils qui ont fini chaque porte. `donePct` vaut `null` sous 3 appareils.
+- **Cron quotidien (18:07 UTC) :** un seul message Telegram par jour, qui liste par classe, chapitre et porte les élèves bloqués. Bloqué veut dire : `start` sans `done`, dernier `start` il y a plus de 2 jours, activité dans les 14 derniers jours. Une porte n'est listée qu'à partir de 3 élèves.
+- Conservation : 180 jours, comme `events`.
+- Tests : `node --no-warnings test_bab.mjs` (vraie base SQLite via `node:sqlite`, même SQL que D1) et `node test_worker.mjs`.
+- **Déploiement :** seulement le code (`PUT …/scripts/taalim-relay/content`, les liaisons et secrets restent), puis `ALLOWED_ORIGIN` (ajout de pro.taalim.men) et le cron par l'API. La table a été créée avec le bloc `bab_events` de `schema.sql`.
